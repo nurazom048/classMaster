@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:table/dataTable.dart';
+import 'package:table/freash.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Tabile3(),
+      home: MyWidget(),
       // home: DataTAble(),
     );
   }
@@ -31,16 +32,16 @@ class Tabile3 extends StatelessWidget {
     List<Priodemodel> priode = [
       Priodemodel(classinfo: [
         Classmodel(
-            instructorname: "Msdnasdf",
+            instructorname: "sat11",
             subjectcode: "12sasds3",
             mainpic: "dfssa",
             classsumary: "clasdssafssumary",
             roomnum: ''),
         Classmodel(
-            instructorname: "fs",
+            instructorname: "Mdsn",
             subjectcode: "123",
-            mainpic: "dsf",
-            classsumary: "classsumary",
+            mainpic: "",
+            classsumary: "classsssumary",
             roomnum: ''),
         Classmodel(
             instructorname: "UfKsdR",
@@ -65,10 +66,10 @@ class Tabile3 extends StatelessWidget {
       ///
       Priodemodel(classinfo: [
         Classmodel(
-            instructorname: "Mnsse",
-            subjectcode: "123",
-            mainpic: "",
-            classsumary: "classsumarysf",
+            instructorname: "sat2",
+            subjectcode: "12sasds3",
+            mainpic: "dfssa",
+            classsumary: "clasdssafssumary",
             roomnum: ''),
         Classmodel(
             instructorname: "Mdsn",
@@ -266,7 +267,7 @@ class Tabile3 extends StatelessWidget {
             roomnum: ''),
       ]),
 
-      ///
+      /// after 7
       Priodemodel(classinfo: [
         Classmodel(
             instructorname: "Mssn",
@@ -404,26 +405,34 @@ class Tabile3 extends StatelessWidget {
 //////// 2nd
               ],
             ),
-            Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              ///************ 7 days******************** */
-              SevenDays(),
+            Container(
+              width: 700,
+              height: 700,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ///************ 7 days******************** */
+                    // SevenDays(),
 
-              ///************ Priode In Column******************** */
-              Wrap(
-                children: List.generate(
-                    7,
-                    (index) => pridodeincolumn(
-                        classinfo: priode[index].classinfo,
-                        comperpriodmodel:
-                            priode[index + 1 > index ? 0 : index + 1]
-                                .classinfo)),
-              ),
-            ]),
+                    ///************ Priode In Column******************** */
+                    Wrap(
+                      children: List.generate(
+                          1,
+                          (index) => pridodeincolumn(
+                              classinfo: fack[0],
+                              comperpriodmodel: priode[index].classinfo)),
+                    ),
+                  ]),
+            ),
           ],
         ),
       ),
     );
   }
+
+  pridodeincolumn(
+      {required classinfo, required List<Classmodel> comperpriodmodel}) {}
 }
 
 class SevenDays extends StatelessWidget {
@@ -465,41 +474,6 @@ class SevenDays extends StatelessWidget {
   }
 }
 
-// ignore: camel_case_types, must_be_immutable
-class pridodeincolumn extends StatelessWidget {
-  List<Classmodel> classinfo;
-  List<Classmodel> comperpriodmodel;
-
-  // ignore: prefer_const_constructors_in_immutables
-  pridodeincolumn({
-    Key? key,
-    required this.classinfo,
-    required this.comperpriodmodel,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Wrap(
-        direction: Axis.vertical,
-        children: List.generate(
-          classinfo.length,
-          (index) => ClassContaner(
-            teachername: comperpriodmodel[index].instructorname ==
-                    classinfo[index].instructorname
-                ? "same"
-                : classinfo[index].instructorname,
-            subjectcode: 666,
-            roomnum: 11,
-            onTap: () {},
-            color: index % 2 == 0
-                ? const Color.fromRGBO(68, 114, 196, 161)
-                : const Color.fromRGBO(191, 191, 191, 161),
-            comperpriodmodel: comperpriodmodel,
-          ),
-        ));
-  }
-}
-
 // ignore: must_be_immutable
 class ClassContaner extends StatelessWidget {
   Color? color;
@@ -507,12 +481,10 @@ class ClassContaner extends StatelessWidget {
   int subjectcode, roomnum;
   // ignore: prefer_typing_uninitialized_variables
   var onTap, bordercolor;
-  List<Classmodel> comperpriodmodel;
 
   ClassContaner({
     Key? key,
     required this.color,
-    required this.comperpriodmodel,
     required this.teachername,
     required this.roomnum,
     required this.subjectcode,
