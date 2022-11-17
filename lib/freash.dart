@@ -1,58 +1,135 @@
 import 'package:flutter/material.dart';
+import 'package:table/classdetals.dart';
+import 'package:table/main.dart';
+
+import 'moidels.dart';
 
 class MyWidget extends StatelessWidget {
   MyWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    List<String> teachername = ["sat", "A", "b", "b", "b", "b"];
-    List<String> teachername2 = ["sat", "A", "b", "b", "c"];
-    List<String> fackteachername = [
-      "sat",
+    // List<String> sevenlist = ["sat", "A", "b", "b", "b", "b"];
+    //List<String> sevenlist2 = ["sat", "A", "b", "b", "c"];
+    List<Classmodel> facksevenlist = [
+      Classmodel(
+          instructorname: "Monday",
+          subjectcode: "subjectcode",
+          mainpic: "mainpic",
+          classsumary: "classsumary",
+          roomnum: "roomnum"),
     ];
+
+    //
 
     return Scaffold(
         body: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            child: Wrap(
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TopContaner(
+                      priode: 'Priode',
+                      startTime: "sevendays",
+                      endtime: "Time"),
+                  Wrap(
+                    //direction: Axis.horizontal,
+                    children: List.generate(
+                      5,
+                      (index) => TopContaner(
+                        priode: "${index + 1}",
+                        startTime: "8:00",
+                        endtime: "8:45",
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Wrap(
                 direction: Axis.horizontal,
                 children: List.generate(
-                    teachername.length,
-                    (index) => Container(
-                        decoration: BoxDecoration(
-                            color: teachername[index] ==
-                                    teachername[
-                                        index + 1 > teachername.length - 1
-                                            ? 0
+                  sunday.length - 1,
+                  (index) => InkWell(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Classdetails(
+                                instractorname: '',
+                                subjectcode: '',
+                                classsumary: '',
+                                roomnum: '',
+                              )),
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: sunday[index + 1 > sunday.length - 1
+                                          ? 0
+                                          : index + 1]
+                                      .subjectcode ==
+                                  sunday[index].subjectcode
+                              ? Colors.amber
+                              : Colors.black12,
+                          border: Border(
+                              right: BorderSide(
+                                  color: sunday[index + 1 > sunday.length - 1
+                                                  ? 0
+                                                  : index + 1]
+                                              .subjectcode ==
+                                          sunday[index].subjectcode
+                                      ? Colors.amber
+                                      : Colors.black12,
+                                  width: 1))),
+                      height: 100,
+                      width: 100,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            sunday[index + 1 > index.bitLength
+                                            ? index.bitLength
                                             : index + 1]
-                                ? Colors.amber
-                                : Colors.black12,
-                            border: Border(
-                                right: BorderSide(
-                                    color: Colors.black,
-                                    width: teachername[index] ==
-                                            teachername[index + 1 >
-                                                    teachername.length - 1
-                                                ? 0
-                                                : index + 1]
-                                        ? 0
-                                        : 1))),
-                        height: 100,
-                        width: 100,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              //index + 1 > teachername.length - 1
-                              index + 1 > teachername.length - 1
-                                  ? fackteachername[0]
-                                  : teachername[index + 1] == teachername[index]
-                                      ? "Same\n  ${teachername[index]}"
-                                      : teachername[index],
-                            ),
-                            Text("subjectcode".toString()),
-                            Text("roomnum".toString()),
-                          ],
-                        ))))));
+                                        .subjectcode ==
+                                    sunday[index].subjectcode
+                                ? "Same\n  ${sunday[index].instructorname}"
+                                : sunday[index].instructorname,
+                          ),
+                          // index == 0
+                          //     ? const Text("")
+                          //     : Text("subjectcode".toString()),
+                          // index == 0
+                          //     ? const Text("")
+                          //     : Text("roomnum".toString()),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+/////
+              Wrap(
+                direction: Axis.horizontal,
+                children: List.generate(
+                  Mobday.length,
+                  (index) => Container(
+                    decoration: const BoxDecoration(
+                        color: Colors.black12,
+                        border: Border(
+                            right: BorderSide(color: Colors.black, width: 1))),
+                    height: 100,
+                    width: 100,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(Mobday[index].instructorname),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ])));
   }
 }
