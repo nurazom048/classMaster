@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:table/moidels.dart';
 
 class Classdetails extends StatelessWidget {
   String instractorname, classsumary;
@@ -15,7 +14,7 @@ class Classdetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Class Detals")),
+      appBar: AppBar(title: const Text("Class Detals")),
       body: Column(children: [
         Container(
           height: 150,
@@ -25,12 +24,12 @@ class Classdetails extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               const CircleAvatar(
                   backgroundImage: NetworkImage(
                       "https://pbs.twimg.com/profile_images/1304985167476523008/QNHrwL2q_400x400.jpg"),
                   radius: 50),
-              SizedBox(width: 30),
+              const SizedBox(width: 30),
               Column(
                 children: [
                   const SizedBox(height: 40),

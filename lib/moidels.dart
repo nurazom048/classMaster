@@ -1,94 +1,292 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-List<Classmodel> sunday = [
-  Classmodel(
-      instructorname: "Sunday",
-      subjectcode: "1",
-      mainpic: "mainpic",
-      classsumary: "classsumary",
-      roomnum: "roomnum"),
-  Classmodel(
-      instructorname: "Sun 1",
-      subjectcode: "665",
-      mainpic: "mainpic",
-      classsumary: "classsumary",
-      roomnum: "1"),
-  Classmodel(
-      instructorname: "Sun 1",
-      subjectcode: "66",
-      mainpic: "mainpic",
-      classsumary: "classsumary",
-      roomnum: "2"),
-  Classmodel(
-      instructorname: "Sun 3",
-      subjectcode: "663",
-      mainpic: "mainpic",
-      classsumary: "classsumary",
-      roomnum: "4"),
-  Classmodel(
-      instructorname: "Sun 3",
-      subjectcode: "66",
-      mainpic: "mainpic",
-      classsumary: "classsumary",
-      roomnum: "4"),
-  Classmodel(
-      instructorname: "Sun 3",
-      subjectcode: "66f",
-      mainpic: "mainpic",
-      classsumary: "classsumary",
-      roomnum: "4"),
-  Classmodel(
-      instructorname: "Sun 3",
-      subjectcode: "66",
-      mainpic: "mainpic",
-      classsumary: "classsumary",
-      roomnum: "4"),
-  Classmodel(
-      instructorname: "Sun 3",
-      subjectcode: "66f",
-      mainpic: "mainpic",
-      classsumary: "classsumary",
-      roomnum: "4"),
-];
-//
+List<Priodemodel> classdata = [
+  Priodemodel(
+// "Sunday"
+
+    date: [
+      Classmodel(
+        instructorname: "Mr.X",
+        subjectcode: "66863",
+        mainpic: "dfssa",
+        classsumary: "clasdssafssumary",
+        roomnum: 'Comunication lab',
+        startingpriode: 1,
+        endingpriode: 3,
+        weith: 300,
+      ),
+      Classmodel(
+        instructorname: "UKR",
+        subjectcode: "66774",
+        mainpic: "",
+        classsumary: "classdssumary",
+        roomnum: '315',
+        startingpriode: 4,
+        endingpriode: 4,
+        weith: 100,
+      ),
+      Classmodel(
+        instructorname: "MBA",
+        subjectcode: "65853",
+        mainpic: "dfssa",
+        classsumary: "clasdssafssumary",
+        roomnum: 'EP Est',
+        startingpriode: 5,
+        endingpriode: 7,
+        weith: 300,
+      ),
+      // Classmodel(
+      //   instructorname: "",
+      //   subjectcode: "6671sd1",
+      //   mainpic: "",
+      //   classsumary: "classdssumary",
+      //   roomnum: '',
+      //   startingpriode: 1,
+      //   endingpriode: 1,
+      // ),
+    ],
+  ),
+
+  ///Monday
+  Priodemodel(
+    date: [
+      Classmodel(
+        instructorname: "CR",
+        subjectcode: "66863",
+        mainpic: "dfssa",
+        classsumary: "clasdssafssumary",
+        roomnum: 'Ep-est',
+        startingpriode: 1,
+        endingpriode: 3,
+        weith: 300,
+      ),
+      Classmodel(
+        instructorname: "MBA",
+        subjectcode: "66774",
+        mainpic: "",
+        classsumary: "315",
+        roomnum: '315',
+        startingpriode: 4,
+        endingpriode: 4,
+        weith: 100,
+      ),
+      Classmodel(
+        instructorname: "BSB",
+        subjectcode: "65853",
+        mainpic: "dfssa",
+        classsumary: "clasdssafssumary",
+        roomnum: '315',
+        startingpriode: 5,
+        endingpriode: 5,
+        weith: 300,
+      ),
+      Classmodel(
+        instructorname: "TMJ",
+        subjectcode: "65853",
+        mainpic: "dfssa",
+        classsumary: "clasdssafssumary",
+        roomnum: '315',
+        startingpriode: 6,
+        endingpriode: 6,
+        weith: 300,
+      ),
+      Classmodel(
+        instructorname: "",
+        subjectcode: "00",
+        mainpic: "dfssa",
+        classsumary: "clasdssafssumary",
+        roomnum: '00',
+        startingpriode: 7,
+        endingpriode: 7,
+        weith: 300,
+      ),
+    ],
+  ),
+
 //monday
-List<Classmodel> Mobday = [
-  Classmodel(
-      instructorname: "Monday",
-      subjectcode: "subjectcode",
-      mainpic: "mainpic",
-      classsumary: "classsumary",
-      roomnum: "roomnum"),
-  Classmodel(
-      instructorname: "mon 1",
-      subjectcode: "subjectcode",
-      mainpic: "mainpic",
-      classsumary: "classsumary",
-      roomnum: "roomnum"),
-  Classmodel(
-      instructorname: "mon 2",
-      subjectcode: "subjectcode",
-      mainpic: "mainpic",
-      classsumary: "classsumary",
-      roomnum: "roomnum"),
-  Classmodel(
-      instructorname: "mon3 3",
-      subjectcode: "subjectcode",
-      mainpic: "mainpic",
-      classsumary: "classsumary",
-      roomnum: "roomnum")
+  Priodemodel(
+    date: [
+      Classmodel(
+        instructorname: "",
+        subjectcode: "00",
+        mainpic: "dfssa",
+        classsumary: "clasdssafssumary",
+        roomnum: '00',
+        startingpriode: 1,
+        endingpriode: 1,
+        weith: null,
+      ),
+      Classmodel(
+        instructorname: "BSB",
+        subjectcode: "6671sd1",
+        mainpic: "",
+        classsumary: "classdssumary",
+        roomnum: '200',
+        startingpriode: 2,
+        endingpriode: 2,
+        weith: null,
+      ),
+      Classmodel(
+        instructorname: "MN",
+        subjectcode: "6671sd1",
+        mainpic: "",
+        classsumary: "classdssumary",
+        roomnum: '200',
+        startingpriode: 3,
+        endingpriode: 5,
+        weith: null,
+      ),
+      Classmodel(
+        instructorname: "MBA",
+        subjectcode: "6671sd1",
+        mainpic: "",
+        classsumary: "classdssumary",
+        roomnum: '200',
+        startingpriode: 6,
+        endingpriode: 6,
+        weith: null,
+      ),
+      Classmodel(
+        instructorname: "",
+        subjectcode: "00",
+        mainpic: "",
+        classsumary: "classdssumary",
+        roomnum: '200',
+        startingpriode: 7,
+        endingpriode: 7,
+        weith: null,
+      ),
+    ],
+  ),
+
+  Priodemodel(
+    date: [
+      Classmodel(
+        instructorname: "CR",
+        subjectcode: "66863",
+        mainpic: "dfssa",
+        classsumary: "clasdssafssumary",
+        roomnum: 'Ep-est',
+        startingpriode: 1,
+        endingpriode: 3,
+        weith: 300,
+      ),
+      Classmodel(
+        instructorname: "MBA",
+        subjectcode: "66774",
+        mainpic: "",
+        classsumary: "315",
+        roomnum: '315',
+        startingpriode: 4,
+        endingpriode: 4,
+        weith: 100,
+      ),
+      Classmodel(
+        instructorname: "BSB",
+        subjectcode: "65853",
+        mainpic: "dfssa",
+        classsumary: "clasdssafssumary",
+        roomnum: '315',
+        startingpriode: 5,
+        endingpriode: 5,
+        weith: 300,
+      ),
+      Classmodel(
+        instructorname: "TMJ",
+        subjectcode: "65853",
+        mainpic: "dfssa",
+        classsumary: "clasdssafssumary",
+        roomnum: '315',
+        startingpriode: 6,
+        endingpriode: 6,
+        weith: 300,
+      ),
+      Classmodel(
+        instructorname: "",
+        subjectcode: "00",
+        mainpic: "dfssa",
+        classsumary: "clasdssafssumary",
+        roomnum: '00',
+        startingpriode: 7,
+        endingpriode: 7,
+        weith: 300,
+      ),
+    ],
+  ),
+
+  Priodemodel(
+    date: [
+      Classmodel(
+        instructorname: "",
+        subjectcode: "00",
+        mainpic: "dfssa",
+        classsumary: "clasdssafssumary",
+        roomnum: '00',
+        startingpriode: 1,
+        endingpriode: 1,
+        weith: null,
+      ),
+      Classmodel(
+        instructorname: "BSB",
+        subjectcode: "6671sd1",
+        mainpic: "",
+        classsumary: "classdssumary",
+        roomnum: '200',
+        startingpriode: 2,
+        endingpriode: 2,
+        weith: null,
+      ),
+      Classmodel(
+        instructorname: "MN",
+        subjectcode: "6671sd1",
+        mainpic: "",
+        classsumary: "classdssumary",
+        roomnum: '200',
+        startingpriode: 3,
+        endingpriode: 5,
+        weith: null,
+      ),
+      Classmodel(
+        instructorname: "MBA",
+        subjectcode: "6671sd1",
+        mainpic: "",
+        classsumary: "classdssumary",
+        roomnum: '200',
+        startingpriode: 6,
+        endingpriode: 6,
+        weith: null,
+      ),
+      Classmodel(
+        instructorname: "",
+        subjectcode: "00",
+        mainpic: "",
+        classsumary: "classdssumary",
+        roomnum: '200',
+        startingpriode: 7,
+        endingpriode: 7,
+        weith: null,
+      ),
+    ],
+  ),
 ];
+
+//
 
 class Classmodel {
   String instructorname, subjectcode, roomnum, mainpic, classsumary;
+  double startingpriode, endingpriode;
+  double? weith;
 
-  Classmodel({
-    required this.instructorname,
-    required this.subjectcode,
-    required this.mainpic,
-    required this.classsumary,
-    required this.roomnum,
-  });
+  Classmodel(
+      {required this.instructorname,
+      required this.subjectcode,
+      required this.mainpic,
+      required this.classsumary,
+      required this.roomnum,
+      required this.startingpriode,
+      required this.endingpriode,
+      required this.weith});
 }
 
 class Priodemodel {
@@ -98,239 +296,3 @@ class Priodemodel {
     required this.date,
   });
 }
-
-List<Priodemodel> priode = [
-  Priodemodel(date: [
-    Classmodel(
-        instructorname: "Sunday",
-        subjectcode: "12sasds3",
-        mainpic: "dfssa",
-        classsumary: "clasdssafssumary",
-        roomnum: ''),
-    Classmodel(
-        instructorname: "B1",
-        subjectcode: "123",
-        mainpic: "",
-        classsumary: "classsssumary",
-        roomnum: ''),
-    Classmodel(
-        instructorname: "Ba2",
-        subjectcode: "123",
-        mainpic: "",
-        classsumary: "classsssumary",
-        roomnum: ''),
-    Classmodel(
-        instructorname: "TMADSsJ",
-        subjectcode: "3",
-        mainpic: "",
-        classsumary: "classsrsumary",
-        roomnum: ''),
-    Classmodel(
-        instructorname: "Mnewee",
-        subjectcode: "12ee3",
-        mainpic: "",
-        classsumary: "clasdwessumary",
-        roomnum: ''),
-  ]),
-
-  /// monday
-  Priodemodel(date: [
-    Classmodel(
-        instructorname: "monday",
-        subjectcode: "12sasds3",
-        mainpic: "dfssa",
-        classsumary: "clasdssafssumary",
-        roomnum: ''),
-    Classmodel(
-        instructorname: "b2sd",
-        subjectcode: "123",
-        mainpic: "",
-        classsumary: "classsssumary",
-        roomnum: ''),
-    Classmodel(
-        instructorname: "UfKsdR",
-        subjectcode: "6671sd1",
-        mainpic: "",
-        classsumary: "classdssumary",
-        roomnum: ''),
-    Classmodel(
-        instructorname: "TMADSsJ",
-        subjectcode: "3",
-        mainpic: "",
-        classsumary: "classsrsumary",
-        roomnum: ''),
-    Classmodel(
-        instructorname: "Mnewee",
-        subjectcode: "12ee3",
-        mainpic: "",
-        classsumary: "clasdwessumary",
-        roomnum: ''),
-  ]),
-
-  // Tuesday
-
-  Priodemodel(date: [
-    Classmodel(
-        instructorname: "Tuesday",
-        subjectcode: "12sasds3",
-        mainpic: "dfssa",
-        classsumary: "clasdssafssumary",
-        roomnum: ''),
-    Classmodel(
-        instructorname: "b2",
-        subjectcode: "123",
-        mainpic: "",
-        classsumary: "classsssumary",
-        roomnum: ''),
-    Classmodel(
-        instructorname: "UfKsdR",
-        subjectcode: "6671sd1",
-        mainpic: "",
-        classsumary: "classdssumary",
-        roomnum: ''),
-    Classmodel(
-        instructorname: "TMADSsJ",
-        subjectcode: "3",
-        mainpic: "",
-        classsumary: "classsrsumary",
-        roomnum: ''),
-    Classmodel(
-        instructorname: "Mnewee",
-        subjectcode: "12ee3",
-        mainpic: "",
-        classsumary: "clasdwessumary",
-        roomnum: ''),
-  ]),
-// Wednesday
-  Priodemodel(date: [
-    Classmodel(
-        instructorname: "Wednesday",
-        subjectcode: "12sasds3",
-        mainpic: "dfssa",
-        classsumary: "clasdssafssumary",
-        roomnum: ''),
-    Classmodel(
-        instructorname: "b2",
-        subjectcode: "123",
-        mainpic: "",
-        classsumary: "classsssumary",
-        roomnum: ''),
-    Classmodel(
-        instructorname: "UfKsdR",
-        subjectcode: "6671sd1",
-        mainpic: "",
-        classsumary: "classdssumary",
-        roomnum: ''),
-    Classmodel(
-        instructorname: "TMADSsJ",
-        subjectcode: "3",
-        mainpic: "",
-        classsumary: "classsrsumary",
-        roomnum: ''),
-    Classmodel(
-        instructorname: "Mnewee",
-        subjectcode: "12ee3",
-        mainpic: "",
-        classsumary: "clasdwessumary",
-        roomnum: ''),
-  ]),
-// Thursday
-  Priodemodel(date: [
-    Classmodel(
-        instructorname: "Thursday",
-        subjectcode: "12sasds3",
-        mainpic: "dfssa",
-        classsumary: "clasdssafssumary",
-        roomnum: ''),
-    Classmodel(
-        instructorname: "b2",
-        subjectcode: "123",
-        mainpic: "",
-        classsumary: "classsssumary",
-        roomnum: ''),
-    Classmodel(
-        instructorname: "UfKsdR",
-        subjectcode: "6671sd1",
-        mainpic: "",
-        classsumary: "classdssumary",
-        roomnum: ''),
-    Classmodel(
-        instructorname: "TMADSsJ",
-        subjectcode: "3",
-        mainpic: "",
-        classsumary: "classsrsumary",
-        roomnum: ''),
-    Classmodel(
-        instructorname: "Mnewee",
-        subjectcode: "12ee3",
-        mainpic: "",
-        classsumary: "clasdwessumary",
-        roomnum: ''),
-  ]),
-// Friday
-  Priodemodel(date: [
-    Classmodel(
-        instructorname: "Friday",
-        subjectcode: "12sasds3",
-        mainpic: "dfssa",
-        classsumary: "clasdssafssumary",
-        roomnum: ''),
-    Classmodel(
-        instructorname: "b2",
-        subjectcode: "123",
-        mainpic: "",
-        classsumary: "classsssumary",
-        roomnum: ''),
-    Classmodel(
-        instructorname: "UfKsdR",
-        subjectcode: "6671sd1",
-        mainpic: "",
-        classsumary: "classdssumary",
-        roomnum: ''),
-    Classmodel(
-        instructorname: "TMADSsJ",
-        subjectcode: "3",
-        mainpic: "",
-        classsumary: "classsrsumary",
-        roomnum: ''),
-    Classmodel(
-        instructorname: "Mnewee",
-        subjectcode: "12ee3",
-        mainpic: "",
-        classsumary: "clasdwessumary",
-        roomnum: ''),
-  ]),
-//sat
-  Priodemodel(date: [
-    Classmodel(
-        instructorname: "saterday",
-        subjectcode: "12sasds3",
-        mainpic: "dfssa",
-        classsumary: "clasdssafssumary",
-        roomnum: ''),
-    Classmodel(
-        instructorname: "b2",
-        subjectcode: "123",
-        mainpic: "",
-        classsumary: "classsssumary",
-        roomnum: ''),
-    Classmodel(
-        instructorname: "UfKsdR",
-        subjectcode: "6671sd1",
-        mainpic: "",
-        classsumary: "classdssumary",
-        roomnum: ''),
-    Classmodel(
-        instructorname: "TMADSsJ",
-        subjectcode: "3",
-        mainpic: "",
-        classsumary: "classsrsumary",
-        roomnum: ''),
-    Classmodel(
-        instructorname: "Mnewee",
-        subjectcode: "12ee3",
-        mainpic: "",
-        classsumary: "clasdwessumary",
-        roomnum: ''),
-  ]),
-];
