@@ -18,22 +18,24 @@ class Classdetails extends StatelessWidget {
           width: double.infinity,
           color: Colors.black12,
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            // crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 30),
               const CircleAvatar(
                   backgroundImage: NetworkImage(
-                      "https://pbs.twimg.com/profile_images/1304985167476523008/QNHrwL2q_400x400.jpg"),
+                      "https://ak.picdn.net/shutterstock/videos/4893908/thumb/1.jpg"),
                   radius: 50),
               const SizedBox(width: 30),
               Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   const SizedBox(height: 40),
-                  Text("InstractorName:"
+                  Text("InstractorName   :  "
                       "${classdate.instructorname.toString()}"),
-                  Text("  subject Code:" "${classdate.subjectcode.toString()}"),
-                  Text("InstractorName: "
+                  Text("  subject Code     :"
+                      "     ${classdate.subjectcode.toString()}"),
+                  Text("InstractorName   :   "
                       "${classdate.instructorname.toString()}"),
                 ],
               )
