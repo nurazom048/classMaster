@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'moidels.dart';
 
+// ignore: must_be_immutable
 class Classdetails extends StatelessWidget {
   Classmodel classdate;
 
