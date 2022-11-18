@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:table/classdetals.dart';
 import 'package:table/main.dart';
 import 'package:table/moidels.dart';
 
@@ -82,44 +83,53 @@ class MyWidget extends StatelessWidget {
                           direction: Axis.horizontal,
                           children: List.generate(
                             classdata[classindex].date.length,
-                            (index) => Container(
-                              decoration: BoxDecoration(
-                                  color: classindex % 2 == 0
-                                      ? const Color.fromRGBO(207, 213, 234, 1)
-                                      : Colors.black12,
-                                  border: const Border(
-                                      right: BorderSide(
-                                          color: Colors.black, width: 1))),
-                              height: 100,
-                              width: (((classdata[classindex]
-                                              .date[index]
-                                              .endingpriode) -
-                                          (classdata[classindex]
-                                              .date[index]
-                                              .startingpriode)) >
-                                      0
-                                  ? 100 *
-                                      ((classdata[classindex]
-                                                  .date[index]
-                                                  .endingpriode -
-                                              classdata[classindex]
-                                                  .date[index]
-                                                  .startingpriode) +
-                                          1)
-                                  : 100),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(classdata[classindex]
-                                      .date[index]
-                                      .instructorname),
-                                  Text(classdata[classindex]
-                                      .date[index]
-                                      .subjectcode),
-                                  Text(classdata[classindex]
-                                      .date[index]
-                                      .roomnum),
-                                ],
+                            (index) => InkWell(
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Classdetails(
+                                        classdate:
+                                            classdata[classindex].date[index])),
+                              ),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: classindex % 2 == 0
+                                        ? const Color.fromRGBO(207, 213, 234, 1)
+                                        : Colors.black12,
+                                    border: const Border(
+                                        right: BorderSide(
+                                            color: Colors.black, width: 1))),
+                                height: 100,
+                                width: (((classdata[classindex]
+                                                .date[index]
+                                                .endingpriode) -
+                                            (classdata[classindex]
+                                                .date[index]
+                                                .startingpriode)) >
+                                        0
+                                    ? 100 *
+                                        ((classdata[classindex]
+                                                    .date[index]
+                                                    .endingpriode -
+                                                classdata[classindex]
+                                                    .date[index]
+                                                    .startingpriode) +
+                                            1)
+                                    : 100),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(classdata[classindex]
+                                        .date[index]
+                                        .instructorname),
+                                    Text(classdata[classindex]
+                                        .date[index]
+                                        .subjectcode),
+                                    Text(classdata[classindex]
+                                        .date[index]
+                                        .roomnum),
+                                  ],
+                                ),
                               ),
                             ),
                           ),

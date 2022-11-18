@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 
-class Classdetails extends StatelessWidget {
-  String instractorname, classsumary;
-  String subjectcode, roomnum;
+import 'moidels.dart';
 
-  Classdetails(
-      {super.key,
-      required this.instractorname,
-      required this.classsumary,
-      required this.subjectcode,
-      required this.roomnum});
+class Classdetails extends StatelessWidget {
+  Classmodel classdate;
+
+  Classdetails({super.key, required this.classdate});
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +29,11 @@ class Classdetails extends StatelessWidget {
               Column(
                 children: [
                   const SizedBox(height: 40),
-                  Text("InstractorName: $instractorname"),
-                  Text("  subject Code: $subjectcode"),
-                  Text("InstractorName: $roomnum"),
+                  Text("InstractorName:"
+                      "${classdate.instructorname.toString()}"),
+                  Text("  subject Code:" "${classdate.subjectcode.toString()}"),
+                  Text("InstractorName: "
+                      "${classdate.instructorname.toString()}"),
                 ],
               )
             ],
@@ -48,7 +46,7 @@ class Classdetails extends StatelessWidget {
           height: 200,
           width: double.infinity,
           color: Colors.black12,
-          child: Text(classsumary),
+          child: Text(classdate.classsumary),
         )
       ]),
     );
