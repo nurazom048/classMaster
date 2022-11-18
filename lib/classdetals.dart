@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:table/freash.dart';
 
 import 'moidels.dart';
 
@@ -11,8 +12,9 @@ class Classdetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Class Detals")),
       body: Column(children: [
+        CustomTopBar("Class Detals", ontap: () {}),
+
         Container(
           height: 150,
           width: double.infinity,
