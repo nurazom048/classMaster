@@ -39,15 +39,6 @@ class Rutinprovider with ChangeNotifier {
           endingpriode: 7,
           weith: 300,
         ),
-        // Classmodel(
-        //   instructorname: "",
-        //   subjectcode: "6671sd1",
-        //   mainpic: "",
-        //   classsumary: "classdssumary",
-        //   roomnum: '',
-        //   startingpriode: 1,
-        //   endingpriode: 1,
-        // ),
       ],
     ),
 
@@ -94,16 +85,6 @@ class Rutinprovider with ChangeNotifier {
           endingpriode: 6,
           weith: 300,
         ),
-        Classmodel(
-          instructorname: "",
-          subjectcode: "00",
-          mainpic: "dfssa",
-          classsumary: "clasdssafssumary",
-          roomnum: '00',
-          startingpriode: 7,
-          endingpriode: 7,
-          weith: 300,
-        ),
       ],
     ),
 
@@ -112,7 +93,7 @@ class Rutinprovider with ChangeNotifier {
       date: [
         Classmodel(
           instructorname: "",
-          subjectcode: "00",
+          subjectcode: "00F",
           mainpic: "dfssa",
           classsumary: "clasdssafssumary",
           roomnum: '00',
@@ -148,16 +129,6 @@ class Rutinprovider with ChangeNotifier {
           roomnum: '200',
           startingpriode: 6,
           endingpriode: 6,
-          weith: null,
-        ),
-        Classmodel(
-          instructorname: "",
-          subjectcode: "00",
-          mainpic: "",
-          classsumary: "classdssumary",
-          roomnum: '200',
-          startingpriode: 7,
-          endingpriode: 7,
           weith: null,
         ),
       ],
@@ -225,7 +196,7 @@ class Rutinprovider with ChangeNotifier {
           subjectcode: "00",
           mainpic: "dfssa",
           classsumary: "clasdssafssumary",
-          roomnum: '00',
+          roomnum: '003',
           startingpriode: 1,
           endingpriode: 1,
           weith: null,
@@ -235,7 +206,7 @@ class Rutinprovider with ChangeNotifier {
           subjectcode: "6671sd1",
           mainpic: "",
           classsumary: "classdssumary",
-          roomnum: '200',
+          roomnum: '2003',
           startingpriode: 2,
           endingpriode: 2,
           weith: null,
@@ -274,7 +245,18 @@ class Rutinprovider with ChangeNotifier {
     ),
 
     ///saterday
-    Priodemodel(date: [])
+    Priodemodel(date: [
+      Classmodel(
+        instructorname: "3",
+        subjectcode: "00",
+        mainpic: "",
+        classsumary: "classdssumary",
+        roomnum: '200',
+        startingpriode: 7,
+        endingpriode: 7,
+        weith: null,
+      ),
+    ])
   ];
 
 //
@@ -284,6 +266,19 @@ class Rutinprovider with ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteclass() {}
-  void eddit() {}
+  void eddit(indexx, Classmodel classdata) {
+    final indexofdatenote = classdataprovider[indexx]
+        .date
+        .indexWhere((element) => element == classdata);
+    classdataprovider[indexx].date[indexofdatenote] = classdata;
+    notifyListeners();
+  }
+
+  void deleteclass(dateinindex, classindex) {
+    // final indexofdatenote = classdataprovider[dateinindex]
+    //  .date
+    // .indexWhere((element) => element == classdata);
+    classdataprovider[dateinindex].date.removeAt(classindex);
+    notifyListeners();
+  }
 }

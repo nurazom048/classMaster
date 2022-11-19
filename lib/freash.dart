@@ -52,9 +52,9 @@ class MyWidget extends StatelessWidget {
                             direction: Axis.vertical,
                             children: List.generate(
                               sevendays.length,
-                              (index) => Container(
+                              (sevendayindex) => Container(
                                 decoration: BoxDecoration(
-                                    color: index % 2 == 0
+                                    color: sevendayindex % 2 == 0
                                         ? const Color.fromRGBO(207, 213, 234, 1)
                                         : Colors.black12,
                                     border: const Border(
@@ -65,7 +65,7 @@ class MyWidget extends StatelessWidget {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(sevendays[index]),
+                                    Text(sevendays[sevendayindex]),
                                     InkWell(
                                       onTap: (() {}),
                                       child: IconButton(
@@ -76,7 +76,8 @@ class MyWidget extends StatelessWidget {
                                                     fullscreenDialog: true,
                                                     builder: (context) =>
                                                         addrutinpage(
-                                                          indexxx: index,
+                                                          indexxx:
+                                                              sevendayindex,
                                                         )));
                                           }),
                                           icon: const Icon(Icons.add)),
@@ -102,110 +103,130 @@ class MyWidget extends StatelessWidget {
                             ),
                           ),
                         ),
-
                         ////////////////////////////// class data
 
                         Wrap(
                           direction: Axis.vertical,
                           children: List.generate(
                             rutinprovider.classdataprovider.length,
-                            ((classindex) => Wrap(
+                            ((dateinindex) => Wrap(
                                   direction: Axis.horizontal,
                                   children: List.generate(
-                                    rutinprovider.classdataprovider[classindex]
-                                        .date.length,
-                                    (index) => InkWell(
-                                      onTap: rutinprovider
-                                                  .classdataprovider[classindex]
-                                                  .date[index]
-                                                  .subjectcode
-                                                  .toString() ==
-                                              "00"
-                                          ? null
-                                          : () => Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) => Classdetails(
-                                                        classdate: rutinprovider
-                                                            .classdataprovider[
-                                                                classindex]
-                                                            .date[index])),
-                                              ),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            color: classindex % 2 == 0
+                                    rutinprovider.classdataprovider[dateinindex]
+                                            .date.isEmpty
+                                        ? 1
+                                        : rutinprovider
+                                            .classdataprovider[dateinindex]
+                                            .date
+                                            .length,
+                                    (index) => rutinprovider
+                                            .classdataprovider[dateinindex]
+                                            .date
+                                            .isEmpty
+                                        ? Container(
+                                            height: 100,
+                                            width: 100,
+                                            color: dateinindex.isEven
                                                 ? const Color.fromRGBO(
                                                     207, 213, 234, 1)
                                                 : Colors.black12,
-                                            border: const Border(
-                                                right: BorderSide(
-                                                    color: Colors.black,
-                                                    width: 1))),
-                                        height: 100,
-                                        width: (((rutinprovider
+                                          )
+                                        : InkWell(
+                                            onLongPress: () {
+                                              rutinprovider.deleteclass(
+                                                  dateinindex, index);
+
+                                              // ignore: avoid_print
+                                              print("dsatindex" "$dateinindex");
+                                              // ignore: avoid_print
+                                              print("classindex" "$index");
+                                              // print(dateinindex);
+                                            },
+                                            onTap: rutinprovider
                                                         .classdataprovider[
-                                                            classindex]
+                                                            dateinindex]
                                                         .date[index]
-                                                        .endingpriode) -
-                                                    (rutinprovider
-                                                        .classdataprovider[
-                                                            classindex]
-                                                        .date[index]
-                                                        .startingpriode)) >
-                                                0
-                                            ? 100 *
-                                                ((rutinprovider
+                                                        .subjectcode
+                                                        .toString() ==
+                                                    "00"
+                                                ? null
+                                                : () => Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) => Classdetails(
+                                                              classdate: rutinprovider
+                                                                  .classdataprovider[
+                                                                      dateinindex]
+                                                                  .date[index])),
+                                                    ),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  color: dateinindex % 2 == 0
+                                                      ? const Color.fromRGBO(
+                                                          207, 213, 234, 1)
+                                                      : Colors.black12,
+                                                  border: const Border(
+                                                      right: BorderSide(
+                                                          color: Colors.black,
+                                                          width: 1))),
+                                              height: 100,
+                                              width: (((rutinprovider
+                                                              .classdataprovider[
+                                                                  dateinindex]
+                                                              .date[index]
+                                                              .endingpriode) -
+                                                          (rutinprovider
+                                                              .classdataprovider[
+                                                                  dateinindex]
+                                                              .date[index]
+                                                              .startingpriode)) >
+                                                      0
+                                                  ? 100 *
+                                                      ((rutinprovider
+                                                                  .classdataprovider[
+                                                                      dateinindex]
+                                                                  .date[index]
+                                                                  .endingpriode -
+                                                              rutinprovider
+                                                                  .classdataprovider[
+                                                                      dateinindex]
+                                                                  .date[index]
+                                                                  .startingpriode) +
+                                                          1)
+                                                  : 100),
+                                              child: rutinprovider
+                                                          .classdataprovider[
+                                                              dateinindex]
+                                                          .date[index]
+                                                          .subjectcode
+                                                          .toString() ==
+                                                      "00"
+                                                  ? const Center(
+                                                      child: Icon(Icons.clear))
+                                                  : Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Text(rutinprovider
                                                             .classdataprovider[
-                                                                classindex]
+                                                                dateinindex]
                                                             .date[index]
-                                                            .endingpriode -
-                                                        rutinprovider
+                                                            .instructorname),
+                                                        Text(rutinprovider
                                                             .classdataprovider[
-                                                                classindex]
+                                                                dateinindex]
                                                             .date[index]
-                                                            .startingpriode) +
-                                                    1)
-                                            : 100),
-                                        child: rutinprovider
-                                                    .classdataprovider[
-                                                        classindex]
-                                                    .date[index]
-                                                    .subjectcode
-                                                    .toString() ==
-                                                "00"
-                                            ? const Center(
-                                                child: Icon(Icons.clear))
-                                            : Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Text(rutinprovider
-                                                      .classdataprovider[
-                                                          classindex]
-                                                      .date[index]
-                                                      .instructorname),
-                                                  Text(rutinprovider
-                                                      .classdataprovider[
-                                                          classindex]
-                                                      .date[index]
-                                                      .subjectcode),
-                                                  Text(rutinprovider
-                                                      .classdataprovider[
-                                                          classindex]
-                                                      .date[index]
-                                                      .roomnum),
-                                                  // Text((((rutinprovider.classdataprovider[classindex]
-                                                  //                 .date[index]
-                                                  //                 .endingpriode) -
-                                                  //             (rutinprovider.classdataprovider[classindex]
-                                                  //                 .date[index]
-                                                  //                 .startingpriode)) +
-                                                  //         1)
-                                                  //     .toString()),
-                                                ],
-                                              ),
-                                      ),
-                                    ),
+                                                            .subjectcode),
+                                                        Text(rutinprovider
+                                                            .classdataprovider[
+                                                                dateinindex]
+                                                            .date[index]
+                                                            .roomnum),
+                                                      ],
+                                                    ),
+                                            ),
+                                          ),
                                   ),
                                 )),
                           ),
