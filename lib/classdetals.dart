@@ -51,7 +51,7 @@ class Classdetails extends StatelessWidget {
           height: 200,
           width: double.infinity,
           color: Colors.black12,
-          child: Text(classdate.classsumary),
+          child: Text(""),
         )
       ]),
     );

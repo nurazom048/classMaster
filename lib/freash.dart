@@ -1,9 +1,13 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:table/addrutin.dart';
 import 'package:table/classdetals.dart';
 import 'package:table/main.dart';
 import 'package:table/moidels.dart';
+import 'package:table/rutinprovider.dart';
 
 class MyWidget extends StatelessWidget {
   //ignore: prefer_const_constructors_in_immutables
@@ -11,6 +15,8 @@ class MyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Rutinprovider rutinprovider = Provider.of<Rutinprovider>(context);
+
     List sevendays = [
       "Sunday",
       "Monday",
@@ -41,6 +47,7 @@ class MyWidget extends StatelessWidget {
                               priode: 'Priode',
                               startTime: "sevendays",
                               endtime: "Time"),
+                          ////date
                           Wrap(
                             direction: Axis.vertical,
                             children: List.generate(
@@ -59,6 +66,21 @@ class MyWidget extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(sevendays[index]),
+                                    InkWell(
+                                      onTap: (() {}),
+                                      child: IconButton(
+                                          onPressed: (() {
+                                            Navigator.push(
+                                                context,
+                                                CupertinoPageRoute(
+                                                    fullscreenDialog: true,
+                                                    builder: (context) =>
+                                                        addrutinpage(
+                                                          indexxx: index,
+                                                        )));
+                                          }),
+                                          icon: const Icon(Icons.add)),
+                                    )
                                   ],
                                 ),
                               ),
@@ -86,13 +108,15 @@ class MyWidget extends StatelessWidget {
                         Wrap(
                           direction: Axis.vertical,
                           children: List.generate(
-                            classdata.length,
+                            rutinprovider.classdataprovider.length,
                             ((classindex) => Wrap(
                                   direction: Axis.horizontal,
                                   children: List.generate(
-                                    classdata[classindex].date.length,
+                                    rutinprovider.classdataprovider[classindex]
+                                        .date.length,
                                     (index) => InkWell(
-                                      onTap: classdata[classindex]
+                                      onTap: rutinprovider
+                                                  .classdataprovider[classindex]
                                                   .date[index]
                                                   .subjectcode
                                                   .toString() ==
@@ -101,11 +125,11 @@ class MyWidget extends StatelessWidget {
                                           : () => Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        Classdetails(
-                                                            classdate: classdata[
-                                                                    classindex]
-                                                                .date[index])),
+                                                    builder: (context) => Classdetails(
+                                                        classdate: rutinprovider
+                                                            .classdataprovider[
+                                                                classindex]
+                                                            .date[index])),
                                               ),
                                       child: Container(
                                         decoration: BoxDecoration(
@@ -118,23 +142,33 @@ class MyWidget extends StatelessWidget {
                                                     color: Colors.black,
                                                     width: 1))),
                                         height: 100,
-                                        width: (((classdata[classindex]
+                                        width: (((rutinprovider
+                                                        .classdataprovider[
+                                                            classindex]
                                                         .date[index]
                                                         .endingpriode) -
-                                                    (classdata[classindex]
+                                                    (rutinprovider
+                                                        .classdataprovider[
+                                                            classindex]
                                                         .date[index]
                                                         .startingpriode)) >
                                                 0
                                             ? 100 *
-                                                ((classdata[classindex]
+                                                ((rutinprovider
+                                                            .classdataprovider[
+                                                                classindex]
                                                             .date[index]
                                                             .endingpriode -
-                                                        classdata[classindex]
+                                                        rutinprovider
+                                                            .classdataprovider[
+                                                                classindex]
                                                             .date[index]
                                                             .startingpriode) +
                                                     1)
                                             : 100),
-                                        child: classdata[classindex]
+                                        child: rutinprovider
+                                                    .classdataprovider[
+                                                        classindex]
                                                     .date[index]
                                                     .subjectcode
                                                     .toString() ==
@@ -145,19 +179,25 @@ class MyWidget extends StatelessWidget {
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
                                                 children: [
-                                                  Text(classdata[classindex]
+                                                  Text(rutinprovider
+                                                      .classdataprovider[
+                                                          classindex]
                                                       .date[index]
                                                       .instructorname),
-                                                  Text(classdata[classindex]
+                                                  Text(rutinprovider
+                                                      .classdataprovider[
+                                                          classindex]
                                                       .date[index]
                                                       .subjectcode),
-                                                  Text(classdata[classindex]
+                                                  Text(rutinprovider
+                                                      .classdataprovider[
+                                                          classindex]
                                                       .date[index]
                                                       .roomnum),
-                                                  // Text((((classdata[classindex]
+                                                  // Text((((rutinprovider.classdataprovider[classindex]
                                                   //                 .date[index]
                                                   //                 .endingpriode) -
-                                                  //             (classdata[classindex]
+                                                  //             (rutinprovider.classdataprovider[classindex]
                                                   //                 .date[index]
                                                   //                 .startingpriode)) +
                                                   //         1)

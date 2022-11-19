@@ -274,19 +274,20 @@ List<Priodemodel> classdata = [
 //
 
 class Classmodel {
-  String instructorname, subjectcode, roomnum, mainpic, classsumary;
+  String instructorname, subjectcode, roomnum;
   double startingpriode, endingpriode;
   double? weith;
+  String? mainpic, classsumary;
 
   Classmodel(
       {required this.instructorname,
       required this.subjectcode,
-      required this.mainpic,
-      required this.classsumary,
+      this.mainpic,
+      this.classsumary,
       required this.roomnum,
       required this.startingpriode,
       required this.endingpriode,
-      required this.weith});
+      this.weith});
 }
 
 class Priodemodel {
