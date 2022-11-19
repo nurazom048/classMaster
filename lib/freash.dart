@@ -133,8 +133,48 @@ class MyWidget extends StatelessWidget {
                                           )
                                         : InkWell(
                                             onLongPress: () {
-                                              rutinprovider.deleteclass(
-                                                  dateinindex, index);
+                                              showCupertinoModalPopup(
+                                                context: context,
+                                                builder: (context) =>
+                                                    CupertinoActionSheet(
+                                                  title: const Text(
+                                                      " Do you want to.. ",
+                                                      style: TextStyle(
+                                                          fontSize: 22,
+                                                          color:
+                                                              Colors.black87)),
+                                                  actions: [
+                                                    CupertinoActionSheetAction(
+                                                      child:
+                                                          const Text("Eddit"),
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                    ),
+                                                    CupertinoActionSheetAction(
+                                                      child: const Text(
+                                                        "Remove",
+                                                        style: TextStyle(
+                                                            color: Colors.red),
+                                                      ),
+                                                      onPressed: () {
+                                                        rutinprovider
+                                                            .deleteclass(
+                                                                dateinindex,
+                                                                index);
+                                                        Navigator.pop(context);
+                                                      },
+                                                    ),
+                                                  ],
+                                                  cancelButton:
+                                                      CupertinoActionSheetAction(
+                                                    child: const Text("cancel"),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                ),
+                                              );
 
                                               // ignore: avoid_print
                                               print("dsatindex" "$dateinindex");
