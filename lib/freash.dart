@@ -6,12 +6,10 @@ import 'package:provider/provider.dart';
 import 'package:table/addrutin.dart';
 import 'package:table/classdetals.dart';
 import 'package:table/main.dart';
-import 'package:table/moidels.dart';
 import 'package:table/rutinprovider.dart';
 
-class MyWidget extends StatelessWidget {
-  //ignore: prefer_const_constructors_in_immutables
-  MyWidget({super.key});
+class RutinPage extends StatelessWidget {
+  const RutinPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +23,55 @@ class MyWidget extends StatelessWidget {
       "Thursday",
       "Saturday",
     ];
+
+    ///  buttom sheet to long press
+    /// for eddit remove
+    void butoomSheet(indexofdate, index) {
+      showCupertinoModalPopup(
+        context: context,
+        builder: (context) => CupertinoActionSheet(
+          title: const Text(" Do you want to.. ",
+              style: TextStyle(fontSize: 22, color: Colors.black87)),
+          actions: [
+            CupertinoActionSheetAction(
+              child: const Text("Eddit"),
+
+              // go to eddit
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                        fullscreenDialog: true,
+                        builder: (context) => AddRutin(
+                              indexofdate: indexofdate,
+                              classdata: Provider.of<Rutinprovider>(context)
+                                  .classdataprovider[indexofdate]
+                                  .date[index],
+                              iseddit: true,
+                            )));
+              },
+            ),
+            CupertinoActionSheetAction(
+              child: const Text(
+                "Remove",
+                style: TextStyle(color: Colors.red),
+              ),
+              onPressed: () {
+                Provider.of<Rutinprovider>(context, listen: false)
+                    .deleteclass(indexofdate, index);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            child: const Text("cancel"),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
+      );
+    }
 
     return SafeArea(
       child: Scaffold(
@@ -52,9 +99,9 @@ class MyWidget extends StatelessWidget {
                             direction: Axis.vertical,
                             children: List.generate(
                               sevendays.length,
-                              (sevendayindex) => Container(
+                              (indexofdate) => Container(
                                 decoration: BoxDecoration(
-                                    color: sevendayindex % 2 == 0
+                                    color: indexofdate % 2 == 0
                                         ? const Color.fromRGBO(207, 213, 234, 1)
                                         : Colors.black12,
                                     border: const Border(
@@ -65,7 +112,7 @@ class MyWidget extends StatelessWidget {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(sevendays[sevendayindex]),
+                                    Text(sevendays[indexofdate]),
                                     InkWell(
                                       onTap: (() {}),
                                       child: IconButton(
@@ -75,10 +122,9 @@ class MyWidget extends StatelessWidget {
                                                 CupertinoPageRoute(
                                                     fullscreenDialog: true,
                                                     builder: (context) =>
-                                                        addrutinpage(
-                                                          indexxx:
-                                                              sevendayindex,
-                                                        )));
+                                                        AddRutin(
+                                                            indexofdate:
+                                                                indexofdate)));
                                           }),
                                           icon: const Icon(Icons.add)),
                                     )
@@ -103,88 +149,44 @@ class MyWidget extends StatelessWidget {
                             ),
                           ),
                         ),
-                        ////////////////////////////// class data
+//           class data
 
                         Wrap(
                           direction: Axis.vertical,
                           children: List.generate(
                             rutinprovider.classdataprovider.length,
-                            ((dateinindex) => Wrap(
+                            ((indexofdate) => Wrap(
                                   direction: Axis.horizontal,
                                   children: List.generate(
-                                    rutinprovider.classdataprovider[dateinindex]
+                                    rutinprovider.classdataprovider[indexofdate]
                                             .date.isEmpty
                                         ? 1
                                         : rutinprovider
-                                            .classdataprovider[dateinindex]
+                                            .classdataprovider[indexofdate]
                                             .date
                                             .length,
                                     (index) => rutinprovider
-                                            .classdataprovider[dateinindex]
+                                            .classdataprovider[indexofdate]
                                             .date
                                             .isEmpty
                                         ? Container(
                                             height: 100,
                                             width: 100,
-                                            color: dateinindex.isEven
+                                            color: indexofdate.isEven
                                                 ? const Color.fromRGBO(
                                                     207, 213, 234, 1)
                                                 : Colors.black12,
                                           )
                                         : InkWell(
                                             onLongPress: () {
-                                              showCupertinoModalPopup(
-                                                context: context,
-                                                builder: (context) =>
-                                                    CupertinoActionSheet(
-                                                  title: const Text(
-                                                      " Do you want to.. ",
-                                                      style: TextStyle(
-                                                          fontSize: 22,
-                                                          color:
-                                                              Colors.black87)),
-                                                  actions: [
-                                                    CupertinoActionSheetAction(
-                                                      child:
-                                                          const Text("Eddit"),
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                    ),
-                                                    CupertinoActionSheetAction(
-                                                      child: const Text(
-                                                        "Remove",
-                                                        style: TextStyle(
-                                                            color: Colors.red),
-                                                      ),
-                                                      onPressed: () {
-                                                        rutinprovider
-                                                            .deleteclass(
-                                                                dateinindex,
-                                                                index);
-                                                        Navigator.pop(context);
-                                                      },
-                                                    ),
-                                                  ],
-                                                  cancelButton:
-                                                      CupertinoActionSheetAction(
-                                                    child: const Text("cancel"),
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                  ),
-                                                ),
+                                              butoomSheet(
+                                                indexofdate,
+                                                index,
                                               );
-
-                                              // ignore: avoid_print
-                                              print("dsatindex" "$dateinindex");
-                                              // ignore: avoid_print
-                                              print("classindex" "$index");
-                                              // print(dateinindex);
                                             },
                                             onTap: rutinprovider
                                                         .classdataprovider[
-                                                            dateinindex]
+                                                            indexofdate]
                                                         .date[index]
                                                         .subjectcode
                                                         .toString() ==
@@ -196,12 +198,12 @@ class MyWidget extends StatelessWidget {
                                                           builder: (context) => Classdetails(
                                                               classdate: rutinprovider
                                                                   .classdataprovider[
-                                                                      dateinindex]
+                                                                      indexofdate]
                                                                   .date[index])),
                                                     ),
                                             child: Container(
                                               decoration: BoxDecoration(
-                                                  color: dateinindex % 2 == 0
+                                                  color: indexofdate % 2 == 0
                                                       ? const Color.fromRGBO(
                                                           207, 213, 234, 1)
                                                       : Colors.black12,
@@ -212,31 +214,31 @@ class MyWidget extends StatelessWidget {
                                               height: 100,
                                               width: (((rutinprovider
                                                               .classdataprovider[
-                                                                  dateinindex]
+                                                                  indexofdate]
                                                               .date[index]
                                                               .endingpriode) -
                                                           (rutinprovider
                                                               .classdataprovider[
-                                                                  dateinindex]
+                                                                  indexofdate]
                                                               .date[index]
                                                               .startingpriode)) >
                                                       0
                                                   ? 100 *
                                                       ((rutinprovider
                                                                   .classdataprovider[
-                                                                      dateinindex]
+                                                                      indexofdate]
                                                                   .date[index]
                                                                   .endingpriode -
                                                               rutinprovider
                                                                   .classdataprovider[
-                                                                      dateinindex]
+                                                                      indexofdate]
                                                                   .date[index]
                                                                   .startingpriode) +
                                                           1)
                                                   : 100),
                                               child: rutinprovider
                                                           .classdataprovider[
-                                                              dateinindex]
+                                                              indexofdate]
                                                           .date[index]
                                                           .subjectcode
                                                           .toString() ==
@@ -250,17 +252,17 @@ class MyWidget extends StatelessWidget {
                                                       children: [
                                                         Text(rutinprovider
                                                             .classdataprovider[
-                                                                dateinindex]
+                                                                indexofdate]
                                                             .date[index]
                                                             .instructorname),
                                                         Text(rutinprovider
                                                             .classdataprovider[
-                                                                dateinindex]
+                                                                indexofdate]
                                                             .date[index]
                                                             .subjectcode),
                                                         Text(rutinprovider
                                                             .classdataprovider[
-                                                                dateinindex]
+                                                                indexofdate]
                                                             .date[index]
                                                             .roomnum),
                                                       ],

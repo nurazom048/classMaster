@@ -37,7 +37,7 @@ class Classdetails extends StatelessWidget {
                       "${classdate.instructorname.toString()}"),
                   Text("  subject Code     :"
                       "     ${classdate.subjectcode.toString()}"),
-                  Text("InstractorName   :   "
+                  Text("Room Name    :   "
                       "${classdate.instructorname.toString()}"),
                 ],
               )
@@ -51,7 +51,7 @@ class Classdetails extends StatelessWidget {
           height: 200,
           width: double.infinity,
           color: Colors.black12,
-          child: Text(""),
+          child: Text(classdate.classsumary.toString()),
         )
       ]),
     );

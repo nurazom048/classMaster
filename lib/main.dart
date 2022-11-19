@@ -24,7 +24,8 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: MyWidget(),
+          // ignore: prefer_const_constructors
+          home: RutinPage(),
         ));
   }
 }
