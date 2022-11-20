@@ -7,8 +7,8 @@ import 'package:table/rutinprovider.dart';
 
 class AddRutin extends StatefulWidget {
   Classmodel? classdata;
-  int indexofdate;
-  int? classindex;
+  dynamic indexofdate;
+  dynamic? classindex;
   bool? iseddit;
   AddRutin(
       {super.key,
@@ -162,7 +162,9 @@ class _AddRutinState extends State<AddRutin> {
 
 ///
 class AddOrEdditPriode extends StatefulWidget {
-  const AddOrEdditPriode({super.key});
+  AddOrEdditPriode({super.key, this.priode, this.isedditing});
+  Addpriode? priode;
+  bool? isedditing;
 
   @override
   State<AddOrEdditPriode> createState() => _AddOrEdditPriodeState();
@@ -177,14 +179,40 @@ class _AddOrEdditPriodeState extends State<AddOrEdditPriode> {
 
   void addNewPriode() {
     Addpriode addNewPriode = Addpriode(
-      startingpriode: starttimeController.text.toString(),
-      endingpriode: endtimeController.text.toString(),
-    );
+        startingpriode: starttimeController.text.toString(),
+        endingpriode: endtimeController.text.toString());
 
     Provider.of<PriodeDateProvider>(context, listen: false)
         .adpriode(addNewPriode);
 
     Navigator.pop(context);
+  }
+
+  void eddit() {
+    widget.priode!.startingpriode = starttimeController.text;
+    widget.priode!.endingpriode = endtimeController.text;
+    // widget.classdata!.roomnum = roomnum.text;
+    //  widget.classdata!.startingpriode = double.parse(start.text);
+    //   widget.classdata!.endingpriode = double.parse(start.text);
+
+    Provider.of<PriodeDateProvider>(context, listen: false)
+        .eddit(widget.priode!);
+
+    Navigator.pop(context);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.isedditing == true) {
+      starttimeController.text = widget.priode!.startingpriode;
+
+      endtimeController.text = widget.priode!.endingpriode;
+      // roomnum.text = widget.classdata!.roomnum;
+      // start.text = widget.classdata!.startingpriode.toString();
+      // end.text = widget.classdata!.endingpriode.toString();
+    }
   }
 
   @override
@@ -196,7 +224,11 @@ class _AddOrEdditPriodeState extends State<AddOrEdditPriode> {
         IconButton(
           icon: const Icon(Icons.check),
           onPressed: () {
-            addNewPriode();
+            if (widget.isedditing == true) {
+              eddit();
+            } else {
+              addNewPriode();
+            }
             print("aded");
           },
         )
@@ -208,14 +240,6 @@ class _AddOrEdditPriodeState extends State<AddOrEdditPriode> {
 /////   hare 3 TextFild
             ///
             children: [
-              // TextField(
-              //   controller: instructorname,
-
-              //   style:
-              //       const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-              //   decoration: const InputDecoration(
-              //       hintText: "InstructorName", border: InputBorder.none),
-              // ),
               TextField(
                 controller: starttimeController,
                 keyboardType: TextInputType.number,
@@ -224,13 +248,13 @@ class _AddOrEdditPriodeState extends State<AddOrEdditPriode> {
                 decoration: const InputDecoration(
                     hintText: "Star time", border: InputBorder.none),
               ),
-              const TextField(
-                //controller: roomnum,
+              TextField(
+                controller: endtimeController,
                 //focusNode: noteFocus,
                 keyboardType: TextInputType.number,
                 maxLines: 1,
-                style: TextStyle(fontSize: 20),
-                decoration: InputDecoration(
+                style: const TextStyle(fontSize: 20),
+                decoration: const InputDecoration(
                     hintText: "End Time", border: InputBorder.none),
               ),
               // TextField(

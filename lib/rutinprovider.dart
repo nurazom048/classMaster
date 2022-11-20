@@ -261,8 +261,8 @@ class Rutinprovider with ChangeNotifier {
 
 //
 
-  void addclass(indexx, Classmodel classdata) {
-    classdataprovider[indexx].date.add(classdata);
+  void addclass(indexofdate, Classmodel classdata) {
+    classdataprovider[indexofdate].date.add(classdata);
     notifyListeners();
   }
 
@@ -274,43 +274,41 @@ class Rutinprovider with ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteclass(dateinindex, classindex) {
-    // final indexofdatenote = classdataprovider[dateinindex]
-    //  .date
+  void removeclass(dateinindex, index) {
+    //final findindex = classdataprovider[dateinindex]
+    // .date
     // .indexWhere((element) => element == classdata);
-    classdataprovider[dateinindex].date.removeAt(classindex);
+    classdataprovider[dateinindex].date.removeAt(index);
     notifyListeners();
   }
 }
 
 /// priode
 class PriodeDateProvider with ChangeNotifier {
-  List<Addpriode> priode = [
+  List<Addpriode> priodelist = [
+    Addpriode(startingpriode: "1", endingpriode: "2"),
+    Addpriode(startingpriode: "1", endingpriode: "2"),
+    Addpriode(startingpriode: "1", endingpriode: "2"),
+    Addpriode(startingpriode: "1", endingpriode: "2"),
+    Addpriode(startingpriode: "1", endingpriode: "2"),
     Addpriode(startingpriode: "1", endingpriode: "2"),
   ];
 
-  //
-  //
-
-//
-
   void adpriode(Addpriode priod) {
-    priode.add(priod);
+    priodelist.add(priod);
     notifyListeners();
   }
 
-  // void eddit(indexx, Classmodel classdata) {
-  //   final indexofdatenote = classdataprovider[indexx]
-  //       .date
-  //       .indexWhere((element) => element == classdata);
-  //   classdataprovider[indexx].date[indexofdatenote] = classdata;
-  //   notifyListeners();
-  // }
+  void eddit(Addpriode priod) {
+    final findindex = priodelist.indexWhere((element) => element == priod);
+    priodelist[findindex] = priod;
+    notifyListeners();
+  }
 
-  // void deleteclass(dateinindex, classindex) {
-  //   // final indexofdatenote = classdataprovider[dateinindex]
-  //   //  .date
-  //   // .indexWhere((element) => element == classdata);
-  //   classdataprovider[dateinindex].date.removeAt(classindex);
-  //   notifyListeners();
+  void remove(priode) {
+    final findindex = priodelist.indexWhere((element) => element == priode);
+
+    priodelist.removeAt(findindex);
+    notifyListeners();
+  }
 }

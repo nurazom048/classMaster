@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:table/addrutin.dart';
 import 'package:table/classdetals.dart';
 import 'package:table/main.dart';
+import 'package:table/moidels.dart';
+
 import 'package:table/rutinprovider.dart';
 
 class RutinPage extends StatelessWidget {
@@ -13,9 +15,6 @@ class RutinPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Rutinprovider rutinprovider = Provider.of<Rutinprovider>(context);
-    PriodeDateProvider priodedata = Provider.of<PriodeDateProvider>(context);
-
     List sevendays = [
       "Sunday",
       "Monday",
@@ -25,9 +24,8 @@ class RutinPage extends StatelessWidget {
       "Saturday",
     ];
 
-    ///  buttom sheet to long press
-    /// for eddit remove
-    void butoomSheet(indexofdate, index) {
+    // buttomsheet for priode
+    void butoomSheetPriode(priode) {
       showCupertinoModalPopup(
         context: context,
         builder: (context) => CupertinoActionSheet(
@@ -35,45 +33,79 @@ class RutinPage extends StatelessWidget {
               style: TextStyle(fontSize: 22, color: Colors.black87)),
           actions: [
             CupertinoActionSheetAction(
-              child: const Text("Eddit"),
+              child: const Text("Eddit"), // go to eddit
 
-              // go to eddit
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                        fullscreenDialog: true,
-                        builder: (context) => AddRutin(
-                              indexofdate: indexofdate,
-                              classdata: Provider.of<Rutinprovider>(context)
-                                  .classdataprovider[indexofdate]
-                                  .date[index],
-                              iseddit: true,
-                            )));
-              },
+              onPressed: () => Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                      fullscreenDialog: true,
+                      builder: (context) => AddOrEdditPriode(
+                            isedditing: true,
+                            priode: priode,
+                          ))),
             ),
             CupertinoActionSheetAction(
-              child: const Text(
-                "Remove",
-                style: TextStyle(color: Colors.red),
-              ),
+              ///// for remove item by index
+              child: const Text("Remove", style: TextStyle(color: Colors.red)),
               onPressed: () {
-                Provider.of<Rutinprovider>(context, listen: false)
-                    .deleteclass(indexofdate, index);
+                Provider.of<PriodeDateProvider>(context, listen: false)
+                    .remove(priode);
                 Navigator.pop(context);
               },
             ),
           ],
           cancelButton: CupertinoActionSheetAction(
             child: const Text("cancel"),
-            onPressed: () {
-              Navigator.pop(context);
-            },
+            onPressed: () => Navigator.pop(context),
           ),
         ),
       );
     }
 
+    ///  buttom sheet to long press
+    /// for eddit remove
+    void butoomSheetForClass(indexofdate, index) {
+      Rutinprovider classdataprovider =
+          Provider.of<Rutinprovider>(context, listen: false);
+      showCupertinoModalPopup(
+        context: context,
+        builder: (context) => CupertinoActionSheet(
+          title: const Text(" Do you want to.. ",
+              style: TextStyle(fontSize: 22, color: Colors.black87)),
+          actions: [
+            CupertinoActionSheetAction(
+                child: const Text("Eddit"),
+
+                // go to eddit
+                onPressed: () => Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                        fullscreenDialog: true,
+                        builder: (context) => AddRutin(
+                              indexofdate: indexofdate,
+                              classdata: classdataprovider
+                                  .classdataprovider[indexofdate].date[index],
+                              iseddit: true,
+                            )))),
+            CupertinoActionSheetAction(
+                child:
+                    const Text("Remove", style: TextStyle(color: Colors.red)),
+                onPressed: () {
+                  classdataprovider.removeclass(indexofdate, index);
+                  Navigator.pop(context);
+                }),
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            child: const Text("cancel"),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ),
+      );
+    }
+
+    Rutinprovider rutinprovider = Provider.of<Rutinprovider>(context);
+    PriodeDateProvider priodedataProvider =
+        Provider.of<PriodeDateProvider>(context);
     return SafeArea(
       child: Scaffold(
         body: Column(
@@ -152,16 +184,31 @@ class RutinPage extends StatelessWidget {
                         Wrap(
                           direction: Axis.horizontal,
                           children: List.generate(
-                            priodedata.priode.length,
-                            (index) => TopContaner(
-                              priode: "${index + 1}",
-                              startTime:
-                                  priodedata.priode[index].startingpriode,
-                              endtime: priodedata.priode[index].endingpriode,
+                            priodedataProvider.priodelist.isEmpty
+                                ? 1
+                                : priodedataProvider.priodelist.length,
+                            //   priode row
+                            (index) => InkWell(
+                              onLongPress: () {
+                                butoomSheetPriode(
+                                    priodedataProvider.priodelist[index]);
+                              },
+                              child: priodedataProvider.priodelist.isEmpty
+                                  ? TopContaner(
+                                      priode: "Add Priode frist",
+                                      startTime: "8:00",
+                                      endtime: "8.45")
+                                  : TopContaner(
+                                      priode: "${index + 1}",
+                                      startTime: priodedataProvider
+                                          .priodelist[index].startingpriode,
+                                      endtime: priodedataProvider
+                                          .priodelist[index].endingpriode,
+                                    ),
                             ),
                           ),
                         ),
-//           class data
+//           class data Row
 
                         Wrap(
                           direction: Axis.vertical,
@@ -191,10 +238,8 @@ class RutinPage extends StatelessWidget {
                                           )
                                         : InkWell(
                                             onLongPress: () {
-                                              butoomSheet(
-                                                indexofdate,
-                                                index,
-                                              );
+                                              butoomSheetForClass(
+                                                  indexofdate, index);
                                             },
                                             onTap: rutinprovider
                                                         .classdataprovider[
@@ -301,7 +346,6 @@ class RutinPage extends StatelessWidget {
 class CustomTopBar extends StatelessWidget {
   String title;
 
-  // ignore: prefer_typing_uninitialized_variables
   var ontap;
   CustomTopBar(
     this.title, {
