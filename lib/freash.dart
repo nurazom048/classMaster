@@ -14,6 +14,7 @@ class RutinPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Rutinprovider rutinprovider = Provider.of<Rutinprovider>(context);
+    PriodeDateProvider priodedata = Provider.of<PriodeDateProvider>(context);
 
     List sevendays = [
       "Sunday",
@@ -91,9 +92,19 @@ class RutinPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           TopContaner(
-                              priode: 'Priode',
-                              startTime: "sevendays",
-                              endtime: "Time"),
+                            priode: 'Priode',
+                            startTime: "sevendays",
+                            endtime: "Time",
+                            iconn: Icons.add,
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                      fullscreenDialog: true,
+                                      builder: (context) =>
+                                          AddOrEdditPriode()));
+                            },
+                          ),
                           ////date
                           Wrap(
                             direction: Axis.vertical,
@@ -141,11 +152,12 @@ class RutinPage extends StatelessWidget {
                         Wrap(
                           direction: Axis.horizontal,
                           children: List.generate(
-                            7,
+                            priodedata.priode.length,
                             (index) => TopContaner(
                               priode: "${index + 1}",
-                              startTime: "8:00",
-                              endtime: "8:45",
+                              startTime:
+                                  priodedata.priode[index].startingpriode,
+                              endtime: priodedata.priode[index].endingpriode,
                             ),
                           ),
                         ),

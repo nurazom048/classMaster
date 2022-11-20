@@ -16,6 +16,9 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(
             create: (context) => Rutinprovider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => PriodeDateProvider(),
           )
         ],
         child: MaterialApp(
@@ -33,17 +36,21 @@ class MyApp extends StatelessWidget {
 // ignore: must_be_immutable
 class TopContaner extends StatelessWidget {
   String priode, startTime, endtime;
+  var onTap;
+  IconData? iconn;
   TopContaner({
     Key? key,
     required this.priode,
     required this.startTime,
     required this.endtime,
+    this.onTap,
+    this.iconn,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
+      height: 135,
       width: 100,
       // ignore: prefer_const_constructors
       decoration: BoxDecoration(
@@ -58,6 +65,8 @@ class TopContaner extends StatelessWidget {
             Text(priode),
             const Divider(color: Colors.black87, height: 18, thickness: .5),
             Text("$startTime \n$endtime"),
+            // IconButton(onPressed: onPressed!, icon: iconn)
+            InkWell(child: Icon(iconn), onTap: onTap),
           ],
         ),
       ),

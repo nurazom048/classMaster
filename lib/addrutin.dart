@@ -159,3 +159,101 @@ class _AddRutinState extends State<AddRutin> {
     );
   }
 }
+
+///
+class AddOrEdditPriode extends StatefulWidget {
+  const AddOrEdditPriode({super.key});
+
+  @override
+  State<AddOrEdditPriode> createState() => _AddOrEdditPriodeState();
+}
+
+class _AddOrEdditPriodeState extends State<AddOrEdditPriode> {
+  TextEditingController starttimeController = TextEditingController();
+  TextEditingController endtimeController = TextEditingController();
+  // TextEditingController roomnum = TextEditingController();
+  // TextEditingController start = TextEditingController();
+  // TextEditingController end = TextEditingController();
+
+  void addNewPriode() {
+    Addpriode addNewPriode = Addpriode(
+      startingpriode: starttimeController.text.toString(),
+      endingpriode: endtimeController.text.toString(),
+    );
+
+    Provider.of<PriodeDateProvider>(context, listen: false)
+        .adpriode(addNewPriode);
+
+    Navigator.pop(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    PriodeDateProvider priodedata = Provider.of<PriodeDateProvider>(context);
+    return Scaffold(
+      appBar:
+          AppBar(title: const Text("Add Priode"), centerTitle: true, actions: [
+        IconButton(
+          icon: const Icon(Icons.check),
+          onPressed: () {
+            addNewPriode();
+            print("aded");
+          },
+        )
+      ]),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Column(
+/////   hare 3 TextFild
+            ///
+            children: [
+              // TextField(
+              //   controller: instructorname,
+
+              //   style:
+              //       const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              //   decoration: const InputDecoration(
+              //       hintText: "InstructorName", border: InputBorder.none),
+              // ),
+              TextField(
+                controller: starttimeController,
+                keyboardType: TextInputType.number,
+                maxLines: 1,
+                style: const TextStyle(fontSize: 20),
+                decoration: const InputDecoration(
+                    hintText: "Star time", border: InputBorder.none),
+              ),
+              const TextField(
+                //controller: roomnum,
+                //focusNode: noteFocus,
+                keyboardType: TextInputType.number,
+                maxLines: 1,
+                style: TextStyle(fontSize: 20),
+                decoration: InputDecoration(
+                    hintText: "End Time", border: InputBorder.none),
+              ),
+              // TextField(
+              //   //controller: start,
+              //   //focusNode: noteFocus,
+              //   maxLines: 1,
+              //   style: const TextStyle(fontSize: 20),
+              //   decoration: const InputDecoration(
+              //       hintText: "Strting priode", border: InputBorder.none),
+              // ),
+              // TextField(
+              //   controller: end,
+              //   // focusNode: noteFocus,
+              //   maxLines: 1,
+              //   keyboardType: TextInputType.number,
+              //   style: const TextStyle(fontSize: 20),
+              //   decoration: const InputDecoration(
+              //       hintText: "Ending priode", border: InputBorder.none),
+              // ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

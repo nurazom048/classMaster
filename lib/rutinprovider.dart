@@ -282,3 +282,35 @@ class Rutinprovider with ChangeNotifier {
     notifyListeners();
   }
 }
+
+/// priode
+class PriodeDateProvider with ChangeNotifier {
+  List<Addpriode> priode = [
+    Addpriode(startingpriode: "1", endingpriode: "2"),
+  ];
+
+  //
+  //
+
+//
+
+  void adpriode(Addpriode priod) {
+    priode.add(priod);
+    notifyListeners();
+  }
+
+  // void eddit(indexx, Classmodel classdata) {
+  //   final indexofdatenote = classdataprovider[indexx]
+  //       .date
+  //       .indexWhere((element) => element == classdata);
+  //   classdataprovider[indexx].date[indexofdatenote] = classdata;
+  //   notifyListeners();
+  // }
+
+  // void deleteclass(dateinindex, classindex) {
+  //   // final indexofdatenote = classdataprovider[dateinindex]
+  //   //  .date
+  //   // .indexWhere((element) => element == classdata);
+  //   classdataprovider[dateinindex].date.removeAt(classindex);
+  //   notifyListeners();
+}
