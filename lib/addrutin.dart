@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, unnecessary_null_comparison
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +8,7 @@ import 'package:table/rutinprovider.dart';
 class AddRutin extends StatefulWidget {
   Classmodel? classdata;
   dynamic indexofdate;
+  // ignore: unnecessary_question_mark
   dynamic? classindex;
   bool? iseddit;
   AddRutin(
@@ -27,7 +28,11 @@ class _AddRutinState extends State<AddRutin> {
   TextEditingController roomnum = TextEditingController();
   TextEditingController start = TextEditingController();
   TextEditingController end = TextEditingController();
-  FocusNode noteFocus = FocusNode();
+
+  FocusNode subjectCodeNameFocus = FocusNode();
+  FocusNode roomnumNameFocus = FocusNode();
+  FocusNode startingFocus = FocusNode();
+  FocusNode endingFocus = FocusNode();
 
   /// addNew Rutin
 
@@ -52,7 +57,7 @@ class _AddRutinState extends State<AddRutin> {
     widget.classdata!.subjectcode = sujectcode.text;
     widget.classdata!.roomnum = roomnum.text;
     widget.classdata!.startingpriode = double.parse(start.text);
-    widget.classdata!.endingpriode = double.parse(start.text);
+    widget.classdata!.endingpriode = double.parse(end.text);
 
     Provider.of<Rutinprovider>(context, listen: false)
         .eddit(widget.indexofdate, widget.classdata!);
@@ -80,9 +85,9 @@ class _AddRutinState extends State<AddRutin> {
 // Appbar()
 
       appBar: AppBar(
+        centerTitle: true,
         title:
             Text(widget.iseddit == true ? " Eddit Class " : " Add New Class"),
-        centerTitle: true,
         actions: [
           IconButton(
             onPressed: () {
@@ -111,7 +116,7 @@ class _AddRutinState extends State<AddRutin> {
                 autofocus: (widget.iseddit == true) ? false : true,
                 onSubmitted: (val) {
                   if (val != "") {
-                    noteFocus.requestFocus();
+                    subjectCodeNameFocus.requestFocus();
                   }
                 },
                 style:
@@ -121,15 +126,20 @@ class _AddRutinState extends State<AddRutin> {
               ),
               TextField(
                 controller: sujectcode,
-                // focusNode: noteFocus,
+                focusNode: roomnumNameFocus,
                 maxLines: 1,
+                onSubmitted: (val) {
+                  if (val != "") {
+                    startingFocus.requestFocus();
+                  }
+                },
                 style: const TextStyle(fontSize: 20),
                 decoration: const InputDecoration(
                     hintText: "Subject Code", border: InputBorder.none),
               ),
               TextField(
                 controller: roomnum,
-                //focusNode: noteFocus,
+                // focusNode: noteFocus,
                 maxLines: 1,
                 style: const TextStyle(fontSize: 20),
                 decoration: const InputDecoration(
@@ -137,7 +147,7 @@ class _AddRutinState extends State<AddRutin> {
               ),
               TextField(
                 controller: start,
-                //focusNode: noteFocus,
+                // focusNode: noteFocus,
                 maxLines: 1,
                 style: const TextStyle(fontSize: 20),
                 decoration: const InputDecoration(
@@ -173,14 +183,10 @@ class AddOrEdditPriode extends StatefulWidget {
 class _AddOrEdditPriodeState extends State<AddOrEdditPriode> {
   TextEditingController starttimeController = TextEditingController();
   TextEditingController endtimeController = TextEditingController();
-  // TextEditingController roomnum = TextEditingController();
-  // TextEditingController start = TextEditingController();
-  // TextEditingController end = TextEditingController();
 
   void addNewPriode() {
-    Addpriode addNewPriode = Addpriode(
-        startingpriode: starttimeController.text.toString(),
-        endingpriode: endtimeController.text.toString());
+    Addpriode addNewPriode =
+        Addpriode(startingpriode: _starttime!, endingpriode: _endtime!);
 
     Provider.of<PriodeDateProvider>(context, listen: false)
         .adpriode(addNewPriode);
@@ -189,11 +195,8 @@ class _AddOrEdditPriodeState extends State<AddOrEdditPriode> {
   }
 
   void eddit() {
-    widget.priode!.startingpriode = starttimeController.text;
-    widget.priode!.endingpriode = endtimeController.text;
-    // widget.classdata!.roomnum = roomnum.text;
-    //  widget.classdata!.startingpriode = double.parse(start.text);
-    //   widget.classdata!.endingpriode = double.parse(start.text);
+    widget.priode!.startingpriode = _starttime!;
+    widget.priode!.endingpriode = _endtime!;
 
     Provider.of<PriodeDateProvider>(context, listen: false)
         .eddit(widget.priode!);
@@ -206,74 +209,94 @@ class _AddOrEdditPriodeState extends State<AddOrEdditPriode> {
     super.initState();
 
     if (widget.isedditing == true) {
-      starttimeController.text = widget.priode!.startingpriode;
+      _starttime = widget.priode!.startingpriode;
 
-      endtimeController.text = widget.priode!.endingpriode;
-      // roomnum.text = widget.classdata!.roomnum;
-      // start.text = widget.classdata!.startingpriode.toString();
-      // end.text = widget.classdata!.endingpriode.toString();
+      _endtime = widget.priode!.endingpriode;
     }
   }
 
+  TimeOfDay? _starttime = const TimeOfDay(hour: 12, minute: 12);
+
+  TimeOfDay? _endtime = const TimeOfDay(hour: 12, minute: 12);
+  bool ischange = false;
   @override
   Widget build(BuildContext context) {
-    PriodeDateProvider priodedata = Provider.of<PriodeDateProvider>(context);
+    var priodedata = Provider.of<PriodeDateProvider>(context).priodelist;
+
     return Scaffold(
-      appBar:
-          AppBar(title: const Text("Add Priode"), centerTitle: true, actions: [
-        IconButton(
-          icon: const Icon(Icons.check),
-          onPressed: () {
-            if (widget.isedditing == true) {
-              eddit();
-            } else {
-              addNewPriode();
-            }
-            print("aded");
-          },
-        )
-      ]),
+      appBar: AppBar(
+          title:
+              Text(widget.isedditing == true ? "Eddit priode" : "Add Priode "),
+          centerTitle: true,
+          actions: [
+            IconButton(
+                icon: const Icon(Icons.check),
+
+                // chack is eddit or add
+                onPressed: () =>
+                    widget.isedditing == true ? eddit() : addNewPriode())
+          ]),
+
+      // body
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Column(
-/////   hare 3 TextFild
-            ///
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextField(
-                controller: starttimeController,
-                keyboardType: TextInputType.number,
-                maxLines: 1,
-                style: const TextStyle(fontSize: 20),
-                decoration: const InputDecoration(
-                    hintText: "Star time", border: InputBorder.none),
+              ////
+              const Text("Add Start Time"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(ischange
+                      ? _starttime!.format(context).toString()
+                      : priodedata.length != null
+                          ? priodedata[priodedata.length - 1]
+                              .endingpriode
+                              .format(context)
+                              .toString()
+                          : _starttime!.format(context).toString()),
+                  IconButton(
+                      icon: const Icon(Icons.add),
+                      onPressed: () {
+                        showTimePicker(
+                                context: context,
+                                initialTime: priodedata.length == null
+                                    ? _endtime!
+                                    : priodedata[priodedata.length - 1]
+                                        .endingpriode)
+                            .then((value) {
+                          if (value != null) {
+                            setState(() {
+                              _starttime = value;
+                              ischange = true;
+                            });
+                          }
+                        });
+                      }),
+                ],
               ),
-              TextField(
-                controller: endtimeController,
-                //focusNode: noteFocus,
-                keyboardType: TextInputType.number,
-                maxLines: 1,
-                style: const TextStyle(fontSize: 20),
-                decoration: const InputDecoration(
-                    hintText: "End Time", border: InputBorder.none),
+
+              ////
+              const Text("Add End Time"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(_endtime!.format(context).toString()),
+                  IconButton(
+                      icon: const Icon(Icons.timer),
+                      onPressed: () {
+                        showTimePicker(
+                                context: context, initialTime: TimeOfDay.now())
+                            .then((value) => value != null
+                                ? setState(() {
+                                    _endtime = value;
+                                  })
+                                : null);
+                      }),
+                ],
               ),
-              // TextField(
-              //   //controller: start,
-              //   //focusNode: noteFocus,
-              //   maxLines: 1,
-              //   style: const TextStyle(fontSize: 20),
-              //   decoration: const InputDecoration(
-              //       hintText: "Strting priode", border: InputBorder.none),
-              // ),
-              // TextField(
-              //   controller: end,
-              //   // focusNode: noteFocus,
-              //   maxLines: 1,
-              //   keyboardType: TextInputType.number,
-              //   style: const TextStyle(fontSize: 20),
-              //   decoration: const InputDecoration(
-              //       hintText: "Ending priode", border: InputBorder.none),
-              // ),
             ],
           ),
         ),

@@ -111,15 +111,19 @@ class RutinPage extends StatelessWidget {
                                   context, priodedataProvider, index),
                               child: priodedataProvider.priodelist.isEmpty
                                   ? TopContaner(
-                                      priode: "Add Priode frist",
+                                      priode: "Add Priode",
                                       startTime: "8:00",
                                       endtime: "8.45")
                                   : TopContaner(
                                       priode: "${index + 1}",
                                       startTime: priodedataProvider
-                                          .priodelist[index].startingpriode,
+                                          .priodelist[index].startingpriode
+                                          .format(context)
+                                          .toString(),
                                       endtime: priodedataProvider
-                                          .priodelist[index].endingpriode,
+                                          .priodelist[index].endingpriode
+                                          .format(context)
+                                          .toString(),
                                     ),
                             ),
                           ),

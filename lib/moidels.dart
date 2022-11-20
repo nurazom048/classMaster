@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Classmodel {
   String instructorname, subjectcode, roomnum;
   double startingpriode, endingpriode;
@@ -24,7 +26,7 @@ class Priodemodel {
 }
 
 class Addpriode {
-  String startingpriode, endingpriode;
+  TimeOfDay startingpriode, endingpriode;
 
   String? mainpic, classsumary;
 

@@ -3,11 +3,16 @@ import 'package:table/freash.dart';
 import 'moidels.dart';
 
 // ignore: must_be_immutable
-class Classdetails extends StatelessWidget {
+class Classdetails extends StatefulWidget {
   Classmodel classdate;
 
   Classdetails({super.key, required this.classdate});
 
+  @override
+  State<Classdetails> createState() => _ClassdetailsState();
+}
+
+class _ClassdetailsState extends State<Classdetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,11 +38,11 @@ class Classdetails extends StatelessWidget {
                 children: [
                   const SizedBox(height: 40),
                   Text("InstractorName   :  "
-                      "${classdate.instructorname.toString()}"),
+                      "${widget.classdate.instructorname.toString()}"),
                   Text("  subject Code     :"
-                      "     ${classdate.subjectcode.toString()}"),
+                      "     ${widget.classdate.subjectcode.toString()}"),
                   Text("Room Name    :   "
-                      "${classdate.instructorname.toString()}"),
+                      "${widget.classdate.instructorname.toString()}"),
                 ],
               )
             ],
@@ -50,7 +55,7 @@ class Classdetails extends StatelessWidget {
           height: 200,
           width: double.infinity,
           color: Colors.black12,
-          child: Text(classdate.classsumary.toString()),
+          child: Text(widget.classdate.classsumary.toString()),
         )
       ]),
     );

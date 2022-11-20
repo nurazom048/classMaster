@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:table/moidels.dart';
 
 class Rutinprovider with ChangeNotifier {
@@ -259,8 +259,7 @@ class Rutinprovider with ChangeNotifier {
     ])
   ];
 
-//
-
+//  add class provider
   void addclass(indexofdate, Classmodel classdata) {
     classdataprovider[indexofdate].date.add(classdata);
     notifyListeners();
@@ -283,15 +282,21 @@ class Rutinprovider with ChangeNotifier {
   }
 }
 
-/// priode
+/// priode provider
 class PriodeDateProvider with ChangeNotifier {
   List<Addpriode> priodelist = [
-    Addpriode(startingpriode: "1", endingpriode: "2"),
-    Addpriode(startingpriode: "1", endingpriode: "2"),
-    Addpriode(startingpriode: "1", endingpriode: "2"),
-    Addpriode(startingpriode: "1", endingpriode: "2"),
-    Addpriode(startingpriode: "1", endingpriode: "2"),
-    Addpriode(startingpriode: "1", endingpriode: "2"),
+    Addpriode(
+        startingpriode: const TimeOfDay(hour: 12, minute: 12),
+        endingpriode: const TimeOfDay(hour: 10, minute: 12)),
+    Addpriode(
+        startingpriode: const TimeOfDay(hour: 12, minute: 12),
+        endingpriode: const TimeOfDay(hour: 10, minute: 12)),
+    Addpriode(
+        startingpriode: const TimeOfDay(hour: 12, minute: 12),
+        endingpriode: const TimeOfDay(hour: 10, minute: 12)),
+    Addpriode(
+        startingpriode: const TimeOfDay(hour: 12, minute: 12),
+        endingpriode: const TimeOfDay(hour: 10, minute: 12)),
   ];
 
   void adpriode(Addpriode priod) {
@@ -306,8 +311,6 @@ class PriodeDateProvider with ChangeNotifier {
   }
 
   void remove(index) {
-    ///final findindex = priodelist.indexWhere((element) => element == priode);
-
     priodelist.removeAt(index);
     notifyListeners();
   }
