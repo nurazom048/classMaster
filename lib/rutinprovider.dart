@@ -305,10 +305,10 @@ class PriodeDateProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void remove(priode) {
-    final findindex = priodelist.indexWhere((element) => element == priode);
+  void remove(index) {
+    ///final findindex = priodelist.indexWhere((element) => element == priode);
 
-    priodelist.removeAt(findindex);
+    priodelist.removeAt(index);
     notifyListeners();
   }
 }

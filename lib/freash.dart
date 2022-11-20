@@ -6,8 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:table/addrutin.dart';
 import 'package:table/classdetals.dart';
 import 'package:table/main.dart';
-import 'package:table/moidels.dart';
-
 import 'package:table/rutinprovider.dart';
 
 class RutinPage extends StatelessWidget {
@@ -24,96 +22,16 @@ class RutinPage extends StatelessWidget {
       "Saturday",
     ];
 
-    // buttomsheet for priode
-    void butoomSheetPriode(priode) {
-      showCupertinoModalPopup(
-        context: context,
-        builder: (context) => CupertinoActionSheet(
-          title: const Text(" Do you want to.. ",
-              style: TextStyle(fontSize: 22, color: Colors.black87)),
-          actions: [
-            CupertinoActionSheetAction(
-              child: const Text("Eddit"), // go to eddit
-
-              onPressed: () => Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                      fullscreenDialog: true,
-                      builder: (context) => AddOrEdditPriode(
-                            isedditing: true,
-                            priode: priode,
-                          ))),
-            ),
-            CupertinoActionSheetAction(
-              ///// for remove item by index
-              child: const Text("Remove", style: TextStyle(color: Colors.red)),
-              onPressed: () {
-                Provider.of<PriodeDateProvider>(context, listen: false)
-                    .remove(priode);
-                Navigator.pop(context);
-              },
-            ),
-          ],
-          cancelButton: CupertinoActionSheetAction(
-            child: const Text("cancel"),
-            onPressed: () => Navigator.pop(context),
-          ),
-        ),
-      );
-    }
-
-    ///  buttom sheet to long press
-    /// for eddit remove
-    void butoomSheetForClass(indexofdate, index) {
-      Rutinprovider classdataprovider =
-          Provider.of<Rutinprovider>(context, listen: false);
-      showCupertinoModalPopup(
-        context: context,
-        builder: (context) => CupertinoActionSheet(
-          title: const Text(" Do you want to.. ",
-              style: TextStyle(fontSize: 22, color: Colors.black87)),
-          actions: [
-            CupertinoActionSheetAction(
-                child: const Text("Eddit"),
-
-                // go to eddit
-                onPressed: () => Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                        fullscreenDialog: true,
-                        builder: (context) => AddRutin(
-                              indexofdate: indexofdate,
-                              classdata: classdataprovider
-                                  .classdataprovider[indexofdate].date[index],
-                              iseddit: true,
-                            )))),
-            CupertinoActionSheetAction(
-                child:
-                    const Text("Remove", style: TextStyle(color: Colors.red)),
-                onPressed: () {
-                  classdataprovider.removeclass(indexofdate, index);
-                  Navigator.pop(context);
-                }),
-          ],
-          cancelButton: CupertinoActionSheetAction(
-            child: const Text("cancel"),
-            onPressed: () => Navigator.pop(context),
-          ),
-        ),
-      );
-    }
-
     Rutinprovider rutinprovider = Provider.of<Rutinprovider>(context);
     PriodeDateProvider priodedataProvider =
         Provider.of<PriodeDateProvider>(context);
     return SafeArea(
       child: Scaffold(
-        body: Column(
-          children: [
-            CustomTopBar("Kpi 7/1/ET-C", ontap: () {}),
-            SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: SingleChildScrollView(
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              CustomTopBar("Kpi 7/1/ET-C", ontap: () {}),
+              SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,7 +44,7 @@ class RutinPage extends StatelessWidget {
                           TopContaner(
                             priode: 'Priode',
                             startTime: "sevendays",
-                            endtime: "Time",
+                            endtime: "",
                             iconn: Icons.add,
                             onTap: () {
                               Navigator.push(
@@ -189,10 +107,8 @@ class RutinPage extends StatelessWidget {
                                 : priodedataProvider.priodelist.length,
                             //   priode row
                             (index) => InkWell(
-                              onLongPress: () {
-                                butoomSheetPriode(
-                                    priodedataProvider.priodelist[index]);
-                              },
+                              onLongPress: () => ShowProdeButtomAction(
+                                  context, priodedataProvider, index),
                               child: priodedataProvider.priodelist.isEmpty
                                   ? TopContaner(
                                       priode: "Add Priode frist",
@@ -208,7 +124,7 @@ class RutinPage extends StatelessWidget {
                             ),
                           ),
                         ),
-//           class data Row
+                        //           class data Row
 
                         Wrap(
                           direction: Axis.vertical,
@@ -237,11 +153,13 @@ class RutinPage extends StatelessWidget {
                                                 : Colors.black12,
                                           )
                                         : InkWell(
-                                            onLongPress: () {
-                                              butoomSheetForClass(
-                                                  indexofdate, index);
-                                            },
-                                            onTap: rutinprovider
+                                            onLongPress: () =>
+                                                ShowClassButtomSheet(
+                                                    context,
+                                                    indexofdate,
+                                                    rutinprovider,
+                                                    index),
+                                            onTap: () => rutinprovider
                                                         .classdataprovider[
                                                             indexofdate]
                                                         .date[index]
@@ -249,15 +167,16 @@ class RutinPage extends StatelessWidget {
                                                         .toString() ==
                                                     "00"
                                                 ? null
-                                                : () => Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) => Classdetails(
-                                                              classdate: rutinprovider
-                                                                  .classdataprovider[
-                                                                      indexofdate]
-                                                                  .date[index])),
-                                                    ),
+                                                : Navigator.push(
+                                                    context,
+                                                    CupertinoPageRoute(
+                                                        fullscreenDialog: true,
+                                                        builder: (context) => Classdetails(
+                                                            classdate: rutinprovider
+                                                                .classdataprovider[
+                                                                    indexofdate]
+                                                                .date[index])),
+                                                  ),
                                             child: Container(
                                               decoration: BoxDecoration(
                                                   color: indexofdate % 2 == 0
@@ -335,8 +254,85 @@ class RutinPage extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ignore: non_constant_identifier_names
+  Future<dynamic> ShowClassButtomSheet(BuildContext context, int indexofdate,
+      Rutinprovider rutinprovider, int index) {
+    return showCupertinoModalPopup(
+      context: context,
+      builder: (context) => CupertinoActionSheet(
+        title: const Text(" Do you want to.. ",
+            style: TextStyle(fontSize: 22, color: Colors.black87)),
+        actions: [
+          CupertinoActionSheetAction(
+              child: const Text("Eddit"),
+
+              // go to eddit
+              onPressed: () => Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                      fullscreenDialog: true,
+                      builder: (context) => AddRutin(
+                            indexofdate: indexofdate,
+                            classdata: rutinprovider
+                                .classdataprovider[indexofdate].date[index],
+                            iseddit: true,
+                          )))),
+          CupertinoActionSheetAction(
+              child: const Text("Remove", style: TextStyle(color: Colors.red)),
+              onPressed: () {
+                rutinprovider.removeclass(indexofdate, index);
+                Navigator.pop(context);
+              }),
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          child: const Text("cancel"),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+    );
+  }
+
+  // ignore: non_constant_identifier_names
+  Future<dynamic> ShowProdeButtomAction(
+      BuildContext context, PriodeDateProvider priodedataProvider, int index) {
+    return showCupertinoModalPopup(
+      context: context,
+      builder: (context) => CupertinoActionSheet(
+        title: const Text(" Do you want to.. ",
+            style: TextStyle(fontSize: 22, color: Colors.black87)),
+        actions: [
+          CupertinoActionSheetAction(
+            child: const Text("Eddit"), // go to eddit
+
+            onPressed: () => Navigator.push(
+                context,
+                CupertinoPageRoute(
+                    fullscreenDialog: true,
+                    builder: (context) => AddOrEdditPriode(
+                          isedditing: true,
+                          priode: priodedataProvider.priodelist[index],
+                        ))),
+          ),
+          CupertinoActionSheetAction(
+            ///// for remove item by index
+            child: const Text("Remove", style: TextStyle(color: Colors.red)),
+            onPressed: () {
+              Provider.of<PriodeDateProvider>(context, listen: false)
+                  .remove(index);
+              Navigator.pop(context);
+            },
+          ),
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          child: const Text("cancel"),
+          onPressed: () => Navigator.pop(context),
         ),
       ),
     );

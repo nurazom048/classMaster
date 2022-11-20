@@ -36,6 +36,7 @@ class MyApp extends StatelessWidget {
 // ignore: must_be_immutable
 class TopContaner extends StatelessWidget {
   String priode, startTime, endtime;
+  // ignore: prefer_typing_uninitialized_variables
   var onTap;
   IconData? iconn;
   TopContaner({
@@ -50,23 +51,21 @@ class TopContaner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 135,
+      height: 100,
       width: 100,
       // ignore: prefer_const_constructors
       decoration: BoxDecoration(
-          color: const Color.fromRGBO(68, 114, 196, 30),
+          color: const Color.fromRGBO(68, 114, 196, 40),
           border:
               const Border(right: BorderSide(color: Colors.black45, width: 1))),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(3.0),
         child: Column(
-          //mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(priode),
-            const Divider(color: Colors.black87, height: 18, thickness: .5),
+            const Divider(color: Colors.black87, height: 10, thickness: .5),
             Text("$startTime \n$endtime"),
-            // IconButton(onPressed: onPressed!, icon: iconn)
-            InkWell(child: Icon(iconn), onTap: onTap),
+            InkWell(onTap: onTap, child: Icon(iconn)),
           ],
         ),
       ),
