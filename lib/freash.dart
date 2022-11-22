@@ -1,5 +1,7 @@
 // ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables
 
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -85,8 +87,8 @@ class RutinPage extends StatelessWidget {
                                                 .format(datetime)
                                                 .toString() ==
                                             sevendays[indexofdate]
-                                        ? Text("Runnimg ")
-                                        : Text(""),
+                                        ? const Text("Runnimg ")
+                                        : const Text(""),
                                     Text(sevendays[indexofdate]),
                                     InkWell(
                                       onTap: (() {}),
@@ -121,8 +123,8 @@ class RutinPage extends StatelessWidget {
                                 : priodedataProvider.priodelist.length,
                             //   priode row
                             (index) => InkWell(
-                              onLongPress: () => ShowProdeButtomAction(
-                                  context, priodedataProvider, index),
+                              onLongPress: () => ShowProdeButtomAction(context,
+                                  priodedataProvider, index, rutinprovider),
                               child: priodedataProvider.priodelist.isEmpty
                                   ? TopContaner(
                                       priode: "Add Priode",
@@ -305,67 +307,46 @@ class RutinPage extends StatelessWidget {
                                                                     indexofdate]
                                                                 .date[index]
                                                                 .subjectcode),
-
-                                                            Text(priodedataProvider
-                                                                .priodelist[rutinprovider
-                                                                        .classdataprovider[
-                                                                            indexofdate]
-                                                                        .date[
-                                                                            index]
-                                                                        .startingpriode
-                                                                        .toInt() -
-                                                                    1]
-                                                                .startingpriode
-                                                                .format(context)
-                                                                .toString()),
-                                                            //
-                                                            // end time
-
-                                                            Text(priodedataProvider.priodelist[rutinprovider.classdataprovider[indexofdate].date[index].startingpriode.toInt() - 1].startingpriode.hour <= hournow &&
-                                                                    priodedataProvider
-                                                                            .priodelist[rutinprovider.classdataprovider[indexofdate].date[index].startingpriode.toInt() -
-                                                                                1]
-                                                                            .startingpriode
-                                                                            .minute <=
-                                                                        minuteNow &&
-                                                                    priodedataProvider
-                                                                            .priodelist[rutinprovider.classdataprovider[indexofdate].date[index].endingpriode.toInt() -
-                                                                                1]
-                                                                            .endingpriode
-                                                                            .hour >=
-                                                                        hournow &&
-                                                                    priodedataProvider
-                                                                            .priodelist[rutinprovider.classdataprovider[indexofdate].date[index].endingpriode.toInt() -
-                                                                                1]
-                                                                            .endingpriode
-                                                                            .minute >=
-                                                                        minuteNow
-                                                                ? "r"
-                                                                : "nr"),
-                                                            //  Text(                           ),
-
-                                                            // Text(priodedataProvider.priodelist[index > priodedataProvider.priodelist.length - 1 ? 0 : index].startingpriode.hour <=
-                                                            //             hournow &&
-                                                            //         priodedataProvider.priodelist[index > priodedataProvider.priodelist.length - 1 ? 0 : index].endingpriode.hour >=
-                                                            //             hournow
-                                                            //     // && //
-                                                            //     //   priodedataProvider.priodelist[index > priodedataProvider.priodelist.length - 1 ? 0 : index].startingpriode.minute <
-                                                            //     //  minuteNow &&
-                                                            //     ///   priodedataProvider.priodelist[index > priodedataProvider.priodelist.length - 1 ? 0 : index].endingpriode.minute >
-                                                            //     // minuteNow
-                                                            //     ? "running"
-                                                            //     : "not"),
+                                                            Text(rutinprovider
+                                                                .classdataprovider[
+                                                                    indexofdate]
+                                                                .date[index]
+                                                                .roomnum),
 
                                                             // Text(priodedataProvider
-                                                            //     .priodelist[index +
-                                                            //                 1 ==
-                                                            //             rutinprovider.classdataprovider[indexofdate].date[index].startingpriode -
-                                                            //                 1
-                                                            //         ? index
-                                                            //         : 0]
+                                                            //     .priodelist[rutinprovider
+                                                            //             .classdataprovider[
+                                                            //                 indexofdate]
+                                                            //             .date[
+                                                            //                 index]
+                                                            //             .startingpriode
+                                                            //             .toInt() -
+                                                            //         1]
                                                             //     .startingpriode
                                                             //     .format(context)
                                                             //     .toString()),
+
+                                                            // Text(priodedataProvider.priodelist[rutinprovider.classdataprovider[indexofdate].date[index].startingpriode.toInt() - 1].startingpriode.hour <= hournow &&
+                                                            //         priodedataProvider
+                                                            //                 .priodelist[rutinprovider.classdataprovider[indexofdate].date[index].startingpriode.toInt() -
+                                                            //                     1]
+                                                            //                 .startingpriode
+                                                            //                 .minute <=
+                                                            //             minuteNow &&
+                                                            //         priodedataProvider
+                                                            //                 .priodelist[rutinprovider.classdataprovider[indexofdate].date[index].endingpriode.toInt() -
+                                                            //                     1]
+                                                            //                 .endingpriode
+                                                            //                 .hour >=
+                                                            //             hournow &&
+                                                            //         priodedataProvider
+                                                            //                 .priodelist[rutinprovider.classdataprovider[indexofdate].date[index].endingpriode.toInt() -
+                                                            //                     1]
+                                                            //                 .endingpriode
+                                                            //                 .minute >=
+                                                            //             minuteNow
+                                                            //     ? "r"
+                                                            //     : "nr"),
                                                           ],
                                                         ),
                                                       ),
@@ -427,8 +408,8 @@ class RutinPage extends StatelessWidget {
   }
 
   // ignore: non_constant_identifier_names
-  Future<dynamic> ShowProdeButtomAction(
-      BuildContext context, PriodeDateProvider priodedataProvider, int index) {
+  Future<dynamic> ShowProdeButtomAction(BuildContext context,
+      PriodeDateProvider priodedataProvider, int index, rutinprovider) {
     return showCupertinoModalPopup(
       context: context,
       builder: (context) => CupertinoActionSheet(
@@ -449,7 +430,12 @@ class RutinPage extends StatelessWidget {
           ),
           CupertinoActionSheetAction(
             ///// for remove item by index
-            child: const Text("Remove", style: TextStyle(color: Colors.red)),
+            child: const Text(
+                // ignore: unrelated_type_equality_checks
+
+                // ? " No More Remove remove class frist"
+                "Remove",
+                style: TextStyle(color: Colors.red)),
             onPressed: () {
               Provider.of<PriodeDateProvider>(context, listen: false)
                   .remove(index);

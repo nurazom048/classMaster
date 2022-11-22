@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class Classmodel {
   String instructorname, subjectcode, roomnum;
-  double startingpriode, endingpriode;
-  double? weith;
+  int startingpriode, endingpriode;
+  int? weith;
   String? mainpic, classsumary;
 
   Classmodel(

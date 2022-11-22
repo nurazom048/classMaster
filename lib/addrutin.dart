@@ -41,8 +41,8 @@ class _AddRutinState extends State<AddRutin> {
       instructorname: instructorname.text,
       subjectcode: sujectcode.text,
       roomnum: roomnum.text,
-      startingpriode: double.parse(start.text),
-      endingpriode: double.parse(end.text),
+      startingpriode: int.parse(start.text),
+      endingpriode: int.parse(end.text),
     );
 
     Provider.of<Rutinprovider>(context, listen: false)
@@ -56,8 +56,8 @@ class _AddRutinState extends State<AddRutin> {
     widget.classdata!.instructorname = instructorname.text;
     widget.classdata!.subjectcode = sujectcode.text;
     widget.classdata!.roomnum = roomnum.text;
-    widget.classdata!.startingpriode = double.parse(start.text);
-    widget.classdata!.endingpriode = double.parse(end.text);
+    widget.classdata!.startingpriode = int.parse(start.text);
+    widget.classdata!.endingpriode = int.parse(end.text);
 
     Provider.of<Rutinprovider>(context, listen: false)
         .eddit(widget.indexofdate, widget.classdata!);
