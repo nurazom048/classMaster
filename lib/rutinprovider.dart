@@ -286,17 +286,32 @@ class Rutinprovider with ChangeNotifier {
 class PriodeDateProvider with ChangeNotifier {
   List<Addpriode> priodelist = [
     Addpriode(
-        startingpriode: const TimeOfDay(hour: 12, minute: 12),
-        endingpriode: const TimeOfDay(hour: 10, minute: 12)),
+        startingpriode: const TimeOfDay(hour: 8, minute: 0),
+        endingpriode: const TimeOfDay(hour: 8, minute: 45)),
     Addpriode(
-        startingpriode: const TimeOfDay(hour: 12, minute: 12),
-        endingpriode: const TimeOfDay(hour: 10, minute: 12)),
+        startingpriode: const TimeOfDay(hour: 8, minute: 45),
+        endingpriode: const TimeOfDay(hour: 9, minute: 30)),
     Addpriode(
-        startingpriode: const TimeOfDay(hour: 12, minute: 12),
-        endingpriode: const TimeOfDay(hour: 10, minute: 12)),
+        startingpriode: const TimeOfDay(hour: 9, minute: 30),
+        endingpriode: const TimeOfDay(hour: 10, minute: 15)),
     Addpriode(
-        startingpriode: const TimeOfDay(hour: 12, minute: 12),
-        endingpriode: const TimeOfDay(hour: 10, minute: 12)),
+        startingpriode: const TimeOfDay(hour: 10, minute: 15),
+        endingpriode: const TimeOfDay(hour: 11, minute: 00)),
+    Addpriode(
+        startingpriode: const TimeOfDay(hour: 11, minute: 5),
+        endingpriode: const TimeOfDay(hour: 11, minute: 30)),
+    Addpriode(
+        startingpriode: const TimeOfDay(hour: 11, minute: 30),
+        endingpriode: const TimeOfDay(hour: 12, minute: 15)),
+    Addpriode(
+        startingpriode: const TimeOfDay(hour: 13, minute: 45),
+        endingpriode: const TimeOfDay(hour: 14, minute: 15)),
+    Addpriode(
+        startingpriode: const TimeOfDay(hour: 14, minute: 15),
+        endingpriode: const TimeOfDay(hour: 14, minute: 45)),
+    Addpriode(
+        startingpriode: const TimeOfDay(hour: 14, minute: 45),
+        endingpriode: const TimeOfDay(hour: 12, minute: 45)),
   ];
 
   void adpriode(Addpriode priod) {

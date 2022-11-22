@@ -217,11 +217,16 @@ class _AddOrEdditPriodeState extends State<AddOrEdditPriode> {
 
   TimeOfDay? _starttime = const TimeOfDay(hour: 12, minute: 12);
 
-  TimeOfDay? _endtime = const TimeOfDay(hour: 12, minute: 12);
+  TimeOfDay? _endtime = const TimeOfDay(hour: 19, minute: 12);
+  DateTime datetime = DateTime.now();
   bool ischange = false;
   @override
   Widget build(BuildContext context) {
     var priodedata = Provider.of<PriodeDateProvider>(context).priodelist;
+    // print(_starttime!.minute.toInt().toString());
+    // print(_endtime!.hour.toInt().toString());
+    //print(datetime.hour);
+    //  print(datetime.minute);
 
     return Scaffold(
       appBar: AppBar(

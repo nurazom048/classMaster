@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:table/freash.dart';
 import 'moidels.dart';
 
+import 'package:intl/intl.dart';
+
 // ignore: must_be_immutable
 class Classdetails extends StatefulWidget {
   Classmodel classdate;
@@ -12,9 +14,12 @@ class Classdetails extends StatefulWidget {
   State<Classdetails> createState() => _ClassdetailsState();
 }
 
+DateTime datetime = DateTime.now();
+
 class _ClassdetailsState extends State<Classdetails> {
   @override
   Widget build(BuildContext context) {
+    print(DateFormat('EEEE').format(datetime).toString());
     return Scaffold(
       body: Column(children: [
         CustomTopBar("Class Detals", ontap: () {}),
@@ -43,6 +48,7 @@ class _ClassdetailsState extends State<Classdetails> {
                       "     ${widget.classdate.subjectcode.toString()}"),
                   Text("Room Name    :   "
                       "${widget.classdate.instructorname.toString()}"),
+                  // Text(DateFormat('EEEE').format(yourDate).toString()),
                 ],
               )
             ],

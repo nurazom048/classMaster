@@ -7,10 +7,17 @@ import 'package:table/addrutin.dart';
 import 'package:table/classdetals.dart';
 import 'package:table/main.dart';
 import 'package:table/rutinprovider.dart';
+import 'package:intl/intl.dart';
 
 class RutinPage extends StatelessWidget {
-  const RutinPage({super.key});
+  RutinPage({super.key});
 
+  var currenttime = DateTime.now();
+
+  int hournow = DateTime.now().hour.toInt();
+  int minuteNow = DateTime.now().minute.toInt();
+
+  // DateTime datetimenow = DateTime.now();
   @override
   Widget build(BuildContext context) {
     List sevendays = [
@@ -25,6 +32,7 @@ class RutinPage extends StatelessWidget {
     Rutinprovider rutinprovider = Provider.of<Rutinprovider>(context);
     PriodeDateProvider priodedataProvider =
         Provider.of<PriodeDateProvider>(context);
+
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -73,6 +81,12 @@ class RutinPage extends StatelessWidget {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
+                                    DateFormat('EEEE')
+                                                .format(datetime)
+                                                .toString() ==
+                                            sevendays[indexofdate]
+                                        ? Text("Runnimg ")
+                                        : Text(""),
                                     Text(sevendays[indexofdate]),
                                     InkWell(
                                       onTap: (() {}),
@@ -225,28 +239,137 @@ class RutinPage extends StatelessWidget {
                                                       "00"
                                                   ? const Center(
                                                       child: Icon(Icons.clear))
-                                                  : Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Text(rutinprovider
-                                                            .classdataprovider[
-                                                                indexofdate]
-                                                            .date[index]
-                                                            .instructorname),
-                                                        Text(rutinprovider
-                                                            .classdataprovider[
-                                                                indexofdate]
-                                                            .date[index]
-                                                            .subjectcode),
-                                                        Text(rutinprovider
-                                                            .classdataprovider[
-                                                                indexofdate]
-                                                            .date[index]
-                                                            .roomnum),
-                                                      ],
-                                                    ),
+                                                  : Stack(children: [
+                                                      DateFormat('EEEE')
+                                                                      .format(
+                                                                          datetime)
+                                                                      .toString() ==
+                                                                  sevendays[
+                                                                      indexofdate] &&
+                                                              priodedataProvider
+                                                                      .priodelist[
+                                                                          rutinprovider.classdataprovider[indexofdate].date[index].startingpriode.toInt() -
+                                                                              1]
+                                                                      .startingpriode
+                                                                      .hour <=
+                                                                  hournow &&
+                                                              priodedataProvider
+                                                                      .priodelist[
+                                                                          rutinprovider.classdataprovider[indexofdate].date[index].startingpriode.toInt() -
+                                                                              1]
+                                                                      .startingpriode
+                                                                      .minute <=
+                                                                  minuteNow &&
+                                                              priodedataProvider
+                                                                      .priodelist[
+                                                                          rutinprovider.classdataprovider[indexofdate].date[index].endingpriode.toInt() -
+                                                                              1]
+                                                                      .endingpriode
+                                                                      .hour >=
+                                                                  hournow &&
+                                                              priodedataProvider
+                                                                      .priodelist[rutinprovider.classdataprovider[indexofdate].date[index].endingpriode.toInt() - 1]
+                                                                      .endingpriode
+                                                                      .minute >=
+                                                                  minuteNow
+                                                          ? Positioned(
+                                                              top: 4,
+                                                              left: 5,
+                                                              child: Row(
+                                                                children: [
+                                                                  Container(
+                                                                      height:
+                                                                          10,
+                                                                      width: 10,
+                                                                      color: Colors
+                                                                          .red),
+                                                                  const Text(
+                                                                      "  Running")
+                                                                ],
+                                                              ),
+                                                            )
+                                                          : Container(),
+                                                      Center(
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Text(rutinprovider
+                                                                .classdataprovider[
+                                                                    indexofdate]
+                                                                .date[index]
+                                                                .instructorname),
+                                                            Text(rutinprovider
+                                                                .classdataprovider[
+                                                                    indexofdate]
+                                                                .date[index]
+                                                                .subjectcode),
+
+                                                            Text(priodedataProvider
+                                                                .priodelist[rutinprovider
+                                                                        .classdataprovider[
+                                                                            indexofdate]
+                                                                        .date[
+                                                                            index]
+                                                                        .startingpriode
+                                                                        .toInt() -
+                                                                    1]
+                                                                .startingpriode
+                                                                .format(context)
+                                                                .toString()),
+                                                            //
+                                                            // end time
+
+                                                            Text(priodedataProvider.priodelist[rutinprovider.classdataprovider[indexofdate].date[index].startingpriode.toInt() - 1].startingpriode.hour <= hournow &&
+                                                                    priodedataProvider
+                                                                            .priodelist[rutinprovider.classdataprovider[indexofdate].date[index].startingpriode.toInt() -
+                                                                                1]
+                                                                            .startingpriode
+                                                                            .minute <=
+                                                                        minuteNow &&
+                                                                    priodedataProvider
+                                                                            .priodelist[rutinprovider.classdataprovider[indexofdate].date[index].endingpriode.toInt() -
+                                                                                1]
+                                                                            .endingpriode
+                                                                            .hour >=
+                                                                        hournow &&
+                                                                    priodedataProvider
+                                                                            .priodelist[rutinprovider.classdataprovider[indexofdate].date[index].endingpriode.toInt() -
+                                                                                1]
+                                                                            .endingpriode
+                                                                            .minute >=
+                                                                        minuteNow
+                                                                ? "r"
+                                                                : "nr"),
+                                                            //  Text(                           ),
+
+                                                            // Text(priodedataProvider.priodelist[index > priodedataProvider.priodelist.length - 1 ? 0 : index].startingpriode.hour <=
+                                                            //             hournow &&
+                                                            //         priodedataProvider.priodelist[index > priodedataProvider.priodelist.length - 1 ? 0 : index].endingpriode.hour >=
+                                                            //             hournow
+                                                            //     // && //
+                                                            //     //   priodedataProvider.priodelist[index > priodedataProvider.priodelist.length - 1 ? 0 : index].startingpriode.minute <
+                                                            //     //  minuteNow &&
+                                                            //     ///   priodedataProvider.priodelist[index > priodedataProvider.priodelist.length - 1 ? 0 : index].endingpriode.minute >
+                                                            //     // minuteNow
+                                                            //     ? "running"
+                                                            //     : "not"),
+
+                                                            // Text(priodedataProvider
+                                                            //     .priodelist[index +
+                                                            //                 1 ==
+                                                            //             rutinprovider.classdataprovider[indexofdate].date[index].startingpriode -
+                                                            //                 1
+                                                            //         ? index
+                                                            //         : 0]
+                                                            //     .startingpriode
+                                                            //     .format(context)
+                                                            //     .toString()),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ]),
                                             ),
                                           ),
                                   ),
