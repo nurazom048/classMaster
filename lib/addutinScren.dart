@@ -2,6 +2,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_intl/flutter_intl.dart';
+import 'package:intl/intl.dart';
 
 class AddScreen extends StatefulWidget {
   const AddScreen({super.key});
@@ -20,8 +22,16 @@ final _startPeriodController = TextEditingController();
 final _endPeriodController = TextEditingController();
 
 class _AddScreenState extends State<AddScreen> {
+  //
+
+  DateTime startTime = DateTime(2022, 01, 01);
+  DateTime endTime = DateTime(2022, 01, 01);
+
+  bool show = false;
+
   @override
   Widget build(BuildContext context) {
+    // print(now.weekday);
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -75,27 +85,38 @@ class _AddScreenState extends State<AddScreen> {
             ),
 
 //
-            MyText(" Start and end time"),
+            MyText("  Start and end time "),
+            // Text(DateFormat.EEEE().format(now).toString()),
             Row(
               children: [
                 Expanded(
                   child: TextFormField(
                     controller: _startTimeController,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(7),
-                        borderSide: const BorderSide(
-                          color: Colors.black12,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(7),
+                          borderSide: const BorderSide(
+                            color: Colors.black12,
+                          ),
                         ),
-                      ),
-                      suffixIcon: InkWell(
-                        onTap: () {
-                          // your callback here
-                        },
-                        child: const Icon(Icons.calendar_today),
-                      ),
-                      hintText: "Start Time",
-                    ),
+                        suffixIcon: InkWell(
+                            onTap: () => showTimePicker(
+                                        context: context,
+                                        initialTime: TimeOfDay.now())
+                                    .then((value) {
+                                  if (value != null) {
+                                    setState(() {
+                                      show = true;
+                                      startTime = DateTime(2023, 01, 01,
+                                              value.hour, value.minute)
+                                          .add(const Duration(days: 0));
+                                    });
+                                  }
+                                }),
+                            child: const Icon(Icons.calendar_today)),
+                        hintText: show
+                            ? DateFormat.jm().format(startTime)
+                            : " Start Time"),
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -112,10 +133,27 @@ class _AddScreenState extends State<AddScreen> {
                       suffixIcon: InkWell(
                         onTap: () {
                           // your callback here
+                          showTimePicker(
+                                  context: context,
+                                  initialTime: TimeOfDay(
+                                      hour: startTime.hour,
+                                      minute: startTime.minute))
+                              .then((value) {
+                            if (value != null) {
+                              setState(() {
+                                show = true;
+
+                                endTime = DateTime(
+                                        2022, 01, 02, value.hour, value.minute)
+                                    .add(const Duration(days: 0));
+                              });
+                            }
+                          });
                         },
                         child: const Icon(Icons.calendar_today),
                       ),
-                      hintText: "End Time",
+                      hintText:
+                          show ? DateFormat.jm().format(endTime) : "End Time",
                     ),
                   ),
                 ),
