@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:table/freash.dart';
+import 'package:table/rutin.dart';
 import 'package:table/rutinprovider.dart';
 
 void main() {
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
           ),
           // ignore: prefer_const_constructors
-          home: RutinPage(),
+          home: RutinScreem(),
         ));
   }
 }
