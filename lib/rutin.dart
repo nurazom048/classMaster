@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table/addutinScren.dart';
 import 'package:table/freash.dart';
+import 'package:table/list.dart';
 
 class RutinScreem extends StatefulWidget {
   const RutinScreem({super.key});
@@ -11,36 +12,6 @@ class RutinScreem extends StatefulWidget {
 }
 
 class _RutinScreemState extends State<RutinScreem> {
-  List<Map<String, dynamic>> mylisst = [
-    {
-      "instructorname": " Mrx ",
-      "subjectcode": "d",
-      "roomnum": "roomnum",
-      "startingpriode": 1.0,
-      "endingpriode": 3.0,
-      "start_time": DateTime(2022, 09, 03, 8, 40),
-      "end_time": DateTime(2022, 09, 03, 9, 30),
-    },
-    {
-      "instructorname": " Mrx ",
-      "subjectcode": "d",
-      "roomnum": "roomnum",
-      "startingpriode": 1.0,
-      "endingpriode": 1.0,
-      "start_time": DateTime(2022, 09, 03, 9, 30),
-      "end_time": DateTime(2022, 09, 03, 10, 15),
-    },
-    {
-      "instructorname": " Mrx ",
-      "subjectcode": "d",
-      "roomnum": "roomnum",
-      "startingpriode": 1.0,
-      "endingpriode": 3.0,
-      "start_time": DateTime(2022, 09, 03, 10, 15),
-      "end_time": DateTime(2022, 09, 03, 11, 00),
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -110,7 +81,7 @@ class _RutinScreemState extends State<RutinScreem> {
                               children: List.generate(
                                   // scrollDirection: Axis.vertical,
                                   // physics: const NeverScrollableScrollPhysics(),
-                                  2,
+                                  mylisst.length,
                                   (index) => myClassContainer(
                                         roomnum: mylisst[index]["roomnum"],
                                         instractorname: mylisst[index]

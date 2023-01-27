@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_intl/flutter_intl.dart';
 import 'package:intl/intl.dart';
+import 'package:table/list.dart';
+import 'package:table/rutin.dart';
 
 class AddScreen extends StatefulWidget {
   const AddScreen({super.key});
@@ -28,6 +30,10 @@ class _AddScreenState extends State<AddScreen> {
   DateTime endTime = DateTime(2022, 01, 01);
 
   bool show = false;
+
+  double startpriode = 1.0;
+
+  double endpriode = 1.0;
 
   @override
   Widget build(BuildContext context) {
@@ -155,6 +161,13 @@ class _AddScreenState extends State<AddScreen> {
                       hintText:
                           show ? DateFormat.jm().format(endTime) : "End Time",
                     ),
+                    validator: (value) {
+                      if (value == null ||
+                          value.isEmpty ||
+                          value.runtimeType == "srting") {
+                        return "Please enter a valid number";
+                      }
+                    },
                   ),
                 ),
               ],
@@ -177,6 +190,12 @@ class _AddScreenState extends State<AddScreen> {
                       ),
                       hintText: "Start priode",
                     ),
+                    validator: (value) {
+                      if (double.tryParse(value!) == null) {
+                        return "Please enter a valid number";
+                      }
+                      return null;
+                    },
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -203,10 +222,42 @@ class _AddScreenState extends State<AddScreen> {
               alignment: Alignment.center,
               child: CupertinoButton(
                 child: const Text("Submit"),
-                onPressed: () {},
+                onPressed: () {
+                  Map<String, dynamic> mewvalue = {
+                    "instructorname": _instructorController.text,
+                    "subjectcode": _startTimeController.text,
+                    "roomnum": _roomController.text,
+                    "startingpriode": startpriode,
+                    "endingpriode": startpriode,
+                    "start_time": startTime,
+                    "end_time": endTime,
+                  };
+
+                  setState(() {
+                    mylisst.add(mewvalue);
+                    print(mylisst);
+                  });
+                },
                 color: Colors.blue,
                 borderRadius: BorderRadius.circular(7),
               ),
+            ),
+
+            Wrap(
+              direction: Axis.horizontal,
+              children: List.generate(
+                  // scrollDirection: Axis.vertical,
+                  // physics: const NeverScrollableScrollPhysics(),
+                  mylisst.length,
+                  (index) => myClassContainer(
+                        roomnum: mylisst[index]["roomnum"],
+                        instractorname: mylisst[index]["instructorname"],
+                        subCode: mylisst[index]["subjectcode"],
+                        start: mylisst[index]["startingpriode"],
+                        end: mylisst[index]["endingpriode"],
+                        startTime: mylisst[index]["start_time"],
+                        endTime: mylisst[index]["end_time"],
+                      )),
             ),
             const Spacer(flex: 17),
           ],

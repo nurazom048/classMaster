@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
           ),
           // ignore: prefer_const_constructors
-          home: AddScreen(),
+          home: RutinScreem(),
         ));
   }
 }
