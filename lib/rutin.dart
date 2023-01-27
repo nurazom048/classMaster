@@ -1,19 +1,20 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:table/addutinScren.dart';
 import 'package:table/freash.dart';
-import 'package:table/list.dart';
+import 'package:table/provider/myRutinProvider.dart';
 
-class RutinScreem extends StatefulWidget {
+class RutinScreem extends StatelessWidget {
   const RutinScreem({super.key});
 
   @override
-  State<RutinScreem> createState() => _RutinScreemState();
-}
-
-class _RutinScreemState extends State<RutinScreem> {
-  @override
   Widget build(BuildContext context) {
+    //
+    var myList = Provider.of<MyRutinProvider>(context).MyClass;
+
     return SafeArea(
       child: Scaffold(
         body: Column(
@@ -44,12 +45,12 @@ class _RutinScreemState extends State<RutinScreem> {
                         //       // physics: const NeverScrollableScrollPhysics(),
                         //       2,
                         //       (index) => myClassContainer(
-                        //             roomnum: mylisst[index]["roomnum"],
-                        //             instractorname: mylisst[index]
+                        //             roomnum: myList[index]["roomnum"],
+                        //             instractorname: myList[index]
                         //                 ["instructorname"],
-                        //             subCode: mylisst[index]["subjectcode"],
-                        //             start: mylisst[index]["startingpriode"],
-                        //             end: mylisst[index]["endingpriode"],
+                        //             subCode: myList[index]["subjectcode"],
+                        //             start: myList[index]["startingpriode"],
+                        //             end: myList[index]["endingpriode"],
                         //           )),
                         // ),
                         /////////////////////////////////////////////////////////////////////////////////////////
@@ -61,16 +62,16 @@ class _RutinScreemState extends State<RutinScreem> {
                               children: List.generate(
                                   // scrollDirection: Axis.vertical,
                                   // physics: const NeverScrollableScrollPhysics(),
-                                  mylisst.length,
+                                  myList.length,
                                   (index) => myClassContainer(
-                                        roomnum: mylisst[index]["roomnum"],
-                                        instractorname: mylisst[index]
+                                        roomnum: myList[index]["roomnum"],
+                                        instractorname: myList[index]
                                             ["instructorname"],
-                                        subCode: mylisst[index]["subjectcode"],
-                                        start: mylisst[index]["startingpriode"],
-                                        end: mylisst[index]["endingpriode"],
-                                        startTime: mylisst[index]["start_time"],
-                                        endTime: mylisst[index]["end_time"],
+                                        subCode: myList[index]["subjectcode"],
+                                        start: myList[index]["startingpriode"],
+                                        end: myList[index]["endingpriode"],
+                                        startTime: myList[index]["start_time"],
+                                        endTime: myList[index]["end_time"],
                                       )),
                             ),
 
@@ -81,16 +82,16 @@ class _RutinScreemState extends State<RutinScreem> {
                               children: List.generate(
                                   // scrollDirection: Axis.vertical,
                                   // physics: const NeverScrollableScrollPhysics(),
-                                  mylisst.length,
+                                  myList.length,
                                   (index) => myClassContainer(
-                                        roomnum: mylisst[index]["roomnum"],
-                                        instractorname: mylisst[index]
+                                        roomnum: myList[index]["roomnum"],
+                                        instractorname: myList[index]
                                             ["instructorname"],
-                                        subCode: mylisst[index]["subjectcode"],
-                                        start: mylisst[index]["startingpriode"],
-                                        end: mylisst[index]["endingpriode"],
-                                        startTime: mylisst[index]["start_time"],
-                                        endTime: mylisst[index]["end_time"],
+                                        subCode: myList[index]["subjectcode"],
+                                        start: myList[index]["startingpriode"],
+                                        end: myList[index]["endingpriode"],
+                                        startTime: myList[index]["start_time"],
+                                        endTime: myList[index]["end_time"],
                                       )),
                             ),
                           ],

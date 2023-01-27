@@ -4,7 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_intl/flutter_intl.dart';
 import 'package:intl/intl.dart';
-import 'package:table/list.dart';
+import 'package:provider/provider.dart';
+import 'package:table/provider/myRutinProvider.dart';
 import 'package:table/rutin.dart';
 
 class AddScreen extends StatefulWidget {
@@ -35,8 +36,28 @@ class _AddScreenState extends State<AddScreen> {
 
   double endpriode = 1.0;
 
+  //
+  void addNewClass() {
+    Map<String, dynamic> newclass = {
+      "instructorname": _instructorController.text,
+      "subjectcode": _startTimeController.text,
+      "roomnum": _roomController.text,
+      "startingpriode": startpriode,
+      "endingpriode": startpriode,
+      "start_time": startTime,
+      "end_time": endTime,
+    };
+    var myList =
+        Provider.of<MyRutinProvider>(context, listen: false).addclass(newclass);
+
+    //  Navigator.pop(context);
+    print("object");
+  }
+
   @override
   Widget build(BuildContext context) {
+    var myList = Provider.of<MyRutinProvider>(context).MyClass;
+
     // print(now.weekday);
     return Scaffold(
       appBar: AppBar(),
@@ -222,24 +243,9 @@ class _AddScreenState extends State<AddScreen> {
               alignment: Alignment.center,
               child: CupertinoButton(
                 child: const Text("Submit"),
-                onPressed: () {
-                  Map<String, dynamic> mewvalue = {
-                    "instructorname": _instructorController.text,
-                    "subjectcode": _startTimeController.text,
-                    "roomnum": _roomController.text,
-                    "startingpriode": startpriode,
-                    "endingpriode": startpriode,
-                    "start_time": startTime,
-                    "end_time": endTime,
-                  };
-
-                  setState(() {
-                    mylisst.add(mewvalue);
-                    print(mylisst);
-                  });
-                },
                 color: Colors.blue,
                 borderRadius: BorderRadius.circular(7),
+                onPressed: addNewClass,
               ),
             ),
 
@@ -248,15 +254,15 @@ class _AddScreenState extends State<AddScreen> {
               children: List.generate(
                   // scrollDirection: Axis.vertical,
                   // physics: const NeverScrollableScrollPhysics(),
-                  mylisst.length,
+                  myList.length,
                   (index) => myClassContainer(
-                        roomnum: mylisst[index]["roomnum"],
-                        instractorname: mylisst[index]["instructorname"],
-                        subCode: mylisst[index]["subjectcode"],
-                        start: mylisst[index]["startingpriode"],
-                        end: mylisst[index]["endingpriode"],
-                        startTime: mylisst[index]["start_time"],
-                        endTime: mylisst[index]["end_time"],
+                        roomnum: myList[index]["roomnum"],
+                        instractorname: myList[index]["instructorname"],
+                        subCode: myList[index]["subjectcode"],
+                        start: myList[index]["startingpriode"],
+                        end: myList[index]["endingpriode"],
+                        startTime: myList[index]["start_time"],
+                        endTime: myList[index]["end_time"],
                       )),
             ),
             const Spacer(flex: 17),
