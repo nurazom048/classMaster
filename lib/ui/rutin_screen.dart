@@ -82,36 +82,28 @@ class RutinScreem extends StatelessWidget {
                               Wrap(
                                 direction: Axis.horizontal,
                                 children: List.generate(
-                                    Sunday!.length,
-                                    (index) => myClassContainer(
-                                          roomnum: Sunday[index]["roomnum"],
-                                          instractorname: Sunday[index]
-                                              ["instructorname"],
-                                          subCode: Sunday[index]["subjectcode"],
-                                          start: Sunday[index]
-                                              ["startingpriode"],
-                                          end: Sunday[index]["endingpriode"],
-                                          startTime: Sunday[index]
-                                              ["start_time"],
-                                          endTime: Sunday[index]["end_time"],
+                                  Sunday!.length,
+                                  (index) => myClassContainer(
+                                    roomnum: Sunday[index]["roomnum"],
+                                    instractorname: Sunday[index]
+                                        ["instructorname"],
+                                    subCode: Sunday[index]["subjectcode"],
+                                    start: Sunday[index]["startingpriode"],
+                                    end: Sunday[index]["endingpriode"],
+                                    startTime: Sunday[index]["start_time"],
+                                    endTime: Sunday[index]["end_time"],
 
-                                          //
-                                          onTap: () => Navigator.push(
-                                            context,
-                                            CupertinoPageRoute(
-                                                fullscreenDialog: true,
-                                                builder: (context) =>
-                                                    Classdetails(
-                                                      roomnumber: Sunday[index]
-                                                          ["roomnum"],
-                                                      instructorname: Sunday[
-                                                              index]
-                                                          ["instructorname"],
-                                                      sunjectcode: Sunday[index]
-                                                          ["subjectcode"],
-                                                    )),
-                                          ),
-                                        )),
+                                    onTap: () => _onTap_class(
+                                      context,
+                                      Sunday[index]["roomnum"],
+                                      Sunday[index]["instructorname"],
+                                      Sunday[index]["subjectcode"],
+                                    ),
+                                    //
+                                    onLongPress: () =>
+                                        _onLongpress_class(context, "Sunday"),
+                                  ),
+                                ),
                               ),
                               //
                               Wrap(
@@ -143,6 +135,106 @@ class RutinScreem extends StatelessWidget {
 
                 //
               ]),
+        ),
+      ),
+    );
+  }
+
+  _onTap_class(context, roomnumber, instructorname, sunjectcode) {
+    Navigator.push(
+      context,
+      CupertinoPageRoute(
+          fullscreenDialog: true,
+          builder: (context) => Classdetails(
+                roomnumber: roomnumber.toString(),
+                instructorname: instructorname.toString(),
+                sunjectcode: sunjectcode.toString(),
+              )),
+    );
+  }
+
+  ///.... onlong press
+  _onLongpress_class(context, String dayname) {
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (context) => Container(
+        decoration: BoxDecoration(
+            color: Colors.white, borderRadius: BorderRadius.circular(12)),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text("Do you want to..",
+                  style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: CupertinoColors.black)),
+            ),
+            Container(
+              decoration: const BoxDecoration(
+                  border: Border(
+                      top: BorderSide(
+                          color: CupertinoColors.lightBackgroundGray))),
+              child: CupertinoButton(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
+                child: const Text("Edit",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: CupertinoColors.activeBlue)),
+                onPressed: () {
+                  // go to edit
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => EditPage(
+                  //             isedit: true,
+                  //         ),
+                  //     ),
+                  // );
+                },
+              ),
+            ),
+            Container(
+              decoration: const BoxDecoration(
+                border: Border(
+                    top:
+                        BorderSide(color: CupertinoColors.lightBackgroundGray)),
+              ),
+              child: CupertinoButton(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
+                child: const Text("Remove",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: CupertinoColors.destructiveRed)),
+                onPressed: () {
+                  // rutinprovider.removeclass(indexofdate, index);
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+            Container(
+              decoration: const BoxDecoration(
+                  border: Border(
+                      top: BorderSide(
+                          color: CupertinoColors.lightBackgroundGray))),
+              child: CupertinoButton(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
+                child: const Text("Cancel",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: CupertinoColors.activeBlue)),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ),
+          ],
         ),
       ),
     );

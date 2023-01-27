@@ -4,7 +4,7 @@ class myClassContainer extends StatelessWidget {
   String instractorname, roomnum, subCode;
   double start, end;
   DateTime startTime, endTime;
-  dynamic onTap;
+  dynamic onTap, onLongPress;
 
   myClassContainer({
     Key? key,
@@ -15,8 +15,10 @@ class myClassContainer extends StatelessWidget {
     required this.end,
     required this.startTime,
     required this.endTime,
+
     //
     this.onTap,
+    this.onLongPress,
   }) : super(key: key);
 
   @override
@@ -29,6 +31,7 @@ class myClassContainer extends StatelessWidget {
     return Row(
       children: [
         InkWell(
+          onLongPress: onLongPress,
           onTap: onTap ?? () {},
           child: Container(
             decoration: BoxDecoration(
