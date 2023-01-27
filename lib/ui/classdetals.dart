@@ -1,25 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:table/freash.dart';
-import 'moidels.dart';
-
-import 'package:intl/intl.dart';
+import 'package:table/old/freash.dart';
 
 // ignore: must_be_immutable
-class Classdetails extends StatefulWidget {
-  Classmodel classdate;
+class Classdetails extends StatelessWidget {
+  String instructorname, roomnumber, sunjectcode;
 
-  Classdetails({super.key, required this.classdate});
+  Classdetails(
+      {super.key,
+      required this.instructorname,
+      required this.roomnumber,
+      required this.sunjectcode});
 
-  @override
-  State<Classdetails> createState() => _ClassdetailsState();
-}
-
-DateTime datetime = DateTime.now();
-
-class _ClassdetailsState extends State<Classdetails> {
   @override
   Widget build(BuildContext context) {
-    print(DateFormat('EEEE').format(datetime).toString());
     return Scaffold(
       body: Column(children: [
         CustomTopBar("Class Detals", ontap: () {}),
@@ -43,11 +36,11 @@ class _ClassdetailsState extends State<Classdetails> {
                 children: [
                   const SizedBox(height: 40),
                   Text("InstractorName   :  "
-                      "${widget.classdate.instructorname.toString()}"),
+                      "$instructorname"),
                   Text("  subject Code     :"
-                      "     ${widget.classdate.subjectcode.toString()}"),
+                      "     $roomnumber"),
                   Text("Room Name    :   "
-                      "${widget.classdate.instructorname.toString()}"),
+                      "$sunjectcode "),
                   // Text(DateFormat('EEEE').format(yourDate).toString()),
                 ],
               )
@@ -61,7 +54,7 @@ class _ClassdetailsState extends State<Classdetails> {
           height: 200,
           width: double.infinity,
           color: Colors.black12,
-          child: Text(widget.classdate.classsumary.toString()),
+          child: Text(sunjectcode),
         )
       ]),
     );
