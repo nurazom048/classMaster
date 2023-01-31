@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable, camel_case_types
+
 import 'package:flutter/material.dart';
 
 class myClassContainer extends StatelessWidget {
@@ -5,6 +7,7 @@ class myClassContainer extends StatelessWidget {
   double start, end;
   DateTime startTime, endTime;
   dynamic onTap, onLongPress;
+  int weakdayIndex;
 
   myClassContainer({
     Key? key,
@@ -19,6 +22,7 @@ class myClassContainer extends StatelessWidget {
     //
     this.onTap,
     this.onLongPress,
+    required this.weakdayIndex,
   }) : super(key: key);
 
   @override
@@ -35,7 +39,8 @@ class myClassContainer extends StatelessWidget {
           onTap: onTap ?? () {},
           child: Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(3), color: Colors.blueGrey),
+                borderRadius: BorderRadius.circular(3),
+                color: getColor(weakdayIndex)),
             height: 100,
             width: contanerwith,
             child: Column(
@@ -74,5 +79,12 @@ class myClassContainer extends StatelessWidget {
         Spacer(flex: 7),
       ],
     );
+  }
+
+  ///.... for changling color....//
+  Color getColor(int indexofdate) {
+    return indexofdate % 2 == 0
+        ? const Color.fromRGBO(207, 213, 234, 1)
+        : Colors.black12;
   }
 }

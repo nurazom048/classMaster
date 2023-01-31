@@ -1,14 +1,15 @@
-// ignore_for_file: unused_local_variable, unnecessary_null_comparison, must_be_immutable
+// ignore_for_file: unused_local_variable, unnecessary_null_comparison, must_be_immutable, non_constant_identifier_names
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:table/provider/topTimeProvider.dart';
 import 'package:table/ui/add_eddit_remove/add_class.dart';
 import 'package:table/ui/classdetals.dart';
 import 'package:table/old/freash.dart';
 import 'package:table/provider/myRutinProvider.dart';
-import 'package:table/provider/topTimeProvider.dart';
 import 'package:table/ui/widgets/class_contaner.dart';
+import 'package:table/ui/widgets/corner_box.dart';
 import 'package:table/ui/widgets/days_container.dart';
 import 'package:table/ui/widgets/priodeContaner.dart';
 
@@ -17,8 +18,21 @@ class RutinScreem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var Sunday = Provider.of<MyRutinProvider>(context).rutin["Sunday"];
-    var mypriodelist = Provider.of<TopPriodeProvider>(context).mypriodelist;
+    var rutin = Provider.of<MyRutinProvider>(context).rutin;
+    var priode = Provider.of<TopPriodeProvider>(context).mypriodelist;
+
+    List<Map<String, dynamic>> sun =
+        rutin["classs"]!.where((item) => item["weakday"] == 1).toList();
+    List<Map<String, dynamic>> mon =
+        rutin["classs"]!.where((item) => item["weakday"] == 2).toList();
+    List<Map<String, dynamic>> thu =
+        rutin["classs"]!.where((item) => item["weakday"] == 3).toList();
+    List<Map<String, dynamic>> wedn =
+        rutin["classs"]!.where((item) => item["weakday"] == 4).toList();
+    List<Map<String, dynamic>> thur =
+        rutin["classs"]!.where((item) => item["weakday"] == 5).toList();
+
+    dynamic listofweakday = [sun, mon, thu, wedn, thur];
 
     return SafeArea(
       child: Scaffold(
@@ -29,15 +43,7 @@ class RutinScreem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //...... Appbar.......!!
-                CustomTopBar("Kpi 7/1/ET-C",
-                    ontap: () => Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              fullscreenDialog: true,
-                              builder: (context) => AddClass(
-                                    dayname: "",
-                                  )),
-                        )),
+                _Appbar(context),
 
                 //.....Priode rows.....//
                 SingleChildScrollView(
@@ -47,86 +53,73 @@ class RutinScreem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          // _SevenDaysName(),
                           Wrap(
-                              direction: Axis.horizontal,
-                              children: List.generate(
-                                  // scrollDirection: Axis.vertical,
-                                  // physics: const NeverScrollableScrollPhysics(),
-                                  mypriodelist.length,
-                                  (index) => PriodeContaner(
-                                        startTime: mypriodelist[index]
-                                            ["start_time"],
-                                        endtime: mypriodelist[index]
-                                            ["end_time"],
-                                        priode: index,
-                                      ))),
-                          /////////////////////////////////////////////////////////////////////////////////////////
+                            direction: Axis.horizontal,
+                            children: List.generate(
+                              priode.length,
+                              (index) => PriodeContaner(
+                                startTime: priode[index]["start_time"],
+                                endtime: priode[index]["end_time"],
+                                priode: index,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Container(
+                            height: 30,
+                            width: 20,
+                          ),
                           Wrap(
                             direction: Axis.vertical,
                             children: List.generate(
-                                7,
-                                (indexofdate) => DaysContaner(
-                                      indexofdate: indexofdate,
-                                    )),
-                          ),
-                          //
-
-                          Column(
-                            children: [
-                              Wrap(
+                              2,
+                              (weakdayIndex) => Wrap(
                                 direction: Axis.horizontal,
                                 children: List.generate(
-                                  Sunday!.length,
+                                  listofweakday[weakdayIndex].length,
                                   (index) => myClassContainer(
-                                    roomnum: Sunday[index]["roomnum"],
-                                    instractorname: Sunday[index]
-                                        ["instructorname"],
-                                    subCode: Sunday[index]["subjectcode"],
-                                    start: Sunday[index]["startingpriode"],
-                                    end: Sunday[index]["endingpriode"],
-                                    startTime: Sunday[index]["start_time"],
-                                    endTime: Sunday[index]["end_time"],
+                                    roomnum: listofweakday[weakdayIndex][index]
+                                        ["roomnum"],
+                                    instractorname: sun[index]["subjectcode"],
+                                    // listofweakday[weakdayIndex][index]
+                                    //     ["instructorname"],
+                                    subCode: listofweakday[weakdayIndex][index]
+                                        ["subjectcode"],
+                                    start: listofweakday[weakdayIndex][index]
+                                        ["startingpriode"],
+                                    end: listofweakday[weakdayIndex][index]
+                                        ["endingpriode"],
+                                    startTime: listofweakday[weakdayIndex]
+                                        [index]["start_time"],
+                                    endTime: listofweakday[weakdayIndex][index]
+                                        ["end_time"],
 
                                     onTap: () => _onTap_class(
                                       context,
-                                      Sunday[index]["roomnum"],
-                                      Sunday[index]["instructorname"],
-                                      Sunday[index]["subjectcode"],
+                                      listofweakday[weakdayIndex][index]
+                                          ["roomnum"],
+                                      listofweakday[weakdayIndex][index]
+                                          ["instructorname"],
+                                      listofweakday[weakdayIndex][index]
+                                          ["subjectcode"],
                                     ),
+                                    weakdayIndex: weakdayIndex,
                                     //
                                     onLongPress: () =>
-                                        _onLongpress_class(context, "Sunday"),
+                                        _onLongpress_class(context, "sun"),
                                   ),
                                 ),
                               ),
-                              //
-                              Wrap(
-                                direction: Axis.horizontal,
-                                children: List.generate(
-                                    Sunday.length,
-                                    (index) => myClassContainer(
-                                          roomnum: Sunday[index]["roomnum"],
-                                          instractorname: Sunday[index]
-                                              ["instructorname"],
-                                          subCode: Sunday[index]["subjectcode"],
-                                          start: Sunday[index]
-                                              ["startingpriode"],
-                                          end: Sunday[index]["endingpriode"],
-                                          startTime: Sunday[index]
-                                              ["start_time"],
-                                          endTime: Sunday[index]["end_time"],
-                                        )),
-                              ),
-                            ],
-                          )
+                            ),
+                          ),
                         ],
-                      ),
+                      )
                     ],
                   ),
                 ),
@@ -138,6 +131,34 @@ class RutinScreem extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _SevenDaysName() {
+    return Column(
+      children: [
+        const CornerBox(),
+        Wrap(
+          direction: Axis.vertical,
+          children: List.generate(
+              7,
+              (indexofdate) => DaysContaner(
+                    indexofdate: indexofdate,
+                  )),
+        ),
+      ],
+    );
+  }
+
+  CustomTopBar _Appbar(BuildContext context) {
+    return CustomTopBar("Kpi 7/1/ET-C",
+        ontap: () => Navigator.push(
+              context,
+              CupertinoPageRoute(
+                  fullscreenDialog: true,
+                  builder: (context) => AddClass(
+                        dayname: "",
+                      )),
+            ));
   }
 
   _onTap_class(context, roomnumber, instructorname, sunjectcode) {
@@ -233,6 +254,31 @@ class RutinScreem extends StatelessWidget {
                         color: CupertinoColors.activeBlue)),
                 onPressed: () => Navigator.pop(context),
               ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Container _zero() {
+    return Container(
+      height: 100,
+      width: 100,
+      decoration: const BoxDecoration(
+          color: Color.fromRGBO(68, 114, 196, 40),
+          border: Border(right: BorderSide(color: Colors.black45, width: 1))),
+      child: Padding(
+        padding: const EdgeInsets.all(3.0),
+        child: Column(
+          children: [
+            const Text("Priode"),
+            const Divider(color: Colors.black87, height: 10, thickness: .5),
+            Column(
+              children: const [
+                Text("Priode"),
+                Text("Days"),
+              ],
             ),
           ],
         ),

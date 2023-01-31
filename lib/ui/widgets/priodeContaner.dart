@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_null_comparison
+// ignore_for_file: unnecessary_null_comparison, must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -33,32 +33,28 @@ class PriodeContaner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return priode == 0
-        ? Container(height: 100, width: 100, color: Colors.amber)
-        : Container(
-            height: 100,
-            width: 100,
-            decoration: const BoxDecoration(
-                color: Color.fromRGBO(68, 114, 196, 40),
-                border:
-                    Border(right: BorderSide(color: Colors.black45, width: 1))),
-            child: Padding(
-              padding: const EdgeInsets.all(3.0),
-              child: Column(
-                children: [
-                  Text(priode.toString()),
-                  const Divider(
-                      color: Colors.black87, height: 10, thickness: .5),
-                  Column(
-                    children: [
-                      Text(formatTime(startTime)),
-                      Text(formatTime(endtime)),
-                      Text(formatTimeDifference(startTime, endtime)),
-                    ],
-                  ),
-                ],
-              ),
+    return Container(
+      height: 100,
+      width: 100,
+      decoration: const BoxDecoration(
+          color: Color.fromRGBO(68, 114, 196, 40),
+          border: Border(right: BorderSide(color: Colors.black45, width: 1))),
+      child: Padding(
+        padding: const EdgeInsets.all(3.0),
+        child: Column(
+          children: [
+            Text(priode.toString()),
+            const Divider(color: Colors.black87, height: 10, thickness: .5),
+            Column(
+              children: [
+                Text(formatTime(startTime)),
+                Text(formatTime(endtime)),
+                Text(formatTimeDifference(startTime, endtime)),
+              ],
             ),
-          );
+          ],
+        ),
+      ),
+    );
   }
 }

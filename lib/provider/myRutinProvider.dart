@@ -10,24 +10,46 @@ class MyRutinProvider with ChangeNotifier {
       },
     ],
 
-    "Sunday": <Map<String, dynamic>>[
+    "classs": <Map<String, dynamic>>[
       {
         "instructorname": " wow",
+        "subjectcode": "d",
+        "roomnum": "111",
+        "startingpriode": 1,
+        "endingpriode": 3.0,
+        "start_time": DateTime(2022, 09, 03, 8, 40),
+        "end_time": DateTime(2022, 09, 03, 9, 30),
+        "weakday": 1
+      },
+      {
+        "instructorname": " wow",
+        "subjectcode": "d",
+        "roomnum": "1112",
+        "startingpriode": 1,
+        "endingpriode": 3.0,
+        "start_time": DateTime(2022, 09, 03, 8, 40),
+        "end_time": DateTime(2022, 09, 03, 9, 30),
+        "weakday": 1
+      },
+      {
+        "instructorname": " 111",
         "subjectcode": "d",
         "roomnum": "roomnum",
         "startingpriode": 1,
         "endingpriode": 3.0,
         "start_time": DateTime(2022, 09, 03, 8, 40),
         "end_time": DateTime(2022, 09, 03, 9, 30),
+        "weakday": 1
       },
       {
         "instructorname": " Mrx ",
         "subjectcode": "d",
-        "roomnum": "roomnum",
+        "roomnum": "502",
         "startingpriode": 1,
         "endingpriode": 1,
         "start_time": DateTime(2022, 09, 03, 9, 30),
         "end_time": DateTime(2022, 09, 03, 10, 15),
+        "weakday": 1
       },
       {
         "instructorname": " Mrx ",
@@ -37,6 +59,7 @@ class MyRutinProvider with ChangeNotifier {
         "endingpriode": 3,
         "start_time": DateTime(2022, 09, 03, 10, 15),
         "end_time": DateTime(2022, 09, 03, 11, 00),
+        "weakday": 1
       },
     ],
   };
@@ -44,7 +67,7 @@ class MyRutinProvider with ChangeNotifier {
 //
 
   void addclass(Map<String, dynamic> newclass) {
-    rutin["Sunday"]!.add(newclass);
+    rutin["classs"]!.add(newclass);
     notifyListeners();
   }
 }

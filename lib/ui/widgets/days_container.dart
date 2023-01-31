@@ -3,7 +3,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table/ui/add_eddit_remove/add_class.dart';
-import 'package:table/old/addrutin.dart';
 
 class DaysContaner extends StatelessWidget {
   int indexofdate;
