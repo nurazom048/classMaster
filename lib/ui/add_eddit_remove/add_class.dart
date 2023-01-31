@@ -1,3 +1,5 @@
+// ignore_for_file: sort_child_properties_last
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -8,9 +10,9 @@ import 'package:table/ui/widgets/select_time.dart';
 import '../widgets/text and buttons/mytext.dart';
 
 class AddClass extends StatefulWidget {
-  String dayname;
+  String? dayname;
 
-  AddClass({super.key, required this.dayname});
+  AddClass({super.key, this.dayname});
 
   @override
   State<AddClass> createState() => _AddClassState();
@@ -43,16 +45,57 @@ class _AddClassState extends State<AddClass> {
       "endingpriode": double.parse(_endPeriodController.text),
       "start_time": startTime,
       "end_time": endTime,
+      "weakday": _selectedDay,
     };
     Navigator.pop(context);
-    print(_startPeriodController.text.runtimeType);
     Provider.of<MyRutinProvider>(context, listen: false).addclass(newclass);
   }
 
+  List sevendays = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  int _selectedDay = 1;
+  // ignore: prefer_final_fields
+  List<DropdownMenuItem<int>> _dayItems = const [
+    DropdownMenuItem(
+      child: Text('Sunday'),
+      value: 1,
+    ),
+    DropdownMenuItem(
+      child: Text('Monday'),
+      value: 2,
+    ),
+    DropdownMenuItem(
+      child: Text('Tuesday'),
+      value: 3,
+    ),
+    DropdownMenuItem(
+      child: Text('Wednesday'),
+      value: 4,
+    ),
+    DropdownMenuItem(
+      child: Text('Thursday'),
+      value: 5,
+    ),
+    DropdownMenuItem(
+      child: Text('Friday'),
+      value: 6,
+    ),
+    DropdownMenuItem(
+      child: Text('Saturday'),
+      value: 7,
+    ),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.dayname)),
+      appBar: AppBar(title: Text(widget.dayname ?? sevendays[0].toString())),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
         child: Form(
@@ -61,6 +104,21 @@ class _AddClassState extends State<AddClass> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const Spacer(flex: 1),
+              MyText("Select Day"),
+
+              DropdownButtonFormField(
+                value: _selectedDay,
+                items: _dayItems,
+                onChanged: (value) => setState(() => _selectedDay = value!),
+                decoration: InputDecoration(
+                  hintText: "Select a day",
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(7),
+                      borderSide: const BorderSide(color: Colors.black12)),
+                ),
+              ),
+
               MyText("Instructor name"),
               TextFormField(
                 controller: _instructorController,
@@ -74,7 +132,7 @@ class _AddClassState extends State<AddClass> {
                   ),
                 ),
                 validator: (value) {
-                  if (value == null) {
+                  if (value!.isEmpty) {
                     return "instractor name is requaid ";
                   }
                 },
@@ -151,28 +209,30 @@ class _AddClassState extends State<AddClass> {
                 children: [
                   Expanded(
                     child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      maxLength: 1,
-                      controller: _startPeriodController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(7),
-                          borderSide: const BorderSide(
-                            color: Colors.black12,
+                        keyboardType: TextInputType.number,
+                        maxLength: 1,
+                        controller: _startPeriodController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(7),
+                            borderSide: const BorderSide(
+                              color: Colors.black12,
+                            ),
                           ),
+                          hintText: "Start priode",
                         ),
-                        hintText: "Start priode",
-                      ),
-                      // validator: (value) {
-
-                      //   double endpriode =
-                      //       double.parse(_endPeriodController.text);
-                      //   if (endpriode < startpriode) {
-                      //     return "End period should be greater than start period";
-                      //   }
-                      //   return "";
-                      // }
-                    ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "End period cannot be empty";
+                          } else if (value.runtimeType != int) {
+                            return "must be an integer";
+                          } else if (int.parse(_startPeriodController.text) <
+                              int.parse(value)) {
+                            return "end priode should be greater than start period";
+                          } else {
+                            return "";
+                          }
+                        }),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
@@ -189,18 +249,18 @@ class _AddClassState extends State<AddClass> {
                         ),
                         hintText: "End priode",
                       ),
-                      // validator: (value) {
-                      //   if (value!.isEmpty) {
-                      //     return "End period cannot be empty";
-                      //   }
-                      //   double endPeriod = double.parse(value);
-                      //   double startPeriod =
-                      //       double.parse(_startPeriodController.text);
-                      //   if (endPeriod < startPeriod) {
-                      //     return "End period should be greater than start period";
-                      //   }
-                      //   return "";
-                      // },
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "End period cannot be empty";
+                        } else if (value.runtimeType != int) {
+                          return "must be an integer";
+                        } else if (int.parse(value) <
+                            int.parse(_startPeriodController.text)) {
+                          return "end priode should be greater than start period";
+                        } else {
+                          return "";
+                        }
+                      },
                     ),
                   ),
                 ],
