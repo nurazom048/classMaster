@@ -23,16 +23,34 @@ class RutinScreem extends StatelessWidget {
 
     List<Map<String, dynamic>> sun =
         rutin["classs"]!.where((item) => item["weakday"] == 1).toList();
-    List<Map<String, dynamic>> mon =
-        rutin["classs"]!.where((item) => item["weakday"] == 2).toList();
-    List<Map<String, dynamic>> thu =
-        rutin["classs"]!.where((item) => item["weakday"] == 3).toList();
-    List<Map<String, dynamic>> wedn =
-        rutin["classs"]!.where((item) => item["weakday"] == 4).toList();
-    List<Map<String, dynamic>> thur =
-        rutin["classs"]!.where((item) => item["weakday"] == 5).toList();
 
-    dynamic listofweakday = [sun, mon, thu, wedn, thur];
+    List<Map<String, dynamic>> mon =
+        rutin["classs"]!.where((item) => item["weakday"] == 3).toList();
+    List<Map<String, dynamic>> tu =
+        rutin["classs"]!.where((item) => item["weakday"] == 3).toList();
+
+    var listofweakday = [
+      mon,
+      mon.length == 0
+          ? [
+              {
+                "instructorname": " dummy",
+                "subjectcode": "d",
+                "roomnum": "1112",
+                "startingpriode": 1,
+                "endingpriode": 3.0,
+                "start_time": DateTime(2022, 09, 03, 8, 40),
+                "end_time": DateTime(2022, 09, 03, 9, 30),
+                "weakday": 1
+              }
+            ]
+          : sun,
+      sun,
+      sun,
+      sun,
+      sun,
+      sun,
+    ];
 
     return SafeArea(
       child: Scaffold(
@@ -53,70 +71,96 @@ class RutinScreem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // _SevenDaysName(),
                           Wrap(
                             direction: Axis.horizontal,
                             children: List.generate(
-                              priode.length,
-                              (index) => PriodeContaner(
-                                startTime: priode[index]["start_time"],
-                                endtime: priode[index]["end_time"],
-                                priode: index,
-                              ),
+                              priode.length + 1,
+                              (index) => index == 0
+                                  ? const CornerBox()
+                                  : PriodeContaner(
+                                      startTime: priode[index - 1]
+                                          ["start_time"],
+                                      endtime: priode[index - 1]["end_time"],
+                                      priode: index - 1,
+                                    ),
                             ),
                           ),
                         ],
                       ),
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            height: 30,
-                            width: 20,
-                          ),
-                          Wrap(
-                            direction: Axis.vertical,
-                            children: List.generate(
-                              2,
-                              (weakdayIndex) => Wrap(
-                                direction: Axis.horizontal,
-                                children: List.generate(
-                                  listofweakday[weakdayIndex].length,
-                                  (index) => myClassContainer(
-                                    roomnum: listofweakday[weakdayIndex][index]
-                                        ["roomnum"],
-                                    instractorname: sun[index]["subjectcode"],
-                                    // listofweakday[weakdayIndex][index]
-                                    //     ["instructorname"],
-                                    subCode: listofweakday[weakdayIndex][index]
-                                        ["subjectcode"],
-                                    start: listofweakday[weakdayIndex][index]
-                                        ["startingpriode"],
-                                    end: listofweakday[weakdayIndex][index]
-                                        ["endingpriode"],
-                                    startTime: listofweakday[weakdayIndex]
-                                        [index]["start_time"],
-                                    endTime: listofweakday[weakdayIndex][index]
-                                        ["end_time"],
+                          _SevenDaysName(),
+                          Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Wrap(
+                                    direction: Axis.vertical,
+                                    children: List.generate(
+                                      listofweakday.length, //.... Weakday list
+                                      (weakdayIndex) {
+                                        return listofweakday[weakdayIndex]
+                                                .isEmpty
+                                            ? const _empty()
+                                            : Wrap(
+                                                direction: Axis
+                                                    .horizontal, //   class on this weaK DAY
+                                                children: List.generate(
+                                                    listofweakday[weakdayIndex]
+                                                        .length, (index) {
+                                                  return myClassContainer(
+                                                    roomnum: listofweakday[
+                                                            weakdayIndex][index]
+                                                        ["roomnum"],
+                                                    instractorname: sun[index]
+                                                        ["subjectcode"],
 
-                                    onTap: () => _onTap_class(
-                                      context,
-                                      listofweakday[weakdayIndex][index]
-                                          ["roomnum"],
-                                      listofweakday[weakdayIndex][index]
-                                          ["instructorname"],
-                                      listofweakday[weakdayIndex][index]
-                                          ["subjectcode"],
+                                                    subCode: listofweakday[
+                                                            weakdayIndex][index]
+                                                        ["subjectcode"],
+                                                    start: listofweakday[
+                                                            weakdayIndex][index]
+                                                        ["startingpriode"],
+                                                    end: listofweakday[
+                                                            weakdayIndex][index]
+                                                        ["endingpriode"],
+                                                    startTime: listofweakday[
+                                                            weakdayIndex][index]
+                                                        ["start_time"],
+                                                    endTime: listofweakday[
+                                                            weakdayIndex][index]
+                                                        ["end_time"],
+
+                                                    onTap: () => _onTap_class(
+                                                      context,
+                                                      listofweakday[
+                                                              weakdayIndex]
+                                                          [index]["roomnum"],
+                                                      listofweakday[
+                                                                  weakdayIndex]
+                                                              [index]
+                                                          ["instructorname"],
+                                                      listofweakday[
+                                                                  weakdayIndex]
+                                                              [index]
+                                                          ["subjectcode"],
+                                                    ),
+                                                    weakdayIndex: weakdayIndex,
+                                                    //
+                                                    onLongPress: () =>
+                                                        _onLongpress_class(
+                                                            context, "sun"),
+                                                  );
+                                                }),
+                                              );
+                                      },
                                     ),
-                                    weakdayIndex: weakdayIndex,
-                                    //
-                                    onLongPress: () =>
-                                        _onLongpress_class(context, "sun"),
                                   ),
-                                ),
+                                ],
                               ),
-                            ),
+                            ],
                           ),
                         ],
                       )
@@ -136,7 +180,6 @@ class RutinScreem extends StatelessWidget {
   Widget _SevenDaysName() {
     return Column(
       children: [
-        const CornerBox(),
         Wrap(
           direction: Axis.vertical,
           children: List.generate(
@@ -282,6 +325,23 @@ class RutinScreem extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _empty extends StatelessWidget {
+  const _empty({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox(
+      height: 100,
+      width: 200,
+      child: Center(
+        child: Text("No Class yeat "),
       ),
     );
   }

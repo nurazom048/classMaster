@@ -14,16 +14,6 @@ class MyRutinProvider with ChangeNotifier {
       {
         "instructorname": " wow",
         "subjectcode": "d",
-        "roomnum": "111",
-        "startingpriode": 1,
-        "endingpriode": 3.0,
-        "start_time": DateTime(2022, 09, 03, 8, 40),
-        "end_time": DateTime(2022, 09, 03, 9, 30),
-        "weakday": 1
-      },
-      {
-        "instructorname": " wow",
-        "subjectcode": "d",
         "roomnum": "1112",
         "startingpriode": 1,
         "endingpriode": 3.0,
@@ -59,7 +49,7 @@ class MyRutinProvider with ChangeNotifier {
         "endingpriode": 3,
         "start_time": DateTime(2022, 09, 03, 10, 15),
         "end_time": DateTime(2022, 09, 03, 11, 00),
-        "weakday": 1
+        "weakday": 2
       },
     ],
   };

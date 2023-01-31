@@ -7,7 +7,7 @@ class myClassContainer extends StatelessWidget {
   double start, end;
   DateTime startTime, endTime;
   dynamic onTap, onLongPress;
-  int weakdayIndex;
+  dynamic weakdayIndex;
 
   myClassContainer({
     Key? key,
@@ -53,9 +53,6 @@ class myClassContainer extends StatelessWidget {
                     Text(instractorname),
                     Text(roomnum),
                     Text(subCode),
-
-                    //  Text(startTime.hour.toString()),
-                    // Text(endTime.minute.toString()),
                   ],
                 ),
                 const Spacer(),

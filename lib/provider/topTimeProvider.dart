@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class TopPriodeProvider with ChangeNotifier {
   List<Map<String, dynamic>> mypriodelist = [
     {
-      "start_time": DateTime(2022, 09, 03, 8, 40),
+      "start_time": DateTime(2022, 09, 03, 8, 59),
       "end_time": DateTime(2022, 09, 03, 9, 30),
     },
     {
