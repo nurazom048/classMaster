@@ -1,91 +1,69 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:table/old/freash.dart';
+import 'package:table/ui/widgets/corner_box.dart';
+import 'package:table/ui/widgets/custom_rutin_card.dart';
+import 'package:table/ui/widgets/priodeContaner.dart';
+import 'package:table/ui/widgets/text%20and%20buttons/mytext.dart';
 
 class AllRutins extends StatelessWidget {
   AllRutins({super.key});
 
-  List<Map<String, dynamic>> mypriodelist = [
-    {
-      "start_time": DateTime(2022, 09, 03, 8, 59),
-      "end_time": DateTime(2022, 09, 03, 9, 30),
-    },
-    {
-      "start_time": DateTime(2022, 09, 03, 9, 30),
-      "end_time": DateTime(2022, 09, 03, 10, 15),
-    },
-    {
-      "start_time": DateTime(2022, 09, 03, 10, 15),
-      "end_time": DateTime(2022, 09, 03, 11, 00),
-    },
-    {
-      "start_time": DateTime(2022, 09, 03, 8, 40),
-      "end_time": DateTime(2022, 09, 03, 9, 30),
-    },
-    {
-      "start_time": DateTime(2022, 09, 03, 9, 30),
-      "end_time": DateTime(2022, 09, 03, 10, 15),
-    },
-    {
-      "start_time": DateTime(2022, 09, 03, 10, 15),
-      "end_time": DateTime(2022, 09, 03, 11, 00),
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white54,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppBar(),
-          const SizedBox(height: 20),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            height: 200,
-            width: 300,
-            color: Colors.black12,
+          //... topbar .../
+          CustomTopBar("All Rutin",
+              icon: Icons.add_circle_outlined, ontap: () {}),
+          SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            physics: BouncingScrollPhysics(),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Priode(),
+                //... hedding .../
+                MyText("All Rutin"),
+
+                //... all rutins...//
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: List.generate(
+                        3, (index) => CustomRutinCard(rutinname: "ET / 7 /1")),
+                  ),
+                ),
+
+                //... hedding .../
+                MyText("Pined Rutin"),
+
+                //... all rutins...//
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: List.generate(
+                        3, (index) => CustomRutinCard(rutinname: "ET / 7 /1")),
+                  ),
+                ),
+
+                //... hedding .../
+                MyText("my Rutin"),
+
+                //... all rutins...//
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: List.generate(
+                        3, (index) => CustomRutinCard(rutinname: "ET / 7 /1")),
+                  ),
+                ),
               ],
             ),
           ),
         ],
       ),
     );
-  }
-
-  Wrap Priode() {
-    return Wrap(
-      direction: Axis.horizontal,
-      children: List.generate(
-        3,
-        (index) => Container(
-          height: 60,
-          width: 60,
-          decoration: const BoxDecoration(
-              color: Color.fromRGBO(68, 114, 196, 40),
-              border:
-                  Border(right: BorderSide(color: Colors.black45, width: 1))),
-          child: Column(
-            children: [
-              Text(index.toString()),
-              const Divider(color: Colors.black87, height: 1, thickness: .5),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(formatTime(mypriodelist[index]["start_time"])),
-                  Text(formatTime(mypriodelist[index]["end_time"])),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  String formatTime(DateTime time) {
-    return DateFormat.jm().format(time);
   }
 }

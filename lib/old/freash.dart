@@ -418,17 +418,20 @@ import 'package:flutter/material.dart';
 
 class CustomTopBar extends StatelessWidget {
   String title;
+  IconData? icon;
 
   var ontap;
   CustomTopBar(
     this.title, {
     required this.ontap,
+    this.icon,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
+        color: Colors.black12,
         padding: const EdgeInsets.all(9.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -437,7 +440,7 @@ class CustomTopBar extends StatelessWidget {
                 icon: const Icon(Icons.arrow_back_ios),
                 onPressed: () => Navigator.pop(context)),
             Text(title),
-            IconButton(icon: const Icon(Icons.edit), onPressed: ontap),
+            IconButton(icon: Icon(icon ?? Icons.edit), onPressed: ontap),
           ],
         ));
   }

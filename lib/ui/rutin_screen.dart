@@ -77,7 +77,7 @@ class RutinScreem extends StatelessWidget {
                             children: List.generate(
                               priode.length + 1,
                               (index) => index == 0
-                                  ? const CornerBox()
+                                  ? CornerBox()
                                   : PriodeContaner(
                                       startTime: priode[index - 1]
                                           ["start_time"],
