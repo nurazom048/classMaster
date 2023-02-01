@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table/old/freash.dart';
-import 'package:table/ui/widgets/corner_box.dart';
+import 'package:table/ui/rutin_screen.dart';
 import 'package:table/ui/widgets/custom_rutin_card.dart';
-import 'package:table/ui/widgets/priodeContaner.dart';
 import 'package:table/ui/widgets/text%20and%20buttons/mytext.dart';
 
 class AllRutins extends StatelessWidget {
@@ -20,19 +19,28 @@ class AllRutins extends StatelessWidget {
               icon: Icons.add_circle_outlined, ontap: () {}),
           SingleChildScrollView(
             scrollDirection: Axis.vertical,
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //... hedding .../
-                MyText("All Rutin"),
+                MyText("My All Rutin"),
 
                 //... all rutins...//
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: List.generate(
-                        3, (index) => CustomRutinCard(rutinname: "ET / 7 /1")),
+                        3,
+                        (index) => InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const RutinScreem()),
+                              );
+                            },
+                            child: CustomRutinCard(rutinname: "ET / 7 /1"))),
                   ),
                 ),
 
