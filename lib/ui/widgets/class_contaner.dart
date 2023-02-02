@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class myClassContainer extends StatelessWidget {
   String instractorname, roomnum, subCode;
-  double start, end;
+  num start, end;
   DateTime startTime, endTime;
   dynamic onTap, onLongPress;
   dynamic weakdayIndex;

@@ -7,10 +7,20 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:table/ui/all_rutins.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final _Username = TextEditingController();
+
+  final _password = TextEditingController();
+
   ///
   Future<void> fetchData() async {
     try {
+      print(username);
       final response =
           await http.get(Uri.parse('http://192.168.31.229:3000/ok'));
 
@@ -27,13 +37,13 @@ class LoginScreen extends StatelessWidget {
   }
 
   String username = "We";
-//
 
+//
   void _Login(context) async {
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.31.229:3000/auth/login/we/123'),
-      );
+          Uri.parse('http://192.168.31.229:3000/auth/login'),
+          body: {"username": _Username.text, "password": _password.text});
 
       //
 
@@ -42,8 +52,8 @@ class LoginScreen extends StatelessWidget {
 
         final routines = json.decode(response.body)["user"]["routines"];
 
-        print(routines[1]["name"]);
-        print(routines.runtimeType);
+        // print(routines[1]["name"]);
+        // print(routines.runtimeType);
 
         // Navigate to the "routine_screen"
         Navigator.push(
@@ -83,6 +93,7 @@ class LoginScreen extends StatelessWidget {
               child: Column(
                 children: [
                   TextFormField(
+                    controller: _Username,
                     decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.person),
                       labelText: 'Username',
@@ -96,6 +107,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
+                    controller: _password,
                     decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.shield_sharp),
                       labelText: 'Password',
@@ -134,6 +146,7 @@ class LoginScreen extends StatelessWidget {
           child: const Text('skip'),
           onPressed: () {
             // login logic
+
             fetchData();
             print("clicked");
           },

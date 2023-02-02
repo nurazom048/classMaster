@@ -30,21 +30,6 @@ class RutinScreem extends StatelessWidget {
         rutin["classs"]!.where((item) => item["weakday"] == 3).toList();
 
     var listofweakday = [
-      mon,
-      mon.length == 0
-          ? [
-              {
-                "instructorname": " dummy",
-                "subjectcode": "d",
-                "roomnum": "1112",
-                "startingpriode": 1,
-                "endingpriode": 3.0,
-                "start_time": DateTime(2022, 09, 03, 8, 40),
-                "end_time": DateTime(2022, 09, 03, 9, 30),
-                "weakday": 1
-              }
-            ]
-          : sun,
       sun,
       sun,
       sun,
@@ -75,14 +60,13 @@ class RutinScreem extends StatelessWidget {
                           Wrap(
                             direction: Axis.horizontal,
                             children: List.generate(
-                              priode.length + 1,
+                              priode.length,
                               (index) => index == 0
                                   ? CornerBox()
                                   : PriodeContaner(
-                                      startTime: priode[index - 1]
-                                          ["start_time"],
-                                      endtime: priode[index - 1]["end_time"],
-                                      priode: index - 1,
+                                      startTime: priode[index]["start_time"],
+                                      endtime: priode[index]["end_time"],
+                                      priode: index,
                                     ),
                             ),
                           ),

@@ -33,18 +33,20 @@ class AllRutins extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: List.generate(
-                          myrutines.length,
-                          (index) => InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const RutinScreem()),
-                                );
-                              },
-                              child: CustomRutinCard(
-                                  rutinname: myrutines[index]["name"]))),
+                          myrutines.isEmpty ? 1 : myrutines.length,
+                          (index) => myrutines.isEmpty
+                              ? const Text("You Dont Have any Rutin created")
+                              : InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const RutinScreem()),
+                                    );
+                                  },
+                                  child: CustomRutinCard(
+                                      rutinname: myrutines[index]["name"]))),
                     ),
                   ),
 
