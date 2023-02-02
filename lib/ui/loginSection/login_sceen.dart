@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:table/ui/all_rutins.dart';
 
 class LoginScreen extends StatelessWidget {
   ///
@@ -15,6 +16,7 @@ class LoginScreen extends StatelessWidget {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
+
         print(data);
       } else {
         throw Exception('Failed to load data');
@@ -27,18 +29,30 @@ class LoginScreen extends StatelessWidget {
   String username = "We";
 //
 
-  void _Login() async {
+  void _Login(context) async {
     try {
       final response = await http.post(
-          Uri.parse('https://reqres.in/api/register'),
-          body: {"email": "eve.holt@reqres.in", "password": "cityslicka"});
+        Uri.parse('http://192.168.31.229:3000/auth/login/we/123'),
+      );
 
       //
 
-      print(response.body);
       if (response.statusCode == 200) {
         final accountData = json.decode(response.body);
-        print(accountData);
+
+        final routines = json.decode(response.body)["user"]["routines"];
+
+        print(routines[1]["name"]);
+        print(routines.runtimeType);
+
+        // Navigate to the "routine_screen"
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AllRutins(myrutines: routines),
+            ));
+
+        //print(accountData['user']['routines']);
       } else {
         throw Exception('Failed to load data');
       }
@@ -99,7 +113,7 @@ class LoginScreen extends StatelessWidget {
                     child: const Text('Login'),
                     onPressed: () {
                       // login logic
-                      _Login();
+                      _Login(context);
                     },
                   )
                 ],
@@ -124,6 +138,43 @@ class LoginScreen extends StatelessWidget {
             print("clicked");
           },
         ),
+      ),
+    );
+  }
+}
+
+class RoutineScreen extends StatelessWidget {
+  final List<dynamic> routines;
+
+  RoutineScreen({required this.routines});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Routines"),
+      ),
+
+      // body: Column(
+      //   children: [
+      //     Text(routines[0]["name"]),
+      //     Text(routines[2]["name"]),
+      //     Text(routines[2]["ownerid"]),
+      //   ],
+      // ),
+
+      body: ListView.builder(
+        itemCount: routines.length,
+        itemBuilder: (context, index) {
+          routines.length;
+          return ListTile(
+            title: Text(routines[index]["name"]),
+            subtitle: Text("Owner ID: ${routines[index]["ownerid"]}"),
+            // trailing: routines["class"].length > 0
+            //     ? Text("Classes: ${routines["class"].length}")
+            //     : null,
+          );
+        },
       ),
     );
   }

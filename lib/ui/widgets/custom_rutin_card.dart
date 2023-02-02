@@ -42,7 +42,6 @@ class CustomRutinCard extends StatelessWidget {
       margin: const EdgeInsets.only(top: 20, right: 10),
       height: 200,
       width: 220,
-      color: Colors.black12,
       child: SingleChildScrollView(
         child: Stack(
           children: [
@@ -71,9 +70,9 @@ class CustomRutinCard extends StatelessWidget {
                 width: 240,
                 // padding: const EdgeInsets.all(5.0),
                 decoration: const BoxDecoration(color: Colors.black12),
-                child: const Center(
+                child: Center(
                   child: Text(
-                    "ET / 7 /1",
+                    rutinname,
                     style: TextStyle(color: Colors.black, fontSize: 20),
                   ),
                 ),
