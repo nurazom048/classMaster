@@ -16,22 +16,21 @@ import 'package:table/ui/widgets/days_container.dart';
 import 'package:table/ui/widgets/priodeContaner.dart';
 import 'package:http/http.dart' as http;
 
-class RutinScreem extends StatefulWidget {
-  RutinScreem({
-    super.key,
-  });
+class AllClassScreen extends StatefulWidget {
+  String rutinId;
+  AllClassScreen({super.key, required this.rutinId});
 
   @override
-  State<RutinScreem> createState() => _RutinScreemState();
+  State<AllClassScreen> createState() => _RutinScreemState();
 }
 
-class _RutinScreemState extends State<RutinScreem> {
+class _RutinScreemState extends State<AllClassScreen> {
   List<Map<String, dynamic>> classes = [];
   //
   Future allrutin() async {
     try {
       final response = await http.get(Uri.parse(
-          'http://192.168.31.229:3000/class/63de69c4264581e068f29e5b/all/class'));
+          'http://192.168.31.229:3000/class/${widget.rutinId}/all/class'));
 
       if (response.statusCode == 200) {
         Map<String, dynamic> responseMap = json.decode(response.body);
@@ -51,31 +50,6 @@ class _RutinScreemState extends State<RutinScreem> {
   Widget build(BuildContext context) {
     var rutin = Provider.of<MyRutinProvider>(context).rutin;
     var priode = Provider.of<TopPriodeProvider>(context).mypriodelist;
-
-    // List<Map<String, dynamic>> sun =
-    //     rutin["classs"]!.where((item) => item["weakday"] == 1).toList();
-
-    // List<Map<String, dynamic>> mon =
-    //     rutin["classs"]!.where((item) => item["weakday"] == 3).toList();
-    // List<Map<String, dynamic>> tu =
-    //     rutin["classs"]!.where((item) => item["weakday"] == 3).toList();
-
-    // var listofweakday = [
-    //   sun,
-    //   sun,
-    //   sun,
-    //   sun,
-    // ];
-
-    var sevendays = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
 
     return SafeArea(
         child: Scaffold(
@@ -116,6 +90,8 @@ class _RutinScreemState extends State<RutinScreem> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _SevenDaysName(),
+
+                      ///\.. show all class
                       FutureBuilder(
                         future: allrutin(),
                         builder: (Context, snapshoot) {
@@ -123,12 +99,12 @@ class _RutinScreemState extends State<RutinScreem> {
                               ConnectionState.waiting) {
                             return const Text("Waiting");
                           } else {
+                            // ignore: avoid_print
                             print(classes);
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
+                              //.... Weakday list
                               children: List.generate(
-                                //.... Weakday list
-
                                 7,
                                 (weakdayIndex) {
                                   return classes[weakdayIndex]["classes"]
@@ -146,8 +122,9 @@ class _RutinScreemState extends State<RutinScreem> {
                                               //
                                               instractorname:
                                                   classes[weakdayIndex]
-                                                          ["classes"][index]
-                                                      ["subjectcode"],
+                                                              ["classes"][index]
+                                                          ["instuctor_name"] ??
+                                                      "",
                                               //
 
                                               subCode: classes[weakdayIndex]
@@ -168,6 +145,10 @@ class _RutinScreemState extends State<RutinScreem> {
                                                   classes[weakdayIndex]
                                                           ["classes"][index]
                                                       ["end_time"]),
+                                              //
+                                              has_class: classes[weakdayIndex]
+                                                      ["classes"][index]
+                                                  ["has_class"],
 
                                               // onTap: () => _onTap_class(
                                               //   context,
@@ -182,7 +163,9 @@ class _RutinScreemState extends State<RutinScreem> {
                                               //
                                               onLongPress: () =>
                                                   _onLongpress_class(
-                                                      context, "sun"),
+                                                context,
+                                                "sun",
+                                              ),
                                             );
                                           }),
                                         );

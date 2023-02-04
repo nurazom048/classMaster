@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 class myClassContainer extends StatelessWidget {
   String instractorname, roomnum, subCode;
+  String? has_class;
   num start, end;
   DateTime startTime, endTime;
   dynamic onTap, onLongPress;
@@ -18,6 +19,7 @@ class myClassContainer extends StatelessWidget {
     required this.end,
     required this.startTime,
     required this.endTime,
+    this.has_class,
 
     //
     this.onTap,
@@ -36,28 +38,32 @@ class myClassContainer extends StatelessWidget {
       children: [
         InkWell(
           onLongPress: onLongPress,
-          onTap: onTap ?? () {},
+          onTap: has_class == "no_class" ? onTap ?? () {} : () {},
           child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(3),
                 color: getColor(weakdayIndex)),
             height: 100,
             width: contanerwith,
-            child: Column(
-              children: [
-                _running(),
-                const Spacer(),
-                /////
-                Column(
-                  children: [
-                    Text(instractorname),
-                    Text(roomnum),
-                    Text(subCode),
-                  ],
-                ),
-                const Spacer(),
-              ],
-            ),
+            child: has_class == "no_class"
+                ? const Center(
+                    child: Icon(Icons.clear_rounded),
+                  )
+                : Column(
+                    children: [
+                      _running(),
+                      const Spacer(),
+                      /////
+                      Column(
+                        children: [
+                          Text(instractorname),
+                          Text(roomnum),
+                          Text(subCode),
+                        ],
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
           ),
         ),
       ],

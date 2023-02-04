@@ -4,7 +4,7 @@ import 'package:table/provider/myRutinProvider.dart';
 import 'package:table/provider/topTimeProvider.dart';
 import 'package:table/ui/all_rutins.dart';
 import 'package:table/ui/loginSection/login_sceen.dart';
-import 'package:table/ui/rutin_screen.dart';
+import 'package:table/ui/all_class-rutin.dart';
 import 'package:table/old/rutinprovider.dart';
 
 void main() {
