@@ -17,47 +17,65 @@ import 'package:table/ui/widgets/priodeContaner.dart';
 import 'package:http/http.dart' as http;
 
 class RutinScreem extends StatefulWidget {
-  List<Map<String, dynamic>>? allClassList;
-  RutinScreem({super.key, this.allClassList});
+  RutinScreem({
+    super.key,
+  });
 
   @override
   State<RutinScreem> createState() => _RutinScreemState();
 }
 
 class _RutinScreemState extends State<RutinScreem> {
+  List<Map<String, dynamic>> classes = [];
   //
+  Future allrutin() async {
+    try {
+      final response = await http.get(Uri.parse(
+          'http://192.168.31.229:3000/class/63de69c4264581e068f29e5b/all/class'));
 
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseMap = json.decode(response.body);
+        responseMap.forEach((key, value) {
+          classes.add({"day": key, "classes": value});
+        });
+      } else {
+        throw Exception('Failed to load data');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  //
   @override
   Widget build(BuildContext context) {
     var rutin = Provider.of<MyRutinProvider>(context).rutin;
     var priode = Provider.of<TopPriodeProvider>(context).mypriodelist;
 
-    List<Map<String, dynamic>> sun =
-        rutin["classs"]!.where((item) => item["weakday"] == 1).toList();
+    // List<Map<String, dynamic>> sun =
+    //     rutin["classs"]!.where((item) => item["weakday"] == 1).toList();
 
-    List<Map<String, dynamic>> mon =
-        rutin["classs"]!.where((item) => item["weakday"] == 3).toList();
-    List<Map<String, dynamic>> tu =
-        rutin["classs"]!.where((item) => item["weakday"] == 3).toList();
+    // List<Map<String, dynamic>> mon =
+    //     rutin["classs"]!.where((item) => item["weakday"] == 3).toList();
+    // List<Map<String, dynamic>> tu =
+    //     rutin["classs"]!.where((item) => item["weakday"] == 3).toList();
 
-    var listofweakday = [
-      sun,
-      sun,
-      sun,
-      sun,
+    // var listofweakday = [
+    //   sun,
+    //   sun,
+    //   sun,
+    //   sun,
+    // ];
+
+    var sevendays = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
     ];
-
-    // print(widget.allClassList![2]["classes"].length);
-    //  ListView.builder(
-    //       itemCount: widget.allClassList!.length,
-    //       itemBuilder: (BuildContext context, int index) {
-    //         return Padding(
-    //           padding: const EdgeInsets.all(8.0),
-    //           child: Text(
-    //               widget.allClassList![index]["classes"].length.toString()),
-    //         );
-    //       },
-    //     ),
 
     return SafeArea(
         child: Scaffold(
@@ -68,18 +86,7 @@ class _RutinScreemState extends State<RutinScreem> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //...... Appbar.......!!
-            InkWell(
-                onTap: () {
-                  // print("ontap");
-                  // _getAllClassOfRutin(context);
-                  // Future listOfAllClasss = _getAllClassOfRutin();
-                  // listOfAllClasss.then((value) {
-                  //   setState(() {
-                  //     listofweakday = value;
-                  //   });
-                  // });
-                },
-                child: _Appbar(context)),
+            _Appbar(context),
 
             //.....Priode rows.....//
             SingleChildScrollView(
@@ -109,88 +116,81 @@ class _RutinScreemState extends State<RutinScreem> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _SevenDaysName(),
-                      Column(
-                        children: [
-                          Row(
-                            children: [
-                              Wrap(
-                                direction: Axis.vertical,
-                                children: List.generate(
-                                  listofweakday.length, //.... Weakday list
-                                  (weakdayIndex) {
-                                    return listofweakday[weakdayIndex].isEmpty
-                                        ? const _empty()
-                                        : Wrap(
-                                            direction: Axis
-                                                .horizontal, //   class on this weaK DAY
-                                            children: List.generate(
-                                                widget
-                                                    .allClassList![weakdayIndex]
-                                                        ["classes"]
-                                                    .length, (index) {
-                                              print(widget
-                                                  .allClassList![weakdayIndex]
-                                                      ["classes"][0]["room"]
-                                                  .toString());
+                      FutureBuilder(
+                        future: allrutin(),
+                        builder: (Context, snapshoot) {
+                          if (snapshoot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Text("Waiting");
+                          } else {
+                            print(classes);
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: List.generate(
+                                //.... Weakday list
 
-                                              return myClassContainer(
-                                                roomnum: widget.allClassList![
-                                                        weakdayIndex]["classes"]
-                                                    [index]["room"],
+                                7,
+                                (weakdayIndex) {
+                                  return classes[weakdayIndex]["classes"]
+                                          .isEmpty // iwnt to retun a emmty text if the lenght is empth
+                                      ? const _empty()
+                                      : Row(
+                                          //   class on this weaK DAY
+                                          children: List.generate(
+                                              classes[weakdayIndex]["classes"]
+                                                  .length, (index) {
+                                            return myClassContainer(
+                                              roomnum: classes[weakdayIndex]
+                                                  ["classes"][index]["room"],
 
-                                                //
-                                                instractorname: widget
-                                                            .allClassList![
-                                                        weakdayIndex]["classes"]
-                                                    [index]["subjectcode"],
-                                                //
-
-                                                subCode:
-                                                    listofweakday[weakdayIndex]
-                                                        [index]["subjectcode"],
-
-                                                // start end
-                                                start: widget.allClassList![
-                                                        weakdayIndex]["classes"]
-                                                    [index]["start"],
-                                                end: widget.allClassList![
-                                                        weakdayIndex]["classes"]
-                                                    [index]["end"],
-
-                                                // start time end tyme
-                                                startTime: DateTime.parse(
-                                                  widget.allClassList![
-                                                              weakdayIndex]
+                                              //
+                                              instractorname:
+                                                  classes[weakdayIndex]
                                                           ["classes"][index]
-                                                      ["start_time"],
-                                                ),
-                                                endTime:
-                                                    listofweakday[weakdayIndex]
-                                                        [index]["end_time"],
+                                                      ["subjectcode"],
+                                              //
 
-                                                onTap: () => _onTap_class(
-                                                  context,
-                                                  listofweakday[weakdayIndex]
-                                                      [index]["roomnum"],
-                                                  listofweakday[weakdayIndex]
-                                                      [index]["instructorname"],
-                                                  listofweakday[weakdayIndex]
-                                                      [index]["subjectcode"],
-                                                ),
-                                                weakdayIndex: weakdayIndex,
-                                                //
-                                                onLongPress: () =>
-                                                    _onLongpress_class(
-                                                        context, "sun"),
-                                              );
-                                            }),
-                                          );
-                                  },
-                                ),
+                                              subCode: classes[weakdayIndex]
+                                                  ["classes"][index]["room"],
+
+                                              // start end
+                                              start: classes[weakdayIndex]
+                                                  ["classes"][index]["start"],
+                                              end: classes[weakdayIndex]
+                                                  ["classes"][index]["end"],
+
+                                              // start time end tyme
+                                              startTime: DateTime.parse(
+                                                  classes[weakdayIndex]
+                                                          ["classes"][index]
+                                                      ["start_time"]),
+                                              endTime: DateTime.parse(
+                                                  classes[weakdayIndex]
+                                                          ["classes"][index]
+                                                      ["end_time"]),
+
+                                              // onTap: () => _onTap_class(
+                                              //   context,
+                                              //   listofweakday[weakdayIndex]
+                                              //       [index]["roomnum"],
+                                              //   listofweakday[weakdayIndex]
+                                              //       [index]["instructorname"],
+                                              //   listofweakday[weakdayIndex]
+                                              //       [index]["subjectcode"],
+                                              // ),
+                                              weakdayIndex: weakdayIndex,
+                                              //
+                                              onLongPress: () =>
+                                                  _onLongpress_class(
+                                                      context, "sun"),
+                                            );
+                                          }),
+                                        );
+                                },
                               ),
-                            ],
-                          ),
-                        ],
+                            );
+                          }
+                        },
                       ),
                     ],
                   )
@@ -201,6 +201,14 @@ class _RutinScreemState extends State<RutinScreem> {
             ///
           ]),
     )));
+  }
+
+  Widget emptyreturn(listofweakday, weakdayIndex) {
+    if (listofweakday[listofweakday].isEmpty) {
+      return Text("empty");
+    } else {
+      return Text("not empty");
+    }
   }
 }
 

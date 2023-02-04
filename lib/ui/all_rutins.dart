@@ -25,9 +25,7 @@ class AllRutins extends StatelessWidget {
         });
         // ;
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => RutinScreem(allClassList: classes)));
+            context, MaterialPageRoute(builder: (context) => RutinScreem()));
       } else {
         throw Exception('Failed to load data');
       }
