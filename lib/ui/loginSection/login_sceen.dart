@@ -1,4 +1,4 @@
-// ignore_for_file: sized_box_for_whitespace
+// ignore_for_file: sized_box_for_whitespace, avoid_print
 
 import 'package:flutter/material.dart';
 
@@ -6,6 +6,9 @@ import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:table/ui/all_rutins.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:table/ui/loginSection/create_new_account.dart';
+import 'package:table/widgets/text%20and%20buttons/wellcome_top_note.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -13,14 +16,13 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _Username = TextEditingController();
-
+  //
+  final _username = TextEditingController();
   final _password = TextEditingController();
 
-  ///
+  ///... chack connection
   Future<void> fetchData() async {
     try {
-      print(username);
       final response =
           await http.get(Uri.parse('http://192.168.31.229:3000/ok'));
 
@@ -36,33 +38,32 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  String username = "We";
-
-//
-  void _Login(context) async {
+//........ Login .........//
+  Future<void> _Login(context) async {
     try {
+      //... send request
       final response = await http.post(
           Uri.parse('http://192.168.31.229:3000/auth/login'),
-          body: {"username": _Username.text, "password": _password.text});
-
-      //
+          body: {"username": _username.text, "password": _password.text});
 
       if (response.statusCode == 200) {
+        //.. responce
         final accountData = json.decode(response.body);
-
         final routines = json.decode(response.body)["user"]["routines"];
 
+        //... save token
+        final prefs = await SharedPreferences.getInstance();
+        var savetoken = await prefs.setString('Token', accountData["token"]);
+
         // print(routines[1]["name"]);
-        // print(routines.runtimeType);
+        print("login");
+        print(savetoken);
 
         // Navigate to the "routine_screen"
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AllRutins(myrutines: routines),
-            ));
-
-        //print(accountData['user']['routines']);
+                builder: (context) => AllRutins(myrutines: routines)));
       } else {
         throw Exception('Failed to load data');
       }
@@ -74,62 +75,57 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 17),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const Spacer(flex: 3),
-            const Text(
-              'Welcome Back!',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+
+            WellComeTopHeder(
+              alignment: Alignment.topLeft,
+              title: 'Welcome Back!',
+              subtitle: 'Please Login to continue',
             ),
-            const Text(
-              'Please Login to continue',
-              style: TextStyle(fontSize: 16),
-            ),
+
             const Spacer(flex: 4),
-            Container(
-              width: 300,
-              child: Column(
-                children: [
-                  TextFormField(
-                    controller: _Username,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.person),
-                      labelText: 'Username',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(7),
-                        borderSide: const BorderSide(
-                          color: Colors.black12,
-                        ),
-                      ),
-                    ),
+
+            //
+            TextFormField(
+              controller: _username,
+              decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.person),
+                labelText: 'Username',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(7),
+                  borderSide: const BorderSide(
+                    color: Colors.black12,
                   ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    controller: _password,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.shield_sharp),
-                      labelText: 'Password',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(7),
-                        borderSide: const BorderSide(
-                          color: Colors.black12,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 40),
-                  CupertinoButton(
-                    color: Colors.blue,
-                    child: const Text('Login'),
-                    onPressed: () {
-                      // login logic
-                      _Login(context);
-                    },
-                  )
-                ],
+                ),
               ),
+            ),
+            const SizedBox(height: 20),
+            TextFormField(
+              controller: _password,
+              decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.shield_sharp),
+                labelText: 'Password',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(7),
+                  borderSide: const BorderSide(
+                    color: Colors.black12,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 40),
+            CupertinoButton(
+              color: Colors.blue,
+              child: const Text('Login'),
+              onPressed: () {
+                // login logic
+                _Login(context);
+              },
             ),
             const Spacer(flex: 10),
           ],
@@ -143,12 +139,12 @@ class _LoginScreenState extends State<LoginScreen> {
         child: CupertinoButton(
           borderRadius: BorderRadius.circular(35),
           color: Colors.blue,
-          child: const Text('skip'),
+          child: const Text('Create New Account'),
           onPressed: () {
-            // login logic
-
-            fetchData();
-            print("clicked");
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CreateNewAccount()),
+            );
           },
         ),
       ),
@@ -165,7 +161,7 @@ class RoutineScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Routines"),
+        title: const Text("Routines"),
       ),
 
       // body: Column(

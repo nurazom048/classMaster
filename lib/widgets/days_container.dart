@@ -20,6 +20,7 @@ class DaysContaner extends StatelessWidget {
       "Thursday",
       "Friday",
       "Saturday",
+      "Saturday",
     ];
     //.. to chack is the is today ...//
     String isToday(String day) {
@@ -40,8 +41,8 @@ class DaysContaner extends StatelessWidget {
         children: [
           Text(isToday(sevendays[indexofdate]),
               style: ismini == true
-                  ? TextStyle(fontSize: 10)
-                  : TextStyle()), //.. show the day name
+                  ? const TextStyle(fontSize: 10)
+                  : const TextStyle()), //.. show the day name
           ismini == false
               ? IconButton(
                   onPressed: (() => Navigator.push(

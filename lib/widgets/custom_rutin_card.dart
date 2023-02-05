@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:table/ui/widgets/corner_box.dart';
-import 'package:table/ui/widgets/days_container.dart';
+import 'package:table/widgets/corner_box.dart';
+import 'package:table/widgets/days_container.dart';
 
 class CustomRutinCard extends StatelessWidget {
   String rutinname;
