@@ -40,45 +40,54 @@ class CustomRutinCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 20, right: 10),
-      height: 200,
+      height: 250,
       width: 220,
       color: Colors.black12,
       child: SingleChildScrollView(
-        child: Stack(
+        child: Column(
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Stack(
               children: [
-                SingleChildScrollView(
-                    scrollDirection: Axis.horizontal, child: Priode()),
-                Wrap(
-                    direction: Axis.vertical,
-                    children: List.generate(
-                      3,
-                      (index) => DaysContaner(
-                        indexofdate: index,
-                        ismini: true,
-                      ),
-                    )),
-              ],
-            ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SingleChildScrollView(
+                        scrollDirection: Axis.horizontal, child: Priode()),
+                    Wrap(
+                        direction: Axis.vertical,
+                        children: List.generate(
+                          3,
+                          (index) => DaysContaner(
+                            indexofdate: index,
+                            ismini: true,
+                          ),
+                        )),
+                  ],
+                ),
 
-            //
-            Positioned(
-              bottom: 0,
-              child: Container(
-                height: 50,
-                width: 240,
-                // padding: const EdgeInsets.all(5.0),
-                decoration: const BoxDecoration(color: Colors.black12),
-                child: const Center(
-                  child: Text(
-                    "ET / 7 /1",
-                    style: TextStyle(color: Colors.black, fontSize: 20),
+                //
+                Positioned(
+                  bottom: 0,
+                  child: Container(
+                    height: 50,
+                    width: 240,
+                    // padding: const EdgeInsets.all(5.0),
+                    decoration: const BoxDecoration(color: Colors.black12),
+                    child: const Center(
+                      child: Text(
+                        "ET / 7 /1",
+                        style: TextStyle(color: Colors.black, fontSize: 20),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            )
+              ],
+            ),
+            MiniAccountCard(
+              name: "",
+              username: "",
+              profilePicture: "",
+            ),
           ],
         ),
       ),
@@ -127,5 +136,53 @@ class CustomRutinCard extends StatelessWidget {
 
   String formatTime(DateTime time) {
     return DateFormat.jm().format(time);
+  }
+}
+
+class MiniAccountCard extends StatelessWidget {
+  String name, username, profilePicture;
+  MiniAccountCard({
+    required this.name,
+    required this.username,
+    required this.profilePicture,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 50,
+      color: Colors.black12,
+      child: Row(
+        children: [
+          const Spacer(flex: 3),
+          CircleAvatar(
+            radius: 20,
+            backgroundColor: Colors.amber,
+            backgroundImage: NetworkImage(profilePicture),
+          ),
+          const Spacer(flex: 2),
+          RichText(
+            text: TextSpan(
+              style: DefaultTextStyle.of(context).style,
+              children: <TextSpan>[
+                TextSpan(
+                  text: name,
+                  style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black),
+                ),
+                TextSpan(
+                  text: '\n$username',
+                  style: const TextStyle(fontSize: 12, color: Colors.black),
+                ),
+              ],
+            ),
+          ),
+          const Spacer(flex: 7),
+        ],
+      ),
+    );
   }
 }

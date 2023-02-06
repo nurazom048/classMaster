@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:table/provider/myRutinProvider.dart';
 import 'package:table/provider/topTimeProvider.dart';
-import 'package:table/ui/all_rutins.dart';
+import 'package:table/ui/bottom_items/all_rutins.dart';
+import 'package:table/ui/bottom_items/bottm_nev_bar.dart';
 import 'package:table/ui/loginSection/login_sceen.dart';
 import 'package:table/ui/rutin_screen.dart';
 import 'package:table/old/rutinprovider.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
           ),
           // ignore: prefer_const_constructors
-          home: AllRutins(),
+          home: BottomNewBar(),
         ));
   }
 }
