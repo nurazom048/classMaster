@@ -50,7 +50,8 @@ class DaysContaner extends StatelessWidget {
                       CupertinoPageRoute(
                           fullscreenDialog: true,
                           builder: (context) => AddClass(
-                              dayname: isToday(sevendays[indexofdate]))))),
+                                rutinId: "",
+                              )))),
                   icon: const Icon(Icons.add))
               : Container()
         ],

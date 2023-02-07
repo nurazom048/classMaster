@@ -440,7 +440,11 @@ class CustomTopBar extends StatelessWidget {
                 icon: const Icon(Icons.arrow_back_ios),
                 onPressed: () => Navigator.pop(context)),
             Text(title),
-            IconButton(icon: Icon(icon ?? Icons.edit), onPressed: ontap),
+            InkWell(
+              child:
+                  IconButton(icon: Icon(icon ?? Icons.edit), onPressed: ontap),
+              onTap: ontap,
+            ),
           ],
         ));
   }

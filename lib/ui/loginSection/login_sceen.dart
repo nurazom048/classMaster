@@ -1,12 +1,11 @@
-// ignore_for_file: sized_box_for_whitespace, avoid_print
+// ignore_for_file: sized_box_for_whitespace, avoid_print, unused_local_variable, prefer_const_constructors, use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:table/ui/all_rutins.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:table/ui/bottom_items/bottm_nev_bar.dart';
 import 'package:table/ui/loginSection/create_new_account.dart';
 import 'package:table/widgets/text%20and%20buttons/wellcome_top_note.dart';
 
@@ -16,35 +15,19 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  //
   final _username = TextEditingController();
   final _password = TextEditingController();
 
-  ///... chack connection
-  Future<void> fetchData() async {
-    try {
-      final response =
-          await http.get(Uri.parse('http://192.168.31.229:3000/ok'));
-
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-
-        print(data);
-      } else {
-        throw Exception('Failed to load data');
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
 //........ Login .........//
-  Future<void> _Login(context) async {
+  String? message;
+  Future<void> login(context) async {
     try {
       //... send request
       final response = await http.post(
           Uri.parse('http://192.168.31.229:3000/auth/login'),
           body: {"username": _username.text, "password": _password.text});
+
+      message = json.decode(response.body)["message"];
 
       if (response.statusCode == 200) {
         //.. responce
@@ -61,9 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
         // Navigate to the "routine_screen"
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => AllRutins(myrutines: routines)));
+            context, MaterialPageRoute(builder: (context) => BottomNevBar()));
       } else {
         throw Exception('Failed to load data');
       }
@@ -123,67 +104,56 @@ class _LoginScreenState extends State<LoginScreen> {
               color: Colors.blue,
               child: const Text('Login'),
               onPressed: () {
-                // login logic
-                _Login(context);
+                // login
+                login(context);
+                //
+                if (message != null) {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(message!)));
+                }
               },
             ),
+            const SizedBox(height: 20),
+            gotoCreateAccountPage(context),
+
             const Spacer(flex: 10),
           ],
         ),
       ),
-      bottomNavigationBar: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        height: 100,
-        width: double.infinity,
-        alignment: Alignment.bottomRight,
-        child: CupertinoButton(
-          borderRadius: BorderRadius.circular(35),
-          color: Colors.blue,
-          child: const Text('Create New Account'),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => CreateNewAccount()),
-            );
-          },
-        ),
-      ),
     );
   }
-}
 
-class RoutineScreen extends StatelessWidget {
-  final List<dynamic> routines;
-
-  RoutineScreen({required this.routines});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Routines"),
-      ),
-
-      // body: Column(
-      //   children: [
-      //     Text(routines[0]["name"]),
-      //     Text(routines[2]["name"]),
-      //     Text(routines[2]["ownerid"]),
-      //   ],
-      // ),
-
-      body: ListView.builder(
-        itemCount: routines.length,
-        itemBuilder: (context, index) {
-          routines.length;
-          return ListTile(
-            title: Text(routines[index]["name"]),
-            subtitle: Text("Owner ID: ${routines[index]["ownerid"]}"),
-            // trailing: routines["class"].length > 0
-            //     ? Text("Classes: ${routines["class"].length}")
-            //     : null,
-          );
-        },
+  Expanded gotoCreateAccountPage(BuildContext context) {
+    return Expanded(
+      child: Align(
+        alignment: FractionalOffset.bottomCenter,
+        child: Container(
+          height: 50,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Don't have an account?"),
+              SizedBox(width: 10),
+              GestureDetector(
+                onTap: () {
+                  // navigate to the "create account screen"
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CreateNewAccount()));
+                },
+                child: const Text(
+                  "Create one",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

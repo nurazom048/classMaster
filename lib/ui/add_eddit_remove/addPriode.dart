@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table/provider/topTimeProvider.dart';
-import 'package:table/ui/widgets/class_contaner.dart';
-import 'package:table/ui/widgets/text%20and%20buttons/mytext.dart';
+import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 
 class AddPriodePage extends StatefulWidget {
   const AddPriodePage({super.key});

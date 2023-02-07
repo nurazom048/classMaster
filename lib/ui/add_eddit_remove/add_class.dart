@@ -1,24 +1,23 @@
-// ignore_for_file: sort_child_properties_last
-
+// ignore_for_file: sort_child_properties_last, avoid_print, prefer_typing_uninitialized_variables, must_be_immutable, unnecessary_string_interpolations
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-import 'package:table/provider/myRutinProvider.dart';
-import 'package:table/ui/widgets/select_time.dart';
-
-import '../widgets/text and buttons/mytext.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:table/widgets/MyTextFields.dart';
+import 'package:table/widgets/select_time.dart';
+import '../../widgets/text and buttons/mytext.dart';
 
 class AddClass extends StatefulWidget {
-  String? dayname;
-
-  AddClass({super.key, this.dayname});
+  String rutinId;
+  AddClass({super.key, required this.rutinId});
 
   @override
   State<AddClass> createState() => _AddClassState();
 }
 
 //
+final _className = TextEditingController();
 final _instructorController = TextEditingController();
 final _roomController = TextEditingController();
 final _subCodeController = TextEditingController();
@@ -32,23 +31,49 @@ class _AddClassState extends State<AddClass> {
 
   DateTime startTime = DateTime(2022, 01, 01);
   DateTime endTime = DateTime(2022, 01, 01);
-
   bool show = false;
+  int _selectedDay = 1;
 
-  //
-  void addNewClass() {
-    Map<String, dynamic> newclass = {
-      "instructorname": _instructorController.text,
-      "subjectcode": _startTimeController.text,
-      "roomnum": _roomController.text,
-      "startingpriode": double.parse(_startPeriodController.text),
-      "endingpriode": double.parse(_endPeriodController.text),
-      "start_time": startTime,
-      "end_time": endTime,
-      "weakday": _selectedDay,
-    };
-    Navigator.pop(context);
-    Provider.of<MyRutinProvider>(context, listen: false).addclass(newclass);
+  var message;
+  // Add class
+
+  Future<void> addClass(context) async {
+    // Obtain shared preferences.
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+
+    final response = await http.post(
+        Uri.parse(
+            'http://192.168.31.229:3000/class/${widget.rutinId}/addclass/'),
+        body: {
+          "name": "2",
+          "instuctor_name": _instructorController.text,
+          "room": _roomController.text,
+          "subjectcode": _subCodeController.text,
+          "start": _startPeriodController.text,
+          "end": _endPeriodController.text,
+          "has_class": "has_class",
+          "weekday": _selectedDay.toString(),
+          "start_time": "${startTime.toIso8601String()}",
+          "end_time": "${endTime.toIso8601String()}",
+        },
+        headers: {
+          'Authorization': 'Bearer $getToken'
+        });
+    message = json.decode(response.body)["message"];
+    print(message);
+
+    if (response.statusCode == 200) {
+      //.. responce
+      final res = json.decode(response.body);
+      Navigator.pop(context);
+
+      //print response
+      print("rutin created successfully");
+      print(res);
+    } else {
+      throw Exception('Failed to load data');
+    }
   }
 
   List sevendays = [
@@ -60,7 +85,7 @@ class _AddClassState extends State<AddClass> {
     "Friday",
     "Saturday",
   ];
-  int _selectedDay = 1;
+
   // ignore: prefer_final_fields
   List<DropdownMenuItem<int>> _dayItems = const [
     DropdownMenuItem(
@@ -95,16 +120,17 @@ class _AddClassState extends State<AddClass> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.dayname ?? sevendays[0].toString())),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0),
-        child: Form(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          key: fromKey,
+      appBar: AppBar(title: Text(sevendays[_selectedDay - 1].toString())),
+      body: Form(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        key: fromKey,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 6),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Spacer(flex: 1),
+
               MyText("Select Day"),
 
               DropdownButtonFormField(
@@ -119,59 +145,26 @@ class _AddClassState extends State<AddClass> {
                 ),
               ),
 
-              MyText("Instructor name"),
-              TextFormField(
+              ///...Class name
+              MyTextField(
+                name: "Class name",
+                controller: _className,
+              ),
+
+              ///...Instructor name
+              MyTextField(
+                name: "Instructor namer",
                 controller: _instructorController,
-                decoration: InputDecoration(
-                  hintText: "Instructor name",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(7),
-                    borderSide: const BorderSide(
-                      color: Colors.black12,
-                    ),
-                  ),
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "instractor name is requaid ";
-                  }
-                },
               ),
 
-              ///
-
-              MyText("Room name"),
-              TextFormField(
+              ///.... room number
+              MyTextField(
+                name: "room number",
                 controller: _roomController,
-                decoration: InputDecoration(
-                  hintText: "Room name",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(7),
-                    borderSide: const BorderSide(
-                      color: Colors.black12,
-                    ),
-                  ),
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "Room number is required";
-                  }
-                },
               ),
-
-              ///
-              MyText("sub_code"),
-              TextFormField(
+              MyTextField(
+                name: "sub_code",
                 controller: _subCodeController,
-                decoration: InputDecoration(
-                  hintText: "subject code",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(7),
-                    borderSide: const BorderSide(
-                      color: Colors.black12,
-                    ),
-                  ),
-                ),
               ),
 
               //
@@ -204,7 +197,6 @@ class _AddClassState extends State<AddClass> {
 
               MyText(" Start and end Priode"),
 
-              //
               Row(
                 children: [
                   Expanded(
@@ -224,11 +216,6 @@ class _AddClassState extends State<AddClass> {
                         validator: (value) {
                           if (value!.isEmpty) {
                             return "End period cannot be empty";
-                          } else if (value.runtimeType != int) {
-                            return "must be an integer";
-                          } else if (int.parse(_startPeriodController.text) <
-                              int.parse(value)) {
-                            return "end priode should be greater than start period";
                           } else {
                             return "";
                           }
@@ -252,11 +239,6 @@ class _AddClassState extends State<AddClass> {
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "End period cannot be empty";
-                        } else if (value.runtimeType != int) {
-                          return "must be an integer";
-                        } else if (int.parse(value) <
-                            int.parse(_startPeriodController.text)) {
-                          return "end priode should be greater than start period";
                         } else {
                           return "";
                         }
@@ -271,16 +253,21 @@ class _AddClassState extends State<AddClass> {
               Align(
                 alignment: Alignment.center,
                 child: CupertinoButton(
-                  child: const Text("Submit"),
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(7),
-                  onPressed: (() {
-                    final isvalidfrom = fromKey.currentState!.validate();
-                    if (isvalidfrom) {
-                      addNewClass();
-                    }
-                  }),
-                ),
+                    child: const Text("Submit"),
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(7),
+                    onPressed: () {
+                      print("ontap submit btn");
+                      addClass(context);
+                      if (message != null) {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(SnackBar(content: Text(message!)));
+                      }
+                      // final isvalidfrom = fromKey.currentState!.validate();
+                      // if (isvalidfrom) {
+
+                      // }
+                    }),
               ),
 
               const Spacer(flex: 17),
