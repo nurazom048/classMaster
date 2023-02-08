@@ -1,9 +1,9 @@
-// ignore_for_file: must_be_immutable, camel_case_types
+// ignore_for_file: must_be_immutable, camel_case_types, avoid_print
 
 import 'package:flutter/material.dart';
 
 class ClassContainer extends StatelessWidget {
-  String instractorname, roomnum, subCode;
+  String instractorname, roomnum, subCode, classname;
   String? has_class;
   num start, end;
   var startTime, endTime;
@@ -22,6 +22,7 @@ class ClassContainer extends StatelessWidget {
     required this.endTime,
     this.has_class,
     required this.weakday,
+    required this.classname,
 
     //
     this.onTap,
@@ -57,20 +58,25 @@ class ClassContainer extends StatelessWidget {
                 ? const Center(
                     child: Icon(Icons.clear_rounded),
                   )
-                : Column(
-                    children: [
-                      checkIfRunning(startTime, endTime, weakday),
-                      const Spacer(),
-                      /////
-                      Column(
-                        children: [
-                          Text(startTime.toString()),
-                          Text(weakday.toString()),
-                          Text(subCode),
-                        ],
-                      ),
-                      const Spacer(),
-                    ],
+                : Container(
+                    decoration: const BoxDecoration(
+                        border: Border(
+                            right: BorderSide(color: Colors.black, width: 1))),
+                    child: Column(
+                      children: [
+                        checkIfRunning(startTime, endTime, weakday),
+                        const Spacer(),
+                        /////
+                        Column(
+                          children: [
+                            Text(classname),
+                            Text(subCode),
+                            Text(roomnum),
+                          ],
+                        ),
+                        const Spacer(),
+                      ],
+                    ),
                   ),
           ),
         ),

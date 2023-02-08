@@ -10,7 +10,14 @@ import '../../widgets/text and buttons/mytext.dart';
 
 class AddClass extends StatefulWidget {
   String rutinId;
-  AddClass({super.key, required this.rutinId});
+  String? classId;
+  bool? isEdit;
+  AddClass({
+    super.key,
+    required this.rutinId,
+    this.classId,
+    this.isEdit,
+  });
 
   @override
   State<AddClass> createState() => _AddClassState();
@@ -46,7 +53,7 @@ class _AddClassState extends State<AddClass> {
         Uri.parse(
             'http://192.168.31.229:3000/class/${widget.rutinId}/addclass/'),
         body: {
-          "name": "2",
+          "name": _className.text,
           "instuctor_name": _instructorController.text,
           "room": _roomController.text,
           "subjectcode": _subCodeController.text,
@@ -117,6 +124,105 @@ class _AddClassState extends State<AddClass> {
       value: 7,
     ),
   ];
+
+// Add class
+
+  Future<void> editClass() async {
+    // Obtain shared preferences.
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+
+    final response = await http.post(
+        Uri.parse('http://192.168.31.229:3000/class/eddit/${widget.classId}'),
+        body: {
+          "name": _className.text,
+          "instuctor_name": _instructorController.text,
+          "room": _roomController.text,
+          "subjectcode": _subCodeController.text,
+          "start": _startPeriodController.text,
+          "end": _endPeriodController.text,
+          "has_class": "has_class",
+          "weekday": _selectedDay.toString(),
+          "start_time": "${startTime.toIso8601String()}",
+          "end_time": "${endTime.toIso8601String()}",
+        },
+        headers: {
+          'Authorization': 'Bearer $getToken'
+        });
+    message = json.decode(response.body)["message"];
+    print(message);
+
+    if (response.statusCode == 200) {
+      //.. responce
+      final res = json.decode(response.body);
+      Navigator.pop(context);
+
+      //print response
+      print("rutin created successfully");
+      print(res);
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+// Add class
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future<void> findClass() async {
+      // Obtain shared preferences.
+      final prefs = await SharedPreferences.getInstance();
+      final String? getToken = prefs.getString('Token');
+
+      final response = await http.get(
+          Uri.parse(
+              'http://192.168.31.229:3000/class/find/class/${widget.classId}'),
+          headers: {'Authorization': 'Bearer $getToken'});
+
+      print(response.statusCode);
+      //.. responce
+      if (response.statusCode == 200) {
+        //
+        _className.text = json.decode(response.body)["classs"]["name"];
+        _instructorController.text =
+            json.decode(response.body)["classs"]["instuctor_name"];
+        _roomController.text = json.decode(response.body)["classs"]["room"];
+        _subCodeController.text =
+            json.decode(response.body)["classs"]["subjectcode"];
+
+        //
+        setState(() {
+          _selectedDay = json.decode(response.body)["classs"]["weekday"];
+          startTime = DateTime.parse(
+              json.decode(response.body)["classs"]["start_time"]);
+          endTime =
+              DateTime.parse(json.decode(response.body)["classs"]["end_time"]);
+          show = true;
+
+          //
+          _startPeriodController.text =
+              json.decode(response.body)["classs"]["start"].toString();
+          _endPeriodController.text =
+              json.decode(response.body)["classs"]["end"].toString();
+        });
+
+        // print("${s.runtimeType}   vhey");
+      } else {
+        throw Exception('Failed to load data');
+      }
+    }
+
+    if (widget.isEdit == true) {
+      findClass();
+      //editClass();
+      //   _starttime = widget.priode!.startingpriode;
+
+      // _endtime = widget.priode!.endingpriode;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -253,12 +359,12 @@ class _AddClassState extends State<AddClass> {
               Align(
                 alignment: Alignment.center,
                 child: CupertinoButton(
-                    child: const Text("Submit"),
+                    child: Text(widget.isEdit == true ? "Eddit" : "Submit"),
                     color: Colors.blue,
                     borderRadius: BorderRadius.circular(7),
                     onPressed: () {
                       print("ontap submit btn");
-                      addClass(context);
+                      widget.isEdit == true ? editClass() : addClass(context);
                       if (message != null) {
                         ScaffoldMessenger.of(context)
                             .showSnackBar(SnackBar(content: Text(message!)));

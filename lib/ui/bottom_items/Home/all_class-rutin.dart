@@ -10,6 +10,7 @@ import 'package:table/ui/add_eddit_remove/add_class.dart';
 import 'package:table/ui/classdetals.dart';
 import 'package:table/old/freash.dart';
 import 'package:table/provider/myRutinProvider.dart';
+import 'package:table/widgets/TopBar.dart';
 import 'package:table/widgets/class_contaner.dart';
 
 import 'package:table/widgets/days_container.dart';
@@ -20,6 +21,7 @@ import 'package:table/widgets/text%20and%20buttons/empty.dart';
 
 class AllClassScreen extends StatefulWidget {
   String rutinId;
+
   AllClassScreen({super.key, required this.rutinId});
 
   @override
@@ -124,6 +126,11 @@ class _RutinScreemState extends State<AllClassScreen> {
                                               classes[weakdayIndex]["classes"]
                                                   .length, (index) {
                                             return ClassContainer(
+//
+                                              classname: classes[weakdayIndex]
+                                                  ["classes"][index]["name"],
+
+                                              //
                                               roomnum: classes[weakdayIndex]
                                                   ["classes"][index]["room"],
 
@@ -278,7 +285,16 @@ class _RutinScreemState extends State<AllClassScreen> {
 
             BottomText(
               "Edit",
-              onPressed: () {},
+              onPressed: () => Navigator.push(
+                context,
+                CupertinoPageRoute(
+                    fullscreenDialog: true,
+                    builder: (context) => AddClass(
+                          rutinId: widget.rutinId,
+                          classId: classId,
+                          isEdit: true,
+                        )),
+              ),
             ),
 
             //.... remove

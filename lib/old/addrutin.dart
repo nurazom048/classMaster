@@ -175,6 +175,7 @@ class AddOrEdditPriode extends StatefulWidget {
   AddOrEdditPriode({super.key, this.priode, this.isedditing});
   Addpriode? priode;
   bool? isedditing;
+  bool? isEdit;
 
   @override
   State<AddOrEdditPriode> createState() => _AddOrEdditPriodeState();
@@ -208,7 +209,7 @@ class _AddOrEdditPriodeState extends State<AddOrEdditPriode> {
   void initState() {
     super.initState();
 
-    if (widget.isedditing == true) {
+    if (widget.isEdit == true) {
       _starttime = widget.priode!.startingpriode;
 
       _endtime = widget.priode!.endingpriode;

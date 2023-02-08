@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/old/freash.dart';
 import 'package:table/ui/bottom_items/Home/all_class-rutin.dart';
+import 'package:table/widgets/TopBar.dart';
 import 'package:table/widgets/custom_rutin_card.dart';
 import 'package:table/widgets/text%20and%20buttons/bottomText.dart';
 import 'package:table/widgets/text%20and%20buttons/mytext.dart';
@@ -268,10 +269,17 @@ onLongpress_class(context, rutinId, message) {
                       fontWeight: FontWeight.bold,
                       color: Colors.black))),
 
-          BottomText(
-            "Edit",
-            onPressed: () {},
-          ),
+          // BottomText(
+          //   "Edit",
+          //   onPressed: () => Navigator.push(
+          //                                         context,
+          //                                         MaterialPageRoute(
+          //                                             builder: (context) =>
+          //                                                 AllClassScreen(
+          //                                                   rutinId: ""
+
+          //                                                        ,
+          // ),),),),
 
           //.... remove
           BottomText(

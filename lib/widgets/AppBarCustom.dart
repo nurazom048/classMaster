@@ -9,6 +9,7 @@ class AppbarCustom extends StatelessWidget {
   Widget? actionIcon;
   double buttompadding;
   double toppadding;
+
   AppbarCustom({
     this.ontap,
     this.ledingicon,
