@@ -2,16 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomTopBar extends StatelessWidget {
-  String title;
-  IconData? icon;
-  double elevation;
-  var ontap;
+  final String title;
+  final IconData? icon;
+  final double elevation;
+  final Widget? acction;
+  final dynamic ontap;
 
-  CustomTopBar(
+  const CustomTopBar(
     this.title, {
     required this.ontap,
     this.icon,
     this.elevation = 4.0,
+    this.acction,
     Key? key,
   }) : super(key: key);
 
@@ -36,13 +38,26 @@ class CustomTopBar extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
-          InkWell(
-            child: IconButton(
-              icon: Icon(icon ?? Icons.edit, size: 22),
-              onPressed: ontap,
-            ),
-            onTap: ontap,
-          ),
+          acction == null
+              ? InkWell(
+                  child: IconButton(
+                    icon: Icon(icon ?? Icons.edit, size: 22),
+                    onPressed: ontap,
+                  ),
+                  onTap: ontap,
+                )
+              : Row(
+                  children: [
+                    InkWell(
+                      child: IconButton(
+                        icon: Icon(icon ?? Icons.edit, size: 22),
+                        onPressed: ontap,
+                      ),
+                      onTap: ontap,
+                    ),
+                    acction ?? const SizedBox(width: 0)
+                  ],
+                )
         ],
       ),
     );

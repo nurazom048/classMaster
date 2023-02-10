@@ -76,6 +76,7 @@ class _AllRutinsState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(myRutines);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white54,
@@ -85,7 +86,7 @@ class _AllRutinsState extends State<HomeScreen> {
             children: [
               //... topbar .../
               CustomTopBar(
-                "All Rutin in bottom",
+                "All Rutins",
                 icon: Icons.add_circle_outlined,
                 ontap: () => _showDialog(context, rutinName),
               ),
@@ -150,7 +151,7 @@ class _AllRutinsState extends State<HomeScreen> {
                             }),
                       ),
                       //... hedding .../
-                      MyText("Pined Rutin"),
+                      MyText("Saved Rutin"),
 
                       //... all rutins...//
                       SingleChildScrollView(
