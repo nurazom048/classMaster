@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class Empty extends StatelessWidget {
-  bool corner;
-  bool mini;
-  Empty({super.key, this.corner = false, this.mini = false});
+  final bool corner;
+  final bool mini;
+  const Empty({super.key, this.corner = false, this.mini = false});
 
   @override
   Widget build(BuildContext context) {

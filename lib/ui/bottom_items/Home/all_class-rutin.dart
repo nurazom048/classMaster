@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/provider/topTimeProvider.dart';
 import 'package:table/ui/add_eddit_remove/add_class.dart';
+import 'package:table/ui/bottom_items/Home/summary_screen.dart';
 import 'package:table/ui/classdetals.dart';
 import 'package:table/provider/myRutinProvider.dart';
 import 'package:table/widgets/TopBar.dart';
@@ -34,7 +35,7 @@ class _RutinScreemState extends State<AllClassScreen> {
   Future allrutin() async {
     try {
       final response = await http.get(Uri.parse(
-          'http://192.168.31.229:3000/class/${widget.rutinId}/all/class'));
+          'http://192.168.0.125:3000/class/${widget.rutinId}/all/class'));
 
       if (response.statusCode == 200) {
         Map<String, dynamic> responseMap = json.decode(response.body);
@@ -250,17 +251,21 @@ class _RutinScreemState extends State<AllClassScreen> {
                                                           ["classes"][index]
                                                       ["weekday"],
 
-                                                  // onTap: () => _onTap_class(
-                                                  //   context,
-                                                  //   listofweakday[weakdayIndex]
-                                                  //       [index]["roomnum"],
-                                                  //   listofweakday[weakdayIndex]
-                                                  //       [index]["instructorname"],
-                                                  //   listofweakday[weakdayIndex]
-                                                  //       [index]["subjectcode"],
-                                                  // ),
                                                   weakdayIndex: weakdayIndex,
 
+                                                  ///..... ontap to summary screen
+                                                  onTap: () => Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          SummaryScreen(
+                                                        classId:
+                                                            classes[weakdayIndex]
+                                                                    ["classes"]
+                                                                [index]["_id"],
+                                                      ),
+                                                    ),
+                                                  ),
                                                   //..for  edit or delete
                                                   onLongPress: () {
                                                     print("ontap");

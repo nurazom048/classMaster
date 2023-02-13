@@ -32,7 +32,7 @@ class _AllRutinsState extends State<HomeScreen> {
     final String? getToken = prefs.getString('Token');
 
     final response = await http.post(
-        Uri.parse('http://192.168.31.229:3000/rutin/allrutins'),
+        Uri.parse('http://192.168.0.125:3000/rutin/allrutins'),
         headers: {'Authorization': 'Bearer $getToken'});
 
     if (response.statusCode == 200) {

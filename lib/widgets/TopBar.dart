@@ -10,7 +10,7 @@ class CustomTopBar extends StatelessWidget {
 
   const CustomTopBar(
     this.title, {
-    required this.ontap,
+    this.ontap,
     this.icon,
     this.elevation = 4.0,
     this.acction,

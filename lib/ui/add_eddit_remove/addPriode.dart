@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table/provider/topTimeProvider.dart';
-import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 
 class AddPriodePage extends StatefulWidget {
   const AddPriodePage({super.key});
@@ -52,7 +51,7 @@ class _AddPriodePageState extends State<AddPriodePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 //
-            MyText("  Start and end time "),
+            // MyText("  Start and end time "),
             // Text(DateFormat.EEEE().format(now).toString()),
             Row(
               children: [

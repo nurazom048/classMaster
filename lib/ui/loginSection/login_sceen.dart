@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/ui/bottom_items/bottm_nev_bar.dart';
 import 'package:table/ui/loginSection/create_new_account.dart';
+import 'package:table/ui/server/server.dart';
 import 'package:table/widgets/text%20and%20buttons/wellcome_top_note.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -17,41 +18,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _username = TextEditingController();
   final _password = TextEditingController();
-
-//........ Login .........//
-  String? message;
-  Future<void> login(context) async {
-    try {
-      //... send request
-      final response = await http.post(
-          Uri.parse('http://192.168.31.229:3000/auth/login'),
-          body: {"username": _username.text, "password": _password.text});
-
-      message = json.decode(response.body)["message"];
-
-      if (response.statusCode == 200) {
-        //.. responce
-        final accountData = json.decode(response.body);
-        final routines = json.decode(response.body)["user"]["routines"];
-
-        //... save token
-        final prefs = await SharedPreferences.getInstance();
-        var savetoken = await prefs.setString('Token', accountData["token"]);
-
-        // print(routines[1]["name"]);
-        print("login");
-        print(savetoken);
-
-        // Navigate to the "routine_screen"
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => BottomNevBar()));
-      } else {
-        throw Exception('Failed to load data');
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,11 +71,15 @@ class _LoginScreenState extends State<LoginScreen> {
               child: const Text('Login'),
               onPressed: () {
                 // login
-                login(context);
+                RutinServer().login(
+                  context,
+                  username: _username.text,
+                  password: _password.text,
+                );
                 //
-                if (message != null) {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text(message!)));
+                if (RutinServer().message != null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(RutinServer().message!)));
                 }
               },
             ),
