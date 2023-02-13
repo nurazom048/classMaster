@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/old/freash.dart';
-import 'package:table/ui/bottom_items/Home/all_class-rutin.dart';
+import 'package:table/ui/bottom_items/Home/class/all_class-rutin.dart';
 import 'package:table/widgets/TopBar.dart';
 import 'package:table/widgets/custom_rutin_card.dart';
 import 'package:table/widgets/text%20and%20buttons/bottomText.dart';
@@ -24,6 +24,9 @@ class _AllRutinsState extends State<HomeScreen> {
   final rutinName = TextEditingController();
   String? message;
 
+  //String base = "192.168.0.125:3000";
+  String base = "localhost:3000";
+
   //... ALl rutin rutin
   var myRutines;
   Future<void> myAllRutin() async {
@@ -31,8 +34,7 @@ class _AllRutinsState extends State<HomeScreen> {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 
-    final response = await http.post(
-        Uri.parse('http://192.168.0.125:3000/rutin/allrutins'),
+    final response = await http.post(Uri.parse('http://$base/rutin/allrutins'),
         headers: {'Authorization': 'Bearer $getToken'});
 
     if (response.statusCode == 200) {
@@ -56,8 +58,7 @@ class _AllRutinsState extends State<HomeScreen> {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 
-    final response = await http.post(
-        Uri.parse('http://192.168.31.229:3000/rutin/create'),
+    final response = await http.post(Uri.parse('http://$base/rutin/create'),
         body: {"name": rutinName.text},
         headers: {'Authorization': 'Bearer $getToken'});
 

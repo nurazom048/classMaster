@@ -7,7 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/provider/topTimeProvider.dart';
 import 'package:table/ui/add_eddit_remove/add_class.dart';
-import 'package:table/ui/bottom_items/Home/summary_screen.dart';
+import 'package:table/ui/bottom_items/Home/class/sunnary/summary_screen.dart';
+
 import 'package:table/ui/classdetals.dart';
 import 'package:table/provider/myRutinProvider.dart';
 import 'package:table/widgets/TopBar.dart';
@@ -30,12 +31,15 @@ class AllClassScreen extends StatefulWidget {
 class _RutinScreemState extends State<AllClassScreen> {
   List<Map<String, dynamic>> classes = [];
 
+  //String base = "192.168.0.125:3000";
+  String base = "localhost:3000";
+
   String? message;
   //.. get all rutines ...
   Future allrutin() async {
     try {
-      final response = await http.get(Uri.parse(
-          'http://192.168.0.125:3000/class/${widget.rutinId}/all/class'));
+      final response = await http
+          .get(Uri.parse('http://$base/class/${widget.rutinId}/all/class'));
 
       if (response.statusCode == 200) {
         Map<String, dynamic> responseMap = json.decode(response.body);

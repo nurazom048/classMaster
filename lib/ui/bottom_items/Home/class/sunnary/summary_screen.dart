@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:table/ui/bottom_items/Home/add_summary.dart';
+import 'package:intl/intl.dart';
+
+import 'package:table/ui/bottom_items/Home/class/sunnary/add_summary.dart';
 import 'package:table/widgets/TopBar.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,18 +21,20 @@ class _SummaryScreenState extends State<SummaryScreen> {
   String roomnumber = "nyr";
   String sunjectcode = "nyr";
 
+  //String base = "192.168.0.125:3000";
+  String base = "localhost:3000";
+
   //.... get summary
 
   String? message;
 
   Future<List> getSummary() async {
-    String base = "192.168.0.125:3000";
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
     try {
       //... send request
       final response = await http.get(
-          Uri.parse('http://192.168.0.125:3000/summary/${widget.classId}'),
+          Uri.parse('http://$base/summary/${widget.classId}'),
           headers: {'Authorization': 'Bearer $getToken'});
 
       if (response.statusCode == 200) {
@@ -43,7 +47,6 @@ class _SummaryScreenState extends State<SummaryScreen> {
         //print(res[0]["text"]);
 
         // Navigate to the "routine_screen"
-
       } else {
         throw Exception('Failed to load data');
       }
@@ -88,9 +91,12 @@ class _SummaryScreenState extends State<SummaryScreen> {
 
                         List summary = snapshoot.data ?? [];
                         return ListView.builder(
+                          reverse: true,
                           itemCount: summary.length,
-                          itemBuilder: (context, index) =>
-                              SummaryContaner(text: summary[index]["text"]),
+                          itemBuilder: (context, index) => SummaryContaner(
+                            text: summary[index]["text"],
+                            date: summary[index]["time"],
+                          ),
                         );
                       }
                     }),
@@ -119,13 +125,16 @@ class _SummaryScreenState extends State<SummaryScreen> {
 
 class SummaryContaner extends StatelessWidget {
   final String text;
+  final String date;
   const SummaryContaner({
     Key? key,
     required this.text,
+    required this.date,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    DateTime flutteDate = DateTime.parse(date);
     return Container(
       decoration: BoxDecoration(
           border: Border.all(color: Colors.blueAccent, width: 1.0),
@@ -134,12 +143,42 @@ class SummaryContaner extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       width: 400,
-      child: Text(
-        text,
-        style: const TextStyle(
-            fontSize: 18, fontWeight: FontWeight.w500, color: Colors.black),
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              text,
+              style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black),
+            ),
+          ),
+          Align(
+              alignment: Alignment.bottomRight,
+              child: Text(_formatDate(flutteDate))),
+        ],
       ),
     );
+  }
+
+  String _formatDate(DateTime flutteDate) {
+    var now = DateTime.now();
+    var formatter = DateFormat('MMM');
+    var month = formatter.format(flutteDate);
+    var displayDate;
+
+    if (flutteDate.day == now.day && flutteDate.month == now.month) {
+      displayDate = "Today";
+    } else if (flutteDate.day == now.subtract(Duration(days: 1)).day &&
+        flutteDate.month == now.subtract(Duration(days: 1)).month) {
+      displayDate = "Yesterday";
+    } else {
+      displayDate = "${flutteDate.day} $month";
+    }
+
+    return displayDate;
   }
 }
 

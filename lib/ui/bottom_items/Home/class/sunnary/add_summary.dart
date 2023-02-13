@@ -17,16 +17,18 @@ class _AddSummaryScreenState extends State<AddSummaryScreen> {
   final _summaryController = TextEditingController();
 //
   String? message;
+  //  String base = "192.168.0.125:3000";
+  //String base = "192.168.0.125:3000";
+  String base = "localhost:3000";
 
   Future<void> addSummary(context) async {
-    String base = "192.168.0.125:3000";
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
     try {
       //... send request
 
       final response = await http.post(
-        Uri.parse('http://192.168.0.125:3000/summary/add/${widget.classId}'),
+        Uri.parse('http://$base/summary/add/${widget.classId}'),
         headers: {'Authorization': 'Bearer $getToken'},
         body: {"text": _summaryController.text},
       );

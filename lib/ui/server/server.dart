@@ -9,12 +9,14 @@ import 'package:table/ui/bottom_items/bottm_nev_bar.dart';
 class RutinServer {
 //........ Login .........//
 
-  String base = "192.168.0.125:3000";
+  //String base = "192.168.0.125:3000";
+  String base = "localhost:3000";
   String? message;
   Future<void> login(context, {username, password}) async {
     try {
       //... send request
-      final response = await http.post(Uri.parse('http://$base/auth/login'),
+      final response = await http.post(
+          Uri.parse('http://localhost:3000/auth/login'),
           body: {"username": username, "password": password});
 
       message = json.decode(response.body)["message"];
