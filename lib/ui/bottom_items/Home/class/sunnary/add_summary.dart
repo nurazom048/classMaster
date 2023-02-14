@@ -17,9 +17,9 @@ class _AddSummaryScreenState extends State<AddSummaryScreen> {
   final _summaryController = TextEditingController();
 //
   String? message;
-  //  String base = "192.168.0.125:3000";
+  String base = "192.168.0.125:3000";
   //String base = "192.168.0.125:3000";
-  String base = "localhost:3000";
+  // String base = "localhost:3000";
 
   Future<void> addSummary(context) async {
     final prefs = await SharedPreferences.getInstance();

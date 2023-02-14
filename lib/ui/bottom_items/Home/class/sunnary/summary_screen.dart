@@ -21,8 +21,8 @@ class _SummaryScreenState extends State<SummaryScreen> {
   String roomnumber = "nyr";
   String sunjectcode = "nyr";
 
-  //String base = "192.168.0.125:3000";
-  String base = "localhost:3000";
+  String base = "192.168.0.125:3000";
+//  String base = "localhost:3000";
 
   //.... get summary
 
@@ -96,6 +96,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                           itemBuilder: (context, index) => SummaryContaner(
                             text: summary[index]["text"],
                             date: summary[index]["time"],
+                            is_last: 0 == index,
                           ),
                         );
                       }
@@ -126,10 +127,12 @@ class _SummaryScreenState extends State<SummaryScreen> {
 class SummaryContaner extends StatelessWidget {
   final String text;
   final String date;
+  final bool is_last;
   const SummaryContaner({
     Key? key,
     required this.text,
     required this.date,
+    required this.is_last,
   }) : super(key: key);
 
   @override
@@ -141,7 +144,8 @@ class SummaryContaner extends StatelessWidget {
           color: Colors.blueAccent,
           borderRadius: BorderRadius.circular(5.0)),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      margin: EdgeInsets.only(
+          top: 20, bottom: is_last == true ? 90 : 20, left: 20, right: 20),
       width: 400,
       child: Column(
         children: [

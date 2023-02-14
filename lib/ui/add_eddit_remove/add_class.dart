@@ -41,6 +41,11 @@ class _AddClassState extends State<AddClass> {
   bool show = false;
   int _selectedDay = 1;
 
+  //
+  String base = "192.168.0.125:3000";
+  //String base = "192.168.0.125:3000";
+  // String base = "localhost:3000";
+
   var message;
   // Add class
 
@@ -50,8 +55,7 @@ class _AddClassState extends State<AddClass> {
     final String? getToken = prefs.getString('Token');
 
     final response = await http.post(
-        Uri.parse(
-            'http://192.168.31.229:3000/class/${widget.rutinId}/addclass/'),
+        Uri.parse('http://$base/class/${widget.rutinId}/addclass/'),
         body: {
           "name": _className.text,
           "instuctor_name": _instructorController.text,
@@ -132,23 +136,21 @@ class _AddClassState extends State<AddClass> {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 
-    final response = await http.post(
-        Uri.parse('http://192.168.31.229:3000/class/eddit/${widget.classId}'),
-        body: {
-          "name": _className.text,
-          "instuctor_name": _instructorController.text,
-          "room": _roomController.text,
-          "subjectcode": _subCodeController.text,
-          "start": _startPeriodController.text,
-          "end": _endPeriodController.text,
-          "has_class": "has_class",
-          "weekday": _selectedDay.toString(),
-          "start_time": "${startTime.toIso8601String()}",
-          "end_time": "${endTime.toIso8601String()}",
-        },
-        headers: {
-          'Authorization': 'Bearer $getToken'
-        });
+    final response = await http
+        .post(Uri.parse('http://$base/class/eddit/${widget.classId}'), body: {
+      "name": _className.text,
+      "instuctor_name": _instructorController.text,
+      "room": _roomController.text,
+      "subjectcode": _subCodeController.text,
+      "start": _startPeriodController.text,
+      "end": _endPeriodController.text,
+      "has_class": "has_class",
+      "weekday": _selectedDay.toString(),
+      "start_time": "${startTime.toIso8601String()}",
+      "end_time": "${endTime.toIso8601String()}",
+    }, headers: {
+      'Authorization': 'Bearer $getToken'
+    });
     message = json.decode(response.body)["message"];
     print(message);
 
@@ -177,8 +179,7 @@ class _AddClassState extends State<AddClass> {
       final String? getToken = prefs.getString('Token');
 
       final response = await http.get(
-          Uri.parse(
-              'http://192.168.31.229:3000/class/find/class/${widget.classId}'),
+          Uri.parse('http://$base/class/find/class/${widget.classId}'),
           headers: {'Authorization': 'Bearer $getToken'});
 
       print(response.statusCode);

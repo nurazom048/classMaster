@@ -31,8 +31,8 @@ class AllClassScreen extends StatefulWidget {
 class _RutinScreemState extends State<AllClassScreen> {
   List<Map<String, dynamic>> classes = [];
 
-  //String base = "192.168.0.125:3000";
-  String base = "localhost:3000";
+  String base = "192.168.0.125:3000";
+  //String base = "localhost:3000";
 
   String? message;
   //.. get all rutines ...
@@ -63,8 +63,7 @@ class _RutinScreemState extends State<AllClassScreen> {
     final String? getToken = prefs.getString('Token');
     try {
       final response = await http.get(
-          Uri.parse(
-              'http://192.168.31.229:3000/rutin/save/${widget.rutinId}/chack'),
+          Uri.parse('http://$base/rutin/save/${widget.rutinId}/chack'),
           headers: {'Authorization': 'Bearer $getToken'});
 
       if (response.statusCode == 200) {
@@ -87,7 +86,7 @@ class _RutinScreemState extends State<AllClassScreen> {
     final String? getToken = prefs.getString('Token');
     try {
       final response = await http.get(
-          Uri.parse('http://192.168.31.229:3000/rutin/save/${widget.rutinId}'),
+          Uri.parse('http://$base/rutin/save/${widget.rutinId}'),
           headers: {'Authorization': 'Bearer $getToken'});
 
       if (response.statusCode == 200) {
@@ -109,8 +108,7 @@ class _RutinScreemState extends State<AllClassScreen> {
     final String? getToken = prefs.getString('Token');
     try {
       final response = await http.get(
-          Uri.parse(
-              'http://192.168.31.229:3000/rutin/unsave/${widget.rutinId}'),
+          Uri.parse('http://$base/rutin/unsave/${widget.rutinId}'),
           headers: {'Authorization': 'Bearer $getToken'});
 
       if (response.statusCode == 200) {

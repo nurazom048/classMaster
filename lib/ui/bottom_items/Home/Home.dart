@@ -24,8 +24,8 @@ class _AllRutinsState extends State<HomeScreen> {
   final rutinName = TextEditingController();
   String? message;
 
-  //String base = "192.168.0.125:3000";
-  String base = "localhost:3000";
+  String base = "192.168.0.125:3000";
+  //String base = "localhost:3000";
 
   //... ALl rutin rutin
   var myRutines;
