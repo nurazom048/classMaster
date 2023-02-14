@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/old/freash.dart';
 import 'package:table/ui/bottom_items/Home/class/all_class-rutin.dart';
+import 'package:table/ui/server/homeRequest.dart';
 import 'package:table/widgets/TopBar.dart';
 import 'package:table/widgets/custom_rutin_card.dart';
 import 'package:table/widgets/text%20and%20buttons/bottomText.dart';
@@ -28,32 +29,9 @@ class _AllRutinsState extends State<HomeScreen> {
   //String base = "localhost:3000";
 
   //... ALl rutin rutin
-  var myRutines;
-  Future<void> myAllRutin() async {
-    // Obtain shared preferences.
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
-
-    final response = await http.post(Uri.parse('http://$base/rutin/allrutins'),
-        headers: {'Authorization': 'Bearer $getToken'});
-
-    if (response.statusCode == 200) {
-      //.. responce
-      final res = json.decode(response.body);
-      final routines = json.decode(response.body)["user"]["routines"];
-      //
-      myRutines = routines;
-
-      //print response
-      print("MyAllRutin");
-      print(routines);
-    } else {
-      throw Exception('Failed to load data');
-    }
-  }
 
   //... create rutin
-  Future<void> CreatRutin() async {
+  Future<void> creatRutin() async {
     // Obtain shared preferences.
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
@@ -77,7 +55,6 @@ class _AllRutinsState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(myRutines);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white54,
@@ -106,7 +83,7 @@ class _AllRutinsState extends State<HomeScreen> {
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: FutureBuilder(
-                            future: myAllRutin(),
+                            future: HomeReq().myAllRutin(),
                             builder: (context, snapshoot) {
                               if (snapshoot.connectionState ==
                                   ConnectionState.waiting) {
@@ -114,13 +91,13 @@ class _AllRutinsState extends State<HomeScreen> {
                               } else {
                                 // print(myRutines.length);
                                 // print(myRutines[0]["_id"]);
-
+                                var myRutines = snapshoot.data;
+                                print("data");
+                                print(myRutines![0]["_id"]);
                                 return Row(
                                   children: List.generate(
-                                      myRutines.length == 0
-                                          ? 1
-                                          : myRutines.length,
-                                      (index) => myRutines.length == 0
+                                      myRutines.isEmpty ? 1 : myRutines.length,
+                                      (index) => myRutines.isEmpty
                                           ? const Text(
                                               "You Dont Have any Rutin created")
                                           : InkWell(
@@ -213,7 +190,7 @@ class _AllRutinsState extends State<HomeScreen> {
                   color: Colors.blue,
                   child: const Text("Create"),
                   onPressed: () {
-                    CreatRutin();
+                    creatRutin();
                     Navigator.of(context).pop();
                   },
                 ),
