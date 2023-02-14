@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:table/ui/server/account_req.dart';
 import 'package:table/widgets/AccountCard.dart';
 import 'package:table/widgets/AppBarCustom.dart';
 import 'package:table/widgets/custom_rutin_card.dart';
@@ -17,34 +18,6 @@ class AccountScreen extends StatefulWidget {
 
   @override
   State<AccountScreen> createState() => _AccountScreenState();
-}
-
-var accountData;
-var myRutines;
-
-//... Account data
-Future _AccountData() async {
-  // Obtain shared preferences.
-  final prefs = await SharedPreferences.getInstance();
-  final String? getToken = prefs.getString('Token');
-
-  final response = await http.post(
-      Uri.parse('http://192.168.31.229:3000/rutin/allrutins'),
-      headers: {'Authorization': 'Bearer $getToken'});
-
-  if (response.statusCode == 200) {
-    //.. responce
-    final res = json.decode(response.body)["user"];
-    final routines = json.decode(response.body)["user"]["routines"];
-    //
-    myRutines = routines;
-    accountData = res;
-    //print response
-    print("Account data ");
-    print(res["_id"]);
-  } else {
-    throw Exception('Failed to load data');
-  }
 }
 
 class _AccountScreenState extends State<AccountScreen> {
@@ -60,11 +33,14 @@ class _AccountScreenState extends State<AccountScreen> {
                 title: "Account", actionIcon: const Icon(Icons.more_vert)),
 
             FutureBuilder(
-                future: _AccountData(),
+                future: AccountReq().accountData(),
                 builder: (context, snapshoot) {
                   if (snapshoot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   } else {
+                    var accountData = snapshoot.data;
+                    var myRutins = accountData["routines"];
+                    print(snapshoot.data);
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Column(
@@ -85,13 +61,13 @@ class _AccountScreenState extends State<AccountScreen> {
                             scrollDirection: Axis.horizontal,
                             child: Row(
                               children: List.generate(
-                                myRutines.length,
+                                myRutins.length,
                                 (index) => InkWell(
                                   child: CustomRutinCard(
-                                    rutinname: myRutines[index]["name"],
-                                    username: myRutines[index]["ownerid"]
+                                    rutinname: myRutins[index]["name"],
+                                    username: myRutins[index]["ownerid"]
                                         ["username"],
-                                    name: myRutines[index]["ownerid"]["name"],
+                                    name: myRutins[index]["ownerid"]["name"],
                                   ),
                                 ),
                               ),
@@ -128,25 +104,15 @@ Future<void> _showConfirmationDialog(context) async {
         ),
         actions: <Widget>[
           CupertinoButton(
-            child: Text(
-              "Yes",
-              style: const TextStyle(
-                fontSize: 18,
-                color: Colors.red,
-              ),
-            ),
+            child: const Text("Yes",
+                style: TextStyle(fontSize: 18, color: Colors.red)),
             onPressed: () {
               Navigator.of(context).pop();
             },
           ),
           CupertinoButton(
-            child: Text(
-              "No",
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.black,
-              ),
-            ),
+            child: const Text("No",
+                style: TextStyle(fontSize: 18, color: Colors.black)),
             onPressed: () {
               Navigator.of(context).pop();
             },

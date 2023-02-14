@@ -131,15 +131,53 @@ class _AllRutinsState extends State<HomeScreen> {
                       //... hedding .../
                       MyText("Saved Rutin"),
 
-                      //... all rutins...//
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: List.generate(
-                              3,
-                              (index) =>
-                                  CustomRutinCard(rutinname: "ET / 7 /1")),
-                        ),
+                        child: FutureBuilder(
+                            future: HomeReq().savedRutins(),
+                            builder: (context, snapshoot) {
+                              if (snapshoot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Text("Waiting");
+                              } else {
+                                // print(myRutines.length);
+                                // print(myRutines[0]["_id"]);
+                                var myRutines = snapshoot.data;
+                                print("data");
+                                print(myRutines![0]["_id"]);
+                                return Row(
+                                  children: List.generate(
+                                      myRutines.isEmpty ? 1 : myRutines.length,
+                                      (index) => myRutines.isEmpty
+                                          ? const Text(
+                                              "You Dont Have any Rutin created")
+                                          : InkWell(
+                                              child: CustomRutinCard(
+                                                rutinname: myRutines[index]
+                                                    ["name"],
+                                                profilePicture: "",
+                                                name: myRutines[index]
+                                                    ["ownerid"]["name"],
+                                                username: myRutines[index]
+                                                    ["ownerid"]["name"],
+
+                                                //
+                                              ),
+
+                                              //
+                                              onTap: () => Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          AllClassScreen(
+                                                            rutinId:
+                                                                myRutines[index]
+                                                                    ["_id"],
+                                                          ))),
+                                            )),
+                                );
+                              }
+                            }),
                       ),
 
                       //... hedding .../

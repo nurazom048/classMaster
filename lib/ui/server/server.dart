@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:table/ui/bottom_items/bottm_nev_bar.dart';
 
-class RutinServer {
+class AuthReq {
 //........ Login .........//
 
   String base = "192.168.0.125:3000";

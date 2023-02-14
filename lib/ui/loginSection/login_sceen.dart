@@ -2,10 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:table/ui/bottom_items/bottm_nev_bar.dart';
 import 'package:table/ui/loginSection/create_new_account.dart';
 import 'package:table/ui/server/server.dart';
 import 'package:table/widgets/text%20and%20buttons/wellcome_top_note.dart';
@@ -71,15 +67,15 @@ class _LoginScreenState extends State<LoginScreen> {
               child: const Text('Login'),
               onPressed: () {
                 // login
-                RutinServer().login(
+                AuthReq().login(
                   context,
                   username: _username.text,
                   password: _password.text,
                 );
                 //
-                if (RutinServer().message != null) {
+                if (AuthReq().message != null) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(RutinServer().message!)));
+                      SnackBar(content: Text(AuthReq().message!)));
                 }
               },
             ),
