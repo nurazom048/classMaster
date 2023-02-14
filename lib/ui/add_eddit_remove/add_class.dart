@@ -83,7 +83,22 @@ class _AddClassState extends State<AddClass> {
       print("rutin created successfully");
       print(res);
     } else {
-      throw Exception('Failed to load data');
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text(message),
+              actions: [
+                ElevatedButton(
+                  child: Text('Ok'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
     }
   }
 
