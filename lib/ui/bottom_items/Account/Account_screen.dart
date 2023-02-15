@@ -1,10 +1,8 @@
 // ignore_for_file: avoid_print
 
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:table/ui/bottom_items/Account/eddit_account.dart';
 import 'package:table/ui/server/account_req.dart';
 import 'package:table/widgets/AccountCard.dart';
 import 'package:table/widgets/AppBarCustom.dart';
@@ -30,7 +28,13 @@ class _AccountScreenState extends State<AccountScreen> {
           children: [
             //... AppBar.....//
             AppbarCustom(
-                title: "Account", actionIcon: const Icon(Icons.more_vert)),
+              title: "Account",
+              actionIcon: IconButton(
+                  icon: const Icon(Icons.more_vert),
+                  onPressed: () {
+                    accountBottomSheet(context);
+                  }),
+            ),
 
             FutureBuilder(
                 future: AccountReq().accountData(),
@@ -81,6 +85,67 @@ class _AccountScreenState extends State<AccountScreen> {
           ],
         ),
       ),
+    );
+  }
+
+//... Account Bottom Sheet....//
+  Future<dynamic> accountBottomSheet(BuildContext context) {
+    return showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          margin: const EdgeInsets.only(bottom: 10),
+          decoration: const BoxDecoration(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16.0))),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 10),
+
+              //
+              CupertinoButton(
+                child: const Text(
+                  'Edit Account',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                          fullscreenDialog: true,
+                          builder: (context) => EdditAccount()));
+                  // Navigator.of(context).pop();
+                },
+              ),
+              const Divider(thickness: 2),
+
+              CupertinoButton(
+                child: const Text(
+                  'Delete Account',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.red,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              const Divider(thickness: 2),
+              const SizedBox(height: 20),
+              CupertinoButton(
+                color: Colors.blue,
+                child: const Text('Cancel'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
