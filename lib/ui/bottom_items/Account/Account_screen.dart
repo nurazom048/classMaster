@@ -44,15 +44,17 @@ class _AccountScreenState extends State<AccountScreen> {
                   } else {
                     var accountData = snapshoot.data;
                     var myRutins = accountData["routines"];
-                    print(snapshoot.data);
+                    String imageUrl = accountData["image"];
+                    print(imageUrl);
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          //Image.network(imageUrl),
                           //... Accoumt Info ..//
                           AccountCard(
-                            ProfilePicture: "",
+                            ProfilePicture: imageUrl,
                             name: accountData["name"],
                             username: accountData["username"],
                             ontapLogOut: () => _showConfirmationDialog(context),

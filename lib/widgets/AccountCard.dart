@@ -26,7 +26,6 @@ class AccountCard extends StatelessWidget {
               backgroundColor: Colors.red,
               backgroundImage: NetworkImage(ProfilePicture),
             ),
-            //
             const Spacer(flex: 4),
             Padding(
               padding: const EdgeInsets.only(top: 10),
