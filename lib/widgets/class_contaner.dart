@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class ClassContainer extends StatelessWidget {
   String instractorname, roomnum, subCode, classname;
   String? has_class;
-  num start, end;
+  num start, end, previous_end;
   var startTime, endTime;
   var weakday;
   dynamic onTap, onLongPress;
@@ -23,6 +23,7 @@ class ClassContainer extends StatelessWidget {
     this.has_class,
     required this.weakday,
     required this.classname,
+    required this.previous_end,
 
     //
     this.onTap,
@@ -37,47 +38,40 @@ class ClassContainer extends StatelessWidget {
     //  var date = DateTime.parse(startTime);
     print(dateTime.hour);
 
-    double contanerwith = 100;
 //... foe Contaner with...//
-    if (end - start > 1 && end - start != 0 && end - start > 0) {
-      contanerwith = (end - start) * 100;
-    }
+
     return Row(
       children: [
+        crossContainer(start, previous_end),
         InkWell(
           onLongPress: onLongPress,
           onTap: onTap,
-          //onTap: has_class == "no_class" ? onTap ?? () {} : () {},
           child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(3),
                 color: getColor(weakdayIndex)),
             height: 100,
-            width: contanerwith,
-            child: has_class == "no_class"
-                ? const Center(
-                    child: Icon(Icons.clear_rounded),
-                  )
-                : Container(
-                    decoration: const BoxDecoration(
-                        border: Border(
-                            right: BorderSide(color: Colors.black, width: 1))),
-                    child: Column(
-                      children: [
-                        checkIfRunning(startTime, endTime, weakday),
-                        const Spacer(),
-                        /////
-                        Column(
-                          children: [
-                            Text(classname),
-                            Text(subCode),
-                            Text(roomnum),
-                          ],
-                        ),
-                        const Spacer(),
-                      ],
-                    ),
+            width: contnerWidth(start, end),
+            child: Container(
+              decoration: const BoxDecoration(
+                  border:
+                      Border(right: BorderSide(color: Colors.black, width: 1))),
+              child: Column(
+                children: [
+                  checkIfRunning(startTime, endTime, weakday),
+                  const Spacer(),
+                  /////
+                  Column(
+                    children: [
+                      Text(instractorname),
+                      Text(subCode),
+                      Text(roomnum),
+                    ],
                   ),
+                  const Spacer(),
+                ],
+              ),
+            ),
           ),
         ),
       ],
@@ -116,6 +110,43 @@ class ClassContainer extends StatelessWidget {
           Text(" Running"),
           Spacer(),
         ],
+      );
+    } else {
+      return Container();
+    }
+  }
+
+//... for contaner width
+  double contnerWidth(var start, var end) {
+    if (end - start > 1 && end - start != 0 && end - start > 0) {
+      return (end - start) * 100;
+    } else {
+      return 100;
+    }
+  }
+
+//... if there is no class THEN RETUN Cross contaner
+  Widget crossContainer(num start, num previous_end) {
+    // .. calculate width
+    double crossContanerWidth(num start, num previous_end) {
+      num size = start - previous_end >= 2 ? start - previous_end - 1 : 0;
+
+      return size * 100;
+    }
+
+    //
+    if (start - previous_end >= 2) {
+      return Container(
+        height: 100,
+        width: crossContanerWidth(start, previous_end),
+        decoration: const BoxDecoration(
+            border: Border(right: BorderSide(color: Colors.black, width: 1))),
+        child: Container(
+          decoration: BoxDecoration(
+              color: getColor(weakdayIndex),
+              borderRadius: BorderRadius.circular(3)),
+          child: const Center(child: Icon(Icons.clear_rounded)),
+        ),
       );
     } else {
       return Container();

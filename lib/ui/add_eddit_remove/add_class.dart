@@ -42,8 +42,8 @@ class _AddClassState extends State<AddClass> {
   int _selectedDay = 1;
 
   //
-  String base = "192.168.0.125:3000";
   //String base = "192.168.0.125:3000";
+  String base = "192.168.31.229:3000";
   // String base = "localhost:3000";
 
   var message;

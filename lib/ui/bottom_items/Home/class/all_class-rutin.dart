@@ -31,8 +31,8 @@ class AllClassScreen extends StatefulWidget {
 class _RutinScreemState extends State<AllClassScreen> {
   List<Map<String, dynamic>> classes = [];
 
-  String base = "192.168.0.125:3000";
-  //String base = "localhost:3000";
+  //String base = "192.168.0.125:3000";
+  String base = "192.168.31.229:3000";
 
   String? message;
   //.. get all rutines ...
@@ -204,6 +204,7 @@ class _RutinScreemState extends State<AllClassScreen> {
                                                   classes[weakdayIndex]
                                                           ["classes"]
                                                       .length, (index) {
+                                                int pi = index - 1;
                                                 return ClassContainer(
 //
                                                   classname:
@@ -234,6 +235,11 @@ class _RutinScreemState extends State<AllClassScreen> {
                                                       ["start"],
                                                   end: classes[weakdayIndex]
                                                       ["classes"][index]["end"],
+                                                  previous_end: index == 0
+                                                      ? 0
+                                                      : classes[weakdayIndex]
+                                                              ["classes"]
+                                                          [index - 1]["end"],
 
                                                   // start time end tyme
                                                   startTime: DateTime.parse(
