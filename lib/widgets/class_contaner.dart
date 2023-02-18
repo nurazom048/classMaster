@@ -1,6 +1,7 @@
-// ignore_for_file: must_be_immutable, camel_case_types, avoid_print
+// ignore_for_file: must_be_immutable, camel_case_types, avoid_print, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ClassContainer extends StatelessWidget {
   String instractorname, roomnum, subCode, classname;
@@ -35,9 +36,14 @@ class ClassContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     DateTime dateTime = DateTime.parse("2023-01-01T22:11:00.000+00:00");
 
-    //  var date = DateTime.parse(startTime);
-    print(dateTime.hour);
-
+    //
+    DateTime newStart = getNewDateTime(startTime);
+    DateTime newEnd = getNewDateTime(endTime);
+    if (DateTime.now().isAfter(newStart) && DateTime.now().isBefore(newEnd)) {
+      print("running  ${newStart.hour} - ${newEnd.hour}");
+    } else {
+      print("not running ${newStart.hour} - ${newEnd.hour}");
+    }
 //... foe Contaner with...//
 
     return Row(
@@ -51,18 +57,16 @@ class ClassContainer extends StatelessWidget {
                 borderRadius: BorderRadius.circular(3),
                 color: getColor(weakdayIndex)),
             height: 100,
-            width: contnerWidth(start, end),
+            width: double.parse(contnerWidth(start, end).toString()),
             child: Container(
               decoration: const BoxDecoration(
                   border:
                       Border(right: BorderSide(color: Colors.black, width: 1))),
               child: Column(
                 children: [
-                  checkIfRunning(startTime, endTime, weakday),
-                  const Spacer(),
-                  /////
                   Column(
                     children: [
+                      _Running(newStart, newEnd),
                       Text(instractorname),
                       Text(subCode),
                       Text(roomnum),
@@ -85,39 +89,8 @@ class ClassContainer extends StatelessWidget {
         : Colors.black12;
   }
 
-  Widget checkIfRunning(DateTime startTime, DateTime endTime, weakday) {
-    int currentHour = DateTime.now().hour;
-    int currentMinute = DateTime.now().minute;
-
-    int currentWek = DateTime.now().weekday;
-    int currentWeekday = currentWek != 7 ? currentWek + 1 : 7;
-
-    int startHour = startTime.hour;
-    int startMinute = startTime.minute;
-
-    int endHour = endTime.hour;
-    int endMinute = endTime.minute;
-
-    if (currentHour >= startHour &&
-        currentMinute >= startMinute &&
-        currentHour >= endHour &&
-        currentMinute >= endMinute &&
-        currentWeekday == weakday) {
-      return Row(
-        children: const [
-          SizedBox(width: 5),
-          CircleAvatar(backgroundColor: Colors.red, radius: 4),
-          Text(" Running"),
-          Spacer(),
-        ],
-      );
-    } else {
-      return Container();
-    }
-  }
-
 //... for contaner width
-  double contnerWidth(var start, var end) {
+  dynamic contnerWidth(var start, var end) {
     if (end - start > 1 && end - start != 0 && end - start > 0) {
       return (end - start) * 100;
     } else {
@@ -150,6 +123,49 @@ class ClassContainer extends StatelessWidget {
       );
     } else {
       return Container();
+    }
+  }
+
+  // date time formet by this
+  DateTime getNewDateTime(DateTime givenTime) {
+    DateTime now = DateTime.now();
+    String month = "${now.month < 10 ? '0' : ''}${now.month}";
+    String nowdays = "${now.day < 10 ? '0' : ''}${now.day}";
+
+    String givenTime_hour =
+        "${givenTime.hour < 10 ? '0' : ''}${givenTime.hour}";
+    String givenTime_minute =
+        "${givenTime.minute < 10 ? '0' : ''}${givenTime.minute}";
+
+    DateTime newDateTime = DateTime.parse(
+        "${now.year}-$month-$nowdays $givenTime_hour:$givenTime_minute:00");
+    return newDateTime;
+  }
+
+  ///
+  Widget _Running(DateTime newStart, DateTime newEnd) {
+    // String formattStart = DateFormat.jm().format(newStart);
+    // String formatt_end = DateFormat.jm().format(newEnd);
+
+    //
+    if (DateTime.now().isAfter(newStart) && DateTime.now().isBefore(newEnd)) {
+      return SingleChildScrollView(
+        child: Row(
+          // ignore: prefer_const_literals_to_create_immutables
+          children: [
+            const SizedBox(width: 5),
+            const CircleAvatar(backgroundColor: Colors.red, radius: 4),
+            const Text(
+              " Running",
+              maxLines: 2,
+              style: TextStyle(overflow: TextOverflow.ellipsis),
+            ),
+            const Spacer(),
+          ],
+        ),
+      );
+    } else {
+      return const Text("");
     }
   }
 }

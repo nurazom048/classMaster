@@ -1,5 +1,6 @@
 // ignore_for_file: sort_child_properties_last, avoid_print, prefer_typing_uninitialized_variables, must_be_immutable, unnecessary_string_interpolations
 import 'dart:convert';
+import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,23 +29,22 @@ final _className = TextEditingController();
 final _instructorController = TextEditingController();
 final _roomController = TextEditingController();
 final _subCodeController = TextEditingController();
-final _startTimeController = TextEditingController();
-final _endTimeController = TextEditingController();
 final _startPeriodController = TextEditingController();
 final _endPeriodController = TextEditingController();
 
 class _AddClassState extends State<AddClass> {
   final fromKey = GlobalKey<FormState>();
 
-  DateTime startTime = DateTime(2022, 01, 01);
-  DateTime endTime = DateTime(2022, 01, 01);
+  late DateTime startTime;
+  late DateTime endTime;
   bool show = false;
   int _selectedDay = 1;
+  //.. just for ui
+  late DateTime startTimeDemo = DateTime.now();
+  late DateTime endTimDemo = DateTime.now();
 
-  //
   //String base = "192.168.0.125:3000";
   String base = "192.168.31.229:3000";
-  // String base = "localhost:3000";
 
   var message;
   // Add class
@@ -65,8 +65,8 @@ class _AddClassState extends State<AddClass> {
           "end": _endPeriodController.text,
           "has_class": "has_class",
           "weekday": _selectedDay.toString(),
-          "start_time": "${startTime.toIso8601String()}",
-          "end_time": "${endTime.toIso8601String()}",
+          "start_time": "${startTime.toIso8601String()}Z",
+          "end_time": "${endTime.toIso8601String()}Z",
         },
         headers: {
           'Authorization': 'Bearer $getToken'
@@ -146,7 +146,7 @@ class _AddClassState extends State<AddClass> {
 
 // Add class
 
-  Future<void> editClass() async {
+  Future<void> editClass(context) async {
     // Obtain shared preferences.
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
@@ -182,60 +182,63 @@ class _AddClassState extends State<AddClass> {
     }
   }
 
-// Add class
+// find class
+  Future<void> findClass() async {
+    // Obtain shared preferences.
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+
+    final response = await http.get(
+        Uri.parse('http://$base/class/find/class/${widget.classId}'),
+        headers: {'Authorization': 'Bearer $getToken'});
+
+    print(response.statusCode);
+    //.. responce
+    if (response.statusCode == 200) {
+      var decodedres = json.decode(response.body);
+      print(decodedres);
+      //
+      _className.text = json.decode(response.body)["classs"]["name"];
+      _instructorController.text =
+          json.decode(response.body)["classs"]["instuctor_name"];
+      _roomController.text = json.decode(response.body)["classs"]["room"];
+      _subCodeController.text =
+          json.decode(response.body)["classs"]["subjectcode"];
+
+      //
+      setState(() {
+        _selectedDay = json.decode(response.body)["classs"]["weekday"];
+        startTime =
+            DateTime.parse(json.decode(response.body)["classs"]["start_time"]);
+        endTime =
+            DateTime.parse(json.decode(response.body)["classs"]["end_time"]);
+
+        //
+        startTimeDemo =
+            DateTime.parse(json.decode(response.body)["classs"]["start_time"]);
+        endTimDemo =
+            DateTime.parse(json.decode(response.body)["classs"]["end_time"]);
+
+        show = true;
+
+        //
+        _startPeriodController.text =
+            json.decode(response.body)["classs"]["start"].toString();
+        _endPeriodController.text =
+            json.decode(response.body)["classs"]["end"].toString();
+      });
+
+      // print("${s.runtimeType}   vhey");
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-
-    Future<void> findClass() async {
-      // Obtain shared preferences.
-      final prefs = await SharedPreferences.getInstance();
-      final String? getToken = prefs.getString('Token');
-
-      final response = await http.get(
-          Uri.parse('http://$base/class/find/class/${widget.classId}'),
-          headers: {'Authorization': 'Bearer $getToken'});
-
-      print(response.statusCode);
-      //.. responce
-      if (response.statusCode == 200) {
-        //
-        _className.text = json.decode(response.body)["classs"]["name"];
-        _instructorController.text =
-            json.decode(response.body)["classs"]["instuctor_name"];
-        _roomController.text = json.decode(response.body)["classs"]["room"];
-        _subCodeController.text =
-            json.decode(response.body)["classs"]["subjectcode"];
-
-        //
-        setState(() {
-          _selectedDay = json.decode(response.body)["classs"]["weekday"];
-          startTime = DateTime.parse(
-              json.decode(response.body)["classs"]["start_time"]);
-          endTime =
-              DateTime.parse(json.decode(response.body)["classs"]["end_time"]);
-          show = true;
-
-          //
-          _startPeriodController.text =
-              json.decode(response.body)["classs"]["start"].toString();
-          _endPeriodController.text =
-              json.decode(response.body)["classs"]["end"].toString();
-        });
-
-        // print("${s.runtimeType}   vhey");
-      } else {
-        throw Exception('Failed to load data');
-      }
-    }
-
     if (widget.isEdit == true) {
       findClass();
-      //editClass();
-      //   _starttime = widget.priode!.startingpriode;
-
-      // _endtime = widget.priode!.endingpriode;
     }
   }
 
@@ -298,7 +301,7 @@ class _AddClassState extends State<AddClass> {
                   Expanded(
                     child: SelectTime(
                       time_text: "start_time",
-                      time: startTime,
+                      time: startTimeDemo,
                       show: show,
                       onTap: () => _selectStartTime(),
                     ),
@@ -307,7 +310,7 @@ class _AddClassState extends State<AddClass> {
                   Expanded(
                     child: SelectTime(
                       time_text: "end time",
-                      time: endTime,
+                      time: endTimDemo,
                       show: show,
                       onTap: _selectEndTime,
                     ),
@@ -380,7 +383,9 @@ class _AddClassState extends State<AddClass> {
                     borderRadius: BorderRadius.circular(7),
                     onPressed: () {
                       print("ontap submit btn");
-                      widget.isEdit == true ? editClass() : addClass(context);
+                      widget.isEdit == true
+                          ? editClass(context)
+                          : addClass(context);
                       if (message != null) {
                         ScaffoldMessenger.of(context)
                             .showSnackBar(SnackBar(content: Text(message!)));
@@ -407,10 +412,15 @@ class _AddClassState extends State<AddClass> {
       initialTime: TimeOfDay.now(),
     ).then((value) {
       if (value != null) {
+        String hour = "${value.hour < 10 ? '0' : ''}${value.hour}";
+        String minute = "${value.minute < 10 ? '0' : ''}${value.minute}";
+        DateTime selecteTime = DateTime.parse("2021-12-23 $hour:$minute:00");
+
         setState(() {
           show = true;
-          startTime = DateTime(2023, 01, 01, value.hour, value.minute)
-              .add(const Duration(days: 0));
+          startTime = selecteTime;
+          startTimeDemo = selecteTime;
+          print(startTime.toIso8601String());
         });
       }
     });
@@ -424,11 +434,16 @@ class _AddClassState extends State<AddClass> {
                 TimeOfDay(hour: startTime.hour, minute: startTime.minute))
         .then((value) {
       if (value != null) {
+        String hour = "${value.hour < 10 ? '0' : ''}${value.hour}";
+        String minute = "${value.minute < 10 ? '0' : ''}${value.minute}";
+        DateTime selecteEndTime = DateTime.parse("2021-12-23 $hour:$minute:00");
+        //
         setState(() {
           show = true;
 
-          endTime = DateTime(2022, 01, 02, value.hour, value.minute)
-              .add(const Duration(days: 0));
+          endTime = selecteEndTime;
+          endTimDemo = selecteEndTime;
+          print(endTime.toIso8601String());
         });
       }
     });

@@ -21,8 +21,8 @@ import 'package:table/widgets/text%20and%20buttons/empty.dart';
 
 class AllClassScreen extends StatefulWidget {
   String rutinId;
-
-  AllClassScreen({super.key, required this.rutinId});
+  String rutinName;
+  AllClassScreen({super.key, required this.rutinId, required this.rutinName});
 
   @override
   State<AllClassScreen> createState() => _RutinScreemState();
@@ -137,13 +137,10 @@ class _RutinScreemState extends State<AllClassScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //...... Appbar.......!!
-                CustomTopBar("Kpi 7/1/ET-C",
+                CustomTopBar(widget.rutinName,
                     acction: IconButton(
-                        onPressed: () {
-                          //   chackStatus();
-                          //   saverutin();
-                          _showModalBottomSheet(context, widget.rutinId);
-                        },
+                        onPressed: () =>
+                            _showModalBottomSheet(context, widget.rutinId),
                         icon: Icon(Icons.more_vert)), ontap: () {
                   print("ontap");
                   Navigator.push(
@@ -195,6 +192,10 @@ class _RutinScreemState extends State<AllClassScreen> {
                                   children: List.generate(
                                     7,
                                     (weakdayIndex) {
+                                      DateTime dt = DateTime.parse(classes[0]
+                                          ["classes"][0]["start_time"]);
+                                      print(dt);
+
                                       return classes[weakdayIndex]["classes"]
                                               .isEmpty // iwnt to retun a emmty text if the lenght is empth
                                           ? Empty()
@@ -243,13 +244,16 @@ class _RutinScreemState extends State<AllClassScreen> {
 
                                                   // start time end tyme
                                                   startTime: DateTime.parse(
-                                                      classes[weakdayIndex]
-                                                              ["classes"][index]
-                                                          ["start_time"]),
+                                                      classes[weakdayIndex][
+                                                                      "classes"]
+                                                                  [index]
+                                                              ["start_time"]
+                                                          .toString()),
                                                   endTime: DateTime.parse(
                                                       classes[weakdayIndex]
-                                                              ["classes"][index]
-                                                          ["end_time"]),
+                                                                  ["classes"][
+                                                              index]["end_time"]
+                                                          .toString()),
                                                   //
                                                   has_class:
                                                       classes[weakdayIndex]

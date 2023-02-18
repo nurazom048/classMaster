@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 class SelectTime extends StatelessWidget {
   bool show;
   dynamic onTap;
-  DateTime time;
+  late DateTime time;
   String time_text;
   SelectTime(
       {super.key,

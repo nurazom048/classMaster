@@ -119,6 +119,9 @@ class _AllRutinsState extends State<HomeScreen> {
                                                   MaterialPageRoute(
                                                       builder: (context) =>
                                                           AllClassScreen(
+                                                            rutinName:
+                                                                myRutines[index]
+                                                                    ["name"],
                                                             rutinId:
                                                                 myRutines[index]
                                                                     ["_id"],
@@ -170,6 +173,9 @@ class _AllRutinsState extends State<HomeScreen> {
                                                   MaterialPageRoute(
                                                       builder: (context) =>
                                                           AllClassScreen(
+                                                            rutinName:
+                                                                myRutines[index]
+                                                                    ["name"],
                                                             rutinId:
                                                                 myRutines[index]
                                                                     ["_id"],
@@ -205,7 +211,7 @@ class _AllRutinsState extends State<HomeScreen> {
   }
 
 //.... Create Rutin
-  void _showDialog(context, RutinName) {
+  void _showDialog(context, rutinName) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -215,7 +221,7 @@ class _AllRutinsState extends State<HomeScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
-                controller: RutinName,
+                controller: rutinName,
                 decoration: const InputDecoration(hintText: "Enter Rutin name"),
               ),
               const SizedBox(height: 17),
