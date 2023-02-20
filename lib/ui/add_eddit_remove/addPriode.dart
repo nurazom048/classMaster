@@ -54,7 +54,7 @@ class _AppPriodePageState extends State<AppPriodePage> {
                         ),
                       ],
                     ),
-
+                    const SizedBox(height: 70),
                     //
                     Align(
                       alignment: Alignment.center,

@@ -9,6 +9,7 @@ class CustomRutinCard extends StatelessWidget {
   String rutinname;
   String? name, username, profilePicture;
   dynamic onTap, onLongPress;
+
   CustomRutinCard({
     super.key,
     required this.rutinname,
@@ -164,6 +165,7 @@ class MiniAccountCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 50,
+      width: 248,
       color: Colors.black12,
       child: Row(
         children: [

@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/old/freash.dart';
 import 'package:table/ui/bottom_items/Home/class/all_class-rutin.dart';
+import 'package:table/ui/bottom_items/Home/search_page.dart';
 import 'package:table/ui/server/homeRequest.dart';
 import 'package:table/widgets/TopBar.dart';
 import 'package:table/widgets/custom_rutin_card.dart';
@@ -62,12 +63,20 @@ class _AllRutinsState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              //... topbar .../
+              //... Appbar .../
               CustomTopBar(
                 "All Rutins",
+                acction: IconButton(
+                    onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SearchPage())),
+                    icon: const Icon(Icons.search)),
                 icon: Icons.add_circle_outlined,
                 ontap: () => _showDialog(context, rutinName),
               ),
+
+              //
               SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 physics: const BouncingScrollPhysics(),
@@ -94,6 +103,7 @@ class _AllRutinsState extends State<HomeScreen> {
                                 var myRutines = snapshoot.data;
                                 print("data");
                                 print(myRutines![0]["_id"]);
+
                                 return Row(
                                   children: List.generate(
                                       myRutines.isEmpty ? 1 : myRutines.length,

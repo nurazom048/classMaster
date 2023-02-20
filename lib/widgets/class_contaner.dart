@@ -11,6 +11,7 @@ class ClassContainer extends StatelessWidget {
   var weakday;
   dynamic onTap, onLongPress;
   dynamic weakdayIndex;
+  bool? isLast;
 
   ClassContainer({
     Key? key,
@@ -30,6 +31,7 @@ class ClassContainer extends StatelessWidget {
     this.onTap,
     this.onLongPress,
     required this.weakdayIndex,
+    this.isLast = false,
   }) : super(key: key);
 
   @override
@@ -69,7 +71,7 @@ class ClassContainer extends StatelessWidget {
                       _Running(newStart, newEnd),
                       Text(instractorname),
                       Text(subCode),
-                      Text(roomnum),
+                      Text(end.toString()),
                     ],
                   ),
                   const Spacer(),
@@ -78,6 +80,7 @@ class ClassContainer extends StatelessWidget {
             ),
           ),
         ),
+        EndcrossContainer(end, 5, isLast ?? false),
       ],
     );
   }
@@ -112,6 +115,34 @@ class ClassContainer extends StatelessWidget {
       return Container(
         height: 100,
         width: crossContanerWidth(start, previous_end),
+        decoration: const BoxDecoration(
+            border: Border(right: BorderSide(color: Colors.black, width: 1))),
+        child: Container(
+          decoration: BoxDecoration(
+              color: getColor(weakdayIndex),
+              borderRadius: BorderRadius.circular(3)),
+          child: const Center(child: Icon(Icons.clear_rounded)),
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
+//... if there is no class THEN RETUN Cross contaner
+  Widget EndcrossContainer(num end, var lastPriode, bool islast) {
+    // .. calculate width
+    double crossContanerWidth(num end, num lastPriode) {
+      num size = lastPriode - end >= 1 ? lastPriode - end : 0;
+
+      return size * 100;
+    }
+
+    //
+    if (lastPriode - end >= 1 && islast) {
+      return Container(
+        height: 100,
+        width: crossContanerWidth(end, lastPriode),
         decoration: const BoxDecoration(
             border: Border(right: BorderSide(color: Colors.black, width: 1))),
         child: Container(

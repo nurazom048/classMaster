@@ -32,8 +32,8 @@ class AllClassScreen extends StatefulWidget {
 class _RutinScreemState extends State<AllClassScreen> {
   List<Map<String, dynamic>> classes = [];
 
-  //String base = "192.168.0.125:3000";
-  String base = "192.168.31.229:3000";
+  String base = "192.168.0.125:3000";
+  // String base = "192.168.31.229:3000";
 
   String? message;
   //.. get all rutines ...
@@ -265,6 +265,12 @@ class _RutinScreemState extends State<AllClassScreen> {
                                                       ["weekday"],
 
                                                   weakdayIndex: weakdayIndex,
+                                                  // is last
+                                                  isLast: index ==
+                                                      classes[weakdayIndex]
+                                                                  ["classes"]
+                                                              .length -
+                                                          1,
 
                                                   ///..... ontap to summary screen
                                                   onTap: () => Navigator.push(
@@ -502,7 +508,7 @@ _onLongpress_class(context, classId, message) {
     final String? getToken = prefs.getString('Token');
 
     final response = await http.delete(
-        Uri.parse('http://192.168.31.229:3000/class/delete/$classId'),
+        Uri.parse('http://192.168.0.125:3000/class/delete/$classId'),
         headers: {'Authorization': 'Bearer $getToken'});
 
     //.. show message
