@@ -1,154 +1,124 @@
-// ignore_for_file: unused_element, unrelated_type_equality_checks
+// ignore_for_file: avoid_print
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-import 'package:table/provider/topTimeProvider.dart';
+import 'package:table/widgets/select_time.dart';
+import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 
-class AddPriodePage extends StatefulWidget {
-  const AddPriodePage({super.key});
+class AppPriodePage extends StatefulWidget {
+  const AppPriodePage({super.key});
 
   @override
-  State<AddPriodePage> createState() => _AddPriodePageState();
+  State<AppPriodePage> createState() => _AppPriodePageState();
 }
 
-//
-
-final _startTimeController = TextEditingController();
-final _endTimeController = TextEditingController();
-
-class _AddPriodePageState extends State<AddPriodePage> {
-  //
-
-  DateTime startTime = DateTime(2022, 01, 01);
-  DateTime endTime = DateTime(2022, 01, 01);
+class _AppPriodePageState extends State<AppPriodePage> {
+  DateTime startTime = DateTime.now();
+  DateTime endTime = DateTime.now();
   bool show = false;
-
-  //
-  void addNewClass() {
-    Map<String, dynamic> newPriode = {
-      "start_time": startTime,
-      "end_time": endTime,
-    };
-    var mypriodelist = Provider.of<TopPriodeProvider>(context, listen: false)
-        .addpriode(newPriode);
-
-    //  Navigator.pop(context);
-    print("object");
-  }
 
   @override
   Widget build(BuildContext context) {
-    var myList = Provider.of<TopPriodeProvider>(context).mypriodelist;
-
-    // print(now.weekday);
-    return Scaffold(
-      appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-//
-            // MyText("  Start and end time "),
-            // Text(DateFormat.EEEE().format(now).toString()),
-            Row(
-              children: [
-                Expanded(
-                    child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.red),
-                    borderRadius: BorderRadius.circular(7),
-                  ),
-                  padding: EdgeInsets.all(10),
-                  child: InkWell(
-                    onTap: () => showTimePicker(
-                            context: context, initialTime: TimeOfDay.now())
-                        .then((value) {
-                      if (value != null) {
-                        setState(() {
-                          show = true;
-                          startTime =
-                              DateTime(2023, 01, 01, value.hour, value.minute)
-                                  .add(const Duration(days: 0));
-                        });
-                      }
-                    }),
-                    child: Text(
-                      show
-                          ? DateFormat.jm().format(startTime)
-                          : "Start Time yyy",
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ),
-                )),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: TextFormField(
-                    controller: _endTimeController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(7),
-                        borderSide: const BorderSide(
-                          color: Colors.black12,
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Add Priode'),
+        ),
+        body: CustomScrollView(
+          slivers: [
+            SliverFillRemaining(
+                child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    MyText(" Start and end time "),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SelectTime(
+                          width: 170,
+                          time_text: "start_time",
+                          time: startTime,
+                          show: show,
+                          onTap: _selectStartTime,
                         ),
-                      ),
-                      suffixIcon: InkWell(
-                        onTap: () {
-                          // your callback here
-                          showTimePicker(
-                                  context: context,
-                                  initialTime: TimeOfDay(
-                                      hour: startTime.hour,
-                                      minute: startTime.minute))
-                              .then((value) {
-                            if (value != null) {
-                              setState(() {
-                                show = true;
-
-                                endTime = DateTime(
-                                        2022, 01, 02, value.hour, value.minute)
-                                    .add(const Duration(days: 0));
-                              });
-                            }
-                          });
-                        },
-                        child: const Icon(Icons.calendar_today),
-                      ),
-                      hintText:
-                          show ? DateFormat.jm().format(endTime) : "End Time",
+                        // const SizedBox(width: 5),
+                        // Expanded(
+                        SelectTime(
+                          width: 170,
+                          time_text: "end time",
+                          time: endTime,
+                          show: show,
+                          onTap: _selectEndTime,
+                        ),
+                      ],
                     ),
-                    validator: (value) {
-                      if (value == null ||
-                          value.isEmpty ||
-                          value.runtimeType == "srting") {
-                        return "Please enter a valid number";
-                      }
-                    },
-                  ),
-                ),
-              ],
-            ),
 
-            //
+                    //
+                    Align(
+                      alignment: Alignment.center,
+                      child: CupertinoButton(
+                          child: Text("Eddit"),
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(7),
+                          onPressed: () {
+                            // final isvalidfrom = fromKey.currentState!.validate();
+                            // if (isvalidfrom) {
 
-//..............
-            const Spacer(flex: 3),
-            Align(
-              alignment: Alignment.center,
-              child: CupertinoButton(
-                child: Text("Submit"),
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(7),
-                onPressed: addNewClass,
-              ),
-            ),
-
-            const Spacer(flex: 17),
+                            // }
+                          }),
+                    ),
+                  ]),
+            ))
           ],
         ),
       ),
     );
+  }
+
+  //--- start time
+
+  void _selectStartTime() {
+    showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    ).then((value) {
+      if (value != null) {
+        String hour = "${value.hour < 10 ? '0' : ''}${value.hour}";
+        String minute = "${value.minute < 10 ? '0' : ''}${value.minute}";
+        DateTime selecteTime = DateTime.parse("2021-12-23 $hour:$minute:00");
+
+        setState(() {
+          show = true;
+          startTime = selecteTime;
+          // startTimeDemo = selecteTime;
+          print(startTime.toIso8601String());
+        });
+      }
+    });
+  }
+
+  //--- end time
+  void _selectEndTime() {
+    showTimePicker(
+            context: context,
+            initialTime:
+                TimeOfDay(hour: startTime.hour, minute: startTime.minute))
+        .then((value) {
+      if (value != null) {
+        String hour = "${value.hour < 10 ? '0' : ''}${value.hour}";
+        String minute = "${value.minute < 10 ? '0' : ''}${value.minute}";
+        DateTime selecteEndTime = DateTime.parse("2021-12-23 $hour:$minute:00");
+        //
+        setState(() {
+          show = true;
+
+          endTime = selecteEndTime;
+          //endTimDemo = selecteEndTime;
+          print(endTime.toIso8601String());
+        });
+      }
+    });
   }
 }

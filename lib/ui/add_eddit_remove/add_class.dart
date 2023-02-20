@@ -1,4 +1,4 @@
-// ignore_for_file: sort_child_properties_last, avoid_print, prefer_typing_uninitialized_variables, must_be_immutable, unnecessary_string_interpolations
+// ignore_for_file: sort_child_properties_last, avoid_print, prefer_typing_uninitialized_variables, must_be_immutable, unnecessary_string_interpolations, sized_box_for_whitespace
 import 'dart:convert';
 import 'dart:math';
 import 'package:http/http.dart' as http;
@@ -246,112 +246,86 @@ class _AddClassState extends State<AddClass> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(sevendays[_selectedDay - 1].toString())),
-      body: Form(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        key: fromKey,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Spacer(flex: 1),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            MyText("Select Day"),
 
-              MyText("Select Day"),
+            DropdownButtonFormField(
+              value: _selectedDay,
+              items: _dayItems,
+              onChanged: (value) => setState(() => _selectedDay = value!),
+              decoration: InputDecoration(
+                hintText: "Select a day",
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(7),
+                    borderSide: const BorderSide(color: Colors.black12)),
+              ),
+            ),
 
-              DropdownButtonFormField(
-                value: _selectedDay,
-                items: _dayItems,
-                onChanged: (value) => setState(() => _selectedDay = value!),
-                decoration: InputDecoration(
-                  hintText: "Select a day",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(7),
-                      borderSide: const BorderSide(color: Colors.black12)),
+            ///...Class name
+            MyTextField(
+              name: "Class name",
+              controller: _className,
+            ),
+
+            ///...Instructor name
+            MyTextField(
+              name: "Instructor namer",
+              controller: _instructorController,
+            ),
+
+            ///.... room number
+            MyTextField(
+              name: "room number",
+              controller: _roomController,
+            ),
+            MyTextField(
+              name: "sub_code",
+              controller: _subCodeController,
+            ),
+
+            //
+
+            MyText(" Start and end time "),
+
+            Row(
+              children: [
+                SelectTime(
+                  width: MediaQuery.of(context).size.width / 2.1,
+                  time_text: "start_time",
+                  time: startTimeDemo,
+                  show: show,
+                  onTap: () => _selectStartTime(),
                 ),
-              ),
-
-              ///...Class name
-              MyTextField(
-                name: "Class name",
-                controller: _className,
-              ),
-
-              ///...Instructor name
-              MyTextField(
-                name: "Instructor namer",
-                controller: _instructorController,
-              ),
-
-              ///.... room number
-              MyTextField(
-                name: "room number",
-                controller: _roomController,
-              ),
-              MyTextField(
-                name: "sub_code",
-                controller: _subCodeController,
-              ),
-
-              //
-
-              MyText(" Start and end time "),
-
-              Row(
-                children: [
-                  Expanded(
-                    child: SelectTime(
-                      time_text: "start_time",
-                      time: startTimeDemo,
-                      show: show,
-                      onTap: () => _selectStartTime(),
-                    ),
+                const SizedBox(width: 5),
+                Expanded(
+                  child: SelectTime(
+                    width: MediaQuery.of(context).size.width / 2.1,
+                    time_text: "end time",
+                    time: endTimDemo,
+                    show: show,
+                    onTap: _selectEndTime,
                   ),
-                  const SizedBox(width: 5),
-                  Expanded(
-                    child: SelectTime(
-                      time_text: "end time",
-                      time: endTimDemo,
-                      show: show,
-                      onTap: _selectEndTime,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
+            ),
 
-              //
+            // //
 
-              MyText(" Start and end Priode"),
+            MyText(" Start and end Priode"),
 
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                        keyboardType: TextInputType.number,
-                        maxLength: 1,
-                        controller: _startPeriodController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(7),
-                            borderSide: const BorderSide(
-                              color: Colors.black12,
-                            ),
-                          ),
-                          hintText: "Start priode",
-                        ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "End period cannot be empty";
-                          } else {
-                            return "";
-                          }
-                        }),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: TextFormField(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width / 2.2,
+                  child: TextFormField(
                       keyboardType: TextInputType.number,
                       maxLength: 1,
-                      controller: _endPeriodController,
+                      controller: _startPeriodController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(7),
@@ -359,7 +333,7 @@ class _AddClassState extends State<AddClass> {
                             color: Colors.black12,
                           ),
                         ),
-                        hintText: "End priode",
+                        hintText: "Start priode",
                       ),
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -367,39 +341,59 @@ class _AddClassState extends State<AddClass> {
                         } else {
                           return "";
                         }
-                      },
+                      }),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width / 2.2,
+                  child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    maxLength: 1,
+                    controller: _endPeriodController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(7),
+                        borderSide: const BorderSide(
+                          color: Colors.black12,
+                        ),
+                      ),
+                      hintText: "End priode",
                     ),
-                  ),
-                ],
-              ),
-
-              //.............. Submit botton ..............//
-              const Spacer(flex: 3),
-              Align(
-                alignment: Alignment.center,
-                child: CupertinoButton(
-                    child: Text(widget.isEdit == true ? "Eddit" : "Submit"),
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(7),
-                    onPressed: () {
-                      print("ontap submit btn");
-                      widget.isEdit == true
-                          ? editClass(context)
-                          : addClass(context);
-                      if (message != null) {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(SnackBar(content: Text(message!)));
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "End period cannot be empty";
+                      } else {
+                        return "";
                       }
-                      // final isvalidfrom = fromKey.currentState!.validate();
-                      // if (isvalidfrom) {
+                    },
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 30),
+            //.............. Submit botton ..............//
 
-                      // }
-                    }),
-              ),
+            Align(
+              alignment: Alignment.center,
+              child: CupertinoButton(
+                  child: Text(widget.isEdit == true ? "Eddit" : "Submit"),
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(7),
+                  onPressed: () {
+                    print("ontap submit btn");
+                    widget.isEdit == true
+                        ? editClass(context)
+                        : addClass(context);
+                    if (message != null) {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text(message!)));
+                    }
+                    // final isvalidfrom = fromKey.currentState!.validate();
+                    // if (isvalidfrom) {
 
-              const Spacer(flex: 17),
-            ],
-          ),
+                    // }
+                  }),
+            ),
+          ],
         ),
       ),
     );

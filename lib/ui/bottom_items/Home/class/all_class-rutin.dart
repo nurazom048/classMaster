@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/provider/topTimeProvider.dart';
+import 'package:table/ui/add_eddit_remove/addPriode.dart';
 import 'package:table/ui/add_eddit_remove/add_class.dart';
 import 'package:table/ui/bottom_items/Home/class/sunnary/summary_screen.dart';
 
@@ -396,6 +397,31 @@ class _RutinScreemState extends State<AllClassScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
+                  BottomText(
+                    "Add Class",
+                    onPressed: () => Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                          fullscreenDialog: true,
+                          builder: (context) => AddClass(
+                                rutinId: widget.rutinId,
+                                classId: id,
+                                isEdit: true,
+                              )),
+                    ),
+                  ),
+
+                  BottomText(
+                    "Add Priode",
+                    onPressed: () => Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                          fullscreenDialog: true,
+                          builder: (context) => AppPriodePage()),
+                    ),
+                  ),
+
+                  //
                   opres["isOwner"] == true
                       ? ListTile(
                           leading: Icon(Icons.edit),

@@ -7,17 +7,21 @@ class SelectTime extends StatelessWidget {
   bool show;
   dynamic onTap;
   late DateTime time;
+  final double width;
   String time_text;
   SelectTime(
       {super.key,
       required this.onTap,
       required this.time_text,
       required this.time,
-      required this.show});
+      required this.show,
+      required this.width});
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 50,
+      width: width,
       decoration: BoxDecoration(
           border: Border.all(color: Colors.black12),
           borderRadius: BorderRadius.circular(7)),
