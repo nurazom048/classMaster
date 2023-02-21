@@ -29,23 +29,26 @@ class _EdditAccountState extends State<EdditAccount> {
     final prefs = await SharedPreferences.getInstance();
     final getImagePath = prefs.getString('Image');
     final String? getToken = prefs.getString('Token');
+    print(getImagePath);
+    print(getToken);
 
-    final url = Uri.parse('http://192.168.31.229:3000/account/eddit');
+    final url = Uri.parse('http://192.168.0.125:3000/account/eddit');
 
     // 1.. request
     final request = http.MultipartRequest('POST', url);
 
     request.headers.addAll({'Authorization': 'Bearer $getToken'});
 
-    request.fields['name'] = name;
+    request.fields['image'] = name;
     if (getImagePath != null) {
       final imagePart =
           await http.MultipartFile.fromPath('image', getImagePath);
+      print("image path");
       request.files.add(imagePart);
     }
 
     final response = await request.send();
-    if (response.statusCode == 200) {
+    if (response.statusCode != 200) {
       Navigator.pop(context);
       print('Account updated successfully');
     } else {

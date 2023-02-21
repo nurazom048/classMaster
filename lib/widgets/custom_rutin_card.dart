@@ -97,7 +97,7 @@ class CustomRutinCard extends StatelessWidget {
                 ],
               ),
               MiniAccountCard(
-                name: name ?? "             ",
+                name: name ?? "",
                 username: username ?? "             ",
                 profilePicture: profilePicture ?? "",
               ),

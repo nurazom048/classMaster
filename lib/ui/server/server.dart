@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:table/ui/bottom_items/bottm_nev_bar.dart';
+import 'package:table/widgets/Alart.dart';
 
 class AuthReq {
 //........ Login .........//
@@ -37,10 +38,10 @@ class AuthReq {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const BottomNevBar()));
       } else {
-        throw Exception('Failed to load data');
+        Alart().errorAlartDilog(context, message!);
       }
     } catch (e) {
-      print(e);
+      Alart().errorAlartDilog(context, "server error");
     }
   }
 }

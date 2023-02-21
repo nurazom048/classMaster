@@ -5,12 +5,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:table/old/freash.dart';
 import 'package:table/ui/bottom_items/Home/class/all_class-rutin.dart';
 import 'package:table/ui/bottom_items/Home/search_page.dart';
 import 'package:table/ui/server/homeRequest.dart';
 import 'package:table/widgets/TopBar.dart';
 import 'package:table/widgets/custom_rutin_card.dart';
+import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/widgets/text%20and%20buttons/bottomText.dart';
 import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 
@@ -96,7 +96,7 @@ class _AllRutinsState extends State<HomeScreen> {
                             builder: (context, snapshoot) {
                               if (snapshoot.connectionState ==
                                   ConnectionState.waiting) {
-                                return const Text("Waiting");
+                                return const Progressindicator();
                               } else {
                                 // print(myRutines.length);
                                 // print(myRutines[0]["_id"]);
@@ -114,7 +114,8 @@ class _AllRutinsState extends State<HomeScreen> {
                                               child: CustomRutinCard(
                                                 rutinname: myRutines[index]
                                                     ["name"],
-                                                profilePicture: "",
+                                                profilePicture: myRutines[index]
+                                                    ["ownerid"]["image"],
                                                 name: myRutines[index]
                                                     ["ownerid"]["name"],
                                                 username: myRutines[index]
@@ -147,11 +148,11 @@ class _AllRutinsState extends State<HomeScreen> {
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: FutureBuilder(
-                            future: HomeReq().savedRutins(),
+                            future: HomeReq().savedRutins(context),
                             builder: (context, snapshoot) {
                               if (snapshoot.connectionState ==
                                   ConnectionState.waiting) {
-                                return const Text("Waiting");
+                                return const Progressindicator();
                               } else {
                                 // print(myRutines.length);
                                 // print(myRutines[0]["_id"]);
@@ -168,7 +169,8 @@ class _AllRutinsState extends State<HomeScreen> {
                                               child: CustomRutinCard(
                                                 rutinname: myRutines[index]
                                                     ["name"],
-                                                profilePicture: "",
+                                                profilePicture: myRutines[index]
+                                                    ["ownerid"]["image"],
                                                 name: myRutines[index]
                                                     ["ownerid"]["name"],
                                                 username: myRutines[index]

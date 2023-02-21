@@ -3,10 +3,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table/ui/bottom_items/Account/eddit_account.dart';
+import 'package:table/ui/bottom_items/Home/class/all_class-rutin.dart';
 import 'package:table/ui/server/account_req.dart';
 import 'package:table/widgets/AccountCard.dart';
 import 'package:table/widgets/AppBarCustom.dart';
 import 'package:table/widgets/custom_rutin_card.dart';
+import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -23,68 +25,128 @@ class _AccountScreenState extends State<AccountScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            //... AppBar.....//
-            AppbarCustom(
-              title: "Account",
-              actionIcon: IconButton(
-                  icon: const Icon(Icons.more_vert),
-                  onPressed: () {
-                    accountBottomSheet(context);
-                  }),
-            ),
+        body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              //... AppBar.....//
+              AppbarCustom(
+                title: "Account",
+                actionIcon: IconButton(
+                    icon: const Icon(Icons.more_vert),
+                    onPressed: () {
+                      accountBottomSheet(context);
+                    }),
+              ),
 
-            FutureBuilder(
-                future: AccountReq().accountData(),
-                builder: (context, snapshoot) {
-                  if (snapshoot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else {
-                    var accountData = snapshoot.data;
-                    var myRutins = accountData["routines"];
-                    String imageUrl = accountData["image"];
-                    print(imageUrl);
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          //Image.network(imageUrl),
-                          //... Accoumt Info ..//
-                          AccountCard(
-                            ProfilePicture: imageUrl,
-                            name: accountData["name"],
-                            username: accountData["username"],
-                            ontapLogOut: () => _showConfirmationDialog(context),
-                          ),
+              FutureBuilder(
+                  future: AccountReq().accountData(),
+                  builder: (context, snapshoot) {
+                    if (snapshoot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: Progressindicator());
+                    } else {
+                      var accountData = snapshoot.data;
 
-                          //...My Rutiners...//
-                          MyText("my Rutin"),
+                      var myRutins = accountData["routines"];
+                      var save_rutin = accountData["Saved_routines"];
+                      // String imageUrl = accountData["image"];
+                      // print(save_rutin);
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            //Image.network(imageUrl),
+                            //... Accoumt Info ..//
+                            AccountCard(
+                              ProfilePicture: accountData["image"],
+                              name: accountData["name"],
+                              username: accountData["username"],
+                              ontapLogOut: () =>
+                                  _showConfirmationDialog(context),
+                            ),
 
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: List.generate(
-                                myRutins.length,
-                                (index) => InkWell(
-                                  child: CustomRutinCard(
-                                    rutinname: myRutins[index]["name"],
-                                    username: myRutins[index]["ownerid"]
-                                        ["username"],
-                                    name: myRutins[index]["ownerid"]["name"],
+                            //...My Rutiners...//
+                            MyText("my Rutin"),
+
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: List.generate(
+                                  myRutins.length,
+                                  (index) => InkWell(
+                                    child: CustomRutinCard(
+                                      rutinname: myRutins[index]["name"],
+                                      username: myRutins[index]["ownerid"]
+                                          ["username"],
+                                      name: myRutins[index]["ownerid"]["name"],
+                                      profilePicture: myRutins[index]["ownerid"]
+                                          ["image"],
+
+                                      //.. On tap...//
+                                      onTap: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => AllClassScreen(
+                                            rutinName: myRutins[index]["name"],
+                                            rutinId: myRutins[index]["_id"],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-                }),
-          ],
+                            //
+
+                            //... Saved Rutin...///
+
+                            MyText("Saved Rutin"),
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: List.generate(
+                                  save_rutin.length,
+                                  (index) => InkWell(
+                                    child: save_rutin.length == 0
+                                        ? Container()
+                                        : CustomRutinCard(
+                                            rutinname: save_rutin[index]
+                                                ["name"],
+                                            username: save_rutin[index]
+                                                ["ownerid"]["username"],
+                                            name: save_rutin[index]["ownerid"]
+                                                ["name"],
+                                            profilePicture: save_rutin[index]
+                                                ["ownerid"]["image"],
+
+                                            //.. On tap...//
+                                            onTap: () => Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    AllClassScreen(
+                                                  rutinName: save_rutin[index]
+                                                      ["name"],
+                                                  rutinId: save_rutin[index]
+                                                      ["_id"],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  }),
+            ],
+          ),
         ),
       ),
     );

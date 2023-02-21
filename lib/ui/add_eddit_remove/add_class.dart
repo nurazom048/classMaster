@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/MyTextFields.dart';
 import 'package:table/widgets/select_time.dart';
 import '../../widgets/text and buttons/mytext.dart';
@@ -83,22 +84,7 @@ class _AddClassState extends State<AddClass> {
       print("rutin created successfully");
       print(res);
     } else {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Error'),
-              content: Text(message),
-              actions: [
-                ElevatedButton(
-                  child: Text('Ok'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          });
+      Alart().errorAlartDilog(context, message);
     }
   }
 
@@ -230,6 +216,7 @@ class _AddClassState extends State<AddClass> {
 
       // print("${s.runtimeType}   vhey");
     } else {
+      Alart().errorAlartDilog(context, message);
       throw Exception('Failed to load data');
     }
   }

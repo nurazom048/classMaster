@@ -47,6 +47,7 @@ class _RutinScreemState extends State<AllClassScreen> {
         responseMap.forEach((key, value) {
           classes.add({"day": key, "classes": value});
         });
+        print(classes);
       } else {
         throw Exception('Failed to load data');
       }
@@ -122,6 +123,33 @@ class _RutinScreemState extends State<AllClassScreen> {
       print(e);
     }
   }
+  // All priode ..
+
+  Future<List> get_priode() async {
+    // Obtain shared preferences.
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+    try {
+      var url = Uri.parse(
+          "http://192.168.0.125:3000/rutin/all_priode/${widget.rutinId}");
+      //
+      //... 1 send request...//
+      final response = await http.post(url);
+//... 2 Get responce ..//
+      if (response.statusCode == 200) {
+        var priode = json.decode(response.body)["routine"]["priode"] ?? [];
+        print("priode");
+        print(priode);
+        return priode;
+      } else {
+        return [];
+        throw Exception('Failed to load data');
+      }
+    } catch (e) {
+      return [];
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -138,20 +166,25 @@ class _RutinScreemState extends State<AllClassScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //...... Appbar.......!!
-                CustomTopBar(widget.rutinName,
-                    acction: IconButton(
-                        onPressed: () =>
-                            _showModalBottomSheet(context, widget.rutinId),
-                        icon: Icon(Icons.more_vert)), ontap: () {
-                  print("ontap");
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                        fullscreenDialog: true,
-                        builder: (context) =>
-                            AddClass(rutinId: widget.rutinId)),
-                  );
-                }),
+                InkWell(
+                  onTap: () {
+                    get_priode();
+                  },
+                  child: CustomTopBar(widget.rutinName,
+                      acction: IconButton(
+                          onPressed: () =>
+                              _showModalBottomSheet(context, widget.rutinId),
+                          icon: Icon(Icons.more_vert)), ontap: () {
+                    print("ontap");
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                          fullscreenDialog: true,
+                          builder: (context) =>
+                              AddClass(rutinId: widget.rutinId)),
+                    );
+                  }),
+                ),
 
                 //.....Priode rows.....//
                 SingleChildScrollView(
@@ -160,18 +193,31 @@ class _RutinScreemState extends State<AllClassScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: List.generate(
-                          priode.length,
-                          (index) => index == 0
-                              ? Empty(corner: true)
-                              : PriodeContaner(
-                                  startTime: priode[index]["start_time"],
-                                  endtime: priode[index]["end_time"],
-                                  priode: index,
+                      FutureBuilder(
+                          future: get_priode(),
+                          builder: (Context, snapshoot) {
+                            if (snapshoot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else {
+                              var date = snapshoot.data;
+                              print("data");
+                              print(date);
+                              return Row(
+                                children: List.generate(
+                                  date!.length,
+                                  (index) => PriodeContaner(
+                                    startTime: DateTime.parse(
+                                        date[index]["start_time"]),
+                                    endtime:
+                                        DateTime.parse(date[index]["end_time"]),
+                                    priode: index,
+                                    lenght: 1,
+                                  ),
                                 ),
-                        ),
-                      ),
+                              );
+                            }
+                          }),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -186,16 +232,17 @@ class _RutinScreemState extends State<AllClassScreen> {
                                 return Center(
                                     child: CircularProgressIndicator());
                               } else {
-                                // print(classes);
+                                // print("snapshoot.data");
+                                // print(snapshoot.data);
                                 return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   //.... Weakday list
                                   children: List.generate(
                                     7,
                                     (weakdayIndex) {
-                                      DateTime dt = DateTime.parse(classes[0]
-                                          ["classes"][0]["start_time"]);
-                                      print(dt);
+                                      // DateTime dt = DateTime.parse(classes[0]
+                                      //     ["classes"][0]["start_time"]);
+                                      // print(dt);
 
                                       return classes[weakdayIndex]["classes"]
                                               .isEmpty // iwnt to retun a emmty text if the lenght is empth
@@ -423,7 +470,8 @@ class _RutinScreemState extends State<AllClassScreen> {
                       context,
                       CupertinoPageRoute(
                           fullscreenDialog: true,
-                          builder: (context) => AppPriodePage()),
+                          builder: (context) =>
+                              AppPriodePage(rutinId: widget.rutinId)),
                     ),
                   ),
 

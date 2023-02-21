@@ -20,8 +20,11 @@ class _PickImageState extends State<PickImage> {
   Future<void> _pickImage(ImageSource source) async {
     try {
       final picker = ImagePicker();
-      final pickedFile = await picker.getImage(source: source);
+      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
       setState(() {
+        print("image path " + _image.toString());
+
+        print("the image is" + _image.toString());
         if (pickedFile != null) {
           _image = File(pickedFile.path);
 
@@ -34,7 +37,7 @@ class _PickImageState extends State<PickImage> {
         var saveImage = await prefs.setString('Image', _image!.path);
       }
     } catch (e) {
-      print(e);
+      // print(e);
     }
   }
 
