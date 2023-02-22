@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -41,9 +42,10 @@ class AccountReq {
       if (response.statusCode == 200) {
         //.. responce
         final res = json.decode(response.body)["user"];
+        print(res);
         return res;
       } else {
-        print("object");
+        return [];
       }
     } catch (e) {
       print(e);

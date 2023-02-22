@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print
 
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table/models/Account_models.dart';
@@ -28,6 +30,8 @@ class AccountScreen extends StatefulWidget {
 class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
+    print("widget.accountId");
+    print(widget.accountId);
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -52,15 +56,17 @@ class _AccountScreenState extends State<AccountScreen> {
                       : AccountReq().accountData(),
                   builder: (context, snapshoot) {
                     if (snapshoot.connectionState == ConnectionState.waiting) {
+                      print(snapshoot.data);
                       return const Center(child: Progressindicator());
                     } else {
                       var accountData = snapshoot.data;
-                      var loginAccount = AccountModels.fromJson(accountData);
-                      print(loginAccount);
+                      print(snapshoot.data);
+
+                      //
                       var myRutins = accountData["routines"];
                       var save_rutin = accountData["Saved_routines"];
-                      // String imageUrl = accountData["image"];
-                      // print(save_rutin);
+
+                      print(save_rutin);
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: Column(
@@ -69,9 +75,9 @@ class _AccountScreenState extends State<AccountScreen> {
                             //Image.network(imageUrl),
                             //... Accoumt Info ..//
                             AccountCard(
-                              ProfilePicture: loginAccount.image!,
-                              name: loginAccount.name!,
-                              username: loginAccount.username!,
+                              ProfilePicture: " loginAccount[]!",
+                              name: "loginAccount.name!",
+                              username: "loginAccount.username!",
                               ontapLogOut: () =>
                                   _showConfirmationDialog(context),
                             ),
