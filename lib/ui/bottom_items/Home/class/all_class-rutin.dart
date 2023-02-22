@@ -9,7 +9,6 @@ import 'package:table/provider/topTimeProvider.dart';
 import 'package:table/ui/add_eddit_remove/addPriode.dart';
 import 'package:table/ui/add_eddit_remove/add_class.dart';
 import 'package:table/ui/bottom_items/Home/class/sunnary/summary_screen.dart';
-
 import 'package:table/ui/classdetals.dart';
 import 'package:table/provider/myRutinProvider.dart';
 import 'package:table/widgets/TopBar.dart';
@@ -32,8 +31,8 @@ class AllClassScreen extends StatefulWidget {
 class _RutinScreemState extends State<AllClassScreen> {
   List<Map<String, dynamic>> classes = [];
 
-  String base = "192.168.0.125:3000";
-  // String base = "192.168.31.229:3000";
+  //String base = "192.168.0.125:3000";
+  String base = "192.168.31.229:3000";
 
   String? message;
   //.. get all rutines ...
@@ -41,8 +40,10 @@ class _RutinScreemState extends State<AllClassScreen> {
     try {
       final response = await http
           .get(Uri.parse('http://$base/class/${widget.rutinId}/all/class'));
+      var res = json.decode(response.body);
 
       if (response.statusCode == 200) {
+        print(res["priodes"]);
         Map<String, dynamic> responseMap = json.decode(response.body);
         responseMap.forEach((key, value) {
           classes.add({"day": key, "classes": value});
@@ -130,14 +131,13 @@ class _RutinScreemState extends State<AllClassScreen> {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
     try {
-      var url = Uri.parse(
-          "http://192.168.0.125:3000/rutin/all_priode/${widget.rutinId}");
+      var url = Uri.parse("http://$base/rutin/all_priode/${widget.rutinId}");
       //
       //... 1 send request...//
       final response = await http.post(url);
 //... 2 Get responce ..//
       if (response.statusCode == 200) {
-        var priode = json.decode(response.body)["routine"]["priode"] ?? [];
+        var priode = json.decode(response.body) ?? [];
         print("priode");
         print(priode);
         return priode;
@@ -166,25 +166,20 @@ class _RutinScreemState extends State<AllClassScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //...... Appbar.......!!
-                InkWell(
-                  onTap: () {
-                    get_priode();
-                  },
-                  child: CustomTopBar(widget.rutinName,
-                      acction: IconButton(
-                          onPressed: () =>
-                              _showModalBottomSheet(context, widget.rutinId),
-                          icon: Icon(Icons.more_vert)), ontap: () {
-                    print("ontap");
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                          fullscreenDialog: true,
-                          builder: (context) =>
-                              AddClass(rutinId: widget.rutinId)),
-                    );
-                  }),
-                ),
+                CustomTopBar(widget.rutinName,
+                    acction: IconButton(
+                        onPressed: () =>
+                            _showModalBottomSheet(context, widget.rutinId),
+                        icon: Icon(Icons.more_vert)), ontap: () {
+                  print("ontap");
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                        fullscreenDialog: true,
+                        builder: (context) =>
+                            AddClass(rutinId: widget.rutinId)),
+                  );
+                }),
 
                 //.....Priode rows.....//
                 SingleChildScrollView(
@@ -193,31 +188,39 @@ class _RutinScreemState extends State<AllClassScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      FutureBuilder(
-                          future: get_priode(),
-                          builder: (Context, snapshoot) {
-                            if (snapshoot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
-                            } else {
-                              var date = snapshoot.data;
-                              print("data");
-                              print(date);
-                              return Row(
-                                children: List.generate(
-                                  date!.length,
-                                  (index) => PriodeContaner(
-                                    startTime: DateTime.parse(
-                                        date[index]["start_time"]),
-                                    endtime:
-                                        DateTime.parse(date[index]["end_time"]),
-                                    priode: index,
-                                    lenght: 1,
-                                  ),
-                                ),
-                              );
-                            }
-                          }),
+                      Row(
+                        children: [
+                          Empty(corner: true),
+
+                          //.... Show priode ...//
+                          FutureBuilder(
+                              future: get_priode(),
+                              builder: (Context, snapshoot) {
+                                if (snapshoot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return Center(
+                                      child: CircularProgressIndicator());
+                                } else {
+                                  var date = snapshoot.data;
+                                  print("data");
+                                  print(date);
+                                  return Row(
+                                    children: List.generate(
+                                      date!.length,
+                                      (index) => PriodeContaner(
+                                        startTime: DateTime.parse(
+                                            date[index]["start_time"]),
+                                        endtime: DateTime.parse(
+                                            date[index]["end_time"]),
+                                        priode: index,
+                                        lenght: 1,
+                                      ),
+                                    ),
+                                  );
+                                }
+                              }),
+                        ],
+                      ),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

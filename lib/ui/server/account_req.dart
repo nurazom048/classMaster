@@ -3,9 +3,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class AccountReq {
-  String base = "http://192.168.0.125:3000";
+  //String base = "http://192.168.0.125:3000";
   //String base = "localhost:3000";
-  //String base = "http://192.168.31.229:3000";
+  String base = "http://192.168.31.229:3000";
 
 //
 //... Account data

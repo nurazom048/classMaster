@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:table/models/Account_models.dart';
 import 'package:table/ui/bottom_items/Account/eddit_account.dart';
 import 'package:table/ui/bottom_items/Home/class/all_class-rutin.dart';
 import 'package:table/ui/server/account_req.dart';
@@ -47,7 +48,8 @@ class _AccountScreenState extends State<AccountScreen> {
                       return const Center(child: Progressindicator());
                     } else {
                       var accountData = snapshoot.data;
-
+                      var loginAccount = AccountModels.fromJson(accountData);
+                      print(loginAccount);
                       var myRutins = accountData["routines"];
                       var save_rutin = accountData["Saved_routines"];
                       // String imageUrl = accountData["image"];
@@ -60,9 +62,9 @@ class _AccountScreenState extends State<AccountScreen> {
                             //Image.network(imageUrl),
                             //... Accoumt Info ..//
                             AccountCard(
-                              ProfilePicture: accountData["image"],
-                              name: accountData["name"],
-                              username: accountData["username"],
+                              ProfilePicture: loginAccount.image!,
+                              name: loginAccount.name!,
+                              username: loginAccount.name!,
                               ontapLogOut: () =>
                                   _showConfirmationDialog(context),
                             ),

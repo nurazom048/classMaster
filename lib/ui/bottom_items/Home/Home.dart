@@ -5,9 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:table/models/RutinOverviewModels.dart';
 import 'package:table/ui/bottom_items/Home/class/all_class-rutin.dart';
 import 'package:table/ui/bottom_items/Home/search_page.dart';
 import 'package:table/ui/server/homeRequest.dart';
+import 'package:table/widgets/AccountCard.dart';
 import 'package:table/widgets/TopBar.dart';
 import 'package:table/widgets/custom_rutin_card.dart';
 import 'package:table/widgets/progress_indicator.dart';
@@ -101,8 +103,12 @@ class _AllRutinsState extends State<HomeScreen> {
                                 // print(myRutines.length);
                                 // print(myRutines[0]["_id"]);
                                 var myRutines = snapshoot.data;
-                                print("data");
-                                print(myRutines![0]["_id"]);
+                                //  print("data");
+                                //print(myRutines![0]["_id"]);
+                                var from =
+                                    RutinOverviewModels.fromJson(myRutines![0]);
+                                print("from");
+                                print(from);
 
                                 return Row(
                                   children: List.generate(
