@@ -62,6 +62,8 @@ class _AllRutinsState extends State<HomeScreen> {
       child: Scaffold(
         backgroundColor: Colors.white54,
         body: SingleChildScrollView(
+          padding: const EdgeInsets.only(bottom: 60),
+          physics: const BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -72,7 +74,7 @@ class _AllRutinsState extends State<HomeScreen> {
                     onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const SearchPage())),
+                            builder: (context) => const SearchPAge())),
                     icon: const Icon(Icons.search)),
                 icon: Icons.add_circle_outlined,
                 ontap: () => _showDialog(context, rutinName),
@@ -125,7 +127,7 @@ class _AllRutinsState extends State<HomeScreen> {
                                                 name: myRutines[index]
                                                     ["ownerid"]["name"],
                                                 username: myRutines[index]
-                                                    ["ownerid"]["name"],
+                                                    ["ownerid"]["username"],
 
                                                 //
                                               ),
@@ -180,7 +182,11 @@ class _AllRutinsState extends State<HomeScreen> {
                                                 name: myRutines[index]
                                                     ["ownerid"]["name"],
                                                 username: myRutines[index]
-                                                    ["ownerid"]["name"],
+                                                    ["ownerid"]["username"],
+                                                // last_update: myRutines[index]
+                                                //             ["last_summary"]
+                                                //         ["text"] ??
+                                                //     "",
 
                                                 //
                                               ),

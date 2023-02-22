@@ -13,13 +13,17 @@ import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 
 class AccountScreen extends StatefulWidget {
+  String? accountId;
   AccountScreen({
     super.key,
+    this.accountId,
   });
 
   @override
   State<AccountScreen> createState() => _AccountScreenState();
 }
+
+//
 
 class _AccountScreenState extends State<AccountScreen> {
   @override
@@ -28,6 +32,7 @@ class _AccountScreenState extends State<AccountScreen> {
       child: Scaffold(
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.only(bottom: 40),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -42,7 +47,9 @@ class _AccountScreenState extends State<AccountScreen> {
               ),
 
               FutureBuilder(
-                  future: AccountReq().accountData(),
+                  future: widget.accountId != null
+                      ? AccountReq().view_account(pramsId: widget.accountId)
+                      : AccountReq().accountData(),
                   builder: (context, snapshoot) {
                     if (snapshoot.connectionState == ConnectionState.waiting) {
                       return const Center(child: Progressindicator());
@@ -64,7 +71,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             AccountCard(
                               ProfilePicture: loginAccount.image!,
                               name: loginAccount.name!,
-                              username: loginAccount.name!,
+                              username: loginAccount.username!,
                               ontapLogOut: () =>
                                   _showConfirmationDialog(context),
                             ),

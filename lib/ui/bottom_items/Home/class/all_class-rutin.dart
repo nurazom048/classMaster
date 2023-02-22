@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/provider/topTimeProvider.dart';
 import 'package:table/ui/add_eddit_remove/addPriode.dart';
 import 'package:table/ui/add_eddit_remove/add_class.dart';
+import 'package:table/ui/bottom_items/Account/Account_screen.dart';
 import 'package:table/ui/bottom_items/Home/class/sunnary/summary_screen.dart';
 import 'package:table/ui/classdetals.dart';
 import 'package:table/provider/myRutinProvider.dart';
@@ -356,13 +357,25 @@ class _RutinScreemState extends State<AllClassScreen> {
                 ///
                 ///
                 ///
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text("Owner Account",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Colors.black)),
+                InkWell(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AccountScreen(
+                        accountId: opres["user"]["_id"],
+                        // rutinName: seach_result[index]["name"],
+                        // rutinId: seach_result[index]["_id"],
+                      ),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("Owner Account",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: Colors.black)),
+                  ),
                 ),
                 FutureBuilder(
                     future: chackStatus(),

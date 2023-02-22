@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table/widgets/days_container.dart';
 import 'package:table/widgets/text%20and%20buttons/empty.dart';
+import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 
 class CustomRutinCard extends StatelessWidget {
   String rutinname;
   String? name, username, profilePicture;
   dynamic onTap, onLongPress;
+  String? last_update;
 
   CustomRutinCard({
     super.key,
@@ -18,6 +20,7 @@ class CustomRutinCard extends StatelessWidget {
     this.profilePicture,
     this.onTap,
     this.onLongPress,
+    this.last_update,
   });
 
   List<Map<String, dynamic>> mypriodelist = [
@@ -59,6 +62,7 @@ class CustomRutinCard extends StatelessWidget {
           onTap: onTap,
           onLongPress: onLongPress,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Stack(
                 children: [
@@ -67,15 +71,41 @@ class CustomRutinCard extends StatelessWidget {
                     children: [
                       SingleChildScrollView(
                           scrollDirection: Axis.horizontal, child: Priode()),
-                      Wrap(
-                          direction: Axis.vertical,
-                          children: List.generate(
-                            3,
-                            (index) => DaysContaner(
-                              indexofdate: index,
-                              ismini: true,
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Wrap(
+                              direction: Axis.vertical,
+                              children: List.generate(
+                                3,
+                                (index) => DaysContaner(
+                                  indexofdate: index,
+                                  ismini: true,
+                                ),
+
+                                //
+                              )),
+
+                          //
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
                             ),
-                          )),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    MyText("Last Update"),
+                                  ],
+                                ),
+                                const SizedBox(height: 2),
+                                //
+                                Text(last_update ?? "")
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     ],
                   ),
 
@@ -165,7 +195,7 @@ class MiniAccountCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 50,
-      width: 248,
+      width: 240,
       color: Colors.black12,
       child: Row(
         children: [

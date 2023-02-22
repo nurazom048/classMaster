@@ -25,4 +25,28 @@ class AccountReq {
       throw Exception('Failed to load data');
     }
   }
+
+  //
+
+  Future<dynamic> view_account({pramsId}) async {
+    try {
+      // Obtain shared preferences.
+      final prefs = await SharedPreferences.getInstance();
+      final String? getToken = prefs.getString('Token');
+
+      final response = await http.post(
+          Uri.parse('$base/account/view_others/:$pramsId'),
+          headers: {'Authorization': 'Bearer $getToken'});
+
+      if (response.statusCode == 200) {
+        //.. responce
+        final res = json.decode(response.body)["user"];
+        return res;
+      } else {
+        print("object");
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 }
