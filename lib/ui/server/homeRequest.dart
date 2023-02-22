@@ -5,8 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:table/widgets/Alart.dart';
 
 class HomeReq {
-  //String base = "http://192.168.0.125:3000";
-  String base = "http://192.168.31.229:3000";
+  String base = "http://192.168.0.125:3000";
+  //String base = "http://192.168.31.229:3000";
   String? message;
 //... myall rutin ,,,//
   Future<List> myAllRutin() async {

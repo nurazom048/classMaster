@@ -29,26 +29,39 @@ class AllClassScreen extends StatefulWidget {
 }
 
 class _RutinScreemState extends State<AllClassScreen> {
+  ///
   List<Map<String, dynamic>> classes = [];
 
-  //String base = "192.168.0.125:3000";
-  String base = "192.168.31.229:3000";
-
+  var Priodes = [];
   String? message;
+  //
+  String base = "192.168.0.125:3000";
+  // String base = "192.168.31.229:3000";
+
   //.. get all rutines ...
-  Future allrutin() async {
+  Future rutins_class_and_priode() async {
     try {
       final response = await http
           .get(Uri.parse('http://$base/class/${widget.rutinId}/all/class'));
       var res = json.decode(response.body);
+      // print(res);
 
       if (response.statusCode == 200) {
-        print(res["priodes"]);
-        Map<String, dynamic> responseMap = json.decode(response.body);
+        //..... priodes...///
+        var pr = json.decode(response.body)["priodes"];
+
+        // print("pr");
+        // print(pr);
+        Priodes = pr;
+
+        //... Classers....//
+
+        Map<String, dynamic> responseMap =
+            json.decode(response.body)["Classes"];
         responseMap.forEach((key, value) {
           classes.add({"day": key, "classes": value});
         });
-        print(classes);
+        // print(classes);
       } else {
         throw Exception('Failed to load data');
       }
@@ -124,32 +137,6 @@ class _RutinScreemState extends State<AllClassScreen> {
       print(e);
     }
   }
-  // All priode ..
-
-  Future<List> get_priode() async {
-    // Obtain shared preferences.
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
-    try {
-      var url = Uri.parse("http://$base/rutin/all_priode/${widget.rutinId}");
-      //
-      //... 1 send request...//
-      final response = await http.post(url);
-//... 2 Get responce ..//
-      if (response.statusCode == 200) {
-        var priode = json.decode(response.body) ?? [];
-        print("priode");
-        print(priode);
-        return priode;
-      } else {
-        return [];
-        throw Exception('Failed to load data');
-      }
-    } catch (e) {
-      return [];
-      print(e);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -194,24 +181,24 @@ class _RutinScreemState extends State<AllClassScreen> {
 
                           //.... Show priode ...//
                           FutureBuilder(
-                              future: get_priode(),
+                              future: rutins_class_and_priode(),
                               builder: (Context, snapshoot) {
                                 if (snapshoot.connectionState ==
                                     ConnectionState.waiting) {
                                   return Center(
                                       child: CircularProgressIndicator());
                                 } else {
-                                  var date = snapshoot.data;
+                                  // var date = snapshoot.data;
                                   print("data");
-                                  print(date);
+                                  // print(Priodes);
                                   return Row(
                                     children: List.generate(
-                                      date!.length,
+                                      Priodes.length,
                                       (index) => PriodeContaner(
                                         startTime: DateTime.parse(
-                                            date[index]["start_time"]),
+                                            Priodes[index]["start_time"]),
                                         endtime: DateTime.parse(
-                                            date[index]["end_time"]),
+                                            Priodes[index]["end_time"]),
                                         priode: index,
                                         lenght: 1,
                                       ),
@@ -228,7 +215,7 @@ class _RutinScreemState extends State<AllClassScreen> {
 
                           ///.. show all class
                           FutureBuilder(
-                            future: allrutin(),
+                            future: rutins_class_and_priode(),
                             builder: (Context, snapshoot) {
                               if (snapshoot.connectionState ==
                                   ConnectionState.waiting) {
