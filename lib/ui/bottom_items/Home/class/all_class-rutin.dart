@@ -36,8 +36,8 @@ class _RutinScreemState extends State<AllClassScreen> {
   var Priodes = [];
   String? message;
   //
-  String base = "192.168.0.125:3000";
-  // String base = "192.168.31.229:3000";
+  // String base = "192.168.0.125:3000";
+  String base = "192.168.31.229:3000";
 
   //.. get all rutines ...
   Future rutins_class_and_priode() async {
@@ -386,42 +386,53 @@ class _RutinScreemState extends State<AllClassScreen> {
                       } else {
                         // print(" hi the res ");
                         // print(" hi the res ${opres["user"]["username"]}");
-                        return Container(
-                          margin: const EdgeInsets.symmetric(vertical: 20),
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          height: 100,
-                          width: MediaQuery.of(context).size.width,
-                          color: Colors.black12,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            // ignore: prefer_const_literals_to_create_immutables
-                            children: [
-                              CircleAvatar(
-                                radius: 30,
-                                backgroundColor: Colors.amber,
+                        return InkWell(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AccountScreen(
+                                Others_Account: true,
+                                accountUsername: opres["user"]["username"],
                               ),
-                              //
-                              Spacer(flex: 3),
-                              Text.rich(
-                                TextSpan(
-                                    text: opres["user"]["name"],
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                        color: Colors.black),
-                                    children: [
-                                      TextSpan(
-                                          text:
-                                              '\n${opres["user"]["username"]}',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                          ))
-                                    ]),
-                              ),
-                              Spacer(flex: 40),
-                            ],
+                            ),
+                          ),
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(vertical: 20),
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            height: 100,
+                            width: MediaQuery.of(context).size.width,
+                            color: Colors.black12,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              // ignore: prefer_const_literals_to_create_immutables
+                              children: [
+                                CircleAvatar(
+                                  radius: 30,
+                                  backgroundColor: Colors.amber,
+                                ),
+                                //
+                                Spacer(flex: 3),
+                                Text.rich(
+                                  TextSpan(
+                                      text: opres["user"]["name"],
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                          color: Colors.black),
+                                      children: [
+                                        TextSpan(
+                                            text:
+                                                '\n${opres["user"]["username"]}',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                            ))
+                                      ]),
+                                ),
+                                Spacer(flex: 40),
+                              ],
+                            ),
                           ),
                         );
                       }

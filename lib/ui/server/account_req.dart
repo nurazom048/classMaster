@@ -4,18 +4,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class AccountReq {
-  String base = "http://192.168.0.125:3000";
-  //String base = "localhost:3000";
-  // String base = "http://192.168.31.229:3000";
+  // String base = "http://192.168.0.125:3000";
+  String base = "http://192.168.31.229:3000";
 
 //
 //... Account data
-  Future<dynamic> accountData() async {
+  Future<dynamic> accountData(username) async {
     // Obtain shared preferences.
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 
-    final response = await http.post(Uri.parse('$base/rutin/allrutins'),
+    final response = await http.post(
+        Uri.parse('$base/account/view_others/:${username ?? "unknown"}'),
         headers: {'Authorization': 'Bearer $getToken'});
 
     if (response.statusCode == 200) {
@@ -24,31 +24,6 @@ class AccountReq {
       return res;
     } else {
       throw Exception('Failed to load data');
-    }
-  }
-
-  //
-
-  Future<dynamic> view_account({pramsId}) async {
-    try {
-      // Obtain shared preferences.
-      final prefs = await SharedPreferences.getInstance();
-      final String? getToken = prefs.getString('Token');
-
-      final response = await http.post(
-          Uri.parse('$base/account/view_others/:$pramsId'),
-          headers: {'Authorization': 'Bearer $getToken'});
-
-      if (response.statusCode == 200) {
-        //.. responce
-        final res = json.decode(response.body)["user"];
-        print(res);
-        return res;
-      } else {
-        return [];
-      }
-    } catch (e) {
-      print(e);
     }
   }
 }

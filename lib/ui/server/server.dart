@@ -10,8 +10,8 @@ import 'package:table/widgets/Alart.dart';
 class AuthReq {
 //........ Login .........//
 
-  String base = "192.168.0.125:3000";
-  //String base = "192.168.31.229:3000";
+  //String base = "192.168.0.125:3000";
+  String base = "192.168.31.229:3000";
   String? message;
   Future<void> login(context, {username, password}) async {
     try {

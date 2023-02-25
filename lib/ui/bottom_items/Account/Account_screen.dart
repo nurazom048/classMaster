@@ -1,6 +1,4 @@
-// ignore_for_file: avoid_print
-
-import 'dart:convert';
+// ignore_for_file: non_constant_identifier_names, must_be_immutable
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,10 +13,13 @@ import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 
 class AccountScreen extends StatefulWidget {
-  String? accountId;
+  final String? accountId, accountUsername;
+  final bool Others_Account;
   AccountScreen({
     super.key,
     this.accountId,
+    this.accountUsername,
+    this.Others_Account = false,
   });
 
   @override
@@ -30,8 +31,8 @@ class AccountScreen extends StatefulWidget {
 class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
-    print("widget.accountId");
-    print(widget.accountId);
+    print("widget.username");
+    print(widget.accountUsername);
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -51,22 +52,22 @@ class _AccountScreenState extends State<AccountScreen> {
               ),
 
               FutureBuilder(
-                  future: widget.accountId != null
-                      ? AccountReq().view_account(pramsId: widget.accountId)
-                      : AccountReq().accountData(),
+                  future: AccountReq().accountData(widget.accountUsername),
                   builder: (context, snapshoot) {
                     if (snapshoot.connectionState == ConnectionState.waiting) {
-                      print(snapshoot.data);
+                      // print(snapshoot.data);
+
                       return const Center(child: Progressindicator());
                     } else {
                       var accountData = snapshoot.data;
-                      print(snapshoot.data);
+                      var loginAccount = AccountModels.fromJson(accountData);
+                      // print(snapshoot.data);
 
                       //
                       var myRutins = accountData["routines"];
                       var save_rutin = accountData["Saved_routines"];
 
-                      print(save_rutin);
+                      //    print(save_rutin);
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: Column(
@@ -75,9 +76,9 @@ class _AccountScreenState extends State<AccountScreen> {
                             //Image.network(imageUrl),
                             //... Accoumt Info ..//
                             AccountCard(
-                              ProfilePicture: " loginAccount[]!",
-                              name: "loginAccount.name!",
-                              username: "loginAccount.username!",
+                              ProfilePicture: loginAccount.image!,
+                              name: loginAccount.name!,
+                              username: loginAccount.username!,
                               ontapLogOut: () =>
                                   _showConfirmationDialog(context),
                             ),
