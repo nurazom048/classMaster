@@ -1,10 +1,13 @@
 // ignore_for_file: unused_local_variable, unnecessary_null_comparison, must_be_immutable, non_constant_identifier_names, avoid_print, prefer_const_constructors
 
 import 'dart:convert';
+import 'dart:html';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:table/models/Account_models.dart';
+import 'package:table/models/ClsassDetailsModel.dart';
 import 'package:table/provider/topTimeProvider.dart';
 import 'package:table/ui/add_eddit_remove/addPriode.dart';
 import 'package:table/ui/add_eddit_remove/add_class.dart';
@@ -12,6 +15,7 @@ import 'package:table/ui/bottom_items/Account/Account_screen.dart';
 import 'package:table/ui/bottom_items/Home/class/sunnary/summary_screen.dart';
 import 'package:table/ui/classdetals.dart';
 import 'package:table/provider/myRutinProvider.dart';
+import 'package:table/ui/server/rutinReq.dart';
 import 'package:table/widgets/TopBar.dart';
 import 'package:table/widgets/class_contaner.dart';
 import 'package:table/widgets/days_container.dart';
@@ -31,45 +35,11 @@ class AllClassScreen extends StatefulWidget {
 
 class _RutinScreemState extends State<AllClassScreen> {
   ///
-  List<Map<String, dynamic>> classes = [];
 
-  var Priodes = [];
   String? message;
   //
-  // String base = "192.168.0.125:3000";
-  String base = "192.168.31.229:3000";
-
-  //.. get all rutines ...
-  Future rutins_class_and_priode() async {
-    try {
-      final response = await http
-          .get(Uri.parse('http://$base/class/${widget.rutinId}/all/class'));
-      var res = json.decode(response.body);
-      // print(res);
-
-      if (response.statusCode == 200) {
-        //..... priodes...///
-        var pr = json.decode(response.body)["priodes"];
-
-        // print("pr");
-        // print(pr);
-        Priodes = pr;
-
-        //... Classers....//
-
-        Map<String, dynamic> responseMap =
-            json.decode(response.body)["Classes"];
-        responseMap.forEach((key, value) {
-          classes.add({"day": key, "classes": value});
-        });
-        // print(classes);
-      } else {
-        throw Exception('Failed to load data');
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
+  String base = "192.168.0.125:3000";
+  //String base = "192.168.31.229:3000";
 
   // chack status
   var opres;
@@ -87,29 +57,7 @@ class _RutinScreemState extends State<AllClassScreen> {
         final res = json.decode(response.body);
         opres = res;
         save = res["save"];
-        print(res);
-      } else {
-        throw Exception('Failed to load data');
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  //.. get all rutines ...
-  Future saverutin() async {
-    // Obtain shared preferences.
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
-    try {
-      final response = await http.get(
-          Uri.parse('http://$base/rutin/save/${widget.rutinId}'),
-          headers: {'Authorization': 'Bearer $getToken'});
-
-      if (response.statusCode == 200) {
-        final res = json.decode(response.body);
-        save = res["save"];
-        print(res);
+        //  print(res);
       } else {
         throw Exception('Failed to load data');
       }
@@ -139,6 +87,7 @@ class _RutinScreemState extends State<AllClassScreen> {
     }
   }
 
+  late AccountModels owener;
   @override
   Widget build(BuildContext context) {
     print("RutinId:  ${widget.rutinId}");
@@ -177,170 +126,41 @@ class _RutinScreemState extends State<AllClassScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
-                        children: [
-                          Empty(corner: true),
-
-                          //.... Show priode ...//
-                          FutureBuilder(
-                              future: rutins_class_and_priode(),
-                              builder: (Context, snapshoot) {
-                                if (snapshoot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return Center(
-                                      child: CircularProgressIndicator());
-                                } else {
-                                  // var date = snapshoot.data;
-                                  print("data");
-                                  // print(Priodes);
-                                  return Row(
-                                    children: List.generate(
-                                      Priodes.length,
-                                      (index) => PriodeContaner(
-                                        startTime: DateTime.parse(
-                                            Priodes[index]["start_time"]),
-                                        endtime: DateTime.parse(
-                                            Priodes[index]["end_time"]),
-                                        priode: index,
-                                        lenght: 1,
-                                      ),
-                                    ),
-                                  );
-                                }
-                              }),
-                        ],
-                      ),
-                      Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _SevenDaysName(),
+                          ListOfWeakdays(),
 
                           ///.. show all class
                           FutureBuilder(
-                            future: rutins_class_and_priode(),
+                            future: Rutin_Req().rutins_class_and_priode(
+                                context, widget.rutinId),
                             builder: (Context, snapshoot) {
                               if (snapshoot.connectionState ==
                                   ConnectionState.waiting) {
                                 return Center(
                                     child: CircularProgressIndicator());
                               } else {
-                                // print("snapshoot.data");
-                                // print(snapshoot.data);
+                                var Classss = snapshoot.data!.classes;
+                                var Priodes = snapshoot.data!.priodes;
+
+                                print("hi i am owender");
+
+                                //.... Priopdes and Classes....//
                                 return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  //.... Weakday list
-                                  children: List.generate(
-                                    7,
-                                    (weakdayIndex) {
-                                      // DateTime dt = DateTime.parse(classes[0]
-                                      //     ["classes"][0]["start_time"]);
-                                      // print(dt);
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      ListOfPriodes(Priodes, widget.rutinId),
 
-                                      return classes[weakdayIndex]["classes"]
-                                              .isEmpty // iwnt to retun a emmty text if the lenght is empth
-                                          ? Empty()
-                                          : Row(
-                                              //   class on this weaK DAY
-                                              children: List.generate(
-                                                  classes[weakdayIndex]
-                                                          ["classes"]
-                                                      .length, (index) {
-                                                int pi = index - 1;
-                                                return ClassContainer(
-//
-                                                  classname:
-                                                      classes[weakdayIndex]
-                                                              ["classes"][index]
-                                                          ["name"],
-
-                                                  //
-                                                  roomnum: classes[weakdayIndex]
-                                                          ["classes"][index]
-                                                      ["room"],
-
-                                                  //
-                                                  instractorname: classes[
-                                                                  weakdayIndex]
-                                                              ["classes"][index]
-                                                          ["instuctor_name"] ??
-                                                      "",
-                                                  //
-
-                                                  subCode: classes[weakdayIndex]
-                                                          ["classes"][index]
-                                                      ["room"],
-
-                                                  // start end
-                                                  start: classes[weakdayIndex]
-                                                          ["classes"][index]
-                                                      ["start"],
-                                                  end: classes[weakdayIndex]
-                                                      ["classes"][index]["end"],
-                                                  previous_end: index == 0
-                                                      ? 0
-                                                      : classes[weakdayIndex]
-                                                              ["classes"]
-                                                          [index - 1]["end"],
-
-                                                  // start time end tyme
-                                                  startTime: DateTime.parse(
-                                                      classes[weakdayIndex][
-                                                                      "classes"]
-                                                                  [index]
-                                                              ["start_time"]
-                                                          .toString()),
-                                                  endTime: DateTime.parse(
-                                                      classes[weakdayIndex]
-                                                                  ["classes"][
-                                                              index]["end_time"]
-                                                          .toString()),
-                                                  //
-                                                  has_class:
-                                                      classes[weakdayIndex]
-                                                              ["classes"][index]
-                                                          ["has_class"],
-                                                  weakday: classes[weakdayIndex]
-                                                          ["classes"][index]
-                                                      ["weekday"],
-
-                                                  weakdayIndex: weakdayIndex,
-                                                  // is last
-                                                  isLast: index ==
-                                                      classes[weakdayIndex]
-                                                                  ["classes"]
-                                                              .length -
-                                                          1,
-
-                                                  ///..... ontap to summary screen
-                                                  onTap: () => Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          SummaryScreen(
-                                                        classId:
-                                                            classes[weakdayIndex]
-                                                                    ["classes"]
-                                                                [index]["_id"],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  //..for  edit or delete
-                                                  onLongPress: () {
-                                                    print("ontap");
-
-                                                    _onLongpress_class(
-                                                      context,
-                                                      classes[weakdayIndex]
-                                                              ["classes"][index]
-                                                          ["_id"],
-                                                      message,
-                                                    );
-                                                  },
-                                                );
-                                              }),
-                                            );
-                                    },
-                                  ),
-                                );
+                                      //
+                                      ListOfDays(Classss.sunday),
+                                      ListOfDays(Classss.monday),
+                                      ListOfDays(Classss.thursday),
+                                      ListOfDays(Classss.wednesday),
+                                      ListOfDays(Classss.thursday),
+                                      ListOfDays(Classss.friday),
+                                      ListOfDays(Classss.saturday),
+                                    ]);
                               }
                             },
                           ),
@@ -378,12 +198,14 @@ class _RutinScreemState extends State<AllClassScreen> {
                   ),
                 ),
                 FutureBuilder(
-                    future: chackStatus(),
+                    future: Rutin_Req()
+                        .rutins_class_and_priode(context, widget.rutinId),
                     builder: (Context, snapshoot) {
                       if (snapshoot.connectionState ==
                           ConnectionState.waiting) {
                         return Center(child: CircularProgressIndicator());
                       } else {
+                        AccountModels owener = snapshoot.data!.owener;
                         // print(" hi the res ");
                         // print(" hi the res ${opres["user"]["username"]}");
                         return InkWell(
@@ -392,7 +214,7 @@ class _RutinScreemState extends State<AllClassScreen> {
                             MaterialPageRoute(
                               builder: (context) => AccountScreen(
                                 Others_Account: true,
-                                accountUsername: opres["user"]["username"],
+                                accountUsername: owener.username,
                               ),
                             ),
                           ),
@@ -409,20 +231,21 @@ class _RutinScreemState extends State<AllClassScreen> {
                                 CircleAvatar(
                                   radius: 30,
                                   backgroundColor: Colors.amber,
+                                  backgroundImage:
+                                      NetworkImage(owener.image ?? ""),
                                 ),
                                 //
                                 Spacer(flex: 3),
                                 Text.rich(
                                   TextSpan(
-                                      text: opres["user"]["name"],
+                                      text: owener.name,
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20,
                                           color: Colors.black),
                                       children: [
                                         TextSpan(
-                                            text:
-                                                '\n${opres["user"]["username"]}',
+                                            text: '\n${owener.username}',
                                             style: TextStyle(
                                               fontWeight: FontWeight.w500,
                                               color: Colors.black,
@@ -444,6 +267,9 @@ class _RutinScreemState extends State<AllClassScreen> {
       ),
     );
   }
+
+  //
+
 //
 
   void _showModalBottomSheet(BuildContext context, id) {
@@ -512,7 +338,9 @@ class _RutinScreemState extends State<AllClassScreen> {
                       onTap: () async {
                         print("ontap");
                         print("save:$save");
-                        save == true ? unSaveRutin() : saverutin();
+                        save == true
+                            ? unSaveRutin()
+                            : Rutin_Req().chackStatus(context);
                       }),
                   opres["isOwner"] == true
                       ? ListTile(
@@ -529,22 +357,6 @@ class _RutinScreemState extends State<AllClassScreen> {
           );
         });
   }
-}
-
-//
-Widget _SevenDaysName() {
-  return Column(
-    children: [
-      Wrap(
-        direction: Axis.vertical,
-        children: List.generate(
-            7,
-            (indexofdate) => DaysContaner(
-                  indexofdate: indexofdate,
-                )),
-      ),
-    ],
-  );
 }
 
 _onTap_class(context, roomnumber, instructorname, sunjectcode) {
@@ -631,4 +443,103 @@ _onLongpress_class(context, classId, message) {
       ),
     ),
   );
+}
+//.. list of days ...///
+
+class ListOfDays extends StatelessWidget {
+  List<Day?> day;
+  ListOfDays(this.day, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return day.isEmpty
+        ? SizedBox(height: 100, width: 200, child: Text("No Class"))
+        : Row(
+            children: List.generate(
+              day.length,
+              (index) => ClassContainer(
+                  instractorname: day[index]?.instuctorName,
+                  roomnum: day[index]?.room,
+                  subCode: day[index]?.subjectcode,
+                  start: day[index]!.start,
+                  end: day[index]!.end,
+                  startTime: day[index]!.startTime,
+                  endTime: day[index]?.endTime,
+                  weakday: day[index]?.weekday,
+                  classname: day[index]?.name,
+                  previous_end:
+                      index == 0 ? day[index]!.end : day[index - 1]!.end,
+                  weakdayIndex: day[index]?.weekday,
+
+                  //
+                  isLast: day.length - 1 == index,
+
+                  // ontap to go summay page..//
+                  onTap: () => Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          fullscreenDialog: true,
+                          builder: (context) => SummaryScreen(
+                            classId: day[index]!.id,
+                          ),
+                        ),
+                      )),
+            ),
+          );
+  }
+}
+
+class ListOfPriodes extends StatelessWidget {
+  List<Priode?> Priodes;
+  String rutinId;
+  ListOfPriodes(this.Priodes, this.rutinId, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: List.generate(
+        Priodes.length,
+        (index) => Priodes.isEmpty
+            ? Text("No Priode")
+            : PriodeContaner(
+                startTime: Priodes[index]!.startTime,
+                endtime: Priodes[index]!.endTime,
+                priode: index,
+                lenght: 1,
+
+                // ontap to go summay page..//
+                onTap: () => Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        fullscreenDialog: true,
+                        builder: (context) => AppPriodePage(
+                          rutinId: rutinId,
+                        ),
+                      ),
+                    )),
+      ),
+    );
+  }
+}
+//
+
+class ListOfWeakdays extends StatelessWidget {
+  const ListOfWeakdays({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Empty(corner: true),
+        Column(
+          children: List.generate(
+            7,
+            (indexofdate) => DaysContaner(
+              indexofdate: indexofdate,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }

@@ -12,7 +12,7 @@ class AccountModels {
   AccountModels(
       {this.sId, this.username, this.name, this.password, this.image});
 
-  AccountModels.fromJson(Map<String, dynamic> json) {
+  AccountModels.fromJson(json) {
     sId = json['_id'];
     username = json['username'];
     name = json['name'];

@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class SummaryScreen extends StatefulWidget {
-  final String classId;
+  final String? classId;
   const SummaryScreen({super.key, required this.classId});
 
   @override
@@ -111,7 +111,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                         CupertinoPageRoute(
                             fullscreenDialog: true,
                             builder: (context) =>
-                                AddSummaryScreen(classId: widget.classId)),
+                                AddSummaryScreen(classId: widget.classId!)),
                       ),
                     ))
               ],

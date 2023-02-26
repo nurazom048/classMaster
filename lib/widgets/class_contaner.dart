@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ClassContainer extends StatelessWidget {
-  String instractorname, roomnum, subCode, classname;
+  String? instractorname, roomnum, subCode, classname;
   String? has_class;
   num start, end, previous_end;
   var startTime, endTime;
@@ -69,9 +69,10 @@ class ClassContainer extends StatelessWidget {
                   Column(
                     children: [
                       _Running(newStart, newEnd),
-                      Text(instractorname),
-                      Text(subCode),
-                      Text(end.toString()),
+                      Text(instractorname ?? ""),
+                      Text(subCode ?? ""),
+                      // Text(
+                      //     "${previous_end == 1 || previous_end == start ? 0 : previous_end} $start")
                     ],
                   ),
                   const Spacer(),
@@ -103,30 +104,30 @@ class ClassContainer extends StatelessWidget {
 
 //... if there is no class THEN RETUN Cross contaner
   Widget crossContainer(num start, num previous_end) {
+    var ptime = previous_end == 1 || previous_end == start ? 0 : previous_end;
+    num size = start - ptime > 1 ? start - ptime - 1 : start - ptime;
     // .. calculate width
     double crossContanerWidth(num start, num previous_end) {
-      num size = start - previous_end >= 2 ? start - previous_end - 1 : 0;
-
       return size * 100;
     }
 
     //
-    if (start - previous_end >= 2) {
-      return Container(
-        height: 100,
-        width: crossContanerWidth(start, previous_end),
-        decoration: const BoxDecoration(
-            border: Border(right: BorderSide(color: Colors.black, width: 1))),
-        child: Container(
-          decoration: BoxDecoration(
-              color: getColor(weakdayIndex),
-              borderRadius: BorderRadius.circular(3)),
-          child: const Center(child: Icon(Icons.clear_rounded)),
-        ),
-      );
-    } else {
+    if (size.isNegative) {
       return Container();
     }
+
+    return Container(
+      height: 100,
+      width: crossContanerWidth(start, previous_end),
+      decoration: const BoxDecoration(
+          border: Border(right: BorderSide(color: Colors.black, width: 1))),
+      child: Container(
+        decoration: BoxDecoration(
+            color: getColor(weakdayIndex),
+            borderRadius: BorderRadius.circular(3)),
+        child: const Center(child: Icon(Icons.clear_rounded)),
+      ),
+    );
   }
 
 //... if there is no class THEN RETUN Cross contaner

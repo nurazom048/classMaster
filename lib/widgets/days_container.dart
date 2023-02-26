@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table/ui/add_eddit_remove/add_class.dart';
+import 'package:table/widgets/text%20and%20buttons/empty.dart';
 
 class DaysContaner extends StatelessWidget {
   int indexofdate;
@@ -39,6 +40,8 @@ class DaysContaner extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          // Text("${DateTime.now().weekday}"),
+          // Text("${DateTime.now().day}"),
           Text(isToday(sevendays[indexofdate]),
               style: ismini == true
                   ? const TextStyle(fontSize: 10)
