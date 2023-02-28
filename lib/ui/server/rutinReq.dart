@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, non_constant_identifier_names, unused_local_variable, body_might_complete_normally_nullable, camel_case_types, avoid_print
 
 import 'dart:convert';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:table/widgets/Alart.dart';
@@ -60,3 +61,9 @@ class Rutin_Req {
     }
   }
 }
+
+//!.. Provider ...!//
+
+final Rutin_ReqProvider = Provider<Rutin_Req>((ref) => Rutin_Req());
+
+//

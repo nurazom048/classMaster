@@ -1,20 +1,16 @@
 // ignore_for_file: unused_local_variable, unnecessary_null_comparison, must_be_immutable, non_constant_identifier_names, avoid_print, prefer_const_constructors
 
 import 'dart:convert';
-import 'dart:html';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/Account_models.dart';
 import 'package:table/models/ClsassDetailsModel.dart';
-import 'package:table/provider/topTimeProvider.dart';
 import 'package:table/ui/add_eddit_remove/addPriode.dart';
 import 'package:table/ui/add_eddit_remove/add_class.dart';
 import 'package:table/ui/bottom_items/Account/Account_screen.dart';
 import 'package:table/ui/bottom_items/Home/class/sunnary/summary_screen.dart';
 import 'package:table/ui/classdetals.dart';
-import 'package:table/provider/myRutinProvider.dart';
 import 'package:table/ui/server/rutinReq.dart';
 import 'package:table/widgets/TopBar.dart';
 import 'package:table/widgets/class_contaner.dart';

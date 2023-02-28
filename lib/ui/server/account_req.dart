@@ -1,7 +1,7 @@
 import 'dart:convert';
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AccountReq {
   // String base = "http://192.168.0.125:3000";
@@ -27,3 +27,6 @@ class AccountReq {
     }
   }
 }
+
+
+//!.. Provider ...!//

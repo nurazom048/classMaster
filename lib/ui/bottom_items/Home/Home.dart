@@ -1,39 +1,32 @@
-// ignore_for_file: unused_local_variable, avoid_print, prefer_typing_uninitialized_variables, prefer_const_constructors_in_immutables
+// ignore_for_file: unused_local_variable, avoid_print, prefer_typing_uninitialized_variables, prefer_const_constructors_in_immutables, must_be_immutable
 
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:table/models/RutinOverviewModels.dart';
 import 'package:table/ui/bottom_items/Home/class/all_class-rutin.dart';
 import 'package:table/ui/bottom_items/Home/search_page.dart';
 import 'package:table/ui/server/homeRequest.dart';
-import 'package:table/widgets/AccountCard.dart';
+import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/TopBar.dart';
 import 'package:table/widgets/custom_rutin_card.dart';
 import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/widgets/text%20and%20buttons/bottomText.dart';
 import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerWidget {
   HomeScreen({super.key});
 
-  @override
-  State<HomeScreen> createState() => _AllRutinsState();
-}
-
-class _AllRutinsState extends State<HomeScreen> {
   //
   final rutinName = TextEditingController();
+
   String? message;
 
   String base = "192.168.0.125:3000";
+
   //String base = "localhost:3000";
-
-  //... ALl rutin rutin
-
-  //... create rutin
   Future<void> creatRutin() async {
     // Obtain shared preferences.
     final prefs = await SharedPreferences.getInstance();
@@ -54,10 +47,12 @@ class _AllRutinsState extends State<HomeScreen> {
       throw Exception('Failed to load data');
     }
   }
-//
 
+//
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final myRutin = ref.watch(all_rutins_provider);
+    final saveRutin = ref.watch(save_rutins_provider);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white54,
@@ -89,125 +84,101 @@ class _AllRutinsState extends State<HomeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      //... hedding .../
+                      //... all rutins...//
                       MyText("My All Rutin"),
 
-                      //... all rutins...//
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
-                        child: FutureBuilder(
-                            future: HomeReq().myAllRutin(),
-                            builder: (context, snapshoot) {
-                              if (snapshoot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const Progressindicator();
-                              } else {
-                                // print(myRutines.length);
-                                // print(myRutines[0]["_id"]);
-                                var myRutines = snapshoot.data;
-                                //  print("data");
-                                //print(myRutines![0]["_id"]);
-                                var from =
-                                    RutinOverviewModels.fromJson(myRutines![0]);
-                                print("from");
-                                print(from);
+                        //.. Show all rutins..//
+                        child: myRutin.when(
+                          loading: () => const Progressindicator(),
+                          data: (data) {
+                            var myRutines = data;
 
-                                return Row(
-                                  children: List.generate(
-                                      myRutines.isEmpty ? 1 : myRutines.length,
-                                      (index) => myRutines.isEmpty
-                                          ? const Text(
-                                              "You Dont Have any Rutin created")
-                                          : InkWell(
-                                              child: CustomRutinCard(
-                                                rutinname: myRutines[index]
-                                                    ["name"],
-                                                profilePicture: myRutines[index]
-                                                    ["ownerid"]["image"],
-                                                name: myRutines[index]
-                                                    ["ownerid"]["name"],
-                                                username: myRutines[index]
-                                                    ["ownerid"]["username"],
+                            return Row(
+                              children: List.generate(
+                                  myRutines.isEmpty ? 1 : myRutines.length,
+                                  (index) => myRutines.isEmpty
+                                      ? const Text(
+                                          "You Dont Have any Rutin created")
+                                      : InkWell(
+                                          child: CustomRutinCard(
+                                            rutinname: myRutines[index]["name"],
+                                            profilePicture: myRutines[index]
+                                                ["ownerid"]["image"],
+                                            name: myRutines[index]["ownerid"]
+                                                ["name"],
+                                            username: myRutines[index]
+                                                ["ownerid"]["username"],
 
-                                                //
-                                              ),
+                                            //
+                                          ),
 
-                                              //
-                                              onTap: () => Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          AllClassScreen(
-                                                            rutinName:
-                                                                myRutines[index]
-                                                                    ["name"],
-                                                            rutinId:
-                                                                myRutines[index]
-                                                                    ["_id"],
-                                                          ))),
-                                            )),
-                                );
-                              }
-                            }),
+                                          //
+                                          onTap: () => Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      AllClassScreen(
+                                                        rutinName:
+                                                            myRutines[index]
+                                                                ["name"],
+                                                        rutinId:
+                                                            myRutines[index]
+                                                                ["_id"],
+                                                      ))),
+                                        )),
+                            );
+                          },
+                          error: (error, stackTrace) => Alart()
+                              .errorAlartDilog(context, error.toString()),
+                        ),
                       ),
+
                       //... hedding .../
                       MyText("Saved Rutin"),
 
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
-                        child: FutureBuilder(
-                            future: HomeReq().savedRutins(context),
-                            builder: (context, snapshoot) {
-                              if (snapshoot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const Progressindicator();
-                              } else {
-                                // print(myRutines.length);
-                                // print(myRutines[0]["_id"]);
-                                var myRutines = snapshoot.data;
-                                print("data");
-                                print(myRutines![0]["_id"]);
-                                return Row(
-                                  children: List.generate(
-                                      myRutines.isEmpty ? 1 : myRutines.length,
-                                      (index) => myRutines.isEmpty
-                                          ? const Text(
-                                              "You Dont Have any Rutin created")
-                                          : InkWell(
-                                              child: CustomRutinCard(
-                                                rutinname: myRutines[index]
-                                                    ["name"],
-                                                profilePicture: myRutines[index]
-                                                    ["ownerid"]["image"],
-                                                name: myRutines[index]
-                                                    ["ownerid"]["name"],
-                                                username: myRutines[index]
-                                                    ["ownerid"]["username"],
-                                                // last_update: myRutines[index]
-                                                //             ["last_summary"]
-                                                //         ["text"] ??
-                                                //     "",
+                        child: saveRutin.when(
+                            loading: () => const Progressindicator(),
+                            data: (saveRutin) {
+                              return Row(
+                                children: List.generate(
+                                    saveRutin.isEmpty ? 1 : saveRutin.length,
+                                    (index) => saveRutin.isEmpty
+                                        ? const Text(
+                                            "You Dont Have any Rutin created")
+                                        : InkWell(
+                                            child: CustomRutinCard(
+                                              rutinname: saveRutin[index]
+                                                  ["name"],
+                                              profilePicture: saveRutin[index]
+                                                  ["ownerid"]["image"],
+                                              name: saveRutin[index]["ownerid"]
+                                                  ["name"],
+                                              username: saveRutin[index]
+                                                  ["ownerid"]["username"],
+                                            ),
 
-                                                //
-                                              ),
-
-                                              //
-                                              onTap: () => Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          AllClassScreen(
-                                                            rutinName:
-                                                                myRutines[index]
-                                                                    ["name"],
-                                                            rutinId:
-                                                                myRutines[index]
-                                                                    ["_id"],
-                                                          ))),
-                                            )),
-                                );
-                              }
-                            }),
+                                            //
+                                            onTap: () => Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        AllClassScreen(
+                                                          rutinName:
+                                                              saveRutin[index]
+                                                                  ["name"],
+                                                          rutinId:
+                                                              saveRutin[index]
+                                                                  ["_id"],
+                                                        ))),
+                                          )),
+                              );
+                            },
+                            error: (error, stackTrace) => Alart()
+                                .errorAlartDilog(context, error.toString())),
                       ),
 
                       //... hedding .../
