@@ -38,8 +38,8 @@ class _RutinScreemState extends State<AllClassScreen> {
 
   String? message;
   //
-  String base = "192.168.0.125:3000";
-  //String base = "192.168.31.229:3000";
+  //String base = "192.168.0.125:3000";
+  String base = "192.168.31.229:3000";
 
   // chack status
   var opres;
@@ -50,7 +50,7 @@ class _RutinScreemState extends State<AllClassScreen> {
     final String? getToken = prefs.getString('Token');
     try {
       final response = await http.get(
-          Uri.parse('http://$base/rutin/save/${widget.rutinId}/chack'),
+          Uri.parse('http://$base/rutin/save/:${widget.rutinId}/chack'),
           headers: {'Authorization': 'Bearer $getToken'});
 
       if (response.statusCode == 200) {
@@ -73,7 +73,7 @@ class _RutinScreemState extends State<AllClassScreen> {
     final String? getToken = prefs.getString('Token');
     try {
       final response = await http.get(
-          Uri.parse('http://$base/rutin/unsave/${widget.rutinId}'),
+          Uri.parse('http://$base/rutin/unsave/:${widget.rutinId}'),
           headers: {'Authorization': 'Bearer $getToken'});
 
       if (response.statusCode == 200) {
@@ -91,8 +91,6 @@ class _RutinScreemState extends State<AllClassScreen> {
   @override
   Widget build(BuildContext context) {
     print("RutinId:  ${widget.rutinId}");
-    var rutin = Provider.of<MyRutinProvider>(context).rutin;
-    var priode = Provider.of<TopPriodeProvider>(context).mypriodelist;
 
     return SafeArea(
       child: Scaffold(

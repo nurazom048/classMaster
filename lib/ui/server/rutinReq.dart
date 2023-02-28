@@ -9,13 +9,15 @@ import 'package:table/models/ClsassDetailsModel.dart';
 class Rutin_Req {
   //
   //
-  String base = "192.168.0.125:3000";
-  //String base = "192.168.31.229:3000";
+  // String base = "192.168.0.125:3000";
+  String base = "192.168.31.229:3000";
 
   //
   ///.......... For all Class and priodes........///
-  Future<ClassDetailsModel?> rutins_class_and_priode(context, rutinId) async {
+  Future<ClassDetailsModel?> rutins_class_and_priode(
+      context, String rutinId) async {
     var url = Uri.parse('http://$base/class/$rutinId/all/class');
+
     try {
       //.. 1 request ...//
       final response = await http.get(url);
@@ -23,7 +25,6 @@ class Rutin_Req {
       if (response.statusCode == 200) {
         var res = json.decode(response.body);
 
-        //
         var classDetalis = ClassDetailsModel.fromJson(res);
 
         return classDetalis;
