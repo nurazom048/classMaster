@@ -15,12 +15,11 @@ import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 class AccountScreen extends StatefulWidget {
   final String? accountId, accountUsername;
   final bool Others_Account;
-  AccountScreen({
-    super.key,
-    this.accountId,
-    this.accountUsername,
-    this.Others_Account = false,
-  });
+  AccountScreen(
+      {super.key,
+      this.accountId,
+      this.accountUsername,
+      required this.Others_Account});
 
   @override
   State<AccountScreen> createState() => _AccountScreenState();

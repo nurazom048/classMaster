@@ -3,12 +3,14 @@ import 'package:table/models/Account_models.dart';
 import 'package:table/ui/bottom_items/Account/Account_screen.dart';
 
 class AccountCardRow extends StatelessWidget {
-  const AccountCardRow({
+  AccountCardRow({
     super.key,
     required this.accountData,
+    this.othersAccount = false,
   });
 
   final AccountModels accountData;
+  final bool othersAccount;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,7 @@ class AccountCardRow extends StatelessWidget {
         context,
         MaterialPageRoute(
           builder: (context) => AccountScreen(
-            Others_Account: true,
+            Others_Account: othersAccount,
             accountUsername: accountData.username,
           ),
         ),

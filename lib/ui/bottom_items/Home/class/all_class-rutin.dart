@@ -163,9 +163,10 @@ class AllClassScreen extends ConsumerWidget {
                   error: (error, stackTrace) => Text(error.toString()),
                   loading: () => const CircularProgressIndicator(),
                   data: (data) {
+                    print(data?.owener.username);
                     return data != null
                         ? AccountCardRow(accountData: data.owener)
-                        : CircularProgressIndicator();
+                        : const CircularProgressIndicator();
                   },
                 ),
 

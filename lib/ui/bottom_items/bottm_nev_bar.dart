@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:table/ui/bottom_items/Account/Account_screen.dart';
 import 'package:table/ui/bottom_items/Home/Home.dart';
 
-List<Widget> pages = [HomeScreen(), AccountScreen()];
+List<Widget> pages = [
+  HomeScreen(),
+  AccountScreen(
+    Others_Account: false,
+  )
+];
 
 class BottomNevBar extends StatefulWidget {
   const BottomNevBar({super.key});
