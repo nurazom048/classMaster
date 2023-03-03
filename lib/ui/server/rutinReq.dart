@@ -4,8 +4,15 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:table/widgets/Alart.dart';
 import 'package:table/models/ClsassDetailsModel.dart';
+
+final Rutin_Req_provider = Provider<Rutin_Req>((ref) => Rutin_Req());
+
+//.... Rutins DEtals Provider
+final rutins_detalis_provider =
+    FutureProvider.family<ClassDetailsModel?, String>((ref, rutinId) async {
+  return ref.read(Rutin_Req_provider).rutins_class_and_priode(rutinId);
+});
 
 class Rutin_Req {
   //
@@ -14,10 +21,11 @@ class Rutin_Req {
   String base = "192.168.31.229:3000";
 
   //
+
   ///.......... For all Class and priodes........///
-  Future<ClassDetailsModel?> rutins_class_and_priode(
-      context, String rutinId) async {
-    var url = Uri.parse('http://$base/class/$rutinId/all/class');
+  Future<ClassDetailsModel?> rutins_class_and_priode(String rutinId) async {
+    // var url = Uri.parse('http://$base/class/$rutinId/all/class');
+    var url = Uri.parse("http://192.168.31.229:3000/class/$rutinId/all/class");
 
     try {
       //.. 1 request ...//
@@ -25,6 +33,7 @@ class Rutin_Req {
 
       if (response.statusCode == 200) {
         var res = json.decode(response.body);
+        print(res["finalCap10List"]);
 
         var classDetalis = ClassDetailsModel.fromJson(res);
 
@@ -33,7 +42,9 @@ class Rutin_Req {
         throw Exception('Failed to load data');
       }
     } catch (e) {
-      Alart().errorAlartDilog(context, e.toString());
+      print(e.toString());
+
+      return null;
     }
   }
 

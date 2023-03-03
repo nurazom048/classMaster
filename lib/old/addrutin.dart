@@ -1,312 +1,312 @@
-// ignore_for_file: must_be_immutable, unnecessary_null_comparison
+// // ignore_for_file: must_be_immutable, unnecessary_null_comparison
 
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:table/old/moidels.dart';
-import 'package:table/old/rutinprovider.dart';
+// import 'package:flutter/material.dart';
 
-class AddRutin extends StatefulWidget {
-  Classmodel? classdata;
-  dynamic indexofdate;
-  // ignore: unnecessary_question_mark
-  dynamic? classindex;
-  bool? iseddit;
-  AddRutin(
-      {super.key,
-      required this.indexofdate,
-      this.classdata,
-      this.classindex,
-      this.iseddit});
+// import 'package:table/old/moidels.dart';
+// import 'package:table/old/rutinprovider.dart';
 
-  @override
-  State<AddRutin> createState() => _AddRutinState();
-}
+// class AddRutin extends StatefulWidget {
+//   Classmodel? classdata;
+//   dynamic indexofdate;
+//   // ignore: unnecessary_question_mark
+//   dynamic? classindex;
+//   bool? iseddit;
+//   AddRutin(
+//       {super.key,
+//       required this.indexofdate,
+//       this.classdata,
+//       this.classindex,
+//       this.iseddit});
 
-class _AddRutinState extends State<AddRutin> {
-  TextEditingController instructorname = TextEditingController();
-  TextEditingController sujectcode = TextEditingController();
-  TextEditingController roomnum = TextEditingController();
-  TextEditingController start = TextEditingController();
-  TextEditingController end = TextEditingController();
+//   @override
+//   State<AddRutin> createState() => _AddRutinState();
+// }
 
-  FocusNode subjectCodeNameFocus = FocusNode();
-  FocusNode roomnumNameFocus = FocusNode();
-  FocusNode startingFocus = FocusNode();
-  FocusNode endingFocus = FocusNode();
+// class _AddRutinState extends State<AddRutin> {
+//   TextEditingController instructorname = TextEditingController();
+//   TextEditingController sujectcode = TextEditingController();
+//   TextEditingController roomnum = TextEditingController();
+//   TextEditingController start = TextEditingController();
+//   TextEditingController end = TextEditingController();
 
-  /// addNew Rutin
+//   FocusNode subjectCodeNameFocus = FocusNode();
+//   FocusNode roomnumNameFocus = FocusNode();
+//   FocusNode startingFocus = FocusNode();
+//   FocusNode endingFocus = FocusNode();
 
-  void addNewClass() {
-    Classmodel addclasses = Classmodel(
-      instructorname: instructorname.text,
-      subjectcode: sujectcode.text,
-      roomnum: roomnum.text,
-      startingpriode: int.parse(start.text),
-      endingpriode: int.parse(end.text),
-    );
+//   /// addNew Rutin
 
-    Provider.of<Rutinprovider>(context, listen: false)
-        .addclass(widget.indexofdate, addclasses);
-    Navigator.pop(context);
-  }
+//   void addNewClass() {
+//     Classmodel addclasses = Classmodel(
+//       instructorname: instructorname.text,
+//       subjectcode: sujectcode.text,
+//       roomnum: roomnum.text,
+//       startingpriode: int.parse(start.text),
+//       endingpriode: int.parse(end.text),
+//     );
 
-  /// Edditing class
+//     Provider.of<Rutinprovider>(context, listen: false)
+//         .addclass(widget.indexofdate, addclasses);
+//     Navigator.pop(context);
+//   }
 
-  void edditclass() {
-    widget.classdata!.instructorname = instructorname.text;
-    widget.classdata!.subjectcode = sujectcode.text;
-    widget.classdata!.roomnum = roomnum.text;
-    widget.classdata!.startingpriode = int.parse(start.text);
-    widget.classdata!.endingpriode = int.parse(end.text);
+//   /// Edditing class
 
-    Provider.of<Rutinprovider>(context, listen: false)
-        .eddit(widget.indexofdate, widget.classdata!);
+//   void edditclass() {
+//     widget.classdata!.instructorname = instructorname.text;
+//     widget.classdata!.subjectcode = sujectcode.text;
+//     widget.classdata!.roomnum = roomnum.text;
+//     widget.classdata!.startingpriode = int.parse(start.text);
+//     widget.classdata!.endingpriode = int.parse(end.text);
 
-    Navigator.pop(context);
-  }
+//     Provider.of<Rutinprovider>(context, listen: false)
+//         .eddit(widget.indexofdate, widget.classdata!);
 
-  @override
-  void initState() {
-    super.initState();
+//     Navigator.pop(context);
+//   }
 
-    if (widget.iseddit == true) {
-      instructorname.text = widget.classdata!.instructorname;
+//   @override
+//   void initState() {
+//     super.initState();
 
-      sujectcode.text = widget.classdata!.subjectcode;
-      roomnum.text = widget.classdata!.roomnum;
-      start.text = widget.classdata!.startingpriode.toString();
-      end.text = widget.classdata!.endingpriode.toString();
-    }
-  }
+//     if (widget.iseddit == true) {
+//       instructorname.text = widget.classdata!.instructorname;
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-// Appbar()
+//       sujectcode.text = widget.classdata!.subjectcode;
+//       roomnum.text = widget.classdata!.roomnum;
+//       start.text = widget.classdata!.startingpriode.toString();
+//       end.text = widget.classdata!.endingpriode.toString();
+//     }
+//   }
 
-      appBar: AppBar(
-        centerTitle: true,
-        title:
-            Text(widget.iseddit == true ? " Eddit Class " : " Add New Class"),
-        actions: [
-          IconButton(
-            onPressed: () {
-              if (widget.iseddit == true) {
-                edditclass();
-                Navigator.pop(context);
-              } else {
-                addNewClass();
-              }
-            },
-            icon: const Icon(Icons.check),
-          ),
-        ],
-      ),
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+// // Appbar()
 
-      // Body
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Column(
-/////   hare 3 TextFild
-            ///
-            children: [
-              TextField(
-                controller: instructorname,
-                autofocus: (widget.iseddit == true) ? false : true,
-                onSubmitted: (val) {
-                  if (val != "") {
-                    subjectCodeNameFocus.requestFocus();
-                  }
-                },
-                style:
-                    const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                decoration: const InputDecoration(
-                    hintText: "InstructorName", border: InputBorder.none),
-              ),
-              TextField(
-                controller: sujectcode,
-                focusNode: roomnumNameFocus,
-                maxLines: 1,
-                onSubmitted: (val) {
-                  if (val != "") {
-                    startingFocus.requestFocus();
-                  }
-                },
-                style: const TextStyle(fontSize: 20),
-                decoration: const InputDecoration(
-                    hintText: "Subject Code", border: InputBorder.none),
-              ),
-              TextField(
-                controller: roomnum,
-                // focusNode: noteFocus,
-                maxLines: 1,
-                style: const TextStyle(fontSize: 20),
-                decoration: const InputDecoration(
-                    hintText: "Room Number", border: InputBorder.none),
-              ),
-              TextField(
-                controller: start,
-                // focusNode: noteFocus,
-                maxLines: 1,
-                style: const TextStyle(fontSize: 20),
-                decoration: const InputDecoration(
-                    hintText: "Strting priode", border: InputBorder.none),
-              ),
-              TextField(
-                controller: end,
-                // focusNode: noteFocus,
-                maxLines: 1,
-                keyboardType: TextInputType.number,
-                style: const TextStyle(fontSize: 20),
-                decoration: const InputDecoration(
-                    hintText: "Ending priode", border: InputBorder.none),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+//       appBar: AppBar(
+//         centerTitle: true,
+//         title:
+//             Text(widget.iseddit == true ? " Eddit Class " : " Add New Class"),
+//         actions: [
+//           IconButton(
+//             onPressed: () {
+//               if (widget.iseddit == true) {
+//                 edditclass();
+//                 Navigator.pop(context);
+//               } else {
+//                 addNewClass();
+//               }
+//             },
+//             icon: const Icon(Icons.check),
+//           ),
+//         ],
+//       ),
 
-///
-class AddOrEdditPriode extends StatefulWidget {
-  AddOrEdditPriode({super.key, this.priode, this.isedditing});
-  Addpriode? priode;
-  bool? isedditing;
-  bool? isEdit;
+//       // Body
+//       body: SafeArea(
+//         child: Padding(
+//           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+//           child: Column(
+// /////   hare 3 TextFild
+//             ///
+//             children: [
+//               TextField(
+//                 controller: instructorname,
+//                 autofocus: (widget.iseddit == true) ? false : true,
+//                 onSubmitted: (val) {
+//                   if (val != "") {
+//                     subjectCodeNameFocus.requestFocus();
+//                   }
+//                 },
+//                 style:
+//                     const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+//                 decoration: const InputDecoration(
+//                     hintText: "InstructorName", border: InputBorder.none),
+//               ),
+//               TextField(
+//                 controller: sujectcode,
+//                 focusNode: roomnumNameFocus,
+//                 maxLines: 1,
+//                 onSubmitted: (val) {
+//                   if (val != "") {
+//                     startingFocus.requestFocus();
+//                   }
+//                 },
+//                 style: const TextStyle(fontSize: 20),
+//                 decoration: const InputDecoration(
+//                     hintText: "Subject Code", border: InputBorder.none),
+//               ),
+//               TextField(
+//                 controller: roomnum,
+//                 // focusNode: noteFocus,
+//                 maxLines: 1,
+//                 style: const TextStyle(fontSize: 20),
+//                 decoration: const InputDecoration(
+//                     hintText: "Room Number", border: InputBorder.none),
+//               ),
+//               TextField(
+//                 controller: start,
+//                 // focusNode: noteFocus,
+//                 maxLines: 1,
+//                 style: const TextStyle(fontSize: 20),
+//                 decoration: const InputDecoration(
+//                     hintText: "Strting priode", border: InputBorder.none),
+//               ),
+//               TextField(
+//                 controller: end,
+//                 // focusNode: noteFocus,
+//                 maxLines: 1,
+//                 keyboardType: TextInputType.number,
+//                 style: const TextStyle(fontSize: 20),
+//                 decoration: const InputDecoration(
+//                     hintText: "Ending priode", border: InputBorder.none),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
-  @override
-  State<AddOrEdditPriode> createState() => _AddOrEdditPriodeState();
-}
+// ///
+// class AddOrEdditPriode extends StatefulWidget {
+//   AddOrEdditPriode({super.key, this.priode, this.isedditing});
+//   Addpriode? priode;
+//   bool? isedditing;
+//   bool? isEdit;
 
-class _AddOrEdditPriodeState extends State<AddOrEdditPriode> {
-  TextEditingController starttimeController = TextEditingController();
-  TextEditingController endtimeController = TextEditingController();
+//   @override
+//   State<AddOrEdditPriode> createState() => _AddOrEdditPriodeState();
+// }
 
-  void addNewPriode() {
-    Addpriode addNewPriode =
-        Addpriode(startingpriode: _starttime!, endingpriode: _endtime!);
+// class _AddOrEdditPriodeState extends State<AddOrEdditPriode> {
+//   TextEditingController starttimeController = TextEditingController();
+//   TextEditingController endtimeController = TextEditingController();
 
-    Provider.of<PriodeDateProvider>(context, listen: false)
-        .adpriode(addNewPriode);
+//   void addNewPriode() {
+//     Addpriode addNewPriode =
+//         Addpriode(startingpriode: _starttime!, endingpriode: _endtime!);
 
-    Navigator.pop(context);
-  }
+//     Provider.of<PriodeDateProvider>(context, listen: false)
+//         .adpriode(addNewPriode);
 
-  void eddit() {
-    widget.priode!.startingpriode = _starttime!;
-    widget.priode!.endingpriode = _endtime!;
+//     Navigator.pop(context);
+//   }
 
-    Provider.of<PriodeDateProvider>(context, listen: false)
-        .eddit(widget.priode!);
+//   void eddit() {
+//     widget.priode!.startingpriode = _starttime!;
+//     widget.priode!.endingpriode = _endtime!;
 
-    Navigator.pop(context);
-  }
+//     Provider.of<PriodeDateProvider>(context, listen: false)
+//         .eddit(widget.priode!);
 
-  @override
-  void initState() {
-    super.initState();
+//     Navigator.pop(context);
+//   }
 
-    if (widget.isEdit == true) {
-      _starttime = widget.priode!.startingpriode;
+//   @override
+//   void initState() {
+//     super.initState();
 
-      _endtime = widget.priode!.endingpriode;
-    }
-  }
+//     if (widget.isEdit == true) {
+//       _starttime = widget.priode!.startingpriode;
 
-  TimeOfDay? _starttime = const TimeOfDay(hour: 12, minute: 12);
+//       _endtime = widget.priode!.endingpriode;
+//     }
+//   }
 
-  TimeOfDay? _endtime = const TimeOfDay(hour: 19, minute: 12);
-  DateTime datetime = DateTime.now();
-  bool ischange = false;
-  @override
-  Widget build(BuildContext context) {
-    var priodedata = Provider.of<PriodeDateProvider>(context).priodelist;
-    // print(_starttime!.minute.toInt().toString());
-    // print(_endtime!.hour.toInt().toString());
-    //print(datetime.hour);
-    //  print(datetime.minute);
+//   TimeOfDay? _starttime = const TimeOfDay(hour: 12, minute: 12);
 
-    return Scaffold(
-      appBar: AppBar(
-          title:
-              Text(widget.isedditing == true ? "Eddit priode" : "Add Priode "),
-          centerTitle: true,
-          actions: [
-            IconButton(
-                icon: const Icon(Icons.check),
+//   TimeOfDay? _endtime = const TimeOfDay(hour: 19, minute: 12);
+//   DateTime datetime = DateTime.now();
+//   bool ischange = false;
+//   @override
+//   Widget build(BuildContext context) {
+//     var priodedata = Provider.of<PriodeDateProvider>(context).priodelist;
+//     // print(_starttime!.minute.toInt().toString());
+//     // print(_endtime!.hour.toInt().toString());
+//     //print(datetime.hour);
+//     //  print(datetime.minute);
 
-                // chack is eddit or add
-                onPressed: () =>
-                    widget.isedditing == true ? eddit() : addNewPriode())
-          ]),
+//     return Scaffold(
+//       appBar: AppBar(
+//           title:
+//               Text(widget.isedditing == true ? "Eddit priode" : "Add Priode "),
+//           centerTitle: true,
+//           actions: [
+//             IconButton(
+//                 icon: const Icon(Icons.check),
 
-      // body
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ////
-              const Text("Add Start Time"),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(ischange
-                      ? _starttime!.format(context).toString()
-                      : priodedata.length != null
-                          ? priodedata[priodedata.length - 1]
-                              .endingpriode
-                              .format(context)
-                              .toString()
-                          : _starttime!.format(context).toString()),
-                  IconButton(
-                      icon: const Icon(Icons.add),
-                      onPressed: () {
-                        showTimePicker(
-                                context: context,
-                                initialTime: priodedata.length == null
-                                    ? _endtime!
-                                    : priodedata[priodedata.length - 1]
-                                        .endingpriode)
-                            .then((value) {
-                          if (value != null) {
-                            setState(() {
-                              _starttime = value;
-                              ischange = true;
-                            });
-                          }
-                        });
-                      }),
-                ],
-              ),
+//                 // chack is eddit or add
+//                 onPressed: () =>
+//                     widget.isedditing == true ? eddit() : addNewPriode())
+//           ]),
 
-              ////
-              const Text("Add End Time"),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(_endtime!.format(context).toString()),
-                  IconButton(
-                      icon: const Icon(Icons.timer),
-                      onPressed: () {
-                        showTimePicker(
-                                context: context, initialTime: TimeOfDay.now())
-                            .then((value) => value != null
-                                ? setState(() {
-                                    _endtime = value;
-                                  })
-                                : null);
-                      }),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+//       // body
+//       body: SafeArea(
+//         child: Padding(
+//           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+//           child: Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               ////
+//               const Text("Add Start Time"),
+//               Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                 children: [
+//                   Text(ischange
+//                       ? _starttime!.format(context).toString()
+//                       : priodedata.length != null
+//                           ? priodedata[priodedata.length - 1]
+//                               .endingpriode
+//                               .format(context)
+//                               .toString()
+//                           : _starttime!.format(context).toString()),
+//                   IconButton(
+//                       icon: const Icon(Icons.add),
+//                       onPressed: () {
+//                         showTimePicker(
+//                                 context: context,
+//                                 initialTime: priodedata.length == null
+//                                     ? _endtime!
+//                                     : priodedata[priodedata.length - 1]
+//                                         .endingpriode)
+//                             .then((value) {
+//                           if (value != null) {
+//                             setState(() {
+//                               _starttime = value;
+//                               ischange = true;
+//                             });
+//                           }
+//                         });
+//                       }),
+//                 ],
+//               ),
+
+//               ////
+//               const Text("Add End Time"),
+//               Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                 children: [
+//                   Text(_endtime!.format(context).toString()),
+//                   IconButton(
+//                       icon: const Icon(Icons.timer),
+//                       onPressed: () {
+//                         showTimePicker(
+//                                 context: context, initialTime: TimeOfDay.now())
+//                             .then((value) => value != null
+//                                 ? setState(() {
+//                                     _endtime = value;
+//                                   })
+//                                 : null);
+//                       }),
+//                 ],
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

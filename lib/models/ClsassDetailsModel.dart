@@ -13,13 +13,16 @@ class ClassDetailsModel {
     required this.priodes,
     required this.classes,
     required this.owener,
+    required this.rutin_name,
+    required this.cap10s,
 
     /// hey chat gpt add the owner fild
   });
-
+  String rutin_name;
   List<Priode> priodes;
   Classes classes;
   AccountModels owener;
+  List<AccountModels> cap10s;
 
   factory ClassDetailsModel.fromJson(Map<String, dynamic> json) =>
       ClassDetailsModel(
@@ -27,6 +30,9 @@ class ClassDetailsModel {
             List<Priode>.from(json["priodes"].map((x) => Priode.fromJson(x))),
         classes: Classes.fromJson(json["Classes"]),
         owener: AccountModels.fromJson(json["owner"]),
+        rutin_name: json["rutin_name"],
+        cap10s: List<AccountModels>.from(
+            json["finalCap10List"].map((x) => AccountModels.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {

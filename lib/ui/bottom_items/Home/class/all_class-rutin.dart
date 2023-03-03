@@ -1,17 +1,19 @@
-// ignore_for_file: unused_local_variable, unnecessary_null_comparison, must_be_immutable, non_constant_identifier_names, avoid_print, prefer_const_constructors
+// ignore_for_file: avoid_print, non_constant_identifier_names
 
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/Account_models.dart';
 import 'package:table/models/ClsassDetailsModel.dart';
 import 'package:table/ui/add_eddit_remove/addPriode.dart';
 import 'package:table/ui/add_eddit_remove/add_class.dart';
-import 'package:table/ui/bottom_items/Account/Account_screen.dart';
 import 'package:table/ui/bottom_items/Home/class/sunnary/summary_screen.dart';
 import 'package:table/ui/classdetals.dart';
 import 'package:table/ui/server/rutinReq.dart';
+import 'package:table/widgets/AccoundCardRow.dart';
+import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/TopBar.dart';
 import 'package:table/widgets/class_contaner.dart';
 import 'package:table/widgets/days_container.dart';
@@ -19,34 +21,29 @@ import 'package:table/widgets/priodeContaner.dart';
 import 'package:http/http.dart' as http;
 import 'package:table/widgets/text%20and%20buttons/bottomText.dart';
 import 'package:table/widgets/text%20and%20buttons/empty.dart';
+import 'package:table/widgets/text%20and%20buttons/hedingText.dart';
 
-class AllClassScreen extends StatefulWidget {
+class AllClassScreen extends ConsumerWidget {
   String rutinId;
   String rutinName;
   AllClassScreen({super.key, required this.rutinId, required this.rutinName});
 
-  @override
-  State<AllClassScreen> createState() => _RutinScreemState();
-}
-
-class _RutinScreemState extends State<AllClassScreen> {
-  ///
-
   String? message;
-  //
-  //String base = "192.168.0.125:3000";
+
   String base = "192.168.31.229:3000";
 
   // chack status
   var opres;
+
   late bool save;
+
   Future chackStatus() async {
     // Obtain shared preferences.
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
     try {
       final response = await http.get(
-          Uri.parse('http://$base/rutin/save/:${widget.rutinId}/chack'),
+          Uri.parse('http://$base/rutin/save/:$rutinId/chack'),
           headers: {'Authorization': 'Bearer $getToken'});
 
       if (response.statusCode == 200) {
@@ -69,7 +66,7 @@ class _RutinScreemState extends State<AllClassScreen> {
     final String? getToken = prefs.getString('Token');
     try {
       final response = await http.get(
-          Uri.parse('http://$base/rutin/unsave/:${widget.rutinId}'),
+          Uri.parse('http://$base/rutin/unsave/:$rutinId'),
           headers: {'Authorization': 'Bearer $getToken'});
 
       if (response.statusCode == 200) {
@@ -84,9 +81,11 @@ class _RutinScreemState extends State<AllClassScreen> {
   }
 
   late AccountModels owener;
+
   @override
-  Widget build(BuildContext context) {
-    print("RutinId:  ${widget.rutinId}");
+  Widget build(BuildContext context, WidgetRef ref) {
+    final rutinDetals = ref.watch(rutins_detalis_provider(rutinId));
+    print("RutinId:  $rutinId");
 
     return SafeArea(
       child: Scaffold(
@@ -97,18 +96,17 @@ class _RutinScreemState extends State<AllClassScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //...... Appbar.......!!
-                CustomTopBar(widget.rutinName,
+                CustomTopBar(rutinDetals.value?.rutin_name ?? "rutinName",
                     acction: IconButton(
                         onPressed: () =>
-                            _showModalBottomSheet(context, widget.rutinId),
-                        icon: Icon(Icons.more_vert)), ontap: () {
+                            _showModalBottomSheet(context, rutinId),
+                        icon: const Icon(Icons.more_vert)), ontap: () {
                   print("ontap");
                   Navigator.push(
                     context,
                     CupertinoPageRoute(
                         fullscreenDialog: true,
-                        builder: (context) =>
-                            AddClass(rutinId: widget.rutinId)),
+                        builder: (context) => AddClass(rutinId: rutinId)),
                   );
                 }),
 
@@ -122,40 +120,34 @@ class _RutinScreemState extends State<AllClassScreen> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          ListOfWeakdays(),
+                          const ListOfWeakdays(),
 
-                          ///.. show all class
-                          FutureBuilder(
-                            future: Rutin_Req().rutins_class_and_priode(
-                                context, widget.rutinId),
-                            builder: (Context, snapshoot) {
-                              if (snapshoot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Center(
-                                    child: CircularProgressIndicator());
-                              } else {
-                                var Classss = snapshoot.data!.classes;
-                                var Priodes = snapshoot.data!.priodes;
+                          ///.. show all priodes  class
 
-                                print("hi i am owender");
+                          rutinDetals.when(
+                            loading: () => const Center(
+                                child: CircularProgressIndicator()),
+                            error: (error, stackTrace) => Alart()
+                                .errorAlartDilog(context, error.toString()),
+                            data: (data) {
+                              var Classss = data?.classes;
+                              var Priodes = data?.priodes;
+                              print("data!.cap10.toString()");
+                              print(data?.cap10s.length ?? "no daa");
+                              return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ListOfPriodes(Priodes ?? [], rutinId),
 
-                                //.... Priopdes and Classes....//
-                                return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      ListOfPriodes(Priodes, widget.rutinId),
-
-                                      //
-                                      ListOfDays(Classss.sunday),
-                                      ListOfDays(Classss.monday),
-                                      ListOfDays(Classss.thursday),
-                                      ListOfDays(Classss.wednesday),
-                                      ListOfDays(Classss.thursday),
-                                      ListOfDays(Classss.friday),
-                                      ListOfDays(Classss.saturday),
-                                    ]);
-                              }
+                                    //
+                                    ListOfDays(Classss?.sunday ?? []),
+                                    ListOfDays(Classss?.monday ?? []),
+                                    ListOfDays(Classss?.thursday ?? []),
+                                    ListOfDays(Classss?.wednesday ?? []),
+                                    ListOfDays(Classss?.thursday ?? []),
+                                    ListOfDays(Classss?.friday ?? []),
+                                    ListOfDays(Classss?.saturday ?? []),
+                                  ]);
                             },
                           ),
                         ],
@@ -164,96 +156,47 @@ class _RutinScreemState extends State<AllClassScreen> {
                   ),
                 ),
 
+                HedingText(" Owner Account"),
+
                 ///
-                ///
-                ///
-                ///
-                ///
-                ///
-                ///
-                InkWell(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AccountScreen(
-                        accountId: opres["user"]["_id"],
-                        // rutinName: seach_result[index]["name"],
-                        // rutinId: seach_result[index]["_id"],
-                      ),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("Owner Account",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.black)),
-                  ),
+                rutinDetals.when(
+                  error: (error, stackTrace) => Text(error.toString()),
+                  loading: () => const CircularProgressIndicator(),
+                  data: (data) {
+                    return data != null
+                        ? AccountCardRow(accountData: data.owener)
+                        : CircularProgressIndicator();
+                  },
                 ),
-                FutureBuilder(
-                    future: Rutin_Req()
-                        .rutins_class_and_priode(context, widget.rutinId),
-                    builder: (Context, snapshoot) {
-                      if (snapshoot.connectionState ==
-                          ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      } else {
-                        AccountModels owener = snapshoot.data!.owener;
-                        // print(" hi the res ");
-                        // print(" hi the res ${opres["user"]["username"]}");
-                        return InkWell(
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AccountScreen(
-                                Others_Account: true,
-                                accountUsername: owener.username,
-                              ),
-                            ),
-                          ),
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(vertical: 20),
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            height: 100,
-                            width: MediaQuery.of(context).size.width,
-                            color: Colors.black12,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              // ignore: prefer_const_literals_to_create_immutables
-                              children: [
-                                CircleAvatar(
-                                  radius: 30,
-                                  backgroundColor: Colors.amber,
-                                  backgroundImage:
-                                      NetworkImage(owener.image ?? ""),
-                                ),
-                                //
-                                Spacer(flex: 3),
-                                Text.rich(
-                                  TextSpan(
-                                      text: owener.name,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20,
-                                          color: Colors.black),
-                                      children: [
-                                        TextSpan(
-                                            text: '\n${owener.username}',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                            ))
-                                      ]),
-                                ),
-                                Spacer(flex: 40),
-                              ],
-                            ),
-                          ),
-                        );
-                      }
-                    })
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    HedingText("  cap10s"),
+                    TextButton(
+                        onPressed: () {}, child: const Text(" Add Cap10  ")),
+                  ],
+                ),
+
+                //
+                rutinDetals.when(
+                    data: (data) {
+                      List<AccountModels> cap10 = data?.cap10s ?? [];
+                      double lenghts = double.parse(cap10.length.toString());
+                      return SizedBox(
+                        width: 500,
+                        height: 130 * lenghts,
+                        child: ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: cap10.length,
+                          itemBuilder: (context, index) {
+                            return AccountCardRow(accountData: cap10[index]);
+                          },
+                        ),
+                      );
+                    },
+                    error: (error, stackTrace) => Text(error.toString()),
+                    loading: () => const CircularProgressIndicator())
               ]),
 
           //
@@ -263,9 +206,6 @@ class _RutinScreemState extends State<AllClassScreen> {
   }
 
   //
-
-//
-
   void _showModalBottomSheet(BuildContext context, id) {
     showModalBottomSheet(
         context: context,
@@ -273,11 +213,11 @@ class _RutinScreemState extends State<AllClassScreen> {
           return Container(
             color: Colors.grey[200],
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
-                  topLeft: const Radius.circular(15.0),
-                  topRight: const Radius.circular(15.0),
+                  topLeft: Radius.circular(15.0),
+                  topRight: Radius.circular(15.0),
                 ),
               ),
               child: Column(
@@ -291,7 +231,7 @@ class _RutinScreemState extends State<AllClassScreen> {
                       CupertinoPageRoute(
                           fullscreenDialog: true,
                           builder: (context) => AddClass(
-                                rutinId: widget.rutinId,
+                                rutinId: rutinId,
                                 classId: id,
                                 isEdit: true,
                               )),
@@ -305,15 +245,15 @@ class _RutinScreemState extends State<AllClassScreen> {
                       CupertinoPageRoute(
                           fullscreenDialog: true,
                           builder: (context) =>
-                              AppPriodePage(rutinId: widget.rutinId)),
+                              AppPriodePage(rutinId: rutinId)),
                     ),
                   ),
 
                   //
                   opres["isOwner"] == true
                       ? ListTile(
-                          leading: Icon(Icons.edit),
-                          title: Text("Edit",
+                          leading: const Icon(Icons.edit),
+                          title: const Text("Edit",
                               style: TextStyle(fontWeight: FontWeight.bold)),
                           onTap: () {
                             Navigator.push(
@@ -321,14 +261,14 @@ class _RutinScreemState extends State<AllClassScreen> {
                               CupertinoPageRoute(
                                   fullscreenDialog: true,
                                   builder: (context) =>
-                                      AddClass(rutinId: widget.rutinId)),
+                                      AddClass(rutinId: rutinId)),
                             );
                           })
                       : Container(),
                   ListTile(
-                      leading: Icon(Icons.save),
+                      leading: const Icon(Icons.save),
                       title: Text(save == false ? "Saved" : " unsave",
-                          style: TextStyle(fontWeight: FontWeight.bold)),
+                          style: const TextStyle(fontWeight: FontWeight.bold)),
                       onTap: () async {
                         print("ontap");
                         print("save:$save");
@@ -338,8 +278,8 @@ class _RutinScreemState extends State<AllClassScreen> {
                       }),
                   opres["isOwner"] == true
                       ? ListTile(
-                          leading: Icon(Icons.delete, color: Colors.red),
-                          title: Text("Delete",
+                          leading: const Icon(Icons.delete, color: Colors.red),
+                          title: const Text("Delete",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.red)),
@@ -447,7 +387,7 @@ class ListOfDays extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return day.isEmpty
-        ? SizedBox(height: 100, width: 200, child: Text("No Class"))
+        ? const SizedBox(height: 100, width: 200, child: Text("No Class"))
         : Row(
             children: List.generate(
               day.length,
@@ -494,7 +434,7 @@ class ListOfPriodes extends StatelessWidget {
       children: List.generate(
         Priodes.length,
         (index) => Priodes.isEmpty
-            ? Text("No Priode")
+            ? const Text("No Priode")
             : PriodeContaner(
                 startTime: Priodes[index]!.startTime,
                 endtime: Priodes[index]!.endTime,
@@ -524,7 +464,7 @@ class ListOfWeakdays extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Empty(corner: true),
+        const Empty(corner: true),
         Column(
           children: List.generate(
             7,
