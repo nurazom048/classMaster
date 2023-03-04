@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/Account_models.dart';
 import 'package:table/models/ClsassDetailsModel.dart';
 import 'package:table/ui/add_eddit_remove/addPriode.dart';
+import 'package:table/ui/add_eddit_remove/add_cap10s.page.dart';
 import 'package:table/ui/add_eddit_remove/add_class.dart';
 import 'package:table/ui/bottom_items/Home/class/sunnary/summary_screen.dart';
 import 'package:table/ui/classdetals.dart';
@@ -175,7 +176,15 @@ class AllClassScreen extends ConsumerWidget {
                   children: [
                     HedingText("  cap10s"),
                     TextButton(
-                        onPressed: () {}, child: const Text(" Add Cap10  ")),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  fullscreenDialog: true,
+                                  builder: (context) =>
+                                      AddCap10sPage(rutinId: rutinId)));
+                        },
+                        child: const Text(" Add Cap10  ")),
                   ],
                 ),
 

@@ -5,7 +5,8 @@ import 'package:table/ui/bottom_items/Home/Home.dart';
 List<Widget> pages = [
   HomeScreen(),
   AccountScreen(
-    Others_Account: false,
+    accountUsername: "",
+    myAccount: true,
   )
 ];
 

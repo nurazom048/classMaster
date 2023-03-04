@@ -13,13 +13,15 @@ import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 
 class AccountScreen extends StatefulWidget {
-  final String? accountId, accountUsername;
-  final bool Others_Account;
-  AccountScreen(
-      {super.key,
-      this.accountId,
-      this.accountUsername,
-      required this.Others_Account});
+  final String? accountId;
+  bool? myAccount = false;
+  final String accountUsername;
+  AccountScreen({
+    super.key,
+    this.accountId,
+    required this.accountUsername,
+    this.myAccount,
+  });
 
   @override
   State<AccountScreen> createState() => _AccountScreenState();
@@ -51,7 +53,8 @@ class _AccountScreenState extends State<AccountScreen> {
               ),
 
               FutureBuilder(
-                  future: AccountReq().accountData(widget.accountUsername),
+                  future: AccountReq()
+                      .accountData(widget.accountUsername, widget.myAccount),
                   builder: (context, snapshoot) {
                     if (snapshoot.connectionState == ConnectionState.waiting) {
                       // print(snapshoot.data);
@@ -75,7 +78,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             //Image.network(imageUrl),
                             //... Accoumt Info ..//
                             AccountCard(
-                              ProfilePicture: loginAccount.image!,
+                              ProfilePicture: loginAccount.image ?? "",
                               name: loginAccount.name!,
                               username: loginAccount.username!,
                               ontapLogOut: () =>

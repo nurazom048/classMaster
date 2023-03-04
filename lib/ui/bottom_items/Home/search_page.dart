@@ -1,4 +1,4 @@
-// ignore_for_file: sized_box_for_whitespace, non_constant_identifier_names, prefer_typing_uninitialized_variables
+// ignore_for_file: sized_box_for_whitespace, non_constant_identifier_names, prefer_typing_uninitialized_variables, avoid_print
 
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
@@ -247,7 +247,7 @@ class SeacrhRutinCard extends StatelessWidget {
       children: List.generate(
         5,
         (index) => index == 0
-            ? Empty(corner: true, mini: true)
+            ? const Empty(corner: true, mini: true)
             : Container(
                 height: 50,
                 width: 50,

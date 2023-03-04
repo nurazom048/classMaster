@@ -5,8 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/loginSection/login_sceen.dart';
 import 'package:table/ui/server/homeRequest.dart';
 
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
 void main() {
   runApp(ProviderScope(child: MyApp()));
 }

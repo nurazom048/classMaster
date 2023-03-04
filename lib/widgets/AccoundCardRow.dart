@@ -6,11 +6,12 @@ class AccountCardRow extends StatelessWidget {
   AccountCardRow({
     super.key,
     required this.accountData,
-    this.othersAccount = false,
+    this.suffix,
   });
 
   final AccountModels accountData;
-  final bool othersAccount;
+
+  final Widget? suffix;
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +20,8 @@ class AccountCardRow extends StatelessWidget {
         context,
         MaterialPageRoute(
           builder: (context) => AccountScreen(
-            Others_Account: othersAccount,
-            accountUsername: accountData.username,
+            accountUsername: accountData.username ?? '',
+            myAccount: false,
           ),
         ),
       ),
@@ -76,7 +77,9 @@ class AccountCardRow extends StatelessWidget {
               ],
             ),
 
-            const Spacer(flex: 24)
+            const Spacer(flex: 24),
+            suffix ?? SizedBox.shrink(),
+            const Spacer(flex: 2),
           ],
         ),
       ),
