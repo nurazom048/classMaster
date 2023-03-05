@@ -54,7 +54,7 @@ class _AppPriodePageState extends State<AppPriodePage> {
       print("rutin created successfully");
       print(res);
     } else {
-      Alart().errorAlartDilog(context, message!);
+      Alart.errorAlartDilog(context, message!);
     }
   }
 

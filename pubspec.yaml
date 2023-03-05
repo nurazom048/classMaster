@@ -44,6 +44,7 @@ dependencies:
   marquee: ^2.2.3
   image_picker: ^0.8.6+1
   flutter_riverpod: ^2.2.0
+  fpdart: ^0.5.0
 
 dev_dependencies:
   flutter_test:

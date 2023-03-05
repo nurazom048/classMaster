@@ -84,7 +84,7 @@ class _AddClassState extends State<AddClass> {
       print("rutin created successfully");
       print(res);
     } else {
-      Alart().errorAlartDilog(context, message);
+      Alart.errorAlartDilog(context, message);
     }
   }
 
@@ -216,7 +216,7 @@ class _AddClassState extends State<AddClass> {
 
       // print("${s.runtimeType}   vhey");
     } else {
-      Alart().errorAlartDilog(context, message);
+      Alart.errorAlartDilog(context, message);
       throw Exception('Failed to load data');
     }
   }

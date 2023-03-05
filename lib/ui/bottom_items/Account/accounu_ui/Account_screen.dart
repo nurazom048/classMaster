@@ -3,7 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table/models/Account_models.dart';
-import 'package:table/ui/bottom_items/Account/eddit_account.dart';
+import 'package:table/ui/bottom_items/Account/accounu_ui/eddit_account.dart';
 import 'package:table/ui/bottom_items/Home/class/all_class-rutin.dart';
 import 'package:table/ui/server/account_req.dart';
 import 'package:table/widgets/AccountCard.dart';

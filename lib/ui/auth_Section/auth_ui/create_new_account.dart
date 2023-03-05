@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:table/ui/loginSection/login_sceen.dart';
+import 'package:table/ui/auth_Section/auth_ui/login_sceen.dart';
 import 'package:table/widgets/custom_textFileds.dart';
 import 'package:table/widgets/text%20and%20buttons/wellcome_top_note.dart';
 

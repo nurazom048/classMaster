@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:table/old/moidels.dart';
+import 'package:table/helper/old/moidels.dart';
 
 class Rutinprovider with ChangeNotifier {
   //

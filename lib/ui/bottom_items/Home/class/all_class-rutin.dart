@@ -128,8 +128,8 @@ class AllClassScreen extends ConsumerWidget {
                           rutinDetals.when(
                             loading: () => const Center(
                                 child: CircularProgressIndicator()),
-                            error: (error, stackTrace) => Alart()
-                                .errorAlartDilog(context, error.toString()),
+                            error: (error, stackTrace) => Alart.errorAlartDilog(
+                                context, error.toString()),
                             data: (data) {
                               var Classss = data?.classes;
                               var Priodes = data?.priodes;

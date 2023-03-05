@@ -2,8 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:table/ui/loginSection/create_new_account.dart';
-import 'package:table/ui/server/server.dart';
+import 'package:table/ui/bottom_items/bottm_nev_bar.dart';
+import 'package:table/ui/auth_Section/auth_req/auth_req.dart';
+import 'package:table/ui/auth_Section/auth_ui/create_new_account.dart';
+import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/text%20and%20buttons/wellcome_top_note.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -65,18 +67,22 @@ class _LoginScreenState extends State<LoginScreen> {
             CupertinoButton(
               color: Colors.blue,
               child: const Text('Login'),
-              onPressed: () {
-                // login
-                AuthReq().login(
-                  context,
+              onPressed: () async {
+                var res = await AuthReq().login(
                   username: _username.text,
                   password: _password.text,
                 );
-                //
-                if (AuthReq().message != null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(AuthReq().message!)));
-                }
+                res.fold(
+                  (l) => Alart.showSnackBar(context, l),
+                  (r) {
+                    Alart.showSnackBar(context, "Login success");
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const BottomNevBar()));
+                  },
+                );
               },
             ),
             const SizedBox(height: 20),

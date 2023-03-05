@@ -2,8 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/loginSection/login_sceen.dart';
-import 'package:table/ui/server/homeRequest.dart';
+import 'package:table/ui/auth_Section/auth_ui/login_sceen.dart';
 
 void main() {
   runApp(ProviderScope(child: MyApp()));
@@ -19,23 +18,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(primarySwatch: Colors.blue),
       home: LoginScreen(),
       //  home: MyWidget(),
-    );
-  }
-}
-
-class MyWidget extends ConsumerWidget {
-  const MyWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final myRutin = ref.watch(all_rutins_provider);
-    return Scaffold(
-      appBar: AppBar(),
-      body: myRutin.when(
-        data: (value) => Text("$value"),
-        error: (err, stackTrace) => Text("error"),
-        loading: () => Text("loading"),
-      ),
     );
   }
 }

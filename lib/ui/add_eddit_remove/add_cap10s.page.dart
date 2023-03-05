@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/Account_models.dart';
 import 'dart:convert';
-
 import 'package:table/widgets/AccoundCardRow.dart';
 import 'package:table/widgets/Alart.dart';
 
@@ -63,12 +62,12 @@ class _AddCap10sPageState extends State<AddCap10sPage> {
     try {
       var res = jsonDecode(response.body);
       if (response.statusCode == 200) {
-        Alart().errorAlartDilog(context, res["message"]);
+        Alart.errorAlartDilog(context, res["message"]);
       } else {
-        Alart().errorAlartDilog(context, res["message"]);
+        Alart.errorAlartDilog(context, res["message"]);
       }
     } catch (e) {
-      Alart().errorAlartDilog(context, e.toString());
+      Alart.errorAlartDilog(context, e.toString());
     }
   }
 

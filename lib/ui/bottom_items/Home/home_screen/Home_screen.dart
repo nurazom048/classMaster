@@ -1,5 +1,3 @@
-// ignore_for_file: unused_local_variable, avoid_print, prefer_typing_uninitialized_variables, prefer_const_constructors_in_immutables, must_be_immutable
-
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/ui/bottom_items/Home/class/all_class-rutin.dart';
-import 'package:table/ui/bottom_items/Home/search_page.dart';
-import 'package:table/ui/server/homeRequest.dart';
+import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
+import 'package:table/ui/bottom_items/Home/home_req/rutinReq.dart';
+import 'package:table/ui/bottom_items/Home/home_screen/search_page.dart';
 import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/TopBar.dart';
 import 'package:table/widgets/custom_rutin_card.dart';
@@ -16,37 +15,13 @@ import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/widgets/text%20and%20buttons/bottomText.dart';
 import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 
+//
 class HomeScreen extends ConsumerWidget {
   HomeScreen({super.key});
 
-  //
   final rutinName = TextEditingController();
 
   String? message;
-
-  String base = "192.168.0.125:3000";
-
-  //String base = "localhost:3000";
-  Future<void> creatRutin() async {
-    // Obtain shared preferences.
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
-
-    final response = await http.post(Uri.parse('http://$base/rutin/create'),
-        body: {"name": rutinName.text},
-        headers: {'Authorization': 'Bearer $getToken'});
-
-    if (response.statusCode == 200) {
-      //.. responce
-      final res = json.decode(response.body);
-
-      //print response
-      print("rutin created successfully");
-      print(res);
-    } else {
-      throw Exception('Failed to load data');
-    }
-  }
 
 //
   @override
@@ -130,8 +105,8 @@ class HomeScreen extends ConsumerWidget {
                                         )),
                             );
                           },
-                          error: (error, stackTrace) => Alart()
-                              .errorAlartDilog(context, error.toString()),
+                          error: (error, stackTrace) =>
+                              Alart.showSnackBar(context, error.toString()),
                         ),
                       ),
 
@@ -177,8 +152,8 @@ class HomeScreen extends ConsumerWidget {
                                           )),
                               );
                             },
-                            error: (error, stackTrace) => Alart()
-                                .errorAlartDilog(context, error.toString())),
+                            error: (error, stackTrace) =>
+                                Alart.showSnackBar(context, error.toString())),
                       ),
 
                       //... hedding .../
@@ -229,7 +204,7 @@ class HomeScreen extends ConsumerWidget {
                   color: Colors.blue,
                   child: const Text("Create"),
                   onPressed: () {
-                    creatRutin();
+                    RutinReqest().creatRutin(rutinName: rutinName);
                     Navigator.of(context).pop();
                   },
                 ),

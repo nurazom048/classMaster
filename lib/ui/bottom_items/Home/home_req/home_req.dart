@@ -1,24 +1,33 @@
 // ignore_for_file: file_names, non_constant_identifier_names
 
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:table/models/ClsassDetailsModel.dart';
-import 'package:table/widgets/Alart.dart';
+import 'package:table/helper/constant/constant.dart';
+
+//!.. Provider ...!//
+
+final home_req_provider = Provider<HomeReq>((ref) => HomeReq());
+
+final all_rutins_provider = FutureProvider<List>((ref) {
+  return ref.read(home_req_provider).myAllRutin();
+});
+final save_rutins_provider = FutureProvider<List>((ref) {
+  return ref.read(home_req_provider).savedRutins();
+});
+
+//
 
 class HomeReq {
-  // String base = "http://192.168.0.125:3000";
-  String base = "http://192.168.31.229:3000";
   String? message;
 //... myall rutin ,,,//
   Future<List> myAllRutin() async {
-    // Obtain shared preferences.
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 //.. request
-    final response = await http.post(Uri.parse('$base/rutin/allrutins'),
+    final response = await http.post(
+        Uri.parse('${Const.BASE_URl}/rutin/allrutins'),
         headers: {'Authorization': 'Bearer $getToken'});
 
     if (response.statusCode == 200) {
@@ -39,7 +48,7 @@ class HomeReq {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 
-    final url = Uri.parse('$base/rutin/allrutins');
+    final url = Uri.parse('${Const.BASE_URl}/rutin/allrutins');
 
     try {
       final response =
@@ -62,13 +71,3 @@ class HomeReq {
     }
   }
 }
-
-//!.. Provider ...!//
-
-final home_req_provider = Provider<HomeReq>((ref) => HomeReq());
-final all_rutins_provider = FutureProvider<List>((ref) {
-  return ref.read(home_req_provider).myAllRutin();
-});
-final save_rutins_provider = FutureProvider<List>((ref) {
-  return ref.read(home_req_provider).savedRutins();
-});

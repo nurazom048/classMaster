@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:table/models/Account_models.dart';
-import 'package:table/ui/bottom_items/Account/Account_screen.dart';
+import 'package:table/ui/bottom_items/Account/accounu_ui/Account_screen.dart';
 
 class AccountCardRow extends StatelessWidget {
   AccountCardRow({
