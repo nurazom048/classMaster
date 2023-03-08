@@ -67,7 +67,7 @@ class HomeReq {
         return [];
       }
     } catch (e) {
-      throw Exception('Failed to load data');
+      throw Exception(e);
     }
   }
 }

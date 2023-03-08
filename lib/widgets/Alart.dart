@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -33,5 +35,12 @@ abstract class Alart {
           content: Text(text.toString()),
         ),
       );
+  }
+
+  static Text handleError(BuildContext context, dynamic error) {
+    Future.delayed(Duration.zero, () {
+      showSnackBar(context, error.toString());
+    });
+    return Text(error.toString());
   }
 }

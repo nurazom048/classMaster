@@ -15,15 +15,11 @@ import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/widgets/text%20and%20buttons/bottomText.dart';
 import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 
-//
 class HomeScreen extends ConsumerWidget {
   HomeScreen({super.key});
 
   final rutinName = TextEditingController();
 
-  String? message;
-
-//
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final myRutin = ref.watch(all_rutins_provider);
@@ -38,17 +34,15 @@ class HomeScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //... Appbar .../
-              CustomTopBar(
-                "All Rutins",
-                acction: IconButton(
-                    onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SearchPAge())),
-                    icon: const Icon(Icons.search)),
-                icon: Icons.add_circle_outlined,
-                ontap: () => _showDialog(context, rutinName),
-              ),
+              CustomTopBar("All Rutins",
+                  acction: IconButton(
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SearchPAge())),
+                      icon: const Icon(Icons.search)),
+                  icon: Icons.add_circle_outlined,
+                  ontap: () => _showDialog(context, rutinName)),
 
               //
               SingleChildScrollView(
@@ -66,95 +60,92 @@ class HomeScreen extends ConsumerWidget {
                         scrollDirection: Axis.horizontal,
                         //.. Show all rutins..//
                         child: myRutin.when(
-                          loading: () => const Progressindicator(),
-                          data: (data) {
-                            var myRutines = data;
-
-                            return Row(
-                              children: List.generate(
-                                  myRutines.isEmpty ? 1 : myRutines.length,
-                                  (index) => myRutines.isEmpty
-                                      ? const Text(
-                                          "You Dont Have any Rutin created")
-                                      : InkWell(
-                                          child: CustomRutinCard(
-                                            rutinname: myRutines[index]["name"],
-                                            profilePicture: myRutines[index]
-                                                ["ownerid"]["image"],
-                                            name: myRutines[index]["ownerid"]
-                                                ["name"],
-                                            username: myRutines[index]
-                                                ["ownerid"]["username"],
-
-                                            //
-                                          ),
-
-                                          //
-                                          onTap: () => Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      AllClassScreen(
-                                                        rutinName:
-                                                            myRutines[index]
-                                                                ["name"],
-                                                        rutinId:
-                                                            myRutines[index]
-                                                                ["_id"],
-                                                      ))),
-                                        )),
-                            );
-                          },
-                          error: (error, stackTrace) =>
-                              Alart.showSnackBar(context, error.toString()),
-                        ),
-                      ),
-
-                      //... hedding .../
-                      MyText("Saved Rutin"),
-
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: saveRutin.when(
                             loading: () => const Progressindicator(),
-                            data: (saveRutin) {
+                            data: (data) {
+                              var myRutines = data;
+
                               return Row(
                                 children: List.generate(
-                                    saveRutin.isEmpty ? 1 : saveRutin.length,
-                                    (index) => saveRutin.isEmpty
+                                    myRutines.isEmpty ? 1 : myRutines.length,
+                                    (index) => myRutines.isEmpty
                                         ? const Text(
                                             "You Dont Have any Rutin created")
                                         : InkWell(
                                             child: CustomRutinCard(
-                                              rutinname: saveRutin[index]
+                                              rutinname: myRutines[index]
                                                   ["name"],
-                                              profilePicture: saveRutin[index]
+                                              profilePicture: myRutines[index]
                                                   ["ownerid"]["image"],
-                                              name: saveRutin[index]["ownerid"]
+                                              name: myRutines[index]["ownerid"]
                                                   ["name"],
-                                              username: saveRutin[index]
+                                              username: myRutines[index]
                                                   ["ownerid"]["username"],
-                                            ),
 
-                                            //
+                                              //
+                                            ),
                                             onTap: () => Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
                                                         AllClassScreen(
                                                           rutinName:
-                                                              saveRutin[index]
+                                                              myRutines[index]
                                                                   ["name"],
                                                           rutinId:
-                                                              saveRutin[index]
+                                                              myRutines[index]
                                                                   ["_id"],
                                                         ))),
                                           )),
                               );
                             },
                             error: (error, stackTrace) =>
-                                Alart.showSnackBar(context, error.toString())),
+                                Alart.handleError(context, error)),
                       ),
+
+                      // //... hedding .../
+                      MyText("Saved Rutin"),
+
+                      SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: saveRutin.when(
+                              loading: () => const Progressindicator(),
+                              data: (saveRutin) {
+                                return Row(
+                                  children: List.generate(
+                                      saveRutin.isEmpty ? 1 : saveRutin.length,
+                                      (index) => saveRutin.isEmpty
+                                          ? const Text(
+                                              "You Dont Have any Rutin created")
+                                          : InkWell(
+                                              child: CustomRutinCard(
+                                                rutinname: saveRutin[index]
+                                                    ["name"],
+                                                profilePicture: saveRutin[index]
+                                                    ["ownerid"]["image"],
+                                                name: saveRutin[index]
+                                                    ["ownerid"]["name"],
+                                                username: saveRutin[index]
+                                                    ["ownerid"]["username"],
+                                              ),
+
+                                              //
+                                              onTap: () => Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          AllClassScreen(
+                                                            rutinName:
+                                                                saveRutin[index]
+                                                                    ["name"],
+                                                            rutinId:
+                                                                saveRutin[index]
+                                                                    ["_id"],
+                                                          ))),
+                                            )),
+                                );
+                              },
+                              error: (error, stackTrace) =>
+                                  Alart.handleError(context, error))),
 
                       //... hedding .../
                       MyText("Others Rutins"),
