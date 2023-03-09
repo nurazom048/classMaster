@@ -7,8 +7,6 @@ import 'package:http/http.dart' as http;
 import 'package:table/helper/constant/constant.dart';
 
 class AuthReq {
-  //
-  //
   //........ Login .........//
   Future<Either<String, dynamic>> login({username, password}) async {
     var loginUrl = Uri.parse('${Const.BASE_URl}/auth/login');
@@ -19,7 +17,6 @@ class AuthReq {
       var message = json.decode(response.body)["message"];
 
       if (response.statusCode == 200) {
-        //.. responce
         final accountData = json.decode(response.body);
         final routines = json.decode(response.body)["user"]["routines"];
 

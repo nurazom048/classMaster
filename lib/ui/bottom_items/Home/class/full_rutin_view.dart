@@ -14,6 +14,7 @@ import 'package:table/ui/add_eddit_remove/add_cap10s.page.dart';
 import 'package:table/ui/add_eddit_remove/add_class.dart';
 import 'package:table/ui/bottom_items/Home/class/class_request/class_request.dart';
 import 'package:table/ui/bottom_items/Home/class/sunnary/summary_screen.dart';
+import 'package:table/ui/bottom_items/Home/home_req/priode_reuest.dart';
 import 'package:table/ui/server/rutinReq.dart';
 import 'package:table/widgets/AccoundCardRow.dart';
 import 'package:table/widgets/Alart.dart';
@@ -26,33 +27,10 @@ import 'package:table/widgets/text%20and%20buttons/bottomText.dart';
 import 'package:table/widgets/text%20and%20buttons/empty.dart';
 import 'package:table/widgets/text%20and%20buttons/hedingText.dart';
 
-class AllClassScreen extends ConsumerWidget {
+class FullRutineView extends ConsumerWidget {
   String rutinId;
   String rutinName;
-  AllClassScreen({super.key, required this.rutinId, required this.rutinName});
-
-  String? message;
-
-  // Future chackStatus() async {
-  //   // Obtain shared preferences.
-  //   final prefs = await SharedPreferences.getInstance();
-  //   final String? getToken = prefs.getString('Token');
-  //   try {
-  //     final response = await http.get(
-  //         Uri.parse('${Const.BASE_URl}/rutin/save/:$rutinId/chack'),
-  //         headers: {'Authorization': 'Bearer $getToken'});
-
-  //     if (response.statusCode == 200) {
-  //       final res = json.decode(response.body);
-
-  //       //  print(res);
-  //     } else {
-  //       throw Exception('Failed to load data');
-  //     }
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
+  FullRutineView({super.key, required this.rutinId, required this.rutinName});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -111,31 +89,31 @@ class AllClassScreen extends ConsumerWidget {
                                   : data.isOwnwer == true ||
                                       data.isOwnwer == true;
                               var Classss = data?.classes;
-                              var Priodes = data?.priodes;
+                              var Priodes = data?.priodes ?? [];
+                              int priodelenght = Priodes.length;
                               print("data!.cap10.toString()");
                               print(data?.cap10s.length ?? "no daa");
                               return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    ListOfPriodes(
-                                        Priodes ?? [], rutinId, permition),
+                                    ListOfPriodes(Priodes, rutinId, permition),
 
                                     //
-                                    ListOfDays(
-                                        Classss?.sunday ?? [], permition),
+                                    ListOfDays(Classss?.sunday ?? [], permition,
+                                        priodelenght),
 
-                                    ListOfDays(
-                                        Classss?.monday ?? [], permition),
-                                    ListOfDays(
-                                        Classss?.thursday ?? [], permition),
-                                    ListOfDays(
-                                        Classss?.wednesday ?? [], permition),
-                                    ListOfDays(
-                                        Classss?.thursday ?? [], permition),
-                                    ListOfDays(
-                                        Classss?.friday ?? [], permition),
-                                    ListOfDays(
-                                        Classss?.saturday ?? [], permition),
+                                    ListOfDays(Classss?.monday ?? [], permition,
+                                        priodelenght),
+                                    ListOfDays(Classss?.thursday ?? [],
+                                        permition, priodelenght),
+                                    ListOfDays(Classss?.wednesday ?? [],
+                                        permition, priodelenght),
+                                    ListOfDays(Classss?.thursday ?? [],
+                                        permition, priodelenght),
+                                    ListOfDays(Classss?.friday ?? [], permition,
+                                        priodelenght),
+                                    ListOfDays(Classss?.saturday ?? [],
+                                        permition, priodelenght),
                                   ]);
                             },
                           ),
@@ -381,8 +359,9 @@ class AllClassScreen extends ConsumerWidget {
 
 class ListOfDays extends StatelessWidget {
   List<Day?> day;
-  ListOfDays(this.day, this.permition, {super.key});
+  ListOfDays(this.day, this.permition, this.priodeLenght, {super.key});
   bool permition;
+  int priodeLenght;
 
   @override
   Widget build(BuildContext context) {
@@ -406,6 +385,7 @@ class ListOfDays extends StatelessWidget {
                   weakdayIndex: day[index]?.weekday,
 
                   //
+                  priodeLenght: priodeLenght,
                   isLast: day.length - 1 == index,
                   onLongPress: () =>
                       ShowProdeButtomAction(context, day[index]?.id),
@@ -418,6 +398,9 @@ class ListOfDays extends StatelessWidget {
                               fullscreenDialog: true,
                               builder: (context) => SummaryScreen(
                                 classId: day[index]!.id,
+                                istractorName: day[index]!.instuctorName,
+                                roomNumber: day[index]!.room,
+                                subjectCode: day[index]!.subjectcode,
                               ),
                             ),
                           )
@@ -434,10 +417,19 @@ class ListOfDays extends StatelessWidget {
             style: TextStyle(fontSize: 22, color: Colors.black87)),
         actions: [
           CupertinoActionSheetAction(
-            child: const Text("Eddit"), // go to eddit
+              child: const Text("Eddit"), // go to eddit
 
-            onPressed: () {},
-          ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                        fullscreenDialog: true,
+                        builder: (context) => AddClass(
+                              rutinId: "rutinId",
+                              classId: classId,
+                              isEdit: true,
+                            )));
+              }),
           CupertinoActionSheetAction(
             child: const Text("Remove", style: TextStyle(color: Colors.red)),
             onPressed: () {
@@ -465,27 +457,46 @@ class ListOfPriodes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-        children: List.generate(
-      Priodes.length,
-      (index) => Priodes.isEmpty
-          ? const Text("No Priode")
-          : PriodeContaner(
-              startTime: Priodes[index]!.startTime,
-              endtime: Priodes[index]!.endTime,
-              priode: index,
-              lenght: 1,
+      children: List.generate(
+        Priodes.length,
+        (index) => Priodes.isEmpty
+            ? const Text("No Priode")
+            : PriodeContaner(
+                startTime: Priodes[index]!.startTime,
+                endtime: Priodes[index]!.endTime,
+                priode: index,
+                lenght: 1,
 
-              // ontap to go summay page..//
-              onTap: () => Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                      fullscreenDialog: true,
-                      builder: (context) => AppPriodePage(
-                        rutinId: rutinId,
-                      ),
-                    ),
-                  )),
-    ));
+                // ontap to go summay page..//
+                onLongPress: () =>
+                    logPressOnPriode(context, Priodes[index]!.id),
+              ),
+      ),
+    );
+  }
+
+  Future<dynamic> logPressOnPriode(BuildContext context, priodeId) {
+    return showCupertinoModalPopup(
+      context: context,
+      builder: (context) => CupertinoActionSheet(
+        title: const Text(" Do you want to.. ",
+            style: TextStyle(fontSize: 22, color: Colors.black87)),
+        actions: [
+          CupertinoActionSheetAction(
+            child: const Text("Remove", style: TextStyle(color: Colors.red)),
+            onPressed: () {
+              PriodeRequest().deletePriode(context, priodeId);
+              print(priodeId);
+              Navigator.pop(context);
+            },
+          ),
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          child: const Text("cancel"),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+    );
   }
 }
 //

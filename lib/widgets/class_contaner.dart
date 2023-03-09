@@ -12,6 +12,7 @@ class ClassContainer extends StatelessWidget {
   dynamic onTap, onLongPress;
   dynamic weakdayIndex;
   bool? isLast;
+  int priodeLenght;
 
   ClassContainer({
     Key? key,
@@ -26,6 +27,7 @@ class ClassContainer extends StatelessWidget {
     required this.weakday,
     required this.classname,
     required this.previous_end,
+    required this.priodeLenght,
 
     //
     this.onTap,
@@ -71,6 +73,7 @@ class ClassContainer extends StatelessWidget {
                       _Running(newStart, newEnd),
                       Text(instractorname ?? ""),
                       Text(subCode ?? ""),
+                      Text(roomnum ?? ""),
                       // Text(
                       //     "${previous_end == 1 || previous_end == start ? 0 : previous_end} $start")
                     ],
@@ -81,7 +84,7 @@ class ClassContainer extends StatelessWidget {
             ),
           ),
         ),
-        EndcrossContainer(end, 5, isLast ?? false),
+        EndcrossContainer(end, priodeLenght, isLast ?? false),
       ],
     );
   }

@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:table/ui/bottom_items/Home/class/all_class-rutin.dart';
+import 'package:table/ui/bottom_items/Home/class/full_rutin_view.dart';
 import 'package:table/widgets/custom_rutin_card.dart';
 import 'package:table/widgets/days_container.dart';
 import 'package:http/http.dart' as http;
@@ -97,7 +97,7 @@ class _SearchPAgeState extends State<SearchPAge> {
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AllClassScreen(
+                      builder: (context) => FullRutineView(
                         rutinName: seach_result[index]["name"],
                         rutinId: seach_result[index]["_id"],
                       ),

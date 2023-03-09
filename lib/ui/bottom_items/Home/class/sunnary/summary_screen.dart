@@ -3,58 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table/ui/bottom_items/Home/class/sunnary/add_summary.dart';
 import 'package:table/widgets/TopBar.dart';
-import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
+import 'summary_request/summary_request.dart';
 
 class SummaryScreen extends StatefulWidget {
   final String? classId;
-  const SummaryScreen({super.key, required this.classId});
+  final String? image;
+  final String? istractorName;
+  final String? subjectCode;
+  final String? roomNumber;
+
+  const SummaryScreen({
+    super.key,
+    required this.classId,
+    this.image,
+    this.istractorName = "",
+    this.subjectCode = "",
+    this.roomNumber = ",",
+  });
 
   @override
   State<SummaryScreen> createState() => _SummaryScreenState();
 }
 
 class _SummaryScreenState extends State<SummaryScreen> {
-  String instructorname = "nyr";
-  String roomnumber = "nyr";
-  String sunjectcode = "nyr";
-
-  String base = "192.168.0.125:3000";
-//  String base = "localhost:3000";
-
-  //.... get summary
-
-  String? message;
-
-  Future<List> getSummary() async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
-    try {
-      //... send request
-      final response = await http.get(
-          Uri.parse('http://$base/summary/${widget.classId}'),
-          headers: {'Authorization': 'Bearer $getToken'});
-
-      if (response.statusCode == 200) {
-        message = json.decode(response.body)["message"];
-        var res = json.decode(response.body);
-        Map<String, dynamic> data = res as Map<String, dynamic>;
-
-        return data["summaries"] ?? [];
-        //.. responce
-        //print(res[0]["text"]);
-
-        // Navigate to the "routine_screen"
-      } else {
-        throw Exception('Failed to load data');
-      }
-    } catch (e) {
-      print(e);
-      return [];
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -64,9 +35,9 @@ class _SummaryScreenState extends State<SummaryScreen> {
           const CustomTopBar("Class Summary"),
           //.... to show the class informeetion
           ClasInfoBox(
-            instructorname: instructorname,
-            roomnumber: roomnumber,
-            sunjectcode: sunjectcode,
+            instructorname: widget.istractorName ?? "",
+            roomnumber: widget.roomNumber ?? '',
+            sunjectcode: widget.subjectCode ?? '',
           ),
           //
           const Divider(height: 5),
@@ -79,45 +50,40 @@ class _SummaryScreenState extends State<SummaryScreen> {
               children: [
                 //.... the summary list
                 FutureBuilder(
-                    future: getSummary(),
+                    future: SummayReuest().getSummaryList(widget.classId),
                     builder: (context, snapshoot) {
                       if (snapshoot.connectionState ==
                           ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
                       } else {
-                        // print("summary");
-                        // print(summary[0]["text"]);
+                        var summary = snapshoot.data!.summaries;
 
-                        List summary = snapshoot.data ?? [];
                         return ListView.builder(
                           reverse: true,
                           itemCount: summary.length,
                           itemBuilder: (context, index) => SummaryContaner(
-                            text: summary[index]["text"],
-                            date: summary[index]["time"],
+                            text: summary[index].text,
+                            date: summary[index].time.toString(),
                             is_last: 0 == index,
                           ),
                         );
                       }
                     }),
-
-                //.... add icon
-                Positioned(
-                    bottom: 10,
-                    right: 10,
-                    child: AddSummary(
-                      onTap: () => Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            fullscreenDialog: true,
-                            builder: (context) =>
-                                AddSummaryScreen(classId: widget.classId!)),
-                      ),
-                    ))
               ],
             ),
           )
         ]),
+
+        //... Add summary icon.....//
+        floatingActionButton: AddSummary(
+          onTap: () => Navigator.push(
+            context,
+            CupertinoPageRoute(
+                fullscreenDialog: true,
+                builder: (context) =>
+                    AddSummaryScreen(classId: widget.classId!)),
+          ),
+        ),
       ),
     );
   }

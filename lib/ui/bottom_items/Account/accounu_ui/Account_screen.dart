@@ -3,9 +3,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table/models/Account_models.dart';
+import 'package:table/ui/bottom_items/Account/account_request/account_request.dart';
 import 'package:table/ui/bottom_items/Account/accounu_ui/eddit_account.dart';
-import 'package:table/ui/bottom_items/Home/class/all_class-rutin.dart';
-import 'package:table/ui/server/account_req.dart';
+import 'package:table/ui/bottom_items/Home/class/full_rutin_view.dart';
 import 'package:table/widgets/AccountCard.dart';
 import 'package:table/widgets/AppBarCustom.dart';
 import 'package:table/widgets/custom_rutin_card.dart';
@@ -106,7 +106,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                       onTap: () => Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => AllClassScreen(
+                                          builder: (context) => FullRutineView(
                                             rutinName: myRutins[index]["name"],
                                             rutinId: myRutins[index]["_id"],
                                           ),
@@ -145,7 +145,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
-                                                    AllClassScreen(
+                                                    FullRutineView(
                                                   rutinName: save_rutin[index]
                                                       ["name"],
                                                   rutinId: save_rutin[index]

@@ -1,6 +1,5 @@
 // ignore_for_file: sort_child_properties_last, avoid_print, prefer_typing_uninitialized_variables, must_be_immutable, unnecessary_string_interpolations, sized_box_for_whitespace
 import 'dart:convert';
-import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -178,7 +177,7 @@ class _AddClassState extends State<AddClass> {
     final String? getToken = prefs.getString('Token');
 
     final response = await http.get(
-        Uri.parse('${Const.BASE_URl}e/class/find/class/${widget.classId}'),
+        Uri.parse('${Const.BASE_URl}/class/find/class/${widget.classId}'),
         headers: {'Authorization': 'Bearer $getToken'});
 
     print(response.statusCode);
