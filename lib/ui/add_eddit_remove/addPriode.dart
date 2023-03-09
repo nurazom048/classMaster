@@ -1,17 +1,18 @@
 // ignore_for_file: avoid_print
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:table/helper/constant/constant.dart';
 import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/select_time.dart';
 import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 
 class AppPriodePage extends StatefulWidget {
   String rutinId;
-  AppPriodePage({super.key, required this.rutinId});
+  bool? isEddit = false;
+  AppPriodePage({super.key, required this.rutinId, this.isEddit});
 
   @override
   State<AppPriodePage> createState() => _AppPriodePageState();
@@ -22,10 +23,6 @@ class _AppPriodePageState extends State<AppPriodePage> {
   DateTime endTime = DateTime.now();
   bool show = false;
 
-  String base = "192.168.0.125:3000";
-  // String base = "192.168.31.229:3000";
-  //
-
 //... Add Priode ...//
   String? message;
   Future<void> addPriode(context) async {
@@ -33,28 +30,32 @@ class _AppPriodePageState extends State<AppPriodePage> {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 
-    final response = await http.post(
-        Uri.parse('http://$base/rutin/add_priode/${widget.rutinId}'),
-        body: {
-          "start_time": "${startTime.toIso8601String()}Z",
-          "end_time": "${endTime.toIso8601String()}Z",
-        },
-        headers: {
-          'Authorization': 'Bearer $getToken'
-        });
-    message = json.decode(response.body)["message"];
-    print(message);
+    try {
+      final response = await http.post(
+          Uri.parse('${Const.BASE_URl}/rutin/add_priode/${widget.rutinId}'),
+          body: {
+            "start_time": "${startTime.toIso8601String()}Z",
+            "end_time": "${endTime.toIso8601String()}Z",
+          },
+          headers: {
+            'Authorization': 'Bearer $getToken'
+          });
+      message = json.decode(response.body)["message"];
+      print(message);
 
-    if (response.statusCode == 200) {
-      //.. responce
-      final res = json.decode(response.body);
-      Navigator.pop(context);
+      if (response.statusCode == 200) {
+        //.. responce
+        final res = json.decode(response.body);
+        Navigator.pop(context);
 
-      //print response
-      print("rutin created successfully");
-      print(res);
-    } else {
-      Alart.errorAlartDilog(context, message!);
+        //print response
+        print("rutin created successfully");
+        print(res);
+      } else {
+        Alart.errorAlartDilog(context, message!);
+      }
+    } catch (e) {
+      Alart.handleError(context, e);
     }
   }
 
@@ -84,8 +85,6 @@ class _AppPriodePageState extends State<AppPriodePage> {
                           show: show,
                           onTap: _selectStartTime,
                         ),
-                        // const SizedBox(width: 5),
-                        // Expanded(
                         SelectTime(
                           width: 170,
                           time_text: "end time",
@@ -105,10 +104,6 @@ class _AppPriodePageState extends State<AppPriodePage> {
                           borderRadius: BorderRadius.circular(7),
                           onPressed: () {
                             addPriode(context);
-                            // final isvalidfrom = fromKey.currentState!.validate();
-                            // if (isvalidfrom) {
-
-                            // }
                           }),
                     ),
                   ]),

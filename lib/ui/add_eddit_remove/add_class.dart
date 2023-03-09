@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:table/helper/constant/constant.dart';
 import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/MyTextFields.dart';
 import 'package:table/widgets/select_time.dart';
@@ -44,47 +45,47 @@ class _AddClassState extends State<AddClass> {
   late DateTime startTimeDemo = DateTime.now();
   late DateTime endTimDemo = DateTime.now();
 
-  String base = "192.168.0.125:3000";
-  // String base = "192.168.31.229:3000";
-
   var message;
   // Add class
 
   Future<void> addClass(context) async {
-    // Obtain shared preferences.
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final String? getToken = prefs.getString('Token');
 
-    final response = await http.post(
-        Uri.parse('http://$base/class/${widget.rutinId}/addclass/'),
-        body: {
-          "name": _className.text,
-          "instuctor_name": _instructorController.text,
-          "room": _roomController.text,
-          "subjectcode": _subCodeController.text,
-          "start": _startPeriodController.text,
-          "end": _endPeriodController.text,
-          "has_class": "has_class",
-          "weekday": _selectedDay.toString(),
-          "start_time": "${startTime.toIso8601String()}Z",
-          "end_time": "${endTime.toIso8601String()}Z",
-        },
-        headers: {
-          'Authorization': 'Bearer $getToken'
-        });
-    message = json.decode(response.body)["message"];
-    print(message);
+      final response = await http.post(
+          Uri.parse('${Const.BASE_URl}/class/${widget.rutinId}/addclass/'),
+          body: {
+            "name": _className.text,
+            "instuctor_name": _instructorController.text,
+            "room": _roomController.text,
+            "subjectcode": _subCodeController.text,
+            "start": _startPeriodController.text,
+            "end": _endPeriodController.text,
+            "has_class": "has_class",
+            "weekday": _selectedDay.toString(),
+            "start_time": "${startTime.toIso8601String()}Z",
+            "end_time": "${endTime.toIso8601String()}Z",
+          },
+          headers: {
+            'Authorization': 'Bearer $getToken'
+          });
+      message = json.decode(response.body)["message"];
+      print(message);
 
-    if (response.statusCode == 200) {
-      //.. responce
-      final res = json.decode(response.body);
-      Navigator.pop(context);
+      if (response.statusCode == 200) {
+        //.. responce
+        final res = json.decode(response.body);
+        Navigator.pop(context);
 
-      //print response
-      print("rutin created successfully");
-      print(res);
-    } else {
-      Alart.errorAlartDilog(context, message);
+        //print response
+        print("rutin created successfully");
+        print(res);
+      } else {
+        Alart.errorAlartDilog(context, message);
+      }
+    } catch (e) {
+      Alart.handleError(context, e);
     }
   }
 
@@ -95,7 +96,7 @@ class _AddClassState extends State<AddClass> {
     "Wednesday",
     "Thursday",
     "Friday",
-    "Saturday",
+    "Saturday"
   ];
 
   // ignore: prefer_final_fields
@@ -137,21 +138,23 @@ class _AddClassState extends State<AddClass> {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 
-    final response = await http
-        .post(Uri.parse('http://$base/class/eddit/${widget.classId}'), body: {
-      "name": _className.text,
-      "instuctor_name": _instructorController.text,
-      "room": _roomController.text,
-      "subjectcode": _subCodeController.text,
-      "start": _startPeriodController.text,
-      "end": _endPeriodController.text,
-      "has_class": "has_class",
-      "weekday": _selectedDay.toString(),
-      "start_time": "${startTime.toIso8601String()}",
-      "end_time": "${endTime.toIso8601String()}",
-    }, headers: {
-      'Authorization': 'Bearer $getToken'
-    });
+    final response = await http.post(
+        Uri.parse('${Const.BASE_URl}/class/eddit/${widget.classId}'),
+        body: {
+          "name": _className.text,
+          "instuctor_name": _instructorController.text,
+          "room": _roomController.text,
+          "subjectcode": _subCodeController.text,
+          "start": _startPeriodController.text,
+          "end": _endPeriodController.text,
+          "has_class": "has_class",
+          "weekday": _selectedDay.toString(),
+          "start_time": "${startTime.toIso8601String()}",
+          "end_time": "${endTime.toIso8601String()}",
+        },
+        headers: {
+          'Authorization': 'Bearer $getToken'
+        });
     message = json.decode(response.body)["message"];
     print(message);
 
@@ -175,7 +178,7 @@ class _AddClassState extends State<AddClass> {
     final String? getToken = prefs.getString('Token');
 
     final response = await http.get(
-        Uri.parse('http://$base/class/find/class/${widget.classId}'),
+        Uri.parse('${Const.BASE_URl}e/class/find/class/${widget.classId}'),
         headers: {'Authorization': 'Bearer $getToken'});
 
     print(response.statusCode);
@@ -216,7 +219,7 @@ class _AddClassState extends State<AddClass> {
 
       // print("${s.runtimeType}   vhey");
     } else {
-      Alart.errorAlartDilog(context, message);
+      Alart.handleError(context, message);
       throw Exception('Failed to load data');
     }
   }
@@ -234,7 +237,7 @@ class _AddClassState extends State<AddClass> {
     return Scaffold(
       appBar: AppBar(title: Text(sevendays[_selectedDay - 1].toString())),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -371,8 +374,7 @@ class _AddClassState extends State<AddClass> {
                         ? editClass(context)
                         : addClass(context);
                     if (message != null) {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text(message!)));
+                      Alart.errorAlartDilog(context, message);
                     }
                     // final isvalidfrom = fromKey.currentState!.validate();
                     // if (isvalidfrom) {

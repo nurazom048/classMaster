@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:convert';
 
 import 'package:table/models/Account_models.dart';
@@ -15,14 +17,18 @@ class ClassDetailsModel {
     required this.owener,
     required this.rutin_name,
     required this.cap10s,
-
-    /// hey chat gpt add the owner fild
+    this.isOwnwer = false,
+    this.isCapten = false,
+    this.isSaved = false,
   });
   String rutin_name;
   List<Priode> priodes;
   Classes classes;
   AccountModels owener;
   List<AccountModels> cap10s;
+  bool? isOwnwer;
+  bool? isCapten;
+  bool? isSaved;
 
   factory ClassDetailsModel.fromJson(Map<String, dynamic> json) =>
       ClassDetailsModel(
@@ -33,6 +39,9 @@ class ClassDetailsModel {
         rutin_name: json["rutin_name"],
         cap10s: List<AccountModels>.from(
             json["finalCap10List"].map((x) => AccountModels.fromJson(x))),
+        isOwnwer: json["isOwnwer"],
+        isCapten: json["isCapten"],
+        isSaved: json["isSaved"],
       );
 
   Map<String, dynamic> toJson() => {
