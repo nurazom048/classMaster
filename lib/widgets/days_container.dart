@@ -2,17 +2,22 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/add_eddit_remove/add_class.dart';
-import 'package:table/widgets/text%20and%20buttons/empty.dart';
 
-class DaysContaner extends StatelessWidget {
+final isEditingModd = StateProvider.autoDispose((ref) => false);
+
+class DaysContaner extends ConsumerWidget {
   int indexofdate;
+  String? rutinId;
 
   bool? ismini;
-  DaysContaner({super.key, this.ismini, required this.indexofdate});
+  DaysContaner(
+      {super.key, this.ismini, required this.indexofdate, this.rutinId});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isEdimgMood = ref.watch(isEditingModd);
     List sevendays = [
       "Sunday",
       "Monday",
@@ -46,15 +51,18 @@ class DaysContaner extends StatelessWidget {
               style: ismini == true
                   ? const TextStyle(fontSize: 10)
                   : const TextStyle()), //.. show the day name
-          ismini == false
+
+          rutinId != null && isEdimgMood == true
               ? IconButton(
-                  onPressed: (() => Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                          fullscreenDialog: true,
-                          builder: (context) => AddClass(
-                                rutinId: "",
-                              )))),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                            fullscreenDialog: true,
+                            builder: (context) => AddClass(
+                                  rutinId: rutinId ?? '',
+                                )));
+                  },
                   icon: const Icon(Icons.add))
               : Container()
         ],

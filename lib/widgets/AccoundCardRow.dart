@@ -1,20 +1,26 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/models/Account_models.dart';
 import 'package:table/ui/bottom_items/Account/accounu_ui/Account_screen.dart';
+import 'package:table/widgets/days_container.dart';
 
-class AccountCardRow extends StatelessWidget {
+class AccountCardRow extends ConsumerWidget {
   AccountCardRow({
     super.key,
     required this.accountData,
     this.suffix,
+    this.removeCapten,
   });
 
   final AccountModels accountData;
 
   final Widget? suffix;
+  dynamic removeCapten;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final bool isEdditingMood = ref.watch(isEditingModd);
     return InkWell(
       onTap: () => Navigator.push(
         context,
@@ -78,7 +84,16 @@ class AccountCardRow extends StatelessWidget {
             ),
 
             const Spacer(flex: 24),
-            suffix ?? SizedBox.shrink(),
+            removeCapten != null && isEdditingMood == true
+                ? IconButton(
+                    onPressed: removeCapten,
+                    icon: const Icon(
+                      Icons.delete_rounded,
+                      color: CupertinoColors
+                          .systemRed, // set the color to systemRed
+                    ),
+                  )
+                : suffix ?? SizedBox.shrink(),
             const Spacer(flex: 2),
           ],
         ),

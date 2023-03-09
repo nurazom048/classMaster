@@ -52,13 +52,11 @@ class FullRutineView extends ConsumerWidget {
                           acction: IconButton(
                               onPressed: () =>
                                   _showModalBottomSheet(context, rutinId, valu),
-                              icon: const Icon(Icons.more_vert)),
-                          ontap: () => Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  fullscreenDialog: true,
-                                  builder: (context) =>
-                                      AddClass(rutinId: rutinId))));
+                              icon: const Icon(Icons.more_vert)), ontap: () {
+                        ref
+                            .read(isEditingModd.notifier)
+                            .update((state) => !state);
+                      });
                     },
                     loading: () => CustomTopBar(rutinName),
                     error: (error, stackTrace) =>
@@ -74,7 +72,7 @@ class FullRutineView extends ConsumerWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const ListOfWeakdays(),
+                          ListOfWeakdays(rutinId: rutinId),
 
                           ///.. show all priodes  class
 
@@ -362,6 +360,7 @@ class ListOfDays extends StatelessWidget {
   ListOfDays(this.day, this.permition, this.priodeLenght, {super.key});
   bool permition;
   int priodeLenght;
+  String? rutinId;
 
   @override
   Widget build(BuildContext context) {
@@ -468,6 +467,7 @@ class ListOfPriodes extends StatelessWidget {
                 lenght: 1,
 
                 // ontap to go summay page..//
+
                 onLongPress: () =>
                     logPressOnPriode(context, Priodes[index]!.id),
               ),
@@ -502,7 +502,9 @@ class ListOfPriodes extends StatelessWidget {
 //
 
 class ListOfWeakdays extends StatelessWidget {
-  const ListOfWeakdays({super.key});
+  ListOfWeakdays({super.key, this.rutinId});
+
+  String? rutinId;
 
   @override
   Widget build(BuildContext context) {
@@ -514,6 +516,7 @@ class ListOfWeakdays extends StatelessWidget {
             7,
             (indexofdate) => DaysContaner(
               indexofdate: indexofdate,
+              rutinId: rutinId,
             ),
           ),
         ),
