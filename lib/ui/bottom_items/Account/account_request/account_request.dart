@@ -7,29 +7,29 @@ import 'package:table/helper/constant/constant.dart';
 
 class AccountReq {
 //... Account data...//
-  Future<dynamic> accountData(username, myAccount) async {
-    print("req : $username , myac :$myAccount");
-
-    //
+  Future<dynamic> accountData(username) async {
+    print("req : $username ");
 
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 
     //... Url for my account and others account
 
-    var url = Uri.parse('${Const.BASE_URl}/account/view_others/qq');
-    var url_otherAc =
-        Uri.parse('${Const.BASE_URl}/account/view_others/$username');
+    var url = Uri.parse('${Const.BASE_URl}/account/$username');
 
-    final response = await http.post(myAccount == true ? url : url_otherAc,
-        headers: {'Authorization': 'Bearer $getToken'});
-
-    if (response.statusCode == 200) {
-      //.. responce
+    try {
+      final response =
+          await http.post(url, headers: {'Authorization': 'Bearer $getToken'});
       final res = json.decode(response.body)["user"];
-      print(response.body);
-      return res;
-    } else {
+
+      if (response.statusCode == 200) {
+        print(response.body);
+        return res;
+      } else {
+        print(response.body);
+        throw Exception('Failed to load data');
+      }
+    } catch (e) {
       throw Exception('Failed to load data');
     }
   }

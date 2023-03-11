@@ -6,7 +6,6 @@ List<Widget> pages = [
   HomeScreen(),
   AccountScreen(
     accountUsername: "",
-    myAccount: true,
   )
 ];
 

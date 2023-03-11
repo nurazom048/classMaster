@@ -14,13 +14,12 @@ import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 
 class AccountScreen extends StatefulWidget {
   final String? accountId;
-  bool? myAccount = false;
+
   final String accountUsername;
   AccountScreen({
     super.key,
     this.accountId,
     required this.accountUsername,
-    this.myAccount,
   });
 
   @override
@@ -53,8 +52,9 @@ class _AccountScreenState extends State<AccountScreen> {
               ),
 
               FutureBuilder(
-                  future: AccountReq()
-                      .accountData(widget.accountUsername, widget.myAccount),
+                  future: AccountReq().accountData(
+                    widget.accountUsername,
+                  ),
                   builder: (context, snapshoot) {
                     if (snapshoot.connectionState == ConnectionState.waiting) {
                       // print(snapshoot.data);
