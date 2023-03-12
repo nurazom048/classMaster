@@ -74,7 +74,7 @@ class HomeReq {
 
   //
   //********    ListOfUploedRutins      *************/
-  Future<ListOfUploedRutins> uplodedRutins({pages}) async {
+  Future<ListOfUploedRutins> uplodedRutins({int pages = 1}) async {
     String queryPage = "?page=$pages}";
     String? username = "";
     final prefs = await SharedPreferences.getInstance();

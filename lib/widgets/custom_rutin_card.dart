@@ -55,7 +55,7 @@ class CustomRutinCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(top: 20, right: 10),
       height: 250,
-      width: 220,
+      width: MediaQuery.of(context).size.width * 0.47,
       color: Colors.black12,
       child: SingleChildScrollView(
         child: InkWell(

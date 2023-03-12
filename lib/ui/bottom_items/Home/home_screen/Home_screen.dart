@@ -11,6 +11,7 @@ import 'package:table/models/listOfSaveRutin.dart';
 import 'package:table/ui/bottom_items/Home/class/full_rutin_view.dart';
 import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
 import 'package:table/ui/bottom_items/Home/home_req/rutinReq.dart';
+import 'package:table/ui/bottom_items/Home/home_screen/GridViewRutin.dart';
 import 'package:table/ui/bottom_items/Home/home_screen/search_page.dart';
 import 'package:table/ui/bottom_items/bottm_nev_bar.dart';
 import 'package:table/widgets/Alart.dart';
@@ -82,7 +83,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        MyText("Uploded Rutins"),
+                        Row(
+                          children: [
+                            MyText("Uploded Rutins"),
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const GridViewRutin()),
+                                  );
+                                },
+                                child: Text("view all"))
+                          ],
+                        ),
 
                         //
                         SingleChildScrollView(

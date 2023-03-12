@@ -1,4 +1,4 @@
-// ignore_for_file: unused_element, non_constant_identifier_names, avoid_print
+// ignore_for_file: unused_element, non_constant_identifier_names, avoid_print, prefer_final_fields, prefer_const_constructors_in_immutables, prefer_const_declarations
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
