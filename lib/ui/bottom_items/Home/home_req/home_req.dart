@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, non_constant_identifier_names, prefer_interpolation_to_compose_strings
+// ignore_for_file: file_names, non_constant_identifier_names, prefer_interpolation_to_compose_strings, unused_local_variable
 
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,8 +17,10 @@ final all_rutins_provider = FutureProvider<List>((ref) {
 final save_rutins_provider = FutureProvider<ListOfSaveRutins>((ref) {
   return ref.read(home_req_provider).savedRutins();
 });
-
-//
+final uploaded_rutin_provider =
+    FutureProvider.family<ListOfUploedRutins, int>((ref, pages) {
+  return ref.read(home_req_provider).uplodedRutins(pages: pages);
+});
 
 class HomeReq {
   String? message;
@@ -62,6 +64,33 @@ class HomeReq {
         var res = json.decode(response.body);
 
         return ListOfSaveRutins.fromJson(res);
+      } else {
+        throw Exception("Failed to load saved routines");
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  //
+  //********    ListOfUploedRutins      *************/
+  Future<ListOfUploedRutins> uplodedRutins({pages}) async {
+    String queryPage = "?page=$pages}";
+    String? username = "";
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+    final url = Uri.parse(
+        '${Const.BASE_URl}/rutin/uploded_rutins/' + username + queryPage);
+    final headers = {'Authorization': 'Bearer $getToken'};
+
+    //.. Request send
+    try {
+      final response = await http.post(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        var res = json.decode(response.body);
+
+        return ListOfUploedRutins.fromJson(res);
       } else {
         throw Exception("Failed to load saved routines");
       }

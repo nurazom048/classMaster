@@ -1,6 +1,7 @@
-// ignore_for_file: unused_local_variable
+// ignore_for_file: unused_local_variable, non_constant_identifier_names
 
 import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,6 +12,7 @@ import 'package:table/ui/bottom_items/Home/class/full_rutin_view.dart';
 import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
 import 'package:table/ui/bottom_items/Home/home_req/rutinReq.dart';
 import 'package:table/ui/bottom_items/Home/home_screen/search_page.dart';
+import 'package:table/ui/bottom_items/bottm_nev_bar.dart';
 import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/TopBar.dart';
 import 'package:table/widgets/custom_rutin_card.dart';
@@ -18,171 +20,212 @@ import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/widgets/text%20and%20buttons/bottomText.dart';
 import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 
-class HomeScreen extends ConsumerWidget {
-  HomeScreen({super.key});
+final currentPageProvider = StateProvider((ref) => 1);
 
-  final rutinName = TextEditingController();
+class HomeScreen extends StatefulWidget {
+  HomeScreen({Key? key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final myRutin = ref.watch(all_rutins_provider);
-    final saveRutin = ref.watch(save_rutins_provider);
-    //  final getsaveRutin = ref.watch(save_rutins_provider);
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
+class _HomeScreenState extends State<HomeScreen> {
+  final rutinName = TextEditingController();
+
+  final uploadRutinController = ScrollController();
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   scroll_Listener();
+  // }
+
+  @override
+  Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white54,
         body: SingleChildScrollView(
           padding: const EdgeInsets.only(bottom: 60),
           physics: const BouncingScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              //... Appbar .../
-              CustomTopBar("All Rutins",
-                  acction: IconButton(
-                      onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SearchPAge())),
-                      icon: const Icon(Icons.search)),
-                  icon: Icons.add_circle_outlined,
-                  ontap: () => _showDialog(context, rutinName)),
+          child: Consumer(builder: (context, ref, _) {
+            //
+            final pages = ref.watch(currentPageProvider);
+            final myRutin = ref.watch(all_rutins_provider);
+            final saveRutin = ref.watch(save_rutins_provider);
+            final uploaded_rutin = ref.watch(uploaded_rutin_provider(pages));
 
-              //
-              SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                physics: const BouncingScrollPhysics(),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      //... all rutins...//
-                      MyText("My All Rutin"),
+            //
 
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        //.. Show all rutins..//
-                        child: myRutin.when(
-                            loading: () => const Progressindicator(),
-                            data: (data) {
-                              var myRutines = data;
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                //... Appbar .../
+                CustomTopBar("All Rutins",
+                    acction: IconButton(
+                        onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SearchPAge())),
+                        icon: const Icon(Icons.search)),
+                    icon: Icons.add_circle_outlined,
+                    ontap: () => _showDialog(context, rutinName)),
 
-                              return Row(
-                                children: List.generate(
-                                    myRutines.isEmpty ? 1 : myRutines.length,
-                                    (index) => myRutines.isEmpty
-                                        ? const Text(
-                                            "You Dont Have any Rutin created")
-                                        : InkWell(
-                                            child: CustomRutinCard(
-                                              rutinname: myRutines[index]
-                                                  ["name"],
-                                              profilePicture: myRutines[index]
-                                                  ["ownerid"]["image"],
-                                              name: myRutines[index]["ownerid"]
-                                                  ["name"],
-                                              username: myRutines[index]
-                                                  ["ownerid"]["username"],
+                //
+                SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  physics: const BouncingScrollPhysics(),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        MyText("Uploded Rutins"),
 
-                                              //
-                                            ),
-                                            onTap: () => Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
+                        //
+                        SingleChildScrollView(
+                            controller: uploadRutinController,
+                            scrollDirection: Axis.horizontal,
+                            child: uploaded_rutin.when(
+                                loading: () => const Progressindicator(),
+                                data: (data) {
+                                  // data
+                                  var UploadedRutins = data.uploaded_rutin;
+
+                                  // int length = UploadedRutins.isEmpty
+                                  //     ? 1
+                                  //     : UploadedRutins.length;
+                                  return SizedBox(
+                                    height: 270,
+                                    width: width,
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount:
+                                          data.uploaded_rutin.length * pages,
+                                      itemBuilder: (context, index) {
+                                        //    print("index" + index.toString());
+                                        //
+                                        var uploadedRutinidex =
+                                            UploadedRutins[index];
+
+                                        return UploadedRutins.isNotEmpty
+                                            ? CustomRutinCard(
+                                                rutinname:
+                                                    uploadedRutinidex.name,
+                                                profilePicture:
+                                                    uploadedRutinidex
+                                                        .ownerid.image,
+                                                name:
+                                                    data.currentPage.toString(),
+                                                username: uploadedRutinidex
+                                                    .ownerid.username,
+
+                                                //
+                                                onTap: () => Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
                                                     builder: (context) =>
                                                         FullRutineView(
-                                                          rutinName:
-                                                              myRutines[index]
-                                                                  ["name"],
-                                                          rutinId:
-                                                              myRutines[index]
-                                                                  ["_id"],
-                                                        ))),
-                                          )),
-                              );
-                            },
-                            error: (error, stackTrace) =>
-                                Alart.handleError(context, error)),
-                      ),
-
-                      // //... hedding .../
-                      MyText("Saved Rutin"),
-
-//
-                      SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: saveRutin.when(
-                              loading: () => const Progressindicator(),
-                              data: (data) {
-                                // data
-                                var saveRutins = data.savedRoutines;
-                                int length =
-                                    saveRutins.isEmpty ? 1 : saveRutins.length;
-                                return SizedBox(
-                                  height: 270,
-                                  width: width,
-                                  child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: length,
-                                    itemBuilder: (context, index) {
-                                      //
-                                      var saveRutinidex = saveRutins[index];
-
-                                      return saveRutins.isNotEmpty
-                                          ? CustomRutinCard(
-                                              rutinname: saveRutinidex.name,
-                                              profilePicture:
-                                                  saveRutinidex.ownerid.image,
-                                              name: saveRutinidex.ownerid.name,
-                                              username: saveRutinidex
-                                                  .ownerid.username,
-
-                                              //
-                                              onTap: () => Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      FullRutineView(
-                                                    rutinName:
-                                                        saveRutinidex.name,
-                                                    rutinId: saveRutinidex.id,
+                                                      rutinName:
+                                                          uploadedRutinidex
+                                                              .name,
+                                                      rutinId:
+                                                          uploadedRutinidex.id,
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            )
-                                          : const Text(
-                                              "You Dont Have any Rutin created");
-                                    },
-                                    padding: const EdgeInsets.only(right: 30),
-                                    physics: const BouncingScrollPhysics(),
-                                  ),
-                                );
-                              },
-                              error: (error, stackTrace) =>
-                                  Alart.handleError(context, error))),
+                                              )
+                                            : const Text(
+                                                "You Dont Have any Rutin created");
+                                      },
+                                      padding: const EdgeInsets.only(right: 30),
+                                      physics: const BouncingScrollPhysics(),
+                                    ),
+                                  );
+                                },
+                                error: (error, stackTrace) =>
+                                    Alart.handleError(context, error))),
 
-                      //... hedding .../
+                        // //... hedding .../
+                        MyText("Saved Rutin"),
 
-                      MyText("Others Rutins"),
+                        //
+                        SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: saveRutin.when(
+                                loading: () => const Progressindicator(),
+                                data: (data) {
+                                  // data
+                                  var saveRutins = data.savedRoutines;
+                                  int length = saveRutins.isEmpty
+                                      ? 1
+                                      : saveRutins.length;
+                                  return SizedBox(
+                                    height: 270,
+                                    width: width,
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: length,
+                                      itemBuilder: (context, index) {
+                                        //
+                                        var saveRutinidex = saveRutins[index];
 
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: List.generate(
-                              3,
-                              (index) =>
-                                  CustomRutinCard(rutinname: "ET / 7 /1")),
+                                        return saveRutins.isNotEmpty
+                                            ? CustomRutinCard(
+                                                rutinname: saveRutinidex.name,
+                                                profilePicture:
+                                                    saveRutinidex.ownerid.image,
+                                                name:
+                                                    saveRutinidex.ownerid.name,
+                                                username: saveRutinidex
+                                                    .ownerid.username,
+
+                                                //
+                                                onTap: () => Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        FullRutineView(
+                                                      rutinName:
+                                                          saveRutinidex.name,
+                                                      rutinId: saveRutinidex.id,
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                            : const Text(
+                                                "You Dont Have any Rutin created");
+                                      },
+                                      padding: const EdgeInsets.only(right: 30),
+                                      physics: const BouncingScrollPhysics(),
+                                    ),
+                                  );
+                                },
+                                error: (error, stackTrace) =>
+                                    Alart.handleError(context, error))),
+
+                        //... hedding .../
+
+                        MyText("Others Rutins"),
+
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: List.generate(
+                                3,
+                                (index) =>
+                                    CustomRutinCard(rutinname: "ET / 7 /1")),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              )
-            ],
-          ),
+                )
+              ],
+            );
+          }),
         ),
       ),
     );
@@ -222,6 +265,14 @@ class HomeScreen extends ConsumerWidget {
         );
       },
     );
+  }
+
+  scroll_Listener() {
+    if (uploadRutinController.position.pixels ==
+        uploadRutinController.position.maxScrollExtent) {
+      print("call");
+      // ref.read(currentPageProvider.notifier).update((state) => state++);
+    }
   }
 }
 
