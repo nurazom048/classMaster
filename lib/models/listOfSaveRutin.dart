@@ -1,19 +1,28 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'dart:convert';
 import 'package:table/models/rutinOverviewModel.dart';
 
 class ListOfSaveRutins {
   ListOfSaveRutins({
     required this.savedRoutines,
+    this.currentPage,
+    this.totalPages,
   });
 
   List<RutinOverviewMode> savedRoutines;
+  int? currentPage = 1;
+  int? totalPages = 1;
 
   factory ListOfSaveRutins.fromJson(Map<String, dynamic> json) {
     List<RutinOverviewMode> routines = List<RutinOverviewMode>.from(
         json["savedRoutines"].map((x) => RutinOverviewMode.fromJson(x)));
-    return ListOfSaveRutins(savedRoutines: routines);
+
+    //
+    return ListOfSaveRutins(
+      savedRoutines: routines,
+      currentPage: json["currentPage"],
+      totalPages: json["totalPages"],
+    );
   }
 
   Map<String, dynamic> toJson() => {

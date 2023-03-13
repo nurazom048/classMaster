@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 
 class MyText extends StatelessWidget {
-  String text;
-  Color? color;
-  MyText(
+  final String text;
+  final Color? color;
+  final EdgeInsetsGeometry? padding;
+  const MyText(
     this.text, {
     this.color,
+    this.padding,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 8.0, bottom: 3),
+      padding: padding ?? const EdgeInsets.only(top: 8.0, bottom: 3),
       child: Text(text,
           style: TextStyle(
               fontWeight: FontWeight.bold,

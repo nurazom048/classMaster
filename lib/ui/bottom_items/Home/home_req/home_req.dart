@@ -14,8 +14,9 @@ final home_req_provider = Provider<HomeReq>((ref) => HomeReq());
 final all_rutins_provider = FutureProvider<List>((ref) {
   return ref.read(home_req_provider).myAllRutin();
 });
-final save_rutins_provider = FutureProvider<ListOfSaveRutins>((ref) {
-  return ref.read(home_req_provider).savedRutins();
+final save_rutins_provider =
+    FutureProvider.family<ListOfSaveRutins, int>((ref, page) {
+  return ref.read(home_req_provider).savedRutins(pages: page);
 });
 final uploaded_rutin_provider =
     FutureProvider.family<ListOfUploedRutins, int>((ref, pages) {
@@ -49,11 +50,13 @@ class HomeReq {
   }
 
 //********    savedRutins      *************/
-  Future<ListOfSaveRutins> savedRutins({username}) async {
+  Future<ListOfSaveRutins> savedRutins({pages}) async {
+    String queryPage = "?page=$pages}";
     String? username = "";
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
-    final url = Uri.parse('${Const.BASE_URl}/rutin/save_rutins/' + username);
+    final url = Uri.parse(
+        '${Const.BASE_URl}/rutin/save_rutins/' + username + queryPage);
     final headers = {'Authorization': 'Bearer $getToken'};
 
     //.. Request send

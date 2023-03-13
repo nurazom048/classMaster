@@ -38,7 +38,7 @@ class _MyWidgetState extends State<MyWidget> {
     return Scaffold(
       body: Consumer(
         builder: (context, ref, child) {
-          final saveRutin = ref.watch(save_rutins_provider);
+          final saveRutin = ref.watch(save_rutins_provider(1));
           return Column(
             children: [
               saveRutin.when(

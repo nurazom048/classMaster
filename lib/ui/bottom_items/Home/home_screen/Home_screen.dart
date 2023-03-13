@@ -1,4 +1,4 @@
-// ignore_for_file: unused_local_variable, non_constant_identifier_names
+// ignore_for_file: unused_local_variable, non_constant_identifier_names, unused_field
 
 import 'dart:convert';
 
@@ -11,12 +11,14 @@ import 'package:table/models/listOfSaveRutin.dart';
 import 'package:table/ui/bottom_items/Home/class/full_rutin_view.dart';
 import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
 import 'package:table/ui/bottom_items/Home/home_req/rutinReq.dart';
-import 'package:table/ui/bottom_items/Home/home_screen/GridViewRutin.dart';
+import 'package:table/ui/bottom_items/Home/home_screen/GridView/GridViewRutin.dart';
+import 'package:table/ui/bottom_items/Home/home_screen/GridView/GridsaveRutin.dart';
 import 'package:table/ui/bottom_items/Home/home_screen/search_page.dart';
 import 'package:table/ui/bottom_items/bottm_nev_bar.dart';
 import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/TopBar.dart';
 import 'package:table/widgets/custom_rutin_card.dart';
+import 'package:table/widgets/hedding_row.dart';
 import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/widgets/text%20and%20buttons/bottomText.dart';
 import 'package:table/widgets/text%20and%20buttons/mytext.dart';
@@ -55,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
             //
             final pages = ref.watch(currentPageProvider);
             final myRutin = ref.watch(all_rutins_provider);
-            final saveRutin = ref.watch(save_rutins_provider);
+            final saveRutin = ref.watch(save_rutins_provider(1));
             final uploaded_rutin = ref.watch(uploaded_rutin_provider(pages));
 
             //
@@ -83,21 +85,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            MyText("Uploded Rutins"),
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const GridViewRutin()),
-                                  );
-                                },
-                                child: Text("view all"))
-                          ],
-                        ),
+                        HeddingRow(
+                            hedding: "Uploded Rutins",
+                            second_Hedding: "View all",
+                            onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const GridViewRutin()))),
 
                         //
                         SingleChildScrollView(
@@ -164,7 +159,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Alart.handleError(context, error))),
 
                         // //... hedding .../
-                        MyText("Saved Rutin"),
+                        HeddingRow(
+                            hedding: "Saved Rutin",
+                            second_Hedding: "View all",
+                            onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const Grid_save_rutin()))),
 
                         //
                         SingleChildScrollView(
@@ -280,14 +282,6 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       },
     );
-  }
-
-  scroll_Listener() {
-    if (uploadRutinController.position.pixels ==
-        uploadRutinController.position.maxScrollExtent) {
-      print("call");
-      // ref.read(currentPageProvider.notifier).update((state) => state++);
-    }
   }
 }
 
