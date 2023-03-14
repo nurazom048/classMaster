@@ -1,20 +1,17 @@
 // ignore_for_file: unused_local_variable, non_constant_identifier_names, unused_field
 
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:table/models/listOfSaveRutin.dart';
 import 'package:table/ui/bottom_items/Home/class/full_rutin_view.dart';
 import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
 import 'package:table/ui/bottom_items/Home/home_req/rutinReq.dart';
 import 'package:table/ui/bottom_items/Home/home_screen/GridView/GridViewRutin.dart';
 import 'package:table/ui/bottom_items/Home/home_screen/GridView/GridsaveRutin.dart';
 import 'package:table/ui/bottom_items/Home/home_screen/search_page.dart';
-import 'package:table/ui/bottom_items/bottm_nev_bar.dart';
 import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/TopBar.dart';
 import 'package:table/widgets/custom_rutin_card.dart';
@@ -26,7 +23,7 @@ import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 final currentPageProvider = StateProvider((ref) => 1);
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key});
+  const HomeScreen({Key? key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -36,12 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final rutinName = TextEditingController();
 
   final uploadRutinController = ScrollController();
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   scroll_Listener();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -127,10 +118,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 profilePicture:
                                                     uploadedRutinidex
                                                         .ownerid.image,
-                                                name:
-                                                    data.currentPage.toString(),
+                                                name: data.uploaded_rutin[index]
+                                                    .ownerid.name,
                                                 username: uploadedRutinidex
                                                     .ownerid.username,
+                                                last_update: uploadedRutinidex
+                                                    .lastSummary.text,
 
                                                 //
                                                 onTap: () => Navigator.push(
@@ -198,6 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     saveRutinidex.ownerid.name,
                                                 username: saveRutinidex
                                                     .ownerid.username,
+                                                    last_update: saveRutinidex.lastSummary.text,
 
                                                 //
                                                 onTap: () => Navigator.push(
@@ -225,7 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         //... hedding .../
 
-                        MyText("Others Rutins"),
+                        const MyText("Others Rutins"),
 
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,

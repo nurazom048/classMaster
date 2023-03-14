@@ -1,7 +1,3 @@
-// ignore_for_file: unnecessary_new
-
-import 'package:flutter/material.dart';
-
 class AccountModels {
   String? sId;
   String? username;
@@ -10,7 +6,7 @@ class AccountModels {
   String? image;
   String? position;
 
-  AccountModels(
+  AccountModels(data,
       {this.sId,
       this.username,
       this.name,

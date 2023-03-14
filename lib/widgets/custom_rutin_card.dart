@@ -53,8 +53,7 @@ class CustomRutinCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 20, right: 10),
-      height: 250,
+      margin: const EdgeInsets.only(top: 0, right: 10),
       width: MediaQuery.of(context).size.width * 0.47,
       color: Colors.black12,
       child: SingleChildScrollView(
@@ -62,11 +61,13 @@ class CustomRutinCard extends StatelessWidget {
           onTap: onTap,
           onLongPress: onLongPress,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Stack(
                 children: [
                   Column(
+                    mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SingleChildScrollView(
@@ -74,35 +75,25 @@ class CustomRutinCard extends StatelessWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Wrap(
-                              direction: Axis.vertical,
+                          Column(
                               children: List.generate(
-                                3,
-                                (index) => DaysContaner(
-                                  indexofdate: index,
-                                  ismini: true,
-                                ),
+                            3,
+                            (index) => DaysContaner(
+                              indexofdate: index,
+                              ismini: true,
+                            ),
 
-                                //
-                              )),
+                            //
+                          )),
 
                           //
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 10,
-                            ),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    MyText("Last Update"),
-                                  ],
-                                ),
-                                const SizedBox(height: 2),
-                                //
-                                Text(last_update ?? "")
-                              ],
-                            ),
+                          Column(
+                            children: [
+                              const MyText("  Last Update",
+                                  padding: EdgeInsets.only(top: 5)),
+                              const SizedBox(height: 5),
+                              Text("$last_update")
+                            ],
                           )
                         ],
                       ),
@@ -112,16 +103,21 @@ class CustomRutinCard extends StatelessWidget {
                   //
                   Positioned(
                     bottom: 0,
-                    child: Container(
-                      height: 50,
-                      width: 240,
-                      // padding: const EdgeInsets.all(5.0),
-                      decoration: const BoxDecoration(color: Colors.black12),
-                      child: Center(
-                        child: Text(rutinname,
-                            style: const TextStyle(
-                                color: Colors.black, fontSize: 20)),
-                      ),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 50,
+                          width: 240,
+                          // padding: const EdgeInsets.all(5.0),
+                          decoration:
+                              const BoxDecoration(color: Colors.black12),
+                          child: Center(
+                            child: Text(rutinname,
+                                style: const TextStyle(
+                                    color: Colors.black, fontSize: 20)),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

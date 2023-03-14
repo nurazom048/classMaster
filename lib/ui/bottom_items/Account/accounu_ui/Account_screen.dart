@@ -13,13 +13,10 @@ import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 
 class AccountScreen extends StatefulWidget {
-  final String? accountId;
-
-  final String accountUsername;
+  final String? accountUsername;
   AccountScreen({
     super.key,
-    this.accountId,
-    required this.accountUsername,
+    this.accountUsername = "",
   });
 
   @override
@@ -31,8 +28,8 @@ class AccountScreen extends StatefulWidget {
 class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
-    print("widget.username");
-    print(widget.accountUsername);
+    // print("widget.username");
+    // print(widget.accountUsername);
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
