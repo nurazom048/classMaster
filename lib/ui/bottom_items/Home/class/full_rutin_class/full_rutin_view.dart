@@ -1,18 +1,17 @@
 // ignore_for_file: avoid_print, non_constant_identifier_names, must_be_immutable
 
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/helper/constant/constant.dart';
-import 'package:table/models/Account_models.dart';
 import 'package:table/models/ClsassDetailsModel.dart';
 import 'package:table/ui/add_eddit_remove/addPriode.dart';
 import 'package:table/ui/add_eddit_remove/add_cap10s.page.dart';
 import 'package:table/ui/add_eddit_remove/add_class.dart';
 import 'package:table/ui/bottom_items/Home/class/class_request/class_request.dart';
+import 'package:table/ui/bottom_items/Home/class/full_rutin_class/view_more_details.dart';
 import 'package:table/ui/bottom_items/Home/class/sunnary/summary_screen.dart';
 import 'package:table/ui/bottom_items/Home/home_req/priode_reuest.dart';
 import 'package:table/ui/server/rutinReq.dart';
@@ -123,7 +122,6 @@ class FullRutineView extends ConsumerWidget {
 
                 HedingText(" Owner Account"),
 
-                ///
                 rutinDetals.when(
                   error: (error, stackTrace) => Text(error.toString()),
                   loading: () => const CircularProgressIndicator(),
@@ -134,87 +132,7 @@ class FullRutineView extends ConsumerWidget {
                         : const CircularProgressIndicator();
                   },
                 ),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    HedingText("  cap10s"),
-                    TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  fullscreenDialog: true,
-                                  builder: (context) =>
-                                      AddCap10sPage(rutinId: rutinId)));
-                        },
-                        child: const Text(" Add Cap10  ")),
-                  ],
-                ),
-
-                //
-                rutinDetals.when(
-                  data: (data) {
-                    print(data!.isOwnwer.toString());
-                    List<AccountModels> cap10 = data.cap10s;
-                    double lenghts = double.parse(cap10.length.toString());
-                    return SizedBox(
-                      width: 500,
-                      height: 130 * lenghts,
-                      child: ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: cap10.length,
-                        itemBuilder: (context, index) {
-                          return AccountCardRow(accountData: cap10[index]);
-                        },
-                      ),
-                    );
-                  },
-                  error: (error, stackTrace) => Text(error.toString()),
-                  loading: () => const CircularProgressIndicator(),
-                ),
-
-                //
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    HedingText(" Members"),
-                    TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  fullscreenDialog: true,
-                                  builder: (context) =>
-                                      AddCap10sPage(rutinId: rutinId)));
-                        },
-                        child: const Text(" Members  ")),
-                  ],
-                ),
-
-                //
-                rutinDetals.when(
-                  data: (data) {
-                    List<AccountModels> cap10 = data?.cap10s ?? [];
-                    double lenghts = double.parse(cap10.length.toString());
-                    return SizedBox(
-                      width: 500,
-                      height: 130 * lenghts,
-                      child: ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: cap10.length,
-                        itemBuilder: (context, index) {
-                          return AccountCardRow(accountData: cap10[index]);
-                        },
-                      ),
-                    );
-                  },
-                  error: (error, stackTrace) => Text(error.toString()),
-                  loading: () => const CircularProgressIndicator(),
-                ),
               ]),
-
-          //
         ),
       ),
     );
@@ -279,6 +197,21 @@ class FullRutineView extends ConsumerWidget {
                                         AddClass(rutinId: rutinId)));
                           })
                       : Container(),
+
+                  valu.isOwnwer == true || valu.isOwnwer == true
+                      ? ListTile(
+                          leading: const Icon(Icons.add),
+                          title: const Text("Add captens ",
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                    fullscreenDialog: true,
+                                    builder: (context) =>
+                                        AddCap10sPage(rutinId: rutinId)));
+                          })
+                      : Container(),
                   ListTile(
                       leading: const Icon(Icons.save),
                       title: Text(valu.isSaved == false ? "Saved" : " unsave",
@@ -290,6 +223,21 @@ class FullRutineView extends ConsumerWidget {
                             ? Rutin_Req().unSaveRutin(rutinId)
                             : chackStatus();
                       }),
+                  ListTile(
+                      leading: const Icon(Icons.more_horiz_rounded,
+                          color: Colors.blue),
+                      title: const Text("View More",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.blue)),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                fullscreenDialog: true,
+                                builder: (context) => ViewMorepage(rutinId)));
+                      }),
+
+                  //
                   valu.isOwnwer == true
                       ? ListTile(
                           leading: const Icon(Icons.delete, color: Colors.red),
@@ -298,7 +246,7 @@ class FullRutineView extends ConsumerWidget {
                                   fontWeight: FontWeight.bold,
                                   color: Colors.red)),
                           onTap: () {})
-                      : Container()
+                      : Container(),
                 ],
               ),
             ),
@@ -306,54 +254,6 @@ class FullRutineView extends ConsumerWidget {
         });
   }
 }
-
-// ///.... onlong press
-// void onLongpress_class(context, classId, message) {
-//   showModalBottomSheet(
-//     backgroundColor: Colors.transparent,
-//     context: context,
-//     builder: (context) => Container(
-//       decoration: BoxDecoration(
-//           color: Colors.white, borderRadius: BorderRadius.circular(12)),
-//       child: Column(
-//         mainAxisSize: MainAxisSize.min,
-//         children: [
-//           const Padding(
-//               padding: EdgeInsets.all(16.0),
-//               child: Text("Do you want to..",
-//                   style: TextStyle(
-//                       fontSize: 22,
-//                       fontWeight: FontWeight.bold,
-//                       color: Colors.black))),
-
-//           BottomText(
-//             "Edit",
-//             onPressed: () => Navigator.push(
-//               context,
-//               CupertinoPageRoute(
-//                   fullscreenDialog: true,
-//                   builder: (context) => AddClass(
-//                         rutinId: "rutinId",
-//                         classId: classId,
-//                         isEdit: true,
-//                       )),
-//             ),
-//           ),
-
-//           //.... remove
-//           BottomText(
-//             "Remove",
-//             color: CupertinoColors.destructiveRed,
-//             onPressed: () => ClassesRequest().deleteClass(context, classId),
-//           ),
-//           //.... Cancel
-//           BottomText("Cancel"),
-//         ],
-//       ),
-//     ),
-//   );
-// }
-//.. list of days ...///
 
 class ListOfDays extends StatelessWidget {
   List<Day?> day;

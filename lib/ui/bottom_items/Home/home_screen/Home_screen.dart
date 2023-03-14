@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:table/ui/bottom_items/Home/class/full_rutin_view.dart';
+import 'package:table/ui/bottom_items/Home/class/full_rutin_class/full_rutin_view.dart';
 import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
 import 'package:table/ui/bottom_items/Home/home_req/rutinReq.dart';
 import 'package:table/ui/bottom_items/Home/home_screen/GridView/GridViewRutin.dart';
@@ -191,7 +191,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     saveRutinidex.ownerid.name,
                                                 username: saveRutinidex
                                                     .ownerid.username,
-                                                    last_update: saveRutinidex.lastSummary.text,
+                                                last_update: saveRutinidex
+                                                    .lastSummary.text,
 
                                                 //
                                                 onTap: () => Navigator.push(

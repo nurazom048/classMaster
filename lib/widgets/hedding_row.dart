@@ -7,10 +7,12 @@ class HeddingRow extends StatelessWidget {
   final String hedding;
   final String? second_Hedding;
   final dynamic onTap;
+  final double? paddingTop;
 
   const HeddingRow({
     required this.hedding,
     this.second_Hedding = "",
+    this.paddingTop,
     this.onTap,
     super.key,
   });
@@ -18,7 +20,7 @@ class HeddingRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 8),
+      padding: EdgeInsets.only(top: paddingTop ?? 8),
       margin: const EdgeInsets.symmetric(horizontal: 3),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
