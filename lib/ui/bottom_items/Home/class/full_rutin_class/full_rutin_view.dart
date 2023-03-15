@@ -1,18 +1,11 @@
 // ignore_for_file: avoid_print, non_constant_identifier_names, must_be_immutable, unused_local_variable
 
-import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:table/helper/constant/constant.dart';
 import 'package:table/models/ClsassDetailsModel.dart';
-import 'package:table/ui/add_eddit_remove/addPriode.dart';
-import 'package:table/ui/add_eddit_remove/add_class.dart';
-import 'package:table/ui/bottom_items/Home/class/class_request/class_request.dart';
-import 'package:table/ui/bottom_items/Home/class/full_rutin_class/view_more_details.dart';
+import 'package:table/ui/bottom_items/Home/class/assist/full_rutin_assist.dart';
 import 'package:table/ui/bottom_items/Home/class/sunnary/summary_screen.dart';
-import 'package:table/ui/bottom_items/Home/home_req/priode_reuest.dart';
 import 'package:table/ui/server/rutinReq.dart';
 import 'package:table/widgets/AccoundCardRow.dart';
 import 'package:table/widgets/Alart.dart';
@@ -20,11 +13,8 @@ import 'package:table/widgets/TopBar.dart';
 import 'package:table/widgets/class_contaner.dart';
 import 'package:table/widgets/days_container.dart';
 import 'package:table/widgets/priodeContaner.dart';
-import 'package:http/http.dart' as http;
-import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/widgets/text%20and%20buttons/empty.dart';
 import 'package:table/widgets/text%20and%20buttons/hedingText.dart';
-import 'package:table/widgets/text%20and%20buttons/squareButton.dart';
 
 class FullRutineView extends ConsumerWidget {
   String rutinId;
@@ -50,7 +40,8 @@ class FullRutineView extends ConsumerWidget {
                       return CustomTopBar(valu!.rutin_name,
                           acction: IconButton(
                               onPressed: () =>
-                                  _showModalBottomSheet(context, rutinId, valu),
+                                  full_rutin_assist.ChackStatusUser_BottomSheet(
+                                      context, rutinId),
                               icon: const Icon(Icons.more_vert)), ontap: () {
                         ref
                             .read(isEditingModd.notifier)
@@ -137,182 +128,6 @@ class FullRutineView extends ConsumerWidget {
       ),
     );
   }
-
-  //
-  void _showModalBottomSheet(BuildContext context, id, var valu) {
-    Future chackStatus() async {
-      // Obtain shared preferences.
-      final prefs = await SharedPreferences.getInstance();
-      final String? getToken = prefs.getString('Token');
-      try {
-        final response = await http.get(
-            Uri.parse('${Const.BASE_URl}/rutin/save/:$rutinId/chack'),
-            headers: {'Authorization': 'Bearer $getToken'});
-
-        if (response.statusCode == 200) {
-          final res = json.decode(response.body);
-        }
-      } catch (e) {
-        throw Exception('Failed to load data');
-      }
-    }
-
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext context) {
-          return Container(
-            color: Colors.grey[200],
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 30),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15.0),
-                  topRight: Radius.circular(15.0),
-                ),
-              ),
-              child: Consumer(builder: (context, ref, _) {
-                final chackStatus = ref.read(ChackStatusUser_provider(rutinId));
-
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    chackStatus.when(
-                        data: (data) {
-                          print(data.isCaptain.toString());
-                          bool isSave = data.isSave;
-                          bool isOwner = data.isOwner;
-                          bool isCapten = data.isCaptain;
-                          return data != null
-                              ? Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        const SqureButton(
-                                          icon: Icons.people_rounded,
-                                          inActiveIcon: Icons.telegram,
-                                          inActiveText: "Send Join request",
-                                          text: 'Members',
-                                          status: false,
-                                        ),
-                                        SqureButton(
-                                          icon: Icons.bookmark_added,
-                                          inActiveIcon:
-                                              Icons.bookmark_add_sharp,
-                                          text: 'Save',
-                                          inActiveText: "add to save",
-                                          status: isSave,
-                                        ),
-                                        SqureButton(
-                                          icon: Icons.more_horiz,
-                                          //  inActiveIcon: Icons.more_vert,
-                                          text: 'view more',
-
-                                          ontap: () => Navigator.push(
-                                            context,
-                                            CupertinoPageRoute(
-                                              fullscreenDialog: true,
-                                              builder: (context) =>
-                                                  ViewMorepage(rutinId),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const Divider(height: 20),
-                                    isCapten || isOwner
-                                        ? Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              SqureButton(
-                                                icon: Icons.add,
-                                                text: "Add Priode",
-                                                ontap: () => Navigator.push(
-                                                  context,
-                                                  CupertinoPageRoute(
-                                                    fullscreenDialog: true,
-                                                    builder: (context) =>
-                                                        AppPriodePage(
-                                                            rutinId: rutinId),
-                                                  ),
-                                                ),
-                                              ),
-                                              SqureButton(
-                                                icon: Icons.add,
-                                                text: "Add Class",
-                                                ontap: () => Navigator.push(
-                                                  context,
-                                                  CupertinoPageRoute(
-                                                    fullscreenDialog: true,
-                                                    builder: (context) =>
-                                                        AppPriodePage(
-                                                            rutinId: rutinId),
-                                                  ),
-                                                ),
-                                              ),
-                                              const SqureButton(
-                                                  icon: Icons.person_add_alt_1,
-                                                  text: "Add captens"),
-                                            ],
-                                          )
-                                        : const SizedBox.shrink(),
-                                    const Divider(height: 20),
-                                    isOwner || isCapten
-                                        ? Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: const [
-                                              SqureButton(
-                                                  icon: Icons.groups_2,
-                                                  text: "see all request"),
-                                              SqureButton(
-                                                  icon: Icons.person_add_alt_1,
-                                                  text: "Add members"),
-                                            ],
-                                          )
-                                        : const SizedBox.shrink(),
-                                    const Divider(height: 20),
-                                    isOwner || isCapten
-                                        ? Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: const [
-                                              SqureButton(
-                                                icon: Icons.person_remove,
-                                                text: "remove members",
-                                                color: Colors.redAccent,
-                                              ),
-                                              SqureButton(
-                                                icon: Icons.person_remove,
-                                                color: Colors.redAccent,
-                                                text: "remove captens",
-                                              ),
-                                              SqureButton(
-                                                icon: Icons.delete,
-                                                text: "Delete",
-                                                color: Colors.red,
-                                              ),
-                                            ],
-                                          )
-                                        : const SizedBox.shrink(),
-                                  ],
-                                )
-                              : Text("Login requaind ");
-                        },
-                        loading: () => const Progressindicator(),
-                        error: (error, stackTrace) =>
-                            Alart.handleError(context, error)),
-                  ],
-                );
-              }),
-            ),
-          );
-        });
-  }
 }
 
 class ListOfDays extends StatelessWidget {
@@ -346,8 +161,8 @@ class ListOfDays extends StatelessWidget {
                   //
                   priodeLenght: priodeLenght,
                   isLast: day.length - 1 == index,
-                  onLongPress: () =>
-                      ShowProdeButtomAction(context, day[index]?.id),
+                  onLongPress: () => full_rutin_assist.long_press_to_class(
+                      context, day[index]?.id),
 
                   // ontap to go summay page..//
                   onTap: permition == true
@@ -366,44 +181,6 @@ class ListOfDays extends StatelessWidget {
                       : () {}),
             ),
           );
-  }
-
-  Future<dynamic> ShowProdeButtomAction(BuildContext context, classId) {
-    return showCupertinoModalPopup(
-      context: context,
-      builder: (context) => CupertinoActionSheet(
-        title: const Text(" Do you want to.. ",
-            style: TextStyle(fontSize: 22, color: Colors.black87)),
-        actions: [
-          CupertinoActionSheetAction(
-              child: const Text("Eddit"), // go to eddit
-
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                        fullscreenDialog: true,
-                        builder: (context) => AddClass(
-                              rutinId: "rutinId",
-                              classId: classId,
-                              isEdit: true,
-                            )));
-              }),
-          CupertinoActionSheetAction(
-            child: const Text("Remove", style: TextStyle(color: Colors.red)),
-            onPressed: () {
-              ClassesRequest().deleteClass(context, classId);
-              print(classId);
-              Navigator.pop(context);
-            },
-          ),
-        ],
-        cancelButton: CupertinoActionSheetAction(
-          child: const Text("cancel"),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-    );
   }
 }
 
@@ -428,37 +205,14 @@ class ListOfPriodes extends StatelessWidget {
 
                 // ontap to go summay page..//
 
-                onLongPress: () =>
-                    logPressOnPriode(context, Priodes[index]!.id),
+                onLongPress: () => full_rutin_assist.logPressOnPriode(
+                    context, Priodes[index]!.id),
               ),
       ),
     );
   }
-
-  Future<dynamic> logPressOnPriode(BuildContext context, priodeId) {
-    return showCupertinoModalPopup(
-      context: context,
-      builder: (context) => CupertinoActionSheet(
-        title: const Text(" Do you want to.. ",
-            style: TextStyle(fontSize: 22, color: Colors.black87)),
-        actions: [
-          CupertinoActionSheetAction(
-            child: const Text("Remove", style: TextStyle(color: Colors.red)),
-            onPressed: () {
-              PriodeRequest().deletePriode(context, priodeId);
-              print(priodeId);
-              Navigator.pop(context);
-            },
-          ),
-        ],
-        cancelButton: CupertinoActionSheetAction(
-          child: const Text("cancel"),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-    );
-  }
 }
+
 //
 
 class ListOfWeakdays extends StatelessWidget {
@@ -483,6 +237,4 @@ class ListOfWeakdays extends StatelessWidget {
       ],
     );
   }
-
-  //
 }

@@ -1,10 +1,20 @@
 // ignore_for_file: prefer_const_constructors_in_immutables, unused_local_variable
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table/ui/add_eddit_remove/addPriode.dart';
 import 'package:table/ui/auth_Section/auth_ui/login_sceen.dart';
+import 'package:table/ui/bottom_items/Home/class/class_request/class_request.dart';
 import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
+import 'package:table/ui/server/rutinReq.dart';
 import 'package:table/widgets/Alart.dart';
+import 'package:table/widgets/TopBar.dart';
+import 'package:table/widgets/days_container.dart';
+import 'package:table/widgets/progress_indicator.dart';
+
+import 'ui/bottom_items/Home/class/full_rutin_class/view_more_details.dart';
+import 'widgets/text and buttons/squareButton.dart';
 
 void main() {
   runApp(ProviderScope(child: MyApp()));
@@ -19,56 +29,133 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.blue),
       home: LoginScreen(),
-      // home: MyWidget(),
+      //home: MyWidget(),
     );
   }
 }
 
-class MyWidget extends StatefulWidget {
+class MyWidget extends ConsumerWidget {
   MyWidget({super.key});
 
   @override
-  State<MyWidget> createState() => _MyWidgetState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                //...... Appbar.......!!
 
-class _MyWidgetState extends State<MyWidget> {
-  @override
-  Widget build(BuildContext context) {
-    var errorMessage = "message";
-    return Scaffold(
-      body: Consumer(
-        builder: (context, ref, child) {
-          final saveRutin = ref.watch(save_rutins_provider(1));
-          return Column(
-            children: [
-              saveRutin.when(
-                  data: (d) => Text(d.toString()),
-                  loading: () => const Text("lodinh"),
-                  error: (error, stackTrace) {
-                    Future.delayed(Duration.zero, () {
-                      Alart.showSnackBar(context, error.toString());
-                    });
-                    return const SizedBox.shrink();
-                  })
-            ],
-          );
-        },
+                CustomTopBar("",
+                    acction: IconButton(
+                        icon: Icon(Icons.abc),
+                        onPressed: () => showModalBottomSheet(
+                            context, "63f457f960818d8f5c4ce70f", ref))),
+              ]),
+        ),
       ),
     );
   }
 
-  void showErrorDialog(BuildContext context, String errorMessage) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Error'),
-        content: Text(errorMessage),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
+  //
+
+  showModalBottomSheet(BuildContext context, rutinId, ref) {
+    return Container(
+      color: Colors.grey[200],
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 30),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15.0),
+            topRight: Radius.circular(15.0),
           ),
-        ],
+        ),
+        child: Consumer(builder: (context, ref, _) {
+          final chackStatus = ref.read(ChackStatusUser_provider(rutinId));
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              chackStatus.when(
+                  data: (data) {
+                    print(data.isCaptain.toString());
+                    bool isSave = data.isSave;
+                    bool isOwner = data.isOwner;
+                    bool isCapten = data.isCaptain;
+                    return data != null
+                        ? Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const SqureButton(
+                                    icon: Icons.people_rounded,
+                                    inActiveIcon: Icons.telegram,
+                                    inActiveText: "Send Join request",
+                                    text: 'Members',
+                                    status: false,
+                                  ),
+                                  SqureButton(
+                                    icon: Icons.bookmark_added,
+                                    inActiveIcon: Icons.bookmark_add_sharp,
+                                    text: 'Save',
+                                    inActiveText: "add to save",
+                                    status: isSave,
+                                  ),
+                                  SqureButton(
+                                    icon: Icons.more_horiz,
+                                    //  inActiveIcon: Icons.more_vert,
+                                    text: 'view more',
+
+                                    ontap: () => Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                        fullscreenDialog: true,
+                                        builder: (context) =>
+                                            ViewMorepage(rutinId),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              isOwner || isCapten
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: const [
+                                        SqureButton(
+                                          icon: Icons.person_remove,
+                                          text: "remove members",
+                                          color: Colors.redAccent,
+                                        ),
+                                        SqureButton(
+                                          icon: Icons.person_remove,
+                                          color: Colors.redAccent,
+                                          text: "remove captens",
+                                        ),
+                                        SqureButton(
+                                          icon: Icons.delete,
+                                          text: "Delete",
+                                          color: Colors.red,
+                                        ),
+                                      ],
+                                    )
+                                  : const SizedBox.shrink(),
+                            ],
+                          )
+                        : Text("Login requaind ");
+                  },
+                  loading: () => const Progressindicator(),
+                  error: (error, stackTrace) =>
+                      Alart.handleError(context, error)),
+            ],
+          );
+        }),
       ),
     );
   }

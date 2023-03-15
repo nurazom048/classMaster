@@ -100,13 +100,13 @@ class _SearchPAgeState extends State<SearchPAge> with TickerProviderStateMixin {
                 ? ListView.builder(
                     itemCount: data["rutins"].length,
                     itemBuilder: (context, index) {
-                      print("data[" "]");
-                      print(data["rutins"][0]["name"].toString());
+                      // print("data[" "]");
+                      // print(data["rutins"][0]["name"].toString());
                       var _serchRutin = data["rutins"][index];
 
                       var listOfrutins = RutinOverviewModel.fromJson(data);
-                      print("listOfrutins" +
-                          listOfrutins.rutins[0].name.toString());
+                      // print("listOfrutins" +
+                      //     listOfrutins.rutins[0].name.toString());
                       return CustomRutinCard(
                         rutinname: _serchRutin["name"],
                         // profilePicture: seach_result[index]["ownerid"]["image"],

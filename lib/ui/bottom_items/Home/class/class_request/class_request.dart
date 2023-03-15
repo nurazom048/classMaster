@@ -8,8 +8,8 @@ import 'package:table/helper/constant/constant.dart';
 import 'package:table/models/chackStatusModel.dart';
 import 'package:table/widgets/Alart.dart';
 
-final ChackStatusUser_provider =
-    FutureProvider.family<CheckStatusModel, String>((ref, rutin_id) {
+final ChackStatusUser_provider = FutureProvider.family
+    .autoDispose<CheckStatusModel, String>((ref, rutin_id) {
   return ref.read(FullRutinProvider).chackStatus(rutin_id);
 });
 
@@ -30,7 +30,7 @@ class FullRutinrequest {
         if (response.body != null) {
           CheckStatusModel res =
               CheckStatusModel.fromJson(jsonDecode(response.body));
-          print(res.activeStatus.toString());
+          print(res);
           return res;
         } else {
           throw Exception("Response body is null");

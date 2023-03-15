@@ -45,7 +45,8 @@ class AccountCardRow extends ConsumerWidget {
             CircleAvatar(
               radius: 30,
               backgroundColor: Colors.amber,
-              backgroundImage: NetworkImage(accountData.image ?? ""),
+              backgroundImage: NetworkImage(
+                  "https://th.bing.com/th/id/OIP.iSu2RcCcdm78xbxNDJMJSgHaEo?pid=ImgDet&rs=1"),
             ),
             //
             const Spacer(flex: 3),
