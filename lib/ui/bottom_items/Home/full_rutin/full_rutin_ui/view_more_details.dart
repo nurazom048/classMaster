@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/models/Account_models.dart';
-import 'package:table/ui/bottom_items/Home/class/full_rutin_class/listOfAccount.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/full_rutin_ui/listOfAccount.dart';
 import 'package:table/ui/server/rutinReq.dart';
 import 'package:table/widgets/AccoundCardRow.dart';
 import 'package:table/widgets/Alart.dart';
