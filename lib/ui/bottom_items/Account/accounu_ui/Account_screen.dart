@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:table/models/Account_models.dart';
 import 'package:table/ui/bottom_items/Account/account_request/account_request.dart';
 import 'package:table/ui/bottom_items/Account/accounu_ui/eddit_account.dart';
-import 'package:table/ui/bottom_items/Home/class/full_rutin_class/full_rutin_view.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/full_rutin_ui/full_rutin_view.dart';
 import 'package:table/widgets/AccountCard.dart';
 import 'package:table/widgets/AppBarCustom.dart';
 import 'package:table/widgets/custom_rutin_card.dart';
@@ -14,7 +14,7 @@ import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 
 class AccountScreen extends StatefulWidget {
   final String? accountUsername;
-  AccountScreen({
+  const AccountScreen({
     super.key,
     this.accountUsername = "",
   });

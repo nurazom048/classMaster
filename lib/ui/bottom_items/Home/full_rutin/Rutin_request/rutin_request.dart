@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, unnecessary_null_comparison
 
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,14 +6,24 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/helper/constant/constant.dart';
 import 'package:table/models/chackStatusModel.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/Rutin_request/svae_unsave.dart';
 import 'package:table/widgets/Alart.dart';
 
-final ChackStatusUser_provider = FutureProvider.family
+final chackStatusUser_provider = FutureProvider.family
     .autoDispose<CheckStatusModel, String>((ref, rutin_id) {
   return ref.read(FullRutinProvider).chackStatus(rutin_id);
 });
+final saveRutin_provider =
+    FutureProvider.family.autoDispose<dynamic, String>((ref, rutin_id) {
+  return ref.read(FullRutinProvider).saveRutin(rutin_id);
+});
 
-class FullRutinrequest {
+final unSave_Rutin_provider =
+    FutureProvider.family.autoDispose<dynamic, String>((ref, rutin_id) {
+  return ref.read(FullRutinProvider).unSaveRutin(rutin_id);
+});
+
+class FullRutinrequest extends saveUnsave {
   //
   //....ChackStatusModel....//
   Future<CheckStatusModel> chackStatus(rutin_id) async {

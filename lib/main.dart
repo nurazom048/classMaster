@@ -3,17 +3,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/add_eddit_remove/addPriode.dart';
 import 'package:table/ui/auth_Section/auth_ui/login_sceen.dart';
-import 'package:table/ui/bottom_items/Home/class/class_request/class_request.dart';
-import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
-import 'package:table/ui/server/rutinReq.dart';
 import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/TopBar.dart';
-import 'package:table/widgets/days_container.dart';
 import 'package:table/widgets/progress_indicator.dart';
-
-import 'ui/bottom_items/Home/class/full_rutin_class/view_more_details.dart';
+import 'ui/bottom_items/Home/full_rutin/Rutin_request/rutin_request.dart';
+import 'ui/bottom_items/Home/full_rutin/full_rutin_ui/view_more_details.dart';
 import 'widgets/text and buttons/squareButton.dart';
 
 void main() {
@@ -75,7 +70,7 @@ class MyWidget extends ConsumerWidget {
           ),
         ),
         child: Consumer(builder: (context, ref, _) {
-          final chackStatus = ref.read(ChackStatusUser_provider(rutinId));
+          final chackStatus = ref.read(chackStatusUser_provider(rutinId));
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,

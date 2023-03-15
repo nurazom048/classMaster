@@ -46,26 +46,6 @@ class Rutin_Req {
     }
   }
 
-//... unsave rutine ....//
-  Future unSaveRutin(rutinId) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
-    try {
-      final response = await http.get(
-          Uri.parse('${Const.BASE_URl}/rutin/unsave/$rutinId'),
-          headers: {'Authorization': 'Bearer $getToken'});
-
-      if (response.statusCode == 200) {
-        final res = json.decode(response.body);
-        print(res);
-      } else {
-        return false;
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
   //
 
   // Future chackStatus() async {

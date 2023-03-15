@@ -1,11 +1,10 @@
 // ignore_for_file: sized_box_for_whitespace, non_constant_identifier_names, prefer_typing_uninitialized_variables, avoid_print, unused_local_variable, no_leading_underscores_for_local_identifiers
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/models/Account_models.dart';
 import 'package:table/models/rutineOverviewModel.dart';
-import 'package:table/ui/bottom_items/Home/class/full_rutin_class/full_rutin_view.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/full_rutin_ui/full_rutin_view.dart';
 import 'package:table/ui/bottom_items/Home/home_screen/search/search_request/search_request.dart';
 import 'package:table/widgets/AccoundCardRow.dart';
 import 'package:table/widgets/Alart.dart';

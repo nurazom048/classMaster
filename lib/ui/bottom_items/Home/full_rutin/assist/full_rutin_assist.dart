@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/add_eddit_remove/addPriode.dart';
 import 'package:table/ui/add_eddit_remove/add_class.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/class_request/class_request.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/Rutin_request/rutin_request.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/Rutin_request/svae_unsave.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/full_rutin_ui/view_more_details.dart';
 import 'package:table/ui/bottom_items/Home/home_req/priode_reuest.dart';
 import 'package:table/widgets/Alart.dart';
@@ -38,8 +39,8 @@ abstract class full_rutin_assist {
           CupertinoActionSheetAction(
             child: const Text("Remove", style: TextStyle(color: Colors.red)),
             onPressed: () {
-              ClassesRequest().deleteClass(context, classId);
-              print(classId);
+              //  ClassesRequest().deleteClass(context, classId);
+
               Navigator.pop(context);
             },
           ),
@@ -82,31 +83,33 @@ abstract class full_rutin_assist {
   static void ChackStatusUser_BottomSheet(BuildContext context, rutinId) {
     showModalBottomSheet(
         context: context,
+        backgroundColor: Colors.transparent,
         builder: (BuildContext context) {
           return Container(
-            color: Colors.grey[200],
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 30),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15.0),
-                  topRight: Radius.circular(15.0),
-                ),
+            padding: const EdgeInsets.symmetric(vertical: 30),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15.0),
+                topRight: Radius.circular(15.0),
               ),
-              child: Consumer(builder: (context, ref, _) {
-                final chackStatus =
-                    ref.watch(ChackStatusUser_provider(rutinId));
+            ),
+            child: Consumer(builder: (context, ref, _) {
+              final chackStatus = ref.watch(chackStatusUser_provider(rutinId));
+              // final saves = ref.watch(saveRutin_provider(rutinId));
+              // final unSave = ref.watch(unSave_Rutin_provider(rutinId));
 
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    chackStatus.when(
-                        data: (data) {
-                          print(data.isCaptain.toString());
-
-                          return Column(
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  chackStatus.when(
+                      data: (data) {
+                        print(data.isCaptain.toString());
+                        late bool issave = data.isSave;
+                        return SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Column(
                             children: [
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -119,11 +122,44 @@ abstract class full_rutin_assist {
                                     status: false,
                                   ),
                                   SqureButton(
-                                    icon: Icons.bookmark_added,
-                                    inActiveIcon: Icons.bookmark_add_sharp,
+                                    inActiveIcon: Icons.bookmark_added,
+                                    icon: Icons.bookmark_add_sharp,
                                     text: 'Save',
                                     inActiveText: "add to save",
                                     status: data.isSave,
+                                    ontap: () => issave == false
+                                        ? saveUnsave().saveRutin(rutinId)
+                                        : saveUnsave().unSaveRutin(rutinId),
+                                    // ontap: issave == false
+                                    //     ? () {
+                                    //         return saveUnsave()
+                                    //             .saveRutin(rutinId);
+
+                                    //         //  saves.when(
+                                    //         //   data: (df) =>
+                                    //         //       Alart.errorAlartDilog(
+                                    //         //           context, df["message"]),
+                                    //         //   error: (error, stackTrace) =>
+                                    //         //       Alart.handleError(
+                                    //         //           context, error),
+                                    //         //   loading: () {},
+                                    //         // );
+                                    //       }
+                                    //     : () {
+                                    //         return saveUnsave()
+                                    //             .unSaveRutin(rutinId);
+                                    //         // unSave.when(
+                                    //         //   data: (undSave_res) {
+                                    //         //     print("date $undSave_res");
+                                    //         //     Alart.errorAlartDilog(context,
+                                    //         //         undSave_res["message"]);
+                                    //         //   },
+                                    //         //   error: (error, stackTrace) =>
+                                    //         //       Alart.handleError(
+                                    //         //           context, error),
+                                    //         //   loading: () {},
+                                    //         // );
+                                    //       }
                                   ),
                                   SqureButton(
                                     icon: Icons.more_horiz,
@@ -221,17 +257,17 @@ abstract class full_rutin_assist {
                                   ],
                                 )
                               else
-                                SizedBox.shrink()
+                                const SizedBox.shrink()
                             ],
-                          );
-                        },
-                        loading: () => const Text("lofing"),
-                        error: (error, stackTrace) =>
-                            Alart.handleError(context, error)),
-                  ],
-                );
-              }),
-            ),
+                          ),
+                        );
+                      },
+                      loading: () => const Text("lofing"),
+                      error: (error, stackTrace) =>
+                          Alart.handleError(context, error)),
+                ],
+              );
+            }),
           );
         });
   }
