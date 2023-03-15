@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, non_constant_identifier_names, must_be_immutable
+// ignore_for_file: avoid_print, non_constant_identifier_names, must_be_immutable, unused_local_variable
 
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
@@ -8,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/helper/constant/constant.dart';
 import 'package:table/models/ClsassDetailsModel.dart';
 import 'package:table/ui/add_eddit_remove/addPriode.dart';
-import 'package:table/ui/add_eddit_remove/add_cap10s.page.dart';
 import 'package:table/ui/add_eddit_remove/add_class.dart';
 import 'package:table/ui/bottom_items/Home/class/class_request/class_request.dart';
 import 'package:table/ui/bottom_items/Home/class/full_rutin_class/view_more_details.dart';
@@ -22,9 +21,10 @@ import 'package:table/widgets/class_contaner.dart';
 import 'package:table/widgets/days_container.dart';
 import 'package:table/widgets/priodeContaner.dart';
 import 'package:http/http.dart' as http;
-import 'package:table/widgets/text%20and%20buttons/bottomText.dart';
+import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/widgets/text%20and%20buttons/empty.dart';
 import 'package:table/widgets/text%20and%20buttons/hedingText.dart';
+import 'package:table/widgets/text%20and%20buttons/squareButton.dart';
 
 class FullRutineView extends ConsumerWidget {
   String rutinId;
@@ -163,6 +163,7 @@ class FullRutineView extends ConsumerWidget {
           return Container(
             color: Colors.grey[200],
             child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 30),
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -170,85 +171,144 @@ class FullRutineView extends ConsumerWidget {
                   topRight: Radius.circular(15.0),
                 ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  valu.isOwnwer == true || valu.isOwnwer == true
-                      ? BottomText("Add Priode",
-                          onPressed: () => Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  fullscreenDialog: true,
-                                  builder: (context) =>
-                                      AppPriodePage(rutinId: rutinId))))
-                      : Container(),
-                  valu.isOwnwer == true || valu.isOwnwer == true
-                      ? ListTile(
-                          leading: const Icon(Icons.add),
-                          title: const Text("Add Class ",
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                    fullscreenDialog: true,
-                                    builder: (context) =>
-                                        AddClass(rutinId: rutinId)));
-                          })
-                      : Container(),
+              child: Consumer(builder: (context, ref, _) {
+                final chackStatus = ref.read(ChackStatusUser_provider(rutinId));
 
-                  valu.isOwnwer == true || valu.isOwnwer == true
-                      ? ListTile(
-                          leading: const Icon(Icons.add),
-                          title: const Text("Add captens ",
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                    fullscreenDialog: true,
-                                    builder: (context) =>
-                                        AddCap10sPage(rutinId: rutinId)));
-                          })
-                      : Container(),
-                  ListTile(
-                      leading: const Icon(Icons.save),
-                      title: Text(valu.isSaved == false ? "Saved" : " unsave",
-                          style: const TextStyle(fontWeight: FontWeight.bold)),
-                      onTap: () async {
-                        print("ontap");
-                        print("save:${valu.isSaved}");
-                        valu.isSaved == true
-                            ? Rutin_Req().unSaveRutin(rutinId)
-                            : chackStatus();
-                      }),
-                  ListTile(
-                      leading: const Icon(Icons.more_horiz_rounded,
-                          color: Colors.blue),
-                      title: const Text("View More",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.blue)),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                                fullscreenDialog: true,
-                                builder: (context) => ViewMorepage(rutinId)));
-                      }),
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    chackStatus.when(
+                        data: (data) {
+                          print(data.isCaptain.toString());
+                          bool isSave = data.isSave;
+                          bool isOwner = data.isOwner;
+                          bool isCapten = data.isCaptain;
+                          return data != null
+                              ? Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const SqureButton(
+                                          icon: Icons.people_rounded,
+                                          inActiveIcon: Icons.telegram,
+                                          inActiveText: "Send Join request",
+                                          text: 'Members',
+                                          status: false,
+                                        ),
+                                        SqureButton(
+                                          icon: Icons.bookmark_added,
+                                          inActiveIcon:
+                                              Icons.bookmark_add_sharp,
+                                          text: 'Save',
+                                          inActiveText: "add to save",
+                                          status: isSave,
+                                        ),
+                                        SqureButton(
+                                          icon: Icons.more_horiz,
+                                          //  inActiveIcon: Icons.more_vert,
+                                          text: 'view more',
 
-                  //
-                  valu.isOwnwer == true
-                      ? ListTile(
-                          leading: const Icon(Icons.delete, color: Colors.red),
-                          title: const Text("Delete",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.red)),
-                          onTap: () {})
-                      : Container(),
-                ],
-              ),
+                                          ontap: () => Navigator.push(
+                                            context,
+                                            CupertinoPageRoute(
+                                              fullscreenDialog: true,
+                                              builder: (context) =>
+                                                  ViewMorepage(rutinId),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const Divider(height: 20),
+                                    isCapten || isOwner
+                                        ? Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              SqureButton(
+                                                icon: Icons.add,
+                                                text: "Add Priode",
+                                                ontap: () => Navigator.push(
+                                                  context,
+                                                  CupertinoPageRoute(
+                                                    fullscreenDialog: true,
+                                                    builder: (context) =>
+                                                        AppPriodePage(
+                                                            rutinId: rutinId),
+                                                  ),
+                                                ),
+                                              ),
+                                              SqureButton(
+                                                icon: Icons.add,
+                                                text: "Add Class",
+                                                ontap: () => Navigator.push(
+                                                  context,
+                                                  CupertinoPageRoute(
+                                                    fullscreenDialog: true,
+                                                    builder: (context) =>
+                                                        AppPriodePage(
+                                                            rutinId: rutinId),
+                                                  ),
+                                                ),
+                                              ),
+                                              const SqureButton(
+                                                  icon: Icons.person_add_alt_1,
+                                                  text: "Add captens"),
+                                            ],
+                                          )
+                                        : const SizedBox.shrink(),
+                                    const Divider(height: 20),
+                                    isOwner || isCapten
+                                        ? Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: const [
+                                              SqureButton(
+                                                  icon: Icons.groups_2,
+                                                  text: "see all request"),
+                                              SqureButton(
+                                                  icon: Icons.person_add_alt_1,
+                                                  text: "Add members"),
+                                            ],
+                                          )
+                                        : const SizedBox.shrink(),
+                                    const Divider(height: 20),
+                                    isOwner || isCapten
+                                        ? Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: const [
+                                              SqureButton(
+                                                icon: Icons.person_remove,
+                                                text: "remove members",
+                                                color: Colors.redAccent,
+                                              ),
+                                              SqureButton(
+                                                icon: Icons.person_remove,
+                                                color: Colors.redAccent,
+                                                text: "remove captens",
+                                              ),
+                                              SqureButton(
+                                                icon: Icons.delete,
+                                                text: "Delete",
+                                                color: Colors.red,
+                                              ),
+                                            ],
+                                          )
+                                        : const SizedBox.shrink(),
+                                  ],
+                                )
+                              : Text("Login requaind ");
+                        },
+                        loading: () => const Progressindicator(),
+                        error: (error, stackTrace) =>
+                            Alart.handleError(context, error)),
+                  ],
+                );
+              }),
             ),
           );
         });
