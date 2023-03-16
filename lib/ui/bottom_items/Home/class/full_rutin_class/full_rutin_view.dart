@@ -11,7 +11,8 @@ import 'package:table/ui/add_eddit_remove/addPriode.dart';
 import 'package:table/ui/add_eddit_remove/add_class.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/Rutin_request/rutin_request.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/full_rutin_ui/view_more_details.dart';
-\\import 'package:table/ui/bottom_items/Home/home_req/priode_reuest.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summary_screen.dart';
+import 'package:table/ui/bottom_items/Home/home_req/priode_reuest.dart';
 import 'package:table/ui/server/rutinReq.dart';
 import 'package:table/widgets/AccoundCardRow.dart';
 import 'package:table/widgets/Alart.dart';
@@ -171,7 +172,7 @@ class FullRutineView extends ConsumerWidget {
                 ),
               ),
               child: Consumer(builder: (context, ref, _) {
-              final chackStatus = ref.read(chackStatusUser_provider(rutinId));
+                final chackStatus = ref.read(chackStatusUser_provider(rutinId));
 
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
