@@ -25,12 +25,10 @@ class AccountReq {
       if (response.statusCode == 200) {
         print(response.body);
         return res;
-      } else {
-        print(response.body);
-        throw Exception('Failed to load data');
       }
     } catch (e) {
-      throw Exception('Failed to load data');
+      print(e);
+      throw Exception(e);
     }
   }
 }

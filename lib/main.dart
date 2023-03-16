@@ -7,8 +7,8 @@ import 'package:table/ui/auth_Section/auth_ui/login_sceen.dart';
 import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/TopBar.dart';
 import 'package:table/widgets/progress_indicator.dart';
-import 'ui/bottom_items/Home/full_rutin/Rutin_request/rutin_request.dart';
-import 'ui/bottom_items/Home/full_rutin/full_rutin_ui/view_more_details.dart';
+import 'ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
+import 'ui/bottom_items/Home/full_rutin/screen/view_more_details.dart';
 import 'widgets/text and buttons/squareButton.dart';
 
 void main() {
@@ -88,7 +88,7 @@ class MyWidget extends ConsumerWidget {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const SqureButton(
+                                  SqureButton(
                                     icon: Icons.people_rounded,
                                     inActiveIcon: Icons.telegram,
                                     inActiveText: "Send Join request",
@@ -122,7 +122,7 @@ class MyWidget extends ConsumerWidget {
                                   ? Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
-                                      children: const [
+                                      children: [
                                         SqureButton(
                                           icon: Icons.person_remove,
                                           text: "remove members",

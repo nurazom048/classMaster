@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/models/Account_models.dart';
 import 'package:table/models/rutineOverviewModel.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/full_rutin_ui/full_rutin_view.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/screen/full_rutin_view.dart';
 import 'package:table/ui/bottom_items/Home/home_screen/search/search_request/search_request.dart';
 import 'package:table/widgets/AccoundCardRow.dart';
 import 'package:table/widgets/Alart.dart';

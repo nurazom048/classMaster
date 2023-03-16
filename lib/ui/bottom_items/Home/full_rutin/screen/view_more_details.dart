@@ -4,7 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/models/Account_models.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/full_rutin_ui/listOfAccount.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/screen/listOfAccount.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/widgets/see_all_members.dart';
 import 'package:table/ui/server/rutinReq.dart';
 import 'package:table/widgets/AccoundCardRow.dart';
 import 'package:table/widgets/Alart.dart';
@@ -113,7 +114,19 @@ class ViewMorepage extends ConsumerWidget {
                   loading: () => const Progressindicator()),
 
               //... Members...//
-              const HeddingRow(hedding: "Members", second_Hedding: "see more"),
+              HeddingRow(
+                hedding: "Members",
+                second_Hedding: "see more",
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                          fullscreenDialog: true,
+                          builder: (context) =>
+                              SeeAllMembers(rutinId: rutinId)));
+                },
+              ),
+
               rutinInfo.when(
                   data: (data) {
                     List<AccountModels> cap10 = data?.cap10s ?? [];

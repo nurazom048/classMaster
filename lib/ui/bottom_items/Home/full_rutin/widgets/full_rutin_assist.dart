@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/add_eddit_remove/addPriode.dart';
 import 'package:table/ui/add_eddit_remove/add_class.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/Rutin_request/rutin_request.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/Rutin_request/svae_unsave.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/full_rutin_ui/view_more_details.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/request/svae_unsave.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/screen/see_all_request.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/screen/view_more_details.dart';
 import 'package:table/ui/bottom_items/Home/home_req/priode_reuest.dart';
 import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/text%20and%20buttons/squareButton.dart';
@@ -83,7 +84,6 @@ abstract class full_rutin_assist {
   static void ChackStatusUser_BottomSheet(BuildContext context, rutinId) {
     showModalBottomSheet(
         context: context,
-        backgroundColor: Colors.transparent,
         builder: (BuildContext context) {
           return Container(
             padding: const EdgeInsets.symmetric(vertical: 30),
@@ -114,13 +114,18 @@ abstract class full_rutin_assist {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const SqureButton(
+                                  SqureButton(
                                     icon: Icons.people_rounded,
                                     inActiveIcon: Icons.telegram,
                                     inActiveText: "Send Join request",
                                     text: 'Members',
                                     status: false,
                                   ),
+                                  // SqureButton(
+                                  //   icon: Icons.people_rounded,
+                                  //   text: ' all Members',
+                                  //   status: false,
+                                  // ),
                                   SqureButton(
                                     inActiveIcon: Icons.bookmark_added,
                                     icon: Icons.bookmark_add_sharp,
@@ -211,7 +216,7 @@ abstract class full_rutin_assist {
                                             ),
                                           ),
                                         ),
-                                        const SqureButton(
+                                        SqureButton(
                                             icon: Icons.person_add_alt_1,
                                             text: "Add captens"),
                                       ],
@@ -220,10 +225,21 @@ abstract class full_rutin_assist {
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
-                                      children: const [
+                                      children: [
                                         SqureButton(
-                                            icon: Icons.groups_2,
-                                            text: "see all request"),
+                                          icon: Icons.groups_2,
+                                          count: data.sentRequestCount,
+                                          text: "see all request",
+                                          ontap: () => Navigator.push(
+                                            context,
+                                            CupertinoPageRoute(
+                                              fullscreenDialog: true,
+                                              builder: (context) =>
+                                                  SeeAllRequest(
+                                                      rutin_id: rutinId),
+                                            ),
+                                          ),
+                                        ),
                                         SqureButton(
                                             icon: Icons.person_add_alt_1,
                                             text: "Add members"),
@@ -234,18 +250,18 @@ abstract class full_rutin_assist {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        const SqureButton(
+                                        SqureButton(
                                           icon: Icons.person_remove,
                                           text: "remove members",
                                           color: Colors.redAccent,
                                         ),
-                                        const SqureButton(
+                                        SqureButton(
                                           icon: Icons.person_remove,
                                           color: Colors.redAccent,
                                           text: "remove captens",
                                         ),
                                         if (data.isOwner == true)
-                                          const SqureButton(
+                                          SqureButton(
                                             icon: Icons.delete,
                                             text: "Delete",
                                             color: Colors.red,

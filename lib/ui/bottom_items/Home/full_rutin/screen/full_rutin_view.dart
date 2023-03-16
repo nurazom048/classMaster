@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/models/ClsassDetailsModel.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/assist/full_rutin_assist.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/widgets/full_rutin_assist.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summary_screen.dart';
 import 'package:table/ui/server/rutinReq.dart';
 import 'package:table/widgets/AccoundCardRow.dart';

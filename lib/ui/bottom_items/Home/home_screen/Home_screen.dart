@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/full_rutin_ui/full_rutin_view.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/screen/full_rutin_view.dart';
 import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
 import 'package:table/ui/bottom_items/Home/home_req/rutinReq.dart';
 import 'package:table/ui/bottom_items/Home/home_screen/search_page.dart';
