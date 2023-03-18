@@ -11,3 +11,5 @@ final all_members_provider =
     FutureProvider.family.autoDispose<MembersModel?, String>((ref, rutin_id) {
   return ref.read(rutin_member_provider).all_members(rutin_id);
 });
+
+void addMember() {}

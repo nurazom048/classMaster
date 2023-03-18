@@ -12,7 +12,7 @@ final searchRoutineProvider =
 });
 
 final search_Account_Provider =
-    FutureProvider.family<dynamic, String>((ref, valu) async {
+    FutureProvider.autoDispose.family<dynamic, String>((ref, valu) async {
   return ref.read(searchRequestProvider).searchAccount(valu);
 });
 
@@ -38,8 +38,7 @@ class SearchRequest {
 
   Future searchAccount(String valu) async {
     print("valu pici vai : $valu");
-    var url =
-        Uri.parse('${Const.BASE_URl}/account/find/account?username=$valu');
+    var url = Uri.parse('${Const.BASE_URl}/account/find/account?q=$valu');
 
     try {
       final response = await http.post(url);

@@ -2,23 +2,19 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:table/ui/bottom_items/bottm_nev_bar.dart';
-import 'package:table/ui/auth_Section/auth_req/auth_req.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 import 'package:table/ui/auth_Section/auth_ui/create_new_account.dart';
-import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/text%20and%20buttons/wellcome_top_note.dart';
 
-class LoginScreen extends StatefulWidget {
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
+class LoginScreen extends ConsumerWidget {
   final _username = TextEditingController();
+
   final _password = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final _authLogin = ref.read(authController_provider);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 17),
@@ -68,21 +64,8 @@ class _LoginScreenState extends State<LoginScreen> {
               color: Colors.blue,
               child: const Text('Login'),
               onPressed: () async {
-                var res = await AuthReq().login(
-                  username: _username.text,
-                  password: _password.text,
-                );
-                res.fold(
-                  (l) => Alart.showSnackBar(context, l),
-                  (r) {
-                    Alart.showSnackBar(context, "Login success");
-
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const BottomNevBar()));
-                  },
-                );
+                print("ontap");
+                _authLogin.siginIn(_username.text, _password.text, context);
               },
             ),
             const SizedBox(height: 20),

@@ -13,9 +13,13 @@ class AccountCardRow extends ConsumerWidget {
     required this.accountData,
     this.suffix,
     this.removeCapten,
+    this.onUsername = _defaultOnUsername,
   });
 
+  String? n;
+  static void _defaultOnUsername(String? n) {}
   final AccountModels accountData;
+  final Function(String?) onUsername;
 
   final Widget? suffix;
   dynamic removeCapten;
@@ -24,7 +28,8 @@ class AccountCardRow extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final bool isEdditingMood = ref.watch(isEditingModd);
     return InkWell(
-      onTap: () => Navigator.push(
+      onTap: () => onUsername(accountData.username),
+      onLongPress: () => Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => AccountScreen(
@@ -42,7 +47,7 @@ class AccountCardRow extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           // ignore: prefer_const_literals_to_create_immutables
           children: [
-            CircleAvatar(
+            const CircleAvatar(
               radius: 30,
               backgroundColor: Colors.amber,
               backgroundImage: NetworkImage(

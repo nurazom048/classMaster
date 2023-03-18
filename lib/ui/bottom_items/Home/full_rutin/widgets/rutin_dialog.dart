@@ -7,6 +7,7 @@ import 'package:table/ui/add_eddit_remove/addPriode.dart';
 import 'package:table/ui/add_eddit_remove/add_class.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/svae_unsave.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/screen/add_members.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/see_all_request.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/view_more_details.dart';
 import 'package:table/ui/bottom_items/Home/home_req/priode_reuest.dart';
@@ -217,8 +218,23 @@ abstract class full_rutin_assist {
                                           ),
                                         ),
                                         SqureButton(
-                                            icon: Icons.person_add_alt_1,
-                                            text: "Add captens"),
+                                          icon: Icons.person_add_alt_1,
+                                          text: "Add captens",
+                                          ontap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      AddMembers(
+                                                        onUsername:
+                                                            (seleted_user) {
+                                                          print(
+                                                              "hi an cll back $seleted_user");
+                                                        },
+                                                      )),
+                                            );
+                                          },
+                                        ),
                                       ],
                                     ),
                                     const Divider(height: 20),
