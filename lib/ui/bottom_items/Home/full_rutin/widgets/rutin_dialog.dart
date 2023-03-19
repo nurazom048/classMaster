@@ -1,13 +1,15 @@
-// ignore_for_file: camel_case_types, non_constant_identifier_names
+// ignore_for_file: camel_case_types, non_constant_identifier_names, unused_local_variable
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/add_eddit_remove/addPriode.dart';
 import 'package:table/ui/add_eddit_remove/add_class.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/controller/members_controllers.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/svae_unsave.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/add_members.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/screen/rutinMember.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/see_all_request.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/view_more_details.dart';
 import 'package:table/ui/bottom_items/Home/home_req/priode_reuest.dart';
@@ -97,6 +99,7 @@ abstract class full_rutin_assist {
             ),
             child: Consumer(builder: (context, ref, _) {
               final chackStatus = ref.watch(chackStatusUser_provider(rutinId));
+              final members = ref.read(memberRequestController);
               // final saves = ref.watch(saveRutin_provider(rutinId));
               // final unSave = ref.watch(unSave_Rutin_provider(rutinId));
 
@@ -227,9 +230,13 @@ abstract class full_rutin_assist {
                                                   builder: (context) =>
                                                       AddMembers(
                                                         onUsername:
-                                                            (seleted_user) {
+                                                            (seleted_username) {
+                                                          members.addMember(
+                                                              rutinId,
+                                                              seleted_username,
+                                                              context);
                                                           print(
-                                                              "hi an cll back $seleted_user");
+                                                              "hi an cll back $seleted_username");
                                                         },
                                                       )),
                                             );
@@ -243,22 +250,29 @@ abstract class full_rutin_assist {
                                           MainAxisAlignment.center,
                                       children: [
                                         SqureButton(
-                                          icon: Icons.groups_2,
-                                          count: data.sentRequestCount,
-                                          text: "see all request",
-                                          ontap: () => Navigator.push(
-                                            context,
-                                            CupertinoPageRoute(
-                                              fullscreenDialog: true,
-                                              builder: (context) =>
-                                                  SeeAllRequest(
-                                                      rutin_id: rutinId),
-                                            ),
+                                            icon: Icons.groups_2,
+                                            count: data.sentRequestCount,
+                                            text: "see all request",
+                                            ontap: () => Navigator.push(
+                                                context,
+                                                CupertinoPageRoute(
+                                                    fullscreenDialog: true,
+                                                    builder: (context) =>
+                                                        SeeAllRequest(
+                                                            rutin_id:
+                                                                rutinId)))),
+                                        SqureButton(
+                                          icon: Icons.person_add_alt_1,
+                                          text: "Add members",
+                                          ontap: () => AddMembers(
+                                            onUsername: (seleted_username) {
+                                              members.addMember(rutinId,
+                                                  seleted_username, context);
+                                              print(
+                                                  "hi an cll back $seleted_username");
+                                            },
                                           ),
                                         ),
-                                        SqureButton(
-                                            icon: Icons.person_add_alt_1,
-                                            text: "Add members"),
                                       ],
                                     ),
                                     const Divider(height: 20),
@@ -267,10 +281,26 @@ abstract class full_rutin_assist {
                                           MainAxisAlignment.center,
                                       children: [
                                         SqureButton(
-                                          icon: Icons.person_remove,
-                                          text: "remove members",
-                                          color: Colors.redAccent,
-                                        ),
+                                            icon: Icons.person_remove,
+                                            text: "remove members",
+                                            color: Colors.redAccent,
+                                            ontap: () => Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      rutin_member_page(
+                                                    rutinId: rutinId,
+                                                    onUsername:
+                                                        (seleted_username) {
+                                                      members.addMember(
+                                                          rutinId,
+                                                          seleted_username,
+                                                          context);
+                                                      print(
+                                                          "hi an cll back $seleted_username");
+                                                    },
+                                                  ),
+                                                ))),
                                         SqureButton(
                                           icon: Icons.person_remove,
                                           color: Colors.redAccent,
