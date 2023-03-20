@@ -101,6 +101,8 @@ abstract class full_rutin_assist {
             child: Consumer(builder: (context, ref, _) {
               final chackStatus = ref.watch(chackStatusUser_provider(rutinId));
               final members = ref.read(memberRequestController);
+              final saveUnsave =
+                  ref.read(saveProvider(p(r: rutinId, c: false)));
 
               // final saves = ref.watch(saveRutin_provider(rutinId));
               // final unSave = ref.watch(unSave_Rutin_provider(rutinId));
@@ -111,12 +113,6 @@ abstract class full_rutin_assist {
                 children: <Widget>[
                   chackStatus.when(
                       data: (data) {
-                        // final svaConditions =
-                        //     StateProvider<bool>((ref) => data.isSave);
-
-                        // final saveRutin = ref.read(saveProvider(
-                        //     p(r: rutinId, c: ref.watch(svaConditions))));
-                        late bool issave = data.isSave;
                         return SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Column(
@@ -125,62 +121,29 @@ abstract class full_rutin_assist {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   SqureButton(
-                                    icon: Icons.people_rounded,
-                                    inActiveIcon: Icons.telegram,
-                                    inActiveText: "Send Join request",
-                                    text: 'Members',
-                                    status: false,
-                                  ),
-                                  // SqureButton(
-                                  //   icon: Icons.people_rounded,
-                                  //   text: ' all Members',
-                                  //   status: false,
-                                  // ),
+                                      icon: Icons.people_rounded,
+                                      inActiveIcon: Icons.telegram,
+                                      inActiveText: data.activeStatus,
+                                      text: data.activeStatus,
+                                      status: data.activeStatus == "joined"
+                                          ? false
+                                          : true,
+                                      ontap: () => members.sendReqController(
+                                          rutinId, context, ref)),
                                   SqureButton(
                                     inActiveIcon: Icons.bookmark_added,
                                     icon: Icons.bookmark_add_sharp,
                                     text: 'Save',
                                     inActiveText: "add to save",
                                     status: data.isSave,
-
                                     ontap: () {
                                       print("onnnnnn");
-                                      ref.watch(saveProvider(
-                                          p(r: rutinId, c: false)));
+                                      saveUnsave.when(
+                                          data: (d) {},
+                                          error: (error, stackTrace) =>
+                                              Alart.handleError(context, error),
+                                          loading: () {});
                                     },
-                                    // ontap: () => issave == false
-                                    //     ? saveUnsave().saveRutin(rutinId)
-                                    //     : saveUnsave().unSaveRutin(rutinId),
-                                    // // ontap: issave == false
-                                    // //     ? () {
-                                    //         return saveUnsave()
-                                    //             .saveRutin(rutinId);
-
-                                    //         //  saves.when(
-                                    //         //   data: (df) =>
-                                    //         //       Alart.errorAlartDilog(
-                                    //         //           context, df["message"]),
-                                    //         //   error: (error, stackTrace) =>
-                                    //         //       Alart.handleError(
-                                    //         //           context, error),
-                                    //         //   loading: () {},
-                                    //         // );
-                                    //       }
-                                    //     : () {
-                                    //         return saveUnsave()
-                                    //             .unSaveRutin(rutinId);
-                                    //         // unSave.when(
-                                    //         //   data: (undSave_res) {
-                                    //         //     print("date $undSave_res");
-                                    //         //     Alart.errorAlartDilog(context,
-                                    //         //         undSave_res["message"]);
-                                    //         //   },
-                                    //         //   error: (error, stackTrace) =>
-                                    //         //       Alart.handleError(
-                                    //         //           context, error),
-                                    //         //   loading: () {},
-                                    //         // );
-                                    //       }
                                   ),
                                   SqureButton(
                                     icon: Icons.more_horiz,
@@ -238,23 +201,22 @@ abstract class full_rutin_assist {
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      AddMembers(
-                                                        addCapten: true,
-                                                        buttotext:
-                                                            "Add captens",
-                                                        onUsername:
-                                                            (seleted_username,
-                                                                setPosition) {
-                                                          members.AddCapten(
-                                                              rutinId,
-                                                              setPosition,
-                                                              seleted_username,
-                                                              context);
-                                                          print(
-                                                              "hi an cll back $seleted_username");
-                                                        },
-                                                      )),
+                                                  builder: (context) {
+                                                return AddMembers(
+                                                  addCapten: true,
+                                                  buttotext: "Add captens",
+                                                  onUsername: (seleted_username,
+                                                      setPosition) {
+                                                    members.AddCapten(
+                                                        rutinId,
+                                                        setPosition,
+                                                        seleted_username,
+                                                        context);
+                                                    print(
+                                                        "hi an cll back $seleted_username");
+                                                  },
+                                                );
+                                              }),
                                             );
                                           },
                                         ),

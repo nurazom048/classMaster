@@ -6,8 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/helper/constant/constant.dart';
 import 'package:table/models/membersModels.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/Rutin_request/rutin_request.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/screen/add_members.dart';
 
 class memberRequest {
 //
@@ -88,9 +86,10 @@ class memberRequest {
   }
 
   //.... add cap10s.../
-  Future<String?> addCaptens(rutinid, position, username) async {
+  Future<String?> addCaptensReq(rutinid, position, username) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
+    print("hi i am calling req $rutinid , $position $username");
 
     final url = Uri.parse('${Const.BASE_URl}/rutin/cap10/add');
 
@@ -102,7 +101,7 @@ class memberRequest {
       "username": username
     });
 
-    var res = jsonDecode(response.body)['Message'];
+    var res = jsonDecode(response.body)['message'];
 
     print("add cap10 req :$res");
     try {
@@ -117,6 +116,38 @@ class memberRequest {
       return e.toString();
     }
   }
+
+  sendRequest(rutin_id) async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+
+    var url =
+        Uri.parse("${Const.BASE_URl}/rutin/member/send_request/$rutin_id");
+
+    try {
+      final response =
+          await http.post(url, headers: {'Authorization': 'Bearer $getToken'});
+
+      var res = jsonDecode(response.body);
+      print("req from  sendRequest $res");
+
+      if (response.statusCode == 200) {
+        if (response.body != null) {
+          print(res);
+          return res;
+        } else {
+          return res;
+        }
+      }
+    } catch (e) {
+      print(e);
+      throw Exception(e);
+    }
+  }
 }
 
 final memberRequestProvider = Provider((ref) => memberRequest());
+final sendRequestProviser =
+    FutureProvider.family<dynamic, String>((ref, rutin_id) async {
+  return ref.read(memberRequestProvider).sendRequest(rutin_id);
+});

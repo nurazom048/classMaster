@@ -1,5 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'dart:convert';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/models/membersModels.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
@@ -36,7 +38,7 @@ class MemberController {
   //******** AddCapten   ************** */
   void AddCapten(rutinid, position, username, context) async {
     final message =
-        await member_request.addCaptens(rutinid, position, username);
+        await member_request.addCaptensReq(rutinid, position, username);
     print("from comtroller : $message");
 
     Alart.showSnackBar(context, message);
@@ -52,6 +54,18 @@ class MemberController {
     print("from comtroller : ${message}");
 
     Alart.showSnackBar(context, message);
+  }
+
+  //******** sendReq   ************** */
+  void sendReqController(rutinId, context, WidgetRef ref) async {
+    final r = ref.read(sendRequestProviser(rutinId));
+    r.when(
+        data: (d) {
+          var message = Message.fromJson(d);
+          Alart.errorAlartDilog(context, message.message);
+        },
+        error: (error, stackTrace) => Alart.handleError(context, error),
+        loading: () {});
   }
 
   //******** acceptMember   ************** */
@@ -70,4 +84,20 @@ class MemberController {
 
     print("from comtroller : ${message}");
   }
+}
+
+class Message {
+  String message;
+
+  Message({required this.message});
+
+  factory Message.fromJson(Map<String, dynamic> json) {
+    return Message(
+      message: json['message'],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'message': message,
+      };
 }

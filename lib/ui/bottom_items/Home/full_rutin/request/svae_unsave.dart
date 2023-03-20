@@ -13,7 +13,7 @@ class p {
   p({required this.r, required this.c});
 }
 
-final saveProvider = FutureProvider.family<bool, p>((ref, p) async {
+final saveProvider = FutureProvider.family<bool?, p>((ref, p) async {
   return await ref.read(saveUnsaveProvider).saveRutin(p.r, p.c);
 });
 
@@ -24,7 +24,7 @@ final saveProvider = FutureProvider.family<bool, p>((ref, p) async {
 
 class saveUnsave {
 //... unsave rutine ....//
-  Future<bool> saveRutin(String rutinId, bool consition) async {
+  Future<bool?> saveRutin(String rutinId, bool consition) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
     print("r : $rutinId b : $consition");
@@ -46,7 +46,8 @@ class saveUnsave {
         return false;
       }
     } catch (e) {
-      throw Exception(e);
+      print(e);
+      return false;
     }
   }
 
