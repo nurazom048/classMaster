@@ -43,6 +43,39 @@ class FullRutinrequest extends saveUnsave {
   }
 
   //
+
+  //
+  //...acceptRequest.....//
+  Future rejectRequest(rutin_id, username) async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+    print("$username");
+
+    try {
+      final response = await http.post(
+          Uri.parse('${Const.BASE_URl}/rutin/member/reject_request/$rutin_id'),
+          headers: {'Authorization': 'Bearer $getToken'},
+          body: {"username": username});
+
+      var res = jsonDecode(response.body);
+            print("rej");
+      print(res);
+
+      if (response.statusCode == 200) {
+        if (response.body != null) {
+          var res = jsonDecode(response.body);
+
+          return res;
+        } else {
+          throw Exception("Response body is null");
+        }
+      }
+    } catch (e) {
+      print(e);
+      throw Exception(e);
+    }
+  }
+
   //....ChackStatusModel....//
   Future<CheckStatusModel> chackStatus(rutin_id) async {
     final prefs = await SharedPreferences.getInstance();

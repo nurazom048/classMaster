@@ -2,6 +2,7 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/models/membersModels.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/member_request.dart';
 import 'package:table/widgets/Alart.dart';
 
@@ -39,5 +40,34 @@ class MemberController {
     print("from comtroller : $message");
 
     Alart.showSnackBar(context, message);
+  }
+
+  //******** acceptMember   ************** */
+  void acceptMember(WidgetRef ref, rutinId, username, context) async {
+    final message = ref.read(
+        accept_request_provider(accept(rutin_id: rutinId, usernme: username)));
+
+    ref.watch(see_all_request_provider(rutinId));
+
+    print("from comtroller : ${message}");
+
+    Alart.showSnackBar(context, message);
+  }
+
+  //******** acceptMember   ************** */
+  void rejectMembers(WidgetRef ref, rutinId, username, context) async {
+    final message = ref.read(
+        reject_request_provider(accept(rutin_id: rutinId, usernme: username)));
+
+    message.when(
+      data: (data) {
+        print("via daa $data");
+        Alart.errorAlartDilog(context, data["message"]);
+      },
+      error: (error, stackTrace) => Alart.handleError(context, error),
+      loading: () {},
+    );
+
+    print("from comtroller : ${message}");
   }
 }

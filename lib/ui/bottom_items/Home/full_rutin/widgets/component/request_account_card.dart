@@ -3,18 +3,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/models/Account_models.dart';
-import 'package:table/models/seeAllRequestModel.dart';
 import 'package:table/widgets/AccoundCardRow.dart';
 
 class requestAccountCard extends ConsumerWidget {
-  final RequestModel Request;
   final AccountModels accountData;
-  final acceptOnTap;
+
+  final onRejectUsername;
+  final acceptUsername;
 
   const requestAccountCard({
-    required this.Request,
     required this.accountData,
-    required this.acceptOnTap,
+    required this.onRejectUsername,
+    required this.acceptUsername,
     super.key,
   });
 
@@ -25,15 +25,35 @@ class requestAccountCard extends ConsumerWidget {
       child: Column(
         children: [
           AccountCardRow(accountData: accountData),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              TextButton(onPressed: acceptOnTap, child: const Text("Reject")),
-              TextButton(onPressed: () {}, child: const Text("Accept")),
-            ],
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                TextButton(
+                    onPressed: onRejectUsername,
+                    child: const Text("Reject",
+                        style: TextStyle(color: Colors.redAccent))),
+                const Vdivider(),
+                TextButton(
+                    onPressed: acceptUsername, child: const Text("Accept")),
+              ],
+            ),
           )
         ],
       ),
     );
+  }
+}
+
+class Vdivider extends StatelessWidget {
+  const Vdivider({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox(
+        height: 24, child: VerticalDivider(color: Colors.grey, thickness: 1));
   }
 }

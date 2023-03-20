@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table/helper/old/moidels.dart';
 import 'package:table/ui/add_eddit_remove/addPriode.dart';
 import 'package:table/ui/add_eddit_remove/add_class.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/members_controllers.dart';
@@ -100,8 +101,7 @@ abstract class full_rutin_assist {
             child: Consumer(builder: (context, ref, _) {
               final chackStatus = ref.watch(chackStatusUser_provider(rutinId));
               final members = ref.read(memberRequestController);
-              final saveRutin = ref.read(saveProvider(rutinId));
-              final unsaveProviders = ref.read(unsaveProvider(rutinId));
+
               // final saves = ref.watch(saveRutin_provider(rutinId));
               // final unSave = ref.watch(unSave_Rutin_provider(rutinId));
 
@@ -111,6 +111,11 @@ abstract class full_rutin_assist {
                 children: <Widget>[
                   chackStatus.when(
                       data: (data) {
+                        // final svaConditions =
+                        //     StateProvider<bool>((ref) => data.isSave);
+
+                        // final saveRutin = ref.read(saveProvider(
+                        //     p(r: rutinId, c: ref.watch(svaConditions))));
                         late bool issave = data.isSave;
                         return SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
@@ -139,19 +144,9 @@ abstract class full_rutin_assist {
                                     status: data.isSave,
 
                                     ontap: () {
-                                      if (data.isSave == true) {
-                                        unsaveProviders.whenData((value) {
-                                          print("value  $value");
-                                          ref.refresh(chackStatusUser_provider(
-                                              rutinId));
-                                        });
-                                      } else if (data.isSave == false) {
-                                        saveRutin.whenData((value) {
-                                          print("value  $value");
-                                          ref.refresh(chackStatusUser_provider(
-                                              rutinId));
-                                        });
-                                      }
+                                      print("onnnnnn");
+                                      ref.watch(saveProvider(
+                                          p(r: rutinId, c: false)));
                                     },
                                     // ontap: () => issave == false
                                     //     ? saveUnsave().saveRutin(rutinId)
@@ -232,8 +227,7 @@ abstract class full_rutin_assist {
                                             CupertinoPageRoute(
                                               fullscreenDialog: true,
                                               builder: (context) =>
-                                                  AppPriodePage(
-                                                      rutinId: rutinId),
+                                                  AddClass(rutinId: rutinId),
                                             ),
                                           ),
                                         ),
@@ -279,10 +273,24 @@ abstract class full_rutin_assist {
                                                 context,
                                                 CupertinoPageRoute(
                                                     fullscreenDialog: true,
-                                                    builder: (context) =>
-                                                        SeeAllRequest(
-                                                            rutin_id:
-                                                                rutinId)))),
+                                                    builder:
+                                                        (context) =>
+                                                            SeeAllRequest(
+                                                              rutin_id: rutinId,
+                                                              onRejectUsername:
+                                                                  (username) =>
+                                                                      members.rejectMembers(
+                                                                          ref,
+                                                                          rutinId,
+                                                                          username,
+                                                                          context),
+                                                              acceptUsername: (username) =>
+                                                                  members.acceptMember(
+                                                                      ref,
+                                                                      rutinId,
+                                                                      username,
+                                                                      context),
+                                                            )))),
                                         SqureButton(
                                             icon: Icons.person_add_alt_1,
                                             text: "Add members",

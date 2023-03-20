@@ -13,15 +13,15 @@ final chackStatusUser_provider = FutureProvider.family
     .autoDispose<CheckStatusModel, String>((ref, rutin_id) {
   return ref.read(FullRutinProvider).chackStatus(rutin_id);
 });
-final saveRutin_provider =
-    FutureProvider.family.autoDispose<dynamic, String>((ref, rutin_id) {
-  return ref.read(FullRutinProvider).saveRutin(rutin_id);
-});
+// final saveRutin_provider =
+//     FutureProvider.family.autoDispose<dynamic, String>((ref, rutin_id) {
+//   return ref.read(FullRutinProvider).saveRutin(rutin_id);
+// });
 
-final unSave_Rutin_provider =
-    FutureProvider.family.autoDispose<dynamic, String>((ref, rutin_id) {
-  return ref.read(FullRutinProvider).unSaveRutin(rutin_id);
-});
+// final unSave_Rutin_provider =
+//     FutureProvider.family.autoDispose<dynamic, String>((ref, rutin_id) {
+//   return ref.read(FullRutinProvider).unSaveRutin(rutin_id);
+// });
 
 class FullRutinrequest extends saveUnsave {
   //

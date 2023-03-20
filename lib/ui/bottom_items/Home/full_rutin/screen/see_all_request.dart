@@ -7,7 +7,14 @@ import 'package:table/widgets/Alart.dart';
 
 class SeeAllRequest extends ConsumerWidget {
   String rutin_id;
-  SeeAllRequest({super.key, required this.rutin_id});
+  final Function(String?) onRejectUsername;
+  final Function(String?) acceptUsername;
+
+  SeeAllRequest(
+      {super.key,
+      required this.rutin_id,
+      required this.onRejectUsername,
+      required this.acceptUsername});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -17,38 +24,52 @@ class SeeAllRequest extends ConsumerWidget {
       child: Scaffold(
         body: Column(
           children: [
-            Container(
-              alignment: Alignment.centerLeft,
-              height: 10,
-              child: CloseButton(onPressed: () => Navigator.pop(context)),
+            Expanded(
+              flex: 2,
+              child: Container(
+                alignment: Alignment.centerLeft,
+                child: CloseButton(onPressed: () => Navigator.pop(context)),
+              ),
             ),
-            Container(
-                height: 700,
-                width: 700,
-                child: all_request.when(
-                    data: (data) {
-                      return ListView.builder(
-                        itemCount: data.allRequest?.length ?? 0,
-                        itemBuilder: (context, index) {
-                          return data.allRequest != null ||
-                                  data.allRequest!.isNotEmpty
-                              ? requestAccountCard(
-                                  Request: data,
-                                  accountData: data.allRequest![index],
-                                  acceptOnTap: () {
-                                    ref.watch(accept_request_provider(accept(
-                                        rutin_id: rutin_id,
-                                        user_id:
-                                            data.allRequest![index].username)));
-                                  },
-                                )
-                              : const Center(child: Text('No New Request'));
-                        },
-                      );
-                    },
-                    error: (error, stackTrace) =>
-                        Alart.handleError(context, error),
-                    loading: () => const Text("loding"))),
+            Expanded(
+              flex: 38,
+              child: Container(
+                  child: all_request.when(
+                      data: (data) {
+                        return data.allRequest != null ||
+                                data.allRequest!.isNotEmpty
+                            ? ListView.builder(
+                                itemCount: data.allRequest?.length ?? 0,
+                                itemBuilder: (context, index) {
+                                  return data.allRequest != null ||
+                                          data.allRequest!.isNotEmpty
+                                      ? requestAccountCard(
+                                          accountData: data.allRequest![index],
+
+                                          //... acsept reject...//
+                                          acceptUsername: () => acceptUsername(
+                                              data.allRequest![index].username),
+                                          onRejectUsername: () =>
+                                              onRejectUsername(data
+                                                  .allRequest![index].username),
+                                        )
+                                      : Center(
+                                          child: Container(
+                                              height: 300,
+                                              child: const Text(
+                                                  'No New Request')));
+                                },
+                              )
+                            : Center(
+                                child: Container(
+                                    height: 300,
+                                    width: 200,
+                                    child: const Text('No New Request')));
+                      },
+                      error: (error, stackTrace) =>
+                          Alart.handleError(context, error),
+                      loading: () => const Text("loding"))),
+            ),
           ],
         ),
       ),
