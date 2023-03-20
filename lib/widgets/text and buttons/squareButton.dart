@@ -26,7 +26,7 @@ class SqureButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: ontap ?? () {},
+      onLongPress: ontap ?? () {},
       child: Stack(
         children: [
           count != null && count! > 0

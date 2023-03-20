@@ -10,9 +10,16 @@ import 'package:table/widgets/searchBarCustom.dart';
 final serachStringProvidder = StateProvider((ref) => "");
 
 class AddMembers extends ConsumerWidget {
-  const AddMembers({super.key, required this.onUsername});
-
-  final Function(String?) onUsername;
+  AddMembers(
+      {super.key,
+      required this.onUsername,
+      this.buttotext,
+      this.color,
+      this.addCapten});
+  String? buttotext;
+  final Color? color;
+  final bool? addCapten;
+  final Function(String?, String?) onUsername;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -40,7 +47,11 @@ class AddMembers extends ConsumerWidget {
                     return data != null || lenght != null
                         ? AccountCardRow(
                             accountData: ac,
-                            onUsername: (u) => onUsername(u),
+                            addCaptem: addCapten,
+                            onUsername: (username, position) =>
+                                onUsername(username, position),
+                            buttotext: buttotext,
+                            color: color,
                           )
                         : const Center(child: Text("No Account found"));
                   },

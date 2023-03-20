@@ -100,6 +100,8 @@ abstract class full_rutin_assist {
             child: Consumer(builder: (context, ref, _) {
               final chackStatus = ref.watch(chackStatusUser_provider(rutinId));
               final members = ref.read(memberRequestController);
+              final saveRutin = ref.read(saveProvider(rutinId));
+              final unsaveProviders = ref.read(unsaveProvider(rutinId));
               // final saves = ref.watch(saveRutin_provider(rutinId));
               // final unSave = ref.watch(unSave_Rutin_provider(rutinId));
 
@@ -109,7 +111,6 @@ abstract class full_rutin_assist {
                 children: <Widget>[
                   chackStatus.when(
                       data: (data) {
-                        print(data.isCaptain.toString());
                         late bool issave = data.isSave;
                         return SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
@@ -136,11 +137,27 @@ abstract class full_rutin_assist {
                                     text: 'Save',
                                     inActiveText: "add to save",
                                     status: data.isSave,
-                                    ontap: () => issave == false
-                                        ? saveUnsave().saveRutin(rutinId)
-                                        : saveUnsave().unSaveRutin(rutinId),
-                                    // ontap: issave == false
-                                    //     ? () {
+
+                                    ontap: () {
+                                      if (data.isSave == true) {
+                                        unsaveProviders.whenData((value) {
+                                          print("value  $value");
+                                          ref.refresh(chackStatusUser_provider(
+                                              rutinId));
+                                        });
+                                      } else if (data.isSave == false) {
+                                        saveRutin.whenData((value) {
+                                          print("value  $value");
+                                          ref.refresh(chackStatusUser_provider(
+                                              rutinId));
+                                        });
+                                      }
+                                    },
+                                    // ontap: () => issave == false
+                                    //     ? saveUnsave().saveRutin(rutinId)
+                                    //     : saveUnsave().unSaveRutin(rutinId),
+                                    // // ontap: issave == false
+                                    // //     ? () {
                                     //         return saveUnsave()
                                     //             .saveRutin(rutinId);
 
@@ -229,10 +246,15 @@ abstract class full_rutin_assist {
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       AddMembers(
+                                                        addCapten: true,
+                                                        buttotext:
+                                                            "Add captens",
                                                         onUsername:
-                                                            (seleted_username) {
-                                                          members.addMember(
+                                                            (seleted_username,
+                                                                setPosition) {
+                                                          members.AddCapten(
                                                               rutinId,
+                                                              setPosition,
                                                               seleted_username,
                                                               context);
                                                           print(
@@ -262,17 +284,28 @@ abstract class full_rutin_assist {
                                                             rutin_id:
                                                                 rutinId)))),
                                         SqureButton(
-                                          icon: Icons.person_add_alt_1,
-                                          text: "Add members",
-                                          ontap: () => AddMembers(
-                                            onUsername: (seleted_username) {
-                                              members.addMember(rutinId,
-                                                  seleted_username, context);
-                                              print(
-                                                  "hi an cll back $seleted_username");
-                                            },
-                                          ),
-                                        ),
+                                            icon: Icons.person_add_alt_1,
+                                            text: "Add members",
+                                            ontap: () => Navigator.push(
+                                                  context,
+                                                  CupertinoPageRoute(
+                                                    fullscreenDialog: true,
+                                                    builder: (context) =>
+                                                        AddMembers(
+                                                      buttotext: "Add member",
+                                                      onUsername:
+                                                          (seleted_username,
+                                                              _) {
+                                                        members.addMember(
+                                                            rutinId,
+                                                            seleted_username,
+                                                            context);
+                                                        print(
+                                                            "hi an cll back $seleted_username");
+                                                      },
+                                                    ),
+                                                  ),
+                                                )),
                                       ],
                                     ),
                                     const Divider(height: 20),
@@ -291,7 +324,7 @@ abstract class full_rutin_assist {
                                                       rutin_member_page(
                                                     rutinId: rutinId,
                                                     onUsername:
-                                                        (seleted_username) {
+                                                        (seleted_username, _) {
                                                       members.addMember(
                                                           rutinId,
                                                           seleted_username,

@@ -15,7 +15,7 @@ class rutin_member_page extends ConsumerWidget {
       {super.key, required this.onUsername, required this.rutinId});
   String rutinId;
 
-  final Function(String?) onUsername;
+  final Function(String?, String?) onUsername;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -43,7 +43,7 @@ class rutin_member_page extends ConsumerWidget {
                     return data != null || lenght != null
                         ? AccountCardRow(
                             accountData: listOfAccount!,
-                            onUsername: (u) => onUsername(u),
+                            onUsername: (u, p) => onUsername(u, p),
                           )
                         : const Center(child: Text("No Account found"));
                   },

@@ -11,9 +11,7 @@ import 'ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
 import 'ui/bottom_items/Home/full_rutin/screen/view_more_details.dart';
 import 'widgets/text and buttons/squareButton.dart';
 
-void main() {
-  runApp(ProviderScope(child: MyApp()));
-}
+void main() => runApp(ProviderScope(child: MyApp()));
 
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);

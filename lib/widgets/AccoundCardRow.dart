@@ -13,30 +13,40 @@ class AccountCardRow extends ConsumerWidget {
     required this.accountData,
     this.suffix,
     this.removeCapten,
+    this.buttotext,
+    this.color,
+    this.addCaptem = false,
     this.onUsername = _defaultOnUsername,
   });
 
   String? n;
-  static void _defaultOnUsername(String? n) {}
+  String? q;
+  static void _defaultOnUsername(String? n, String? q) {}
   final AccountModels accountData;
-  final Function(String?) onUsername;
+
+  final String? buttotext;
+  final Color? color;
+  final bool? addCaptem;
+  final Function(String?, String?) onUsername;
 
   final Widget? suffix;
   dynamic removeCapten;
+  TextEditingController position = TextEditingController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bool isEdditingMood = ref.watch(isEditingModd);
     return InkWell(
-      onTap: () => onUsername(accountData.username),
-      onLongPress: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => AccountScreen(
-            accountUsername: accountData.username ?? '',
-          ),
-        ),
-      ),
+      onTap: buttotext != null
+          ? () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AccountScreen(
+                    accountUsername: accountData.username ?? '',
+                  ),
+                ),
+              )
+          : () {},
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 4),
         padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 20),
@@ -89,22 +99,62 @@ class AccountCardRow extends ConsumerWidget {
                 ),
               ],
             ),
+            // Text("$buttotext"),
 
             const Spacer(flex: 24),
-            removeCapten != null && isEdditingMood == true
-                ? IconButton(
-                    onPressed: removeCapten,
-                    icon: const Icon(
-                      Icons.delete_rounded,
-                      color: CupertinoColors
-                          .systemRed, // set the color to systemRed
-                    ),
-                  )
-                : suffix ?? SizedBox.shrink(),
+            if (removeCapten != null && isEdditingMood == true)
+              IconButton(
+                onPressed: removeCapten,
+                icon: const Icon(Icons.delete_rounded,
+                    color: CupertinoColors.systemRed),
+              ),
+
+            if (buttotext != null)
+              TextButton(
+                  onPressed: addCaptem == true
+                      ? () => addCaptenAlart(context)
+                      : () => onUsername(accountData.username, ""),
+                  child: Text(buttotext ?? "",
+                      style: TextStyle(color: color ?? Colors.blue))),
             const Spacer(flex: 2),
           ],
         ),
       ),
+    );
+  }
+
+//... add captem with position .../
+
+  addCaptenAlart(context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Set a position"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                  controller: position,
+                  decoration:
+                      const InputDecoration(hintText: "enter position  name")),
+              const SizedBox(height: 17),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: CupertinoButton(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  color: Colors.blue,
+                  child: const Text("add as acpten"),
+                  onPressed: () {
+                    onUsername(accountData.username, position.text);
+                    print(position.text);
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

@@ -21,7 +21,6 @@ class MemberController {
   //******** addMember   ************** */
   void addMember(rutinid, username, context) async {
     final message = await member_request.addMemberReq(rutinid, username);
-    print("from comtroller : $message");
 
     Alart.showSnackBar(context, message);
   }
@@ -29,6 +28,14 @@ class MemberController {
   //******** remove member   ************** */
   void removeMember(rutinid, username, context) async {
     final message = await member_request.removeMemberReq(rutinid, username);
+
+    Alart.showSnackBar(context, message);
+  }
+
+  //******** AddCapten   ************** */
+  void AddCapten(rutinid, position, username, context) async {
+    final message =
+        await member_request.addCaptens(rutinid, position, username);
     print("from comtroller : $message");
 
     Alart.showSnackBar(context, message);

@@ -88,7 +88,7 @@ class memberRequest {
   }
 
   //.... add cap10s.../
-  Future<String> addCaptens({rutinid, position, username}) async {
+  Future<String?> addCaptens(rutinid, position, username) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 
@@ -102,16 +102,19 @@ class memberRequest {
       "username": username
     });
 
+    var res = jsonDecode(response.body)['Message'];
+
+    print("add cap10 req :$res");
     try {
       if (response.statusCode == 200) {
-        var res = jsonDecode(response.body)['Message'];
         print(res);
         return res;
       } else {
-        return " fails to add cap10";
+        return res;
       }
     } catch (e) {
-      throw Exception(e);
+      print(e);
+      return e.toString();
     }
   }
 }
