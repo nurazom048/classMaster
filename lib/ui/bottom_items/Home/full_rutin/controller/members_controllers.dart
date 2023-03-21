@@ -1,9 +1,9 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'dart:convert';
-
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/models/membersModels.dart';
+import 'package:table/models/messageModel.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/member_request.dart';
 import 'package:table/widgets/Alart.dart';
@@ -39,7 +39,7 @@ class MemberController {
   void AddCapten(rutinid, position, username, context) async {
     final message =
         await member_request.addCaptensReq(rutinid, position, username);
-    print("from comtroller : $message");
+    //  print("from comtroller : $message");
 
     Alart.showSnackBar(context, message);
   }
@@ -49,23 +49,28 @@ class MemberController {
     final message = ref.read(
         accept_request_provider(accept(rutin_id: rutinId, usernme: username)));
 
-    ref.watch(see_all_request_provider(rutinId));
+    //("from comtroller : ${message}");
 
-    print("from comtroller : ${message}");
-
-    Alart.showSnackBar(context, message);
+    message.hasError
+        ? Alart.showSnackBar(context, message.hasError)
+        : Alart.showSnackBar(context, message);
   }
 
   //******** sendReq   ************** */
   void sendReqController(rutinId, context, WidgetRef ref) async {
     final r = ref.read(sendRequestProviser(rutinId));
     r.when(
-        data: (d) {
-          var message = Message.fromJson(d);
-          Alart.errorAlartDilog(context, message.message);
-        },
-        error: (error, stackTrace) => Alart.handleError(context, error),
-        loading: () {});
+      data: (d) {
+        if (d == null) Alart.errorAlartDilog(context, "");
+        Navigator.pop(context);
+        Alart.errorAlartDilog(context, d?.message);
+      },
+      error: (error, stackTrace) {
+        Navigator.pop(context);
+        return Alart.errorAlartDilog(context, error.toString());
+      },
+      loading: () {},
+    );
   }
 
   //******** acceptMember   ************** */
@@ -84,20 +89,23 @@ class MemberController {
 
     print("from comtroller : ${message}");
   }
-}
 
-class Message {
-  String message;
+  //*******Leave Member   ************** */
+  void leaveMember(WidgetRef ref, rutinId, context) async {
+    final message = ref.read(LeaveMembertProviser(rutinId));
 
-  Message({required this.message});
-
-  factory Message.fromJson(Map<String, dynamic> json) {
-    return Message(
-      message: json['message'],
+    message.when(
+      data: (data) {
+        Navigator.pop(context);
+        Alart.showSnackBar(context, data!.message);
+      },
+      error: (error, stackTrace) {
+        Navigator.pop(context);
+        return Alart.handleError(context, error);
+      },
+      loading: () {},
     );
-  }
 
-  Map<String, dynamic> toJson() => {
-        'message': message,
-      };
+    print("from comtroller : ${message.asData}");
+  }
 }

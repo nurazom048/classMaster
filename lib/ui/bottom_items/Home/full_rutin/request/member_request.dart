@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, camel_case_types, non_constant_identifier_names, unused_local_variable
+// ignore_for_file: avoid_print, camel_case_types, non_constant_identifier_names, unused_local_variable, body_might_complete_normally_nullable
 
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/helper/constant/constant.dart';
 import 'package:table/models/membersModels.dart';
+
+import '../../../../../models/messageModel.dart';
 
 class memberRequest {
 //
@@ -117,7 +119,7 @@ class memberRequest {
     }
   }
 
-  sendRequest(rutin_id) async {
+  Future<Message?> sendRequest(rutin_id) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 
@@ -128,7 +130,7 @@ class memberRequest {
       final response =
           await http.post(url, headers: {'Authorization': 'Bearer $getToken'});
 
-      var res = jsonDecode(response.body);
+      var res = Message.fromJson(jsonDecode(response.body));
       print("req from  sendRequest $res");
 
       if (response.statusCode == 200) {
@@ -140,7 +142,29 @@ class memberRequest {
         }
       }
     } catch (e) {
-      print(e);
+      throw Exception(e);
+    }
+  }
+
+  Future<Message?> leaveRequest(rutin_id) async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+
+    var url = Uri.parse("${Const.BASE_URl}/rutin/member/leave/$rutin_id");
+
+    try {
+      final response =
+          await http.post(url, headers: {'Authorization': 'Bearer $getToken'});
+
+      var res = Message.fromJson(jsonDecode(response.body));
+      print("req from  leave member ${res.message}");
+
+      if (response.statusCode == 200) {
+        return res;
+      } else {
+        return res;
+      }
+    } catch (e) {
       throw Exception(e);
     }
   }
@@ -148,6 +172,12 @@ class memberRequest {
 
 final memberRequestProvider = Provider((ref) => memberRequest());
 final sendRequestProviser =
-    FutureProvider.family<dynamic, String>((ref, rutin_id) async {
+    FutureProvider.family<Message?, String>((ref, rutin_id) async {
   return ref.read(memberRequestProvider).sendRequest(rutin_id);
+});
+
+///
+final LeaveMembertProviser =
+    FutureProvider.autoDispose.family<Message?, String>((ref, rutin_id) async {
+  return ref.read(memberRequestProvider).leaveRequest(rutin_id);
 });

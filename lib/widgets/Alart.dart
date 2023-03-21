@@ -26,6 +26,38 @@ abstract class Alart {
     );
   }
 
+  static errorAlertDialogCallBack(BuildContext context, dynamic message,
+      {Function? onConfirm}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Alart',
+              style: TextStyle(fontWeight: FontWeight.bold)),
+          content:
+              Text(message.toString(), style: const TextStyle(fontSize: 16)),
+          actions: <Widget>[
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                if (onConfirm != null) {
+                  onConfirm(true);
+                }
+              },
+              child: const Text('Yes',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('No',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   //.... show sncksbar ...//
   static showSnackBar(BuildContext context, dynamic text) {
     ScaffoldMessenger.of(context)

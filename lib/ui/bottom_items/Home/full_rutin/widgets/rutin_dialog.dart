@@ -3,10 +3,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/helper/old/moidels.dart';
 import 'package:table/ui/add_eddit_remove/addPriode.dart';
 import 'package:table/ui/add_eddit_remove/add_class.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/members_controllers.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/controller/save_unsave_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/svae_unsave.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/add_members.dart';
@@ -16,6 +16,8 @@ import 'package:table/ui/bottom_items/Home/full_rutin/screen/view_more_details.d
 import 'package:table/ui/bottom_items/Home/home_req/priode_reuest.dart';
 import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/text%20and%20buttons/squareButton.dart';
+
+final isSaveBoolProvider = StateProvider<bool>((ref) => false);
 
 abstract class full_rutin_assist {
   //
@@ -101,8 +103,7 @@ abstract class full_rutin_assist {
             child: Consumer(builder: (context, ref, _) {
               final chackStatus = ref.watch(chackStatusUser_provider(rutinId));
               final members = ref.read(memberRequestController);
-              final saveUnsave =
-                  ref.read(saveProvider(p(r: rutinId, c: false)));
+              final saveUn = ref.read(svae_unsave_Controller_Provider);
 
               // final saves = ref.watch(saveRutin_provider(rutinId));
               // final unSave = ref.watch(unSave_Rutin_provider(rutinId));
@@ -113,6 +114,11 @@ abstract class full_rutin_assist {
                 children: <Widget>[
                   chackStatus.when(
                       data: (data) {
+                        bool ss = data.isSave == null ? data.isSave : false;
+                        ref
+                            .read(isSaveBoolProvider.notifier)
+                            .update((state) => ss);
+                        final s = ref.read(isSaveBoolProvider);
                         return SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Column(
@@ -120,31 +126,54 @@ abstract class full_rutin_assist {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  SqureButton(
-                                      icon: Icons.people_rounded,
-                                      inActiveIcon: Icons.telegram,
-                                      inActiveText: data.activeStatus,
+                                  if (data.activeStatus == "joined")
+                                    SqureButton(
+                                      icon: Icons.logout,
+                                      inActiveText: "leave",
+                                      color: Colors.redAccent,
                                       text: data.activeStatus,
-                                      status: data.activeStatus == "joined"
-                                          ? false
-                                          : true,
-                                      ontap: () => members.sendReqController(
-                                          rutinId, context, ref)),
+                                      ontap: () {
+                                        return Alart.errorAlertDialogCallBack(
+                                            context,
+                                            "are you sure you want to leave",
+                                            onConfirm: (bool isYes) {
+                                          Navigator.pop(context);
+                                          members.leaveMember(
+                                              ref, rutinId, context);
+                                        });
+                                      },
+                                    )
+                                  else
+                                    SqureButton(
+                                        icon: Icons.people_rounded,
+                                        inActiveIcon: Icons.telegram,
+                                        inActiveText: data.activeStatus,
+                                        status: data.activeStatus == "joined"
+                                            ? true
+                                            : false,
+                                        text: data.activeStatus == "not joined"
+                                            ? "send request"
+                                            : data.activeStatus,
+                                        ontap: () => members.sendReqController(
+                                            rutinId, context, ref)),
                                   SqureButton(
-                                    inActiveIcon: Icons.bookmark_added,
-                                    icon: Icons.bookmark_add_sharp,
-                                    text: 'Save',
-                                    inActiveText: "add to save",
-                                    status: data.isSave,
-                                    ontap: () {
-                                      print("onnnnnn");
-                                      saveUnsave.when(
-                                          data: (d) {},
-                                          error: (error, stackTrace) =>
-                                              Alart.handleError(context, error),
-                                          loading: () {});
-                                    },
-                                  ),
+                                      inActiveIcon: Icons.bookmark_added,
+                                      icon: Icons.bookmark_add_sharp,
+                                      text: 'Save',
+                                      inActiveText: "add to save",
+                                      status: data.isSave,
+                                      ontap: () {
+                                        print(data.activeStatus);
+                                        print("onnnnnn");
+                                        ref.read(isSaveBoolProvider).toString();
+
+                                        saveUn.save_unsaves(
+                                          ref,
+                                          context,
+                                          rutinId,
+                                          data.isSave == true ? false : true,
+                                        );
+                                      }),
                                   SqureButton(
                                     icon: Icons.more_horiz,
                                     //  inActiveIcon: Icons.more_vert,
