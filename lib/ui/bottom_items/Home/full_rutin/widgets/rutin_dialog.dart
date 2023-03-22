@@ -6,8 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/add_eddit_remove/addPriode.dart';
 import 'package:table/ui/add_eddit_remove/add_class.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/members_controllers.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/controller/save_unsave_controller.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/request/svae_unsave.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/controller/save_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/add_members.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/rutinMember.dart';
@@ -16,8 +15,6 @@ import 'package:table/ui/bottom_items/Home/full_rutin/screen/view_more_details.d
 import 'package:table/ui/bottom_items/Home/home_req/priode_reuest.dart';
 import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/text%20and%20buttons/squareButton.dart';
-
-final isSaveBoolProvider = StateProvider<bool>((ref) => false);
 
 abstract class full_rutin_assist {
   //
@@ -103,7 +100,13 @@ abstract class full_rutin_assist {
             child: Consumer(builder: (context, ref, _) {
               final chackStatus = ref.watch(chackStatusUser_provider(rutinId));
               final members = ref.read(memberRequestController);
-              final saveUn = ref.read(svae_unsave_Controller_Provider);
+              final saveUn =
+                  ref.watch(svae_unsave_Controller_Provider.notifier);
+
+              final isssave = ref.watch(svae_unsave_Controller_Provider);
+
+              // final saves = ref.watch(saveRutin_provider(rutinId));
+              // final unSave = ref.watch(unSave_Rutin_provider(rutinId));
 
               // final saves = ref.watch(saveRutin_provider(rutinId));
               // final unSave = ref.watch(unSave_Rutin_provider(rutinId));
@@ -115,10 +118,7 @@ abstract class full_rutin_assist {
                   chackStatus.when(
                       data: (data) {
                         bool ss = data.isSave == null ? data.isSave : false;
-                        ref
-                            .read(isSaveBoolProvider.notifier)
-                            .update((state) => ss);
-                        final s = ref.read(isSaveBoolProvider);
+
                         return SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Column(
@@ -161,17 +161,18 @@ abstract class full_rutin_assist {
                                       icon: Icons.bookmark_add_sharp,
                                       text: 'Save',
                                       inActiveText: "add to save",
-                                      status: data.isSave,
+                                      status: isssave ?? data.isSave,
                                       ontap: () {
-                                        print(data.activeStatus);
-                                        print("onnnnnn");
-                                        ref.read(isSaveBoolProvider).toString();
+                                        // print(data.activeStatus);
+                                        // print("onnnnnn");
 
                                         saveUn.save_unsaves(
                                           ref,
                                           context,
                                           rutinId,
-                                          data.isSave == true ? false : true,
+                                          isssave ?? data.isSave == true
+                                              ? false
+                                              : true,
                                         );
                                       }),
                                   SqureButton(
@@ -191,6 +192,13 @@ abstract class full_rutin_assist {
                                 ],
                               ),
                               const Divider(height: 20),
+                              Consumer(builder: (BuildContext context, ref, _) {
+                                final saveNotifier = ref.watch(
+                                    svae_unsave_Controller_Provider.notifier);
+                                final isSaved = saveNotifier.state ?? false;
+                                final saveText = isSaved ? 'Yes' : 'No';
+                                return Text("Saved: $isssave");
+                              }),
                               if (data.isCaptain || data.isOwner)
                                 Column(
                                   children: [

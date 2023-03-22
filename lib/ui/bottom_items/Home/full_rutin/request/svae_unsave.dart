@@ -19,6 +19,8 @@ final saveProvider =
   return ref.read(saveUnsaveProvider).saveUnsaveRutinReq(p.r, p.c);
 });
 
+final saveUnsaveProvider = Provider<saveUnsave>((ref) => saveUnsave());
+
 class saveUnsave {
   Future<Either<String, Message>> saveUnsaveRutinReq(rutinId, consition) async {
     final prefs = await SharedPreferences.getInstance();
@@ -44,5 +46,3 @@ class saveUnsave {
     }
   }
 }
-
-final saveUnsaveProvider = Provider<saveUnsave>((ref) => saveUnsave());

@@ -9,6 +9,8 @@ import 'package:table/widgets/Alart.dart';
 final authController_provider = StateNotifierProvider.autoDispose(
     (ref) => AuthController(ref.watch(auth_req_provider)));
 
+//
+
 class AuthController extends StateNotifier<bool> {
   final AuthReq authReqq;
   AuthController(this.authReqq) : super(false);
