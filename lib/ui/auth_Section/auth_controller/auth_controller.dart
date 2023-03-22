@@ -6,21 +6,26 @@ import 'package:table/ui/auth_Section/auth_req/auth_req.dart';
 import 'package:table/ui/bottom_items/bottm_nev_bar.dart';
 import 'package:table/widgets/Alart.dart';
 
-final authController_provider =
-    Provider.autoDispose((ref) => AuthController(ref.read(auth_req_provider)));
+final authController_provider = StateNotifierProvider.autoDispose(
+    (ref) => AuthController(ref.watch(auth_req_provider)));
 
-class AuthController {
+class AuthController extends StateNotifier<bool> {
   final AuthReq authReqq;
-  AuthController(this.authReqq);
+  AuthController(this.authReqq) : super(false);
 
   //
 //******** siginIn      ************ */
   void siginIn(username, password, context) async {
+    state = true;
     final res = await authReqq.login(username: username, password: password);
 
     res.fold(
-      (l) => Alart.errorAlartDilog(context, l),
+      (l) {
+        state = false;
+        return Alart.errorAlartDilog(context, l);
+      },
       (r) {
+        state = false;
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const BottomNevBar()));
         Alart.showSnackBar(context, r);
