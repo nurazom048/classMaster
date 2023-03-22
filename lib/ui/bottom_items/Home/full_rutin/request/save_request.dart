@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types, non_constant_identifier_names
+// ignore_for_file: camel_case_types, non_constant_identifier_names, avoid_print
 
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,32 +14,34 @@ class p {
   p({required this.r, required this.c});
 }
 
-final saveProvider =
-    FutureProvider.family<Future<Either<String, Message>>, p>((ref, p) async {
-  return ref.read(saveUnsaveProvider).saveUnsaveRutinReq(p.r, p.c);
-});
+//.. provider...//
+final saveReqProvider =
+    Provider<SaveUnsaveRequest>((ref) => SaveUnsaveRequest());
 
-final saveUnsaveProvider = Provider<saveUnsave>((ref) => saveUnsave());
-
-class saveUnsave {
-  Future<Either<String, Message>> saveUnsaveRutinReq(rutinId, consition) async {
+//.... Request......//
+class SaveUnsaveRequest {
+  //... for save and unsave .. togole ...///
+  Future<Either<String, Message>> saveUnsaveRutinReq(rutinId, condition) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
+    final url = Uri.parse('${Const.BASE_URl}/rutin/save_unsave/$rutinId');
+    final headers = {'Authorization': 'Bearer $getToken'};
+
     try {
-      var url = Uri.parse('${Const.BASE_URl}/rutin/save_unsave/$rutinId');
       final response = await http.post(
         url,
-        headers: {'Authorization': 'Bearer $getToken'},
-        body: {"saveCondition": "$consition"},
+        headers: headers,
+        body: {'saveCondition': '$condition'},
       );
 
       final res = json.decode(response.body);
-      Message m = Message.fromJson(res);
-      print("from unsave :$res");
+      final message = Message.fromJson(res);
+      print('from unsave: $res');
+
       if (response.statusCode == 200) {
-        return right(m);
+        return right(message);
       } else {
-        return right(m);
+        return right(message);
       }
     } catch (e) {
       return left(e.toString());

@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/helper/constant/constant.dart';
 import 'package:table/models/chackStatusModel.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/request/svae_unsave.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/request/save_request.dart';
 import 'package:table/widgets/Alart.dart';
 
 final chackStatusUser_provider = FutureProvider.family
@@ -23,7 +23,7 @@ final chackStatusUser_provider = FutureProvider.family
 //   return ref.read(FullRutinProvider).unSaveRutin(rutin_id);
 // });
 
-class FullRutinrequest extends saveUnsave {
+class FullRutinrequest extends SaveUnsaveRequest {
   //
   //....ChackStatusModel....//
   Future<CheckStatusModel> chackStatus(rutin_id) async {
