@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:table/helper/constant/constant.dart';
 import 'package:table/models/listOfSaveRutin.dart';
+import 'package:table/models/rutins.dart';
 
 //!.. Provider ...!//
 
@@ -21,6 +22,11 @@ final save_rutins_provider =
 final uploaded_rutin_provider =
     FutureProvider.family<ListOfUploedRutins, int>((ref, pages) {
   return ref.read(home_req_provider).uplodedRutins(pages: pages);
+});
+
+final joined_rutin_provider =
+    FutureProvider.family<RoutinesResponse, int>((ref, pages) {
+  return ref.read(home_req_provider).joinedRutinsReq(pages: pages);
 });
 
 class HomeReq {
@@ -94,6 +100,32 @@ class HomeReq {
         var res = json.decode(response.body);
 
         return ListOfUploedRutins.fromJson(res);
+      } else {
+        throw Exception("Failed to load saved routines");
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  //********    joinedRutinsReq      *************/
+  Future<RoutinesResponse> joinedRutinsReq({int pages = 1}) async {
+    String queryPage = "?page=$pages}";
+    String? username = "";
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+    final url = Uri.parse('${Const.BASE_URl}/rutin/joined');
+    final headers = {'Authorization': 'Bearer $getToken'};
+
+    //.. Request send
+    try {
+      final response = await http.get(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        var res = json.decode(response.body);
+        print(res);
+
+        return RoutinesResponse.fromJson(res);
       } else {
         throw Exception("Failed to load saved routines");
       }

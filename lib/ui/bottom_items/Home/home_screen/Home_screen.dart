@@ -23,7 +23,7 @@ import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 final currentPageProvider = StateProvider((ref) => 1);
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key});
+  HomeScreen({Key? key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -50,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
             final myRutin = ref.watch(all_rutins_provider);
             final saveRutin = ref.watch(save_rutins_provider(1));
             final uploaded_rutin = ref.watch(uploaded_rutin_provider(pages));
+            final joined_rutin = ref.watch(joined_rutin_provider(pages));
 
             //
 
@@ -169,9 +170,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 data: (data) {
                                   // data
                                   var saveRutins = data.savedRoutines;
-                                  int length = saveRutins.isEmpty
-                                      ? 1
-                                      : saveRutins.length;
+                                  int length = saveRutins.length;
+
                                   return SizedBox(
                                     height: 270,
                                     width: width,
@@ -179,7 +179,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                       scrollDirection: Axis.horizontal,
                                       itemCount: length,
                                       itemBuilder: (context, index) {
-                                        //
                                         var saveRutinidex = saveRutins[index];
 
                                         return saveRutins.isNotEmpty
@@ -220,17 +219,68 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         //... hedding .../
 
-                        const MyText("Others Rutins"),
+                        HeddingRow(
+                            hedding: "joined Rutins",
+                            second_Hedding: "View all",
+                            onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const GridViewRutin()))),
 
+                        //
                         SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: List.generate(
-                                3,
-                                (index) =>
-                                    CustomRutinCard(rutinname: "ET / 7 /1")),
-                          ),
-                        ),
+                            controller: uploadRutinController,
+                            scrollDirection: Axis.horizontal,
+                            child: joined_rutin.when(
+                                loading: () => const Progressindicator(),
+                                data: (data) {
+                                  var joinedRutins = data.routines;
+
+                                  return SizedBox(
+                                    height: 270,
+                                    width: width,
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: data.routines.length * pages,
+                                      itemBuilder: (context, index) {
+                                        //
+                                        var Rutinidex = joinedRutins[index];
+
+                                        return joinedRutins.isNotEmpty
+                                            ? CustomRutinCard(
+                                                rutinname: Rutinidex.name,
+                                                profilePicture:
+                                                    Rutinidex.owner.image,
+                                                name: data
+                                                    .routines[index].owner.name,
+                                                username:
+                                                    Rutinidex.owner.username,
+                                                last_update:
+                                                    Rutinidex.lastSummary.text,
+
+                                                //
+                                                onTap: () => Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        FullRutineView(
+                                                      rutinName: Rutinidex.name,
+                                                      rutinId: Rutinidex.id,
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                            : const Text(
+                                                "You Dont Have any Rutin created");
+                                      },
+                                      padding: const EdgeInsets.only(right: 30),
+                                      physics: const BouncingScrollPhysics(),
+                                    ),
+                                  );
+                                },
+                                error: (error, stackTrace) =>
+                                    Alart.handleError(context, error))),
                       ],
                     ),
                   ),
