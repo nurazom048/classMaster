@@ -2,14 +2,15 @@
 
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/helper/constant/constant.dart';
 import 'package:table/models/membersModels.dart';
-
 import '../../../../../models/messageModel.dart';
 
-class memberRequest {
+class memberRequest extends StateNotifier<bool> {
+  memberRequest() : super(true);
 //
 //**********************   rutin all _members    *********** */
   Future<MembersModel?> all_members(rutin_id) async {
@@ -119,7 +120,7 @@ class memberRequest {
     }
   }
 
-  Future<Message?> sendRequest(rutin_id) async {
+  Future<Either<String, Message>> sendRequest(rutin_id) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 
@@ -134,15 +135,12 @@ class memberRequest {
       print("req from  sendRequest $res");
 
       if (response.statusCode == 200) {
-        if (response.body != null) {
-          print(res);
-          return res;
-        } else {
-          return res;
-        }
+        return right(res);
+      } else {
+        return right(res);
       }
     } catch (e) {
-      throw Exception(e);
+      return left(e.toString());
     }
   }
 
@@ -170,14 +168,8 @@ class memberRequest {
   }
 }
 
-final memberRequestProvider = Provider((ref) => memberRequest());
-final sendRequestProviser =
-    FutureProvider.family<Message?, String>((ref, rutin_id) async {
-  return ref.read(memberRequestProvider).sendRequest(rutin_id);
-});
+final memberRequestProvider = StateNotifierProvider((ref) => memberRequest());
 
-///
-final LeaveMembertProviser =
-    FutureProvider.autoDispose.family<Message?, String>((ref, rutin_id) async {
-  return ref.read(memberRequestProvider).leaveRequest(rutin_id);
+final lavePr = FutureProvider.family<Message?, String>((ref, rutin_id) async {
+  return ref.watch(memberRequestProvider.notifier).leaveRequest(rutin_id);
 });

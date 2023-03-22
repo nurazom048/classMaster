@@ -7,6 +7,7 @@ import 'package:table/ui/add_eddit_remove/addPriode.dart';
 import 'package:table/ui/add_eddit_remove/add_class.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/members_controllers.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/controller/request_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/save_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/add_members.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/rutinMember.dart';
@@ -99,11 +100,15 @@ abstract class full_rutin_assist {
             ),
             child: Consumer(builder: (context, ref, _) {
               final chackStatus = ref.watch(chackStatusUser_provider(rutinId));
-              final members = ref.read(memberRequestController);
+              final members = ref.read(memberRequestController.notifier);
 
               //... saveRutinController_Provider
               final saveUn = ref.watch(saveRutinController_Provider.notifier);
               final save = ref.watch(saveRutinController_Provider);
+
+              // join controller provider ...//
+              final joinCont = ref.watch(joinReqControllerProviders.notifier);
+              final activeStatus = ref.watch(joinReqControllerProviders);
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,15 +117,17 @@ abstract class full_rutin_assist {
                   chackStatus.when(
                       data: (data) {
                         bool isSave = save ?? data.isSave;
+                        String aT = activeStatus ?? data.activeStatus;
 
                         return SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Column(
                             children: [
+                              Text(activeStatus ?? ''),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  if (data.activeStatus == "joined")
+                                  if (aT == "joined")
                                     SqureButton(
                                       icon: Icons.logout,
                                       inActiveText: "leave",
@@ -131,8 +138,8 @@ abstract class full_rutin_assist {
                                             context,
                                             "are you sure you want to leave",
                                             onConfirm: (bool isYes) {
-                                          Navigator.pop(context);
-                                          members.leaveMember(
+                                          //  Navigator.pop(context);
+                                          joinCont.leaveMember(
                                               ref, rutinId, context);
                                         });
                                       },
@@ -141,14 +148,12 @@ abstract class full_rutin_assist {
                                     SqureButton(
                                         icon: Icons.people_rounded,
                                         inActiveIcon: Icons.telegram,
-                                        inActiveText: data.activeStatus,
-                                        status: data.activeStatus == "joined"
+                                        inActiveText: aT,
+                                        status: aT == "request_pending"
                                             ? true
                                             : false,
-                                        text: data.activeStatus == "not joined"
-                                            ? "send request"
-                                            : data.activeStatus,
-                                        ontap: () => members.sendReqController(
+                                        text: aT,
+                                        ontap: () => joinCont.sendReqController(
                                             rutinId, context, ref)),
                                   SqureButton(
                                       inActiveIcon: Icons.bookmark_added,

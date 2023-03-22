@@ -8,12 +8,6 @@ import 'package:http/http.dart' as http;
 import 'package:table/helper/constant/constant.dart';
 import '../../../../../models/messageModel.dart';
 
-class p {
-  final String r;
-  final bool c;
-  p({required this.r, required this.c});
-}
-
 //.. provider...//
 final saveReqProvider =
     Provider<SaveUnsaveRequest>((ref) => SaveUnsaveRequest());

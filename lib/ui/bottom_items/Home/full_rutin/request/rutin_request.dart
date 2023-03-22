@@ -7,10 +7,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/helper/constant/constant.dart';
 import 'package:table/models/chackStatusModel.dart';
 import 'package:table/models/seeAllRequestModel.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/request/save_request.dart';
 import 'package:table/widgets/Alart.dart';
 
-class FullRutinrequest extends SaveUnsaveRequest {
+class FullRutinrequest {
   //
   //...acceptRequest.....//
   Future acceptRequest(rutin_id, username) async {

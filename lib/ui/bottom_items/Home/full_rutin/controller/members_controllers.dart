@@ -3,23 +3,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/models/membersModels.dart';
-import 'package:table/models/messageModel.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/member_request.dart';
 import 'package:table/widgets/Alart.dart';
 
-final memberRequestController =
-    Provider((ref) => MemberController(ref.read(memberRequestProvider)));
+final memberRequestController = StateNotifierProvider(
+    (ref) => MemberController(ref.read(memberRequestProvider.notifier)));
 
 final all_members_provider =
     FutureProvider.family.autoDispose<MembersModel?, String>((ref, rutin_id) {
-  return ref.read(memberRequestProvider).all_members(rutin_id);
+  return ref.read(memberRequestProvider.notifier).all_members(rutin_id);
 });
 
-class MemberController {
+class MemberController extends StateNotifier {
   memberRequest member_request;
 
-  MemberController(this.member_request);
+  MemberController(this.member_request) : super(null);
 
   //******** addMember   ************** */
   void addMember(rutinid, username, context) async {
@@ -57,21 +56,21 @@ class MemberController {
   }
 
   //******** sendReq   ************** */
-  void sendReqController(rutinId, context, WidgetRef ref) async {
-    final r = ref.read(sendRequestProviser(rutinId));
-    r.when(
-      data: (d) {
-        if (d == null) Alart.errorAlartDilog(context, "");
-        Navigator.pop(context);
-        Alart.errorAlartDilog(context, d?.message);
-      },
-      error: (error, stackTrace) {
-        Navigator.pop(context);
-        return Alart.errorAlartDilog(context, error.toString());
-      },
-      loading: () {},
-    );
-  }
+  // void sendReqController(rutinId, context, WidgetRef ref) async {
+  //   final r = ;
+  //   r.when(
+  //     data: (d) {
+  //       if (d == null) Alart.errorAlartDilog(context, "");
+  //       Navigator.pop(context);
+  //       Alart.errorAlartDilog(context, d?.message);
+  //     },
+  //     error: (error, stackTrace) {
+  //       Navigator.pop(context);
+  //       return Alart.errorAlartDilog(context, error.toString());
+  //     },
+  //     loading: () {},
+  //   );
+  // }
 
   //******** acceptMember   ************** */
   void rejectMembers(WidgetRef ref, rutinId, username, context) async {
@@ -92,7 +91,7 @@ class MemberController {
 
   //*******Leave Member   ************** */
   void leaveMember(WidgetRef ref, rutinId, context) async {
-    final message = ref.read(LeaveMembertProviser(rutinId));
+    final message = ref.watch(lavePr(rutinId));
 
     message.when(
       data: (data) {

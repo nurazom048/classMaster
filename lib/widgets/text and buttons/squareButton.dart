@@ -75,7 +75,7 @@ class SqureButton extends StatelessWidget {
                   style: TextStyle(
                     color: status == false
                         ? color ?? Colors.blue.shade400
-                        : Colors.black12,
+                        : Colors.black87,
                     fontSize: 15,
                   ),
                 )
