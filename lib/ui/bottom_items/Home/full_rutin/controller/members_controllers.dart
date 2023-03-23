@@ -12,7 +12,7 @@ final memberRequestController = StateNotifierProvider(
 
 final all_members_provider =
     FutureProvider.family.autoDispose<MembersModel?, String>((ref, rutin_id) {
-  return ref.read(memberRequestProvider.notifier).all_members(rutin_id);
+  return ref.watch(memberRequestProvider.notifier).all_members(rutin_id);
 });
 
 //** MemberController ****/
@@ -72,4 +72,21 @@ class MemberController extends StateNotifier {
 
     print("from comtroller : ${message}");
   }
+
+  // //******** acceptMember   ************** */
+//   void sellAllCaptens(WidgetRef ref, rutinId, context) async {
+//     final res = await member_request.sellAllCaptemReq(rutinId)  ;
+
+//  res.fold((l) => null, (r) => )
+//     message.when(
+//       data: (data) {
+//         print("via daa $data");
+//         Alart.errorAlartDilog(context, data["message"]);
+//       },
+//       error: (error, stackTrace) => Alart.handleError(context, error),
+//       loading: () {},
+//     );
+
+//     print("from comtroller : ${message}");
+//   }
 }

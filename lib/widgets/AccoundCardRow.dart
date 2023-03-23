@@ -37,12 +37,12 @@ class AccountCardRow extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final bool isEdditingMood = ref.watch(isEditingModd);
     return InkWell(
-      onTap: buttotext != null
+      onTap: buttotext == null
           ? () => Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => AccountScreen(
-                    accountUsername: accountData.username ?? '',
+                    accountUsername: "qq",
                   ),
                 ),
               )

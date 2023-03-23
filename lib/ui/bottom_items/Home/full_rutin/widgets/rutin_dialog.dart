@@ -11,7 +11,7 @@ import 'package:table/ui/bottom_items/Home/full_rutin/controller/priodeControlle
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/request_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/save_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/add_members.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/screen/rutinMember.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/screen/seeAllCaotensList.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/see_all_request.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/view_more_details.dart';
 import 'package:table/widgets/Alart.dart';
@@ -330,16 +330,17 @@ abstract class full_rutin_diloge {
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      rutin_member_page(
+                                                      seeAllcaptensList(
                                                     rutinId: rutinId,
+                                                    buttotext: "Remove Member",
                                                     onUsername:
                                                         (seleted_username, _) {
-                                                      members.addMember(
+                                                      joinCont.removeMember(
+                                                          context,
                                                           rutinId,
-                                                          seleted_username,
-                                                          context);
+                                                          seleted_username);
                                                       print(
-                                                          "hi an cll back $seleted_username");
+                                                          "select member $seleted_username");
                                                     },
                                                   ),
                                                 ))),

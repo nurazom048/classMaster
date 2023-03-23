@@ -16,7 +16,7 @@ class AccountScreen extends StatefulWidget {
   final String? accountUsername;
   const AccountScreen({
     super.key,
-    this.accountUsername = "",
+    this.accountUsername,
   });
 
   @override

@@ -6,7 +6,10 @@ import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/helper/constant/constant.dart';
+import 'package:table/models/captens/listOfCaptens.dart';
 import 'package:table/models/membersModels.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/widgets/see_all_members.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/widgets/sell_all_captens.dart';
 import '../../../../../models/messageModel.dart';
 
 class memberRequest extends StateNotifier<bool> {
@@ -63,28 +66,29 @@ class memberRequest extends StateNotifier<bool> {
   }
 
 //**********************   remove members   *********** */
-  Future<String?> removeMemberReq(rutin_id, username) async {
+  Future<Message> removeMemberReq(rutin_id, username) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 
     var url =
-        Uri.parse('${Const.BASE_URl}/rutin/member/remove/$rutin_id/$username');
+        Uri.parse('${Const.BASE_URl}/rutin/member/remove//$rutin_id/$username');
 
     try {
       final response =
           await http.post(url, headers: {'Authorization': 'Bearer $getToken'});
 
-      var res = jsonDecode(response.body)["message"];
+      var res = jsonDecode(response.body);
+      print(res);
+      Message message = Message.fromJson(res);
 
       if (response.statusCode == 200) {
-        print(res);
-        return res;
+        return message;
       } else {
-        throw Exception("faild to load all member list ");
+        throw Exception(message.message);
       }
     } catch (e) {
       print(e);
-      throw Exception(e);
+      throw Exception(Message(message: e.toString()));
     }
   }
 
@@ -166,10 +170,37 @@ class memberRequest extends StateNotifier<bool> {
       throw Exception(e);
     }
   }
+
+  //
+  Future<ListCptens> sellAllCaptemReq(String rutin_id) async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+
+    var url = Uri.parse("${Const.BASE_URl}/rutin/cap10/$rutin_id");
+
+    //
+    final response = await http.post(url);
+    var res = ListCptens.fromJson(jsonDecode(response.body));
+    print("req from  leave member ${res}");
+
+    try {
+      if (response.statusCode == 200) {
+        return res;
+      } else {
+        throw Exception(res.message);
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }
 
 final memberRequestProvider = StateNotifierProvider((ref) => memberRequest());
 
 final lavePr = FutureProvider.family<Message?, String>((ref, rutin_id) async {
   return ref.watch(memberRequestProvider.notifier).leaveRequest(rutin_id);
+});
+final allCaptenProvider =
+    FutureProvider.family<ListCptens, String>((ref, rutin_id) async {
+  return ref.watch(memberRequestProvider.notifier).sellAllCaptemReq(rutin_id);
 });
