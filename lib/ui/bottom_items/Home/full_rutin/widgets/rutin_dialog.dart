@@ -344,6 +344,12 @@ abstract class full_rutin_assist {
                                             icon: Icons.delete,
                                             text: "Delete",
                                             color: Colors.red,
+                                            ontap: () =>
+                                                Alart.errorAlertDialogCallBack(
+                                              context,
+                                              "Are you sure to delete",
+                                              onConfirm: (isyes) {},
+                                            ),
                                           )
                                         else
                                           const SizedBox.shrink(),

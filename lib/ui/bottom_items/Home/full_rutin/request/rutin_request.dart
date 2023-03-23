@@ -9,6 +9,8 @@ import 'package:table/models/chackStatusModel.dart';
 import 'package:table/models/seeAllRequestModel.dart';
 import 'package:table/widgets/Alart.dart';
 
+final RutinProvider = Provider((ref) => FullRutinrequest());
+
 class FullRutinrequest {
   //
   //...acceptRequest.....//
@@ -132,8 +134,6 @@ class FullRutinrequest {
     }
   }
 }
-
-final FullRutinProvider = Provider((ref) => FullRutinrequest());
 
 class ClassesRequest {
   //

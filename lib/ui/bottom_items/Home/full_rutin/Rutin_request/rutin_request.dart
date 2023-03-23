@@ -6,24 +6,26 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/helper/constant/constant.dart';
 import 'package:table/models/chackStatusModel.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/request/save_request.dart';
 import 'package:table/widgets/Alart.dart';
+import '../../../../../../models/messageModel.dart';
+
+//*** Providers  ******   */
+final FullRutinProvider = StateNotifierProvider((ref) => FullRutinrequest());
+
+//..delete rutin ...//
+final deleteRutinProvider =
+    FutureProvider.family.autoDispose<Message?, String>((ref, rutin_id) {
+  return ref.watch(FullRutinProvider.notifier).deleteRutin(rutin_id);
+});
 
 final chackStatusUser_provider = FutureProvider.family
     .autoDispose<CheckStatusModel, String>((ref, rutin_id) {
-  return ref.read(FullRutinProvider).chackStatus(rutin_id);
+  return ref.read(FullRutinProvider.notifier).chackStatus(rutin_id);
 });
-// final saveRutin_provider =
-//     FutureProvider.family.autoDispose<dynamic, String>((ref, rutin_id) {
-//   return ref.read(FullRutinProvider).saveRutin(rutin_id);
-// });
 
-// final unSave_Rutin_provider =
-//     FutureProvider.family.autoDispose<dynamic, String>((ref, rutin_id) {
-//   return ref.read(FullRutinProvider).unSaveRutin(rutin_id);
-// });
+class FullRutinrequest extends StateNotifier<bool?> {
+  FullRutinrequest() : super(null);
 
-class FullRutinrequest extends SaveUnsaveRequest {
   //
   //....ChackStatusModel....//
   Future<CheckStatusModel> chackStatus(rutin_id) async {
@@ -53,12 +55,7 @@ class FullRutinrequest extends SaveUnsaveRequest {
       throw Exception(e);
     }
   }
-}
 
-final FullRutinProvider = Provider((ref) => FullRutinrequest());
-
-class ClassesRequest {
-  //
   //,, delete class
   Future<void> deleteClass(context, classId) async {
     final prefs = await SharedPreferences.getInstance();
@@ -77,6 +74,31 @@ class ClassesRequest {
       }
     } catch (e) {
       Alart.handleError(context, e);
+    }
+  }
+
+  //...... Delete Rutin.....//
+
+  Future<Message?> deleteRutin(rutin_id) async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+
+    var url = Uri.parse("${Const.BASE_URl}/rutin/$rutin_id");
+
+    try {
+      final response = await http
+          .delete(url, headers: {'Authorization': 'Bearer $getToken'});
+
+      var res = Message.fromJson(jsonDecode(response.body));
+      print("req from delete req ${res.message}");
+
+      if (response.statusCode == 200) {
+        return res;
+      } else {
+        throw Exception(res.message);
+      }
+    } catch (e) {
+      throw Exception(e);
     }
   }
 }

@@ -1,12 +1,12 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/models/membersModels.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/member_request.dart';
 import 'package:table/widgets/Alart.dart';
 
+//** Providers ****/
 final memberRequestController = StateNotifierProvider(
     (ref) => MemberController(ref.read(memberRequestProvider.notifier)));
 
@@ -15,6 +15,7 @@ final all_members_provider =
   return ref.read(memberRequestProvider.notifier).all_members(rutin_id);
 });
 
+//** MemberController ****/
 class MemberController extends StateNotifier {
   memberRequest member_request;
 
@@ -55,23 +56,6 @@ class MemberController extends StateNotifier {
         : Alart.showSnackBar(context, message);
   }
 
-  //******** sendReq   ************** */
-  // void sendReqController(rutinId, context, WidgetRef ref) async {
-  //   final r = ;
-  //   r.when(
-  //     data: (d) {
-  //       if (d == null) Alart.errorAlartDilog(context, "");
-  //       Navigator.pop(context);
-  //       Alart.errorAlartDilog(context, d?.message);
-  //     },
-  //     error: (error, stackTrace) {
-  //       Navigator.pop(context);
-  //       return Alart.errorAlartDilog(context, error.toString());
-  //     },
-  //     loading: () {},
-  //   );
-  // }
-
   //******** acceptMember   ************** */
   void rejectMembers(WidgetRef ref, rutinId, username, context) async {
     final message = ref.read(
@@ -87,24 +71,5 @@ class MemberController extends StateNotifier {
     );
 
     print("from comtroller : ${message}");
-  }
-
-  //*******Leave Member   ************** */
-  void leaveMember(WidgetRef ref, rutinId, context) async {
-    final message = ref.watch(lavePr(rutinId));
-
-    message.when(
-      data: (data) {
-        Navigator.pop(context);
-        Alart.showSnackBar(context, data!.message);
-      },
-      error: (error, stackTrace) {
-        Navigator.pop(context);
-        return Alart.handleError(context, error);
-      },
-      loading: () {},
-    );
-
-    print("from comtroller : ${message.asData}");
   }
 }
