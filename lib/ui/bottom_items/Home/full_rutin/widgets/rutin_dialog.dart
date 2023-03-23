@@ -65,7 +65,8 @@ abstract class full_rutin_assist {
 
   //**********     long press to priode       *********//
 
-  static Future<dynamic> logPressOnPriode(BuildContext context, priodeId) {
+  static Future<dynamic> logPressOnPriode(
+      BuildContext context, priodeId, rutinId) {
     return showCupertinoModalPopup(
       context: context,
       builder: (context) => CupertinoActionSheet(
@@ -78,7 +79,7 @@ abstract class full_rutin_assist {
               onPressed: () {
                 ref
                     .watch(priodeController.notifier)
-                    .deletePriode(ref, context, priodeId);
+                    .deletePriode(ref, context, priodeId, rutinId);
                 //   PriodeRequest().deletePriode(context, priodeId);
                 print(priodeId);
                 Navigator.pop(context);

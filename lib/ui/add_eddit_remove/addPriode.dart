@@ -1,18 +1,14 @@
 // ignore_for_file: avoid_print
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:table/helper/constant/constant.dart';
-import 'package:table/widgets/Alart.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/controller/priodeController.dart';
 import 'package:table/widgets/select_time.dart';
 import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 
 class AppPriodePage extends StatefulWidget {
-  String rutinId;
-  bool? isEddit = false;
-  AppPriodePage({super.key, required this.rutinId, this.isEddit});
+  final String rutinId;
+  const AppPriodePage({super.key, required this.rutinId});
 
   @override
   State<AppPriodePage> createState() => _AppPriodePageState();
@@ -25,39 +21,6 @@ class _AppPriodePageState extends State<AppPriodePage> {
 
 //... Add Priode ...//
   String? message;
-  Future<void> addPriode(context) async {
-    // Obtain shared preferences.
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
-
-    try {
-      final response = await http.post(
-          Uri.parse('${Const.BASE_URl}/rutin/add_priode/${widget.rutinId}'),
-          body: {
-            "start_time": "${startTime.toIso8601String()}Z",
-            "end_time": "${endTime.toIso8601String()}Z",
-          },
-          headers: {
-            'Authorization': 'Bearer $getToken'
-          });
-      message = json.decode(response.body)["message"];
-      print(message);
-
-      if (response.statusCode == 200) {
-        //.. responce
-        final res = json.decode(response.body);
-        Navigator.pop(context);
-
-        //print response
-        print("rutin created successfully");
-        print(res);
-      } else {
-        Alart.errorAlartDilog(context, message!);
-      }
-    } catch (e) {
-      Alart.handleError(context, e);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +37,7 @@ class _AppPriodePageState extends State<AppPriodePage> {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    MyText(" Start and end time "),
+                    const MyText(" Start and end time "),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -96,16 +59,27 @@ class _AppPriodePageState extends State<AppPriodePage> {
                     ),
                     const SizedBox(height: 70),
                     //
-                    Align(
-                      alignment: Alignment.center,
-                      child: CupertinoButton(
-                          child: Text("Eddit"),
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(7),
-                          onPressed: () {
-                            addPriode(context);
-                          }),
-                    ),
+                    Consumer(builder: (context, ref, _) {
+                      final isLoding = ref.watch(priodeController);
+
+                      return Align(
+                        alignment: Alignment.center,
+                        child: isLoding != null && isLoding == true
+                            ? CupertinoButton(
+                                onPressed: () {},
+                                child: const CircularProgressIndicator())
+                            : CupertinoButton(
+                                child: Text("Add Priode"),
+                                color: Colors.blue,
+                                borderRadius: BorderRadius.circular(7),
+                                onPressed: () {
+                                  ref
+                                      .watch(priodeController.notifier)
+                                      .addPriode(ref, context, startTime,
+                                          endTime, widget.rutinId);
+                                }),
+                      );
+                    }),
                   ]),
             ))
           ],

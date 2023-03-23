@@ -206,7 +206,7 @@ class ListOfPriodes extends StatelessWidget {
                 // ontap to go summay page..//
 
                 onLongPress: () => full_rutin_assist.logPressOnPriode(
-                    context, Priodes[index]!.id),
+                    context, Priodes[index]!.id, rutinId),
               ),
       ),
     );

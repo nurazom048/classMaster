@@ -45,33 +45,4 @@ class Rutin_Req {
       throw Exception(e);
     }
   }
-
-  //
-
-  // Future chackStatus() async {
-  //   // Obtain shared preferences.
-  //   final prefs = await SharedPreferences.getInstance();
-  //   final String? getToken = prefs.getString('Token');
-  //   try {
-  //     final response = await http.get(
-  //         Uri.parse('${Const.BASE_URl}/rutin/save/:$rutinId/chack'),
-  //         headers: {'Authorization': 'Bearer $getToken'});
-
-  //     if (response.statusCode == 200) {
-  //       final res = json.decode(response.body);
-
-  //       //  print(res);
-  //     } else {
-  //       throw Exception('Failed to load data');
-  //     }
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
 }
-
-//!.. Provider ...!//
-
-final Rutin_ReqProvider = Provider<Rutin_Req>((ref) => Rutin_Req());
-
-//
