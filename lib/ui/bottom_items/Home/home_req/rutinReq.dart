@@ -35,21 +35,4 @@ class RutinReqest {
       return left(e.toString());
     }
   }
-
-  //.. search rutin.....//
-  Future<void> searchRoutine(String valu) async {
-    print(valu);
-    try {
-      final response =
-          await http.post(Uri.parse('${Const.BASE_URl}/rutin/search/$valu'));
-
-      if (response.statusCode == 200) {
-        var seach_result = json.decode(response.body)["rutins"];
-
-        //  print(seach_result);
-      }
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
 }

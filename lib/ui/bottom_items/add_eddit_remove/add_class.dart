@@ -8,7 +8,7 @@ import 'package:table/helper/constant/constant.dart';
 import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/MyTextFields.dart';
 import 'package:table/widgets/select_time.dart';
-import '../../widgets/text and buttons/mytext.dart';
+import '../../../widgets/text and buttons/mytext.dart';
 
 class AddClass extends StatefulWidget {
   String rutinId;

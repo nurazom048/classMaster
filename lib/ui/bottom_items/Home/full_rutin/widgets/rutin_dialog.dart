@@ -3,8 +3,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/add_eddit_remove/addPriode.dart';
-import 'package:table/ui/add_eddit_remove/add_class.dart';
+import 'package:table/ui/bottom_items/add_eddit_remove/addPriode.dart';
+import 'package:table/ui/bottom_items/add_eddit_remove/add_class.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/members_controllers.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/priodeController.dart';

@@ -6,7 +6,10 @@ import 'package:table/widgets/days_container.dart';
 import 'package:table/widgets/text%20and%20buttons/empty.dart';
 import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 
+import '../ui/bottom_items/Home/full_rutin/screen/full_rutin_view.dart';
+
 class CustomRutinCard extends StatelessWidget {
+  String? id;
   String rutinname;
   String? name, username, profilePicture;
   dynamic onTap, onLongPress;
@@ -21,6 +24,7 @@ class CustomRutinCard extends StatelessWidget {
     this.onTap,
     this.onLongPress,
     this.last_update,
+    this.id,
   });
 
   List<Map<String, dynamic>> mypriodelist = [
@@ -58,7 +62,16 @@ class CustomRutinCard extends StatelessWidget {
       color: Colors.black12,
       child: SingleChildScrollView(
         child: InkWell(
-          onTap: onTap,
+          onTap: onTap ??
+              () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FullRutineView(
+                        rutinName: name ?? '',
+                        rutinId: id ?? '',
+                      ),
+                    ),
+                  ),
           onLongPress: onLongPress,
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -82,8 +95,6 @@ class CustomRutinCard extends StatelessWidget {
                               indexofdate: index,
                               ismini: true,
                             ),
-
-                            //
                           )),
 
                           //
@@ -108,7 +119,6 @@ class CustomRutinCard extends StatelessWidget {
                         Container(
                           height: 50,
                           width: 240,
-                          // padding: const EdgeInsets.all(5.0),
                           decoration:
                               const BoxDecoration(color: Colors.black12),
                           child: Center(

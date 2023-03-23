@@ -3,7 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/add_eddit_remove/add_class.dart';
+import 'package:table/ui/bottom_items/add_eddit_remove/add_class.dart';
 
 final isEditingModd = StateProvider.autoDispose((ref) => false);
 
