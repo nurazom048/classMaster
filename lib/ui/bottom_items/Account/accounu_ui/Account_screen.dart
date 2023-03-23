@@ -2,11 +2,14 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/models/Account_models.dart';
+import 'package:table/ui/bottom_items/Account/Account%20Controller.dart';
 import 'package:table/ui/bottom_items/Account/account_request/account_request.dart';
 import 'package:table/ui/bottom_items/Account/accounu_ui/eddit_account.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/full_rutin_view.dart';
 import 'package:table/widgets/AccountCard.dart';
+import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/AppBarCustom.dart';
 import 'package:table/widgets/custom_rutin_card.dart';
 import 'package:table/widgets/progress_indicator.dart';
@@ -35,133 +38,157 @@ class _AccountScreenState extends State<AccountScreen> {
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.only(bottom: 40),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              //... AppBar.....//
-              AppbarCustom(
-                title: "Account",
-                actionIcon: IconButton(
-                    icon: const Icon(Icons.more_vert),
-                    onPressed: () {
-                      accountBottomSheet(context);
-                    }),
-              ),
+          child: Consumer(builder: (context, ref, _) {
+            final accountData =
+                ref.watch(accountDataProvider(widget.accountUsername));
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                //... AppBar.....//
+                AppbarCustom(
+                  title: "Account",
+                  actionIcon: IconButton(
+                      icon: const Icon(Icons.more_vert),
+                      onPressed: () {
+                        accountBottomSheet(context);
+                      }),
+                ),
+                accountData.when(
+                  data: (data) {
+                    print(data);
 
-              FutureBuilder(
-                  future: AccountReq().accountData(
-                    widget.accountUsername,
-                  ),
-                  builder: (context, snapshoot) {
-                    if (snapshoot.connectionState == ConnectionState.waiting) {
-                      // print(snapshoot.data);
-
-                      return const Center(child: Progressindicator());
+                    if (data == null) {
+                      return const Text("null");
                     } else {
-                      var accountData = snapshoot.data;
-                      var loginAccount = AccountModels.fromJson(accountData);
-                      // print(snapshoot.data);
-
-                      //
-                      var myRutins = accountData["routines"];
-                      var save_rutin = accountData["Saved_routines"];
-
-                      //    print(save_rutin);
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            //Image.network(imageUrl),
-                            //... Accoumt Info ..//
-                            AccountCard(
-                              ProfilePicture: loginAccount.image ?? "",
-                              name: loginAccount.name!,
-                              username: loginAccount.username!,
-                              ontapLogOut: () =>
-                                  _showConfirmationDialog(context),
-                            ),
-
-                            //...My Rutiners...//
-                            MyText("my Rutin"),
-
-                            SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                children: List.generate(
-                                  myRutins.length,
-                                  (index) => InkWell(
-                                    child: CustomRutinCard(
-                                      rutinname: myRutins[index]["name"],
-                                      username: myRutins[index]["ownerid"]
-                                          ["username"],
-                                      name: myRutins[index]["ownerid"]["name"],
-                                      profilePicture: myRutins[index]["ownerid"]
-                                          ["image"],
-
-                                      //.. On tap...//
-                                      onTap: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => FullRutineView(
-                                            rutinName: myRutins[index]["name"],
-                                            rutinId: myRutins[index]["_id"],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            //
-
-                            //... Saved Rutin...///
-
-                            MyText("Saved Rutin"),
-                            SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                children: List.generate(
-                                  save_rutin.length,
-                                  (index) => InkWell(
-                                    child: save_rutin.length == 0
-                                        ? Container()
-                                        : CustomRutinCard(
-                                            rutinname: save_rutin[index]
-                                                ["name"],
-                                            username: save_rutin[index]
-                                                ["ownerid"]["username"],
-                                            name: save_rutin[index]["ownerid"]
-                                                ["name"],
-                                            profilePicture: save_rutin[index]
-                                                ["ownerid"]["image"],
-
-                                            //.. On tap...//
-                                            onTap: () => Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    FullRutineView(
-                                                  rutinName: save_rutin[index]
-                                                      ["name"],
-                                                  rutinId: save_rutin[index]
-                                                      ["_id"],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                      return AccountCard(
+                        ProfilePicture: data.image ?? '',
+                        name: data.name ?? '',
+                        username: data.username ?? '',
+                        ontapLogOut: () => _showConfirmationDialog(context),
                       );
                     }
-                  }),
-            ],
-          ),
+                  },
+                  error: (error, stackTrace) =>
+                      Alart.handleError(context, error),
+                  loading: () => const Text("loding"),
+                ),
+                // FutureBuilder(
+                //     future: ref
+                //         .read(AccountControllerProvider)
+                //         .account(context, widget.accountUsername),
+                //     builder: (context, snapshoot) {
+                //       if (snapshoot.connectionState ==
+                //           ConnectionState.waiting) {
+                //         // print(snapshoot.data);
+
+                //         return const Center(child: Progressindicator());
+                //       } else {
+                //         var accountData = snapshoot;
+                //         // var loginAccount = AccountModels.fromJson(accountData);
+                //         print(accountData.data?.name);
+
+                //         //
+                //         // var myRutins = accountData!["routines"];
+                //         // var save_rutin = accountData["Saved_routines"];
+
+                //         //    print(save_rutin);
+                //         return Text("${accountData.data}");
+                //         // return Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 10),
+                //   child: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       //Image.network(imageUrl),
+                //       //... Accoumt Info ..//
+                //       AccountCard(
+                //         ProfilePicture: loginAccount.image ?? "",
+                //         name: loginAccount.name!,
+                //         username: loginAccount.username!,
+                //         ontapLogOut: () =>
+                //             _showConfirmationDialog(context),
+                //       ),
+
+                //       //...My Rutiners...//
+                //       MyText("my Rutin"),
+
+                //       SingleChildScrollView(
+                //         scrollDirection: Axis.horizontal,
+                //         child: Row(
+                //           children: List.generate(
+                //             myRutins.length,
+                //             (index) => InkWell(
+                //               child: CustomRutinCard(
+                //                 rutinname: myRutins[index]["name"],
+                //                 username: myRutins[index]["ownerid"]
+                //                     ["username"],
+                //                 name: myRutins[index]["ownerid"]["name"],
+                //                 profilePicture: myRutins[index]["ownerid"]
+                //                     ["image"],
+
+                //                 //.. On tap...//
+                //                 onTap: () => Navigator.push(
+                //                   context,
+                //                   MaterialPageRoute(
+                //                     builder: (context) => FullRutineView(
+                //                       rutinName: myRutins[index]["name"],
+                //                       rutinId: myRutins[index]["_id"],
+                //                     ),
+                //                   ),
+                //                 ),
+                //               ),
+                //             ),
+                //           ),
+                //         ),
+                //       ),
+                //       //
+
+                //       //... Saved Rutin...///
+
+                //       MyText("Saved Rutin"),
+                //       SingleChildScrollView(
+                //         scrollDirection: Axis.horizontal,
+                //         child: Row(
+                //           children: List.generate(
+                //             save_rutin.length,
+                //             (index) => InkWell(
+                //               child: save_rutin.length == 0
+                //                   ? Container()
+                //                   : CustomRutinCard(
+                //                       rutinname: save_rutin[index]
+                //                           ["name"],
+                //                       username: save_rutin[index]
+                //                           ["ownerid"]["username"],
+                //                       name: save_rutin[index]["ownerid"]
+                //                           ["name"],
+                //                       profilePicture: save_rutin[index]
+                //                           ["ownerid"]["image"],
+
+                //                       //.. On tap...//
+                //                       onTap: () => Navigator.push(
+                //                         context,
+                //                         MaterialPageRoute(
+                //                           builder: (context) =>
+                //                               FullRutineView(
+                //                             rutinName: save_rutin[index]
+                //                                 ["name"],
+                //                             rutinId: save_rutin[index]
+                //                                 ["_id"],
+                //                           ),
+                //                         ),
+                //                       ),
+                //                     ),
+                //             ),
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // );
+                //}
+                // }),
+              ],
+            );
+          }),
         ),
       ),
     );

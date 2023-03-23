@@ -47,20 +47,10 @@ class seeAllcaptensList extends ConsumerWidget {
                     var account = data.captains[index];
 
                     if (data != null || lenght != null) {
-                      return InkWell(
-                        child: AccountCardRow(
-                          accountData: account,
+                      return AccountCardRow(
+                        accountData: account,
 
-                          //
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AccountScreen(
-                                    accountUsername: account.username)),
-                          );
-                        },
+                        //
                       );
                     } else {
                       return const Center(child: Text("No Account found"));

@@ -42,7 +42,7 @@ class AccountCardRow extends ConsumerWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => AccountScreen(
-                    accountUsername: "qq",
+                    accountUsername: accountData.username,
                   ),
                 ),
               )
