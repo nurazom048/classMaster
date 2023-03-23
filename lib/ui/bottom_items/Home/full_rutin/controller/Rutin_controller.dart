@@ -1,11 +1,12 @@
 // ignore_for_file: non_constant_identifier_names, camel_case_types
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/models/seeAllRequestModel.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/request/rutin_request.dart';
 import 'package:table/widgets/Alart.dart';
 import '../../../../../models/chackStatusModel.dart';
 import '../Rutin_request/rutin_request.dart';
+import '../request/rutin_request.dart';
 
 class accept {
   final String rutin_id;
@@ -39,12 +40,14 @@ final reject_request_provider =
 
 ///
 ///
-final RutinControllerProvider =
-    StateNotifierProvider<RutinController, bool?>((ref) => RutinController());
+final RutinControllerProvider = StateNotifierProvider<RutinController, bool?>(
+    (ref) => RutinController(ref.read(RutinProvider)));
 
 ///
 class RutinController extends StateNotifier<bool?> {
-  RutinController() : super(null);
+  var FullRutinReq;
+
+  RutinController(this.FullRutinReq) : super(null);
 
   //... Delete Rutin...//
 
@@ -55,6 +58,21 @@ class RutinController extends StateNotifier<bool?> {
       data: (data) {},
       error: (error, stackTrace) => Alart.handleError(context, error),
       loading: () {},
+    );
+  }
+
+  //......Delete Class....//
+
+  void deleteClass(String classId, BuildContext context) async {
+    final result = await FullRutinReq.deleteClass(context, classId);
+
+    result.fold(
+      (errorMessage) => Alart.errorAlartDilog(context, errorMessage),
+      (response) {
+        state = response.activeStatus;
+
+        Alart.showSnackBar(context, response.message);
+      },
     );
   }
 }

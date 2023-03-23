@@ -40,7 +40,7 @@ class FullRutineView extends ConsumerWidget {
                       return CustomTopBar(valu!.rutin_name,
                           acction: IconButton(
                               onPressed: () =>
-                                  full_rutin_assist.ChackStatusUser_BottomSheet(
+                                  full_rutin_diloge.ChackStatusUser_BottomSheet(
                                       context, rutinId),
                               icon: const Icon(Icons.more_vert)), ontap: () {
                         ref
@@ -161,7 +161,7 @@ class ListOfDays extends StatelessWidget {
                   //
                   priodeLenght: priodeLenght,
                   isLast: day.length - 1 == index,
-                  onLongPress: () => full_rutin_assist.long_press_to_class(
+                  onLongPress: () => full_rutin_diloge.long_press_to_class(
                       context, day[index]?.id),
 
                   // ontap to go summay page..//
@@ -205,7 +205,7 @@ class ListOfPriodes extends StatelessWidget {
 
                 // ontap to go summay page..//
 
-                onLongPress: () => full_rutin_assist.logPressOnPriode(
+                onLongPress: () => full_rutin_diloge.logPressOnPriode(
                     context, Priodes[index]!.id, rutinId),
               ),
       ),

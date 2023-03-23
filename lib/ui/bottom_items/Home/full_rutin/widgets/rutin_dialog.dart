@@ -14,12 +14,10 @@ import 'package:table/ui/bottom_items/Home/full_rutin/screen/add_members.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/rutinMember.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/see_all_request.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/view_more_details.dart';
-import 'package:table/ui/bottom_items/Home/home_req/priode_reuest.dart';
 import 'package:table/widgets/Alart.dart';
-import 'package:table/widgets/priodeContaner.dart';
 import 'package:table/widgets/text%20and%20buttons/squareButton.dart';
 
-abstract class full_rutin_assist {
+abstract class full_rutin_diloge {
   //
   //**********     long press to class       *********//
   static Future<dynamic> long_press_to_class(BuildContext context, classId) {
@@ -47,8 +45,9 @@ abstract class full_rutin_assist {
             return CupertinoActionSheetAction(
               child: const Text("Remove", style: TextStyle(color: Colors.red)),
               onPressed: () {
-                /// ref.watch(priodeController.notifier).deletePriode(ref, context, priodeId)
-                //  ClassesRequest().deleteClass(context, classId);
+                ref
+                    .watch(RutinControllerProvider.notifier)
+                    .deleteClass(classId, context);
 
                 Navigator.pop(context);
               },
@@ -80,8 +79,7 @@ abstract class full_rutin_assist {
                 ref
                     .watch(priodeController.notifier)
                     .deletePriode(ref, context, priodeId, rutinId);
-                //   PriodeRequest().deletePriode(context, priodeId);
-                print(priodeId);
+
                 Navigator.pop(context);
               },
             );

@@ -2,10 +2,12 @@
 
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/helper/constant/constant.dart';
 import 'package:table/models/chackStatusModel.dart';
+import 'package:table/models/messageModel.dart';
 import 'package:table/models/seeAllRequestModel.dart';
 import 'package:table/widgets/Alart.dart';
 
@@ -133,28 +135,29 @@ class FullRutinrequest {
       throw Exception(e);
     }
   }
-}
 
-class ClassesRequest {
-  //
   //,, delete class
-  Future<void> deleteClass(context, classId) async {
+  Future<Either<String, Message>> deleteClass(context, classId) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
+    var url = Uri.parse('${Const.BASE_URl}/class/delete/$classId');
 
     try {
-      final response = await http.delete(
-          Uri.parse('${Const.BASE_URl}/class/delete/$classId'),
-          headers: {'Authorization': 'Bearer $getToken'});
+      final response = await http
+          .delete(url, headers: {'Authorization': 'Bearer $getToken'});
+
+      var res = json.decode(response.body);
+      print("res $res");
+
+      var message = Message.fromJson(res);
 
       if (response.statusCode == 200) {
-        var message = json.decode(response.body)["message"];
-        Alart.handleError(context, message.toString());
+        return right(message);
       } else {
-        throw Exception('Failed to load data');
+        throw Exception(message.message);
       }
     } catch (e) {
-      Alart.handleError(context, e);
+      throw Exception(e.toString());
     }
   }
 }
