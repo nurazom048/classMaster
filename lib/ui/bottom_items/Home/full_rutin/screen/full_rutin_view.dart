@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/models/ClsassDetailsModel.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/widgets/rutin_dialog.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/screen/dailog/rutin_dialog.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summary_screen.dart';
 import 'package:table/ui/server/rutinReq.dart';
 import 'package:table/widgets/AccoundCardRow.dart';
@@ -40,7 +40,7 @@ class FullRutineView extends ConsumerWidget {
                       return CustomTopBar(valu!.rutin_name,
                           acction: IconButton(
                               onPressed: () =>
-                                  full_rutin_diloge.ChackStatusUser_BottomSheet(
+                                  RutinDialog.ChackStatusUser_BottomSheet(
                                       context, rutinId),
                               icon: const Icon(Icons.more_vert)), ontap: () {
                         ref
@@ -161,8 +161,8 @@ class ListOfDays extends StatelessWidget {
                   //
                   priodeLenght: priodeLenght,
                   isLast: day.length - 1 == index,
-                  onLongPress: () => full_rutin_diloge.long_press_to_class(
-                      context, day[index]?.id),
+                  onLongPress: () =>
+                      RutinDialog.long_press_to_class(context, day[index]?.id),
 
                   // ontap to go summay page..//
                   onTap: permition == true
@@ -205,7 +205,7 @@ class ListOfPriodes extends StatelessWidget {
 
                 // ontap to go summay page..//
 
-                onLongPress: () => full_rutin_diloge.logPressOnPriode(
+                onLongPress: () => RutinDialog.logPressOnPriode(
                     context, Priodes[index]!.id, rutinId),
               ),
       ),

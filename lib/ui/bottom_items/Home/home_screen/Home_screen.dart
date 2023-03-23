@@ -21,7 +21,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
+    double width = MediaQuery.of(context).size.width;
 
     return SafeArea(
       child: Scaffold(

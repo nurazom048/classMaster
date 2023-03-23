@@ -1,12 +1,10 @@
-// ignore_for_file: camel_case_types
+// ignore_for_file: camel_case_types, unused_result, avoid_print
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/ui/server/rutinReq.dart';
 import 'package:table/widgets/Alart.dart';
 import '../request/priodeREquest/priode_request.dart';
-import 'package:fpdart/fpdart.dart';
 
 //.. prvider...//
 final priodeController = StateNotifierProvider.autoDispose(
@@ -26,7 +24,6 @@ class priodeClassController extends StateNotifier<bool?> {
 
     deleteRes.when(
       data: (data) {
-        print("i am from cont");
         ref.refresh(rutins_detalis_provider(rutinId));
         return Alart.showSnackBar(context, data?.message);
       },

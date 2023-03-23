@@ -2,30 +2,28 @@
 
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/helper/constant/constant.dart';
 import 'package:table/models/chackStatusModel.dart';
-import 'package:table/widgets/Alart.dart';
-import '../../../../../../models/messageModel.dart';
+import '../../../../../../../models/messageModel.dart';
 
 //*** Providers  ******   */
-final FullRutinProvider = StateNotifierProvider((ref) => FullRutinrequest());
+final FullRutinProvider = Provider((ref) => FullRutinrequest());
 
 //..delete rutin ...//
 final deleteRutinProvider =
     FutureProvider.family.autoDispose<Message?, String>((ref, rutin_id) {
-  return ref.watch(FullRutinProvider.notifier).deleteRutin(rutin_id);
+  return ref.watch(FullRutinProvider).deleteRutin(rutin_id);
 });
 
 final chackStatusUser_provider = FutureProvider.family
     .autoDispose<CheckStatusModel, String>((ref, rutin_id) {
-  return ref.read(FullRutinProvider.notifier).chackStatus(rutin_id);
+  return ref.read(FullRutinProvider).chackStatus(rutin_id);
 });
 
-class FullRutinrequest extends StateNotifier<bool?> {
-  FullRutinrequest() : super(null);
-
+class FullRutinrequest {
   //
   //....ChackStatusModel....//
   Future<CheckStatusModel> chackStatus(rutin_id) async {
@@ -57,23 +55,25 @@ class FullRutinrequest extends StateNotifier<bool?> {
   }
 
   //,, delete class
-  Future<void> deleteClass(context, classId) async {
+  Future<Message> deleteClass(context, classId) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 
-    try {
-      final response = await http.delete(
-          Uri.parse('${Const.BASE_URl}/class/delete/$classId'),
-          headers: {'Authorization': 'Bearer $getToken'});
+    var url = Uri.parse('${Const.BASE_URl}/class/delete/$classId');
 
+    try {
+      final response = await http
+          .delete(url, headers: {'Authorization': 'Bearer $getToken'});
+      Message message = Message.fromJson(json.decode(response.body));
+
+      //
       if (response.statusCode == 200) {
-        var message = json.decode(response.body)["message"];
-        Alart.handleError(context, message.toString());
+        return message;
       } else {
-        throw Exception('Failed to load data');
+        throw Exception(message.message);
       }
     } catch (e) {
-      Alart.handleError(context, e);
+      throw Exception(e);
     }
   }
 
@@ -99,6 +99,35 @@ class FullRutinrequest extends StateNotifier<bool?> {
       }
     } catch (e) {
       throw Exception(e);
+    }
+  }
+
+//... Save unsve rutin.....///
+
+  Future<Either<String, Message>> saveUnsaveRutinReq(rutinId, condition) async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+    final url = Uri.parse('${Const.BASE_URl}/rutin/save_unsave/$rutinId');
+    final headers = {'Authorization': 'Bearer $getToken'};
+
+    try {
+      final response = await http.post(
+        url,
+        headers: headers,
+        body: {'saveCondition': '$condition'},
+      );
+
+      final res = json.decode(response.body);
+      final message = Message.fromJson(res);
+      print('from unsave: $res');
+
+      if (response.statusCode == 200) {
+        return right(message);
+      } else {
+        return right(message);
+      }
+    } catch (e) {
+      return left(e.toString());
     }
   }
 }

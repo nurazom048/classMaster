@@ -3,21 +3,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/controller/save_controller.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/screen/widgets/seeAllCaotensList.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/screen/widgets/see_all_request.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/screen/widgets/select_account.dart';
 import 'package:table/ui/bottom_items/add_eddit_remove/addPriode.dart';
 import 'package:table/ui/bottom_items/add_eddit_remove/add_class.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/members_controllers.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/priodeController.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/request_controller.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/controller/save_controller.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/screen/add_members.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/screen/seeAllCaotensList.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/screen/see_all_request.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/view_more_details.dart';
 import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/text%20and%20buttons/squareButton.dart';
 
-abstract class full_rutin_diloge {
+class RutinDialog {
   //
   //**********     long press to class       *********//
   static Future<dynamic> long_press_to_class(BuildContext context, classId) {
@@ -94,7 +94,7 @@ abstract class full_rutin_diloge {
   }
 
   //**********     ChackStatusUser_BottomSheet       **********/
-  static void ChackStatusUser_BottomSheet(BuildContext context, rutinId) {
+  static ChackStatusUser_BottomSheet(BuildContext context, rutinId) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
@@ -171,17 +171,12 @@ abstract class full_rutin_diloge {
                                       inActiveText: "add to save",
                                       status: isSave,
                                       ontap: () {
-                                        // print(data.activeStatus);
-                                        // print("onnnnnn");
-
                                         saveUn.saveUnsave(
                                             context, rutinId, isSave);
                                       }),
                                   SqureButton(
                                     icon: Icons.more_horiz,
-                                    //  inActiveIcon: Icons.more_vert,
                                     text: 'view more',
-
                                     ontap: () => Navigator.push(
                                       context,
                                       CupertinoPageRoute(
@@ -194,13 +189,6 @@ abstract class full_rutin_diloge {
                                 ],
                               ),
                               const Divider(height: 20),
-                              // Consumer(builder: (BuildContext context, ref, _) {
-                              //   final saveNotifier = ref.watch(
-                              //       svae_unsave_Controller_Provider.notifier);
-                              //   final isSaved = saveNotifier.state ?? false;
-                              //   final saveText = isSaved ? 'Yes' : 'No';
-                              //   return Text("Saved: $isSaved");
-                              // }),
                               if (data.isCaptain || data.isOwner)
                                 Column(
                                   children: [
@@ -240,22 +228,23 @@ abstract class full_rutin_diloge {
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                  builder: (context) {
-                                                return AddMembers(
-                                                  addCapten: true,
-                                                  buttotext: "Add captens",
-                                                  onUsername: (seleted_username,
-                                                      setPosition) {
-                                                    members.AddCapten(
-                                                        rutinId,
-                                                        setPosition,
-                                                        seleted_username,
-                                                        context);
-                                                    print(
-                                                        "hi an cll back $seleted_username");
-                                                  },
-                                                );
-                                              }),
+                                                  builder: (context) =>
+                                                      SeelectAccount(
+                                                        addCapten: true,
+                                                        buttotext:
+                                                            "Add captens",
+                                                        onUsername:
+                                                            (seleted_username,
+                                                                setPosition) {
+                                                          members.AddCapten(
+                                                              rutinId,
+                                                              setPosition,
+                                                              seleted_username,
+                                                              context);
+                                                          print(
+                                                              "hi an cll back $seleted_username");
+                                                        },
+                                                      )),
                                             );
                                           },
                                         ),
@@ -274,47 +263,48 @@ abstract class full_rutin_diloge {
                                                 context,
                                                 CupertinoPageRoute(
                                                     fullscreenDialog: true,
-                                                    builder:
-                                                        (context) =>
-                                                            SeeAllRequest(
-                                                              rutin_id: rutinId,
-                                                              onRejectUsername:
-                                                                  (username) =>
-                                                                      members.rejectMembers(
-                                                                          ref,
-                                                                          rutinId,
-                                                                          username,
-                                                                          context),
-                                                              acceptUsername: (username) =>
-                                                                  members.acceptMember(
-                                                                      ref,
+                                                    builder: (context) =>
+                                                        SeeAllRequest(
+                                                          rutin_id: rutinId,
+                                                          onRejectUsername:
+                                                              (username) => members
+                                                                  .rejectMembers(
                                                                       rutinId,
                                                                       username,
                                                                       context),
-                                                            )))),
+                                                          acceptUsername:
+                                                              (username) {
+                                                            members
+                                                                .acceptMember(
+                                                                    rutinId,
+                                                                    username,
+                                                                    context);
+                                                          },
+                                                        )))),
                                         SqureButton(
                                             icon: Icons.person_add_alt_1,
                                             text: "Add members",
-                                            ontap: () => Navigator.push(
-                                                  context,
-                                                  CupertinoPageRoute(
-                                                    fullscreenDialog: true,
-                                                    builder: (context) =>
-                                                        AddMembers(
-                                                      buttotext: "Add member",
-                                                      onUsername:
-                                                          (seleted_username,
-                                                              _) {
-                                                        members.addMember(
-                                                            rutinId,
-                                                            seleted_username,
-                                                            context);
-                                                        print(
-                                                            "hi an cll back $seleted_username");
-                                                      },
-                                                    ),
+                                            ontap: () {
+                                              return Navigator.push(
+                                                context,
+                                                CupertinoPageRoute(
+                                                  fullscreenDialog: true,
+                                                  builder: (context) =>
+                                                      SeelectAccount(
+                                                    buttotext: "Add member",
+                                                    onUsername:
+                                                        (seleted_username, _) {
+                                                      members.addMember(
+                                                          rutinId,
+                                                          seleted_username,
+                                                          context);
+                                                      print(
+                                                          "hi an cll back $seleted_username");
+                                                    },
                                                   ),
-                                                )),
+                                                ),
+                                              );
+                                            }),
                                       ],
                                     ),
                                     const Divider(height: 20),

@@ -1,10 +1,11 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, invalid_return_type_for_catch_error
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/models/membersModels.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/member_request.dart';
 import 'package:table/widgets/Alart.dart';
+
+import '../../../../../models/seeAllRequestModel.dart';
 
 //** Providers ****/
 final memberRequestController = StateNotifierProvider(
@@ -45,48 +46,18 @@ class MemberController extends StateNotifier {
   }
 
   //******** acceptMember   ************** */
-  void acceptMember(WidgetRef ref, rutinId, username, context) async {
-    final message = ref.read(
-        accept_request_provider(accept(rutin_id: rutinId, usernme: username)));
+  void acceptMember(rutinId, username, context) async {
+    final res = member_request.acceptRequest(rutinId, username);
 
-    //("from comtroller : ${message}");
-
-    message.hasError
-        ? Alart.showSnackBar(context, message.hasError)
-        : Alart.showSnackBar(context, message);
+    res.catchError((error) => Alart.handleError(context, error));
+    res.then((value) => Alart.showSnackBar(context, value.message));
   }
 
   //******** acceptMember   ************** */
-  void rejectMembers(WidgetRef ref, rutinId, username, context) async {
-    final message = ref.read(
-        reject_request_provider(accept(rutin_id: rutinId, usernme: username)));
+  void rejectMembers(rutinId, username, context) async {
+    final res = member_request.rejectRequest(rutinId, username);
 
-    message.when(
-      data: (data) {
-        print("via daa $data");
-        Alart.errorAlartDilog(context, data["message"]);
-      },
-      error: (error, stackTrace) => Alart.handleError(context, error),
-      loading: () {},
-    );
-
-    print("from comtroller : ${message}");
+    res.catchError((error) => Alart.handleError(context, error));
+    res.then((value) => Alart.showSnackBar(context, value.message));
   }
-
-  // //******** acceptMember   ************** */
-//   void sellAllCaptens(WidgetRef ref, rutinId, context) async {
-//     final res = await member_request.sellAllCaptemReq(rutinId)  ;
-
-//  res.fold((l) => null, (r) => )
-//     message.when(
-//       data: (data) {
-//         print("via daa $data");
-//         Alart.errorAlartDilog(context, data["message"]);
-//       },
-//       error: (error, stackTrace) => Alart.handleError(context, error),
-//       loading: () {},
-//     );
-
-//     print("from comtroller : ${message}");
-//   }
 }

@@ -7,7 +7,6 @@ import 'package:table/widgets/AccoundCardRow.dart';
 import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/widgets/searchBarCustom.dart';
-import '../../../Account/accounu_ui/Account_screen.dart';
 
 final serachStringProvidder = StateProvider((ref) => "");
 

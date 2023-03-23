@@ -3,17 +3,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/models/Account_models.dart';
-import 'package:table/ui/bottom_items/Account/Account%20Controller.dart';
 import 'package:table/ui/bottom_items/Account/account_request/account_request.dart';
 import 'package:table/ui/bottom_items/Account/accounu_ui/eddit_account.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/screen/full_rutin_view.dart';
 import 'package:table/widgets/AccountCard.dart';
 import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/AppBarCustom.dart';
-import 'package:table/widgets/custom_rutin_card.dart';
-import 'package:table/widgets/progress_indicator.dart';
-import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 
 class AccountScreen extends StatefulWidget {
   final String? accountUsername;

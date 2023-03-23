@@ -1,7 +1,7 @@
 // ignore_for_file: sized_box_for_whitespace, non_constant_identifier_names, must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/request/member_request.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/component/request_account_card.dart';
 import 'package:table/widgets/Alart.dart';
 

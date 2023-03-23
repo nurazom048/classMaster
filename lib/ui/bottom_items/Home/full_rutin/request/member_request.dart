@@ -8,8 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/helper/constant/constant.dart';
 import 'package:table/models/captens/listOfCaptens.dart';
 import 'package:table/models/membersModels.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/widgets/see_all_members.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/widgets/sell_all_captens.dart';
+import 'package:table/models/seeAllRequestModel.dart';
 import '../../../../../models/messageModel.dart';
 
 class memberRequest extends StateNotifier<bool> {
@@ -28,12 +27,10 @@ class memberRequest extends StateNotifier<bool> {
       var res = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
-        if (response.body != null) {
-          print(res);
-          return MembersModel.fromJson(res);
-        } else {
-          throw Exception("faild to load all member list ");
-        }
+        print(res);
+        return MembersModel.fromJson(res);
+      } else {
+        throw Exception("faild to load all member list ");
       }
     } catch (e) {
       print(e);
@@ -193,6 +190,87 @@ class memberRequest extends StateNotifier<bool> {
       throw Exception(e);
     }
   }
+  //... see all joi request ..............///
+
+  //....sell all request ....//
+  Future<RequestModel> sell_all_request(rutin_id) async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+
+    try {
+      final response = await http.post(
+        Uri.parse('${Const.BASE_URl}/rutin/member/see_all_request/$rutin_id'),
+        headers: {'Authorization': 'Bearer $getToken'},
+      );
+
+      if (response.statusCode == 200) {
+        if (response.body != null) {
+          RequestModel res = RequestModel.fromJson(jsonDecode(response.body));
+          print(res);
+          return res;
+        } else {
+          throw Exception("Response body is null");
+        }
+      } else {
+        throw Exception("Failed to load status");
+      }
+    } catch (e) {
+      print(e);
+      throw Exception(e);
+    }
+  }
+
+  //...acceptRequest.....//
+  Future<Message> acceptRequest(rutinId, username) async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+    print("$username");
+
+    try {
+      final response = await http.post(
+          Uri.parse('${Const.BASE_URl}/rutin/member/acsept_request/$rutinId'),
+          headers: {'Authorization': 'Bearer $getToken'},
+          body: {"username": username});
+
+      var res = Message.fromJson(jsonDecode(response.body));
+
+      if (response.statusCode == 200) {
+        print(res);
+        return res;
+      } else {
+        throw Exception("Response body is null");
+      }
+    } catch (e) {
+      print(e);
+      throw Exception(e);
+    }
+  }
+
+  //
+  //...acceptRequest.....//
+  Future<Message> rejectRequest(rutin_id, username) async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+    print("$username");
+
+    try {
+      final response = await http.post(
+          Uri.parse('${Const.BASE_URl}/rutin/member/reject_request/$rutin_id'),
+          headers: {'Authorization': 'Bearer $getToken'},
+          body: {"username": username});
+
+      var res = Message.fromJson(jsonDecode(response.body));
+
+      if (response.statusCode == 200) {
+        return res;
+      } else {
+        throw Exception(res.message);
+      }
+    } catch (e) {
+      print(e);
+      throw Exception(e);
+    }
+  }
 }
 
 final memberRequestProvider = StateNotifierProvider((ref) => memberRequest());
@@ -203,4 +281,9 @@ final lavePr = FutureProvider.family<Message?, String>((ref, rutin_id) async {
 final allCaptenProvider =
     FutureProvider.family<ListCptens, String>((ref, rutin_id) async {
   return ref.watch(memberRequestProvider.notifier).sellAllCaptemReq(rutin_id);
+});
+// see all request provider
+final see_all_request_provider =
+    FutureProvider.family.autoDispose<RequestModel, String>((ref, rutin_id) {
+  return ref.read(memberRequestProvider.notifier).sell_all_request(rutin_id);
 });
