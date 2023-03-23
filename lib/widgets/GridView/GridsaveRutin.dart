@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/screen/full_rutin_view.dart';
 import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
 import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/custom_rutin_card.dart';
@@ -44,6 +45,22 @@ class _GridViewRutinState extends State<Grid_save_rutin> {
                       bool isNotlast = index - 1 != data.savedRoutines.length;
                       return CustomRutinCard(
                         rutinname: data.savedRoutines[index].name,
+
+                        name: data.savedRoutines[index].ownerid.name,
+                        username: data.savedRoutines[index].ownerid.username,
+                        last_update: data.savedRoutines[index].lastSummary.text,
+
+                        //
+                        //
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FullRutineView(
+                              rutinName: data.savedRoutines[index].name,
+                              rutinId: data.savedRoutines[index].id,
+                            ),
+                          ),
+                        ),
                       );
                     },
                   ),

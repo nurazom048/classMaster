@@ -47,7 +47,6 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Consumer(builder: (context, ref, _) {
             //
             final pages = ref.watch(currentPageProvider);
-            final myRutin = ref.watch(all_rutins_provider);
             final saveRutin = ref.watch(save_rutins_provider(1));
             final uploaded_rutin = ref.watch(uploaded_rutin_provider(pages));
             final joined_rutin = ref.watch(joined_rutin_provider(pages));

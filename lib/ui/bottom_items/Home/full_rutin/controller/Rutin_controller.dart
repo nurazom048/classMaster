@@ -48,8 +48,8 @@ class RutinController extends StateNotifier<bool?> {
 
   //... Delete Rutin...//
 
-  void deleteRutin(WidgetRef ref, String rutin_id, context) {
-    var res = ref.watch(deleteRutinProvider(rutin_id));
+  void deleteRutin(String rutin_id, context) {
+    var res = context.watch(deleteRutinProvider(rutin_id));
 
     res.when(
       data: (data) {},

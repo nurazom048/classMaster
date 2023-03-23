@@ -7,6 +7,7 @@ import 'package:table/ui/add_eddit_remove/addPriode.dart';
 import 'package:table/ui/add_eddit_remove/add_class.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/members_controllers.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/controller/priodeController.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/request_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/save_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/add_members.dart';
@@ -15,6 +16,7 @@ import 'package:table/ui/bottom_items/Home/full_rutin/screen/see_all_request.dar
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/view_more_details.dart';
 import 'package:table/ui/bottom_items/Home/home_req/priode_reuest.dart';
 import 'package:table/widgets/Alart.dart';
+import 'package:table/widgets/priodeContaner.dart';
 import 'package:table/widgets/text%20and%20buttons/squareButton.dart';
 
 abstract class full_rutin_assist {
@@ -41,14 +43,17 @@ abstract class full_rutin_assist {
                               isEdit: true,
                             )));
               }),
-          CupertinoActionSheetAction(
-            child: const Text("Remove", style: TextStyle(color: Colors.red)),
-            onPressed: () {
-              //  ClassesRequest().deleteClass(context, classId);
+          Consumer(builder: (context, ref, _) {
+            return CupertinoActionSheetAction(
+              child: const Text("Remove", style: TextStyle(color: Colors.red)),
+              onPressed: () {
+                /// ref.watch(priodeController.notifier).deletePriode(ref, context, priodeId)
+                //  ClassesRequest().deleteClass(context, classId);
 
-              Navigator.pop(context);
-            },
-          ),
+                Navigator.pop(context);
+              },
+            );
+          }),
         ],
         cancelButton: CupertinoActionSheetAction(
           child: const Text("cancel"),
@@ -67,14 +72,19 @@ abstract class full_rutin_assist {
         title: const Text(" Do you want to.. ",
             style: TextStyle(fontSize: 22, color: Colors.black87)),
         actions: [
-          CupertinoActionSheetAction(
-            child: const Text("Remove", style: TextStyle(color: Colors.red)),
-            onPressed: () {
-              PriodeRequest().deletePriode(context, priodeId);
-              print(priodeId);
-              Navigator.pop(context);
-            },
-          ),
+          Consumer(builder: (context, ref, _) {
+            return CupertinoActionSheetAction(
+              child: const Text("Remove", style: TextStyle(color: Colors.red)),
+              onPressed: () {
+                ref
+                    .watch(priodeController.notifier)
+                    .deletePriode(ref, context, priodeId);
+                //   PriodeRequest().deletePriode(context, priodeId);
+                print(priodeId);
+                Navigator.pop(context);
+              },
+            );
+          }),
         ],
         cancelButton: CupertinoActionSheetAction(
           child: const Text("cancel"),
@@ -348,7 +358,14 @@ abstract class full_rutin_assist {
                                                 Alart.errorAlertDialogCallBack(
                                               context,
                                               "Are you sure to delete",
-                                              onConfirm: (isyes) {},
+                                              onConfirm: (isyes) {
+                                                ref
+                                                    .watch(
+                                                        RutinControllerProvider
+                                                            .notifier)
+                                                    .deleteRutin(
+                                                        rutinId, context);
+                                              },
                                             ),
                                           )
                                         else
