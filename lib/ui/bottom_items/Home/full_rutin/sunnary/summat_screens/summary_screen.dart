@@ -4,8 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:table/models/rutins.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summary_request/summary_request.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summat_screens/add_summary.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/sunnary%20Controller/summary_controller.dart';
 import 'package:table/widgets/Alart.dart';
@@ -49,19 +47,17 @@ class SummaryScreen extends StatelessWidget {
             width: double.infinity,
             color: Colors.black12,
             child: Consumer(builder: (context, ref, _) {
-              final summarylist = ref.watch(getSumarisProvider(classId));
-              final lstSummary = ref.watch(sunnaryControllerProvider);
+              ////
+              final lstSummary = ref.watch(sunnaryControllerProvider(classId));
 
               List<Summary> summary = [];
 
               return Stack(
                 children: [
-                  summarylist.when(
+                  lstSummary.when(
                     data: (data) {
-                      summary = data.summaries;
-                      if (lstSummary != null) {
-                        summary.add(lstSummary);
-                      }
+                      summary.addAll(data.summaries);
+
                       newScroll();
 
                       return ListView.builder(

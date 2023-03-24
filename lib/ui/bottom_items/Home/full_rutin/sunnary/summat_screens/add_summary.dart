@@ -35,7 +35,7 @@ class AddSummaryScreen extends StatelessWidget {
                         child: const Text('Create'),
                         onPressed: () {
                           ref
-                              .read(sunnaryControllerProvider.notifier)
+                              .read(sunnaryControllerProvider(classId).notifier)
                               .addSummary(ref, classId, _summaryController.text,
                                   context);
                         }),

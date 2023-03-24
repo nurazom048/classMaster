@@ -1,10 +1,3 @@
-import 'dart:convert';
-
-SummayModels summayModelsFromJson(String str) =>
-    SummayModels.fromJson(json.decode(str));
-
-String summayModelsToJson(SummayModels data) => json.encode(data.toJson());
-
 class SummayModels {
   SummayModels({required this.summaries});
 
@@ -15,9 +8,9 @@ class SummayModels {
             json["summaries"].map((x) => Summary.fromJson(x))),
       );
 
-  Map<String, dynamic> toJson() => {
-        "summaries": List<dynamic>.from(summaries.map((x) => x.toJson())),
-      };
+  SummayModels copyWith({List<Summary>? summaries}) {
+    return SummayModels(summaries: summaries ?? this.summaries);
+  }
 }
 
 class Summary {
@@ -42,4 +35,16 @@ class Summary {
         "_id": id,
         "time": time.toIso8601String(),
       };
+
+  Summary copyWith({
+    String? text,
+    String? id,
+    DateTime? time,
+  }) {
+    return Summary(
+      text: text ?? this.text,
+      id: id ?? this.id,
+      time: time ?? this.time,
+    );
+  }
 }
