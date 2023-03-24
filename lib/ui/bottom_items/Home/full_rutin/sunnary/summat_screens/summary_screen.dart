@@ -61,22 +61,9 @@ class SummaryScreen extends StatelessWidget {
                       summary = data.summaries;
                       if (lstSummary != null) {
                         summary.add(lstSummary);
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          scrollController.animateTo(
-                            scrollController.position.maxScrollExtent,
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeInOut,
-                          );
-                        });
-                      } else {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          scrollController.animateTo(
-                            scrollController.position.maxScrollExtent,
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeInOut,
-                          );
-                        });
                       }
+                      newScroll();
+
                       return ListView.builder(
                         padding: const EdgeInsets.only(bottom: 100),
                         shrinkWrap: true,
@@ -112,6 +99,16 @@ class SummaryScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void newScroll() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      scrollController.animateTo(
+        scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    });
   }
 }
 
