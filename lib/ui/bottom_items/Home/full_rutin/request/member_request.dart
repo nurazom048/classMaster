@@ -11,8 +11,9 @@ import 'package:table/models/membersModels.dart';
 import 'package:table/models/seeAllRequestModel.dart';
 import '../../../../../models/messageModel.dart';
 
-class memberRequest extends StateNotifier<bool> {
-  memberRequest() : super(true);
+final memberRequestProvider = Provider((ref) => memberRequest());
+
+class memberRequest {
 //
 //**********************   rutin all _members    *********** */
   Future<MembersModel?> all_members(rutin_id) async {
@@ -145,7 +146,7 @@ class memberRequest extends StateNotifier<bool> {
     }
   }
 
-  Future<Message?> leaveRequest(rutin_id) async {
+  Future<Message> leaveRequest(rutin_id) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 
@@ -161,7 +162,7 @@ class memberRequest extends StateNotifier<bool> {
       if (response.statusCode == 200) {
         return res;
       } else {
-        return res;
+        throw Exception(res.message);
       }
     } catch (e) {
       throw Exception(e);
@@ -273,17 +274,12 @@ class memberRequest extends StateNotifier<bool> {
   }
 }
 
-final memberRequestProvider = StateNotifierProvider((ref) => memberRequest());
-
-final lavePr = FutureProvider.family<Message?, String>((ref, rutin_id) async {
-  return ref.watch(memberRequestProvider.notifier).leaveRequest(rutin_id);
-});
 final allCaptenProvider =
     FutureProvider.family<ListCptens, String>((ref, rutin_id) async {
-  return ref.watch(memberRequestProvider.notifier).sellAllCaptemReq(rutin_id);
+  return ref.watch(memberRequestProvider).sellAllCaptemReq(rutin_id);
 });
 // see all request provider
 final see_all_request_provider =
     FutureProvider.family.autoDispose<RequestModel, String>((ref, rutin_id) {
-  return ref.read(memberRequestProvider.notifier).sell_all_request(rutin_id);
+  return ref.read(memberRequestProvider).sell_all_request(rutin_id);
 });

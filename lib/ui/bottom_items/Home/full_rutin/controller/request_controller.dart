@@ -10,48 +10,13 @@ import '../../home_screen/Home_screen.dart';
 
 final joinReqControllerProviders =
     StateNotifierProvider.autoDispose<joinReqController, String?>((ref) {
-  return joinReqController(ref.watch(memberRequestProvider.notifier));
+  return joinReqController(ref.watch(memberRequestProvider));
 });
 
 class joinReqController extends StateNotifier<String?> {
   memberRequest rutinRequest;
 
   joinReqController(this.rutinRequest) : super(null);
-
-//......
-
-  void sendReqController(rutinId, context, WidgetRef ref) async {
-    final result = await rutinRequest.sendRequest(rutinId);
-
-    result.fold(
-      (errorMessage) => Alart.errorAlartDilog(context, errorMessage),
-      (response) {
-        state = response.activeStatus;
-
-        Alart.showSnackBar(context, response.message);
-      },
-    );
-  }
-
-//
-//***********  leaveMember *********** */
-  leaveMember(WidgetRef ref, rutinId, context) async {
-    final message = ref.watch(lavePr(rutinId));
-    state = "not_joined";
-
-    message.when(
-      data: (data) {
-        state = "not_joined";
-        print("Hello from Controller");
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => HomeScreen()));
-
-        Alart.showSnackBar(context, data!.message);
-      },
-      error: (error, stackTrace) => Alart.handleError(context, error),
-      loading: () {},
-    );
-  }
 
 //... remove member .....//
   void removeMember(BuildContext context, String rutinId, username) async {

@@ -4,7 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/models/Account_models.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/controller/chack_status_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/widgets/seeAllCaotensList.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/screen/widgets/status_row.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/see_all_members.dart';
 import 'package:table/ui/server/rutinReq.dart';
 import 'package:table/widgets/AccoundCardRow.dart';
@@ -44,7 +46,7 @@ class ViewMorepage extends ConsumerWidget {
                       backgroundImage: NetworkImage(
                           "https://th.bing.com/th/id/OIP.OF59vsDmwxPP1tw7b_8clQHaE8?pid=ImgDet&rs=1"),
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 6),
                     Text(
                       "Owner name",
                       style: TextStyle(
@@ -52,33 +54,7 @@ class ViewMorepage extends ConsumerWidget {
                         fontFamily: "Cupertino",
                       ),
                     ),
-                    SizedBox(height: 10),
-                    Row(
-                      // ignore: prefer_const_literals_to_create_immutables
-                      children: [
-                        Spacer(),
-                        SqureButton(
-                          icon: Icons.people_rounded,
-                          inActiveIcon: Icons.telegram,
-                          inActiveText: "Send Join request",
-                          text: 'Members',
-                          status: false,
-                        ),
-                        SqureButton(
-                          icon: Icons.bookmark_added,
-                          inActiveIcon: Icons.bookmark_add_sharp,
-                          text: 'Save',
-                          status: true,
-                        ),
-                        SqureButton(
-                          icon: Icons.bookmark_added,
-                          inActiveIcon: Icons.bookmark_add_sharp,
-                          text: 'Save',
-                          status: true,
-                        ),
-                        Spacer(),
-                      ],
-                    )
+                    StatusRow(rutinId),
                   ],
                 ),
               ),

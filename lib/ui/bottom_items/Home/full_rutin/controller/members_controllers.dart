@@ -5,15 +5,13 @@ import 'package:table/models/membersModels.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/member_request.dart';
 import 'package:table/widgets/Alart.dart';
 
-import '../../../../../models/seeAllRequestModel.dart';
-
 //** Providers ****/
 final memberRequestController = StateNotifierProvider(
-    (ref) => MemberController(ref.read(memberRequestProvider.notifier)));
+    (ref) => MemberController(ref.read(memberRequestProvider)));
 
 final all_members_provider =
     FutureProvider.family.autoDispose<MembersModel?, String>((ref, rutin_id) {
-  return ref.watch(memberRequestProvider.notifier).all_members(rutin_id);
+  return ref.watch(memberRequestProvider).all_members(rutin_id);
 });
 
 //** MemberController ****/

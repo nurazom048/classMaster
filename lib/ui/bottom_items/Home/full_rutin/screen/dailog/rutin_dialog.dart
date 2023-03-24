@@ -108,16 +108,17 @@ class RutinDialog {
               ),
             ),
             child: Consumer(builder: (context, ref, _) {
-              final chackStatus = ref.watch(chackStatusProvider(rutinId));
+              //! providers
+              final chackStatus =
+                  ref.watch(chackStatusControllerProvider(rutinId));
+              final joinCont = ref.watch(joinReqControllerProviders.notifier);
+
+              //.. providers with notifier
+              final chackStatusNotifier =
+                  ref.watch(chackStatusControllerProvider(rutinId).notifier);
               final members = ref.read(memberRequestController.notifier);
 
-              //... saveRutinController_Provider
-              // final saveUn = ref.watch(saveRutinController_Provider.notifier);
-              // final save = ref.watch(saveRutinController_Provider);
-
               // join controller provider ...//
-              final joinCont = ref.watch(joinReqControllerProviders.notifier);
-              final activeStatus = ref.watch(joinReqControllerProviders);
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,18 +126,16 @@ class RutinDialog {
                 children: <Widget>[
                   chackStatus.when(
                       data: (data) {
-                        //  bool isSave = save ?? data.isSave;
-                        String aT = activeStatus ?? data.activeStatus;
+                        String status = chackStatus.value?.activeStatus ?? '';
 
                         return SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Column(
                             children: [
-                              Text(activeStatus ?? ''),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  if (aT == "joined")
+                                  if (status == "joined")
                                     SqureButton(
                                       icon: Icons.logout,
                                       inActiveText: "leave",
@@ -148,8 +147,9 @@ class RutinDialog {
                                             "are you sure you want to leave",
                                             onConfirm: (bool isYes) {
                                           //  Navigator.pop(context);
-                                          joinCont.leaveMember(
-                                              ref, rutinId, context);
+
+                                          chackStatusNotifier
+                                              .leaveMember(context);
                                         });
                                       },
                                     )
@@ -157,13 +157,15 @@ class RutinDialog {
                                     SqureButton(
                                         icon: Icons.people_rounded,
                                         inActiveIcon: Icons.telegram,
-                                        inActiveText: aT,
-                                        status: aT == "request_pending"
+                                        inActiveText: status,
+                                        status: status == "request_pending"
                                             ? true
                                             : false,
-                                        text: aT,
-                                        ontap: () => joinCont.sendReqController(
-                                            rutinId, context, ref)),
+                                        text: status,
+                                        ontap: () {
+                                          chackStatusNotifier
+                                              .sendReqController(context);
+                                        }),
                                   SqureButton(
                                       inActiveIcon: Icons.bookmark_added,
                                       icon: Icons.bookmark_add_sharp,
@@ -171,13 +173,10 @@ class RutinDialog {
                                       inActiveText: "add to save",
                                       status: chackStatus.value?.isSave,
                                       ontap: () {
-                                        ref
-                                            .read(chackStatusProvider(rutinId)
-                                                .notifier)
-                                            .saveUnsave(
-                                                context,
-                                                !(chackStatus.value?.isSave ??
-                                                    false));
+                                        chackStatusNotifier.saveUnsave(
+                                            context,
+                                            !(chackStatus.value?.isSave ??
+                                                false));
                                       }),
                                   SqureButton(
                                     icon: Icons.more_horiz,

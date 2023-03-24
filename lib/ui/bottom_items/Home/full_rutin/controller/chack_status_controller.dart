@@ -5,14 +5,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/models/chackStatusModel.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/Rutin_request/rutin_request.dart';
-
+import 'package:table/ui/bottom_items/Home/full_rutin/request/member_request.dart';
 import '../../../../../widgets/Alart.dart';
 
 //
-final chackStatusProvider = StateNotifierProvider.autoDispose
+final chackStatusControllerProvider = StateNotifierProvider.autoDispose
     .family<ChackStatusController, AsyncValue<CheckStatusModel>, String>(
         (ref, rutinId) {
-  return ChackStatusController(ref, rutinId, ref.read(FullRutinProvider));
+  return ChackStatusController(ref, rutinId, ref.read(FullRutinProvider),
+      ref.read(memberRequestProvider));
 });
 
 //
@@ -22,7 +23,9 @@ class ChackStatusController
   var ref;
   String rutinId;
   FullRutinrequest fullRutinReq;
-  ChackStatusController(this.ref, this.rutinId, this.fullRutinReq)
+  memberRequest memberRequests;
+  ChackStatusController(
+      this.ref, this.rutinId, this.fullRutinReq, this.memberRequests)
       : super(AsyncLoading()) {
     getStatus();
   }
@@ -50,7 +53,6 @@ class ChackStatusController
     final result = await fullRutinReq.saveUnsaveRutinReq(rutinId, condition);
     print("c $rutinId $condition");
 
-    // Handle the result of the save or unsave request
     result.fold(
       (errorMessage) => Alart.errorAlartDilog(context, errorMessage),
       (response) {
@@ -59,5 +61,33 @@ class ChackStatusController
         Alart.showSnackBar(context, response.message);
       },
     );
+  }
+
+//***********  send join  *********** */
+  void sendReqController(context) async {
+    final result = await memberRequests.sendRequest(rutinId);
+
+    result.fold(
+      (errorMessage) => Alart.errorAlartDilog(context, errorMessage),
+      (response) {
+        state = AsyncData(
+            state.value!.copyWith(activeStatus: response.activeStatus));
+
+        Alart.showSnackBar(context, response.message);
+      },
+    );
+  }
+
+//
+//***********  leaveMember *********** */
+  leaveMember(context) async {
+    try {
+      final res = await memberRequests.leaveRequest(rutinId);
+      state = AsyncData(state.value!.copyWith(activeStatus: "not_joined"));
+
+      Alart.showSnackBar(context, res.message);
+    } catch (e) {
+      Alart.handleError(context, e);
+    }
   }
 }
