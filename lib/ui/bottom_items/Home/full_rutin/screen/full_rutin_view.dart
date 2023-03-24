@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/models/ClsassDetailsModel.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/dailog/rutin_dialog.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summary_screen.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summat_screens/summary_screen.dart';
 import 'package:table/ui/server/rutinReq.dart';
 import 'package:table/widgets/AccoundCardRow.dart';
 import 'package:table/widgets/Alart.dart';

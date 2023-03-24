@@ -1,18 +1,25 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/add_summary.dart';
+import 'package:table/models/rutins.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summary_request/summary_request.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summat_screens/add_summary.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/sunnary%20Controller/summary_controller.dart';
+import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/TopBar.dart';
-import 'summary_request/summary_request.dart';
+import '../../../../../../models/summaryModels.dart';
 
-class SummaryScreen extends StatefulWidget {
-  final String? classId;
+class SummaryScreen extends StatelessWidget {
+  final String classId;
   final String? image;
   final String? istractorName;
   final String? subjectCode;
   final String? roomNumber;
 
-  const SummaryScreen({
+  SummaryScreen({
     super.key,
     required this.classId,
     this.image,
@@ -20,57 +27,77 @@ class SummaryScreen extends StatefulWidget {
     this.subjectCode = "",
     this.roomNumber = ",",
   });
+  final scrollController = ScrollController();
 
-  @override
-  State<SummaryScreen> createState() => _SummaryScreenState();
-}
-
-class _SummaryScreenState extends State<SummaryScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: Column(children: [
-          //.. AppBar...//
+          // AppBar...
           const CustomTopBar("Class Summary"),
-          //.... to show the class informeetion
+          // Class information
           ClasInfoBox(
-            instructorname: widget.istractorName ?? "",
-            roomnumber: widget.roomNumber ?? '',
-            sunjectcode: widget.subjectCode ?? '',
+            instructorname: istractorName ?? "",
+            roomnumber: roomNumber ?? '',
+            sunjectcode: subjectCode ?? '',
           ),
-          //
           const Divider(height: 5),
           Container(
             padding: const EdgeInsets.all(20),
             height: MediaQuery.of(context).size.height - 210,
             width: double.infinity,
             color: Colors.black12,
-            child: Stack(
-              children: [
-                //.... the summary list
-                FutureBuilder(
-                    future: SummayReuest().getSummaryList(widget.classId),
-                    builder: (context, snapshoot) {
-                      if (snapshoot.connectionState ==
-                          ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else {
-                        var summary = snapshoot.data!.summaries;
+            child: Consumer(builder: (context, ref, _) {
+              final summarylist = ref.watch(getSumarisProvider(classId));
+              final lstSummary = ref.watch(sunnaryControllerProvider);
 
-                        return ListView.builder(
-                          reverse: true,
-                          itemCount: summary.length,
-                          itemBuilder: (context, index) => SummaryContaner(
-                            text: summary[index].text,
-                            date: summary[index].time.toString(),
-                            is_last: 0 == index,
-                          ),
-                        );
+              List<Summary> summary = [];
+
+              return Stack(
+                children: [
+                  summarylist.when(
+                    data: (data) {
+                      summary = data.summaries;
+                      if (lstSummary != null) {
+                        summary.add(lstSummary);
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          scrollController.animateTo(
+                            scrollController.position.maxScrollExtent,
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.easeInOut,
+                          );
+                        });
+                      } else {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          scrollController.animateTo(
+                            scrollController.position.maxScrollExtent,
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.easeInOut,
+                          );
+                        });
                       }
-                    }),
-              ],
-            ),
+                      return ListView.builder(
+                        padding: const EdgeInsets.only(bottom: 100),
+                        shrinkWrap: true,
+                        reverse: false,
+                        controller: scrollController,
+                        itemCount: summary.length,
+                        itemBuilder: (context, index) => SummaryContaner(
+                          text: summary[index].text,
+                          date: summary[index].time.toString(),
+                          is_last: 0 == index,
+                        ),
+                      );
+                    },
+                    error: (error, stackTrace) =>
+                        Alart.handleError(context, error),
+                    loading: () =>
+                        const Center(child: CircularProgressIndicator()),
+                  ),
+                ],
+              );
+            }),
           )
         ]),
 
@@ -80,8 +107,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
             context,
             CupertinoPageRoute(
                 fullscreenDialog: true,
-                builder: (context) =>
-                    AddSummaryScreen(classId: widget.classId!)),
+                builder: (context) => AddSummaryScreen(classId: classId)),
           ),
         ),
       ),
