@@ -3,7 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/controller/save_controller.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/controller/chack_status_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/widgets/seeAllCaotensList.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/widgets/see_all_request.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/widgets/select_account.dart';
@@ -108,12 +108,12 @@ class RutinDialog {
               ),
             ),
             child: Consumer(builder: (context, ref, _) {
-              final chackStatus = ref.watch(chackStatusUser_provider(rutinId));
+              final chackStatus = ref.watch(chackStatusProvider(rutinId));
               final members = ref.read(memberRequestController.notifier);
 
               //... saveRutinController_Provider
-              final saveUn = ref.watch(saveRutinController_Provider.notifier);
-              final save = ref.watch(saveRutinController_Provider);
+              // final saveUn = ref.watch(saveRutinController_Provider.notifier);
+              // final save = ref.watch(saveRutinController_Provider);
 
               // join controller provider ...//
               final joinCont = ref.watch(joinReqControllerProviders.notifier);
@@ -125,7 +125,7 @@ class RutinDialog {
                 children: <Widget>[
                   chackStatus.when(
                       data: (data) {
-                        bool isSave = save ?? data.isSave;
+                        //  bool isSave = save ?? data.isSave;
                         String aT = activeStatus ?? data.activeStatus;
 
                         return SingleChildScrollView(
@@ -169,10 +169,15 @@ class RutinDialog {
                                       icon: Icons.bookmark_add_sharp,
                                       text: 'Save',
                                       inActiveText: "add to save",
-                                      status: isSave,
+                                      status: chackStatus.value?.isSave,
                                       ontap: () {
-                                        saveUn.saveUnsave(
-                                            context, rutinId, isSave);
+                                        ref
+                                            .read(chackStatusProvider(rutinId)
+                                                .notifier)
+                                            .saveUnsave(
+                                                context,
+                                                !(chackStatus.value?.isSave ??
+                                                    false));
                                       }),
                                   SqureButton(
                                     icon: Icons.more_horiz,

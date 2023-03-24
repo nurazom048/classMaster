@@ -25,4 +25,22 @@ class CheckStatusModel {
       sentRequestCount: json['sentRequestCount'] ?? 0,
     );
   }
+
+  CheckStatusModel copyWith({
+    bool? isOwner,
+    bool? isCaptain,
+    String? activeStatus,
+    bool? isSave,
+    int? memberCount,
+    int? sentRequestCount,
+  }) {
+    return CheckStatusModel(
+      isOwner: isOwner ?? this.isOwner,
+      isCaptain: isCaptain ?? this.isCaptain,
+      activeStatus: activeStatus ?? this.activeStatus,
+      isSave: isSave ?? this.isSave,
+      memberCount: memberCount ?? this.memberCount,
+      sentRequestCount: sentRequestCount ?? this.sentRequestCount,
+    );
+  }
 }

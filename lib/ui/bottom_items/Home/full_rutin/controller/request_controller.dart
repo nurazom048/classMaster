@@ -1,6 +1,5 @@
 // ignore_for_file: camel_case_types, invalid_return_type_for_catch_error, avoid_print
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/models/messageModel.dart';

@@ -18,10 +18,10 @@ final deleteRutinProvider =
   return ref.watch(FullRutinProvider).deleteRutin(rutin_id);
 });
 
-final chackStatusUser_provider = FutureProvider.family
-    .autoDispose<CheckStatusModel, String>((ref, rutin_id) {
-  return ref.read(FullRutinProvider).chackStatus(rutin_id);
-});
+// final chackStatusUser_provider = FutureProvider.family
+//     .autoDispose<CheckStatusModel, String>((ref, rutin_id) {
+//   return ref.read(FullRutinProvider).chackStatus(rutin_id);
+// });
 
 class FullRutinrequest {
   //
@@ -127,6 +127,7 @@ class FullRutinrequest {
         return right(message);
       }
     } catch (e) {
+      print(e.toString());
       return left(e.toString());
     }
   }
