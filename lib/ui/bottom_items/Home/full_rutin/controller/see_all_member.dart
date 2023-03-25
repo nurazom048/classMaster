@@ -1,10 +1,7 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, invalid_return_type_for_catch_error, prefer_const_constructors, unused_element
 
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/member_request.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/screen/widgets/seeAllCaotensList.dart';
-import '../../../../../models/messageModel.dart';
 import '../../../../../models/seeAllRequestModel.dart';
 import '../../../../../widgets/Alart.dart';
 
@@ -28,13 +25,21 @@ class SeeAllRequestControllerClass
       : super(AsyncLoading()) {
     getAllRequestList();
   }
-  void getAllRequestList() async {
-    {
-      try {
-        final res = await memberRequests.sell_all_request(rutinId);
 
+  void dispose() {
+    // Clean up any resources here
+    super.dispose();
+  }
+
+  void getAllRequestList() async {
+    try {
+      final res = await memberRequests.sell_all_request(rutinId);
+
+      if (mounted) {
         state = AsyncData(res);
-      } catch (e) {
+      }
+    } catch (e) {
+      if (mounted) {
         state = throw Exception(e);
       }
     }
