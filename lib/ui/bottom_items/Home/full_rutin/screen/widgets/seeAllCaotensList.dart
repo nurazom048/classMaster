@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/member_request.dart';
 import 'package:table/widgets/AccoundCardRow.dart';
-import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/widgets/searchBarCustom.dart';
+
+import '../../../../../../core/dialogs/Alart_dialogs.dart';
 
 final serachStringProvidder = StateProvider((ref) => "");
 

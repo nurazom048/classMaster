@@ -16,6 +16,8 @@ import 'package:table/widgets/hedding_row.dart';
 import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/widgets/text%20and%20buttons/squareButton.dart';
 
+import '../../../../../core/dialogs/Alart_dialogs.dart';
+
 class ViewMorepage extends ConsumerWidget {
   final String rutinId;
   const ViewMorepage(this.rutinId, {super.key});

@@ -3,7 +3,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/server/rutinReq.dart';
-import 'package:table/widgets/Alart.dart';
+import '../../../../../core/dialogs/Alart_dialogs.dart';
 import '../request/priodeREquest/priode_request.dart';
 
 //.. prvider...//

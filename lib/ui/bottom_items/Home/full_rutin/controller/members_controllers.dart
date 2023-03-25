@@ -2,13 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table/core/dialogs/Alart_dialogs.dart';
 import 'package:table/models/membersModels.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/member_request.dart';
-import 'package:table/widgets/Alart.dart';
-
 import '../../../../../models/messageModel.dart';
 
-//** Providers ****/
+//! ** Providers ****/
 final memberControllerProvider =
     StateNotifierProvider.family<MemberController, bool, String>(
         (ref, rutinId) =>

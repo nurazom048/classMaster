@@ -7,6 +7,8 @@ import 'package:table/widgets/AccoundCardRow.dart';
 import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/progress_indicator.dart';
 
+import '../../../../../core/dialogs/Alart_dialogs.dart';
+
 class SeeeAllCaptens extends ConsumerWidget {
   String rutinId;
   SeeeAllCaptens({super.key, required this.rutinId});

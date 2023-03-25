@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/auth_Section/auth_req/auth_req.dart';
 import 'package:table/ui/bottom_items/bottm_nev_bar.dart';
-import 'package:table/widgets/Alart.dart';
+import '../../../core/dialogs/Alart_dialogs.dart';
 
 final authController_provider = StateNotifierProvider.autoDispose(
     (ref) => AuthController(ref.watch(auth_req_provider)));

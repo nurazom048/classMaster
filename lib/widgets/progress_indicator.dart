@@ -3,18 +3,24 @@
 import 'package:flutter/material.dart';
 
 class Progressindicator extends StatelessWidget {
+  final double? h;
+  final double? w;
   const Progressindicator({
+    this.h,
+    this.w,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 250,
-        width: 220,
-        child: const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 70, vertical: 90),
-          child: CircularProgressIndicator(),
+        height: h ?? 250,
+        width: w ?? 220,
+        child: const Center(
+          child: Padding(
+            padding: EdgeInsets.all(30),
+            child: CircularProgressIndicator(),
+          ),
         ));
   }
 }

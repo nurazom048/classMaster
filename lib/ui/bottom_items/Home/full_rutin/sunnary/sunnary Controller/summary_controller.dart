@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/models/summaryModels.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summary_request/summary_request.dart';
-import '../../../../../../widgets/Alart.dart';
+import '../../../../../../core/dialogs/Alart_dialogs.dart';
+
 // providers
 
 final sunnaryControllerProvider = StateNotifierProvider.autoDispose

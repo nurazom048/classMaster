@@ -8,6 +8,7 @@ import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summat_screens/add
 import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/sunnary%20Controller/summary_controller.dart';
 import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/TopBar.dart';
+import '../../../../../../core/dialogs/Alart_dialogs.dart';
 import '../../../../../../models/summaryModels.dart';
 
 class SummaryScreen extends StatelessWidget {

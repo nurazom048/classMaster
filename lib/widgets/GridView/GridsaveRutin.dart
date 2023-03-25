@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/full_rutin_view.dart';
 import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
-import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/custom_rutin_card.dart';
+
+import '../../core/dialogs/Alart_dialogs.dart';
 
 final _SaveRutinPageProvider = StateProvider((ref) => 1);
 

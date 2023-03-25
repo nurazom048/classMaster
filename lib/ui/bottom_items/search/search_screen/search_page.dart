@@ -7,10 +7,10 @@ import 'package:table/models/rutineOverviewModel.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/full_rutin_view.dart';
 import 'package:table/ui/bottom_items/search/search_request/search_request.dart';
 import 'package:table/widgets/AccoundCardRow.dart';
-import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/custom_rutin_card.dart';
 import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/widgets/searchBarCustom.dart';
+import '../../../../core/dialogs/Alart_dialogs.dart';
 
 final Serarch_String_Provider = StateProvider<String>((ref) => "");
 

@@ -12,6 +12,7 @@ import 'package:table/widgets/custom_rutin_card.dart';
 import 'package:table/widgets/hedding_row.dart';
 import 'package:table/widgets/progress_indicator.dart';
 
+import '../../../../core/dialogs/Alart_dialogs.dart';
 import 'dailog/create_rutin-dialog.dart';
 
 final currentPageProvider = StateProvider((ref) => 1);

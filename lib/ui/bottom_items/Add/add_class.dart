@@ -5,9 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/helper/constant/constant.dart';
-import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/MyTextFields.dart';
 import 'package:table/widgets/select_time.dart';
+import '../../../core/dialogs/Alart_dialogs.dart';
 import '../../../widgets/text and buttons/mytext.dart';
 
 class AddClass extends StatefulWidget {

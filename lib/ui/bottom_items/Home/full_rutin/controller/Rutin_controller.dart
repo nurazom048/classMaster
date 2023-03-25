@@ -2,7 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/widgets/Alart.dart';
+import 'package:table/core/dialogs/Alart_dialogs.dart';
 import '../../../../../models/chackStatusModel.dart';
 import '../request/Rutin_request/rutin_request.dart';
 

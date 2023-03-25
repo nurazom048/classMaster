@@ -2,13 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table/core/dialogs/Alart_dialogs.dart';
 import 'package:table/models/chackStatusModel.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/Rutin_request/rutin_request.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/member_request.dart';
 import '../../../../../widgets/Alart.dart';
 
-//
+//! providers
 final chackStatusControllerProvider = StateNotifierProvider.autoDispose
     .family<ChackStatusController, AsyncValue<CheckStatusModel>, String>(
         (ref, rutinId) {
@@ -16,7 +17,7 @@ final chackStatusControllerProvider = StateNotifierProvider.autoDispose
       ref.read(memberRequestProvider));
 });
 
-//
+//? Controllers
 
 class ChackStatusController
     extends StateNotifier<AsyncValue<CheckStatusModel>> {
@@ -30,7 +31,6 @@ class ChackStatusController
     getStatus();
   }
 
-// ! gets status....//
   getStatus() async {
     try {
       AsyncValue<CheckStatusModel> res =

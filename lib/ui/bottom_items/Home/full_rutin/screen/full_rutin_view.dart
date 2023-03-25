@@ -4,17 +4,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/models/ClsassDetailsModel.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/screen/dailog/logngPress.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/dailog/rutin_dialog.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summat_screens/summary_screen.dart';
 import 'package:table/ui/server/rutinReq.dart';
 import 'package:table/widgets/AccoundCardRow.dart';
-import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/TopBar.dart';
 import 'package:table/widgets/class_contaner.dart';
 import 'package:table/widgets/days_container.dart';
 import 'package:table/widgets/priodeContaner.dart';
 import 'package:table/widgets/text%20and%20buttons/empty.dart';
 import 'package:table/widgets/text%20and%20buttons/hedingText.dart';
+
+import '../../../../../core/dialogs/Alart_dialogs.dart';
 
 class FullRutineView extends ConsumerWidget {
   String rutinId;
@@ -161,8 +163,8 @@ class ListOfDays extends StatelessWidget {
                   //
                   priodeLenght: priodeLenght,
                   isLast: day.length - 1 == index,
-                  onLongPress: () =>
-                      RutinDialog.long_press_to_class(context, day[index]?.id),
+                  onLongPress: () => LongPressDialog.long_press_to_class(
+                      context, day[index]?.id),
 
                   // ontap to go summay page..//
                   onTap: permition == true
@@ -205,7 +207,7 @@ class ListOfPriodes extends StatelessWidget {
 
                 // ontap to go summay page..//
 
-                onLongPress: () => RutinDialog.logPressOnPriode(
+                onLongPress: () => LongPressDialog.logPressOnPriode(
                     context, Priodes[index]!.id, rutinId),
               ),
       ),
