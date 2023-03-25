@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/chack_status_controller.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/controller/see_all_member.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/widgets/seeAllCaotensList.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/widgets/see_all_request.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/widgets/select_account.dart';
@@ -12,7 +13,6 @@ import 'package:table/ui/bottom_items/add_eddit_remove/add_class.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/members_controllers.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/priodeController.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/controller/request_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/view_more_details.dart';
 import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/text%20and%20buttons/squareButton.dart';
@@ -111,12 +111,15 @@ class RutinDialog {
               //! providers
               final chackStatus =
                   ref.watch(chackStatusControllerProvider(rutinId));
-              final joinCont = ref.watch(joinReqControllerProviders.notifier);
+              // final s = ref.read(seeAllRequestControllerProvider(rutinId).notifier).
+              final seeAllJonReq =
+                  ref.read(seeAllRequestControllerProvider(rutinId).notifier);
 
               //.. providers with notifier
               final chackStatusNotifier =
                   ref.watch(chackStatusControllerProvider(rutinId).notifier);
-              final members = ref.read(memberRequestController.notifier);
+              final members =
+                  ref.read(memberControllerProvider(rutinId).notifier);
 
               // join controller provider ...//
 
@@ -271,16 +274,16 @@ class RutinDialog {
                                                         SeeAllRequest(
                                                           rutin_id: rutinId,
                                                           onRejectUsername:
-                                                              (username) => members
-                                                                  .rejectMembers(
-                                                                      rutinId,
-                                                                      username,
-                                                                      context),
+                                                              (username) {
+                                                            seeAllJonReq
+                                                                .rejectMembers(
+                                                                    username,
+                                                                    context);
+                                                          },
                                                           acceptUsername:
                                                               (username) {
-                                                            members
+                                                            seeAllJonReq
                                                                 .acceptMember(
-                                                                    rutinId,
                                                                     username,
                                                                     context);
                                                           },
@@ -299,7 +302,6 @@ class RutinDialog {
                                                     onUsername:
                                                         (seleted_username, _) {
                                                       members.addMember(
-                                                          rutinId,
                                                           seleted_username,
                                                           context);
                                                       print(
@@ -329,9 +331,8 @@ class RutinDialog {
                                                     buttotext: "Remove Member",
                                                     onUsername:
                                                         (seleted_username, _) {
-                                                      joinCont.removeMember(
+                                                      members.removeMember(
                                                           context,
-                                                          rutinId,
                                                           seleted_username);
                                                       print(
                                                           "select member $seleted_username");
@@ -375,8 +376,10 @@ class RutinDialog {
                         );
                       },
                       loading: () => const Text("lofing"),
-                      error: (error, stackTrace) =>
-                          Alart.handleError(context, error)),
+                      error: (error, stackTrace) {
+                        print(error.toString());
+                        return Alart.handleError(context, error);
+                      }),
                 ],
               );
             }),

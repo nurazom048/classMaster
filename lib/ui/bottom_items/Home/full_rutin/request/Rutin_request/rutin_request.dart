@@ -12,17 +12,6 @@ import '../../../../../../../models/messageModel.dart';
 //*** Providers  ******   */
 final FullRutinProvider = Provider((ref) => FullRutinrequest());
 
-//..delete rutin ...//
-final deleteRutinProvider =
-    FutureProvider.family.autoDispose<Message?, String>((ref, rutin_id) {
-  return ref.watch(FullRutinProvider).deleteRutin(rutin_id);
-});
-
-// final chackStatusUser_provider = FutureProvider.family
-//     .autoDispose<CheckStatusModel, String>((ref, rutin_id) {
-//   return ref.read(FullRutinProvider).chackStatus(rutin_id);
-// });
-
 class FullRutinrequest {
   //
   //....ChackStatusModel....//
@@ -37,16 +26,12 @@ class FullRutinrequest {
       );
 
       if (response.statusCode == 200) {
-        if (response.body != null) {
-          CheckStatusModel res =
-              CheckStatusModel.fromJson(jsonDecode(response.body));
-          print(res);
-          return res;
-        } else {
-          throw Exception("Response body is null");
-        }
+        CheckStatusModel res =
+            CheckStatusModel.fromJson(jsonDecode(response.body));
+        print("res  ${jsonDecode(response.body)}");
+        return res;
       } else {
-        throw Exception("Failed to load status");
+        throw Exception("Response body is null");
       }
     } catch (e) {
       print(e);
@@ -79,7 +64,7 @@ class FullRutinrequest {
 
   //...... Delete Rutin.....//
 
-  Future<Message?> deleteRutin(rutin_id) async {
+  Future<Message> deleteRutin(rutin_id) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 

@@ -36,12 +36,17 @@ class ChackStatusController
       AsyncValue<CheckStatusModel> res =
           await ref.watch(chackStatusUser_provider(rutinId));
 
-      res.whenData((value) {
-        print("vai ami controller ${value}");
-      });
-
-      state = res;
+      res.when(
+          data: (data) {
+            state = AsyncData(data);
+          },
+          error: (error, stackTrace) {
+            print(error.toString());
+            state = AsyncError(error, stackTrace);
+          },
+          loading: () {});
     } catch (e) {
+      print(e.toString());
       state = throw Exception(e);
     }
   }

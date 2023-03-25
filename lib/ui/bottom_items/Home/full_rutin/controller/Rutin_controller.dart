@@ -25,20 +25,19 @@ class RutinController extends StateNotifier<bool?> {
 
   //... Delete Rutin...//
 
-  void deleteRutin(String rutin_id, context) {
-    var res = context.watch(deleteRutinProvider(rutin_id));
-
-    res.when(
-      data: (data) {},
-      error: (error, stackTrace) => Alart.handleError(context, error),
-      loading: () {},
-    );
+  void deleteRutin(String rutin_id, context) async {
+    try {
+      var res = await FullRutinreques.deleteRutin(rutin_id);
+      Alart.showSnackBar(context, res.message);
+    } catch (e) {
+      Alart.handleError(context, e);
+    }
   }
 
   //......Delete Class....//
 
-  void deleteClass(String classId, BuildContext context) async {
-    final result = await FullRutinreques.deleteClass(context, classId)
+  void deleteClass(String classId, BuildContext context) {
+    FullRutinreques.deleteClass(context, classId)
         .catchError((error) => Alart.handleError(context, error))
         .then((value) => Alart.showSnackBar(context, value.message));
   }

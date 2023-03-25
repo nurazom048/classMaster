@@ -194,7 +194,7 @@ class memberRequest {
   //... see all joi request ..............///
 
   //....sell all request ....//
-  Future<RequestModel> sell_all_request(rutin_id) async {
+  Future<SeeAllRequestModel> sell_all_request(rutin_id) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 
@@ -206,7 +206,8 @@ class memberRequest {
 
       if (response.statusCode == 200) {
         if (response.body != null) {
-          RequestModel res = RequestModel.fromJson(jsonDecode(response.body));
+          SeeAllRequestModel res =
+              SeeAllRequestModel.fromJson(jsonDecode(response.body));
           print(res);
           return res;
         } else {
@@ -279,7 +280,7 @@ final allCaptenProvider =
   return ref.watch(memberRequestProvider).sellAllCaptemReq(rutin_id);
 });
 // see all request provider
-final see_all_request_provider =
-    FutureProvider.family.autoDispose<RequestModel, String>((ref, rutin_id) {
-  return ref.read(memberRequestProvider).sell_all_request(rutin_id);
-});
+// final see_all_request_provider = FutureProvider.family
+//     .autoDispose<SeeAllRequestModel, String>((ref, rutin_id) {
+//   return ref.read(memberRequestProvider).sell_all_request(rutin_id);
+// });

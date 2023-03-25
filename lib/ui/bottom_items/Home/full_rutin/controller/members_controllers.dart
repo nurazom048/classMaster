@@ -1,13 +1,18 @@
 // ignore_for_file: non_constant_identifier_names, invalid_return_type_for_catch_error
 
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/models/membersModels.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/member_request.dart';
 import 'package:table/widgets/Alart.dart';
 
+import '../../../../../models/messageModel.dart';
+
 //** Providers ****/
-final memberRequestController = StateNotifierProvider(
-    (ref) => MemberController(ref.read(memberRequestProvider)));
+final memberControllerProvider =
+    StateNotifierProvider.family<MemberController, bool, String>(
+        (ref, rutinId) =>
+            MemberController(ref.read(memberRequestProvider), rutinId));
 
 final all_members_provider =
     FutureProvider.family.autoDispose<MembersModel?, String>((ref, rutin_id) {
@@ -15,47 +20,40 @@ final all_members_provider =
 });
 
 //** MemberController ****/
-class MemberController extends StateNotifier {
-  memberRequest member_request;
+class MemberController extends StateNotifier<bool> {
+  memberRequest memberRequests;
+  String rutinId;
 
-  MemberController(this.member_request) : super(null);
-
-  //******** addMember   ************** */
-  void addMember(rutinid, username, context) async {
-    final message = await member_request.addMemberReq(rutinid, username);
-
-    Alart.showSnackBar(context, message);
-  }
-
-  //******** remove member   ************** */
-  void removeMember(rutinid, username, context) async {
-    final message = await member_request.removeMemberReq(rutinid, username);
-
-    Alart.showSnackBar(context, message);
-  }
+  MemberController(this.memberRequests, this.rutinId) : super(false);
 
   //******** AddCapten   ************** */
   void AddCapten(rutinid, position, username, context) async {
     final message =
-        await member_request.addCaptensReq(rutinid, position, username);
+        await memberRequests.addCaptensReq(rutinid, position, username);
     //  print("from comtroller : $message");
 
     Alart.showSnackBar(context, message);
   }
 
-  //******** acceptMember   ************** */
-  void acceptMember(rutinId, username, context) async {
-    final res = member_request.acceptRequest(rutinId, username);
+//...  select and remove member .....//
+  void removeMembers(BuildContext context, username) async {
+    Future<Message> message = memberRequests.removeMemberReq(rutinId, username);
 
-    res.catchError((error) => Alart.handleError(context, error));
-    res.then((value) => Alart.showSnackBar(context, value.message));
+    message.catchError((error) => Alart.handleError(context, error));
+    message.then((valu) => Alart.showSnackBar(context, valu.message));
   }
 
-  //******** acceptMember   ************** */
-  void rejectMembers(rutinId, username, context) async {
-    final res = member_request.rejectRequest(rutinId, username);
+  //******** addMember   ************** */
+  void addMember(username, context) async {
+    final message = await memberRequests.addMemberReq(rutinId, username);
 
-    res.catchError((error) => Alart.handleError(context, error));
-    res.then((value) => Alart.showSnackBar(context, value.message));
+    Alart.showSnackBar(context, message);
+  }
+
+  //******** remove member   ************** */
+  void removeMember(username, context) async {
+    final message = await memberRequests.removeMemberReq(rutinId, username);
+
+    Alart.showSnackBar(context, message);
   }
 }

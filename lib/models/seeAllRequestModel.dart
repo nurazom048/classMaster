@@ -1,24 +1,26 @@
 import 'package:table/models/Account_models.dart';
 
-class RequestModel {
-  String? message;
-  int? count;
-  List<AccountModels>? allRequest;
+import 'dart:convert';
 
-  RequestModel({
+SeeAllRequestModel seeAllRequestModelFromJson(String str) =>
+    SeeAllRequestModel.fromJson(json.decode(str));
+
+class SeeAllRequestModel {
+  SeeAllRequestModel({
     required this.message,
-    this.count = 0,
-    this.allRequest = const [],
+    required this.count,
+    required this.listAccounts,
   });
 
-  RequestModel.fromJson(Map<String, dynamic> json) {
-    message = json['message'];
-    count = json['count'] ?? 0;
-    allRequest = [];
-    if (json['allRequest'] != null) {
-      json['allRequest'].forEach((requestData) {
-        allRequest?.add(AccountModels.fromJson(requestData));
-      });
-    }
-  }
+  String message;
+  int count;
+  List<AccountModels> listAccounts;
+
+  factory SeeAllRequestModel.fromJson(Map<String, dynamic> json) =>
+      SeeAllRequestModel(
+        message: json["message"],
+        count: json["count"],
+        listAccounts: List<AccountModels>.from(
+            json["allRequest"].map((x) => AccountModels.fromJson(x))),
+      );
 }
