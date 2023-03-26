@@ -7,18 +7,14 @@ import 'package:http/http.dart' as http;
 import '../../../../../../helper/constant/constant.dart';
 
 //... provider...//
-final priodeRequestProvider = Provider<priodeRequest>((ref) => priodeRequest());
+final priodeRequestProvider = Provider<PriodeRequest>((ref) => PriodeRequest());
 
 //
-final deletePriodeProvider =
-    FutureProvider.autoDispose.family<Message?, String>((ref, priodeId) async {
-  return await ref.read(priodeRequestProvider).deletePriode(priodeId);
-});
 
-class priodeRequest {
+class PriodeRequest {
 //... Delete  Priode request....//
 
-  Future<Message?> deletePriode(String priodeId) async {
+  Future<Either<String, Message>> deletePriode(String priodeId) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
     final url = Uri.parse('${Const.BASE_URl}/rutin/priode/remove/$priodeId');
@@ -34,12 +30,12 @@ class priodeRequest {
       Message messsaeg = Message.fromJson(res);
 
       if (response.statusCode == 200) {
-        return messsaeg;
+        return right(messsaeg);
       } else {
         throw Exception(res);
       }
     } catch (e) {
-      throw Exception(e);
+      return left(e.toString());
     }
   }
 
@@ -70,6 +66,7 @@ class priodeRequest {
         return left(message.message);
       }
     } catch (e) {
+      print("s $e");
       return left(e.toString());
     }
   }

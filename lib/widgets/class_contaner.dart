@@ -1,7 +1,6 @@
-// ignore_for_file: must_be_immutable, camel_case_types, avoid_print, non_constant_identifier_names
+// ignore_for_file: must_be_immutable, camel_case_types, avoid_print, non_constant_identifier_names, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class ClassContainer extends StatelessWidget {
   String? instractorname, roomnum, subCode, classname;
@@ -48,7 +47,6 @@ class ClassContainer extends StatelessWidget {
     } else {
       print("not running ${newStart.hour} - ${newEnd.hour}");
     }
-//... foe Contaner with...//
 
     return Row(
       children: [
@@ -91,7 +89,7 @@ class ClassContainer extends StatelessWidget {
 
   ///.... for changling color....//
   Color getColor(int indexofdate) {
-    return indexofdate % 2 == 0
+    return indexofdate.isOdd
         ? const Color.fromRGBO(207, 213, 234, 1)
         : Colors.black12;
   }
@@ -115,9 +113,7 @@ class ClassContainer extends StatelessWidget {
     }
 
     //
-    if (size.isNegative) {
-      return Container();
-    }
+    if (size.isNegative) return Container();
 
     return Container(
       height: 100,

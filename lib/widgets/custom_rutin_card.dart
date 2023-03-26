@@ -5,26 +5,19 @@ import 'package:intl/intl.dart';
 import 'package:table/widgets/days_container.dart';
 import 'package:table/widgets/text%20and%20buttons/empty.dart';
 import 'package:table/widgets/text%20and%20buttons/mytext.dart';
-
+import '../models/rutins/rutins.dart';
 import '../ui/bottom_items/Home/full_rutin/screen/full_rutin_view.dart';
 
 class CustomRutinCard extends StatelessWidget {
-  String? id;
-  String rutinname;
-  String? name, username, profilePicture;
+  Routine rutinModel;
+
   dynamic onTap, onLongPress;
-  String? last_update;
 
   CustomRutinCard({
     super.key,
-    required this.rutinname,
-    this.name,
-    this.username,
-    this.profilePicture,
+    required this.rutinModel,
     this.onTap,
     this.onLongPress,
-    this.last_update,
-    this.id,
   });
 
   List<Map<String, dynamic>> mypriodelist = [
@@ -67,8 +60,8 @@ class CustomRutinCard extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => FullRutineView(
-                        rutinName: name ?? '',
-                        rutinId: id ?? '',
+                        rutinName: rutinModel.name,
+                        rutinId: rutinModel.id,
                       ),
                     ),
                   ),
@@ -103,7 +96,7 @@ class CustomRutinCard extends StatelessWidget {
                               const MyText("  Last Update",
                                   padding: EdgeInsets.only(top: 5)),
                               const SizedBox(height: 5),
-                              Text("$last_update")
+                              Text(rutinModel.lastSummary.text)
                             ],
                           )
                         ],
@@ -122,7 +115,7 @@ class CustomRutinCard extends StatelessWidget {
                           decoration:
                               const BoxDecoration(color: Colors.black12),
                           child: Center(
-                            child: Text(rutinname,
+                            child: Text(rutinModel.name,
                                 style: const TextStyle(
                                     color: Colors.black, fontSize: 20)),
                           ),
@@ -133,9 +126,9 @@ class CustomRutinCard extends StatelessWidget {
                 ],
               ),
               MiniAccountCard(
-                name: name ?? "",
-                username: username ?? "             ",
-                profilePicture: profilePicture ?? "",
+                name: rutinModel.owner.name,
+                username: rutinModel.owner.username,
+                profilePicture: rutinModel.owner.image ?? "",
               ),
             ],
           ),

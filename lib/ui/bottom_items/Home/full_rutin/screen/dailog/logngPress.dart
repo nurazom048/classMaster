@@ -8,7 +8,7 @@ import '../../../../Add/add_class.dart';
 import '../../controller/Rutin_controller.dart';
 import '../../controller/priodeController.dart';
 
-class LongPressDialog with RutinDialog {
+class LongPressDialog {
 //
   //! **********     long press to class       *********//
   static Future<dynamic> long_press_to_class(BuildContext context, classId) {

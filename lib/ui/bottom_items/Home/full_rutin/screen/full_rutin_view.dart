@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/models/ClsassDetailsModel.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/controller/chack_status_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/dailog/logngPress.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/dailog/rutin_dialog.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summat_screens/summary_screen.dart';
@@ -25,6 +26,8 @@ class FullRutineView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    //! providers
+    final chackStatus = ref.watch(chackStatusControllerProvider(rutinId));
     final rutinDetals = ref.watch(rutins_detalis_provider(rutinId));
     print("RutinId:  $rutinId");
 
@@ -39,7 +42,7 @@ class FullRutineView extends ConsumerWidget {
                 //...... Appbar.......!!
                 rutinDetals.when(
                     data: (valu) {
-                      return CustomTopBar(valu!.rutin_name,
+                      return CustomTopBar("",
                           acction: IconButton(
                               onPressed: () =>
                                   RutinDialog.ChackStatusUser_BottomSheet(
@@ -74,36 +77,34 @@ class FullRutineView extends ConsumerWidget {
                             error: (error, stackTrace) =>
                                 Alart.handleError(context, error),
                             data: (data) {
-                              bool permition = data == null
-                                  ? true
-                                  : data.isOwnwer == true ||
-                                      data.isOwnwer == true;
                               var Classss = data?.classes;
                               var Priodes = data?.priodes ?? [];
                               int priodelenght = Priodes.length;
                               print("data!.cap10.toString()");
-                              print(data?.cap10s.length ?? "no daa");
+
                               return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    ListOfPriodes(Priodes, rutinId, permition),
+                                    ListOfPriodes(Priodes, rutinId, false),
 
                                     //
-                                    ListOfDays(Classss?.sunday ?? [], permition,
+                                    ListOfDays(Classss?.sunday ?? [], false,
                                         priodelenght),
 
-                                    ListOfDays(Classss?.monday ?? [], permition,
+                                    ListOfDays(Classss?.monday ?? [], false,
                                         priodelenght),
-                                    ListOfDays(Classss?.thursday ?? [],
-                                        permition, priodelenght),
-                                    ListOfDays(Classss?.wednesday ?? [],
-                                        permition, priodelenght),
-                                    ListOfDays(Classss?.thursday ?? [],
-                                        permition, priodelenght),
-                                    ListOfDays(Classss?.friday ?? [], permition,
+                                    ListOfDays(Classss?.thursday ?? [], false,
                                         priodelenght),
-                                    ListOfDays(Classss?.saturday ?? [],
-                                        permition, priodelenght),
+                                    ListOfDays(Classss?.wednesday ?? [], false,
+                                        priodelenght),
+                                    ListOfDays(Classss?.thursday ?? [], false,
+                                        priodelenght),
+                                    ListOfDays(Classss?.friday ?? [], false,
+                                        priodelenght),
+                                    ListOfDays(Classss?.saturday ?? [], false,
+                                        priodelenght),
+                                    // ListOfDays(Classss?.saturday ?? [],
+                                    //     false, priodelenght),
                                   ]);
                             },
                           ),
@@ -119,9 +120,8 @@ class FullRutineView extends ConsumerWidget {
                   error: (error, stackTrace) => Text(error.toString()),
                   loading: () => const CircularProgressIndicator(),
                   data: (data) {
-                    print(data?.owener.username);
                     return data != null
-                        ? AccountCardRow(accountData: data.owener)
+                        ? AccountCardRow(accountData: data.owner)
                         : const CircularProgressIndicator();
                   },
                 ),
@@ -167,7 +167,7 @@ class ListOfDays extends StatelessWidget {
                       context, day[index]?.id),
 
                   // ontap to go summay page..//
-                  onTap: permition == true
+                  onTap: false == true
                       ? () => Navigator.push(
                             context,
                             CupertinoPageRoute(

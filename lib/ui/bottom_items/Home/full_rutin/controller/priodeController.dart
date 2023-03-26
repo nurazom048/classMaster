@@ -12,23 +12,28 @@ final priodeController = StateNotifierProvider.autoDispose(
 
 //
 //...class....//
-class priodeClassController extends StateNotifier<bool?> {
-  priodeRequest priodereq;
+class priodeClassController extends StateNotifier<bool> {
+  PriodeRequest priodereq;
 
-  priodeClassController(this.priodereq) : super(null);
+  priodeClassController(this.priodereq) : super(false);
 
   //....deletePriode
-  void deletePriode(
-      WidgetRef ref, BuildContext context, String priodeId, String rutinId) {
-    var deleteRes = ref.watch(deletePriodeProvider(priodeId));
+  void deletePriode(WidgetRef ref, BuildContext context, String priodeId,
+      String rutinId) async {
+    var deleteRes =
+        await ref.read(priodeRequestProvider).deletePriode(priodeId);
 
-    deleteRes.when(
-      data: (data) {
-        ref.refresh(rutins_detalis_provider(rutinId));
-        return Alart.showSnackBar(context, data?.message);
+    deleteRes.fold(
+      (l) {
+        state = false;
+        return Alart.errorAlartDilog(context, l);
       },
-      error: (error, stackTrace) => Alart.handleError(context, error),
-      loading: () {},
+      (r) {
+        ref.refresh(rutins_detalis_provider(rutinId));
+        state = false;
+
+        Alart.showSnackBar(context, r.message);
+      },
     );
   }
 
@@ -47,6 +52,7 @@ class priodeClassController extends StateNotifier<bool?> {
         return Alart.errorAlartDilog(context, l);
       },
       (r) {
+        ref.refresh(rutins_detalis_provider(rutinId));
         state = false;
 
         Alart.showSnackBar(context, r.message);

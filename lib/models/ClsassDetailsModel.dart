@@ -6,47 +6,27 @@ import 'package:table/models/Account_models.dart';
 ClassDetailsModel classDetailsModelFromJson(String str) =>
     ClassDetailsModel.fromJson(json.decode(str));
 
-String classDetailsModelToJson(ClassDetailsModel data) =>
-    json.encode(data.toJson());
-
 class ClassDetailsModel {
   ClassDetailsModel({
+    required this.rutinName,
     required this.priodes,
     required this.classes,
-    required this.owener,
-    required this.rutin_name,
-    required this.cap10s,
-    this.isOwnwer = false,
-    this.isCapten = false,
-    this.isSaved = false,
+    required this.owner,
   });
-  String rutin_name;
+
+  String rutinName;
   List<Priode> priodes;
   Classes classes;
-  AccountModels owener;
-  List<AccountModels> cap10s;
-  bool? isOwnwer;
-  bool? isCapten;
-  bool? isSaved;
+  AccountModels owner;
 
   factory ClassDetailsModel.fromJson(Map<String, dynamic> json) =>
       ClassDetailsModel(
+        rutinName: json["rutin_name"],
         priodes:
             List<Priode>.from(json["priodes"].map((x) => Priode.fromJson(x))),
         classes: Classes.fromJson(json["Classes"]),
-        owener: AccountModels.fromJson(json["owner"]),
-        rutin_name: json["rutin_name"],
-        cap10s: List<AccountModels>.from(
-            json["finalCap10List"].map((x) => AccountModels.fromJson(x))),
-        isOwnwer: json["isOwnwer"],
-        isCapten: json["isCapten"],
-        isSaved: json["isSaved"],
+        owner: AccountModels.fromJson(json["owner"]),
       );
-
-  Map<String, dynamic> toJson() => {
-        "priodes": List<dynamic>.from(priodes.map((x) => x.toJson())),
-        "Classes": classes.toJson(),
-      };
 }
 
 class Classes {
@@ -60,13 +40,13 @@ class Classes {
     required this.saturday,
   });
 
-  List<Day?> sunday;
-  List<Day?> monday;
-  List<Day?> tuesday;
-  List<Day?> wednesday;
-  List<Day?> thursday;
-  List<Day?> friday;
-  List<Day?> saturday;
+  List<Day> sunday;
+  List<Day> monday;
+  List<Day> tuesday;
+  List<Day> wednesday;
+  List<Day> thursday;
+  List<Day> friday;
+  List<Day> saturday;
 
   factory Classes.fromJson(Map<String, dynamic> json) => Classes(
         sunday: List<Day>.from(json["Sunday"].map((x) => Day.fromJson(x))),
@@ -75,19 +55,9 @@ class Classes {
         wednesday:
             List<Day>.from(json["Wednesday"].map((x) => Day.fromJson(x))),
         thursday: List<Day>.from(json["Thursday"].map((x) => Day.fromJson(x))),
-        friday: List<Day>.from(json["Friday"].map((x) => x)),
+        friday: List<Day>.from(json["Friday"].map((x) => Day.fromJson(x))),
         saturday: List<Day>.from(json["Saturday"].map((x) => Day.fromJson(x))),
       );
-
-  Map<String, dynamic> toJson() => {
-        "Sunday": List<dynamic>.from(sunday.map((x) => x?.toJson())),
-        "Monday": List<dynamic>.from(monday.map((x) => x?.toJson())),
-        "Tuesday": List<dynamic>.from(tuesday.map((x) => x?.toJson())),
-        "Wednesday": List<dynamic>.from(wednesday.map((x) => x?.toJson())),
-        "Thursday": List<dynamic>.from(thursday.map((x) => x?.toJson())),
-        "Friday": List<dynamic>.from(friday.map((x) => x)),
-        "Saturday": List<dynamic>.from(saturday.map((x) => x?.toJson())),
-      };
 }
 
 class Day {
@@ -130,20 +100,6 @@ class Day {
         endTime: DateTime.parse(json["end_time"]),
         hasClass: json["has_class"],
       );
-
-  Map<String, dynamic> toJson() => {
-        "_id": id,
-        "name": name,
-        "instuctor_name": instuctorName,
-        "room": room,
-        "subjectcode": subjectcode,
-        "start": start,
-        "end": end,
-        "weekday": weekday,
-        "start_time": startTime.toIso8601String(),
-        "end_time": endTime.toIso8601String(),
-        "has_class": hasClass,
-      };
 }
 
 class Priode {

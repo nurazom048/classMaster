@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/models/Account_models.dart';
-import 'package:table/models/rutineOverviewModel.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/full_rutin_view.dart';
 import 'package:table/ui/bottom_items/search/search_request/search_request.dart';
 import 'package:table/widgets/AccoundCardRow.dart';
@@ -11,6 +10,7 @@ import 'package:table/widgets/custom_rutin_card.dart';
 import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/widgets/searchBarCustom.dart';
 import '../../../../core/dialogs/Alart_dialogs.dart';
+import '../../../../models/rutins/rutins.dart';
 
 final Serarch_String_Provider = StateProvider<String>((ref) => "");
 
@@ -103,14 +103,16 @@ class _SearchPAgeState extends State<SearchPAge> with TickerProviderStateMixin {
                       // print(data["rutins"][0]["name"].toString());
                       var _serchRutin = data["rutins"][index];
 
-                      var listOfrutins = RutinOverviewModel.fromJson(data);
+                      var listOfrutins = Routine.fromJson(data);
                       // print("listOfrutins" +
                       //     listOfrutins.rutins[0].name.toString());
                       return CustomRutinCard(
-                        rutinname: _serchRutin["name"],
-                        // profilePicture: seach_result[index]["ownerid"]["image"],
-                        name: _serchRutin["name"],
-                        username: _serchRutin["_id"],
+                        rutinModel: listOfrutins,
+
+                        // rutinname: _serchRutin["name"],
+                        // // profilePicture: seach_result[index]["ownerid"]["image"],
+                        // name: _serchRutin["name"],
+                        // username: _serchRutin["_id"],
 
                         onTap: () => Navigator.push(
                           context,

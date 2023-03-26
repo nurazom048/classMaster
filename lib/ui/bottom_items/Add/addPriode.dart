@@ -64,7 +64,7 @@ class _AppPriodePageState extends State<AppPriodePage> {
 
                       return Align(
                         alignment: Alignment.center,
-                        child: isLoding != null && isLoding == true
+                        child: (isLoding != null && isLoding == true)
                             ? CupertinoButton(
                                 onPressed: () {},
                                 child: const CircularProgressIndicator())

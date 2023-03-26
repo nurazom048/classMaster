@@ -5,16 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:table/helper/constant/constant.dart';
-import 'package:table/models/listOfSaveRutin.dart';
-import 'package:table/models/rutins.dart';
+import 'package:table/models/rutins/listOfSaveRutin.dart';
+import '../../../../models/rutins/jponed_rutins_model.dart';
 
 //!.. Provider ...!//
 
 final home_req_provider = Provider<HomeReq>((ref) => HomeReq());
 
-// final all_rutins_provider = FutureProvider<List>((ref) {
-//   return ref.read(home_req_provider).myAllRutin();
-// });
 final save_rutins_provider =
     FutureProvider.family<ListOfSaveRutins, int>((ref, page) {
   return ref.read(home_req_provider).savedRutins(pages: page);
@@ -25,7 +22,7 @@ final uploaded_rutin_provider =
 });
 
 final joined_rutin_provider =
-    FutureProvider.family<RoutinesResponse, int>((ref, pages) {
+    FutureProvider.family<JoinRutinsModel, int>((ref, pages) {
   return ref.read(home_req_provider).joinedRutinsReq(pages: pages);
 });
 
@@ -84,7 +81,7 @@ class HomeReq {
   }
 
   //********    joinedRutinsReq      *************/
-  Future<RoutinesResponse> joinedRutinsReq({int pages = 1}) async {
+  Future<JoinRutinsModel> joinedRutinsReq({int pages = 1}) async {
     String queryPage = "?page=$pages}";
     String? username = "";
     final prefs = await SharedPreferences.getInstance();
@@ -94,13 +91,13 @@ class HomeReq {
 
     //.. Request send
     try {
-      final response = await http.get(url, headers: headers);
+      final response = await http.post(url, headers: headers);
 
       if (response.statusCode == 200) {
         var res = json.decode(response.body);
         print(res);
 
-        return RoutinesResponse.fromJson(res);
+        return JoinRutinsModel.fromJson(res);
       } else {
         throw Exception("Failed to load saved routines");
       }

@@ -1,60 +1,51 @@
-// ignore_for_file: unused_local_variable, non_constant_identifier_names, avoid_print, no_leading_underscores_for_local_identifiers
+// ignore_for_file: unused_local_variable, non_constant_identifier_names, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/screen/full_rutin_view.dart';
 import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
 import 'package:table/widgets/custom_rutin_card.dart';
-
 import '../../core/dialogs/Alart_dialogs.dart';
 
-final _SaveRutinPageProvider = StateProvider((ref) => 1);
+final pageProvider = StateProvider((ref) => 1);
 
-class Grid_save_rutin extends StatefulWidget {
-  const Grid_save_rutin({super.key});
+class gridJoinRutins extends StatefulWidget {
+  const gridJoinRutins({super.key});
 
   @override
-  State<Grid_save_rutin> createState() => _GridViewRutinState();
+  State<gridJoinRutins> createState() => _GridViewRutinState();
 }
 
-class _GridViewRutinState extends State<Grid_save_rutin> {
+class _GridViewRutinState extends State<gridJoinRutins> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
       body: Consumer(builder: (context, ref, _) {
-        final page = ref.read(_SaveRutinPageProvider);
+        //! providers
+        final page = ref.read(pageProvider);
+        final joined_rutin =
+            ref.watch(joined_rutin_provider(ref.watch(pageProvider)));
 
-        final _SaveRutins =
-            ref.watch(save_rutins_provider(ref.watch(_SaveRutinPageProvider)));
-
-        return _SaveRutins.when(
+        return joined_rutin.when(
           data: (data) {
-            bool noNextPage =
-                data.totalPages == ref.read(_SaveRutinPageProvider);
-            bool noPreviusPage = 1 >= ref.read(_SaveRutinPageProvider);
+            bool noNextPage = data.totalPages == ref.read(pageProvider);
+            bool noPreviusPage = 1 >= ref.read(pageProvider);
             return Column(
               children: [
                 Expanded(
                   flex: 20,
                   child: GridView.builder(
-                    itemCount: data.savedRoutines.length,
+                    itemCount: data.routines.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2, mainAxisExtent: 272),
                     itemBuilder: (context, index) {
-                      bool isNotlast = index - 1 != data.savedRoutines.length;
+                      bool isNotlast = index - 1 != data.routines.length;
+                      var indivisuRutin = data.routines[index];
+
+                      //!
                       return CustomRutinCard(
-                        rutinModel: data.savedRoutines[index],
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => FullRutineView(
-                              rutinName: data.savedRoutines[index].name,
-                              rutinId: data.savedRoutines[index].id,
-                            ),
-                          ),
-                        ),
+                        rutinModel: data.routines[index],
                       );
                     },
                   ),
@@ -75,10 +66,8 @@ class _GridViewRutinState extends State<Grid_save_rutin> {
                           onPressed: noPreviusPage
                               ? () {}
                               : () {
-                                  print(ref.watch(_SaveRutinPageProvider));
-                                  ref
-                                      .read(_SaveRutinPageProvider.notifier)
-                                      .state--;
+                                  print(ref.watch(pageProvider));
+                                  ref.read(pageProvider.notifier).state--;
                                 },
                           child: Text("previus",
                               style: TextStyle(
@@ -92,10 +81,8 @@ class _GridViewRutinState extends State<Grid_save_rutin> {
                           onPressed: noNextPage
                               ? () {}
                               : () {
-                                  print(ref.read(_SaveRutinPageProvider));
-                                  ref
-                                      .read(_SaveRutinPageProvider.notifier)
-                                      .state++;
+                                  print(ref.read(pageProvider));
+                                  ref.read(pageProvider.notifier).state++;
                                 },
                           child: Text("next",
                               style: TextStyle(

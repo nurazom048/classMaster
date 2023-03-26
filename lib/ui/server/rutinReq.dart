@@ -29,12 +29,12 @@ class Rutin_Req {
       //.. 1 request ...//
       final response =
           await http.post(url, headers: {'Authorization': 'Bearer $getToken'});
+      var res = json.decode(response.body);
+      print(res);
 
       // print("rutins_class_and_priode" + response.body);
 
       if (response.statusCode == 200) {
-        var res = json.decode(response.body);
-
         var classDetalis = ClassDetailsModel.fromJson(res);
 
         return classDetalis;
@@ -42,6 +42,7 @@ class Rutin_Req {
         throw Exception('Failed to load data');
       }
     } catch (e) {
+      print(e.toString());
       throw Exception(e);
     }
   }

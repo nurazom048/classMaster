@@ -1,10 +1,13 @@
 // ignore_for_file: sort_child_properties_last, avoid_print, prefer_typing_uninitialized_variables, must_be_immutable, unnecessary_string_interpolations, sized_box_for_whitespace
 import 'dart:convert';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/helper/constant/constant.dart';
+import 'package:table/models/class_model.dart';
+import 'package:table/ui/bottom_items/Add/request/class_request.dart';
 import 'package:table/widgets/MyTextFields.dart';
 import 'package:table/widgets/select_time.dart';
 import '../../../core/dialogs/Alart_dialogs.dart';
@@ -36,8 +39,9 @@ final _endPeriodController = TextEditingController();
 class _AddClassState extends State<AddClass> {
   final fromKey = GlobalKey<FormState>();
 
-  late DateTime startTime;
-  late DateTime endTime;
+  late DateTime startTime = DateTime.now();
+  late DateTime endTime = DateTime.now().add(Duration(minutes: 30));
+
   bool show = false;
   int _selectedDay = 1;
   //.. just for ui
@@ -45,48 +49,6 @@ class _AddClassState extends State<AddClass> {
   late DateTime endTimDemo = DateTime.now();
 
   var message;
-  // Add class
-
-  Future<void> addClass(context) async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final String? getToken = prefs.getString('Token');
-
-      final response = await http.post(
-          Uri.parse('${Const.BASE_URl}/class/${widget.rutinId}/addclass/'),
-          body: {
-            "name": _className.text,
-            "instuctor_name": _instructorController.text,
-            "room": _roomController.text,
-            "subjectcode": _subCodeController.text,
-            "start": _startPeriodController.text,
-            "end": _endPeriodController.text,
-            "has_class": "has_class",
-            "weekday": _selectedDay.toString(),
-            "start_time": "${startTime.toIso8601String()}Z",
-            "end_time": "${endTime.toIso8601String()}Z",
-          },
-          headers: {
-            'Authorization': 'Bearer $getToken'
-          });
-      message = json.decode(response.body)["message"];
-      print(message);
-
-      if (response.statusCode == 200) {
-        //.. responce
-        final res = json.decode(response.body);
-        Navigator.pop(context);
-
-        //print response
-        print("rutin created successfully");
-        print(res);
-      } else {
-        Alart.errorAlartDilog(context, message);
-      }
-    } catch (e) {
-      Alart.handleError(context, e);
-    }
-  }
 
   List sevendays = [
     "Sunday",
@@ -233,6 +195,13 @@ class _AddClassState extends State<AddClass> {
 
   @override
   Widget build(BuildContext context) {
+    int startPrInt = _startPeriodController.text.isNotEmpty
+        ? int.parse(_startPeriodController.text)
+        : 0; // or any other default value you want to use
+
+    int endPrint = _endPeriodController.text.isNotEmpty
+        ? int.parse(_endPeriodController.text)
+        : 0; //
     return Scaffold(
       appBar: AppBar(title: Text(sevendays[_selectedDay - 1].toString())),
       body: SingleChildScrollView(
@@ -361,6 +330,25 @@ class _AddClassState extends State<AddClass> {
             const SizedBox(height: 30),
             //.............. Submit botton ..............//
 
+            TextButton(
+                onPressed: () {
+                  ClassRequest().addClass(
+                      widget.rutinId,
+                      context,
+                      ClassModel(
+                        className: _className.text,
+                        instructorName: _instructorController.text,
+                        roomNumber: _roomController.text,
+                        subjectCode: _subCodeController.text,
+                        startingPeriod: startPrInt,
+                        endingPeriod: endPrint,
+                        weekday: _selectedDay,
+                        startTime: startTime,
+                        endTime: endTime,
+                      ));
+                },
+                child: Text("Submit")),
+
             Align(
               alignment: Alignment.center,
               child: CupertinoButton(
@@ -368,13 +356,32 @@ class _AddClassState extends State<AddClass> {
                   color: Colors.blue,
                   borderRadius: BorderRadius.circular(7),
                   onPressed: () {
-                    print("ontap submit btn");
-                    widget.isEdit == true
-                        ? editClass(context)
-                        : addClass(context);
-                    if (message != null) {
-                      Alart.errorAlartDilog(context, message);
+                    print("$startPrInt , $endPrint");
+                    if (startPrInt == 0 || endPrint == 0) {
+                      Alart.errorAlartDilog(context, "null");
                     }
+
+                    print("ontap submit btn");
+                    //widget.isEdit == true
+                    // ? editClass(context)
+                    ClassRequest().addClass(
+                        widget.rutinId,
+                        context,
+                        ClassModel(
+                          className: _className.text,
+                          instructorName: _instructorController.text,
+                          roomNumber: _roomController.text,
+                          subjectCode: _subCodeController.text,
+                          startingPeriod:
+                              int.parse(_startPeriodController.text),
+                          endingPeriod: int.parse(_endPeriodController.text),
+                          weekday: _selectedDay,
+                          startTime: startTime,
+                          endTime: endTime,
+                        ));
+                    // if (message != null) {
+                    //   Alart.errorAlartDilog(context, message);
+                    // }
                     // final isvalidfrom = fromKey.currentState!.validate();
                     // if (isvalidfrom) {
 

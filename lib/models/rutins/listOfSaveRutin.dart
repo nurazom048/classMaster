@@ -1,6 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:table/models/rutinOverviewModel.dart';
+import 'rutins.dart';
 
 class ListOfSaveRutins {
   ListOfSaveRutins({
@@ -9,13 +9,13 @@ class ListOfSaveRutins {
     this.totalPages,
   });
 
-  List<RutinOverviewMode> savedRoutines;
+  List<Routine> savedRoutines;
   int? currentPage = 1;
   int? totalPages = 1;
 
   factory ListOfSaveRutins.fromJson(Map<String, dynamic> json) {
-    List<RutinOverviewMode> routines = List<RutinOverviewMode>.from(
-        json["savedRoutines"].map((x) => RutinOverviewMode.fromJson(x)));
+    List<Routine> routines = List<Routine>.from(
+        json["savedRoutines"].map((x) => Routine.fromJson(x)));
 
     //
     return ListOfSaveRutins(
@@ -24,36 +24,27 @@ class ListOfSaveRutins {
       totalPages: json["totalPages"],
     );
   }
-
-  Map<String, dynamic> toJson() => {
-        "savedRoutines":
-            List<dynamic>.from(savedRoutines.map((x) => x.toJson())),
-      };
 }
 
 //
 class ListOfUploedRutins {
   ListOfUploedRutins({
-    required this.uploaded_rutin,
+    required this.rutins,
     this.currentPage,
     this.totalPages,
   });
 
-  List<RutinOverviewMode> uploaded_rutin;
+  List<Routine> rutins;
   int? currentPage;
   int? totalPages;
 
   factory ListOfUploedRutins.fromJson(Map<String, dynamic> json) {
-    List<RutinOverviewMode> routines = List<RutinOverviewMode>.from(
-        json["rutins"].map((x) => RutinOverviewMode.fromJson(x)));
+    List<Routine> routines =
+        List<Routine>.from(json["rutins"].map((x) => Routine.fromJson(x)));
     return ListOfUploedRutins(
-      uploaded_rutin: routines,
+      rutins: routines,
       currentPage: json["currentPage"],
       totalPages: json["totalPages"],
     );
   }
-
-  Map<String, dynamic> toJson() => {
-        "rutins": List<dynamic>.from(uploaded_rutin.map((x) => x.toJson())),
-      };
 }

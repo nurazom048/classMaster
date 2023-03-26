@@ -3,20 +3,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/models/Account_models.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/controller/chack_status_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/widgets/seeAllCaotensList.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/widgets/status_row.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/see_all_members.dart';
 import 'package:table/ui/server/rutinReq.dart';
-import 'package:table/widgets/AccoundCardRow.dart';
-import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/TopBar.dart';
 import 'package:table/widgets/hedding_row.dart';
-import 'package:table/widgets/progress_indicator.dart';
-import 'package:table/widgets/text%20and%20buttons/squareButton.dart';
-
-import '../../../../../core/dialogs/Alart_dialogs.dart';
 
 class ViewMorepage extends ConsumerWidget {
   final String rutinId;
@@ -78,21 +70,21 @@ class ViewMorepage extends ConsumerWidget {
                 },
               ),
 
-              rutinInfo.when(
-                  data: (data) {
-                    List<AccountModels> cap10 = data?.cap10s ?? [];
-                    return Container(
-                      height: 210,
-                      child: ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: 2,
-                          itemBuilder: (context, index) =>
-                              AccountCardRow(accountData: cap10[index])),
-                    );
-                  },
-                  error: (error, stackTrace) =>
-                      Alart.handleError(context, error),
-                  loading: () => const Progressindicator()),
+              // rutinInfo.when(
+              //     data: (data) {
+              //       List<AccountModels> cap10 = data?.cap10s ?? [];
+              //       return Container(
+              //         height: 210,
+              //         child: ListView.builder(
+              //             physics: const NeverScrollableScrollPhysics(),
+              //             itemCount: 2,
+              //             itemBuilder: (context, index) =>
+              //                 AccountCardRow(accountData: cap10[index])),
+              //       );
+              //     },
+              //     error: (error, stackTrace) =>
+              //         Alart.handleError(context, error),
+              //     loading: () => const Progressindicator()),
 
               //... Members...//
               HeddingRow(
@@ -108,21 +100,21 @@ class ViewMorepage extends ConsumerWidget {
                 },
               ),
 
-              rutinInfo.when(
-                  data: (data) {
-                    List<AccountModels> cap10 = data?.cap10s ?? [];
-                    return Container(
-                      height: 210,
-                      child: ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: 2,
-                          itemBuilder: (context, index) =>
-                              AccountCardRow(accountData: cap10[index])),
-                    );
-                  },
-                  error: (error, stackTrace) =>
-                      Alart.handleError(context, error),
-                  loading: () => const Progressindicator()),
+              // rutinInfo.when(
+              //     data: (data) {
+              //       List<AccountModels> cap10 = data?.cap10s ?? [];
+              //       return Container(
+              //         height: 210,
+              //         child: ListView.builder(
+              //             physics: const NeverScrollableScrollPhysics(),
+              //             itemCount: 2,
+              //             itemBuilder: (context, index) =>
+              //                 AccountCardRow(accountData: cap10[index])),
+              //       );
+              //     },
+              //     error: (error, stackTrace) =>
+              //         Alart.handleError(context, error),
+              //     loading: () => const Progressindicator()),
             ],
           ),
         ),
