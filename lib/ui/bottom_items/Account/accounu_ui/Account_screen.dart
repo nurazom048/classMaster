@@ -6,9 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Account/account_request/account_request.dart';
 import 'package:table/ui/bottom_items/Account/accounu_ui/eddit_account.dart';
 import 'package:table/widgets/AccountCard.dart';
-import 'package:table/widgets/AppBarCustom.dart';
 
 import '../../../../core/dialogs/Alart_dialogs.dart';
+import '../../../../core/component/component_improts.dart';
 
 class AccountScreen extends StatefulWidget {
   final String? accountUsername;

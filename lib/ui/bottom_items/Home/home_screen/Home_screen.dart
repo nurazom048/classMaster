@@ -18,7 +18,7 @@ import 'dailog/create_rutin-dialog.dart';
 final currentPageProvider = StateProvider((ref) => 1);
 
 class HomeScreen extends StatelessWidget {
-  HomeScreen({Key? key});
+  const HomeScreen({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +31,11 @@ class HomeScreen extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 60),
           physics: const BouncingScrollPhysics(),
           child: Consumer(builder: (context, ref, _) {
-            //
+            //! provider
             final pages = ref.watch(currentPageProvider);
             final saveRutin = ref.watch(save_rutins_provider(1));
             final uploaded_rutin = ref.watch(uploaded_rutin_provider(pages));
             final joined_rutin = ref.watch(joined_rutin_provider(pages));
-
-            //
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,20 +91,7 @@ class HomeScreen extends StatelessWidget {
 
                                         return UploadedRutins.isNotEmpty
                                             ? CustomRutinCard(
-                                                rutinModel: data.rutins[index],
-                                                // id: uploadedRutinidex.id,
-                                                // rutinname:
-                                                //     uploadedRutinidex.name,
-                                                // profilePicture:
-                                                //     uploadedRutinidex
-                                                //         .ownerid.image,
-                                                // name: data
-                                                //     .rutins[index].ownerid.name,
-                                                // username: uploadedRutinidex
-                                                //     .ownerid.username,
-                                                // last_update: uploadedRutinidex
-                                                //     .lastSummary.text,
-                                              )
+                                                rutinModel: data.rutins[index])
                                             : const Text(
                                                 "You Dont Have any Rutin created");
                                       },
@@ -144,24 +129,10 @@ class HomeScreen extends StatelessWidget {
                                     child: ListView.builder(
                                       scrollDirection: Axis.horizontal,
                                       itemCount: length,
-                                      itemBuilder: (context, index) {
-                                        var saveRutinidex = saveRutins[index];
-
+                                      itemBuilder: (context, i) {
                                         return saveRutins.isNotEmpty
                                             ? CustomRutinCard(
-                                                rutinModel:
-                                                    data.savedRoutines[index],
-                                                // id: saveRutinidex.id,
-                                                // rutinname: saveRutinidex.name,
-                                                // profilePicture:
-                                                //     saveRutinidex.ownerid.image,
-                                                // name:
-                                                //     saveRutinidex.ownerid.name,
-                                                // username: saveRutinidex
-                                                //     .ownerid.username,
-                                                // last_update: saveRutinidex
-                                                // .lastSummary.text,
-                                              )
+                                                rutinModel: saveRutins[i])
                                             : const Text(
                                                 "You Dont Have any Rutin created");
                                       },
@@ -204,18 +175,8 @@ class HomeScreen extends StatelessWidget {
 
                                         return joinedRutins.isNotEmpty
                                             ? CustomRutinCard(
-                                                rutinModel: data.routines[
-                                                    index], // id: Rutinidex.id,
-                                                // rutinname: Rutinidex.name,
-                                                // profilePicture:
-                                                //     Rutinidex.owner.image,
-                                                // name: data
-                                                //     .routines[index].owner.name,
-                                                // username:
-                                                //     Rutinidex.owner.username,
-                                                // last_update:
-                                                //     Rutinidex.lastSummary.text,
-                                              )
+                                                rutinModel:
+                                                    data.routines[index])
                                             : const Text(
                                                 "You Dont Have any Rutin created");
                                       },

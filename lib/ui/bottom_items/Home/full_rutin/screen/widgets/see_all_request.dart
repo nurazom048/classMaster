@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/see_all_req_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/component/request_account_card.dart';
-
+import '../../../../../../core/component/component_improts.dart';
 import '../../../../../../core/dialogs/Alart_dialogs.dart';
 
 class SeeAllRequest extends ConsumerWidget {
-  String rutin_id;
+  final String rutin_id;
   final Function(String?) onRejectUsername;
   final Function(String?) acceptUsername;
 
-  SeeAllRequest(
+  const SeeAllRequest(
       {super.key,
       required this.rutin_id,
       required this.onRejectUsername,
@@ -25,13 +25,7 @@ class SeeAllRequest extends ConsumerWidget {
       child: Scaffold(
         body: Column(
           children: [
-            Expanded(
-              flex: 2,
-              child: Container(
-                alignment: Alignment.centerLeft,
-                child: CloseButton(onPressed: () => Navigator.pop(context)),
-              ),
-            ),
+            CrossBar(context),
             Expanded(
               flex: 38,
               child: Container(
