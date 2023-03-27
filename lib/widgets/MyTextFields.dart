@@ -4,10 +4,12 @@ import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 class MyTextField extends StatelessWidget {
   String name;
   var controller;
+  dynamic validate;
 
   MyTextField({
     required this.name,
     required this.controller,
+    this.validate,
     super.key,
   });
 
@@ -28,10 +30,7 @@ class MyTextField extends StatelessWidget {
               ),
             ),
           ),
-          validator: (value) {
-            if (value!.isEmpty) return "$name is required";
-            return null;
-          },
+          validator: validate,
         ),
       ],
     );

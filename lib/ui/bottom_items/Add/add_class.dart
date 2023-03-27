@@ -27,17 +27,15 @@ class AddClass extends StatefulWidget {
   State<AddClass> createState() => _AddClassState();
 }
 
-//
-final _className = TextEditingController();
-final _instructorController = TextEditingController();
-final _roomController = TextEditingController();
-final _subCodeController = TextEditingController();
-final _startPeriodController = TextEditingController();
-final _endPeriodController = TextEditingController();
-
 class _AddClassState extends State<AddClass> {
-  final fromKey = GlobalKey<FormState>();
-
+  //
+  final _className = TextEditingController();
+  final _instructorController = TextEditingController();
+  final _roomController = TextEditingController();
+  final _subCodeController = TextEditingController();
+  final _startPeriodController = TextEditingController();
+  final _endPeriodController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   late DateTime startTime = DateTime.now();
   late DateTime endTime = DateTime.now().add(Duration(minutes: 30));
 
