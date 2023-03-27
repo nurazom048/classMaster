@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table/ui/bottom_items/Add/addClassScreen.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/chack_status_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/see_all_req_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/dailog/logngPress.dart';
@@ -146,7 +147,7 @@ class RutinDialog extends LongPressDialog {
                                       CupertinoPageRoute(
                                         fullscreenDialog: true,
                                         builder: (context) =>
-                                            AddClass(rutinId: rutinId),
+                                            AddClassSceen(rutinId: rutinId),
                                       ),
                                     ),
                                   ),
