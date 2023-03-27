@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/component/component_improts.dart';
 import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
 import 'package:table/widgets/custom_rutin_card.dart';
+import 'package:table/widgets/progress_indicator.dart';
 import '../../core/dialogs/Alart_dialogs.dart';
 
 final pageProvider = StateProvider((ref) => 1);
@@ -100,7 +101,8 @@ class _GridViewRutinState extends State<GridViewRutin> {
               );
             },
             error: (error, stackTrace) => Alart.handleError(context, error),
-            loading: () => const Text("loading"),
+            loading: () => Container(
+                alignment: Alignment.center, child: const Progressindicator()),
 
             //
           );

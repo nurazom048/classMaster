@@ -6,6 +6,7 @@ import 'package:table/core/component/component_improts.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/full_rutin_view.dart';
 import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
 import 'package:table/widgets/custom_rutin_card.dart';
+import 'package:table/widgets/progress_indicator.dart';
 
 import '../../core/dialogs/Alart_dialogs.dart';
 
@@ -114,7 +115,8 @@ class _GridViewRutinState extends State<Grid_save_rutin> {
               );
             },
             error: (error, stackTrace) => Alart.handleError(context, error),
-            loading: () => const Text("loading"),
+            loading: () => Container(
+                alignment: Alignment.center, child: const Progressindicator()),
 
             //
           );

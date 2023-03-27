@@ -1,6 +1,5 @@
 // ignore_for_file: sort_child_properties_last, avoid_print, prefer_typing_uninitialized_variables, must_be_immutable, unnecessary_string_interpolations, sized_box_for_whitespace
 import 'dart:convert';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +47,7 @@ class _AddClassState extends State<AddClass> {
   late DateTime startTimeDemo = DateTime.now();
   late DateTime endTimDemo = DateTime.now();
 
-  var message;
+  String? message;
 
   List sevendays = [
     "Sunday",
@@ -206,84 +205,115 @@ class _AddClassState extends State<AddClass> {
       appBar: AppBar(title: Text(sevendays[_selectedDay - 1].toString())),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            MyText("Select Day"),
+        child: Builder(builder: (context) {
+          // final isvalidfrom = fromKey.currentState!.validate();
 
-            DropdownButtonFormField(
-              value: _selectedDay,
-              items: _dayItems,
-              onChanged: (value) => setState(() => _selectedDay = value!),
-              decoration: InputDecoration(
-                hintText: "Select a day",
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(7),
-                    borderSide: const BorderSide(color: Colors.black12)),
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const MyText("Select Day"),
+
+              DropdownButtonFormField(
+                value: _selectedDay,
+                items: _dayItems,
+                onChanged: (value) => setState(() => _selectedDay = value!),
+                decoration: InputDecoration(
+                  hintText: "Select a day",
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(7),
+                      borderSide: const BorderSide(color: Colors.black12)),
+                ),
               ),
-            ),
 
-            ///...Class name
-            MyTextField(
-              name: "Class name",
-              controller: _className,
-            ),
+              ///...Class name
+              MyTextField(
+                name: "Class name",
+                controller: _className,
+              ),
 
-            ///...Instructor name
-            MyTextField(
-              name: "Instructor namer",
-              controller: _instructorController,
-            ),
+              ///...Instructor name
+              MyTextField(
+                name: "Instructor namer",
+                controller: _instructorController,
+              ),
 
-            ///.... room number
-            MyTextField(
-              name: "room number",
-              controller: _roomController,
-            ),
-            MyTextField(
-              name: "sub_code",
-              controller: _subCodeController,
-            ),
+              ///.... room number
+              MyTextField(
+                name: "room number",
+                controller: _roomController,
+              ),
+              MyTextField(
+                name: "sub_code",
+                controller: _subCodeController,
+              ),
 
-            //
+              //
 
-            MyText(" Start and end time "),
+              const MyText(" Start and end time "),
 
-            Row(
-              children: [
-                SelectTime(
-                  width: MediaQuery.of(context).size.width / 2.1,
-                  time_text: "start_time",
-                  time: startTimeDemo,
-                  show: show,
-                  onTap: () => _selectStartTime(),
-                ),
-                const SizedBox(width: 5),
-                Expanded(
-                  child: SelectTime(
+              Row(
+                children: [
+                  SelectTime(
                     width: MediaQuery.of(context).size.width / 2.1,
-                    time_text: "end time",
-                    time: endTimDemo,
+                    time_text: "start_time",
+                    time: startTimeDemo,
                     show: show,
-                    onTap: _selectEndTime,
+                    onTap: () => _selectStartTime(),
                   ),
-                ),
-              ],
-            ),
+                  const SizedBox(width: 5),
+                  Expanded(
+                    child: SelectTime(
+                      width: MediaQuery.of(context).size.width / 2.1,
+                      time_text: "end time",
+                      time: endTimDemo,
+                      show: show,
+                      onTap: _selectEndTime,
+                    ),
+                  ),
+                ],
+              ),
 
-            // //
+              const MyText(" Start and end Priode"),
 
-            MyText(" Start and end Priode"),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width / 2.2,
-                  child: TextFormField(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width / 2.2,
+                    child: TextFormField(
+                        keyboardType: TextInputType.number,
+                        maxLength: 1,
+                        controller: _startPeriodController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(7),
+                            borderSide: const BorderSide(
+                              color: Colors.black12,
+                            ),
+                          ),
+                          hintText: "Start priode",
+                        ),
+                        onChanged: (valu) {
+                          if (valu.isEmpty) {
+                            setState(() {
+                              message = "start period cannot be empty";
+                            });
+                          }
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "start period cannot be empty";
+                          } else {
+                            return "";
+                          }
+                        }),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width / 2.2,
+                    child: TextFormField(
                       keyboardType: TextInputType.number,
                       maxLength: 1,
-                      controller: _startPeriodController,
+                      controller: _endPeriodController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(7),
@@ -291,105 +321,72 @@ class _AddClassState extends State<AddClass> {
                             color: Colors.black12,
                           ),
                         ),
-                        hintText: "Start priode",
+                        hintText: "End priode",
                       ),
+                      onChanged: (value) {
+                        if (value.isEmpty) {
+                          setState(() {
+                            message = "End period cannot be empty";
+                          });
+                        }
+                      },
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "End period cannot be empty";
                         } else {
                           return "";
                         }
-                      }),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width / 2.2,
-                  child: TextFormField(
-                    keyboardType: TextInputType.number,
-                    maxLength: 1,
-                    controller: _endPeriodController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(7),
-                        borderSide: const BorderSide(
-                          color: Colors.black12,
-                        ),
-                      ),
-                      hintText: "End priode",
+                      },
                     ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "End period cannot be empty";
-                      } else {
-                        return "";
-                      }
-                    },
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 30),
-            //.............. Submit botton ..............//
+                ],
+              ),
+              const SizedBox(height: 30),
+              //.............. Submit botton ..............//
 
-            TextButton(
-                onPressed: () {
-                  ClassRequest().addClass(
-                      widget.rutinId,
-                      context,
-                      ClassModel(
-                        className: _className.text,
-                        instructorName: _instructorController.text,
-                        roomNumber: _roomController.text,
-                        subjectCode: _subCodeController.text,
-                        startingPeriod: startPrInt,
-                        endingPeriod: endPrint,
-                        weekday: _selectedDay,
-                        startTime: startTime,
-                        endTime: endTime,
-                      ));
-                },
-                child: Text("Submit")),
+              Align(
+                alignment: Alignment.center,
+                child: CupertinoButton(
+                    child: Text(widget.isEdit == true ? "Eddit" : "Submit"),
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(7),
+                    onPressed: () {
+                      print("$startPrInt , $endPrint");
+                      if (startPrInt == 0 || endPrint == 0) {
+                        Alart.errorAlartDilog(context, "null");
+                      }
 
-            Align(
-              alignment: Alignment.center,
-              child: CupertinoButton(
-                  child: Text(widget.isEdit == true ? "Eddit" : "Submit"),
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(7),
-                  onPressed: () {
-                    print("$startPrInt , $endPrint");
-                    if (startPrInt == 0 || endPrint == 0) {
-                      Alart.errorAlartDilog(context, "null");
-                    }
+                      print("ontap submit btn");
 
-                    print("ontap submit btn");
-                    //widget.isEdit == true
-                    // ? editClass(context)
-                    ClassRequest().addClass(
-                        widget.rutinId,
-                        context,
-                        ClassModel(
-                          className: _className.text,
-                          instructorName: _instructorController.text,
-                          roomNumber: _roomController.text,
-                          subjectCode: _subCodeController.text,
-                          startingPeriod:
-                              int.parse(_startPeriodController.text),
-                          endingPeriod: int.parse(_endPeriodController.text),
-                          weekday: _selectedDay,
-                          startTime: startTime,
-                          endTime: endTime,
-                        ));
-                    // if (message != null) {
-                    //   Alart.errorAlartDilog(context, message);
-                    // }
-                    // final isvalidfrom = fromKey.currentState!.validate();
-                    // if (isvalidfrom) {
+                      if (message != null) {
+                        Alart.errorAlartDilog(context, message);
+                      } else if (message == null) {
+                        //     if (isvalidfrom) {
+                        ClassRequest().addClass(
+                            widget.rutinId,
+                            context,
+                            ClassModel(
+                              className: _className.text,
+                              instructorName: _instructorController.text,
+                              roomNumber: _roomController.text,
+                              subjectCode: _subCodeController.text,
+                              startingPeriod:
+                                  int.parse(_startPeriodController.text),
+                              endingPeriod:
+                                  int.parse(_endPeriodController.text),
+                              weekday: _selectedDay,
+                              startTime: startTime,
+                              endTime: endTime,
+                            ));
+                        //  }
+                      }
+                    }),
+              ),
 
-                    // }
-                  }),
-            ),
-          ],
-        ),
+              const SizedBox(height: 400)
+            ],
+          );
+        }),
       ),
     );
   }
