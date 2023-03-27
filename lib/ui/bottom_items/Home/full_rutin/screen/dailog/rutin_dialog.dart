@@ -11,13 +11,11 @@ import 'package:table/ui/bottom_items/Home/full_rutin/screen/widgets/seeAllCaote
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/widgets/see_all_request.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/widgets/select_account.dart';
 import 'package:table/ui/bottom_items/Add/addPriode.dart';
-import 'package:table/ui/bottom_items/Add/add_class.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/members_controllers.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/view_more_details.dart';
 import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/widgets/text%20and%20buttons/squareButton.dart';
-
 import '../../../../../../core/dialogs/Alart_dialogs.dart';
 
 class RutinDialog extends LongPressDialog {
@@ -247,7 +245,30 @@ class RutinDialog extends LongPressDialog {
                                       icon: Icons.person_remove,
                                       text: "remove members",
                                       color: Colors.redAccent,
-                                      ontap: () => Navigator.push(
+                                      ontap: () {
+                                        return Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  seeAllcaptensList(
+                                                rutinId: rutinId,
+                                                buttotext: "Remove Member",
+                                                onUsername:
+                                                    (seleted_username, _) {
+                                                  members.removeMember(context,
+                                                      seleted_username);
+                                                  print(
+                                                      "select member $seleted_username");
+                                                },
+                                              ),
+                                            ));
+                                      }),
+                                  SqureButton(
+                                    icon: Icons.person_remove,
+                                    color: Colors.redAccent,
+                                    text: "remove captens",
+                                    ontap: () {
+                                      return Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
@@ -262,11 +283,8 @@ class RutinDialog extends LongPressDialog {
                                                     "select member $seleted_username");
                                               },
                                             ),
-                                          ))),
-                                  SqureButton(
-                                    icon: Icons.person_remove,
-                                    color: Colors.redAccent,
-                                    text: "remove captens",
+                                          ));
+                                    },
                                   ),
                                   if (data.isOwner == true) ...[
                                     SqureButton(

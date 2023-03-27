@@ -3,7 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../ui/bottom_items/Add/add_class.dart';
+import 'package:table/ui/bottom_items/Add/addClassScreen.dart';
 
 final isEditingModd = StateProvider.autoDispose((ref) => false);
 
@@ -59,7 +59,7 @@ class DaysContaner extends ConsumerWidget {
                         context,
                         CupertinoPageRoute(
                             fullscreenDialog: true,
-                            builder: (context) => AddClass(
+                            builder: (context) => AddClassSceen(
                                   rutinId: rutinId ?? '',
                                 )));
                   },

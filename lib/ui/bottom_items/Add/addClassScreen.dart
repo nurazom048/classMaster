@@ -1,10 +1,16 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/ui/bottom_items/Add/request/class_request.dart';
 import 'package:table/widgets/MyTextFields.dart';
 import 'package:table/widgets/select_time.dart';
 import 'package:table/widgets/text%20and%20buttons/butonCustom.dart';
 import 'package:table/widgets/text%20and%20buttons/mytext.dart';
-
+import '../../../core/dialogs/Alart_dialogs.dart';
+import '../../../helper/constant/constant.dart';
 import '../../../models/class_model.dart';
 import '../../../widgets/daySelectDropdowen.dart';
 
@@ -38,6 +44,69 @@ class _AddClassSceenState extends State<AddClassSceen> {
   late DateTime endTimDemo = DateTime.now();
 
   int _selectedDay = 1;
+
+  //
+  // find class
+  Future<void> findClass() async {
+    // Obtain shared preferences.
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+
+    try {
+      final response = await http.get(
+          Uri.parse('${Const.BASE_URl}/class/find/class/${widget.classId}'),
+          headers: {'Authorization': 'Bearer $getToken'});
+
+      print(response.statusCode);
+      //.. responce
+      if (response.statusCode == 200) {
+        var decodedres = json.decode(response.body);
+        print(decodedres);
+        //
+        _className.text = json.decode(response.body)["classs"]["name"];
+        _instructorController.text =
+            json.decode(response.body)["classs"]["instuctor_name"];
+        _roomController.text = json.decode(response.body)["classs"]["room"];
+        _subCodeController.text =
+            json.decode(response.body)["classs"]["subjectcode"];
+
+        //
+        setState(() {
+          _selectedDay = json.decode(response.body)["classs"]["weekday"];
+          startTime = DateTime.parse(
+              json.decode(response.body)["classs"]["start_time"]);
+          endTime =
+              DateTime.parse(json.decode(response.body)["classs"]["end_time"]);
+
+          //
+          startTimeDemo = DateTime.parse(
+              json.decode(response.body)["classs"]["start_time"]);
+          endTimDemo =
+              DateTime.parse(json.decode(response.body)["classs"]["end_time"]);
+
+          show = true;
+
+          //
+          _startPeriodController.text =
+              json.decode(response.body)["classs"]["start"].toString();
+          _endPeriodController.text =
+              json.decode(response.body)["classs"]["end"].toString();
+        });
+      } else {
+        throw Exception('Failed to load data');
+      }
+    } catch (e) {
+      Alart.handleError(context, e.toString());
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.isEdit == true) {
+      findClass();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -211,27 +280,46 @@ class _AddClassSceenState extends State<AddClassSceen> {
               Container(
                 alignment: Alignment.center,
                 child: ButtomCustom(
-                  text: Text("add class"),
+                  text:
+                      Text(widget.isEdit == true ? "Edit Class" : "add class"),
                   onPressed: () {
                     _formKey.currentState!.save();
                     if (_formKey.currentState!.validate()) {
                       print("ok validate ");
-
-                      ClassRequest().addClass(
-                          widget.rutinId,
-                          context,
-                          ClassModel(
-                            className: _className.text,
-                            instructorName: _instructorController.text,
-                            roomNumber: _roomController.text,
-                            subjectCode: _subCodeController.text,
-                            startingPeriod:
-                                int.parse(_startPeriodController.text),
-                            endingPeriod: int.parse(_endPeriodController.text),
-                            weekday: _selectedDay,
-                            startTime: startTime,
-                            endTime: endTime,
-                          ));
+                      print(widget.classId);
+                      widget.isEdit == true
+                          ? ClassRequest().editClass(
+                              context,
+                              widget.classId ?? "",
+                              ClassModel(
+                                className: _className.text,
+                                instructorName: _instructorController.text,
+                                roomNumber: _roomController.text,
+                                subjectCode: _subCodeController.text,
+                                startingPeriod:
+                                    int.parse(_startPeriodController.text),
+                                endingPeriod:
+                                    int.parse(_endPeriodController.text),
+                                weekday: _selectedDay,
+                                startTime: startTime,
+                                endTime: endTime,
+                              ))
+                          : ClassRequest().addClass(
+                              widget.rutinId,
+                              context,
+                              ClassModel(
+                                className: _className.text,
+                                instructorName: _instructorController.text,
+                                roomNumber: _roomController.text,
+                                subjectCode: _subCodeController.text,
+                                startingPeriod:
+                                    int.parse(_startPeriodController.text),
+                                endingPeriod:
+                                    int.parse(_endPeriodController.text),
+                                weekday: _selectedDay,
+                                startTime: startTime,
+                                endTime: endTime,
+                              ));
                     }
                   },
                 ),

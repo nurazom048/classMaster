@@ -10,9 +10,9 @@ import 'package:table/widgets/custom_rutin_card.dart';
 import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/widgets/searchBarCustom.dart';
 import '../../../../core/dialogs/Alart_dialogs.dart';
-import '../../../../models/rutins/rutins.dart';
+import '../../../../models/rutins/search_rutin.dart';
 
-final Serarch_String_Provider = StateProvider<String>((ref) => "");
+final Serarch_String_Provider = StateProvider<String>((ref) => "x");
 
 class SearchPAge extends StatefulWidget {
   const SearchPAge({super.key});
@@ -89,37 +89,24 @@ class _SearchPAgeState extends State<SearchPAge> with TickerProviderStateMixin {
   }
 
   Widget _search_rutines(
-      BuildContext context, AsyncValue<dynamic> searchRoutine) {
+      BuildContext context, AsyncValue<RutinQuarry> searchRoutine) {
     return Container(
         height: 300,
         width: MediaQuery.of(context).size.width,
         child: searchRoutine.when(
           data: (data) {
-            return data != null
+            return data.rutins.isEmpty
                 ? ListView.builder(
-                    itemCount: data["rutins"].length,
+                    itemCount: data.rutins.length,
                     itemBuilder: (context, index) {
-                      // print("data[" "]");
-                      // print(data["rutins"][0]["name"].toString());
-                      var _serchRutin = data["rutins"][index];
-
-                      var listOfrutins = Routine.fromJson(data);
-                      // print("listOfrutins" +
-                      //     listOfrutins.rutins[0].name.toString());
                       return CustomRutinCard(
-                        rutinModel: listOfrutins,
-
-                        // rutinname: _serchRutin["name"],
-                        // // profilePicture: seach_result[index]["ownerid"]["image"],
-                        // name: _serchRutin["name"],
-                        // username: _serchRutin["_id"],
-
+                        rutinModel: data.rutins[index],
                         onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => FullRutineView(
-                              rutinName: _serchRutin["name"],
-                              rutinId: _serchRutin["_id"],
+                              rutinName: data.rutins[index].name,
+                              rutinId: data.rutins[index].id,
                             ),
                           ),
                         ),

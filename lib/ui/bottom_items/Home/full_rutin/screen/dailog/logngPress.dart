@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/dailog/rutin_dialog.dart';
-import '../../../../Add/add_class.dart';
+import '../../../../Add/addClassScreen.dart';
 import '../../controller/Rutin_controller.dart';
 import '../../controller/priodeController.dart';
 
@@ -26,7 +26,7 @@ class LongPressDialog {
                     context,
                     CupertinoPageRoute(
                         fullscreenDialog: true,
-                        builder: (context) => AddClass(
+                        builder: (context) => AddClassSceen(
                               rutinId: "rutinId",
                               classId: classId,
                               isEdit: true,
