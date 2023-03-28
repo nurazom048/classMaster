@@ -2,14 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/models/Account_models.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/widgets/seeAllCaotensList.dart';
 import 'package:table/ui/bottom_items/search/search_request/search_request.dart';
 import 'package:table/widgets/AccoundCardRow.dart';
-import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/widgets/searchBarCustom.dart';
-
 import '../../../../../../core/dialogs/Alart_dialogs.dart';
 
 class SeelectAccount extends ConsumerWidget {
@@ -42,14 +39,13 @@ class SeelectAccount extends ConsumerWidget {
             flex: 13,
             child: search_Account.when(
               data: (data) {
-                var lenght = data["accounts"].length ?? 0;
+                var lenght = data.accounts?.length ?? 0;
                 return ListView.builder(
                   itemCount: lenght,
                   itemBuilder: (context, index) {
-                    var ac = AccountModels.fromJson(data["accounts"][index]);
-                    return data != null || lenght != null
+                    return data != null && data.accounts!.isNotEmpty
                         ? AccountCardRow(
-                            accountData: ac,
+                            accountData: data.accounts![index],
                             addCaptem: addCapten,
                             onUsername: (username, position) =>
                                 onUsername(username, position),

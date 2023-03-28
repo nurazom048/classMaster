@@ -40,10 +40,6 @@ class _SearchPAgeState extends State<SearchPAge> with TickerProviderStateMixin {
     return Scaffold(
       body: SingleChildScrollView(
         child: Consumer(builder: (context, ref, _) {
-          final searchText = ref.watch(Serarch_String_Provider);
-          //
-          final searchRoutine = ref.watch(searchRoutineProvider(searchText));
-          final search_Account = ref.read(search_Account_Provider(searchText));
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -84,8 +80,8 @@ class _SearchPAgeState extends State<SearchPAge> with TickerProviderStateMixin {
                 height: MediaQuery.of(context).size.height - 20,
                 width: MediaQuery.of(context).size.width,
                 child: TabBarView(controller: tabController, children: [
-                  _search_rutines(context, searchRoutine),
-                  search_acounts(context, search_Account),
+                  _search_rutines(context),
+                  search_acounts(context),
                 ]),
               ),
             ],
@@ -95,61 +91,71 @@ class _SearchPAgeState extends State<SearchPAge> with TickerProviderStateMixin {
     );
   }
 
-  Widget _search_rutines(
-      BuildContext context, AsyncValue<RutinQuarry> searchRoutine) {
-    return Container(
-        height: 300,
-        width: MediaQuery.of(context).size.width,
-        child: searchRoutine.when(
-          data: (data) {
-            return data.rutins.isNotEmpty
-                ? ListView.builder(
-                    itemCount: data.rutins.length,
-                    itemBuilder: (context, index) {
-                      return CustomRutinCard(
-                        rutinModel: data.rutins[index],
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => FullRutineView(
-                              rutinName: data.rutins[index].name,
-                              rutinId: data.rutins[index].id,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  )
-                : Center(child: Text("No rutin found ${data.rutins.length}"));
-          },
-          error: (error, stackTrace) => Alart.handleError(context, error),
-          loading: () => const Progressindicator(),
-        ));
-  }
+  Widget _search_rutines(BuildContext context) {
+    return Consumer(builder: (context, WidgetRef ref, _) {
+      //! Provider.
+      final searchText = ref.watch(Serarch_String_Provider);
 
-  Widget search_acounts(
-      BuildContext context, AsyncValue<dynamic> search_Account) {
-    return Container(
-        height: 500,
-        width: MediaQuery.of(context).size.width,
-        child: search_Account.when(
+      final searchRoutine = ref.watch(searchRoutineProvider(searchText));
+
+      return Container(
+          height: 300,
+          width: MediaQuery.of(context).size.width,
+          child: searchRoutine.when(
             data: (data) {
-              print(data.toString());
-
-              return ListView.builder(
-                itemCount: data["accounts"].length ?? 0,
-                itemBuilder: (context, index) {
-                  var ac = AccountModels.fromJson(data["accounts"][index]);
-
-                  print(data);
-                  return data != null || data["accounts"].lenght != null
-                      ? AccountCardRow(accountData: ac)
-                      : const Center(child: Text("No Account found"));
-                },
-              );
+              return data?.rutins == null
+                  ? Alart.handleError(context, "error")
+                  : data!.rutins.isNotEmpty
+                      ? ListView.builder(
+                          itemCount: data.rutins.length,
+                          itemBuilder: (context, index) {
+                            return CustomRutinCard(
+                              rutinModel: data.rutins[index],
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => FullRutineView(
+                                    rutinName: data.rutins[index].name,
+                                    rutinId: data.rutins[index].id,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        )
+                      : const Center(child: Text("No rutin found"));
             },
             error: (error, stackTrace) => Alart.handleError(context, error),
-            loading: () => const Progressindicator()));
+            loading: () => const Progressindicator(),
+          ));
+    });
+  }
+
+  Widget search_acounts(BuildContext context) {
+    return Consumer(builder: (context, WidgetRef ref, _) {
+      //
+      final searchText = ref.watch(Serarch_String_Provider);
+      final search_Account = ref.watch(search_Account_Provider(searchText));
+      return Container(
+          height: 500,
+          width: MediaQuery.of(context).size.width,
+          child: search_Account.when(
+              data: (data) {
+                print(data.toString());
+
+                return ListView.builder(
+                  itemCount: data.accounts?.length,
+                  itemBuilder: (context, index) {
+                    print(data);
+                    return data != null && data.accounts!.isNotEmpty
+                        ? AccountCardRow(accountData: data.accounts![index])
+                        : const Center(child: Text("No Account found"));
+                  },
+                );
+              },
+              error: (error, stackTrace) => Alart.handleError(context, error),
+              loading: () => const Progressindicator()));
+    });
   }
 }
 
