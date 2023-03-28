@@ -1,72 +1,13 @@
-// ignore_for_file: prefer_const_constructors_in_immutables, unused_local_variable, camel_case_types
+// ignore_for_file: avoid_print
 
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:io';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:table/ui/auth_Section/auth_ui/login_sceen.dart';
 
-void main() => runApp(ProviderScope(child: MyApp()));
-
-class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: LoginScreen(),
-      //  home: const MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  String? imagePath;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Image Picker and Compressor'),
-      ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              if (imagePath != null)
-                Container(
-                    height: 350,
-                    width: 350,
-                    child: Image.file(File(imagePath!))),
-              ElevatedButton(
-                onPressed: () async {
-                  String? path = await _pickAndCompressImage();
-                  setState(() {
-                    imagePath = path;
-                  });
-                },
-                child: Text('Pick and Compress Image'),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Future<String?> _pickAndCompressImage() async {
+class HelperMethods {
+  //! Pick image and compressed....//
+  static Future<String?> pickAndCompressImage() async {
     // Define a method that compresses the image and returns the compressed image path
     Future<String?> compressAndReturnImagePath() async {
       // Pick an image from the gallery
@@ -115,4 +56,30 @@ class _MyHomePageState extends State<MyHomePage> {
     // Compress the image and return the compressed image path
     return await compressAndReturnImagePath();
   }
+
+  //!.. Simple image pick ...
+
+  // Future<void> _pickImage(ImageSource source) async {
+  //
+  //     final picker = ImagePicker();
+  //     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  //     setState(() {
+  //       print("image path " + _image.toString());
+
+  //       print("the image is" + _image.toString());
+  //       if (pickedFile != null) {
+  //         _image = File(pickedFile.path);
+
+  //         //... save token
+  //       }
+  //     });
+
+  //     if (_image != null) {
+  //       final prefs = await SharedPreferences.getInstance();
+  //       var saveImage = await prefs.setString('Image', _image!.path);
+  //     }
+
+  //     // print(e);
+  //  }
+  // }
 }

@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Account/account_request/account_request.dart';
 import 'package:table/ui/bottom_items/Account/accounu_ui/eddit_account.dart';
 import 'package:table/widgets/AccountCard.dart';
-
 import '../../../../core/dialogs/Alart_dialogs.dart';
 import '../../../../core/component/component_improts.dart';
 
@@ -45,7 +44,8 @@ class _AccountScreenState extends State<AccountScreen> {
                   actionIcon: IconButton(
                       icon: const Icon(Icons.more_vert),
                       onPressed: () {
-                        accountBottomSheet(context);
+                        accountBottomSheet(
+                            context, widget.accountUsername ?? '');
                       }),
                 ),
                 accountData.when(
@@ -190,7 +190,8 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
 //... Account Bottom Sheet....//
-  Future<dynamic> accountBottomSheet(BuildContext context) {
+  Future<dynamic> accountBottomSheet(
+      BuildContext context, String accountUsername) {
     return showModalBottomSheet(
       context: context,
       builder: (context) {
@@ -218,7 +219,9 @@ class _AccountScreenState extends State<AccountScreen> {
                       context,
                       CupertinoPageRoute(
                           fullscreenDialog: true,
-                          builder: (context) => EdditAccount()));
+                          builder: (context) => EdditAccount(
+                                accountUsername: accountUsername,
+                              )));
                   // Navigator.of(context).pop();
                 },
               ),

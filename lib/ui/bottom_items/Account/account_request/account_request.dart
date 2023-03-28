@@ -19,7 +19,7 @@ final accountDataProvider = FutureProvider.autoDispose
 
 class AccountReq {
 //... Account data...//
-  Future<AccountModels?> accountData(username) async {
+  Future<AccountModels?> accountData(String? username) async {
     print("req usrname  : $username");
 
     final prefs = await SharedPreferences.getInstance();

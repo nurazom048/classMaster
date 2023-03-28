@@ -1,12 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:table/helper/helper_fun.dart';
 
 class PickImage extends StatefulWidget {
   final dynamic onTap;
-  PickImage({
+  final Function(String?) onImagePathSelected; // new property
+  const PickImage({
     this.onTap,
+    required this.onImagePathSelected,
     Key? key,
   }) : super(key: key);
 
@@ -16,30 +17,6 @@ class PickImage extends StatefulWidget {
 
 class _PickImageState extends State<PickImage> {
   late File? _image = null;
-
-  Future<void> _pickImage(ImageSource source) async {
-    try {
-      final picker = ImagePicker();
-      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-      setState(() {
-        print("image path " + _image.toString());
-
-        print("the image is" + _image.toString());
-        if (pickedFile != null) {
-          _image = File(pickedFile.path);
-
-          //... save token
-        }
-      });
-
-      if (_image != null) {
-        final prefs = await SharedPreferences.getInstance();
-        var saveImage = await prefs.setString('Image', _image!.path);
-      }
-    } catch (e) {
-      // print(e);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +38,17 @@ class _PickImageState extends State<PickImage> {
               backgroundColor: Colors.red,
               child: Center(
                 child: IconButton(
-                  onPressed: () {
-                    _pickImage(ImageSource.gallery);
+                  onPressed: () async {
+                    String? imagePath =
+                        await HelperMethods.pickAndCompressImage();
+
+                    setState(() {
+                      if (imagePath != null) {
+                        _image = File(imagePath);
+                      }
+                    });
+                    widget
+                        .onImagePathSelected(imagePath); // invoke the callback
                   },
                   icon: const Icon(Icons.edit),
                 ),

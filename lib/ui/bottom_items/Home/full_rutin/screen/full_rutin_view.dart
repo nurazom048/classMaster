@@ -142,7 +142,7 @@ class ListOfDays extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return day.isEmpty
-        ? const SizedBox(height: 100, width: 200, child: Text("No Class"))
+        ? const SizedBox(height: 100, width: 200, child: Text("  No Class"))
         : Row(
             children: List.generate(
               day.length,
@@ -196,9 +196,10 @@ class ListOfPriodes extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: List.generate(
-        Priodes.length,
+        Priodes.isEmpty ? 1 : Priodes.length,
         (index) => Priodes.isEmpty
-            ? const Text("No Priode")
+            ? Container(
+                height: 100, child: const Center(child: Text("   No Priode")))
             : PriodeContaner(
                 startTime: Priodes[index]!.startTime,
                 endtime: Priodes[index]!.endTime,

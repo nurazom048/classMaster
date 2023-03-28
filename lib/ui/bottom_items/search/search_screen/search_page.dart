@@ -43,16 +43,22 @@ class _SearchPAgeState extends State<SearchPAge> with TickerProviderStateMixin {
           final searchText = ref.watch(Serarch_String_Provider);
           //
           final searchRoutine = ref.watch(searchRoutineProvider(searchText));
-          final search_Account = ref.watch(search_Account_Provider(searchText));
+          final search_Account = ref.read(search_Account_Provider(searchText));
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //.. search bar
-              SearchBarCustom(onChanged: (valu) {
-                ref.read(Serarch_String_Provider.notifier).state = valu;
-              }),
               Container(
-                padding: const EdgeInsets.symmetric(vertical: 10),
+                height: 70,
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: SearchBarCustom(onChanged: (valu) {
+                    ref.read(Serarch_String_Provider.notifier).state = valu;
+                  }),
+                ),
+              ),
+
+              Container(
                 width: MediaQuery.of(context).size.width,
                 child: TabBar(
                   controller: tabController,
@@ -71,10 +77,11 @@ class _SearchPAgeState extends State<SearchPAge> with TickerProviderStateMixin {
                 ),
               ),
               Container(
-                margin:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                color: Colors.black12,
-                height: MediaQuery.of(context).size.height - 200,
+                margin: const EdgeInsets.only(top: 5),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 1, horizontal: 10),
+                //color: Colors.black12,
+                height: MediaQuery.of(context).size.height - 20,
                 width: MediaQuery.of(context).size.width,
                 child: TabBarView(controller: tabController, children: [
                   _search_rutines(context, searchRoutine),
@@ -95,7 +102,7 @@ class _SearchPAgeState extends State<SearchPAge> with TickerProviderStateMixin {
         width: MediaQuery.of(context).size.width,
         child: searchRoutine.when(
           data: (data) {
-            return data.rutins.isEmpty
+            return data.rutins.isNotEmpty
                 ? ListView.builder(
                     itemCount: data.rutins.length,
                     itemBuilder: (context, index) {
@@ -113,7 +120,7 @@ class _SearchPAgeState extends State<SearchPAge> with TickerProviderStateMixin {
                       );
                     },
                   )
-                : const Center(child: Text("No rutin found"));
+                : Center(child: Text("No rutin found ${data.rutins.length}"));
           },
           error: (error, stackTrace) => Alart.handleError(context, error),
           loading: () => const Progressindicator(),

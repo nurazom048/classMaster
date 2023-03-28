@@ -13,13 +13,13 @@ import 'package:table/widgets/searchBarCustom.dart';
 import '../../../../../../core/dialogs/Alart_dialogs.dart';
 
 class SeelectAccount extends ConsumerWidget {
-  SeelectAccount(
+  const SeelectAccount(
       {super.key,
       required this.onUsername,
       this.buttotext,
       this.color,
       this.addCapten});
-  String? buttotext;
+  final String? buttotext;
   final Color? color;
   final bool? addCapten;
   final Function(String?, String?) onUsername;
