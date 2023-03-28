@@ -17,6 +17,7 @@ import 'package:table/ui/bottom_items/Home/full_rutin/screen/view_more_details.d
 import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/widgets/text%20and%20buttons/squareButton.dart';
 import '../../../../../../core/dialogs/Alart_dialogs.dart';
+import '../widgets/seeAllMembers.dart';
 
 class RutinDialog extends LongPressDialog {
   //**********     ChackStatusUser_BottomSheet       **********/
@@ -250,7 +251,7 @@ class RutinDialog extends LongPressDialog {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  seeAllcaptensList(
+                                                  seeAllMembers(
                                                 rutinId: rutinId,
                                                 buttotext: "Remove Member",
                                                 onUsername:
@@ -274,7 +275,8 @@ class RutinDialog extends LongPressDialog {
                                             builder: (context) =>
                                                 seeAllcaptensList(
                                               rutinId: rutinId,
-                                              buttotext: "Remove Member",
+                                              buttotext: "Remove capten",
+                                              Color: Colors.red,
                                               onUsername:
                                                   (seleted_username, _) {
                                                 members.removeMember(

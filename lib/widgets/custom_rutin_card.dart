@@ -128,7 +128,7 @@ class CustomRutinCard extends StatelessWidget {
               MiniAccountCard(
                 name: rutinModel.owner.name,
                 username: rutinModel.owner.username,
-                profilePicture: rutinModel.owner.image ?? "",
+                profilePicture: rutinModel.owner.image,
               ),
             ],
           ),
@@ -143,7 +143,7 @@ class CustomRutinCard extends StatelessWidget {
       children: List.generate(
         5,
         (index) => index == 0
-            ? Empty(corner: true, mini: true)
+            ? const Empty(corner: true, mini: true)
             : Container(
                 height: 50,
                 width: 50,

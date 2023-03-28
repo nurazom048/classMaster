@@ -9,6 +9,7 @@ import 'package:table/helper/constant/constant.dart';
 import 'package:table/models/captens/listOfCaptens.dart';
 import 'package:table/models/membersModels.dart';
 import 'package:table/models/seeAllRequestModel.dart';
+import '../../../../../models/member/allMember.dart';
 import '../../../../../models/messageModel.dart';
 
 final memberRequestProvider = Provider((ref) => memberRequest());
@@ -191,6 +192,25 @@ class memberRequest {
       throw Exception(e);
     }
   }
+
+  //....see All members........//
+  Future<AllMember> seeAllMemberReq(String rutin_id) async {
+    var url = Uri.parse("${Const.BASE_URl}/rutin/member/$rutin_id");
+
+    //
+    final response = await http.post(url);
+    var res = AllMember.fromJson(jsonDecode(response.body));
+
+    try {
+      if (response.statusCode == 200) {
+        return res;
+      } else {
+        throw Exception(res.message);
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
   //... see all joi request ..............///
 
   //....sell all request ....//
@@ -279,8 +299,7 @@ final allCaptenProvider =
     FutureProvider.family<ListCptens, String>((ref, rutin_id) async {
   return ref.watch(memberRequestProvider).sellAllCaptemReq(rutin_id);
 });
-// see all request provider
-// final see_all_request_provider = FutureProvider.family
-//     .autoDispose<SeeAllRequestModel, String>((ref, rutin_id) {
-//   return ref.read(memberRequestProvider).sell_all_request(rutin_id);
-// });
+final allMembersProvider =
+    FutureProvider.family<AllMember, String>((ref, rutin_id) async {
+  return ref.watch(memberRequestProvider).seeAllMemberReq(rutin_id);
+});
