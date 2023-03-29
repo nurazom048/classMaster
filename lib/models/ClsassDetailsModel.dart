@@ -114,8 +114,8 @@ class Priode {
   String id;
 
   factory Priode.fromJson(Map<String, dynamic> json) => Priode(
-        startTime: DateTime.parse(json["start_time"]),
-        endTime: DateTime.parse(json["end_time"]),
+        startTime: DateTime.parse(json["start_time"]).toLocal(),
+        endTime: DateTime.parse(json["end_time"]).toLocal(),
         id: json["_id"],
       );
 

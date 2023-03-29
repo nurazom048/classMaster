@@ -93,7 +93,7 @@ class FullRutineView extends ConsumerWidget {
 
                                     ListOfDays(Classss?.monday ?? [], false,
                                         priodelenght),
-                                    ListOfDays(Classss?.thursday ?? [], false,
+                                    ListOfDays(Classss?.tuesday ?? [], false,
                                         priodelenght),
                                     ListOfDays(Classss?.wednesday ?? [], false,
                                         priodelenght),
@@ -153,7 +153,7 @@ class ListOfDays extends StatelessWidget {
                   start: day[index]!.start,
                   end: day[index]!.end,
                   startTime: day[index]!.startTime,
-                  endTime: day[index]?.endTime,
+                  endTime: day[index]!.endTime,
                   weakday: day[index]?.weekday,
                   classname: day[index]?.name,
                   previous_end:

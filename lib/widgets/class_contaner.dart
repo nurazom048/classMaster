@@ -1,19 +1,20 @@
-// ignore_for_file: must_be_immutable, camel_case_types, avoid_print, non_constant_identifier_names, prefer_typing_uninitialized_variables
+// ignore_for_file: must_be_immutable, camel_case_types, avoid_print, non_constant_identifier_names, prefer_typing_uninitialized_variables, unused_local_variable
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ClassContainer extends StatelessWidget {
-  String? instractorname, roomnum, subCode, classname;
-  String? has_class;
-  num start, end, previous_end;
-  var startTime, endTime;
-  var weakday;
-  dynamic onTap, onLongPress;
-  dynamic weakdayIndex;
-  bool? isLast;
-  int priodeLenght;
+  final String? instractorname, roomnum, subCode, classname;
+  final String? has_class;
+  final num start, end, previous_end;
+  final DateTime startTime, endTime;
+  final dynamic weakday;
+  final dynamic onTap, onLongPress;
+  final dynamic weakdayIndex;
+  final bool isLast;
+  final int priodeLenght;
 
-  ClassContainer({
+  const ClassContainer({
     Key? key,
     required this.instractorname,
     required this.roomnum,
@@ -37,20 +38,9 @@ class ClassContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DateTime dateTime = DateTime.parse("2023-01-01T22:11:00.000+00:00");
-
-    //
-    DateTime newStart = getNewDateTime(startTime);
-    DateTime newEnd = getNewDateTime(endTime);
-    if (DateTime.now().isAfter(newStart) && DateTime.now().isBefore(newEnd)) {
-      print("running  ${newStart.hour} - ${newEnd.hour}");
-    } else {
-      print("not running ${newStart.hour} - ${newEnd.hour}");
-    }
-
     return Row(
       children: [
-        crossContainer(start, previous_end),
+        crossContainer(end, previous_end),
         InkWell(
           onLongPress: onLongPress,
           onTap: onTap,
@@ -68,7 +58,7 @@ class ClassContainer extends StatelessWidget {
                 children: [
                   Column(
                     children: [
-                      _Running(newStart, newEnd),
+                      running(startTime, endTime),
                       Text(instractorname ?? ""),
                       Text(subCode ?? ""),
                       Text(roomnum ?? ""),
@@ -82,7 +72,7 @@ class ClassContainer extends StatelessWidget {
             ),
           ),
         ),
-        EndcrossContainer(end, priodeLenght, isLast ?? false),
+        EndcrossContainer(end, priodeLenght, isLast),
       ],
     );
   }
@@ -104,20 +94,22 @@ class ClassContainer extends StatelessWidget {
   }
 
 //... if there is no class THEN RETUN Cross contaner
-  Widget crossContainer(num start, num previous_end) {
-    var ptime = previous_end == 1 || previous_end == start ? 0 : previous_end;
-    num size = start - ptime > 1 ? start - ptime - 1 : start - ptime;
-    // .. calculate width
-    double crossContanerWidth(num start, num previous_end) {
-      return size * 100;
-    }
+  Widget crossContainer(num end, num previous_end) {
+    num misingPriode = (previous_end - end);
+    num startMisingContaner = start - 1;
+    num size = misingPriode.isNegative == false
+        ? startMisingContaner.isNegative == false
+            ? startMisingContaner
+            : misingPriode
+        : 0;
 
-    //
+    double width = size * 100;
+
     if (size.isNegative) return Container();
 
     return Container(
       height: 100,
-      width: crossContanerWidth(start, previous_end),
+      width: width, // .. calculate width
       decoration: const BoxDecoration(
           border: Border(right: BorderSide(color: Colors.black, width: 1))),
       child: Container(
@@ -130,73 +122,73 @@ class ClassContainer extends StatelessWidget {
   }
 
 //... if there is no class THEN RETUN Cross contaner
-  Widget EndcrossContainer(num end, var lastPriode, bool islast) {
-    // .. calculate width
-    double crossContanerWidth(num end, num lastPriode) {
-      num size = lastPriode - end >= 1 ? lastPriode - end : 0;
+  Widget EndcrossContainer(num end, dynamic priodeLenght, bool islast) {
+    num misingPriode = priodeLenght - end;
+    num size = (misingPriode >= 0 && isLast == true) ? misingPriode : 0;
 
-      return size * 100;
-    }
-
-    //
-    if (lastPriode - end >= 1 && islast) {
-      return Container(
-        height: 100,
-        width: crossContanerWidth(end, lastPriode),
-        decoration: const BoxDecoration(
-            border: Border(right: BorderSide(color: Colors.black, width: 1))),
-        child: Container(
-          decoration: BoxDecoration(
-              color: getColor(weakdayIndex),
-              borderRadius: BorderRadius.circular(3)),
-          child: const Center(child: Icon(Icons.clear_rounded)),
-        ),
-      );
-    } else {
-      return Container();
-    }
+    if (size == 0) return const SizedBox.shrink();
+    return Container(
+      height: 100,
+      width: size * 100, // .. calculate width
+      decoration: const BoxDecoration(
+          border: Border(right: BorderSide(color: Colors.black, width: 1))),
+      child: Container(
+        decoration: BoxDecoration(
+            color: getColor(weakdayIndex),
+            borderRadius: BorderRadius.circular(3)),
+        child: const Center(child: Icon(Icons.clear_rounded)),
+      ),
+    );
   }
+}
 
-  // date time formet by this
-  DateTime getNewDateTime(DateTime givenTime) {
-    DateTime now = DateTime.now();
-    String month = "${now.month < 10 ? '0' : ''}${now.month}";
-    String nowdays = "${now.day < 10 ? '0' : ''}${now.day}";
+// date time formet by this
+DateTime getNewDateTime(DateTime givenTime) {
+  DateTime now = DateTime.now();
+  String month = "${now.month < 10 ? '0' : ''}${now.month}";
+  String nowdays = "${now.day < 10 ? '0' : ''}${now.day}";
 
-    String givenTime_hour =
-        "${givenTime.hour < 10 ? '0' : ''}${givenTime.hour}";
-    String givenTime_minute =
-        "${givenTime.minute < 10 ? '0' : ''}${givenTime.minute}";
+  String givenTime_hour = "${givenTime.hour < 10 ? '0' : ''}${givenTime.hour}";
+  String givenTime_minute =
+      "${givenTime.minute < 10 ? '0' : ''}${givenTime.minute}";
 
-    DateTime newDateTime = DateTime.parse(
-        "${now.year}-$month-$nowdays $givenTime_hour:$givenTime_minute:00");
-    return newDateTime;
-  }
+  DateTime newDateTime = DateTime.parse(
+      "${now.year}-$month-$nowdays $givenTime_hour:$givenTime_minute:00");
+  return newDateTime;
+}
 
-  ///
-  Widget _Running(DateTime newStart, DateTime newEnd) {
-    // String formattStart = DateFormat.jm().format(newStart);
-    // String formatt_end = DateFormat.jm().format(newEnd);
+///
+Widget running(DateTime startTime, DateTime end_time) {
+  DateTime current = DateTime.now().toLocal();
+  DateTime newST = DateTime(current.year, current.month, current.day,
+      startTime.hour, startTime.minute, 0);
+  DateTime newET = DateTime(current.year, current.month, current.day,
+      end_time.hour, end_time.minute, 0);
 
-    //
-    if (DateTime.now().isAfter(newStart) && DateTime.now().isBefore(newEnd)) {
-      return SingleChildScrollView(
-        child: Row(
-          // ignore: prefer_const_literals_to_create_immutables
-          children: [
-            const SizedBox(width: 5),
-            const CircleAvatar(backgroundColor: Colors.red, radius: 4),
-            const Text(
-              " Running",
-              maxLines: 2,
-              style: TextStyle(overflow: TextOverflow.ellipsis),
+  //
+  if (current.isAfter(newST) && current.isBefore(newET)) {
+    return SingleChildScrollView(
+      child: Row(
+        // ignore: prefer_const_literals_to_create_immutables
+        children: [
+          const SizedBox(width: 5),
+          const CircleAvatar(
+              backgroundColor: CupertinoColors.systemRed, radius: 4),
+          const Text(
+            " Running",
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: CupertinoColors.systemRed,
+              fontFamily: 'Cupertino', // Set font family to Cupertino
+              fontWeight: FontWeight.w400, // Set font weight to bold
             ),
-            const Spacer(),
-          ],
-        ),
-      );
-    } else {
-      return const Text("");
-    }
+          ),
+          const Spacer(),
+        ],
+      ),
+    );
+  } else {
+    return const Text("");
   }
 }

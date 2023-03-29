@@ -341,7 +341,9 @@ class _AddClassSceenState extends State<AddClassSceen> {
       if (value != null) {
         String hour = "${value.hour < 10 ? '0' : ''}${value.hour}";
         String minute = "${value.minute < 10 ? '0' : ''}${value.minute}";
-        DateTime selecteTime = DateTime.parse("2021-12-23 $hour:$minute:00");
+        DateTime selecteTime = DateTime.parse("2021-12-23 $hour:$minute:00Z");
+
+        print("houre : ${value.hour} ,munite ${value.minute}");
 
         setState(() {
           show = true;
@@ -363,7 +365,8 @@ class _AddClassSceenState extends State<AddClassSceen> {
       if (value != null) {
         String hour = "${value.hour < 10 ? '0' : ''}${value.hour}";
         String minute = "${value.minute < 10 ? '0' : ''}${value.minute}";
-        DateTime selecteEndTime = DateTime.parse("2021-12-23 $hour:$minute:00");
+        DateTime selecteEndTime =
+            DateTime.parse("2021-12-23 $hour:$minute:00Z");
         //
         setState(() {
           show = true;
