@@ -26,7 +26,6 @@ class ListOfSaveRutins {
   }
 }
 
-//
 class ListOfUploedRutins {
   ListOfUploedRutins({
     required this.rutins,
@@ -45,6 +44,18 @@ class ListOfUploedRutins {
       rutins: routines,
       currentPage: json["currentPage"],
       totalPages: json["totalPages"],
+    );
+  }
+
+  ListOfUploedRutins copyWith({
+    List<Routine>? rutins,
+    int? currentPage,
+    int? totalPages,
+  }) {
+    return ListOfUploedRutins(
+      rutins: rutins ?? this.rutins,
+      currentPage: currentPage ?? this.currentPage,
+      totalPages: totalPages ?? this.totalPages,
     );
   }
 }

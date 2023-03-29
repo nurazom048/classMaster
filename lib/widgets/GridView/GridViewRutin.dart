@@ -1,4 +1,4 @@
-// ignore_for_file: unused_local_variable, non_constant_identifier_names, avoid_print
+// ignore_for_file: unused_local_variable, non_constant_identifier_names, avoid_print, no_leading_underscores_for_local_identifiers, prefer_const_constructors, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,96 +7,68 @@ import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
 import 'package:table/widgets/custom_rutin_card.dart';
 import 'package:table/widgets/progress_indicator.dart';
 import '../../core/dialogs/Alart_dialogs.dart';
+import '../../models/rutins/listOfSaveRutin.dart';
+import '../../models/rutins/rutins.dart';
 
-final pageProvider = StateProvider((ref) => 1);
+//final pageProvider = StateProvider((ref) => 1);
 
-class GridViewRutin extends StatefulWidget {
+class GridViewRutin extends StatelessWidget {
   const GridViewRutin({super.key});
 
   @override
-  State<GridViewRutin> createState() => _GridViewRutinState();
-}
-
-class _GridViewRutinState extends State<GridViewRutin> {
-  @override
   Widget build(BuildContext context) {
+    ///
+    final scrollController = ScrollController();
+
     return SafeArea(
       child: Scaffold(
         body: Consumer(builder: (context, ref, _) {
-          final page = ref.read(pageProvider);
+          final uploaded_ruti = ref.watch(UpRutinProvider);
 
-          final uploaded_rutin =
-              ref.watch(uploaded_rutin_provider(ref.watch(pageProvider)));
-
-          return uploaded_rutin.when(
+          return uploaded_ruti.when(
             data: (data) {
-              bool noNextPage = data.totalPages == ref.read(pageProvider);
-              bool noPreviusPage = 1 >= ref.read(pageProvider);
+              List<Routine> listtt = data.rutins;
+
+              //
+              _scrollLiser() {
+                if (scrollController.position.pixels ==
+                    scrollController.position.maxScrollExtent) {
+                  //
+
+                  print("liser call");
+                  int page = data.currentPage ?? 1;
+                  int totla = data.totalPages ?? 1;
+                  print(data.rutins);
+                  if (page != totla) {
+                    ref.read(UpRutinProvider.notifier).loadMore(page++);
+                  }
+                } else {
+                  print("call");
+                }
+              }
+
+              scrollController.addListener(_scrollLiser);
+
               return Column(
                 children: [
                   CrossBar(context),
-
                   Expanded(
                     flex: 20,
                     child: GridView.builder(
+                      controller: scrollController,
                       itemCount: data.rutins.length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2, mainAxisExtent: 272),
                       itemBuilder: (context, index) {
                         bool isNotlast = index - 1 != data.rutins.length;
+
                         return CustomRutinCard(
                           rutinModel: data.rutins[index],
-                          // rutinname: data.rutins[index].name,
                         );
                       },
                     ),
                   ),
-
-                  //
-                  Expanded(
-                    flex: 2,
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 30),
-                      alignment: Alignment.center,
-                      height: 300,
-                      width: MediaQuery.of(context).size.width,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          TextButton(
-                            onPressed: noPreviusPage
-                                ? () {}
-                                : () {
-                                    print(ref.watch(pageProvider));
-                                    ref.read(pageProvider.notifier).state--;
-                                  },
-                            child: Text("previus",
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    color: noPreviusPage
-                                        ? Colors.black12
-                                        : Colors.blue)),
-                          ),
-                          Text(data.currentPage.toString()),
-                          TextButton(
-                            onPressed: noNextPage
-                                ? () {}
-                                : () {
-                                    print(ref.read(pageProvider));
-                                    ref.read(pageProvider.notifier).state++;
-                                  },
-                            child: Text("next",
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    color: noNextPage
-                                        ? Colors.black12
-                                        : Colors.blue)),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
                 ],
               );
             },
@@ -109,5 +81,67 @@ class _GridViewRutinState extends State<GridViewRutin> {
         }),
       ),
     );
+  }
+}
+
+//_________________________
+final UpRutinProvider =
+    StateNotifierProvider.autoDispose<Uprutin, AsyncValue<ListOfUploedRutins>>(
+        (ref) {
+  return Uprutin(ref);
+});
+
+class Uprutin extends StateNotifier<AsyncValue<ListOfUploedRutins>> {
+  var ref;
+  Uprutin(this.ref) : super(AsyncLoading()) {
+    _init();
+  }
+
+  _init() async {
+    try {
+      AsyncValue<ListOfUploedRutins> res =
+          await ref.watch(uploaded_rutin_provider(1));
+
+      res.when(
+          data: (data) {
+            state = AsyncData(data);
+          },
+          error: (error, stackTrace) {
+            print(error.toString());
+            state = AsyncError(error, stackTrace);
+          },
+          loading: () {});
+    } catch (e) {
+      print(e.toString());
+      state = throw Exception(e);
+    }
+  }
+
+  //
+  void loadMore(page) async {
+    try {
+      AsyncValue<ListOfUploedRutins> res =
+          await ref.watch(uploaded_rutin_provider(page + 1));
+
+      res.when(
+          data: (data) {
+            print("tota ${data.totalPages} : giver page ${page + 1}");
+            print(data.rutins.length);
+
+            if (state.value?.totalPages != page) {
+              List<Routine> rutins = List.from(state.value!.rutins)
+                ..addAll(data.rutins);
+              state = AsyncData(state.value!.copyWith(rutins: rutins));
+            }
+          },
+          error: (error, stackTrace) {
+            print(error.toString());
+            state = AsyncError(error, stackTrace);
+          },
+          loading: () {});
+    } catch (e) {
+      print(e.toString());
+      state = throw Exception(e);
+    }
   }
 }

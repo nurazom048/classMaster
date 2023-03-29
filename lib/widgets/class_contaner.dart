@@ -105,20 +105,21 @@ class ClassContainer extends StatelessWidget {
 
     double width = size * 100;
 
-    if (size.isNegative) return Container();
-
-    return Container(
-      height: 100,
-      width: width, // .. calculate width
-      decoration: const BoxDecoration(
-          border: Border(right: BorderSide(color: Colors.black, width: 1))),
-      child: Container(
-        decoration: BoxDecoration(
-            color: getColor(weakdayIndex),
-            borderRadius: BorderRadius.circular(3)),
-        child: const Center(child: Icon(Icons.clear_rounded)),
-      ),
-    );
+    return size.isNegative
+        ? const SizedBox.shrink()
+        : Container(
+            height: 100,
+            width: width, // .. calculate width
+            decoration: const BoxDecoration(
+                border:
+                    Border(right: BorderSide(color: Colors.black, width: 1))),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: getColor(weakdayIndex),
+                  borderRadius: BorderRadius.circular(3)),
+              child: const Center(child: Icon(Icons.clear_rounded)),
+            ),
+          );
   }
 
 //... if there is no class THEN RETUN Cross contaner

@@ -33,99 +33,111 @@ class FullRutineView extends ConsumerWidget {
 
     return SafeArea(
       child: Scaffold(
-        body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                //...... Appbar.......!!
-                rutinDetals.when(
-                    data: (valu) {
-                      return CustomTopBar("",
-                          acction: IconButton(
-                              onPressed: () =>
-                                  RutinDialog.ChackStatusUser_BottomSheet(
-                                      context, rutinId),
-                              icon: const Icon(Icons.more_vert)), ontap: () {
-                        ref
-                            .read(isEditingModd.notifier)
-                            .update((state) => !state);
-                      });
-                    },
-                    loading: () => CustomTopBar(rutinName),
-                    error: (error, stackTrace) =>
-                        Alart.handleError(context, error)),
+        body: Scrollbar(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //...... Appbar.......!!
+                  rutinDetals.when(
+                      data: (valu) {
+                        return CustomTopBar("",
+                            acction: IconButton(
+                                onPressed: () =>
+                                    RutinDialog.ChackStatusUser_BottomSheet(
+                                        context, rutinId),
+                                icon: const Icon(Icons.more_vert)), ontap: () {
+                          ref
+                              .read(isEditingModd.notifier)
+                              .update((state) => !state);
+                        });
+                      },
+                      loading: () => CustomTopBar(rutinName),
+                      error: (error, stackTrace) =>
+                          Alart.handleError(context, error)),
 
-                //.....Priode rows.....//
-                SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ListOfWeakdays(rutinId: rutinId),
+                  //.....Priode rows.....//
+                  Scrollbar(
+                    thickness: 10,
+                    radius: const Radius.circular(10),
+                    child: Column(
+                      children: [
+                        SingleChildScrollView(
+                          physics: const BouncingScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ListOfWeakdays(rutinId: rutinId),
 
-                          ///.. show all priodes  class
+                                  ///.. show all priodes  class
 
-                          rutinDetals.when(
-                            loading: () => const Center(
-                                child: CircularProgressIndicator()),
-                            error: (error, stackTrace) =>
-                                Alart.handleError(context, error),
-                            data: (data) {
-                              var Classss = data?.classes;
-                              var Priodes = data?.priodes ?? [];
-                              int priodelenght = Priodes.length;
-                              print("data!.cap10.toString()");
+                                  rutinDetals.when(
+                                    loading: () => const Center(
+                                        child: CircularProgressIndicator()),
+                                    error: (error, stackTrace) =>
+                                        Alart.handleError(context, error),
+                                    data: (data) {
+                                      var Classss = data?.classes;
+                                      var Priodes = data?.priodes ?? [];
+                                      int priodelenght = Priodes.length;
+                                      print("data!.cap10.toString()");
 
-                              return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    ListOfPriodes(Priodes, rutinId, false),
+                                      return Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            ListOfPriodes(
+                                                Priodes, rutinId, false),
 
-                                    //
-                                    ListOfDays(Classss?.sunday ?? [], false,
-                                        priodelenght),
+                                            //
+                                            ListOfDays(Classss?.sunday ?? [],
+                                                false, priodelenght),
 
-                                    ListOfDays(Classss?.monday ?? [], false,
-                                        priodelenght),
-                                    ListOfDays(Classss?.tuesday ?? [], false,
-                                        priodelenght),
-                                    ListOfDays(Classss?.wednesday ?? [], false,
-                                        priodelenght),
-                                    ListOfDays(Classss?.thursday ?? [], false,
-                                        priodelenght),
-                                    ListOfDays(Classss?.friday ?? [], false,
-                                        priodelenght),
-                                    ListOfDays(Classss?.saturday ?? [], false,
-                                        priodelenght),
-                                    // ListOfDays(Classss?.saturday ?? [],
-                                    //     false, priodelenght),
-                                  ]);
-                            },
+                                            ListOfDays(Classss?.monday ?? [],
+                                                false, priodelenght),
+                                            ListOfDays(Classss?.tuesday ?? [],
+                                                false, priodelenght),
+                                            ListOfDays(Classss?.wednesday ?? [],
+                                                false, priodelenght),
+                                            ListOfDays(Classss?.thursday ?? [],
+                                                false, priodelenght),
+                                            ListOfDays(Classss?.friday ?? [],
+                                                false, priodelenght),
+                                            ListOfDays(Classss?.saturday ?? [],
+                                                false, priodelenght),
+                                            // ListOfDays(Classss?.saturday ?? [],
+                                            //     false, priodelenght),
+                                          ]);
+                                    },
+                                  ),
+                                ],
+                              )
+                            ],
                           ),
-                        ],
-                      )
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
 
-                HedingText(" Owner Account"),
+                  HedingText(" Owner Account"),
 
-                rutinDetals.when(
-                  error: (error, stackTrace) => Text(error.toString()),
-                  loading: () => const CircularProgressIndicator(),
-                  data: (data) {
-                    return data != null
-                        ? AccountCardRow(accountData: data.owner)
-                        : const CircularProgressIndicator();
-                  },
-                ),
-              ]),
+                  rutinDetals.when(
+                    error: (error, stackTrace) => Text(error.toString()),
+                    loading: () => const CircularProgressIndicator(),
+                    data: (data) {
+                      return data != null
+                          ? AccountCardRow(accountData: data.owner)
+                          : const CircularProgressIndicator();
+                    },
+                  ),
+                ]),
+          ),
         ),
       ),
     );
