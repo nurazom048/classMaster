@@ -1,8 +1,14 @@
 // ignore_for_file: non_constant_identifier_names, use_key_in_widget_constructors
-
+import 'dart:convert';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table/helper/constant/constant.dart';
+import 'package:table/ui/bottom_items/Add/addNoticeBord.dart';
 import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
+import 'package:table/ui/bottom_items/Home/notice/fullNotice.dart';
 import 'package:table/ui/bottom_items/search/search_screen/search_page.dart';
 import 'package:table/widgets/GridView/GridViewRutin.dart';
 import 'package:table/widgets/GridView/GridsaveRutin.dart';
@@ -12,6 +18,7 @@ import 'package:table/widgets/hedding_row.dart';
 import 'package:table/widgets/progress_indicator.dart';
 
 import '../../../../core/dialogs/Alart_dialogs.dart';
+import '../../../../models/notice/allUplodeNotice.dart';
 import '../../../../widgets/GridView/Grid_join_rutin.dart';
 import 'dailog/create_rutin-dialog.dart';
 
@@ -41,17 +48,67 @@ class HomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //... Appbar .../
+
                 CustomTopBar("All Rutins",
-                    acction: IconButton(
-                        onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SearchPAge())),
-                        icon: const Icon(Icons.search)),
+                    acction: Column(
+                      children: [
+                        IconButton(
+                            onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const AddNoticeBord())),
+                            icon: const Icon(Icons.search)),
+                        // IconButton(
+                        //     onPressed: () => Navigator.push(
+                        //         context,
+                        //         MaterialPageRoute(
+                        //             builder: (context) => const SearchPAge())),
+                        //     icon: const Icon(Icons.search)),
+                      ],
+                    ),
                     icon: Icons.add_circle_outlined,
                     ontap: () => createRutinDialog(context)),
 
-                //
+                // ...............................
+
+                Container(
+                  height: 200,
+                  width: 900,
+                  child: FutureBuilder<AllUploadedNotice>(
+                    future: fetchAllUploadedNotices("qq"),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: snapshot.data!.notice.length,
+                          itemBuilder: (context, index) {
+                            final notice = snapshot.data!.notice[index];
+                            return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                      fullscreenDialog: true,
+                                      builder: (context) =>
+                                          const AllContentPage(),
+                                    ));
+                              },
+                              child: NoticeBordWiget(
+                                text: Text(notice.name),
+                              ),
+                            );
+                          },
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      } else {
+                        return const CircularProgressIndicator();
+                      }
+                    },
+                  ),
+                ),
+
                 SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   physics: const BouncingScrollPhysics(),
@@ -197,5 +254,16 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+Future<AllUploadedNotice> fetchAllUploadedNotices(String username) async {
+  final response =
+      await http.get(Uri.parse('${Const.BASE_URl}/notice/$username'));
+
+  if (response.statusCode == 200) {
+    return AllUploadedNotice.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception('Failed to load all uploaded notices');
   }
 }
