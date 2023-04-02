@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, non_constant_identifier_names
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +70,10 @@ class SummaryScreen extends StatelessWidget {
                         itemBuilder: (context, index) => SummaryContaner(
                           text: summary[index].text,
                           date: summary[index].time.toString(),
-                          is_last: 0 == index,
+                          is_last: summary.length - 1 == index,
+                          time: summary[index].time,
+                          previusTime:
+                              summary[index == 0 ? index : index - 1].time,
                         ),
                       );
                     },
@@ -113,43 +116,87 @@ class SummaryContaner extends StatelessWidget {
   final String text;
   final String date;
   final bool is_last;
+  final DateTime time;
+  final DateTime previusTime;
   const SummaryContaner({
     Key? key,
     required this.text,
     required this.date,
     required this.is_last,
+    required this.time,
+    required this.previusTime,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     DateTime flutteDate = DateTime.parse(date);
-    return Container(
-      decoration: BoxDecoration(
-          border: Border.all(color: Colors.blueAccent, width: 1.0),
-          color: Colors.blueAccent,
-          borderRadius: BorderRadius.circular(5.0)),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      margin: EdgeInsets.only(
-          top: 20, bottom: is_last == true ? 90 : 20, left: 20, right: 20),
-      width: 400,
-      child: Column(
-        children: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              text,
-              style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black),
-            ),
+
+    String topTime(DateTime previusTime, DateTime time, DateTime now) {
+      if (previusTime.difference(time).inHours == 0 &&
+          previusTime.difference(time).inMinutes == 0) {
+        return " ";
+      } else if (now.difference(time).inDays == 0) {
+        return "${DateFormat.jm().format(time)} today";
+      } else {
+        return DateFormat.jm().format(time);
+      }
+    }
+
+    return Column(
+      children: [
+        Text(topTime(previusTime, time, DateTime.now())),
+        Container(
+          decoration: BoxDecoration(
+              border: Border.all(color: Colors.blueAccent, width: 1.0),
+              color: Colors.blueAccent,
+              borderRadius: BorderRadius.circular(5.0)),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          margin: EdgeInsets.only(
+              top: 20, bottom: is_last == true ? 90 : 20, left: 20, right: 20),
+          width: 400,
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  text,
+                  style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black),
+                ),
+              ),
+              Align(
+                  alignment: Alignment.bottomRight,
+                  child: Text(_formatDate(flutteDate))),
+            ],
           ),
-          Align(
-              alignment: Alignment.bottomRight,
-              child: Text(_formatDate(flutteDate))),
-        ],
-      ),
+        ),
+        Align(
+            alignment: Alignment.centerRight,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 20.0),
+              child: Text(endTime(previusTime, time, is_last)),
+            ))
+      ],
     );
+  }
+
+  //..... end time....//
+  String endTime(DateTime previusTime, DateTime last, bool is_last) {
+    // time match with previus and is last
+    if (time.difference(previusTime).inMinutes == 0 &&
+        time.difference(previusTime).inHours == 0) {
+      return "";
+      // return DateFormat.jm().format(time);
+    } else if (last.day == DateTime.now().day &&
+            last.difference(previusTime).inMinutes != 0 ||
+        last.difference(previusTime).inHours != 0 ||
+        is_last == true) {
+      return DateFormat.jm().format(time);
+    } else {
+      return "";
+    }
   }
 
   String _formatDate(DateTime flutteDate) {

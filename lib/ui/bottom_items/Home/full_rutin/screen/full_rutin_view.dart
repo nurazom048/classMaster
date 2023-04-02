@@ -167,7 +167,7 @@ class ListOfDays extends StatelessWidget {
                       context, day[index]?.id),
 
                   // ontap to go summay page..//
-                  onTap: false == true
+                  onTap: true == true
                       ? () => Navigator.push(
                             context,
                             CupertinoPageRoute(
