@@ -10,7 +10,6 @@ import 'package:table/widgets/TopBar.dart';
 import 'package:table/widgets/custom_rutin_card.dart';
 import 'package:table/widgets/hedding_row.dart';
 import 'package:table/widgets/progress_indicator.dart';
-
 import '../../../../core/dialogs/Alart_dialogs.dart';
 import '../../../../widgets/GridView/Grid_join_rutin.dart';
 import 'dailog/create_rutin-dialog.dart';

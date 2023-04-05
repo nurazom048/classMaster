@@ -20,14 +20,14 @@ import 'package:table/widgets/text%20and%20buttons/hedingText.dart';
 import '../../../../../core/dialogs/Alart_dialogs.dart';
 
 class FullRutineView extends ConsumerWidget {
-  String rutinId;
-  String rutinName;
-  FullRutineView({super.key, required this.rutinId, required this.rutinName});
+  final String rutinId;
+  final String rutinName;
+  const FullRutineView(
+      {super.key, required this.rutinId, required this.rutinName});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //! providers
-    final chackStatus = ref.watch(chackStatusControllerProvider(rutinId));
     final rutinDetals = ref.watch(rutins_detalis_provider(rutinId));
     print("RutinId:  $rutinId");
 
@@ -44,7 +44,6 @@ class FullRutineView extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   //...... Appbar.......!!
-
                   CustomTopBar(
                     rutinName,
                     acction: IconButton(
@@ -78,17 +77,16 @@ class FullRutineView extends ConsumerWidget {
                               ///.. show all priodes  class
 
                               rutinDetals.when(
-                                loading: () => const Center(
-                                    child: CircularProgressIndicator()),
-                                error: (error, stackTrace) =>
-                                    Alart.handleError(context, error),
                                 data: (data) {
                                   var Classss = data?.classes;
+
+                                  //? priodes
                                   var Priodes = data?.priodes ?? [];
                                   int priodelenght = Priodes.length;
-                                  var endPriodeNumber =
-                                      Priodes[Priodes.length - 1].priode_number;
-                                  print("data!.cap10.toString()");
+                                  var endPriodeNumber = Priodes.isEmpty
+                                      ? 0
+                                      : Priodes[Priodes.length - 1]
+                                          .priode_number;
 
                                   return Column(
                                       crossAxisAlignment:
@@ -114,6 +112,10 @@ class FullRutineView extends ConsumerWidget {
                                             endPriodeNumber, rutinId),
                                       ]);
                                 },
+                                loading: () => const Center(
+                                    child: CircularProgressIndicator()),
+                                error: (error, stackTrace) =>
+                                    Alart.handleError(context, error),
                               ),
                             ],
                           ),
@@ -126,9 +128,10 @@ class FullRutineView extends ConsumerWidget {
                     error: (error, stackTrace) => Text(error.toString()),
                     loading: () => const CircularProgressIndicator(),
                     data: (data) {
-                      return data != null
-                          ? AccountCardRow(accountData: data.owner)
-                          : const CircularProgressIndicator();
+                      if (data != null) {
+                        return AccountCardRow(accountData: data.owner);
+                      }
+                      return const Text("data");
                     },
                   ),
                 ]),
