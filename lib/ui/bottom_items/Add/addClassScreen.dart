@@ -178,29 +178,29 @@ class _AddClassSceenState extends State<AddClassSceen> {
 
               //
 
-              const MyText(" Start and end time "),
+              // const MyText(" Start and end time "),
 
-              Row(
-                children: [
-                  SelectTime(
-                    width: MediaQuery.of(context).size.width / 2.1,
-                    time_text: "start_time",
-                    time: startTimeDemo,
-                    show: show,
-                    onTap: () => _selectStartTime(),
-                  ),
-                  const SizedBox(width: 5),
-                  Expanded(
-                    child: SelectTime(
-                      width: MediaQuery.of(context).size.width / 2.1,
-                      time_text: "end time",
-                      time: endTimDemo,
-                      show: show,
-                      onTap: _selectEndTime,
-                    ),
-                  ),
-                ],
-              ),
+              // Row(
+              //   children: [
+              //     SelectTime(
+              //       width: MediaQuery.of(context).size.width / 2.1,
+              //       time_text: "start_time",
+              //       time: startTimeDemo,
+              //       show: show,
+              //       onTap: () => _selectStartTime(),
+              //     ),
+              //     const SizedBox(width: 5),
+              //     Expanded(
+              //       child: SelectTime(
+              //         width: MediaQuery.of(context).size.width / 2.1,
+              //         time_text: "end time",
+              //         time: endTimDemo,
+              //         show: show,
+              //         onTap: _selectEndTime,
+              //       ),
+              //     ),
+              //   ],
+              // ),
 
               const MyText("Start and end Priode"),
               Row(

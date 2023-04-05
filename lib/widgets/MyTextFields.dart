@@ -5,11 +5,13 @@ class MyTextField extends StatelessWidget {
   String name;
   var controller;
   dynamic validate;
+  TextInputType? keyboardType;
 
   MyTextField({
     required this.name,
     required this.controller,
     this.validate,
+    this.keyboardType,
     super.key,
   });
 
@@ -20,6 +22,7 @@ class MyTextField extends StatelessWidget {
       children: [
         MyText(name),
         TextFormField(
+          keyboardType: keyboardType,
           controller: controller,
           decoration: InputDecoration(
             hintText: name,

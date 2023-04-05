@@ -41,20 +41,23 @@ class PriodeRequest {
 
   //
   //... add priode....//
-  Future<Either<String, Message>> addPriode(
-      DateTime startTime, DateTime endTime, String rutinId) async {
+  Future<Either<String, Message>> addPriode(DateTime startTime,
+      DateTime endTime, String rutinId, int? priode_number) async {
     // Obtain shared preferences.
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
     var url = Uri.parse('${Const.BASE_URl}/rutin/priode/add/$rutinId');
 
     try {
-      final response = await http.post(url, body: {
-        "start_time": "${startTime.toIso8601String()}Z",
-        "end_time": "${endTime.toIso8601String()}Z",
-      }, headers: {
-        'Authorization': 'Bearer $getToken'
-      });
+      final response = await http.post(
+        url,
+        headers: {'Authorization': 'Bearer $getToken'},
+        body: {
+          "start_time": "${startTime.toIso8601String()}Z",
+          "end_time": "${endTime.toIso8601String()}Z",
+          "priode_number": priode_number?.toString() ?? "0"
+        },
+      );
 
       var res = json.decode(response.body);
       print(res);

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/priodeController.dart';
+import 'package:table/widgets/MyTextFields.dart';
 import 'package:table/widgets/select_time.dart';
 import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 
@@ -19,6 +20,7 @@ class _AppPriodePageState extends State<AppPriodePage> {
   DateTime startTime = DateTime.now();
   DateTime endTime = DateTime.now();
   bool show = false;
+  final priodeNumController = TextEditingController();
 
 //... Add Priode ...//
   String? message;
@@ -40,6 +42,17 @@ class _AppPriodePageState extends State<AppPriodePage> {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    MyTextField(
+                      name: "Priode Number",
+                      keyboardType: TextInputType.number,
+                      controller: priodeNumController,
+                      validate: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Priode Number is  Required';
+                        }
+                        return null;
+                      },
+                    ),
                     const MyText(" Start and end time "),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -78,8 +91,14 @@ class _AppPriodePageState extends State<AppPriodePage> {
                                 onPressed: () {
                                   ref
                                       .watch(priodeController.notifier)
-                                      .addPriode(ref, context, startTime,
-                                          endTime, widget.rutinId);
+                                      .addPriode(
+                                          ref,
+                                          context,
+                                          startTime,
+                                          endTime,
+                                          widget.rutinId,
+                                          int.parse(priodeNumController.text
+                                              .toString()));
                                 }),
                       );
                     }),

@@ -1,36 +1,40 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:convert';
+
 import 'package:table/models/Account_models.dart';
 
-ClassDetailsModel classDetailsModelFromJson(String str) =>
-    ClassDetailsModel.fromJson(json.decode(str));
+NewClassDetailsModel newClassDetailsModelFromJson(String str) =>
+    NewClassDetailsModel.fromJson(json.decode(str));
 
-class ClassDetailsModel {
-  ClassDetailsModel({
+class NewClassDetailsModel {
+  NewClassDetailsModel({
+    required this.id,
     required this.rutinName,
     required this.priodes,
     required this.classes,
     required this.owner,
   });
 
+  String id;
   String rutinName;
   List<Priode> priodes;
-  Classes classes;
+  NewClasses classes;
   AccountModels owner;
 
-  factory ClassDetailsModel.fromJson(Map<String, dynamic> json) =>
-      ClassDetailsModel(
-        rutinName: json["rutin_name"],
+  factory NewClassDetailsModel.fromJson(Map<String, dynamic> json) =>
+      NewClassDetailsModel(
+        id: json["_id"] ?? '',
+        rutinName: json["rutin_name"] ?? "",
         priodes:
             List<Priode>.from(json["priodes"].map((x) => Priode.fromJson(x))),
-        classes: Classes.fromJson(json["Classes"]),
+        classes: NewClasses.fromJson(json["Classes"]),
         owner: AccountModels.fromJson(json["owner"]),
       );
 }
 
-class Classes {
-  Classes({
+class NewClasses {
+  NewClasses({
     required this.sunday,
     required this.monday,
     required this.tuesday,
@@ -48,7 +52,7 @@ class Classes {
   List<Day> friday;
   List<Day> saturday;
 
-  factory Classes.fromJson(Map<String, dynamic> json) => Classes(
+  factory NewClasses.fromJson(Map<String?, dynamic> json) => NewClasses(
         sunday: List<Day>.from(json["Sunday"].map((x) => Day.fromJson(x))),
         monday: List<Day>.from(json["Monday"].map((x) => Day.fromJson(x))),
         tuesday: List<Day>.from(json["Tuesday"].map((x) => Day.fromJson(x))),
@@ -60,6 +64,8 @@ class Classes {
       );
 }
 
+/////////////////////////////////////////////////////////////////
+
 class Day {
   Day({
     required this.id,
@@ -70,9 +76,8 @@ class Day {
     required this.start,
     required this.end,
     required this.weekday,
-    required this.startTime,
-    required this.endTime,
-    required this.hasClass,
+    this.startTime,
+    this.endTime,
   });
 
   String id;
@@ -83,43 +88,46 @@ class Day {
   int start;
   int end;
   int weekday;
-  DateTime startTime;
-  DateTime endTime;
-  String hasClass;
+  DateTime? startTime;
+  DateTime? endTime;
 
-  factory Day.fromJson(Map<String, dynamic> json) => Day(
-        id: json["_id"],
-        name: json["name"],
-        instuctorName: json["instuctor_name"],
+  factory Day.fromJson(Map<String?, dynamic> json) => Day(
+        id: json["_id"] ?? '',
+        name: json["name"] ?? '',
+        instuctorName: json["instuctor_name"] ?? '',
         room: json["room"],
-        subjectcode: json["subjectcode"],
-        start: json["start"],
-        end: json["end"],
-        weekday: json["weekday"],
-        startTime: DateTime.parse(json["start_time"]),
-        endTime: DateTime.parse(json["end_time"]),
-        hasClass: json["has_class"],
+        subjectcode: json["subjectcode"] ?? '',
+        start: json["start"] ?? '',
+        end: json["end"] ?? '',
+        weekday: json["weekday"] ?? '',
+        startTime: json["start_time"] != null
+            ? DateTime.parse(json["start_time"])
+            : null,
+        endTime:
+            json["end_time"] != null ? DateTime.parse(json["end_time"]) : null,
       );
 }
 
 class Priode {
   Priode({
+    required this.priode_number,
     required this.startTime,
     required this.endTime,
     required this.id,
   });
-
+  dynamic priode_number;
   DateTime startTime;
   DateTime endTime;
-  String id;
+  String? id;
 
-  factory Priode.fromJson(Map<String, dynamic> json) => Priode(
+  factory Priode.fromJson(Map<String?, dynamic> json) => Priode(
+        priode_number: json["priode_number"],
         startTime: DateTime.parse(json["start_time"]).toLocal(),
         endTime: DateTime.parse(json["end_time"]).toLocal(),
         id: json["_id"],
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String?, dynamic> toJson() => {
         "start_time": startTime.toIso8601String(),
         "end_time": endTime.toIso8601String(),
         "_id": id,

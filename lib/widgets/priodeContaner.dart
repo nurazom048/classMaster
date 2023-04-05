@@ -3,19 +3,23 @@ import 'package:intl/intl.dart';
 
 class PriodeContaner extends StatelessWidget {
   final int priode;
+  final int previusPriode;
   final DateTime startTime, endtime;
 
   final dynamic onLongPress;
   final IconData? iconn;
   final int lenght;
+  final int index;
 
-  PriodeContaner({
+  const PriodeContaner({
     Key? key,
     required this.priode,
     required this.startTime,
     required this.endtime,
+    required this.previusPriode,
     this.onLongPress,
     this.iconn,
+    required this.index,
     required this.lenght,
   }) : super(key: key);
 
@@ -23,28 +27,34 @@ class PriodeContaner extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: onLongPress ?? () {},
-      child: Container(
-        height: 100,
-        width: 100,
-        decoration: const BoxDecoration(
-            color: Color.fromRGBO(68, 114, 196, 40),
-            border: Border(right: BorderSide(color: Colors.black45, width: 1))),
-        child: Padding(
-          padding: const EdgeInsets.all(3.0),
-          child: Column(
-            children: [
-              Text({priode + 1}.toString()),
-              const Divider(color: Colors.black87, height: 10, thickness: .5),
-              Column(
+      child: Row(
+        children: [
+          crossContainerPriode(priode, previusPriode),
+          Container(
+            height: 100,
+            width: 100,
+            decoration: const BoxDecoration(
+                color: Color.fromRGBO(68, 114, 196, 40),
+                border:
+                    Border(right: BorderSide(color: Colors.black45, width: 1))),
+            child: Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: Column(
                 children: [
-                  Text(formatTime(startTime)),
-                  Text(formatTime(endtime)),
-                  // Text(formatTimeDifference(startTime, endtime)),
+                  Text({priode}.toString()),
+                  const Divider(
+                      color: Colors.black87, height: 10, thickness: .5),
+                  Column(
+                    children: [
+                      Text(formatTime(startTime)),
+                      Text(formatTime(endtime)),
+                    ],
+                  ),
                 ],
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -61,5 +71,48 @@ class PriodeContaner extends StatelessWidget {
   //
   String formatTime(DateTime time) {
     return DateFormat.jm().format(time);
+  }
+
+//... if there is no class THEN RETUN Cross contaner
+  Widget crossContainerPriode(num currentPriodeNumber, num priviusPriodeNum) {
+    num size = (currentPriodeNumber - priviusPriodeNum);
+
+    print(size);
+
+    double width = size * 100;
+
+    return size.isNegative || width == 0 || size == 1
+        ? const SizedBox.shrink()
+        : Row(
+            children: [
+              for (var i = priviusPriodeNum + 1;
+                  i <= currentPriodeNumber - 1;
+                  i++)
+                Container(
+                  height: 100,
+                  width: 100,
+                  decoration: const BoxDecoration(
+                    color: Color.fromRGBO(68, 114, 196, 40),
+                    border: Border(
+                      right: BorderSide(color: Colors.black45, width: 1),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child: Column(
+                      children: [
+                        Text("($i)"),
+                        Divider(
+                          color: Colors.black87,
+                          height: 10,
+                          thickness: .5,
+                        ),
+                        Icon(Icons.clear),
+                      ],
+                    ),
+                  ),
+                ),
+            ],
+          );
   }
 }

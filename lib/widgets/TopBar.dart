@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomTopBar extends StatelessWidget {
@@ -38,26 +37,19 @@ class CustomTopBar extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
-          acction == null
-              ? InkWell(
+          Row(
+            children: [
+              if (ontap != null)
+                InkWell(
                   child: IconButton(
                     icon: Icon(icon ?? Icons.edit, size: 22),
                     onPressed: ontap,
                   ),
                   onTap: ontap,
-                )
-              : Row(
-                  children: [
-                    InkWell(
-                      child: IconButton(
-                        icon: Icon(icon ?? Icons.edit, size: 22),
-                        onPressed: ontap,
-                      ),
-                      onTap: ontap,
-                    ),
-                    acction ?? const SizedBox(width: 0)
-                  ],
-                )
+                ),
+              acction ?? const SizedBox(width: 0)
+            ],
+          )
         ],
       ),
     );

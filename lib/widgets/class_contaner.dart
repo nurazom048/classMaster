@@ -7,7 +7,7 @@ class ClassContainer extends StatelessWidget {
   final String? instractorname, roomnum, subCode, classname;
   final String? has_class;
   final num start, end, previous_end;
-  final DateTime startTime, endTime;
+  final DateTime? startTime, endTime;
   final dynamic weakday;
   final dynamic onTap, onLongPress;
   final dynamic weakdayIndex;
@@ -58,7 +58,8 @@ class ClassContainer extends StatelessWidget {
                 children: [
                   Column(
                     children: [
-                      running(startTime, endTime),
+                      running(startTime ?? DateTime.now(),
+                          endTime ?? DateTime.now()),
                       Text(instractorname ?? ""),
                       Text(subCode ?? ""),
                       Text(roomnum ?? ""),

@@ -40,10 +40,10 @@ class priodeClassController extends StateNotifier<bool> {
   //
   //....addPriode...//
   void addPriode(WidgetRef ref, BuildContext context, DateTime startTime,
-      DateTime endTime, String rutinId) async {
+      DateTime endTime, String rutinId, int? priode_number) async {
     var addRes = await ref
         .watch(priodeRequestProvider)
-        .addPriode(startTime, endTime, rutinId);
+        .addPriode(startTime, endTime, rutinId, priode_number);
     print("i am from cont");
 
     addRes.fold(

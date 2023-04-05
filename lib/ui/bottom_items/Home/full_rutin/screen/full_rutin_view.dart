@@ -34,6 +34,9 @@ class FullRutineView extends ConsumerWidget {
     return SafeArea(
       child: Scaffold(
         body: Scrollbar(
+          thickness: 10,
+          radius: const Radius.circular(10),
+          scrollbarOrientation: ScrollbarOrientation.left,
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Column(
@@ -41,92 +44,84 @@ class FullRutineView extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   //...... Appbar.......!!
-                  rutinDetals.when(
-                      data: (valu) {
-                        return CustomTopBar("",
-                            acction: IconButton(
-                                onPressed: () =>
-                                    RutinDialog.ChackStatusUser_BottomSheet(
-                                        context, rutinId),
-                                icon: const Icon(Icons.more_vert)), ontap: () {
-                          ref
-                              .read(isEditingModd.notifier)
-                              .update((state) => !state);
-                        });
-                      },
-                      loading: () => CustomTopBar(rutinName),
-                      error: (error, stackTrace) =>
-                          Alart.handleError(context, error)),
+
+                  CustomTopBar(
+                    rutinName,
+                    acction: IconButton(
+                        onPressed: () {
+                          RutinDialog.ChackStatusUser_BottomSheet(
+                              context, rutinId);
+                        },
+                        icon: const Icon(Icons.more_vert)),
+                    // ontap: () => ref
+                    //     .read(isEditingModd.notifier)
+                    //     .update((state) => !state)
+                  ),
 
                   //.....Priode rows.....//
                   Scrollbar(
                     thickness: 10,
                     radius: const Radius.circular(10),
+                    scrollbarOrientation: ScrollbarOrientation.top,
                     child: Column(
                       children: [
+                        const SizedBox(height: 10),
                         SingleChildScrollView(
+                          padding: const EdgeInsets.only(left: 6, right: 30),
                           physics: const BouncingScrollPhysics(),
                           scrollDirection: Axis.horizontal,
-                          child: Column(
+                          child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  ListOfWeakdays(rutinId: rutinId),
+                              ListOfWeakdays(rutinId: rutinId),
 
-                                  ///.. show all priodes  class
+                              ///.. show all priodes  class
 
-                                  rutinDetals.when(
-                                    loading: () => const Center(
-                                        child: CircularProgressIndicator()),
-                                    error: (error, stackTrace) =>
-                                        Alart.handleError(context, error),
-                                    data: (data) {
-                                      var Classss = data?.classes;
-                                      var Priodes = data?.priodes ?? [];
-                                      int priodelenght = Priodes.length;
-                                      print("data!.cap10.toString()");
+                              rutinDetals.when(
+                                loading: () => const Center(
+                                    child: CircularProgressIndicator()),
+                                error: (error, stackTrace) =>
+                                    Alart.handleError(context, error),
+                                data: (data) {
+                                  var Classss = data?.classes;
+                                  var Priodes = data?.priodes ?? [];
+                                  int priodelenght = Priodes.length;
+                                  var endPriodeNumber =
+                                      Priodes[Priodes.length - 1].priode_number;
+                                  print("data!.cap10.toString()");
 
-                                      return Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            ListOfPriodes(
-                                                Priodes, rutinId, false),
+                                  return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        ListOfPriodes(Priodes, rutinId),
 
-                                            //
-                                            ListOfDays(Classss?.sunday ?? [],
-                                                false, priodelenght),
+                                        //
+                                        ListOfDays(Classss?.sunday ?? [],
+                                            endPriodeNumber, rutinId),
 
-                                            ListOfDays(Classss?.monday ?? [],
-                                                false, priodelenght),
-                                            ListOfDays(Classss?.tuesday ?? [],
-                                                false, priodelenght),
-                                            ListOfDays(Classss?.wednesday ?? [],
-                                                false, priodelenght),
-                                            ListOfDays(Classss?.thursday ?? [],
-                                                false, priodelenght),
-                                            ListOfDays(Classss?.friday ?? [],
-                                                false, priodelenght),
-                                            ListOfDays(Classss?.saturday ?? [],
-                                                false, priodelenght),
-                                            // ListOfDays(Classss?.saturday ?? [],
-                                            //     false, priodelenght),
-                                          ]);
-                                    },
-                                  ),
-                                ],
-                              )
+                                        ListOfDays(Classss?.monday ?? [],
+                                            endPriodeNumber, rutinId),
+                                        ListOfDays(Classss?.tuesday ?? [],
+                                            endPriodeNumber, rutinId),
+                                        ListOfDays(Classss?.wednesday ?? [],
+                                            endPriodeNumber, rutinId),
+                                        ListOfDays(Classss?.thursday ?? [],
+                                            endPriodeNumber, rutinId),
+                                        ListOfDays(Classss?.friday ?? [],
+                                            endPriodeNumber, rutinId),
+                                        ListOfDays(Classss?.saturday ?? [],
+                                            endPriodeNumber, rutinId),
+                                      ]);
+                                },
+                              ),
                             ],
                           ),
                         ),
                       ],
                     ),
                   ),
-
-                  HedingText(" Owner Account"),
-
+                  HedingText("    Owner Account"),
                   rutinDetals.when(
                     error: (error, stackTrace) => Text(error.toString()),
                     loading: () => const CircularProgressIndicator(),
@@ -144,85 +139,118 @@ class FullRutineView extends ConsumerWidget {
   }
 }
 
-class ListOfDays extends StatelessWidget {
+class ListOfDays extends ConsumerWidget {
   List<Day?> day;
-  ListOfDays(this.day, this.permition, this.priodeLenght, {super.key});
-  bool permition;
+  ListOfDays(this.day, this.priodeLenght, this.rutinId, {super.key});
+
   int priodeLenght;
-  String? rutinId;
+  String rutinId;
 
   @override
-  Widget build(BuildContext context) {
-    return day.isEmpty
-        ? const SizedBox(height: 100, width: 200, child: Text("  No Class"))
-        : Row(
-            children: List.generate(
-              day.length,
-              (index) => ClassContainer(
-                  instractorname: day[index]?.instuctorName,
-                  roomnum: day[index]?.room,
-                  subCode: day[index]?.subjectcode,
-                  start: day[index]!.start,
-                  end: day[index]!.end,
-                  startTime: day[index]!.startTime,
-                  endTime: day[index]!.endTime,
-                  weakday: day[index]?.weekday,
-                  classname: day[index]?.name,
-                  previous_end:
-                      index == 0 ? day[index]!.end : day[index - 1]!.end,
-                  weakdayIndex: day[index]?.weekday,
+  Widget build(BuildContext context, WidgetRef ref) {
+    if (day.isEmpty) {
+      return const SizedBox(height: 100, width: 200, child: Text("  No Class"));
+    } else {
+      //! provider
+      final chackStatus = ref.watch(chackStatusControllerProvider(rutinId));
+      return Row(
+        children: List.generate(
+          day.length,
+          (index) => ClassContainer(
+              instractorname: day[index]?.instuctorName,
+              roomnum: day[index]?.room,
+              subCode: day[index]?.subjectcode,
+              start: day[index]!.start,
+              end: day[index]!.end,
+              startTime: day[index]?.startTime,
+              endTime: day[index]?.endTime,
+              weakday: day[index]?.weekday,
+              classname: day[index]?.name,
+              previous_end: index == 0 ? day[index]!.end : day[index - 1]!.end,
+              weakdayIndex: day[index]?.weekday,
 
-                  //
-                  priodeLenght: priodeLenght,
-                  isLast: day.length - 1 == index,
-                  onLongPress: () => LongPressDialog.long_press_to_class(
-                      context, day[index]?.id),
+              //
+              priodeLenght: priodeLenght,
+              isLast: day.length - 1 == index,
+              onLongPress: () {
+                return chackStatus.whenData((value) {
+                  if (value.isCaptain || value.isOwner) {
+                    LongPressDialog.long_press_to_class(
+                        context, day[index]?.id);
+                  }
+                });
+              },
 
-                  // ontap to go summay page..//
-                  onTap: false == true
-                      ? () => Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              fullscreenDialog: true,
-                              builder: (context) => SummaryScreen(
-                                classId: day[index]!.id,
-                                istractorName: day[index]!.instuctorName,
-                                roomNumber: day[index]!.room,
-                                subjectCode: day[index]!.subjectcode,
-                              ),
-                            ),
-                          )
-                      : () {}),
-            ),
-          );
+              // ontap to go summay page..//
+              onTap: () {
+                return chackStatus.whenData((value) {
+                  print(value.isCaptain);
+                  if (value.isCaptain == true || value.isOwner == true) {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        fullscreenDialog: true,
+                        builder: (context) => SummaryScreen(
+                          classId: day[index]!.id,
+                          istractorName: day[index]!.instuctorName,
+                          roomNumber: day[index]!.room,
+                          subjectCode: day[index]!.subjectcode,
+                        ),
+                      ),
+                    );
+                  }
+                });
+              }),
+        ),
+      );
+    }
   }
 }
 
 class ListOfPriodes extends StatelessWidget {
   List<Priode?> Priodes;
   String rutinId;
-  ListOfPriodes(this.Priodes, this.rutinId, this.permition, {super.key});
-  bool permition;
+  ListOfPriodes(this.Priodes, this.rutinId, {super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
     return Row(
       children: List.generate(
         Priodes.isEmpty ? 1 : Priodes.length,
-        (index) => Priodes.isEmpty
-            ? Container(
-                height: 100, child: const Center(child: Text("   No Priode")))
-            : PriodeContaner(
+        (index) {
+          if (Priodes.isEmpty) {
+            return const SizedBox(
+                height: 100, child: Center(child: Text("   No Priode")));
+          } else {
+            return Consumer(builder: (context, ref, _) {
+              //! provider
+              final chackStatus =
+                  ref.watch(chackStatusControllerProvider(rutinId));
+              return PriodeContaner(
                 startTime: Priodes[index]!.startTime,
                 endtime: Priodes[index]!.endTime,
-                priode: index,
+                priode: Priodes[index]?.priode_number,
                 lenght: 1,
+                index: index,
+                previusPriode:
+                    Priodes[index == 0 ? index : index - 1]?.priode_number,
 
                 // ontap to go summay page..//
 
-                onLongPress: () => LongPressDialog.logPressOnPriode(
-                    context, Priodes[index]!.id, rutinId),
-              ),
+                onLongPress: () {
+                  return chackStatus.whenData((value) {
+                    if (value.isCaptain || value.isOwner) {
+                      LongPressDialog.logPressOnPriode(
+                          context, Priodes[index]!.id, rutinId);
+                    }
+                  });
+                },
+              );
+            });
+          }
+        },
       ),
     );
   }
