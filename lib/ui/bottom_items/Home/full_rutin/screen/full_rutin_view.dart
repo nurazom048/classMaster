@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print, non_constant_identifier_names, must_be_immutable, unused_local_variable
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,19 +14,20 @@ import 'package:table/widgets/days_container.dart';
 import 'package:table/widgets/priodeContaner.dart';
 import 'package:table/widgets/text%20and%20buttons/empty.dart';
 import 'package:table/widgets/text%20and%20buttons/hedingText.dart';
-
 import '../../../../../core/dialogs/Alart_dialogs.dart';
 
 class FullRutineView extends ConsumerWidget {
-  final String rutinId;
-  final String rutinName;
   const FullRutineView(
       {super.key, required this.rutinId, required this.rutinName});
+
+  final String rutinId;
+  final String rutinName;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //! providers
     final rutinDetals = ref.watch(rutins_detalis_provider(rutinId));
+    // ignore: avoid_print
     print("RutinId:  $rutinId");
 
     return SafeArea(
@@ -78,37 +77,36 @@ class FullRutineView extends ConsumerWidget {
 
                               rutinDetals.when(
                                 data: (data) {
-                                  var Classss = data?.classes;
+                                  var classss = data?.classes;
 
                                   //? priodes
-                                  var Priodes = data?.priodes ?? [];
-                                  int priodelenght = Priodes.length;
-                                  var endPriodeNumber = Priodes.isEmpty
+                                  var priodes = data?.priodes ?? [];
+                                  var endPriodeNumber = priodes.isEmpty
                                       ? 0
-                                      : Priodes[Priodes.length - 1]
+                                      : priodes[priodes.length - 1]
                                           .priode_number;
 
                                   return Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        ListOfPriodes(Priodes, rutinId),
+                                        ListOfPriodes(priodes, rutinId),
 
                                         //
-                                        ListOfDays(Classss?.sunday ?? [],
+                                        ListOfDays(classss?.sunday ?? [],
                                             endPriodeNumber, rutinId),
 
-                                        ListOfDays(Classss?.monday ?? [],
+                                        ListOfDays(classss?.monday ?? [],
                                             endPriodeNumber, rutinId),
-                                        ListOfDays(Classss?.tuesday ?? [],
+                                        ListOfDays(classss?.tuesday ?? [],
                                             endPriodeNumber, rutinId),
-                                        ListOfDays(Classss?.wednesday ?? [],
+                                        ListOfDays(classss?.wednesday ?? [],
                                             endPriodeNumber, rutinId),
-                                        ListOfDays(Classss?.thursday ?? [],
+                                        ListOfDays(classss?.thursday ?? [],
                                             endPriodeNumber, rutinId),
-                                        ListOfDays(Classss?.friday ?? [],
+                                        ListOfDays(classss?.friday ?? [],
                                             endPriodeNumber, rutinId),
-                                        ListOfDays(Classss?.saturday ?? [],
+                                        ListOfDays(classss?.saturday ?? [],
                                             endPriodeNumber, rutinId),
                                       ]);
                                 },
@@ -143,11 +141,10 @@ class FullRutineView extends ConsumerWidget {
 }
 
 class ListOfDays extends ConsumerWidget {
-  List<Day?> day;
-  ListOfDays(this.day, this.priodeLenght, this.rutinId, {super.key});
-
-  int priodeLenght;
-  String rutinId;
+  const ListOfDays(this.day, this.priodeLenght, this.rutinId, {super.key});
+  final List<Day?> day;
+  final int priodeLenght;
+  final String rutinId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -211,19 +208,18 @@ class ListOfDays extends ConsumerWidget {
 }
 
 class ListOfPriodes extends StatelessWidget {
-  List<Priode?> Priodes;
-  String rutinId;
-  ListOfPriodes(this.Priodes, this.rutinId, {super.key});
-
+  const ListOfPriodes(this.priodes, this.rutinId, {super.key});
+  final List<Priode?> priodes;
+  final String rutinId;
   @override
   Widget build(
     BuildContext context,
   ) {
     return Row(
       children: List.generate(
-        Priodes.isEmpty ? 1 : Priodes.length,
+        priodes.isEmpty ? 1 : priodes.length,
         (index) {
-          if (Priodes.isEmpty) {
+          if (priodes.isEmpty) {
             return const SizedBox(
                 height: 100, child: Center(child: Text("   No Priode")));
           } else {
@@ -232,13 +228,13 @@ class ListOfPriodes extends StatelessWidget {
               final chackStatus =
                   ref.watch(chackStatusControllerProvider(rutinId));
               return PriodeContaner(
-                startTime: Priodes[index]!.startTime,
-                endtime: Priodes[index]!.endTime,
-                priode: Priodes[index]?.priode_number,
+                startTime: priodes[index]!.startTime,
+                endtime: priodes[index]!.endTime,
+                priode: priodes[index]?.priode_number,
                 lenght: 1,
                 index: index,
                 previusPriode:
-                    Priodes[index == 0 ? index : index - 1]?.priode_number,
+                    priodes[index == 0 ? index : index - 1]?.priode_number,
 
                 // ontap to go summay page..//
 
@@ -246,7 +242,7 @@ class ListOfPriodes extends StatelessWidget {
                   return chackStatus.whenData((value) {
                     if (value.isCaptain || value.isOwner) {
                       LongPressDialog.logPressOnPriode(
-                          context, Priodes[index]!.id, rutinId);
+                          context, priodes[index]!.id, rutinId);
                     }
                   });
                 },
@@ -262,9 +258,9 @@ class ListOfPriodes extends StatelessWidget {
 //
 
 class ListOfWeakdays extends StatelessWidget {
-  ListOfWeakdays({super.key, this.rutinId});
+  const ListOfWeakdays({super.key, this.rutinId});
 
-  String? rutinId;
+  final String? rutinId;
 
   @override
   Widget build(BuildContext context) {

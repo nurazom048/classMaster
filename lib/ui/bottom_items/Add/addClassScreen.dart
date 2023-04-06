@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/ui/bottom_items/Add/request/class_request.dart';
 import 'package:table/widgets/MyTextFields.dart';
-import 'package:table/widgets/select_time.dart';
 import 'package:table/widgets/text%20and%20buttons/butonCustom.dart';
 import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 import '../../../core/dialogs/Alart_dialogs.dart';
@@ -15,10 +14,10 @@ import '../../../models/class_model.dart';
 import '../../../widgets/daySelectDropdowen.dart';
 
 class AddClassSceen extends StatefulWidget {
-  String rutinId;
-  String? classId;
-  bool? isEdit;
-  AddClassSceen(
+  final String rutinId;
+  final String? classId;
+  final bool? isEdit;
+  const AddClassSceen(
       {super.key, required this.rutinId, this.classId, this.isEdit = false});
 
   @override
@@ -33,11 +32,6 @@ class _AddClassSceenState extends State<AddClassSceen> {
   final _subCodeController = TextEditingController();
   final _startPeriodController = TextEditingController();
   final _endPeriodController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-  late DateTime startTime = DateTime.now();
-  late DateTime endTime = DateTime.now().add(Duration(minutes: 30));
-
-  bool show = false;
 
   //.. just for ui
   late DateTime startTimeDemo = DateTime.now();
@@ -46,6 +40,8 @@ class _AddClassSceenState extends State<AddClassSceen> {
   int _selectedDay = 1;
 
   //
+  final _formKey = GlobalKey<FormState>();
+
   // find class
   Future<void> findClass() async {
     // Obtain shared preferences.
@@ -57,12 +53,8 @@ class _AddClassSceenState extends State<AddClassSceen> {
           Uri.parse('${Const.BASE_URl}/class/find/class/${widget.classId}'),
           headers: {'Authorization': 'Bearer $getToken'});
 
-      print(response.statusCode);
       //.. responce
       if (response.statusCode == 200) {
-        var decodedres = json.decode(response.body);
-        print(decodedres);
-        //
         _className.text = json.decode(response.body)["classs"]["name"];
         _instructorController.text =
             json.decode(response.body)["classs"]["instuctor_name"];
@@ -73,20 +65,7 @@ class _AddClassSceenState extends State<AddClassSceen> {
         //
         setState(() {
           _selectedDay = json.decode(response.body)["classs"]["weekday"];
-          startTime = DateTime.parse(
-              json.decode(response.body)["classs"]["start_time"]);
-          endTime =
-              DateTime.parse(json.decode(response.body)["classs"]["end_time"]);
 
-          //
-          startTimeDemo = DateTime.parse(
-              json.decode(response.body)["classs"]["start_time"]);
-          endTimDemo =
-              DateTime.parse(json.decode(response.body)["classs"]["end_time"]);
-
-          show = true;
-
-          //
           _startPeriodController.text =
               json.decode(response.body)["classs"]["start"].toString();
           _endPeriodController.text =
@@ -127,7 +106,6 @@ class _AddClassSceenState extends State<AddClassSceen> {
                     setState(() {
                       _selectedDay = day ?? 1;
                     });
-                    print(_selectedDay.toString());
                   }),
 
               ///...Class name
@@ -175,32 +153,6 @@ class _AddClassSceenState extends State<AddClassSceen> {
                   return null;
                 },
               ),
-
-              //
-
-              // const MyText(" Start and end time "),
-
-              // Row(
-              //   children: [
-              //     SelectTime(
-              //       width: MediaQuery.of(context).size.width / 2.1,
-              //       time_text: "start_time",
-              //       time: startTimeDemo,
-              //       show: show,
-              //       onTap: () => _selectStartTime(),
-              //     ),
-              //     const SizedBox(width: 5),
-              //     Expanded(
-              //       child: SelectTime(
-              //         width: MediaQuery.of(context).size.width / 2.1,
-              //         time_text: "end time",
-              //         time: endTimDemo,
-              //         show: show,
-              //         onTap: _selectEndTime,
-              //       ),
-              //     ),
-              //   ],
-              // ),
 
               const MyText("Start and end Priode"),
               Row(
@@ -285,8 +237,6 @@ class _AddClassSceenState extends State<AddClassSceen> {
                   onPressed: () {
                     _formKey.currentState!.save();
                     if (_formKey.currentState!.validate()) {
-                      print("ok validate ");
-                      print(widget.classId);
                       widget.isEdit == true
                           ? ClassRequest().editClass(
                               context,
@@ -301,8 +251,8 @@ class _AddClassSceenState extends State<AddClassSceen> {
                                 endingPeriod:
                                     int.parse(_endPeriodController.text),
                                 weekday: _selectedDay,
-                                startTime: startTime,
-                                endTime: endTime,
+                                startTime: DateTime.now(),
+                                endTime: DateTime.now(),
                               ))
                           : ClassRequest().addClass(
                               widget.rutinId,
@@ -317,8 +267,8 @@ class _AddClassSceenState extends State<AddClassSceen> {
                                 endingPeriod:
                                     int.parse(_endPeriodController.text),
                                 weekday: _selectedDay,
-                                startTime: startTime,
-                                endTime: endTime,
+                                startTime: DateTime.now(),
+                                endTime: DateTime.now(),
                               ));
                     }
                   },
@@ -331,51 +281,5 @@ class _AddClassSceenState extends State<AddClassSceen> {
         ),
       ),
     );
-  }
-
-  void _selectStartTime() {
-    showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    ).then((value) {
-      if (value != null) {
-        String hour = "${value.hour < 10 ? '0' : ''}${value.hour}";
-        String minute = "${value.minute < 10 ? '0' : ''}${value.minute}";
-        DateTime selecteTime = DateTime.parse("2021-12-23 $hour:$minute:00Z");
-
-        print("houre : ${value.hour} ,munite ${value.minute}");
-
-        setState(() {
-          show = true;
-          startTime = selecteTime;
-          startTimeDemo = selecteTime;
-          print(startTime.toIso8601String());
-        });
-      }
-    });
-  }
-
-  //--- end time
-  void _selectEndTime() {
-    showTimePicker(
-            context: context,
-            initialTime:
-                TimeOfDay(hour: startTime.hour, minute: startTime.minute))
-        .then((value) {
-      if (value != null) {
-        String hour = "${value.hour < 10 ? '0' : ''}${value.hour}";
-        String minute = "${value.minute < 10 ? '0' : ''}${value.minute}";
-        DateTime selecteEndTime =
-            DateTime.parse("2021-12-23 $hour:$minute:00Z");
-        //
-        setState(() {
-          show = true;
-
-          endTime = selecteEndTime;
-          endTimDemo = selecteEndTime;
-          print(endTime.toIso8601String());
-        });
-      }
-    });
   }
 }

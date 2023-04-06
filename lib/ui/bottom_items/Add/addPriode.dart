@@ -26,6 +26,9 @@ class _AppPriodePageState extends State<AppPriodePage> {
   String? message;
 
   ///
+  ///  //.. just for ui
+  late DateTime startTimeDemo = DateTime.now();
+  late DateTime endTimDemo = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -53,26 +56,50 @@ class _AppPriodePageState extends State<AppPriodePage> {
                         return null;
                       },
                     ),
+
                     const MyText(" Start and end time "),
+
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SelectTime(
-                          width: 170,
+                          width: MediaQuery.of(context).size.width / 2.1,
                           time_text: "start_time",
-                          time: startTime,
+                          time: startTimeDemo,
                           show: show,
-                          onTap: _selectStartTime,
+                          onTap: () => _selectStartTime(),
                         ),
-                        SelectTime(
-                          width: 170,
-                          time_text: "end time",
-                          time: endTime,
-                          show: show,
-                          onTap: _selectEndTime,
+                        const SizedBox(width: 5),
+                        Expanded(
+                          child: SelectTime(
+                            width: MediaQuery.of(context).size.width / 2.1,
+                            time_text: "end time",
+                            time: endTimDemo,
+                            show: show,
+                            onTap: _selectEndTime,
+                          ),
                         ),
                       ],
                     ),
+                    // const MyText(" Start and end time "),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     SelectTime(
+                    //       width: 170,
+                    //       time_text: "start_time",
+                    //       time: startTime,
+                    //       show: show,
+                    //       onTap: _selectStartTime,
+                    //     ),
+                    //     SelectTime(
+                    //       width: 170,
+                    //       time_text: "end time",
+                    //       time: endTime,
+                    //       show: show,
+                    //       onTap: _selectEndTime,
+                    //     ),
+                    //   ],
+                    // ),
                     const SizedBox(height: 70),
                     //
                     Consumer(builder: (context, ref, _) {

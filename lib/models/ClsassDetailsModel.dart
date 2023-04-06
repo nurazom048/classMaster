@@ -121,12 +121,13 @@ class Priode {
 
   factory Priode.fromJson(Map<String?, dynamic> json) => Priode(
         priode_number: json["priode_number"],
-        startTime: DateTime.parse(json["start_time"]).toLocal(),
-        endTime: DateTime.parse(json["end_time"]).toLocal(),
+        startTime: DateTime.parse(json["start_time"]),
+        endTime: DateTime.parse(json["end_time"]),
         id: json["_id"],
       );
 
   Map<String?, dynamic> toJson() => {
+        "priode_number": priode_number.toString(),
         "start_time": startTime.toIso8601String(),
         "end_time": endTime.toIso8601String(),
         "_id": id,
