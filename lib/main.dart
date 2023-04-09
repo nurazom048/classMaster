@@ -1,13 +1,16 @@
 // ignore_for_file: prefer_const_constructors_in_immutables, unused_local_variable, camel_case_types
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:table/helper/constant/AppColor.dart';
-import 'package:table/widgets/appWidget/buttons/cupertinoButttons.dart';
+import 'package:file_picker/file_picker.dart';
 
-import 'ui/auth_Section/new Auuth_Screen/LogIn_Screen.dart';
-import 'ui/auth_Section/new Auuth_Screen/SiginUp_Screen.dart';
+import 'package:table/helper/constant/AppColor.dart';
+import 'package:table/ui/auth_Section/new%20Auuth_Screen/LogIn_Screen.dart';
+import 'package:table/widgets/appWidget/TextFromFild.dart';
+import 'package:table/widgets/appWidget/appText.dart';
+
+import 'widgets/appWidget/buttons/cupertinoButttons.dart';
 
 void main() => runApp(ProviderScope(child: MyApp()));
 
@@ -19,170 +22,207 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: SignUpScreen(),
+      home: AddNoticeScreen(),
       //  home: const MyHomePage(),
     );
   }
 }
 
-class SelectAccounType extends StatefulWidget {
-  final void Function(String?)? onAccountType;
-  const SelectAccounType({super.key, required this.onAccountType});
-
+class AddNoticeScreen extends ConsumerWidget {
+  AddNoticeScreen({super.key});
+  TextEditingController descriptionController = TextEditingController();
   @override
-  State<SelectAccounType> createState() => _SelectAccounTypeState();
-}
-
-class _SelectAccounTypeState extends State<SelectAccounType> {
-  String? selectedRole;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.only(bottom: 400),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              HeaderTitle("Log In", context),
-              const SizedBox(height: 30),
-              Column(
-                children: [
-                  SvgPicture.asset("assets/svg/man1.svg"),
+              HeaderTitle("Back to Home", context),
+              //const SizedBox(height: 100),
 
-                  Container(
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Almost there!',
-                      style: TextStyle(
-                        fontFamily: 'Open Sans',
-                        fontWeight: FontWeight.w300,
-                        fontSize: 48,
-                        height: 65.37 / 48,
-                        color: Color(0xFF001D47),
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0)
+                    .copyWith(top: 25),
+                child: const Text(
+                  "Add A New \nNotice",
+                  style: TextStyle(
+                    fontFamily: 'Open Sans',
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.w300,
+                    fontSize: 48.0,
+                    height: 65 / 48, // This sets the line height to 65px
+                    color: Colors.black,
+                    // text-edge and leading-trim are not currently supported in Flutter
                   ),
-                  Container(
-                    alignment: Alignment.center,
-                    child: const Text(
-                      '   Select Account Type',
-                      style: TextStyle(
-                        fontFamily: 'Open Sans',
-                        fontWeight: FontWeight.w300,
-                        fontSize: 20,
-                        height: 65.37 / 48,
-                        color: Color(0xFF001D47),
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 30),
+                ),
+              ),
 
-                    //... Select Account Type ....//
+              ///
+              ///
+              ///
+              ///
+              MyDropdownButton(),
 
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            decoration: BoxDecoration(
-                              color: selectedRole == "Student"
-                                  ? const Color(0xFF0168FF)
-                                  : const Color(0xFFEEF4FC),
-                              borderRadius: BorderRadius.circular(8.0),
-                              border: Border.all(
-                                color: const Color(0xFF0168FF),
-                                width: 1.0,
-                              ),
-                            ),
-                            child: RadioListTile(
-                              title: Text(
-                                "Student",
-                                style: TextStyle(
-                                  color: selectedRole == "Student"
-                                      ? Colors.white
-                                      : const Color(0xFF0168FF),
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              value: "Student",
-                              groupValue: selectedRole,
-                              onChanged: (value) {
-                                setState(() {
-                                  if (value != null) {
-                                    selectedRole = value;
-                                  }
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8.0),
-                        Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            decoration: BoxDecoration(
-                              color: selectedRole == "Academy"
-                                  ? const Color(0xFF0168FF)
-                                  : const Color(0xFFEEF4FC),
-                              borderRadius: BorderRadius.circular(8.0),
-                              border: Border.all(
-                                color: const Color(0xFF0168FF),
-                                width: 1.0,
-                              ),
-                            ),
-                            child: RadioListTile(
-                              title: Text(
-                                "Academy",
-                                style: TextStyle(
-                                  color: selectedRole == "Academy"
-                                      ? Colors.white
-                                      : const Color(0xFF0168FF),
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              value: "Academy",
-                              groupValue: selectedRole,
-                              onChanged: (value) {
-                                setState(() {
-                                  if (value != null) {
-                                    selectedRole = value;
-                                  }
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 50),
-                  ////
-                  ///
-                  ///
-                  if (selectedRole == null)
-                    CupertinoButtonCustom(
-                      textt: "Select Type",
-                      onPressed: () {},
-                    ),
+              AppTextFromField(
+                controller: descriptionController,
+                hint: "Notice Title",
+                labelText: "Emter Your notice title",
+              ),
 
-                  if (selectedRole != null)
-                    CupertinoButtonCustom(
-                      textt: "Let’s go",
-                      color: AppColor.nokiaBlue,
-                      onPressed: () {
-                        widget.onAccountType?.call(selectedRole);
-                      },
-                    )
-                ],
+              AppTextFromField(
+                controller: descriptionController,
+                hint: "Notice Description",
+                labelText: "Describe what the notice is about.",
+              ),
+              const SizedBox(height: 60),
+
+              UploadPDFB_Button(),
+
+              //
+              const SizedBox(height: 60),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 10),
+                child: CupertinoButtonCustom(
+                  color: AppColor.nokiaBlue,
+                  textt: "Add Notice",
+                  onPressed: () {},
+                ),
               )
             ],
           ),
         ),
       ),
     );
+  }
+}
+
+class UploadPDFB_Button extends StatefulWidget {
+  const UploadPDFB_Button({
+    super.key,
+  });
+
+  @override
+  State<UploadPDFB_Button> createState() => _UploadPDFB_ButtonState();
+}
+
+class _UploadPDFB_ButtonState extends State<UploadPDFB_Button> {
+// Define a method that compresses the PDF and returns the compressed PDF path
+  Future<String?> pickPDFFile() async {
+    // Pick a PDF file from the device
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    // If no file was picked, return null
+    if (result == null) {
+      return null;
+    }
+
+    // Get the PDF file path
+    final path = result.files.single.path;
+
+    // Return the PDF file path
+    return path;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFFEEF4FC),
+        border: Border.all(color: const Color(0xFF0168FF)),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      child: CupertinoButton(
+        onPressed: () async {
+          String? PAth = await pickPDFFile();
+          print(PAth);
+        },
+        color: const Color(0xFFEEF4FC),
+        borderRadius: BorderRadius.circular(8),
+        pressedOpacity: 0.8,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'Upload Notice File (PDF)',
+              style: TextStyle(
+                fontFamily: 'Open Sans',
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
+                height: 1.36,
+                color: Color(0xFF0168FF),
+              ),
+            ),
+            const SizedBox(width: 20),
+            Icon(Icons.file_upload_outlined, color: AppColor.nokiaBlue)
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class MyDropdownButton extends StatefulWidget {
+  @override
+  _MyDropdownButtonState createState() => _MyDropdownButtonState();
+}
+
+class _MyDropdownButtonState extends State<MyDropdownButton> {
+  String _selectedItem = 'Item 1';
+  List<String> _items = ['Item 1', 'Item 2', 'Item 3'];
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        width: 340,
+        height: 46,
+        margin: const EdgeInsets.symmetric(horizontal: 17).copyWith(top: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
+        decoration: BoxDecoration(
+          color: const Color(0xFFEEF4FC),
+          border: Border.all(color: const Color(0xFF0168FF)),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: _selectedItem == null
+            ? DropdownButton<String>(
+                value: _selectedItem,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _selectedItem = newValue!;
+                  });
+                },
+                items: _items.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: AppText(
+                      title: value,
+                      color: Colors.black,
+                    ),
+                  );
+                }).toList(),
+              )
+            : InkWell(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const AppText(title: "Select Board"),
+                    Icon(
+                      Icons.arrow_forward_ios_outlined,
+                      color: AppColor.nokiaBlue,
+                    ),
+                  ],
+                ),
+
+                //
+
+                onTap: () {},
+              ));
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table/widgets/appWidget/appText.dart';
 import 'package:table/widgets/appWidget/buttons/cupertinoButttons.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 
@@ -65,22 +66,9 @@ class HeaderTitle extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           InkWell(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Icon(Icons.arrow_back_ios, size: 20)),
-          Text(
-            title,
-            style: const TextStyle(
-              fontFamily: 'Open Sans',
-              fontStyle: FontStyle.normal,
-              fontWeight: FontWeight.w600,
-              fontSize: 16.0,
-              height: 1.3, // This sets the line height to 22px (16px * 1.3)
-              color: Color(
-                  0xFF0168FF), // This sets the color to Nokia Pure Blue (#0168FF)
-            ),
-          ),
+              onTap: () => Navigator.pop(context),
+              child: const Icon(Icons.arrow_back_ios, size: 20)),
+          AppText(title: title),
         ],
       ),
     );
