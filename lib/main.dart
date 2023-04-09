@@ -3,14 +3,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// ignore: unused_import
 import 'package:file_picker/file_picker.dart';
 
 import 'package:table/helper/constant/AppColor.dart';
+import 'package:table/helper/picker.dart';
 import 'package:table/ui/auth_Section/new%20Auuth_Screen/LogIn_Screen.dart';
 import 'package:table/widgets/appWidget/TextFromFild.dart';
 import 'package:table/widgets/appWidget/appText.dart';
 
 import 'widgets/appWidget/buttons/cupertinoButttons.dart';
+
+//
 
 void main() => runApp(ProviderScope(child: MyApp()));
 
@@ -31,6 +35,7 @@ class MyApp extends StatelessWidget {
 class AddNoticeScreen extends ConsumerWidget {
   AddNoticeScreen({super.key});
   TextEditingController descriptionController = TextEditingController();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SafeArea(
@@ -110,25 +115,9 @@ class UploadPDFB_Button extends StatefulWidget {
 }
 
 class _UploadPDFB_ButtonState extends State<UploadPDFB_Button> {
+  //import 'package:pdf/pdf.dart';
+
 // Define a method that compresses the PDF and returns the compressed PDF path
-  Future<String?> pickPDFFile() async {
-    // Pick a PDF file from the device
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf'],
-    );
-
-    // If no file was picked, return null
-    if (result == null) {
-      return null;
-    }
-
-    // Get the PDF file path
-    final path = result.files.single.path;
-
-    // Return the PDF file path
-    return path;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +130,8 @@ class _UploadPDFB_ButtonState extends State<UploadPDFB_Button> {
       margin: const EdgeInsets.symmetric(horizontal: 20),
       child: CupertinoButton(
         onPressed: () async {
-          String? PAth = await pickPDFFile();
+          String? PAth = await picker.pickPDFFile();
+          print("The apth is ");
           print(PAth);
         },
         color: const Color(0xFFEEF4FC),
