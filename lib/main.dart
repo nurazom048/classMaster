@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors_in_immutables, unused_local_variable, camel_case_types
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,12 +12,16 @@ import 'package:table/helper/picker.dart';
 import 'package:table/ui/auth_Section/new%20Auuth_Screen/LogIn_Screen.dart';
 import 'package:table/widgets/appWidget/TextFromFild.dart';
 import 'package:table/widgets/appWidget/appText.dart';
-
+import 'firebase_options.dart';
 import 'widgets/appWidget/buttons/cupertinoButttons.dart';
 
 //
 
-void main() => runApp(ProviderScope(child: MyApp()));
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(ProviderScope(child: MyApp()));
+}
 
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);

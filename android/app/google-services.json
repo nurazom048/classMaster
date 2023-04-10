@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "837394216188",
+    "project_id": "rutinapp-cadc1",
+    "storage_bucket": "rutinapp-cadc1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:837394216188:android:18115f8313208a028dd379",
+        "android_client_info": {
+          "package_name": "com.example.table"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "837394216188-gcbf8mq1gbev0qol61m0okga5j5q8fh0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD50R66U5baOtkiMfN7CZvuOYjvbb7pVKU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "837394216188-gcbf8mq1gbev0qol61m0okga5j5q8fh0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
