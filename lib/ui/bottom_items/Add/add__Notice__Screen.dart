@@ -169,9 +169,9 @@ class _MyDropdownButtonState extends State<MyDropdownButton> {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: AppText(
-                      title: value,
-                      color: Colors.black,
-                    ),
+                      value,
+                      //  color: Colors.black,
+                    ).heding(),
                   );
                 }).toList(),
               )
@@ -179,7 +179,7 @@ class _MyDropdownButtonState extends State<MyDropdownButton> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const AppText(title: "Select Board"),
+                    AppText("Select Board").heding(),
                     Icon(
                       Icons.arrow_forward_ios_outlined,
                       color: AppColor.nokiaBlue,

@@ -68,7 +68,7 @@ class HeaderTitle extends StatelessWidget {
           InkWell(
               onTap: () => Navigator.pop(context),
               child: const Icon(Icons.arrow_back_ios, size: 20)),
-          AppText(title: title),
+          AppText(title).heding(),
         ],
       ),
     );

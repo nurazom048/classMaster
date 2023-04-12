@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // ignore: unused_import
 import 'package:file_picker/file_picker.dart';
+import 'package:table/helper/constant/AppColor.dart';
 import 'package:table/widgets/appWidget/appText.dart';
+import 'package:table/widgets/appWidget/buttons/Expende_button.dart';
+// ignore: unused_import
 import 'package:table/widgets/appWidget/buttons/capsule_button.dart';
 import 'package:table/widgets/appWidget/dottted_divider.dart';
 import 'firebase_options.dart';
@@ -39,69 +42,63 @@ class RutinCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       //backgroundColor: Colors.black,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          BoldText("Hello").read_text(),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 35),
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  "CSE BATCH 23",
-                  style: TextStyle(
-                    fontFamily: 'Open Sans',
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16,
-                    height: 1.36,
-                    color: Colors.black,
-                  ),
-                ),
-                //
-                CapsuleButton(
-                  "send request",
-                  onTap: () {},
-                )
-              ],
-            ),
-          ),
-          Center(
-            child: Container(
-              width: 340,
-              height: 275,
-              margin: const EdgeInsets.only(bottom: 224),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(5),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 1,
-                    blurRadius: 5,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-                border: Border.all(
-                  width: 2,
-                  color: const Color(0xFFE8E8DB),
-                ),
-              ),
-              child: Column(
-                children: const [
-                  RutineCardInfoRow(
-                    isFrist: true,
-                  ),
-                  RutineCardInfoRow(),
-                  RutineCardInfoRow(),
-                ],
-              ),
-            ),
-          )
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+            children: List.generate(
+          10,
+          (index) => RutinBox(rutinNmae: "Rutin Name"),
+        )),
       ),
     );
+  }
+}
+
+class RutinBox extends StatelessWidget {
+  final dynamic onTap;
+  final String rutinNmae;
+  const RutinBox({
+    super.key,
+    this.onTap,
+    required this.rutinNmae,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+      const MyDivider(),
+      Container(
+        margin: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            AppText(rutinNmae).heding(),
+            //
+            CapsuleButton(
+              "send request",
+              onTap: () {},
+            )
+          ],
+        ),
+      ),
+
+      //
+
+      Center(
+        child: Column(
+          children: const [
+            RutineCardInfoRow(isFrist: true),
+            RutineCardInfoRow(),
+            RutineCardInfoRow(),
+          ],
+        ),
+      ),
+
+      //
+      const ExpendedButton(),
+      MiniAccountInfo(name: "Md Nur Azom", username: "nurazom049"),
+      SizedBox(height: 15)
+    ]);
   }
 }
 
@@ -117,19 +114,20 @@ class RutineCardInfoRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60,
+      margin: const EdgeInsets.symmetric(horizontal: 20),
       width: MediaQuery.of(context).size.width,
       child: Column(
         children: [
           if (isFrist == true) const DotedDivider(),
           Container(
-            margin: const EdgeInsets.symmetric(vertical: 8),
+            margin: const EdgeInsets.symmetric(vertical: 10),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const Text(
                   '09:30 AM\n-\n10:45 AM',
+                  textScaleFactor: 1.2,
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontWeight: FontWeight.w500,
@@ -140,14 +138,16 @@ class RutineCardInfoRow extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 //
+                const Spacer(),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
                       width: MediaQuery.of(context).size.width / 2.1,
-                      child: Text(
+                      child: const Text(
                         'Introduction to Computer ds gfs ghd s hgf gdfg',
-                        maxLines: 2,
+                        maxLines: 1,
+                        textScaleFactor: 1.2,
                         style: TextStyle(
                           fontFamily: 'Inter',
                           fontWeight: FontWeight.w500,
@@ -159,8 +159,9 @@ class RutineCardInfoRow extends StatelessWidget {
                     ),
                     //
 
-                    Text(
-                      '- NlueTExt',
+                    const Text(
+                      '\n- NlueTExt',
+                      textScaleFactor: 1.2,
                       maxLines: 2,
                       style: TextStyle(
                         fontFamily: 'Inter',
@@ -172,13 +173,15 @@ class RutineCardInfoRow extends StatelessWidget {
                     ),
                   ],
                 ),
+                const Spacer(),
 
                 //
                 InkWell(
                     onTap: onTap ?? () {},
                     child: Container(
+                        padding: const EdgeInsets.only(right: 2),
                         alignment: AlignmentDirectional.center,
-                        child: Icon(Icons.arrow_forward_ios)))
+                        child: const Icon(Icons.arrow_forward_ios)))
               ],
             ),
           ),
@@ -189,19 +192,37 @@ class RutineCardInfoRow extends StatelessWidget {
   }
 }
 
+//***********************   MiniAccountInfo*******************/
+class MiniAccountInfo extends StatelessWidget {
+  final String name, username;
 
+  MiniAccountInfo({Key? key, required this.name, required this.username})
+      : super(key: key);
 
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
 
-
-
-
-
-
-
-
-
-
-
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const Spacer(flex: 1),
+        CircleAvatar(backgroundImage: NetworkImage("N"), radius: 22),
+        const Spacer(flex: 1),
+        Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // name ad user name
+              AppText(name, fontSize: 17).heding(),
+              AppText(username, fontSize: 16).heding()
+            ]),
+        const Spacer(flex: 8),
+        IconButton(onPressed: () {}, icon: Icon(Icons.more_vert))
+      ],
+    );
+  }
+}
 
 // class TestVarifi extends StatefulWidget {
 //   const TestVarifi({super.key});
