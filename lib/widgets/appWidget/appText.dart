@@ -1,5 +1,23 @@
 import 'package:flutter/material.dart';
 
+class BoldText extends Text {
+  BoldText(
+    String data, {
+    Key? key,
+    TextStyle? style,
+  }) : super(
+          data,
+          key: key,
+          style: style?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        );
+  read_text() {
+    style?.copyWith(fontSize: 32);
+    return BoldText(data!);
+  }
+}
+
 class AppText extends StatelessWidget {
   const AppText({
     super.key,

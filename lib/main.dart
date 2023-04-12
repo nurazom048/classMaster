@@ -1,19 +1,14 @@
 // ignore_for_file: prefer_const_constructors_in_immutables, unused_local_variable, camel_case_types
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // ignore: unused_import
 import 'package:file_picker/file_picker.dart';
-
-import 'package:table/helper/constant/AppColor.dart';
-import 'package:table/helper/picker.dart';
-import 'package:table/ui/auth_Section/new%20Auuth_Screen/LogIn_Screen.dart';
-import 'package:table/widgets/appWidget/TextFromFild.dart';
 import 'package:table/widgets/appWidget/appText.dart';
+import 'package:table/widgets/appWidget/buttons/capsule_button.dart';
+import 'package:table/widgets/appWidget/dottted_divider.dart';
 import 'firebase_options.dart';
-import 'widgets/appWidget/buttons/cupertinoButttons.dart';
 
 //
 
@@ -31,193 +26,248 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: AddNoticeScreen(),
+      home: const RutinCardWidget(),
       //  home: const MyHomePage(),
     );
   }
 }
 
-class AddNoticeScreen extends ConsumerWidget {
-  AddNoticeScreen({super.key});
-  TextEditingController descriptionController = TextEditingController();
+class RutinCardWidget extends StatelessWidget {
+  const RutinCardWidget({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.only(bottom: 400),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              HeaderTitle("Back to Home", context),
-              //const SizedBox(height: 100),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0)
-                    .copyWith(top: 25),
-                child: const Text(
-                  "Add A New \nNotice",
+  Widget build(BuildContext context) {
+    return Scaffold(
+      //backgroundColor: Colors.black,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          BoldText("Hello").read_text(),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 35),
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "CSE BATCH 23",
                   style: TextStyle(
                     fontFamily: 'Open Sans',
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.w300,
-                    fontSize: 48.0,
-                    height: 65 / 48, // This sets the line height to 65px
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                    height: 1.36,
                     color: Colors.black,
-                    // text-edge and leading-trim are not currently supported in Flutter
                   ),
                 ),
-              ),
-
-              ///
-              ///
-              ///
-              ///
-              MyDropdownButton(),
-
-              AppTextFromField(
-                controller: descriptionController,
-                hint: "Notice Title",
-                labelText: "Emter Your notice title",
-              ),
-
-              AppTextFromField(
-                controller: descriptionController,
-                hint: "Notice Description",
-                labelText: "Describe what the notice is about.",
-              ),
-              const SizedBox(height: 60),
-
-              UploadPDFB_Button(),
-
-              //
-              const SizedBox(height: 60),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                child: CupertinoButtonCustom(
-                  color: AppColor.nokiaBlue,
-                  textt: "Add Notice",
-                  onPressed: () {},
-                ),
-              )
-            ],
+                //
+                CapsuleButton(
+                  "send request",
+                  onTap: () {},
+                )
+              ],
+            ),
           ),
-        ),
+          Center(
+            child: Container(
+              width: 340,
+              height: 275,
+              margin: const EdgeInsets.only(bottom: 224),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 1,
+                    blurRadius: 5,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+                border: Border.all(
+                  width: 2,
+                  color: const Color(0xFFE8E8DB),
+                ),
+              ),
+              child: Column(
+                children: const [
+                  RutineCardInfoRow(
+                    isFrist: true,
+                  ),
+                  RutineCardInfoRow(),
+                  RutineCardInfoRow(),
+                ],
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
 }
 
-class UploadPDFB_Button extends StatefulWidget {
-  const UploadPDFB_Button({
+class RutineCardInfoRow extends StatelessWidget {
+  final bool? isFrist;
+  final dynamic onTap;
+  const RutineCardInfoRow({
     super.key,
+    this.isFrist,
+    this.onTap,
   });
 
   @override
-  State<UploadPDFB_Button> createState() => _UploadPDFB_ButtonState();
-}
-
-class _UploadPDFB_ButtonState extends State<UploadPDFB_Button> {
-  //import 'package:pdf/pdf.dart';
-
-// Define a method that compresses the PDF and returns the compressed PDF path
-
-  @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFFEEF4FC),
-        border: Border.all(color: const Color(0xFF0168FF)),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      child: CupertinoButton(
-        onPressed: () async {
-          String? PAth = await picker.pickPDFFile();
-          print("The apth is ");
-          print(PAth);
-        },
-        color: const Color(0xFFEEF4FC),
-        borderRadius: BorderRadius.circular(8),
-        pressedOpacity: 0.8,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Upload Notice File (PDF)',
-              style: TextStyle(
-                fontFamily: 'Open Sans',
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
-                height: 1.36,
-                color: Color(0xFF0168FF),
-              ),
-            ),
-            const SizedBox(width: 20),
-            Icon(Icons.file_upload_outlined, color: AppColor.nokiaBlue)
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class MyDropdownButton extends StatefulWidget {
-  @override
-  _MyDropdownButtonState createState() => _MyDropdownButtonState();
-}
-
-class _MyDropdownButtonState extends State<MyDropdownButton> {
-  String _selectedItem = 'Item 1';
-  List<String> _items = ['Item 1', 'Item 2', 'Item 3'];
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        width: 340,
-        height: 46,
-        margin: const EdgeInsets.symmetric(horizontal: 17).copyWith(top: 20),
-        padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
-        decoration: BoxDecoration(
-          color: const Color(0xFFEEF4FC),
-          border: Border.all(color: const Color(0xFF0168FF)),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: _selectedItem == null
-            ? DropdownButton<String>(
-                value: _selectedItem,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _selectedItem = newValue!;
-                  });
-                },
-                items: _items.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: AppText(
-                      title: value,
-                      color: Colors.black,
-                    ),
-                  );
-                }).toList(),
-              )
-            : InkWell(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      height: 60,
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        children: [
+          if (isFrist == true) const DotedDivider(),
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text(
+                  '09:30 AM\n-\n10:45 AM',
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12,
+                    height: 1.1,
+                    color: Color(0xFF4F4F4F),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                //
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const AppText(title: "Select Board"),
-                    Icon(
-                      Icons.arrow_forward_ios_outlined,
-                      color: AppColor.nokiaBlue,
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / 2.1,
+                      child: Text(
+                        'Introduction to Computer ds gfs ghd s hgf gdfg',
+                        maxLines: 2,
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12,
+                          height: 1.1,
+                          color: Color(0xFF4F4F4F),
+                        ),
+                      ),
+                    ),
+                    //
+
+                    Text(
+                      '- NlueTExt',
+                      maxLines: 2,
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12,
+                        height: 1.1,
+                        color: Color(0xFF0168FF),
+                      ),
                     ),
                   ],
                 ),
 
                 //
-
-                onTap: () {},
-              ));
+                InkWell(
+                    onTap: onTap ?? () {},
+                    child: Container(
+                        alignment: AlignmentDirectional.center,
+                        child: Icon(Icons.arrow_forward_ios)))
+              ],
+            ),
+          ),
+          const DotedDivider(),
+        ],
+      ),
+    );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// class TestVarifi extends StatefulWidget {
+//   const TestVarifi({super.key});
+
+//   @override
+//   State<TestVarifi> createState() => _TestVarifiState();
+// }
+
+// final emailController = TextEditingController();
+// final otpController = TextEditingController();
+
+// final formKey = GlobalKey<FormState>();
+
+// class _TestVarifiState extends State<TestVarifi> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return SafeArea(
+//       child: Scaffold(
+//         body: SingleChildScrollView(
+//           physics: const BouncingScrollPhysics(),
+//           padding: const EdgeInsets.only(bottom: 400),
+//           child: Column(
+//             children: [
+//               HeaderTitle("Log In", context),
+//               const SizedBox(height: 10),
+
+//               ///
+//               ///
+
+//               Form(
+//                 key: formKey,
+//                 child: Column(
+//                   children: [
+//                     AppTextFromField(
+//                       controller: emailController,
+//                       hint: "Email",
+//                       labelText: "Enter email address",
+//                     ),
+//                     AppTextFromField(
+//                       controller: otpController,
+//                       keyboardType: TextInputType.number,
+//                       hint: "otp",
+//                       labelText: "enter otp",
+//                       validator: (value) =>
+//                           SignUpValidation.validateUsername(value),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//               //
+
+//               TextButton(onPressed: () {}, child: const Text("Send Otp")),
+//               const SizedBox(height: 30),
+//               CupertinoButtonCustom(
+//                 color: AppColor.nokiaBlue,
+//                 textt: "Sign up",
+//                 onPressed: () {
+//                   if (formKey.currentState?.validate() ?? false) {
+//                     print("validate");
+//                   }
+//                 },
+//               )
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

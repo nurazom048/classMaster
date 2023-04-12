@@ -11,6 +11,7 @@ class AppTextFromField extends StatelessWidget {
     this.validator,
     this.onFieldSubmitted,
     this.focusNode,
+    this.keyboardType,
   });
 
   //
@@ -18,7 +19,7 @@ class AppTextFromField extends StatelessWidget {
   final String hint;
   final String? labelText;
   final dynamic validator;
-  final dynamic onFieldSubmitted;
+  final dynamic onFieldSubmitted, keyboardType;
   final FocusNode? focusNode;
 
   @override
@@ -44,6 +45,7 @@ class AppTextFromField extends StatelessWidget {
             focusNode: focusNode,
             onFieldSubmitted: onFieldSubmitted,
             validator: validator,
+            keyboardType: keyboardType,
             decoration: InputDecoration(
               labelText: labelText ?? "Enter your full $hint ",
               errorStyle: TextStyle(
