@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:table/ui/auth_Section/auth_ui/login_sceen.dart';
 import 'package:table/widgets/custom_textFileds.dart';
 import 'package:table/widgets/text%20and%20buttons/wellcome_top_note.dart';
+
+import '../new Auuth_Screen/Login_Screen.dart';
 
 class CreateNewAccount extends StatefulWidget {
   @override
@@ -36,7 +37,7 @@ class _LoginScreenState extends State<CreateNewAccount> {
       print(res);
       if (response.statusCode == 200) {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LoginScreen()));
+            context, MaterialPageRoute(builder: (context) => LogingScreen()));
       }
       print(response);
       //.. responce

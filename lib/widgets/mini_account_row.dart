@@ -5,8 +5,10 @@ import 'package:table/widgets/appWidget/appText.dart';
 
 class MiniAccountInfo extends StatelessWidget {
   final AccountModels? accountData;
+  final dynamic onTapMore;
 
-  const MiniAccountInfo({Key? key, this.accountData}) : super(key: key);
+  const MiniAccountInfo({Key? key, this.accountData, this.onTapMore})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,8 @@ class MiniAccountInfo extends StatelessWidget {
               AppText(accountData?.username ?? '', fontSize: 16).heding()
             ]),
         const Spacer(flex: 8),
-        IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))
+        IconButton(
+            onPressed: onTapMore ?? () {}, icon: const Icon(Icons.more_vert))
       ],
     );
   }

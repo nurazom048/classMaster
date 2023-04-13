@@ -3,8 +3,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/auth_Section/auth_ui/login_sceen.dart';
 import 'firebase_options.dart';
+import 'ui/auth_Section/new Auuth_Screen/LogIn_Screen.dart';
 
 //
 
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: LoginScreen(),
+      home: LogingScreen(),
       //  home: const MyHomePage(),
     );
   }

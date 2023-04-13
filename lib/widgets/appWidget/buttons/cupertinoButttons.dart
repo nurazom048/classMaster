@@ -13,6 +13,7 @@ class CupertinoButtonCustom extends StatelessWidget {
   final Widget? widget;
   final dynamic onPressed;
   final Color? color;
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;

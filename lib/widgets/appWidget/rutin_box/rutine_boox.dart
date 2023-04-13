@@ -2,14 +2,18 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table/core/dialogs/Alart_dialogs.dart';
 import 'package:table/models/Account_models.dart';
 import 'package:table/models/ClsassDetailsModel.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summat_screens/summary_screen.dart';
 import 'package:table/widgets/appWidget/appText.dart';
 import 'package:table/widgets/appWidget/buttons/Expende_button.dart';
 import 'package:table/widgets/appWidget/buttons/capsule_button.dart';
+import 'package:table/widgets/appWidget/rutin_box/rutin_card_row.dart';
 import 'package:table/widgets/mini_account_row.dart';
+import 'package:table/widgets/progress_indicator.dart';
+import '../../../ui/bottom_items/Home/full_rutin/controller/chack_status_controller.dart';
 import '../dottted_divider.dart';
 import '../selectDayRow.dart';
 
@@ -24,11 +28,15 @@ class RutinBox extends StatefulWidget {
   List<Day?> fri;
   List<Day?> sat;
   final String rutinNmae;
+  final String rutinId;
   final AccountModels accountData;
+  final dynamic onTapMore;
   RutinBox({
     super.key,
     this.onTap,
     required this.rutinNmae,
+    required this.onTapMore,
+    required this.rutinId,
     required this.accountData,
     required this.sun,
     required this.mon,
@@ -52,19 +60,60 @@ class _RutinBoxState extends State<RutinBox> {
       const MyDivider(),
 
       Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20),
+        margin: const EdgeInsets.symmetric(horizontal: 10),
         padding: const EdgeInsets.symmetric(vertical: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            AppText(widget.rutinNmae).heding(),
-            //
-            CapsuleButton(
-              "send request",
-              onTap: () {},
-            )
-          ],
-        ),
+        child: Consumer(builder: (context, ref, _) {
+          //! providers
+          final chackStatus =
+              ref.watch(chackStatusControllerProvider(widget.rutinId));
+
+          //! notifier
+          final chackStatusNotifier =
+              ref.watch(chackStatusControllerProvider(widget.rutinId).notifier);
+
+          String status = chackStatus.value?.activeStatus ?? '';
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              AppText(widget.rutinNmae).heding(),
+              //
+
+              chackStatus.when(
+                  data: (data) {
+                    if (status == "joined") {
+                      return CapsuleButton(
+                        "Leave",
+                        color: Colors.red,
+                        icon: Icons.logout,
+                        onTap: () {
+                          return Alart.errorAlertDialogCallBack(
+                            context,
+                            "are you sure you want to leave",
+                            onConfirm: (bool isYes) {
+                              //  Navigator.pop(context);
+
+                              chackStatusNotifier.leaveMember(context);
+                            },
+                          );
+                        },
+                      );
+                    } else {
+                      return CapsuleButton(
+                        status == "not_joined" ? "send request" : status,
+                        icon:
+                            status == "request_pending" ? null : Icons.telegram,
+                        onTap: () {
+                          chackStatusNotifier.sendReqController(context);
+                        },
+                      );
+                    }
+                  },
+                  error: (error, stackTrace) =>
+                      Alart.handleError(context, error),
+                  loading: () => const Text("data")),
+            ],
+          );
+        }),
       ),
 
       //
@@ -135,7 +184,8 @@ class _RutinBoxState extends State<RutinBox> {
           }
         });
       }),
-      MiniAccountInfo(accountData: widget.accountData),
+      MiniAccountInfo(
+          accountData: widget.accountData, onTapMore: widget.onTapMore),
       const SizedBox(height: 15)
     ]);
   }
@@ -145,96 +195,6 @@ class _RutinBoxState extends State<RutinBox> {
       context,
       CupertinoPageRoute(
           builder: (context) => SummaryScreen(classId: day?.id ?? "")),
-    );
-  }
-}
-
-class RutineCardInfoRow extends StatelessWidget {
-  final Day? day;
-  final bool? isFrist;
-  final dynamic onTap;
-  const RutineCardInfoRow({super.key, this.isFrist, this.onTap, this.day});
-  String formatTime(DateTime? time) {
-    return DateFormat.jm().format(time ?? DateTime.now());
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        children: [
-          if (isFrist == true) const DotedDivider(),
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 10),
-            child: Row(
-              //  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  '${formatTime(day?.startTime)}\n-\n${formatTime(day?.endTime)}',
-                  textScaleFactor: 1.2,
-                  style: const TextStyle(
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12,
-                    height: 1.1,
-                    color: Color(0xFF4F4F4F),
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                //
-                const Spacer(),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 2.1,
-                      child: Text(
-                        day?.name ?? "subject Name ",
-                        maxLines: 1,
-                        textScaleFactor: 1.2,
-                        style: const TextStyle(
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12,
-                          height: 1.1,
-                          color: Color(0xFF4F4F4F),
-                        ),
-                      ),
-                    ),
-                    //
-
-                    Text(
-                      '\n- ${day?.instuctorName ?? "instuctorName"}',
-                      textScaleFactor: 1.2,
-                      maxLines: 2,
-                      style: const TextStyle(
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12,
-                        height: 1.1,
-                        color: Color(0xFF0168FF),
-                      ),
-                    ),
-                  ],
-                ),
-                const Spacer(),
-
-                //
-                InkWell(
-                    onTap: onTap ?? () {},
-                    child: Container(
-                        padding: const EdgeInsets.only(right: 2),
-                        alignment: AlignmentDirectional.center,
-                        child: const Icon(Icons.arrow_forward_ios)))
-              ],
-            ),
-          ),
-          const DotedDivider(),
-        ],
-      ),
     );
   }
 }
