@@ -28,8 +28,8 @@ class _BottomNewBarState extends State<BottomNevBar> {
 
           // post
           // BottomNavigationBarItem(
-          //   icon: Icon(Icons.search),
-          //   label: "Search",
+          //   icon: Icon(Icons.add),
+          //   label: "Add",
           //   backgroundColor: Colors.white,
           // ),
           // Chats

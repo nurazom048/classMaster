@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/component/component_improts.dart';
+import 'package:table/models/rutins/rutins.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/full_rutin_view.dart';
 import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
 import 'package:table/widgets/custom_rutin_card.dart';

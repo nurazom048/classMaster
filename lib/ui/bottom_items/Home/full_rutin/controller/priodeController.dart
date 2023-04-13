@@ -39,21 +39,20 @@ class priodeClassController extends StateNotifier<bool> {
 
   //
   //....addPriode...//
-  void addPriode(WidgetRef ref, BuildContext context, DateTime startTime,
-      DateTime endTime, String rutinId, int? priode_number) async {
-    var addRes = await ref
-        .watch(priodeRequestProvider)
-        .addPriode(startTime, endTime, rutinId, priode_number);
+  void addPriode(
+      WidgetRef ref, Map<String, dynamic> item, String rutinId, context) async {
+    var addRes =
+        await ref.watch(priodeRequestProvider).addPriode(item, rutinId);
     print("i am from cont");
 
     addRes.fold(
       (l) {
-        state = false;
+        //    state = false;
         return Alart.errorAlartDilog(context, l);
       },
       (r) {
         ref.refresh(rutins_detalis_provider(rutinId));
-        state = false;
+        //state = false;
 
         Alart.showSnackBar(context, r.message);
       },

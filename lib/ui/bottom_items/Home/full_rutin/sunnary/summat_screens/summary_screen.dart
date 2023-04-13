@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:table/models/ClsassDetailsModel.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summat_screens/add_summary.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/sunnary%20Controller/summary_controller.dart';
 import 'package:table/widgets/Alart.dart';
@@ -13,18 +14,12 @@ import '../../../../../../models/summaryModels.dart';
 
 class SummaryScreen extends StatelessWidget {
   final String classId;
-  final String? image;
-  final String? istractorName;
-  final String? subjectCode;
-  final String? roomNumber;
+  final Day? day;
 
   SummaryScreen({
     super.key,
     required this.classId,
-    this.image,
-    this.istractorName = "",
-    this.subjectCode = "",
-    this.roomNumber = ",",
+    this.day,
   });
   final scrollController = ScrollController();
 
@@ -37,9 +32,9 @@ class SummaryScreen extends StatelessWidget {
           const CustomTopBar("Class Summary"),
           // Class information
           ClasInfoBox(
-            instructorname: istractorName ?? "",
-            roomnumber: roomNumber ?? '',
-            sunjectcode: subjectCode ?? '',
+            instructorname: day?.instuctorName ?? "",
+            roomnumber: day?.room ?? '',
+            sunjectcode: day?.subjectcode ?? '',
           ),
           const Divider(height: 5),
           Container(

@@ -21,7 +21,7 @@ import '../widgets/seeAllMembers.dart';
 
 class RutinDialog extends LongPressDialog {
   //**********     ChackStatusUser_BottomSheet       **********/
-  static ChackStatusUser_BottomSheet(BuildContext context, rutinId) {
+  static ChackStatusUser_BottomSheet(BuildContext context, rutinId, rutinName) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
@@ -133,8 +133,10 @@ class RutinDialog extends LongPressDialog {
                                       context,
                                       CupertinoPageRoute(
                                         fullscreenDialog: true,
-                                        builder: (context) =>
-                                            AppPriodePage(rutinId: rutinId),
+                                        builder: (context) => AppPriodePage(
+                                          rutinId: rutinId,
+                                          rutinName: rutinName,
+                                        ),
                                       ),
                                     ),
                                   ),

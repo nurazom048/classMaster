@@ -38,16 +38,16 @@ class _GridViewRutinState extends State<gridJoinRutins> {
                   Expanded(
                     flex: 20,
                     child: GridView.builder(
-                      itemCount: data.routines.length,
+                      itemCount: data.rutins.length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2, mainAxisExtent: 272),
                       itemBuilder: (context, index) {
-                        bool isNotlast = index - 1 != data.routines.length;
+                        bool isNotlast = index - 1 != data.rutins.length;
 
                         //!
                         return CustomRutinCard(
-                          rutinModel: data.routines[index],
+                          rutinModel: data.rutins[index],
                         );
                       },
                     ),

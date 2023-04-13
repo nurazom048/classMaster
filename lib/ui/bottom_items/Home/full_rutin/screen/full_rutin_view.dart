@@ -39,7 +39,8 @@ class FullRutineView extends StatelessWidget {
                     sat: data.classes.saturday,
                     //
                     onTapMore: () {
-                      RutinDialog.ChackStatusUser_BottomSheet(context, rutinId);
+                      RutinDialog.ChackStatusUser_BottomSheet(
+                          context, rutinId, rutinName);
                     },
                   );
                 },

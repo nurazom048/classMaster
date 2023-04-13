@@ -1,23 +1,31 @@
-import 'rutins.dart';
+import 'package:table/models/rutins/rutins.dart';
 
 class JoinRutinsModel {
-  List<Routine> routines;
-  int currentPage;
-  int totalPages;
+  JoinRutinsModel({
+    required this.rutins,
+    this.currentPage,
+    this.totalPages,
+  });
 
-  JoinRutinsModel(
-      {required this.routines,
-      required this.currentPage,
-      required this.totalPages});
+  List<Routine> rutins;
+  int? currentPage;
+  int? totalPages;
 
   factory JoinRutinsModel.fromJson(Map<String, dynamic> json) {
-    var routineList = json['routines'] as List;
-    List<Routine> routines = routineList
-        .map((routineJson) => Routine.fromJson(routineJson))
-        .toList();
+    List<Routine> routines = [];
+
+    if (json["rutins"] != null) {
+      routines = List<Routine>.from(json["rutins"].map((x) => Routine.fromJson(
+          x["_id"],
+          x["name"],
+          Owner.fromJson(x["ownerid"]),
+          LastSummary.fromJson(x["last_summary"]))));
+    }
+
     return JoinRutinsModel(
-        routines: routines,
-        currentPage: json['currentPage'],
-        totalPages: json['totalPages']);
+      rutins: routines,
+      currentPage: json["currentPage"],
+      totalPages: json["totalPages"],
+    );
   }
 }

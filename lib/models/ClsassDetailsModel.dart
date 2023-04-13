@@ -64,41 +64,41 @@ class NewClasses {
 }
 
 /////////////////////////////////////////////////////////////////
-
+///
 class Day {
   Day({
     required this.id,
+    required this.classId,
     required this.name,
     required this.instuctorName,
     required this.room,
     required this.subjectcode,
     required this.start,
     required this.end,
-    required this.weekday,
     this.startTime,
     this.endTime,
   });
 
   String id;
+  String classId;
   String name;
   String instuctorName;
   String room;
   String subjectcode;
   int start;
   int end;
-  int weekday;
   DateTime? startTime;
   DateTime? endTime;
 
   factory Day.fromJson(Map<String?, dynamic> json) => Day(
         id: json["_id"] ?? '',
-        name: json["name"] ?? '',
-        instuctorName: json["instuctor_name"] ?? '',
-        room: json["room"],
-        subjectcode: json["subjectcode"] ?? '',
+        classId: json["class_id"]?["_id"] ?? '',
+        name: json["class_id"]?["name"] ?? '',
+        instuctorName: json["class_id"]?["instuctor_name"] ?? '',
+        room: json["class_id"]?["room"],
+        subjectcode: json["class_id"]?["subjectcode"] ?? '',
         start: json["start"] ?? '',
         end: json["end"] ?? '',
-        weekday: json["weekday"] ?? '',
         startTime: json["start_time"] != null
             ? DateTime.parse(json["start_time"])
             : null,
@@ -106,6 +106,48 @@ class Day {
             json["end_time"] != null ? DateTime.parse(json["end_time"]) : null,
       );
 }
+
+// class Day {
+//   Day({
+//     required this.id,
+//     required this.name,
+//     required this.instuctorName,
+//     required this.room,
+//     required this.subjectcode,
+//     required this.start,
+//     required this.end,
+//     required this.weekday,
+//     this.startTime,
+//     this.endTime,
+//   });
+
+//   String id;
+//   String name;
+//   String instuctorName;
+//   String room;
+//   String subjectcode;
+//   int start;
+//   int end;
+//   int weekday;
+//   DateTime? startTime;
+//   DateTime? endTime;
+
+//   factory Day.fromJson(Map<String?, dynamic> json) => Day(
+//         id: json["_id"] ?? '',
+//         name: json["name"] ?? '',
+//         instuctorName: json["instuctor_name"] ?? '',
+//         room: json["room"],
+//         subjectcode: json["subjectcode"] ?? '',
+//         start: json["start"] ?? '',
+//         end: json["end"] ?? '',
+//         weekday: json["weekday"] ?? '',
+//         startTime: json["start_time"] != null
+//             ? DateTime.parse(json["start_time"])
+//             : null,
+//         endTime:
+//             json["end_time"] != null ? DateTime.parse(json["end_time"]) : null,
+//       );
+// }
 
 class Priode {
   Priode({

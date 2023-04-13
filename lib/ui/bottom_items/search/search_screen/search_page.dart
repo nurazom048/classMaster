@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/models/Account_models.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/full_rutin_view.dart';
 import 'package:table/ui/bottom_items/search/search_request/search_request.dart';
 import 'package:table/widgets/AccoundCardRow.dart';
@@ -10,7 +9,6 @@ import 'package:table/widgets/custom_rutin_card.dart';
 import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/widgets/searchBarCustom.dart';
 import '../../../../core/dialogs/Alart_dialogs.dart';
-import '../../../../models/rutins/search_rutin.dart';
 
 final Serarch_String_Provider = StateProvider<String>((ref) => "x");
 

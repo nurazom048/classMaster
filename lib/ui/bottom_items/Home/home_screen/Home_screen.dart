@@ -160,22 +160,21 @@ class HomeScreen extends StatelessWidget {
                             child: joined_rutin.when(
                                 loading: () => const Progressindicator(),
                                 data: (data) {
-                                  var joinedRutins = data.routines;
+                                  var joinedRutins = data.rutins;
 
                                   return SizedBox(
                                     height: 270,
                                     width: width,
                                     child: ListView.builder(
                                       scrollDirection: Axis.horizontal,
-                                      itemCount: data.routines.length * pages,
+                                      itemCount: data.rutins.length * pages,
                                       itemBuilder: (context, index) {
                                         //
                                         var Rutinidex = joinedRutins[index];
 
                                         return joinedRutins.isNotEmpty
                                             ? CustomRutinCard(
-                                                rutinModel:
-                                                    data.routines[index])
+                                                rutinModel: data.rutins[index])
                                             : const Text(
                                                 "You Dont Have any Rutin created");
                                       },

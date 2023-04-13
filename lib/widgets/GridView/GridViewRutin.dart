@@ -85,13 +85,12 @@ class GridViewRutin extends StatelessWidget {
 }
 
 //_________________________
-final UpRutinProvider =
-    StateNotifierProvider.autoDispose<Uprutin, AsyncValue<ListOfUploedRutins>>(
-        (ref) {
+final UpRutinProvider = StateNotifierProvider.autoDispose<Uprutin,
+    AsyncValue<ListOfUploadedRutins>>((ref) {
   return Uprutin(ref);
 });
 
-class Uprutin extends StateNotifier<AsyncValue<ListOfUploedRutins>> {
+class Uprutin extends StateNotifier<AsyncValue<ListOfUploadedRutins>> {
   var ref;
   Uprutin(this.ref) : super(AsyncLoading()) {
     _init();
@@ -99,7 +98,7 @@ class Uprutin extends StateNotifier<AsyncValue<ListOfUploedRutins>> {
 
   _init() async {
     try {
-      AsyncValue<ListOfUploedRutins> res =
+      AsyncValue<ListOfUploadedRutins> res =
           await ref.watch(uploaded_rutin_provider(1));
 
       res.when(
@@ -120,7 +119,7 @@ class Uprutin extends StateNotifier<AsyncValue<ListOfUploedRutins>> {
   //
   void loadMore(page) async {
     try {
-      AsyncValue<ListOfUploedRutins> res =
+      AsyncValue<ListOfUploadedRutins> res =
           await ref.watch(uploaded_rutin_provider(page + 1));
 
       res.when(
@@ -131,7 +130,7 @@ class Uprutin extends StateNotifier<AsyncValue<ListOfUploedRutins>> {
             if (state.value?.totalPages != page) {
               List<Routine> rutins = List.from(state.value!.rutins)
                 ..addAll(data.rutins);
-              state = AsyncData(state.value!.copyWith(rutins: rutins));
+              //  state = AsyncData(state.value!.copyWith(rutins: rutins));
             }
           },
           error: (error, stackTrace) {

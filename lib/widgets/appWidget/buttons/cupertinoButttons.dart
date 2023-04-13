@@ -7,18 +7,20 @@ class CupertinoButtonCustom extends StatelessWidget {
     this.widget,
     this.onPressed,
     this.color,
+    this.padding,
     super.key,
   });
   final String textt;
   final Widget? widget;
   final dynamic onPressed;
   final Color? color;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return CupertinoButton(
-      padding: EdgeInsets.symmetric(horizontal: size.width * 0.36),
+      padding: padding ?? EdgeInsets.symmetric(horizontal: size.width * 0.36),
 
       color: color ??
           const Color(0xFF666666), // Set the background color to #666666
@@ -30,15 +32,14 @@ class CupertinoButtonCustom extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                textt,
+                "$textt  ",
                 style: const TextStyle(
                   color: CupertinoColors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 16.0,
                 ),
               ),
-              const SizedBox(
-                  width: 11.13), // Set the gap between the text and the icon
+
               const Icon(
                 Icons.arrow_forward,
                 color: CupertinoColors.white,

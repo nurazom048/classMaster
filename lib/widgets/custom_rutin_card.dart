@@ -96,7 +96,6 @@ class CustomRutinCard extends StatelessWidget {
                               const MyText("  Last Update",
                                   padding: EdgeInsets.only(top: 5)),
                               const SizedBox(height: 5),
-                              Text(rutinModel.lastSummary.text)
                             ],
                           )
                         ],
@@ -126,9 +125,9 @@ class CustomRutinCard extends StatelessWidget {
                 ],
               ),
               MiniAccountCard(
-                name: rutinModel.owner.name,
+                name: rutinModel.owner.name ?? '',
                 username: rutinModel.owner.username,
-                profilePicture: rutinModel.owner.image,
+                profilePicture: rutinModel.owner.image ?? '',
               ),
             ],
           ),
@@ -206,6 +205,7 @@ class MiniAccountCard extends StatelessWidget {
           ),
           const SizedBox(width: 6),
           RichText(
+            maxLines: 2,
             text: TextSpan(
               style: DefaultTextStyle.of(context).style,
               children: <TextSpan>[
@@ -218,7 +218,10 @@ class MiniAccountCard extends StatelessWidget {
                 ),
                 TextSpan(
                   text: '\n$username',
-                  style: const TextStyle(fontSize: 12, color: Colors.black),
+                  style: const TextStyle(
+                      fontSize: 12,
+                      color: Colors.black,
+                      overflow: TextOverflow.ellipsis),
                 ),
               ],
             ),

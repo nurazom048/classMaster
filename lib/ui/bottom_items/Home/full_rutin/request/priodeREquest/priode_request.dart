@@ -41,8 +41,8 @@ class PriodeRequest {
 
   //
   //... add priode....//
-  Future<Either<String, Message>> addPriode(DateTime startTime,
-      DateTime endTime, String rutinId, int? priode_number) async {
+  Future<Either<String, Message>> addPriode(
+      Map<String, dynamic> priodeItm, String rutinId) async {
     // Obtain shared preferences.
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
@@ -53,9 +53,9 @@ class PriodeRequest {
         url,
         headers: {'Authorization': 'Bearer $getToken'},
         body: {
-          "start_time": "${startTime.toIso8601String()}Z",
-          "end_time": "${endTime.toIso8601String()}Z",
-          "priode_number": priode_number?.toString() ?? "0"
+          "start_time": "${priodeItm["start_time"].toIso8601String()}Z",
+          "end_time": "${priodeItm["end_time"].toIso8601String()}Z",
+          "priode_number": priodeItm["priode_number"]?.toString() ?? "0"
         },
       );
 

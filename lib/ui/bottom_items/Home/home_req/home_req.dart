@@ -17,7 +17,7 @@ final save_rutins_provider =
   return ref.read(home_req_provider).savedRutins(pages: page);
 });
 final uploaded_rutin_provider =
-    FutureProvider.family<ListOfUploedRutins, int>((ref, pages) {
+    FutureProvider.family<ListOfUploadedRutins, int>((ref, pages) {
   return ref.read(home_req_provider).uplodedRutins(pages: pages);
 });
 
@@ -55,7 +55,7 @@ class HomeReq {
 
   //
   //********    ListOfUploedRutins      *************/
-  Future<ListOfUploedRutins> uplodedRutins({int pages = 1}) async {
+  Future<ListOfUploadedRutins> uplodedRutins({int pages = 1}) async {
     String queryPage = "?page=$pages}";
     String? username = "";
     final prefs = await SharedPreferences.getInstance();
@@ -71,7 +71,7 @@ class HomeReq {
       if (response.statusCode == 200) {
         var res = json.decode(response.body);
 
-        return ListOfUploedRutins.fromJson(res);
+        return ListOfUploadedRutins.fromJson(res);
       } else {
         throw Exception("Failed to load saved routines");
       }
