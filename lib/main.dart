@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table/helper/constant/AppColor.dart';
 import 'firebase_options.dart';
 import 'ui/auth_Section/new Auuth_Screen/LogIn_Screen.dart';
 
@@ -21,9 +22,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(
+        scaffoldBackgroundColor: AppColor.background,
+        primarySwatch: Colors.blue,
+      ),
       home: LogingScreen(),
-      //  home: const MyHomePage(),
     );
   }
 }

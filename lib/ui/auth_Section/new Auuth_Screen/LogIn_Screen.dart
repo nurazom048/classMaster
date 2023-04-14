@@ -2,15 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
+import 'package:table/ui/auth_Section/utils/Login_validation.dart';
 import 'package:table/widgets/appWidget/appText.dart';
 import 'package:table/widgets/appWidget/buttons/cupertinoButttons.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
+import '../../../widgets/heder/hederTitle.dart';
 
 class LogingScreen extends ConsumerWidget {
   LogingScreen({super.key});
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authLogin = ref.watch(authController_provider.notifier);
@@ -20,71 +22,62 @@ class LogingScreen extends ConsumerWidget {
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.only(bottom: 400),
-          child: Column(
-            children: [
-              HeaderTitle("Log In", context, onTap: () {}),
-              const SizedBox(height: 100),
+          child: Form(
+            key: formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                HeaderTitle("Log In", context, onTap: () {}),
+                const SizedBox(height: 40),
 
-              ///
+                const AppText("   Login To Continue").title(),
 
-              AppTextFromField(
-                controller: _emailController,
-                hint: "Email",
-                labelText: "Enter email address",
-              ),
+                const SizedBox(height: 30),
 
-              AppTextFromField(
-                controller: _passwordController,
-                hint: "password",
-                labelText: "Enter a valid password",
-              ),
+                ///
 
-              //
-              const SizedBox(height: 30),
+                AppTextFromField(
+                  controller: _emailController,
+                  hint: "Email",
+                  labelText: "Enter email address",
+                  validator: (value) => LoginValidation.validateEmail(value),
+                ),
 
-              if (loding != null && loding == true)
-                CupertinoButton(
-                  onPressed: () {},
-                  child: const CircularProgressIndicator(),
-                )
-              else
-                CupertinoButtonCustom(
-                  textt: "Log In",
-                  onPressed: () async {
-                    authLogin.siginIn(_emailController.text,
-                        _passwordController.text, context);
-                  },
-                )
-            ],
+                AppTextFromField(
+                  controller: _passwordController,
+                  hint: "password",
+                  labelText: "Enter a valid password",
+                  validator: (value) => LoginValidation.validatePassword(value),
+                ),
+
+                //
+                const SizedBox(height: 30),
+
+                if (loding != null && loding == true)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CupertinoButton(
+                        onPressed: () {},
+                        child: const CircularProgressIndicator(),
+                      ),
+                    ],
+                  )
+                else
+                  CupertinoButtonCustom(
+                    padding: EdgeInsets.symmetric(horizontal: 40),
+                    textt: "Log In",
+                    onPressed: () async {
+                      if (formKey.currentState?.validate() ?? false) {
+                        authLogin.siginIn(_emailController.text,
+                            _passwordController.text, context);
+                      }
+                    },
+                  )
+              ],
+            ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class HeaderTitle extends StatelessWidget {
-  const HeaderTitle(
-    this.title,
-    this.context, {
-    super.key,
-    this.onTap,
-  });
-  final String title;
-  final BuildContext context;
-  final dynamic onTap;
-  @override
-  Widget build(BuildContext contextt) {
-    return Container(
-      margin: const EdgeInsets.only(left: 25.5, top: 32),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          InkWell(
-              onTap: () => onTap ?? Navigator.pop(context),
-              child: const Icon(Icons.arrow_back_ios, size: 20)),
-          AppText(title).heding(),
-        ],
       ),
     );
   }

@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/full_rutin_view.dart';
 import 'package:table/ui/bottom_items/search/search_request/search_request.dart';
 import 'package:table/widgets/AccoundCardRow.dart';
+import 'package:table/widgets/appWidget/rutin_box/rutin_box_by_id.dart';
+import 'package:table/widgets/appWidget/rutin_box/rutine_boox.dart';
 import 'package:table/widgets/custom_rutin_card.dart';
 import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/widgets/searchBarCustom.dart';
@@ -93,35 +95,26 @@ class _SearchPAgeState extends State<SearchPAge> with TickerProviderStateMixin {
     return Consumer(builder: (context, WidgetRef ref, _) {
       //! Provider.
       final searchText = ref.watch(Serarch_String_Provider);
-
       final searchRoutine = ref.watch(searchRoutineProvider(searchText));
 
       return Container(
           height: 300,
           width: MediaQuery.of(context).size.width,
           child: searchRoutine.when(
-            data: (data) {
-              return data?.rutins == null
-                  ? Alart.handleError(context, "error")
-                  : data!.rutins.isNotEmpty
+            data: (eitherData) {
+              return eitherData.fold(
+                  (error) => Alart.handleError(context, error),
+                  (data) => data != null
                       ? ListView.builder(
-                          itemCount: data.rutins.length,
+                          itemCount: data.routine.length,
                           itemBuilder: (context, index) {
-                            return CustomRutinCard(
-                              rutinModel: data.rutins[index],
-                              onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => FullRutineView(
-                                    rutinName: data.rutins[index].name,
-                                    rutinId: data.rutins[index].id,
-                                  ),
-                                ),
-                              ),
-                            );
+                            return RutinBoxById(
+                                rutinNmae: data.routine[index].name,
+                                onTapMore: () {},
+                                rutinId: data.routine[index].id);
                           },
                         )
-                      : const Center(child: Text("No rutin found"));
+                      : const Text("no Rutin Found"));
             },
             error: (error, stackTrace) => Alart.handleError(context, error),
             loading: () => const Progressindicator(),
@@ -141,15 +134,20 @@ class _SearchPAgeState extends State<SearchPAge> with TickerProviderStateMixin {
               data: (data) {
                 print(data.toString());
 
-                return ListView.builder(
-                  itemCount: data.accounts?.length,
-                  itemBuilder: (context, index) {
-                    print(data);
-                    return data != null && data.accounts!.isNotEmpty
-                        ? AccountCardRow(accountData: data.accounts![index])
-                        : const Center(child: Text("No Account found"));
-                  },
-                );
+                return data.fold(
+                    (l) => Alart.showSnackBar(context, l),
+                    (r) => ListView.builder(
+                          itemCount: r.accounts?.length,
+                          itemBuilder: (context, index) {
+                            if (r.accounts!.isNotEmpty) {
+                              return AccountCardRow(
+                                  accountData: r.accounts![index]);
+                            } else {
+                              return const Center(
+                                  child: Text("No Account found"));
+                            }
+                          },
+                        ));
               },
               error: (error, stackTrace) => Alart.handleError(context, error),
               loading: () => const Progressindicator()));

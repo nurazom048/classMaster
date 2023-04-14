@@ -2,8 +2,10 @@
 
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:table/helper/constant/constant.dart';
 import 'package:http/http.dart' as http;
+import 'package:table/models/messageModel.dart';
 import '../../../../models/rutins/search_rutin.dart';
 import '../../../../models/search_account.dart';
 
@@ -12,12 +14,13 @@ final searchRequestProvider = Provider.autoDispose((ref) => SearchRequest());
 
 //
 final searchRoutineProvider =
-    FutureProvider.family<RutinQuarry?, String>((ref, valu) async {
+    FutureProvider.family<Either<Message, RutinQuarry?>, String>(
+        (ref, valu) async {
   return ref.read(searchRequestProvider).searchRoutine(valu);
 });
 
 final search_Account_Provider = FutureProvider.autoDispose
-    .family<AccountsResponse, String>((ref, valu) async {
+    .family<Either<Message, AccountsResponse>, String>((ref, valu) async {
   return ref.read(searchRequestProvider).searchAccount(valu);
 });
 
@@ -26,29 +29,30 @@ final search_Account_Provider = FutureProvider.autoDispose
 //...... SearchRequest.....//
 class SearchRequest {
 //.... Rutin Search .....///
-  Future<RutinQuarry?> searchRoutine(String? valu) async {
+  Future<Either<Message, RutinQuarry?>> searchRoutine(String? valu) async {
     print("valu pici vai : $valu");
+    //  var url = Uri.parse('${Const.BASE_URl}/rutin/search?src=$valu');
     var url = Uri.parse('${Const.BASE_URl}/rutin/search?src=$valu');
 
     try {
       final response = await http.get(url);
       var res = json.decode(response.body);
-      // print(res);
-
+      print("print from body");
+      print(res);
       if (response.statusCode == 200) {
-        return RutinQuarry.fromJson(res);
+        return right(RutinQuarry.fromJson(res));
       } else {
-        throw Exception("fild to get rutin");
+        throw Exception(res);
       }
     } catch (e) {
       print(e.toString());
-      throw Exception("fild to get rutin");
+      return left(Message(message: e.toString()));
     }
   }
 
   //********* searchAccount   ************ *//
 
-  Future<AccountsResponse> searchAccount(String valu) async {
+  Future<Either<Message, AccountsResponse>> searchAccount(String valu) async {
     print("valu pici vai : $valu");
     var url = Uri.parse('${Const.BASE_URl}/account/find?q=$valu');
 
@@ -58,12 +62,12 @@ class SearchRequest {
 
       if (response.statusCode == 200) {
         //   print(json.decode(response.body));
-        return AccountsResponse.fromJson(res);
+        return right(AccountsResponse.fromJson(res));
       } else {
-        throw Exception("faild");
+        throw Exception(res);
       }
     } catch (e) {
-      throw Exception(e.toString());
+      return left(Message(message: e.toString()));
     }
   }
 }

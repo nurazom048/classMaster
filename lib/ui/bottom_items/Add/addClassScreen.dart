@@ -1,6 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
+import 'package:flutter/gestures.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,7 +17,7 @@ import '../../../models/class_model.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/appWidget/buttons/cupertinoButttons.dart';
 import '../../../widgets/daySelectDropdowen.dart';
-import '../../auth_Section/new Auuth_Screen/LogIn_Screen.dart';
+import '../../../widgets/heder/hederTitle.dart';
 
 class AddClassSceen extends StatefulWidget {
   final String rutinId;
@@ -73,8 +75,11 @@ class _AddClassSceenState extends State<AddClassSceen> {
         child: Form(
           key: _formKey,
           child: ListView(
+            primary: true,
+            // physics: NeverScrollableScrollPhysics(),
             children: <Widget>[
               HeaderTitle(widget.rutinName ?? '', context),
+              SizedBox(height: 40),
 
               const AppText("  Add Class").title(),
 
@@ -106,6 +111,12 @@ class _AddClassSceenState extends State<AddClassSceen> {
                   }),
 
               ///.... room number
+              AppTextFromField(
+                controller: _instructorController,
+                hint: "Classroom Number",
+                labelText: "EnterClassroom Number in this day",
+                validator: (value) => AddClassValidator.roomNumber(value),
+              ),
               AppTextFromField(
                 controller: _instructorController,
                 hint: "Classroom Number",

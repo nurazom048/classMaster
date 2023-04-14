@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:table/ui/bottom_items/Account/accounu_ui/Account_screen.dart';
-import 'package:table/ui/bottom_items/Home/home_screen/Home_screen.dart';
+import 'package:table/ui/bottom_items/tab_bar.dart';
 
-List<Widget> pages = [HomeScreen(), AccountScreen()];
+import 'Account/accounu_ui/Account_screen.dart';
+
+List<Widget> pages = [TabBatView(), const Text("Add Screen"), AccountScreen()];
 
 class BottomNevBar extends StatefulWidget {
   const BottomNevBar({super.key});
@@ -26,13 +27,11 @@ class _BottomNewBarState extends State<BottomNevBar> {
               label: "Home",
               backgroundColor: Colors.white),
 
-          // post
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.add),
-          //   label: "Add",
-          //   backgroundColor: Colors.white,
-          // ),
-          // Chats
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            label: "",
+            backgroundColor: Colors.white,
+          ),
 
           //Account
           BottomNavigationBarItem(

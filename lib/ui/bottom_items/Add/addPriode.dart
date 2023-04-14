@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/priodeController.dart';
 import 'package:table/widgets/appWidget/buttons/cupertinoButttons.dart';
+import 'package:table/widgets/heder/hederTitle.dart';
 import 'package:table/widgets/select_time.dart';
-
-import '../../auth_Section/new Auuth_Screen/LogIn_Screen.dart';
 
 class AppPriodePage extends StatefulWidget {
   const AppPriodePage(

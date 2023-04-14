@@ -7,11 +7,9 @@ import 'package:intl/intl.dart';
 import 'package:table/models/ClsassDetailsModel.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summat_screens/add_summary.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/sunnary%20Controller/summary_controller.dart';
-import 'package:table/widgets/Alart.dart';
-import 'package:table/widgets/TopBar.dart';
+import 'package:table/widgets/heder/hederTitle.dart';
 import '../../../../../../core/dialogs/Alart_dialogs.dart';
 import '../../../../../../models/summaryModels.dart';
-import '../../../../../auth_Section/new Auuth_Screen/LogIn_Screen.dart';
 
 class SummaryScreen extends StatelessWidget {
   final String classId;
@@ -28,59 +26,67 @@ class SummaryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          // AppBar...
-          HeaderTitle(day?.room ?? '', context),
+        body: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) =>[
 
-          // Class information
-          ClasInfoBox(
-            instructorname: day?.instuctorName ?? "",
-            roomnumber: day?.room ?? '',
-            sunjectcode: day?.subjectcode ?? '',
-          ),
-          const Divider(height: 5),
-          Container(
-            padding: const EdgeInsets.all(20),
-            height: MediaQuery.of(context).size.height - 210,
-            width: double.infinity,
-            color: Colors.black12,
-            child: Consumer(builder: (context, ref, _) {
-              ////
-              final lstSummary = ref.watch(sunnaryControllerProvider(classId));
 
-              List<Summary> summary = [];
 
-              return Stack(
-                children: [
-                  lstSummary.when(
-                    data: (data) {
-                      summary.addAll(data.summaries);
 
-                      newScroll();
+          ],
+          body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            // AppBar...
+            HeaderTitle(day?.room ?? '', context),
 
-                      return ListView.builder(
-                        padding: const EdgeInsets.only(bottom: 100),
-                        shrinkWrap: true,
-                        reverse: false,
-                        controller: scrollController,
-                        itemCount: summary.length,
-                        itemBuilder: (context, index) => SummaryContaner(
-                          text: summary[index].text,
-                          date: summary[index].time.toString(),
-                          is_last: 0 == index,
-                        ),
-                      );
-                    },
-                    error: (error, stackTrace) =>
-                        Alart.handleError(context, error),
-                    loading: () =>
-                        const Center(child: CircularProgressIndicator()),
-                  ),
-                ],
-              );
-            }),
-          )
-        ]),
+            // Class information
+            ClasInfoBox(
+              instructorname: day?.instuctorName ?? "",
+              roomnumber: day?.room ?? '',
+              sunjectcode: day?.subjectcode ?? '',
+            ),
+            const Divider(height: 5),
+            Container(
+              padding: const EdgeInsets.all(20),
+              height: MediaQuery.of(context).size.height - 210,
+              width: double.infinity,
+              color: Colors.black12,
+              child: Consumer(builder: (context, ref, _) {
+                ////
+                final lstSummary = ref.watch(sunnaryControllerProvider(classId));
+
+                List<Summary> summary = [];
+
+                return Stack(
+                  children: [
+                    lstSummary.when(
+                      data: (data) {
+                        summary.addAll(data.summaries);
+
+                        newScroll();
+
+                        return ListView.builder(
+                          padding: const EdgeInsets.only(bottom: 100),
+                          shrinkWrap: true,
+                          reverse: false,
+                          controller: scrollController,
+                          itemCount: summary.length,
+                          itemBuilder: (context, index) => SummaryContaner(
+                            text: summary[index].text,
+                            date: summary[index].time.toString(),
+                            is_last: 0 == index,
+                          ),
+                        );
+                      },
+                      error: (error, stackTrace) =>
+                          Alart.handleError(context, error),
+                      loading: () =>
+                      const Center(child: CircularProgressIndicator()),
+                    ),
+                  ],
+                );
+              }),
+            )
+          ]),
+        ),
 
         //... Add summary icon.....//
         floatingActionButton: AddSummary(

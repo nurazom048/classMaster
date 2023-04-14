@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/helper/constant/AppColor.dart';
-import 'package:table/ui/auth_Section/new%20Auuth_Screen/LogIn_Screen.dart';
-import 'package:table/ui/auth_Section/widgets/Valadatoe.dart';
+import 'package:table/ui/auth_Section/utils/singUp_validation.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/appWidget/buttons/cupertinoButttons.dart';
+import '../../../widgets/heder/hederTitle.dart';
 
 class SignUpScreen extends ConsumerWidget {
   SignUpScreen({super.key});

@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table/ui/auth_Section/new%20Auuth_Screen/Login_Screen.dart';
 
 import '../../../helper/constant/AppColor.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/appWidget/appText.dart';
 import '../../../widgets/appWidget/buttons/cupertinoButttons.dart';
-import '../../auth_Section/new Auuth_Screen/LogIn_Screen.dart';
 import 'package:table/helper/picker.dart';
+
+import '../../../widgets/heder/hederTitle.dart';
 
 class AddNoticeScreen extends ConsumerWidget {
   AddNoticeScreen({super.key});

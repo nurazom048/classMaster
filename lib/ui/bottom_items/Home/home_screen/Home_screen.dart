@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table/helper/constant/AppColor.dart';
 import 'package:table/ui/bottom_items/Add/create_new_rutine.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/dailog/rutin_dialog.dart';
 import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
@@ -20,6 +21,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: AppColor.background,
         body: SingleChildScrollView(
           padding: const EdgeInsets.only(bottom: 60),
           physics: const BouncingScrollPhysics(),
@@ -33,20 +35,6 @@ class HomeScreen extends StatelessWidget {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                //... Appbar .../
-                CustomTopBar("All Rutins",
-                    acction: IconButton(
-                        onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SearchPAge())),
-                        icon: const Icon(Icons.search)),
-                    icon: Icons.add_circle_outlined,
-                    ontap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CreaeNewRutine()))),
-
                 //
                 SingleChildScrollView(
                   scrollDirection: Axis.vertical,

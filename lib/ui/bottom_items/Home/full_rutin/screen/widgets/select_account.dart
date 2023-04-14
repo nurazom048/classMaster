@@ -39,22 +39,27 @@ class SeelectAccount extends ConsumerWidget {
             flex: 13,
             child: search_Account.when(
               data: (data) {
-                var lenght = data.accounts?.length ?? 0;
-                return ListView.builder(
-                  itemCount: lenght,
-                  itemBuilder: (context, index) {
-                    return data != null && data.accounts!.isNotEmpty
-                        ? AccountCardRow(
-                            accountData: data.accounts![index],
-                            addCaptem: addCapten,
-                            onUsername: (username, position) =>
-                                onUsername(username, position),
-                            buttotext: buttotext,
-                            color: color,
-                          )
-                        : const Center(child: Text("No Account found"));
-                  },
-                );
+                return data.fold((error) {
+                  return Alart.showSnackBar(context, error);
+                }, (r) {
+                  var lenght = r.accounts?.length ?? 0;
+
+                  return ListView.builder(
+                    itemCount: lenght,
+                    itemBuilder: (context, index) {
+                      return r.accounts!.isNotEmpty
+                          ? AccountCardRow(
+                              accountData: r.accounts![index],
+                              addCaptem: addCapten,
+                              onUsername: (username, position) =>
+                                  onUsername(username, position),
+                              buttotext: buttotext,
+                              color: color,
+                            )
+                          : const Center(child: Text("No Account found"));
+                    },
+                  );
+                });
               },
               error: (error, stackTrace) => Alart.handleError(context, error),
               loading: () => const Center(
