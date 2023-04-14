@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 class AppText {
   final double? fontSize;
   final String data;
+  final Color? color;
   const AppText(
     this.data, {
     Key? key,
     this.fontSize,
+    this.color,
   });
 
   //
@@ -27,7 +29,25 @@ class AppText {
           color: const Color(0xFF333333),
         ));
   }
+
+  //
+
+  title() {
+    return Text(
+      data,
+      style: TextStyle(
+        fontFamily: 'Open Sans',
+        fontWeight: FontWeight.w300,
+        fontSize: fontSize ?? 36,
+        height: 49 / 36,
+        color: color ?? Colors.black,
+      ),
+    );
+  }
 }
+
+
+  
 
 // class AppText extends StatelessWidget {
 //   const AppText({

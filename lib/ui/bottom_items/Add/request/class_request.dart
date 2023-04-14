@@ -24,8 +24,7 @@ class ClassRequest {
         "subjectcode": classModel.subjectCode.toString(),
         "start": classModel.startingPeriod.toString(),
         "end": classModel.endingPeriod.toString(),
-        "has_class": "has_class",
-        "weekday": classModel.weekday.toString(),
+        "num": classModel.weekday.toString(),
         "start_time": classModel.startTime.toString(),
         "end_time": classModel.endTime.toString(),
       }, headers: {

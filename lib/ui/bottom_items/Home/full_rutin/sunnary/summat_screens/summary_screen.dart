@@ -11,6 +11,7 @@ import 'package:table/widgets/Alart.dart';
 import 'package:table/widgets/TopBar.dart';
 import '../../../../../../core/dialogs/Alart_dialogs.dart';
 import '../../../../../../models/summaryModels.dart';
+import '../../../../../auth_Section/new Auuth_Screen/LogIn_Screen.dart';
 
 class SummaryScreen extends StatelessWidget {
   final String classId;
@@ -27,9 +28,10 @@ class SummaryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Column(children: [
+        body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           // AppBar...
-          const CustomTopBar("Class Summary"),
+          HeaderTitle(day?.room ?? '', context),
+
           // Class information
           ClasInfoBox(
             instructorname: day?.instuctorName ?? "",
@@ -225,13 +227,8 @@ class ClasInfoBox extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(height: 30),
-            const CircleAvatar(
-                backgroundImage: NetworkImage(
-                    "https://ak.picdn.net/shutterstock/videos/4893908/thumb/1.jpg"),
-                radius: 50),
-            const SizedBox(width: 30),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [

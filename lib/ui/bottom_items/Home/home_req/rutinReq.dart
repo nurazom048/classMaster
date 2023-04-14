@@ -26,7 +26,7 @@ class RutinReqest {
 
         //print response
         // print("rutin created successfully");
-        // print(res);
+        print(res);
         return right(null);
       } else {
         return right(null);

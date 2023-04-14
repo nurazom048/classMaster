@@ -18,35 +18,35 @@ class CupertinoButtonCustom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    return CupertinoButton(
-      padding: padding ?? EdgeInsets.symmetric(horizontal: size.width * 0.36),
+    return Container(
+      margin: padding ?? const EdgeInsets.symmetric(horizontal: 1),
+      child: CupertinoButton(
+        color: color ??
+            const Color(0xFF666666), // Set the background color to #666666
+        borderRadius: BorderRadius.circular(11.13),
 
-      color: color ??
-          const Color(0xFF666666), // Set the background color to #666666
-      borderRadius: BorderRadius.circular(11.13),
-
-      onPressed: onPressed,
-      child: widget ??
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                "$textt  ",
-                style: const TextStyle(
-                  color: CupertinoColors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16.0,
+        onPressed: onPressed,
+        child: widget ??
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "$textt  ",
+                  style: const TextStyle(
+                    color: CupertinoColors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
+                  ),
                 ),
-              ),
 
-              const Icon(
-                Icons.arrow_forward,
-                color: CupertinoColors.white,
-                size: 16.0,
-              ), // Replace with the desired right icon
-            ],
-          ),
+                const Icon(
+                  Icons.arrow_forward,
+                  color: CupertinoColors.white,
+                  size: 16.0,
+                ), // Replace with the desired right icon
+              ],
+            ),
+      ),
     );
   }
 }

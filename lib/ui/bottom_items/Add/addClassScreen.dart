@@ -5,21 +5,29 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/ui/bottom_items/Add/request/class_request.dart';
-import 'package:table/widgets/MyTextFields.dart';
-import 'package:table/widgets/select_time.dart';
-import 'package:table/widgets/text%20and%20buttons/butonCustom.dart';
+import 'package:table/ui/bottom_items/Add/utils/add_class_validation.dart';
+import 'package:table/widgets/appWidget/appText.dart';
 import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 import '../../../core/dialogs/Alart_dialogs.dart';
+import '../../../helper/constant/AppColor.dart';
 import '../../../helper/constant/constant.dart';
 import '../../../models/class_model.dart';
+import '../../../widgets/appWidget/TextFromFild.dart';
+import '../../../widgets/appWidget/buttons/cupertinoButttons.dart';
 import '../../../widgets/daySelectDropdowen.dart';
+import '../../auth_Section/new Auuth_Screen/LogIn_Screen.dart';
 
 class AddClassSceen extends StatefulWidget {
-  String rutinId;
-  String? classId;
-  bool? isEdit;
-  AddClassSceen(
-      {super.key, required this.rutinId, this.classId, this.isEdit = false});
+  final String rutinId;
+  final String? rutinName;
+  final String? classId;
+  final bool? isEdit;
+  const AddClassSceen(
+      {super.key,
+      required this.rutinId,
+      this.classId,
+      this.isEdit = false,
+      this.rutinName});
 
   @override
   State<AddClassSceen> createState() => _AddClassSceenState();
@@ -44,61 +52,9 @@ class _AddClassSceenState extends State<AddClassSceen> {
   late DateTime endTimDemo = DateTime.now();
 
   int _selectedDay = 1;
-
+  DateTime? st;
+  DateTime? et;
   //
-  // find class
-  Future<void> findClass() async {
-    // Obtain shared preferences.
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
-
-    try {
-      final response = await http.get(
-          Uri.parse('${Const.BASE_URl}/class/find/class/${widget.classId}'),
-          headers: {'Authorization': 'Bearer $getToken'});
-
-      print(response.statusCode);
-      //.. responce
-      if (response.statusCode == 200) {
-        var decodedres = json.decode(response.body);
-        print(decodedres);
-        //
-        _className.text = json.decode(response.body)["classs"]["name"];
-        _instructorController.text =
-            json.decode(response.body)["classs"]["instuctor_name"];
-        _roomController.text = json.decode(response.body)["classs"]["room"];
-        _subCodeController.text =
-            json.decode(response.body)["classs"]["subjectcode"];
-
-        //
-        setState(() {
-          _selectedDay = json.decode(response.body)["classs"]["weekday"];
-          startTime = DateTime.parse(
-              json.decode(response.body)["classs"]["start_time"]);
-          endTime =
-              DateTime.parse(json.decode(response.body)["classs"]["end_time"]);
-
-          //
-          startTimeDemo = DateTime.parse(
-              json.decode(response.body)["classs"]["start_time"]);
-          endTimDemo =
-              DateTime.parse(json.decode(response.body)["classs"]["end_time"]);
-
-          show = true;
-
-          //
-          _startPeriodController.text =
-              json.decode(response.body)["classs"]["start"].toString();
-          _endPeriodController.text =
-              json.decode(response.body)["classs"]["end"].toString();
-        });
-      } else {
-        throw Exception('Failed to load data');
-      }
-    } catch (e) {
-      Alart.handleError(context, e.toString());
-    }
-  }
 
   @override
   void initState() {
@@ -111,98 +67,53 @@ class _AddClassSceenState extends State<AddClassSceen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Add class')),
+      backgroundColor: const Color(0xFFEFF6FF),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Form(
           key: _formKey,
           child: ListView(
             children: <Widget>[
-              const MyText("Select Day"),
+              HeaderTitle(widget.rutinName ?? '', context),
+
+              const AppText("  Add Class").title(),
+
+              AppTextFromField(
+                controller: _className,
+                hint: "Class name",
+                labelText: "Enter class name",
+                validator: (value) => AddClassValidator.className(value),
+              ),
+              AppTextFromField(
+                controller: _instructorController,
+                hint: "Instructor Name",
+                labelText: "Enter Instructor Name",
+                validator: (value) => AddClassValidator.instructorName(value),
+              ),
+
+              AppTextFromField(
+                controller: _subCodeController,
+                hint: "Subject Name",
+                labelText: "Subject Name",
+                validator: (value) => AddClassValidator.subCode(value),
+              ),
 
               DayDropdown(
-                  labelText: "select day",
-                  initialDay: 7,
-                  onChanged: (day) {
-                    setState(() {
-                      _selectedDay = day ?? 1;
-                    });
-                    print(_selectedDay.toString());
+                  labelText: "labelText",
+                  onPressed: () {},
+                  onChanged: (selected_day) {
+                    print(selected_day);
                   }),
 
-              ///...Class name
-              MyTextField(
-                name: "Class name",
-                controller: _className,
-                validate: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'User Name Required';
-                  }
-                  return null;
-                },
-              ),
-
-              ///...Instructor name
-              MyTextField(
-                name: "Instructor namer",
-                controller: _instructorController,
-                validate: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'User Name Required';
-                  }
-                  return null;
-                },
-              ),
-
               ///.... room number
-              MyTextField(
-                name: "room number",
-                controller: _roomController,
-                validate: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'User Name Required';
-                  }
-                  return null;
-                },
-              ),
-              MyTextField(
-                name: "sub_code",
-                controller: _subCodeController,
-                validate: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'User Name Required';
-                  }
-                  return null;
-                },
+              AppTextFromField(
+                controller: _instructorController,
+                hint: "Classroom Number",
+                labelText: "EnterClassroom Number in this day",
+                validator: (value) => AddClassValidator.roomNumber(value),
               ),
 
-              //
-
-              // const MyText(" Start and end time "),
-
-              // Row(
-              //   children: [
-              //     SelectTime(
-              //       width: MediaQuery.of(context).size.width / 2.1,
-              //       time_text: "start_time",
-              //       time: startTimeDemo,
-              //       show: show,
-              //       onTap: () => _selectStartTime(),
-              //     ),
-              //     const SizedBox(width: 5),
-              //     Expanded(
-              //       child: SelectTime(
-              //         width: MediaQuery.of(context).size.width / 2.1,
-              //         time_text: "end time",
-              //         time: endTimDemo,
-              //         show: show,
-              //         onTap: _selectEndTime,
-              //       ),
-              //     ),
-              //   ],
-              // ),
-
-              const MyText("Start and end Priode"),
+              const MyText("Start and end Time"),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -277,54 +188,17 @@ class _AddClassSceenState extends State<AddClassSceen> {
 
               const SizedBox(height: 10),
 
-              Container(
-                alignment: Alignment.center,
-                child: ButtomCustom(
-                  text:
-                      Text(widget.isEdit == true ? "Edit Class" : "add class"),
-                  onPressed: () {
-                    _formKey.currentState!.save();
-                    if (_formKey.currentState!.validate()) {
-                      print("ok validate ");
-                      print(widget.classId);
-                      widget.isEdit == true
-                          ? ClassRequest().editClass(
-                              context,
-                              widget.classId ?? "",
-                              ClassModel(
-                                className: _className.text,
-                                instructorName: _instructorController.text,
-                                roomNumber: _roomController.text,
-                                subjectCode: _subCodeController.text,
-                                startingPeriod:
-                                    int.parse(_startPeriodController.text),
-                                endingPeriod:
-                                    int.parse(_endPeriodController.text),
-                                weekday: _selectedDay,
-                                startTime: startTime,
-                                endTime: endTime,
-                              ))
-                          : ClassRequest().addClass(
-                              widget.rutinId,
-                              context,
-                              ClassModel(
-                                className: _className.text,
-                                instructorName: _instructorController.text,
-                                roomNumber: _roomController.text,
-                                subjectCode: _subCodeController.text,
-                                startingPeriod:
-                                    int.parse(_startPeriodController.text),
-                                endingPeriod:
-                                    int.parse(_endPeriodController.text),
-                                weekday: _selectedDay,
-                                startTime: startTime,
-                                endTime: endTime,
-                              ));
-                    }
-                  },
-                ),
+              CupertinoButtonCustom(
+                textt: "Create Class",
+                color: AppColor.nokiaBlue,
+                onPressed: () async {
+                  if (_formKey.currentState!.validate() &&
+                      st != null &&
+                      et != null) {
+                    _onTapToButton();
+                  }
+                },
               ),
-
               const SizedBox(height: 200),
             ],
           ),
@@ -333,49 +207,91 @@ class _AddClassSceenState extends State<AddClassSceen> {
     );
   }
 
-  void _selectStartTime() {
-    showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    ).then((value) {
-      if (value != null) {
-        String hour = "${value.hour < 10 ? '0' : ''}${value.hour}";
-        String minute = "${value.minute < 10 ? '0' : ''}${value.minute}";
-        DateTime selecteTime = DateTime.parse("2021-12-23 $hour:$minute:00Z");
-
-        print("houre : ${value.hour} ,munite ${value.minute}");
-
-        setState(() {
-          show = true;
-          startTime = selecteTime;
-          startTimeDemo = selecteTime;
-          print(startTime.toIso8601String());
-        });
-      }
-    });
+  void _onTapToButton() {
+    widget.isEdit == true
+        ? ClassRequest().editClass(
+            context,
+            widget.classId ?? "",
+            ClassModel(
+              className: _className.text,
+              instructorName: _instructorController.text,
+              roomNumber: _roomController.text,
+              subjectCode: _subCodeController.text,
+              startingPeriod: int.parse(_startPeriodController.text),
+              endingPeriod: int.parse(_endPeriodController.text),
+              weekday: _selectedDay,
+              startTime: st!,
+              endTime: et!,
+            ))
+        : ClassRequest().addClass(
+            widget.rutinId,
+            context,
+            ClassModel(
+              className: _className.text,
+              instructorName: _instructorController.text,
+              roomNumber: _roomController.text,
+              subjectCode: _subCodeController.text,
+              startingPeriod: int.parse(_startPeriodController.text),
+              endingPeriod: int.parse(_endPeriodController.text),
+              weekday: _selectedDay,
+              startTime: st!,
+              endTime: et!,
+            ));
   }
 
-  //--- end time
-  void _selectEndTime() {
-    showTimePicker(
-            context: context,
-            initialTime:
-                TimeOfDay(hour: startTime.hour, minute: startTime.minute))
-        .then((value) {
-      if (value != null) {
-        String hour = "${value.hour < 10 ? '0' : ''}${value.hour}";
-        String minute = "${value.minute < 10 ? '0' : ''}${value.minute}";
-        DateTime selecteEndTime =
-            DateTime.parse("2021-12-23 $hour:$minute:00Z");
+  //
+  // find class
+  Future<void> findClass() async {
+    // Obtain shared preferences.
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+
+    try {
+      final response = await http.get(
+          Uri.parse('${Const.BASE_URl}/class/find/class/${widget.classId}'),
+          headers: {'Authorization': 'Bearer $getToken'});
+
+      //.. responce
+      if (response.statusCode == 200) {
+        var decodedres = json.decode(response.body);
+        //
+        _className.text = json.decode(response.body)["classs"]["name"];
+        _instructorController.text =
+            json.decode(response.body)["classs"]["instuctor_name"];
+        _roomController.text = json.decode(response.body)["classs"]["room"];
+        _subCodeController.text =
+            json.decode(response.body)["classs"]["subjectcode"];
+
         //
         setState(() {
+          _selectedDay = json.decode(response.body)["classs"]["weekday"];
+          startTime = DateTime.parse(
+              json.decode(response.body)["classs"]["start_time"]);
+          endTime =
+              DateTime.parse(json.decode(response.body)["classs"]["end_time"]);
+
+          //
+          startTimeDemo = DateTime.parse(
+              json.decode(response.body)["classs"]["start_time"]);
+          endTimDemo =
+              DateTime.parse(json.decode(response.body)["classs"]["end_time"]);
+
           show = true;
 
-          endTime = selecteEndTime;
-          endTimDemo = selecteEndTime;
-          print(endTime.toIso8601String());
+          //
+          _startPeriodController.text =
+              json.decode(response.body)["classs"]["start"].toString();
+          _endPeriodController.text =
+              json.decode(response.body)["classs"]["end"].toString();
         });
+      } else {
+        throw Exception('Failed to load data');
       }
-    });
+    } catch (e) {
+      Alart.handleError(context, e.toString());
+    }
   }
 }
+
+///
+///

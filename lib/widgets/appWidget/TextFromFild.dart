@@ -12,6 +12,7 @@ class AppTextFromField extends StatelessWidget {
     this.onFieldSubmitted,
     this.focusNode,
     this.keyboardType,
+    this.margin,
   });
 
   //
@@ -21,11 +22,13 @@ class AppTextFromField extends StatelessWidget {
   final dynamic validator;
   final dynamic onFieldSubmitted, keyboardType;
   final FocusNode? focusNode;
+  final EdgeInsetsGeometry? margin;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24).copyWith(top: 34),
+      margin: margin ??
+          const EdgeInsets.symmetric(horizontal: 24).copyWith(top: 34),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
