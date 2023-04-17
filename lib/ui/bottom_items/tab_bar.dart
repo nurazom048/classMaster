@@ -5,6 +5,8 @@ import 'package:table/ui/bottom_items/search/search_screen/search_page.dart';
 import 'Home/home_screen/Home_screen.dart';
 import 'package:intl/intl.dart';
 
+import 'Home/tababar items/joined_rutine_screen.dart';
+
 class TabBatView extends StatefulWidget {
   const TabBatView({Key? key}) : super(key: key);
 
@@ -18,7 +20,7 @@ class _TopTabController extends State<TabBatView>
   Widget build(BuildContext context) {
     // provider
 
-    TabController _controller = TabController(vsync: this, length: 2);
+    TabController _controller = TabController(vsync: this, length: 3);
 
     return SafeArea(
       child: Scaffold(
@@ -55,10 +57,7 @@ class _TopTabController extends State<TabBatView>
                   tabs: [
                     const Tab(child: Text("Joined Rutine")),
                     const Tab(child: Text("Joined notice")),
-                    // MyTab("Feed  ", Icons.play_arrow),
-                    // MyTab(" My Community", Icons.people_alt),
-                    // MyTab(" My Course", MyIcons.course_file, size: 22),
-                    // MyTab("Notifications", Icons.notifications)
+                    const Tab(child: Text("Notification")),
                   ],
                 ),
               ),
@@ -67,7 +66,11 @@ class _TopTabController extends State<TabBatView>
                 child: TabBarView(
                   controller: _controller,
                   // ignore: prefer_const_literals_to_create_immutables
-                  children: [const HomeScreen(), const Text("norice")],
+                  children: [
+                    const HomeScreen(),
+                    const JoinedRutineScreen(),
+                    const Text("notification"),
+                  ],
                 ),
               ),
             ],

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:table/ui/bottom_items/tab_bar.dart';
 
 import 'Account/accounu_ui/Account_screen.dart';
+import 'Home/home_screen/Home_screen.dart';
 
-List<Widget> pages = [TabBatView(), const Text("Add Screen"), AccountScreen()];
+List<Widget> pages = [HomeScreen(), const Text("Add Screen"), AccountScreen()];
 
 class BottomNevBar extends StatefulWidget {
   const BottomNevBar({super.key});

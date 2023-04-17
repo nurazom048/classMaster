@@ -18,12 +18,12 @@ class AppText {
   ///
   ///
   ///
-  heding() {
+  heding({FontWeight? fontWeight}) {
     return Text(data,
         style: TextStyle(
           fontFamily: 'Open Sans',
           fontStyle: FontStyle.normal,
-          fontWeight: FontWeight.w300,
+          fontWeight: fontWeight ?? FontWeight.w300,
           fontSize: fontSize ?? 20,
           height: 1.27,
           color: const Color(0xFF333333),
