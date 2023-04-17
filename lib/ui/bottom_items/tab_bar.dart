@@ -32,7 +32,7 @@ class _TopTabController extends State<TabBatView>
                 "title",
                 ontap: () => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SearchPAge()),
+                  MaterialPageRoute(builder: (context) => const SearchPAge()),
                 ),
               ),
             )
@@ -117,18 +117,18 @@ class ChustomTitleBar extends StatelessWidget {
             children: [
               Text(
                 dayOfWeek,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w300,
-                  color: AppColor.nokiaBlue,
+                  color: Colors.black,
                 ),
               ),
               Text(
                 date,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
-                  color: AppColor.nokiaBlue,
+                  color: Colors.black,
                 ),
               ),
             ],
@@ -138,6 +138,17 @@ class ChustomTitleBar extends StatelessWidget {
             onTap: ontap ?? () {},
             child: Icon(
               icon ?? Icons.search,
+              size: 22,
+              color: AppColor.nokiaBlue,
+            ),
+          ),
+          // ignore: prefer_const_constructors
+          SizedBox(width: 10),
+          //
+          InkWell(
+            onTap: ontap ?? () {},
+            child: Icon(
+              icon ?? Icons.notifications_outlined,
               size: 22,
               color: AppColor.nokiaBlue,
             ),

@@ -1,128 +1,112 @@
 class Notice {
-  String? id;
-  String? contentName;
-  List<Pdf>? pdfList;
-  String? description;
-  NoticeBoard? noticeBoard;
-  String? visibility;
-  String? time;
+  String id;
+  String contentName;
+  List<Pdf> pdf;
+  String description;
+  NoticeBoard noticeBoard;
+  String visibility;
+  String time;
 
   Notice({
-    this.id,
-    this.contentName,
-    this.pdfList,
-    this.description,
-    this.noticeBoard,
-    this.visibility,
-    this.time,
+    required this.id,
+    required this.contentName,
+    required this.pdf,
+    required this.description,
+    required this.noticeBoard,
+    required this.visibility,
+    required this.time,
   });
 
-  Notice.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
-    contentName = json['content_name'];
-    if (json['pdf'] != null) {
-      pdfList = [];
-      json['pdf'].forEach((v) {
-        pdfList?.add(Pdf.fromJson(v));
-      });
-    }
-    description = json['description'];
-    noticeBoard = json['noticeBoard'] != null
-        ? NoticeBoard.fromJson(json['noticeBoard'])
-        : null;
-    visibility = json['visibility'];
-    time = json['time'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = id;
-    data['content_name'] = contentName;
-    if (pdfList != null) {
-      data['pdf'] = pdfList?.map((v) => v.toJson()).toList();
-    }
-    data['description'] = description;
-    if (noticeBoard != null) {
-      data['noticeBoard'] = noticeBoard?.toJson();
-    }
-    data['visibility'] = visibility;
-    data['time'] = time;
-    return data;
+  factory Notice.fromJson(Map<String, dynamic> json) {
+    return Notice(
+      id: json['_id'],
+      contentName: json['content_name'],
+      pdf: List<Pdf>.from(json['pdf'].map((pdf) => Pdf.fromJson(pdf))),
+      description: json['description'],
+      noticeBoard: NoticeBoard.fromJson(json['noticeBoard']),
+      visibility: json['visibility'],
+      time: json['time'],
+    );
   }
 }
 
 class Pdf {
-  String? url;
-  String? id;
+  String url;
+  String id;
 
   Pdf({
-    this.url,
-    this.id,
+    required this.url,
+    required this.id,
   });
 
-  Pdf.fromJson(Map<String, dynamic> json) {
-    url = json['url'];
-    id = json['_id'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['url'] = url;
-    data['_id'] = id;
-    return data;
+  factory Pdf.fromJson(Map<String, dynamic> json) {
+    return Pdf(
+      url: json['url'],
+      id: json['_id'],
+    );
   }
 }
 
 class NoticeBoard {
-  String? id;
-  Account? owner;
-  String? name;
+  String id;
+  Owner owner;
+  String name;
 
   NoticeBoard({
-    this.id,
-    this.owner,
-    this.name,
+    required this.id,
+    required this.owner,
+    required this.name,
   });
 
-  NoticeBoard.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
-    owner = json['owner'] != null ? Account.fromJson(json['owner']) : null;
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = id;
-    if (owner != null) {
-      data['owner'] = owner?.toJson();
-    }
-    data['name'] = name;
-    return data;
+  factory NoticeBoard.fromJson(Map<String, dynamic> json) {
+    return NoticeBoard(
+      id: json['_id'],
+      owner: Owner.fromJson(json['owner']),
+      name: json['name'],
+    );
   }
 }
 
-class Account {
-  String? id;
-  String? username;
-  String? name;
+class Owner {
+  String id;
+  String username;
+  String name;
 
-  Account({
-    this.id,
-    this.username,
-    this.name,
+  Owner({
+    required this.id,
+    required this.username,
+    required this.name,
   });
 
-  Account.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
-    username = json['username'];
-    name = json['name'];
+  factory Owner.fromJson(Map<String, dynamic> json) {
+    return Owner(
+      id: json['_id'],
+      username: json['username'],
+      name: json['name'],
+    );
   }
+}
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = id;
-    data['username'] = username;
-    data['name'] = name;
-    return data;
+class NoticesResponse {
+  String message;
+  List<Notice> notices;
+  int currentPage;
+  int totalPages;
+
+  NoticesResponse({
+    required this.message,
+    required this.notices,
+    required this.currentPage,
+    required this.totalPages,
+  });
+
+  factory NoticesResponse.fromJson(Map<String, dynamic> json) {
+    return NoticesResponse(
+      message: json['message'],
+      notices: List<Notice>.from(
+          json['notices'].map((notice) => Notice.fromJson(notice))),
+      currentPage: json['currentPage'],
+      totalPages: json['totalPages'],
+    );
   }
 }

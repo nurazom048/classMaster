@@ -26,7 +26,7 @@ class AppText {
           fontWeight: fontWeight ?? FontWeight.w300,
           fontSize: fontSize ?? 20,
           height: 1.27,
-          color: const Color(0xFF333333),
+          color: color ?? const Color(0xFF333333),
         ));
   }
 

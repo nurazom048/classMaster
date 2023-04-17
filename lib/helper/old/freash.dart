@@ -81,9 +81,9 @@
 // //                                 child: Column(
 // //                                   mainAxisAlignment: MainAxisAlignment.center,
 // //                                   children: [
-// //                                     DateFormat('EEEE')
-// //                                                 .format(datetime)
-// //                                                 .toString() ==
+                                    // DateFormat('EEEE')
+                                    //             .format(datetime)
+                                    //             .toString() ==
 // //                                             sevendays[indexofdate]
 // //                                         ? const Text("Runnimg ")
 // //                                         : const Text(""),
