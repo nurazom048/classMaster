@@ -95,13 +95,20 @@ class _AccountScreenState extends State<AccountScreen> {
 
                 /// ********Sattings ******//
                 MyContainerButton(
-                    const Icon(Icons.settings_outlined), "Sattings"),
+                  const Icon(Icons.settings_outlined),
+                  "Sattings",
+                  onTap: () {},
+                ),
                 MyContainerButton(const Icon(Icons.logout_outlined), "Sign out",
                     color: Colors.red,
                     onTap: () => AccoutUtils.showConfirmationDialog(context)),
 
                 MyDividerr(thickness: 1.0, height: 1.0),
-                MyContainerButton(const Icon(Icons.help_rounded), "About"),
+                MyContainerButton(
+                  const Icon(Icons.help_rounded),
+                  "About",
+                  onTap: () {},
+                ),
               ],
             );
           }),
