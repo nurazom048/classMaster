@@ -2,18 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/helper/constant/AppColor.dart';
-import 'package:table/ui/bottom_items/Add/create_new_rutine.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/dailog/rutin_dialog.dart';
 import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
 import 'package:table/ui/bottom_items/Home/notice/noticeRequest.dart';
-import 'package:table/ui/bottom_items/search/search_screen/search_page.dart';
-import 'package:table/ui/bottom_items/tab_bar.dart';
-import 'package:table/widgets/TopBar.dart';
 import 'package:table/widgets/appWidget/rutin_box/rutin_box_by_id.dart';
 import 'package:table/widgets/progress_indicator.dart';
 import '../../../../core/dialogs/Alart_dialogs.dart';
 import '../../../../main.dart';
+import '../widgets/custom_title_bar.dart';
 
 final currentPageProvider = StateProvider((ref) => 1);
 
@@ -45,7 +41,7 @@ class HomeScreen extends StatelessWidget {
                   child: viewNoticeByusername.when(
                       data: (data) {
                         return data.fold(
-                            (Error) => Alart.showSnackBar(context, Error),
+                            (error) => Alart.showSnackBar(context, error),
                             (r) => Column(
                                   children: List.generate(
                                     r.notices.length,

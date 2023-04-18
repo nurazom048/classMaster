@@ -5,9 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Account/account_request/account_request.dart';
 import 'package:table/ui/bottom_items/Account/accounu_ui/eddit_account.dart';
+import 'package:table/ui/bottom_items/Account/widgets/my_container_button.dart';
+import 'package:table/ui/bottom_items/Account/widgets/my_divider.dart';
+import 'package:table/ui/bottom_items/Account/widgets/tiled_boutton.dart';
 import 'package:table/widgets/AccountCard.dart';
 import '../../../../core/dialogs/Alart_dialogs.dart';
 import '../../../../core/component/component_improts.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AccountScreen extends StatefulWidget {
   final String? accountUsername;
@@ -59,7 +63,6 @@ class _AccountScreenState extends State<AccountScreen> {
                         ProfilePicture: data.image ?? '',
                         name: data.name ?? '',
                         username: data.username ?? '',
-                        ontapLogOut: () => _showConfirmationDialog(context),
                       );
                     }
                   },
@@ -67,120 +70,39 @@ class _AccountScreenState extends State<AccountScreen> {
                       Alart.handleError(context, error),
                   loading: () => const Text("loding"),
                 ),
-                // FutureBuilder(
-                //     future: ref
-                //         .read(AccountControllerProvider)
-                //         .account(context, widget.accountUsername),
-                //     builder: (context, snapshoot) {
-                //       if (snapshoot.connectionState ==
-                //           ConnectionState.waiting) {
-                //         // print(snapshoot.data);
+                /////////////////////
+                // ignore: prefer_const_constructors
+                SizedBox(height: 10),
+                MyContainerButton(
+                    const FaIcon(FontAwesomeIcons.pen), "Eddit Profile"),
+                MyDividerr(thickness: 1.0, height: 1.0),
+                //*********************** Tilesbutton*****************************/
+                Container(
+                  alignment: Alignment.center,
+                  child: Wrap(alignment: WrapAlignment.start, children: [
+                    Tilesbutton(
+                        "Hystory", const FaIcon(FontAwesomeIcons.history)),
+                    Tilesbutton(
+                        "Dowenloads", const FaIcon(FontAwesomeIcons.arrowDown)),
+                    Tilesbutton(
+                        "Saved", const FaIcon(FontAwesomeIcons.bookmark)),
 
-                //         return const Center(child: Progressindicator());
-                //       } else {
-                //         var accountData = snapshoot;
-                //         // var loginAccount = AccountModels.fromJson(accountData);
-                //         print(accountData.data?.name);
+                    //
+                  ]),
+                ),
+                MyDividerr(thickness: 1.0, height: 1.0),
 
-                //         //
-                //         // var myRutins = accountData!["routines"];
-                //         // var save_rutin = accountData["Saved_routines"];
+                /// ********Sattings ******//
+                MyContainerButton(
+                    const Icon(Icons.settings_outlined), "Sattings"),
+                MyContainerButton(
+                  const Icon(Icons.logout_outlined),
+                  "Sign out",
+                  onTap: () => _showConfirmationDialog(context),
+                ),
 
-                //         //    print(save_rutin);
-                //         return Text("${accountData.data}");
-                //         // return Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 10),
-                //   child: Column(
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     children: [
-                //       //Image.network(imageUrl),
-                //       //... Accoumt Info ..//
-                //       AccountCard(
-                //         ProfilePicture: loginAccount.image ?? "",
-                //         name: loginAccount.name!,
-                //         username: loginAccount.username!,
-                //         ontapLogOut: () =>
-                //             _showConfirmationDialog(context),
-                //       ),
-
-                //       //...My Rutiners...//
-                //       MyText("my Rutin"),
-
-                //       SingleChildScrollView(
-                //         scrollDirection: Axis.horizontal,
-                //         child: Row(
-                //           children: List.generate(
-                //             myRutins.length,
-                //             (index) => InkWell(
-                //               child: CustomRutinCard(
-                //                 rutinname: myRutins[index]["name"],
-                //                 username: myRutins[index]["ownerid"]
-                //                     ["username"],
-                //                 name: myRutins[index]["ownerid"]["name"],
-                //                 profilePicture: myRutins[index]["ownerid"]
-                //                     ["image"],
-
-                //                 //.. On tap...//
-                //                 onTap: () => Navigator.push(
-                //                   context,
-                //                   MaterialPageRoute(
-                //                     builder: (context) => FullRutineView(
-                //                       rutinName: myRutins[index]["name"],
-                //                       rutinId: myRutins[index]["_id"],
-                //                     ),
-                //                   ),
-                //                 ),
-                //               ),
-                //             ),
-                //           ),
-                //         ),
-                //       ),
-                //       //
-
-                //       //... Saved Rutin...///
-
-                //       MyText("Saved Rutin"),
-                //       SingleChildScrollView(
-                //         scrollDirection: Axis.horizontal,
-                //         child: Row(
-                //           children: List.generate(
-                //             save_rutin.length,
-                //             (index) => InkWell(
-                //               child: save_rutin.length == 0
-                //                   ? Container()
-                //                   : CustomRutinCard(
-                //                       rutinname: save_rutin[index]
-                //                           ["name"],
-                //                       username: save_rutin[index]
-                //                           ["ownerid"]["username"],
-                //                       name: save_rutin[index]["ownerid"]
-                //                           ["name"],
-                //                       profilePicture: save_rutin[index]
-                //                           ["ownerid"]["image"],
-
-                //                       //.. On tap...//
-                //                       onTap: () => Navigator.push(
-                //                         context,
-                //                         MaterialPageRoute(
-                //                           builder: (context) =>
-                //                               FullRutineView(
-                //                             rutinName: save_rutin[index]
-                //                                 ["name"],
-                //                             rutinId: save_rutin[index]
-                //                                 ["_id"],
-                //                           ),
-                //                         ),
-                //                       ),
-                //                     ),
-                //             ),
-                //           ),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // );
-                //}
-                // }),
+                MyDividerr(thickness: 1.0, height: 1.0),
+                MyContainerButton(const Icon(Icons.help_rounded), "About"),
               ],
             );
           }),
@@ -291,3 +213,6 @@ Future<void> _showConfirmationDialog(context) async {
     },
   );
 }
+
+///
+

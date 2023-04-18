@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+//import 'package:flutter_svg/flutter_svg.dart';
 import 'package:table/widgets/appWidget/buttons/cupertinoButttons.dart';
 import '../../../helper/constant/AppColor.dart';
 import '../../../widgets/heder/hederTitle.dart';
@@ -27,7 +27,7 @@ class _SelectAccounTypeState extends State<SelectAccounType> {
               const SizedBox(height: 30),
               Column(
                 children: [
-                  SvgPicture.asset("assets/svg/man1.svg"),
+                  //  SvgPicture.asset("assets/svg/man1.svg"),
 
                   Container(
                     alignment: Alignment.center,

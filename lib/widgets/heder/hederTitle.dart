@@ -7,25 +7,37 @@ class HeaderTitle extends StatelessWidget {
     this.context, {
     super.key,
     this.onTap,
+    this.margin,
+    this.widget,
   });
   final String title;
   final BuildContext context;
   final dynamic onTap;
+  final EdgeInsetsGeometry? margin;
+  final Widget? widget;
   @override
   Widget build(BuildContext contextt) {
     return Container(
-      margin: const EdgeInsets.only(left: 25.5, top: 50),
+      margin: margin ?? const EdgeInsets.only(left: 25.5, top: 50),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          InkWell(
-              onTap: () => onTap ?? Navigator.pop(context),
-              child: const Icon(
-                Icons.arrow_back_ios,
-                size: 20,
-                color: Colors.black,
-              )),
-          AppText(title).heding(),
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              InkWell(
+                  onTap: () => onTap ?? Navigator.pop(context),
+                  child: const Icon(
+                    Icons.arrow_back_ios,
+                    size: 20,
+                    color: Colors.black,
+                  )),
+              AppText(title).heding(),
+            ],
+          ),
+          //
+
+          widget ?? const SizedBox.shrink(),
         ],
       ),
     );
