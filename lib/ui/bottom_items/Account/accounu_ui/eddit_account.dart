@@ -2,14 +2,11 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:table/core/dialogs/Alart_dialogs.dart';
-import 'package:table/helper/constant/constant.dart';
 import 'package:table/ui/bottom_items/Account/account_request/account_request.dart';
-import 'package:table/widgets/custom_textFileds.dart';
+import 'package:table/widgets/appWidget/TextFromFild.dart';
 import 'package:table/widgets/pickImage.dart';
-import 'package:http/http.dart' as http;
+import '../../../../widgets/heder/hederTitle.dart';
+import '../../../auth_Section/utils/singUp_validation.dart';
 
 class EdditAccount extends StatefulWidget {
   final String accountUsername;
@@ -21,109 +18,90 @@ class EdditAccount extends StatefulWidget {
 
 class _EdditAccountState extends State<EdditAccount> {
   //.. Controllers
-  final _username = TextEditingController();
-  final _password = TextEditingController();
-  final _name = TextEditingController();
-
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
   //
-  Future<void> updateAccount(context, {name, imagePath}) async {
-    // get image
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
-
-    final url = Uri.parse('${Const.BASE_URl}/account/eddit');
-
-    // 1.. request
-    final request = http.MultipartRequest('POST', url);
-
-    request.headers.addAll({'Authorization': 'Bearer $getToken'});
-
-    request.fields['image'] = name;
-    if (imagePath != null) {
-      final imagePart = await http.MultipartFile.fromPath('image', imagePath);
-      print("image path");
-      request.files.add(imagePart);
-    }
-
-    final response = await request.send();
-    if (response.statusCode != 200) {
-      Navigator.pop(context);
-      print('Account updated successfully');
-    } else {
-      print('Failed to update account: ${response.statusCode}');
-    }
-  }
+  final nameFocusNode = FocusNode();
+  final emailFocusNode = FocusNode();
+  final usernameFocusNode = FocusNode();
+  final passwordFocusNode = FocusNode();
+  final confirmPasswordFocusNode = FocusNode();
 
   String? imagePath;
   //
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(title: const Text("Eddit Account")),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 17),
-            child: Consumer(builder: (context, WidgetRef ref, _) {
-              final date =
-                  ref.watch(accountDataProvider(widget.accountUsername));
-              date.when(
-                  data: (data) {
-                    // setState(() {
-                    //   _username.text = data?.username ?? "";
-                    //   _password.text = data?.password ?? "";
-                    //   _name.text = data?.name ?? "";
-                    // });
-                  },
-                  error: (error, stackTrace) =>
-                      Alart.handleError(context, error),
-                  loading: () {});
+    return Scaffold(
+      body: Form(
+        key: formKey,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              HeaderTitle("Eddit Account", context),
+              PickImage(
+                onImagePathSelected: (inagePath) async {
+                  imagePath = inagePath;
 
-              return Column(
-                children: [
-                  PickImage(
-                    onImagePathSelected: (inagePath) async {
-                      imagePath = inagePath;
+                  print("path paici vai $imagePath");
+                },
+              ),
+              AppTextFromField(
+                controller: nameController,
+                hint: "Name",
+                validator: (value) => SignUpValidation.validateName(value),
+                focusNode: nameFocusNode,
+                onFieldSubmitted: (_) => emailFocusNode.requestFocus(),
+              ),
+              AppTextFromField(
+                controller: emailController,
+                hint: "Email",
+                labelText: "Enter email address",
+                validator: (value) => SignUpValidation.validateEmail(value),
+                focusNode: emailFocusNode,
+                onFieldSubmitted: (_) => usernameFocusNode.requestFocus(),
+              ),
+              AppTextFromField(
+                controller: usernameController,
+                hint: "username",
+                labelText: "Couse a User for your Account",
+                validator: (value) => SignUpValidation.validateUsername(value),
+                focusNode: usernameFocusNode,
+                onFieldSubmitted: (_) => passwordFocusNode.requestFocus(),
+              ),
+              // AppTextFromField(
+              //   controller: passwordController,
+              //   hint: "password",
+              //   labelText: "Enter a valid password",
+              //   validator: (value) => SignUpValidation.validatePassword(value),
+              //   focusNode: passwordFocusNode,
+              //   onFieldSubmitted: (_) =>
+              //       confirmPasswordFocusNode.requestFocus(),
+              // ),
+              // AppTextFromField(
+              //   controller: confirmPasswordController,
+              //   hint: "Confirm Password",
+              //   labelText: "Enter the same password",
+              //   validator: (value) => SignUpValidation.validateConfirmPassword(
+              //       value, passwordController.text),
+              //   focusNode: confirmPasswordFocusNode,
+              //   onFieldSubmitted: (_) => formKey.currentState?.validate(),
+              // ),
+              const SizedBox(height: 20),
 
-                      print("path paici vai $imagePath");
-                    },
-                  ),
-                  //.. Username ..//
-
-                  ////////
-                  CustomTextField(
-                    controller: _name,
-                    labelText: "Full Name",
-                  ),
-                  const SizedBox(height: 20),
-
-                  CustomTextField(
-                    controller: _username,
-                    labelText: "username",
-                  ),
-
-                  const SizedBox(height: 20),
-                  // CustomTextField(
-                  //   controller: _password,
-                  //   labelText: "Password",
-                  // ),
-                  //
-                  //   const SizedBox(height: 20),
-                  // CustomTextField(
-                  //   controller: _confromPassword,
-                  //   labelText: "Comfrom the password",
-                  // ),
-                  CupertinoButton(
-                      color: Colors.blue,
-                      child: const Text('Eddit Account'),
-                      onPressed: () async {
-                        await updateAccount(context,
-                            name: _name.text, imagePath: imagePath);
-                      }),
-                  //
-                ],
-              );
-            }),
+              // update Account
+              CupertinoButton(
+                  color: Colors.blue,
+                  child: const Text('Eddit Account'),
+                  onPressed: () async {
+                    await AccountReq().updateAccount(context,
+                        name: nameController.text, imagePath: imagePath);
+                  }),
+              const SizedBox(height: 70),
+            ],
           ),
         ),
       ),

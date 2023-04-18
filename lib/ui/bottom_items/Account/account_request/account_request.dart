@@ -44,4 +44,33 @@ class AccountReq {
       throw Exception(e);
     }
   }
+
+  // update Account .....//
+
+  Future<void> updateAccount(context, {name, imagePath}) async {
+    // get image
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+
+    final url = Uri.parse('${Const.BASE_URl}/account/eddit');
+
+    // 1.. request
+    final request = http.MultipartRequest('POST', url);
+
+    request.headers.addAll({'Authorization': 'Bearer $getToken'});
+
+    request.fields['image'] = name;
+    if (imagePath != null) {
+      final imagePart = await http.MultipartFile.fromPath('image', imagePath);
+      print("image path");
+      request.files.add(imagePart);
+    }
+
+    final response = await request.send();
+    if (response.statusCode != 200) {
+      print('Account updated successfully');
+    } else {
+      print('Failed to update account: ${response.statusCode}');
+    }
+  }
 }

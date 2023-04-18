@@ -21,7 +21,7 @@ class _PickImageState extends State<PickImage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 20),
+      margin: const EdgeInsets.symmetric(vertical: 5),
       width: 114,
       child: Stack(
         children: [

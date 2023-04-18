@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Account/account_request/account_request.dart';
 import 'package:table/ui/bottom_items/Account/accounu_ui/eddit_account.dart';
+import 'package:table/ui/bottom_items/Account/utils/account_utils.dart';
 import 'package:table/ui/bottom_items/Account/widgets/my_container_button.dart';
 import 'package:table/ui/bottom_items/Account/widgets/my_divider.dart';
 import 'package:table/ui/bottom_items/Account/widgets/tiled_boutton.dart';
@@ -29,8 +30,6 @@ class AccountScreen extends StatefulWidget {
 class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
-    // print("widget.username");
-    // print(widget.accountUsername);
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -43,15 +42,7 @@ class _AccountScreenState extends State<AccountScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //... AppBar.....//
-                AppbarCustom(
-                  title: "Account",
-                  actionIcon: IconButton(
-                      icon: const Icon(Icons.more_vert),
-                      onPressed: () {
-                        accountBottomSheet(
-                            context, widget.accountUsername ?? '');
-                      }),
-                ),
+                AppbarCustom(title: "    Account"),
                 accountData.when(
                   data: (data) {
                     print(data);
@@ -71,10 +62,20 @@ class _AccountScreenState extends State<AccountScreen> {
                   loading: () => const Text("loding"),
                 ),
                 /////////////////////
-                // ignore: prefer_const_constructors
-                SizedBox(height: 10),
+
+                const SizedBox(height: 10),
                 MyContainerButton(
-                    const FaIcon(FontAwesomeIcons.pen), "Eddit Profile"),
+                  const FaIcon(FontAwesomeIcons.pen),
+                  "Eddit Profile",
+                  onTap: () => Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => EdditAccount(
+                        accountUsername: widget.accountUsername ?? "",
+                      ),
+                    ),
+                  ),
+                ),
                 MyDividerr(thickness: 1.0, height: 1.0),
                 //*********************** Tilesbutton*****************************/
                 Container(
@@ -95,11 +96,9 @@ class _AccountScreenState extends State<AccountScreen> {
                 /// ********Sattings ******//
                 MyContainerButton(
                     const Icon(Icons.settings_outlined), "Sattings"),
-                MyContainerButton(
-                  const Icon(Icons.logout_outlined),
-                  "Sign out",
-                  onTap: () => _showConfirmationDialog(context),
-                ),
+                MyContainerButton(const Icon(Icons.logout_outlined), "Sign out",
+                    color: Colors.red,
+                    onTap: () => AccoutUtils.showConfirmationDialog(context)),
 
                 MyDividerr(thickness: 1.0, height: 1.0),
                 MyContainerButton(const Icon(Icons.help_rounded), "About"),
@@ -110,109 +109,4 @@ class _AccountScreenState extends State<AccountScreen> {
       ),
     );
   }
-
-//... Account Bottom Sheet....//
-  Future<dynamic> accountBottomSheet(
-      BuildContext context, String accountUsername) {
-    return showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Container(
-          margin: const EdgeInsets.only(bottom: 10),
-          decoration: const BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(16.0))),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(height: 10),
-
-              //
-              CupertinoButton(
-                child: const Text(
-                  'Edit Account',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.black,
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                          fullscreenDialog: true,
-                          builder: (context) => EdditAccount(
-                                accountUsername: accountUsername,
-                              )));
-                  // Navigator.of(context).pop();
-                },
-              ),
-              const Divider(thickness: 2),
-
-              CupertinoButton(
-                child: const Text(
-                  'Delete Account',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.red,
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              const Divider(thickness: 2),
-              const SizedBox(height: 20),
-              CupertinoButton(
-                color: Colors.blue,
-                child: const Text('Cancel'),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
 }
-
-Future<void> _showConfirmationDialog(context) async {
-  return showDialog<void>(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        title: const Text(
-          "Are you sure to log out?",
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
-        actions: <Widget>[
-          CupertinoButton(
-            child: const Text("Yes",
-                style: TextStyle(fontSize: 18, color: Colors.red)),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          CupertinoButton(
-            child: const Text("No",
-                style: TextStyle(fontSize: 18, color: Colors.black)),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
-  );
-}
-
-///
-
