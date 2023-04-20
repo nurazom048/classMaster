@@ -5,12 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summat_screens/summary_screen.dart';
+import 'package:table/models/notice%20bord/recentNotice.dart';
 import 'package:table/ui/bottom_items/Home/notice/viewNotice.dart';
 import 'package:table/widgets/appWidget/appText.dart';
 import 'package:table/widgets/appWidget/buttons/Expende_button.dart';
 import 'firebase_options.dart';
-import 'models/notice bord/listOfnotice model.dart';
 import 'ui/auth_Section/new Auuth_Screen/Login_Screen.dart';
 import 'widgets/appWidget/dottted_divider.dart';
 

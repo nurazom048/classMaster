@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:table/ui/bottom_items/Add/add__Notice__Screen.dart';
 import 'package:table/ui/bottom_items/tab_bar.dart';
 
 import 'Account/accounu_ui/Account_screen.dart';
 import 'Home/home_screen/Home_screen.dart';
 
-List<Widget> pages = [HomeScreen(), const Text("Add Screen"), AccountScreen()];
+List<Widget> pages = [
+  const HomeScreen(),
+  const Text("Add Screen"),
+  const AccountScreen()
+];
 
 class BottomNevBar extends StatefulWidget {
   const BottomNevBar({super.key});
@@ -41,11 +46,96 @@ class _BottomNewBarState extends State<BottomNevBar> {
             backgroundColor: Colors.white,
           ),
         ],
-        onTap: (index) => setState(() => currentIndex = (index)),
+        onTap: (index) {
+          if (index == 1) {
+            _showBottomSheet(context);
+          } else {
+            setState(() => currentIndex = index);
+          }
+        },
         elevation: 8.1,
         type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
       ),
     );
   }
+}
+
+void _showBottomSheet(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    builder: (BuildContext context) {
+      return Container(
+        height: 200.0,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(5.0),
+            topRight: Radius.circular(5.0),
+          ),
+        ),
+        child: Column(
+          children: [
+            Card(
+              elevation: 2.0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.note_add),
+                    title: const Text(
+                      'Add Notice',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddNoticeScreen()),
+                      );
+                      //
+//  Navigator.pop(context);
+                      // Handle add notice action here
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.date_range),
+                    title: const Text(
+                      'Create Routine',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      // Handle create routine action here
+                    },
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.cancel),
+              title: const Text(
+                'Cancel',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16.0,
+                ),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }

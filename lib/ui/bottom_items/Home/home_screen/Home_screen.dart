@@ -29,8 +29,7 @@ class HomeScreen extends StatelessWidget {
             final pages = ref.watch(currentPageProvider);
             //final saveRutin = ref.watch(save_rutins_provider(1));
             final uploaded_rutin = ref.watch(uploaded_rutin_provider(pages));
-            final viewNoticeByusername =
-                ref.watch(viewNoticeByUsernameProvider);
+            final recentNoticeList = ref.watch(recentNoticeProvider);
             // final joined_rutin = ref.watch(joined_rutin_provider(pages));
 
             return Column(
@@ -38,16 +37,16 @@ class HomeScreen extends StatelessWidget {
               children: [
                 const ChustomTitleBar("title"),
                 RecentNotice(
-                  child: viewNoticeByusername.when(
+                  child: recentNoticeList.when(
                       data: (data) {
                         return data.fold(
-                            (error) => Alart.showSnackBar(context, error),
+                            (error) => Alart.handleError(context, error),
                             (r) => Column(
                                   children: List.generate(
                                     r.notices.length,
                                     (index) => NoticeRow(
                                       notice: r.notices[index],
-                                      date: r.notices[index].time,
+                                      date: r.notices[index].time.toString(),
                                       title: r.notices[index].contentName,
                                     ),
                                   ),

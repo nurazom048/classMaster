@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/auth_Section/new%20Auuth_Screen/Login_Screen.dart';
-
+import 'package:table/core/dialogs/Alart_dialogs.dart';
+import 'package:table/ui/bottom_items/Home/notice/noticeRequest.dart';
 import '../../../helper/constant/AppColor.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/appWidget/appText.dart';
@@ -13,74 +13,85 @@ import '../../../widgets/heder/hederTitle.dart';
 
 class AddNoticeScreen extends ConsumerWidget {
   AddNoticeScreen({super.key});
+
+  final _formKey = GlobalKey<FormState>();
   TextEditingController descriptionController = TextEditingController();
+  String? id;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.only(bottom: 400),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              HeaderTitle("Back to Home", context),
-              //const SizedBox(height: 100),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0)
-                    .copyWith(top: 25),
-                child: const Text(
-                  "Add A New \nNotice",
-                  style: TextStyle(
-                    fontFamily: 'Open Sans',
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.w300,
-                    fontSize: 48.0,
-                    height: 65 / 48, // This sets the line height to 65px
-                    color: Colors.black,
-                    // text-edge and leading-trim are not currently supported in Flutter
-                  ),
-                ),
-              ),
-
-              ///
-              ///
-              ///
-              ///
-              MyDropdownButton(),
-
-              AppTextFromField(
-                controller: descriptionController,
-                hint: "Notice Title",
-                labelText: "Emter Your notice title",
-              ),
-
-              AppTextFromField(
-                controller: descriptionController,
-                hint: "Notice Description",
-                labelText: "Describe what the notice is about.",
-              ),
-              const SizedBox(height: 60),
-
-              UploadPDFB_Button(),
-
-              //
-              const SizedBox(height: 60),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                child: CupertinoButtonCustom(
-                  color: AppColor.nokiaBlue,
-                  textt: "Add Notice",
-                  onPressed: () {},
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+        child: Scaffold(
+            body: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.only(bottom: 400),
+                child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        HeaderTitle("Back to Home", context),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0)
+                              .copyWith(top: 25),
+                          child: const Text(
+                            "Add A New \nNotice",
+                            style: TextStyle(
+                              fontFamily: 'Open Sans',
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w300,
+                              fontSize: 48.0,
+                              height:
+                                  65 / 48, // This sets the line height to 65px
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        MyDropdownButton(
+                          onSelected: (iD) {
+                            print(iD);
+                            id = iD;
+                          },
+                        ),
+                        AppTextFromField(
+                          controller: descriptionController,
+                          hint: "Notice Title",
+                          labelText: "Enter Your notice title",
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter notice title';
+                            }
+                            return null;
+                          },
+                        ),
+                        AppTextFromField(
+                          controller: descriptionController,
+                          hint: "Notice Description",
+                          labelText: "Describe what the notice is about.",
+                          // validator: (value) {
+                          //   if (value == null || value.isEmpty) {
+                          //     return 'Please enter notice description';
+                          //   }
+                          //   return null;
+                          // },
+                        ),
+                        const SizedBox(height: 60),
+                        UploadPDFB_Button(),
+                        const SizedBox(height: 60),
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 10),
+                          child: CupertinoButtonCustom(
+                            color: AppColor.nokiaBlue,
+                            textt: "Add Notice",
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                // form fields are valid, perform desired action
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    )))));
   }
 }
 
@@ -139,17 +150,26 @@ class _UploadPDFB_ButtonState extends State<UploadPDFB_Button> {
 }
 
 class MyDropdownButton extends StatefulWidget {
+  final Function(String?) onSelected;
+
+  const MyDropdownButton({
+    Key? key,
+    required this.onSelected,
+  }) : super(key: key);
+
   @override
   _MyDropdownButtonState createState() => _MyDropdownButtonState();
 }
 
 class _MyDropdownButtonState extends State<MyDropdownButton> {
-  String _selectedItem = 'Item 1';
-  List<String> _items = ['Item 1', 'Item 2', 'Item 3'];
+  int? _selectedItemIndex;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Consumer(builder: (context, ref, _) {
+      final noticeBoardList = ref.watch(createdNoticeBoardNmae);
+
+      return Container(
         width: 340,
         height: 46,
         margin: const EdgeInsets.symmetric(horizontal: 17).copyWith(top: 20),
@@ -159,39 +179,58 @@ class _MyDropdownButtonState extends State<MyDropdownButton> {
           border: Border.all(color: const Color(0xFF0168FF)),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: _selectedItem == null
-            ? DropdownButton<String>(
-                value: _selectedItem,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _selectedItem = newValue!;
-                  });
+        child: noticeBoardList.when(
+          data: (data) {
+            if (data == null) return const Text("No Notice Board is created");
+
+            return DropdownButtonHideUnderline(
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {});
                 },
-                items: _items.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: AppText(
-                      value,
-                      //  color: Colors.black,
-                    ).heding(),
-                  );
-                }).toList(),
-              )
-            : InkWell(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    AppText("Select Board").heding(),
-                    Icon(
-                      Icons.arrow_forward_ios_outlined,
-                      color: AppColor.nokiaBlue,
+                child: DropdownButton<int?>(
+                  value: _selectedItemIndex,
+                  onChanged: (int? newIndex) {
+                    setState(() {
+                      if (_selectedItemIndex != 0) {
+                        _selectedItemIndex = newIndex;
+                        widget.onSelected(
+                            data.noticeBoards[_selectedItemIndex!].id);
+                      }
+                    });
+                  },
+                  items: [
+                    DropdownMenuItem(
+                      value: null,
+                      child: const AppText(
+                        'Select notice board',
+                        color: Colors.grey,
+                      ).heding(),
                     ),
+                    ...data.noticeBoards
+                        .asMap()
+                        .map((index, notice) {
+                          return MapEntry(
+                            index,
+                            DropdownMenuItem<int>(
+                              value: index,
+                              child: AppText(
+                                notice.name,
+                              ).heding(),
+                            ),
+                          );
+                        })
+                        .values
+                        .toList(),
                   ],
                 ),
-
-                //
-
-                onTap: () {},
-              ));
+              ),
+            );
+          },
+          error: (error, stackTrace) => Alart.handleError(context, error),
+          loading: () => Text("Loading"),
+        ),
+      );
+    });
   }
 }
