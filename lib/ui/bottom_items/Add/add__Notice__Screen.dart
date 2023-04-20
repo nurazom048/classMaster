@@ -16,7 +16,9 @@ class AddNoticeScreen extends ConsumerWidget {
 
   final _formKey = GlobalKey<FormState>();
   TextEditingController descriptionController = TextEditingController();
+  TextEditingController noticeTitleController = TextEditingController();
   String? id;
+  String? pdfPath;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -54,7 +56,7 @@ class AddNoticeScreen extends ConsumerWidget {
                           },
                         ),
                         AppTextFromField(
-                          controller: descriptionController,
+                          controller: noticeTitleController,
                           hint: "Notice Title",
                           labelText: "Enter Your notice title",
                           validator: (value) {
@@ -68,15 +70,14 @@ class AddNoticeScreen extends ConsumerWidget {
                           controller: descriptionController,
                           hint: "Notice Description",
                           labelText: "Describe what the notice is about.",
-                          // validator: (value) {
-                          //   if (value == null || value.isEmpty) {
-                          //     return 'Please enter notice description';
-                          //   }
-                          //   return null;
-                          // },
                         ),
                         const SizedBox(height: 60),
-                        UploadPDFB_Button(),
+                        UploadPDFB_Button(
+                          onSelected: (thePath) {
+                            print("expected path $thePath");
+                            pdfPath = thePath;
+                          },
+                        ),
                         const SizedBox(height: 60),
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -84,8 +85,15 @@ class AddNoticeScreen extends ConsumerWidget {
                             color: AppColor.nokiaBlue,
                             textt: "Add Notice",
                             onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                // form fields are valid, perform desired action
+                              if (_formKey.currentState!.validate() &&
+                                  id != null) {
+                                print("validate $pdfPath");
+                                NoticeRequest().addNotice(
+                                  content_name: noticeTitleController.text,
+                                  description: descriptionController.text,
+                                  noticeId: id,
+                                  pdf_file: pdfPath,
+                                );
                               }
                             },
                           ),
@@ -96,7 +104,10 @@ class AddNoticeScreen extends ConsumerWidget {
 }
 
 class UploadPDFB_Button extends StatefulWidget {
+  final Function(String?) onSelected;
+
   const UploadPDFB_Button({
+    required this.onSelected,
     super.key,
   });
 
@@ -105,24 +116,20 @@ class UploadPDFB_Button extends StatefulWidget {
 }
 
 class _UploadPDFB_ButtonState extends State<UploadPDFB_Button> {
-  //import 'package:pdf/pdf.dart';
-
-// Define a method that compresses the PDF and returns the compressed PDF path
-
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFFEEF4FC),
-        border: Border.all(color: const Color(0xFF0168FF)),
-        borderRadius: BorderRadius.circular(8),
-      ),
+          color: const Color(0xFFEEF4FC),
+          border: Border.all(color: const Color(0xFF0168FF)),
+          borderRadius: BorderRadius.circular(8)),
       margin: const EdgeInsets.symmetric(horizontal: 20),
       child: CupertinoButton(
         onPressed: () async {
           String? PAth = await picker.pickPDFFile();
           print("The apth is ");
           print(PAth);
+          widget.onSelected(PAth);
         },
         color: const Color(0xFFEEF4FC),
         borderRadius: BorderRadius.circular(8),
@@ -181,7 +188,8 @@ class _MyDropdownButtonState extends State<MyDropdownButton> {
         ),
         child: noticeBoardList.when(
           data: (data) {
-            if (data == null) return const Text("No Notice Board is created");
+            if (data == null)
+              return const Text("No Notice Board is not  created");
 
             return DropdownButtonHideUnderline(
               child: GestureDetector(
@@ -192,8 +200,8 @@ class _MyDropdownButtonState extends State<MyDropdownButton> {
                   value: _selectedItemIndex,
                   onChanged: (int? newIndex) {
                     setState(() {
-                      if (_selectedItemIndex != 0) {
-                        _selectedItemIndex = newIndex;
+                      _selectedItemIndex = newIndex;
+                      if (_selectedItemIndex != null) {
                         widget.onSelected(
                             data.noticeBoards[_selectedItemIndex!].id);
                       }
@@ -228,7 +236,7 @@ class _MyDropdownButtonState extends State<MyDropdownButton> {
             );
           },
           error: (error, stackTrace) => Alart.handleError(context, error),
-          loading: () => Text("Loading"),
+          loading: () => const Text("Loading"),
         ),
       );
     });

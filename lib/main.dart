@@ -38,8 +38,9 @@ class MyApp extends StatelessWidget {
 }
 
 class RecentNotice extends StatelessWidget {
-  const RecentNotice({Key? key, required this.child});
+  const RecentNotice({Key? key, required this.child, required this.onTap});
   final Widget child;
+  final dynamic onTap;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -53,8 +54,11 @@ class RecentNotice extends StatelessWidget {
             children: [
               const AppText("Recent Notices", fontSize: 24)
                   .heding(fontWeight: FontWeight.normal),
-              const ExpendedButton(
-                  text: "View More ", icon: Icons.arrow_forward_ios),
+              ExpendedButton(
+                text: "View More ",
+                icon: Icons.arrow_forward_ios,
+                onTap: onTap,
+              ),
             ],
           ),
           const SizedBox(height: 10),

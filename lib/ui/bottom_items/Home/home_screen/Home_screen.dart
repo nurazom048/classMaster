@@ -1,10 +1,12 @@
 // ignore_for_file: non_constant_identifier_names, use_key_in_widget_constructors
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/dailog/rutin_dialog.dart';
 import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
 import 'package:table/ui/bottom_items/Home/notice/noticeRequest.dart';
+import 'package:table/ui/bottom_items/Home/notice/viewAllRecentNotice.dart';
 import 'package:table/widgets/appWidget/rutin_box/rutin_box_by_id.dart';
 import 'package:table/widgets/progress_indicator.dart';
 import '../../../../core/dialogs/Alart_dialogs.dart';
@@ -43,7 +45,9 @@ class HomeScreen extends StatelessWidget {
                             (error) => Alart.handleError(context, error),
                             (r) => Column(
                                   children: List.generate(
-                                    r.notices.length,
+                                    r.notices.length >= 3
+                                        ? 3
+                                        : r.notices.length,
                                     (index) => NoticeRow(
                                       notice: r.notices[index],
                                       date: r.notices[index].time.toString(),
@@ -54,7 +58,16 @@ class HomeScreen extends StatelessWidget {
                       },
                       error: (error, stackTrace) =>
                           Alart.handleError(context, error),
-                      loading: () => Text("loding")),
+                      loading: () => const Text("loding")),
+
+                  //
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                          builder: (context) => const ViewAllRecentNotice()),
+                    );
+                  },
                 ),
                 uploaded_rutin.when(
                   data: (data) {

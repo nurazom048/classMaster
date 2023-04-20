@@ -1,7 +1,6 @@
 // ignore_for_file: unused_local_variable
 
 import 'dart:convert';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:fpdart/fpdart.dart';
@@ -100,6 +99,45 @@ class NoticeRequest {
       }
     } catch (e) {
       throw e;
+    }
+  }
+
+  //******    add notice     ********* */
+  Future<String> addNotice({
+    String? noticeId,
+    String? content_name,
+    String? description,
+    String? pdf_file,
+  }) async {
+    // Obtain shared preferences.
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+    var url = Uri.parse('${Const.BASE_URl}/notice/add/$noticeId');
+
+    final request = http.MultipartRequest('POST', url);
+    request.headers.addAll({'Authorization': 'Bearer $getToken'});
+
+    request.fields['content_name'] = content_name ?? '';
+    request.fields['description'] = description ?? '';
+    if (pdf_file != null) {
+      final pdfPath = await http.MultipartFile.fromPath('pdf_file', pdf_file);
+      print("pdf path: $pdf_file");
+      request.files.add(pdfPath);
+    }
+
+    final response = await request.send();
+
+    try {
+      if (response.statusCode == 200) {
+        final responseBody = await response.stream.bytesToString();
+        print(responseBody);
+        return responseBody;
+      } else {
+        throw "Server error";
+      }
+    } catch (e) {
+      print(e.toString());
+      return e.toString();
     }
   }
 }

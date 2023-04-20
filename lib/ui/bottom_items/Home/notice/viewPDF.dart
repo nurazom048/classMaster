@@ -15,19 +15,21 @@ class _ViewPDfState extends State<ViewPDf> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          appBar(context),
-          Container(
-            height: MediaQuery.of(context).size.height - 100,
-            child: SfPdfViewer.network(
-              widget.pdfLink,
-              key: UniqueKey(),
-              controller: _pdfViewerController,
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          children: [
+            appBar(context),
+            Container(
+              height: MediaQuery.of(context).size.height - 100,
+              child: SfPdfViewer.network(
+                widget.pdfLink,
+                key: UniqueKey(),
+                controller: _pdfViewerController,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
