@@ -13,9 +13,8 @@ class MiniAccountInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Spacer(flex: 1),
+        SizedBox(width: 14),
         CircleAvatar(
             backgroundImage: NetworkImage(accountData?.image ?? "N"),
             radius: 22),

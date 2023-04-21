@@ -39,7 +39,6 @@ class AppText {
         fontFamily: 'Open Sans',
         fontWeight: FontWeight.w300,
         fontSize: fontSize ?? 36,
-        height: 49 / 36,
         color: color ?? Colors.black,
       ),
     );

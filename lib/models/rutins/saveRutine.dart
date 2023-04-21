@@ -1,21 +1,21 @@
 import 'package:table/models/rutins/search_rutin.dart';
 
-class JoinedRutines {
-  List<Routine> routines;
+class SaveRutineResponse {
+  List<Routine> savedRoutines;
   int currentPage;
   int totalPages;
 
-  JoinedRutines({
-    required this.routines,
+  SaveRutineResponse({
+    required this.savedRoutines,
     required this.currentPage,
     required this.totalPages,
   });
 
-  factory JoinedRutines.fromJson(Map<String, dynamic> json) {
-    var list = json['routines'] as List;
+  factory SaveRutineResponse.fromJson(Map<String, dynamic> json) {
+    var list = json['savedRoutines'] as List;
     List<Routine> routines = list.map((i) => Routine.fromJson(i)).toList();
-    return JoinedRutines(
-      routines: routines,
+    return SaveRutineResponse(
+      savedRoutines: routines,
       currentPage: json['currentPage'],
       totalPages: json['totalPages'],
     );

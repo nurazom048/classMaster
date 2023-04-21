@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/models/rutins/rutins.dart';
+import 'package:table/ui/bottom_items/Account/widgets/my_divider.dart';
 import 'package:table/widgets/appWidget/appText.dart';
 import 'package:table/widgets/appWidget/buttons/Expende_button.dart';
 import 'package:table/widgets/appWidget/buttons/capsule_button.dart';
@@ -53,161 +54,185 @@ class _RutinBoxState extends State<RutinBoxById> {
       //! notifier
       final chackStatusNotifier =
           ref.watch(chackStatusControllerProvider(widget.rutinId).notifier);
-      return Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-        const MyDivider(),
-
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 10),
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              AppText(widget.rutinNmae).heding(),
-              //
-              chackStatus.when(
-                  data: (data) {
-                    if (status == "joined") {
-                      return CapsuleButton(
-                        "Leave",
-                        color: Colors.red,
-                        icon: Icons.logout,
-                        onTap: () {
-                          return Alart.errorAlertDialogCallBack(
-                            context,
-                            "are you sure you want to leave",
-                            onConfirm: (bool isYes) {
-                              //  Navigator.pop(context);
-
-                              chackStatusNotifier.leaveMember(context);
-                            },
-                          );
-                        },
-                      );
-                    } else {
-                      return CapsuleButton(
-                        status == "not_joined" ? "send request" : status,
-                        icon:
-                            status == "request_pending" ? null : Icons.telegram,
-                        onTap: () {
-                          chackStatusNotifier.sendReqController(context);
-                        },
-                      );
-                    }
-                  },
-                  error: (error, stackTrace) =>
-                      Alart.handleError(context, error),
-                  loading: () => const Text("data")),
-            ],
+      return Container(
+        margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(6),
+            topRight: Radius.circular(6),
           ),
         ),
+        child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                AppText(widget.rutinNmae, fontSize: 22).title(),
+                //
 
-        //
-        rutinDetals.when(
-            data: (data) {
-              if (data == null) return const Text("id null");
+                chackStatus.when(
+                    data: (data) {
+                      if (status == "joined") {
+                        return CapsuleButton(
+                          "Leave",
+                          color: Colors.red,
+                          icon: Icons.logout,
+                          onTap: () {
+                            return Alart.errorAlertDialogCallBack(
+                              context,
+                              "are you sure you want to leave",
+                              onConfirm: (bool isYes) {
+                                //  Navigator.pop(context);
 
-              List<Day?> sun = data.classes.sunday;
-              List<Day?> mon = data.classes.monday;
-              List<Day?> tue = data.classes.tuesday;
-              List<Day?> wed = data.classes.wednesday;
-              List<Day?> thu = data.classes.thursday;
-              List<Day?> fri = data.classes.friday;
-              List<Day?> sat = data.classes.saturday;
+                                chackStatusNotifier.leaveMember(context);
+                              },
+                            );
+                          },
+                        );
+                      } else {
+                        return CapsuleButton(
+                          status == "not_joined" ? "send request" : status,
+                          icon: status == "request_pending"
+                              ? null
+                              : Icons.telegram,
+                          onTap: () {
+                            chackStatusNotifier.sendReqController(context);
+                          },
+                        );
+                      }
+                    },
+                    error: (error, stackTrace) =>
+                        Alart.handleError(context, error),
+                    loading: () => const Text("data")),
+              ],
+            ),
+          ),
 
-              return Column(
-                children: [
-                  SelectDayRow(selectedDay: (selectedDay) {
-                    switch (selectedDay) {
-                      case 0:
-                        setState(() {
-                          listOfDays = sun;
-                        });
+          //
 
-                        break;
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Divider(
+              thickness: 2,
+              color: Colors.blue.shade200,
+            ),
+          ),
+          rutinDetals.when(
+              data: (data) {
+                if (data == null) return const Text("id null");
 
-                      case 1:
-                        setState(() {
-                          listOfDays = mon;
-                        });
+                List<Day?> sun = data.classes.sunday;
+                List<Day?> mon = data.classes.monday;
+                List<Day?> tue = data.classes.tuesday;
+                List<Day?> wed = data.classes.wednesday;
+                List<Day?> thu = data.classes.thursday;
+                List<Day?> fri = data.classes.friday;
+                List<Day?> sat = data.classes.saturday;
 
-                        break;
+                return Column(
+                  children: [
+                    SelectDayRow(selectedDay: (selectedDay) {
+                      switch (selectedDay) {
+                        case 0:
+                          setState(() {
+                            listOfDays = sun;
+                          });
 
-                      case 2:
-                        setState(() {
-                          listOfDays = tue;
-                        });
+                          break;
 
-                        break;
+                        case 1:
+                          setState(() {
+                            listOfDays = mon;
+                          });
 
-                      case 3:
-                        setState(() {
-                          listOfDays = wed;
-                        });
+                          break;
 
-                        break;
+                        case 2:
+                          setState(() {
+                            listOfDays = tue;
+                          });
 
-                      case 4:
-                        setState(() {
-                          listOfDays = thu;
-                        });
+                          break;
 
-                        break;
+                        case 3:
+                          setState(() {
+                            listOfDays = wed;
+                          });
 
-                      case 5:
-                        setState(() {
-                          listOfDays = fri;
-                        });
+                          break;
 
-                        break;
+                        case 4:
+                          setState(() {
+                            listOfDays = thu;
+                          });
 
-                      case 6:
-                        setState(() {
-                          listOfDays = sat;
-                        });
+                          break;
 
-                        break;
-                    }
-                  }),
+                        case 5:
+                          setState(() {
+                            listOfDays = fri;
+                          });
 
-                  const SizedBox(height: 20),
-                  Center(
-                    child: Column(
-                      children: List.generate(
-                        listOfDays.length,
-                        (index) {
-                          return listOfDays.isNotEmpty
-                              ? RutineCardInfoRow(
-                                  isFrist: index == 0,
-                                  day: listOfDays[index],
-                                  onTap: () => ontap(listOfDays[index]),
-                                )
-                              : const Text("No Class");
-                        },
+                          break;
+
+                        case 6:
+                          setState(() {
+                            listOfDays = sat;
+                          });
+
+                          break;
+                      }
+                    }),
+
+                    const SizedBox(height: 20),
+                    Container(
+                      constraints: const BoxConstraints(minHeight: 200),
+                      child: Column(
+                        children: List.generate(
+                          listOfDays.length,
+                          (index) {
+                            return listOfDays.isNotEmpty
+                                ? RutineCardInfoRow(
+                                    isFrist: index == 0,
+                                    day: listOfDays[index],
+                                    onTap: () => ontap(listOfDays[index]),
+                                  )
+                                : const Text("No Class");
+                          },
+                        ),
                       ),
                     ),
-                  ),
 
-                  //
-                  ExpendedButton(onTap: () {
-                    setState(() {
-                      if (lenght == listOfDays.length) {
-                        lenght = 2;
-                      } else {
-                        lenght = listOfDays.length;
-                      }
-                    });
-                  }),
-
-                  //
-                  MiniAccountInfo(
-                      accountData: data.owner, onTapMore: widget.onTapMore),
-                  const SizedBox(height: 15)
-                ],
-              );
-            },
-            error: (error, stackTrace) => Alart.handleError(context, error),
-            loading: () => const Text("data")),
-      ]);
+                    //
+                    ExpendedButton(onTap: () {
+                      setState(() {
+                        if (lenght == listOfDays.length) {
+                          lenght = 2;
+                        } else {
+                          lenght = listOfDays.length;
+                        }
+                      });
+                    }),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: Divider(
+                        thickness: 2,
+                        color: Colors.blue.shade200,
+                      ),
+                    ),
+                    //
+                    MiniAccountInfo(
+                        accountData: data.owner, onTapMore: widget.onTapMore),
+                  ],
+                );
+              },
+              error: (error, stackTrace) => Alart.handleError(context, error),
+              loading: () => const Text("data")),
+        ]),
+      );
     });
   }
 

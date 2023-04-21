@@ -12,13 +12,13 @@ class SelectDayRow extends StatefulWidget {
 
 class _SelectDayRowState extends State<SelectDayRow> {
   List dayNAme = [
-    "sun",
-    "mon",
-    "tue",
-    "wed",
-    "thu",
-    "fri",
-    "sat",
+    "Sun",
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat",
   ];
 
   int selectedDays = DateTime.now().toLocal().weekday;
@@ -60,8 +60,7 @@ class SelectDayChip extends StatelessWidget {
         onTap: onTap,
         child: isSelected == true
             ? Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2),
+                padding: const EdgeInsets.symmetric(vertical: 6),
                 child: Text(text,
                     textScaleFactor: 1.6,
                     style: TextStyle(color: AppColor.nokiaBlue)),

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:table/ui/bottom_items/Account/widgets/my_divider.dart';
 import 'package:table/ui/bottom_items/Add/add__Notice__Screen.dart';
+import 'package:table/ui/bottom_items/Add/create_new_rutine.dart';
 import 'package:table/ui/bottom_items/tab_bar.dart';
 
 import 'Account/accounu_ui/Account_screen.dart';
+import 'Add/create_notice_board.dart';
 import 'Home/home_screen/Home_screen.dart';
 
 List<Widget> pages = [
@@ -66,7 +69,7 @@ void _showBottomSheet(BuildContext context) {
     context: context,
     builder: (BuildContext context) {
       return Container(
-        height: 200.0,
+        height: 280.0,
         decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -83,6 +86,26 @@ void _showBottomSheet(BuildContext context) {
               ),
               child: Column(
                 children: [
+                  ListTile(
+                    leading: const Icon(Icons.note_add),
+                    title: const Text(
+                      'Create NoticeBoard',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CreateNoticeBoard()),
+                      );
+                      //
+//  Navigator.pop(context);
+                      // Handle add notice action here
+                    },
+                  ),
                   ListTile(
                     leading: const Icon(Icons.note_add),
                     title: const Text(
@@ -103,8 +126,9 @@ void _showBottomSheet(BuildContext context) {
                       // Handle add notice action here
                     },
                   ),
+                  MyDividerr(),
                   ListTile(
-                    leading: const Icon(Icons.date_range),
+                    leading: const Icon(Icons.note_add),
                     title: const Text(
                       'Create Routine',
                       style: TextStyle(
@@ -113,10 +137,34 @@ void _showBottomSheet(BuildContext context) {
                       ),
                     ),
                     onTap: () {
-                      Navigator.pop(context);
-                      // Handle create routine action here
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CreaeNewRutine()),
+                      );
                     },
                   ),
+
+                  ///
+                  ///
+                  ///
+                  // ListTile(
+                  //   leading: const Icon(Icons.note_add),
+                  //   title: const Text(
+                  //     'Add Class',
+                  //     style: TextStyle(
+                  //       fontWeight: FontWeight.bold,
+                  //       fontSize: 16.0,
+                  //     ),
+                  //   ),
+                  //   onTap: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //           builder: (context) => CreaeNewRutine()),
+                  //     );
+                  //   },
+                  // ),
                 ],
               ),
             ),

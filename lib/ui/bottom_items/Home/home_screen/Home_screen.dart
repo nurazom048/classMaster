@@ -22,7 +22,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color(0xFFEFF6FF),
+        backgroundColor: const Color(0xFFF2F2F2),
         body: SingleChildScrollView(
           //padding: const EdgeInsets.only(bottom: 60),
           physics: const BouncingScrollPhysics(),

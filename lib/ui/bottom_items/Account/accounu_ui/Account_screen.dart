@@ -4,7 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Account/account_request/account_request.dart';
+import 'package:table/ui/bottom_items/Account/accounu_ui/all_uploadeade_rutines.dart';
 import 'package:table/ui/bottom_items/Account/accounu_ui/eddit_account.dart';
+import 'package:table/ui/bottom_items/Account/accounu_ui/joined_rutines.dart';
+import 'package:table/ui/bottom_items/Account/accounu_ui/save_screen.dart';
 import 'package:table/ui/bottom_items/Account/utils/account_utils.dart';
 import 'package:table/ui/bottom_items/Account/widgets/my_container_button.dart';
 import 'package:table/ui/bottom_items/Account/widgets/my_divider.dart';
@@ -76,17 +79,60 @@ class _AccountScreenState extends State<AccountScreen> {
                     ),
                   ),
                 ),
+                const SizedBox(height: 10),
+                MyContainerButton(
+                  const Icon(Icons.person_add_alt_1_outlined),
+                  "invitation",
+                  onTap: () => Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => EdditAccount(
+                        accountUsername: widget.accountUsername ?? "",
+                      ),
+                    ),
+                  ),
+                ),
                 MyDividerr(thickness: 1.0, height: 1.0),
                 //*********************** Tilesbutton*****************************/
                 Container(
                   alignment: Alignment.center,
                   child: Wrap(alignment: WrapAlignment.start, children: [
                     Tilesbutton(
-                        "Hystory", const FaIcon(FontAwesomeIcons.history)),
+                      "\nJoined Rutines",
+                      const FaIcon(FontAwesomeIcons.history),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const joinedRutines()),
+                        );
+                      },
+                    ),
                     Tilesbutton(
-                        "Dowenloads", const FaIcon(FontAwesomeIcons.arrowDown)),
+                      "Uploades Rutines",
+                      const FaIcon(FontAwesomeIcons.cableCar),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const allUploadesRutinesMini()),
+                        );
+                      },
+                    ),
                     Tilesbutton(
-                        "Saved", const FaIcon(FontAwesomeIcons.bookmark)),
+                      "Saved",
+                      const FaIcon(
+                        FontAwesomeIcons.bookmark,
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SaveScreen()),
+                        );
+                      },
+                    ),
 
                     //
                   ]),

@@ -20,7 +20,7 @@ class CapsuleButton extends StatelessWidget {
       onPressed: onTap,
       color: const Color(0xFFE4F0FF),
       borderRadius: BorderRadius.circular(19),
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(8),
       minSize: 32,
       pressedOpacity: 0.5,
       child: Row(
@@ -28,9 +28,11 @@ class CapsuleButton extends StatelessWidget {
           Text(text,
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
-              style: TextStyle(color: color ?? AppColor.nokiaBlue)),
+              style:
+                  TextStyle(fontSize: 16, color: color ?? AppColor.nokiaBlue)),
           const SizedBox(width: 5),
-          if (icon != null) Icon(icon, color: color ?? AppColor.nokiaBlue),
+          if (icon != null)
+            Icon(icon, size: 20, color: color ?? AppColor.nokiaBlue),
         ],
       ),
     );

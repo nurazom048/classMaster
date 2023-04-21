@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 
 class DotedDivider extends StatelessWidget {
   const DotedDivider({
+    this.dashColor,
     super.key,
   });
-
+  final Color? dashColor;
   @override
   Widget build(BuildContext context) {
-    return const DottedLine(
-      dashColor: Colors.black,
+    return DottedLine(
+      dashColor: dashColor ?? Colors.black,
       dashGapLength: 5,
       dashLength: 5,
       lineThickness: 1,

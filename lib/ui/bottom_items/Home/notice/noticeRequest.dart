@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:fpdart/fpdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/helper/constant/constant.dart';
+import 'package:table/models/messageModel.dart';
 import 'package:table/models/notice%20bord/ceatedNoticeBordName.dart';
 
 import '../../../../models/notice bord/listOfnotice model.dart';
@@ -31,6 +32,34 @@ final createdNoticeBoardNmae =
 final noticeReqProvider = Provider<NoticeRequest>((ref) => NoticeRequest());
 
 class NoticeRequest {
+//******    create a new noticeBoard     ********* */
+
+  Future<Either<String, Message>> createAnewNoticeBoard(
+      {required String name, required String about}) async {
+    // Obtain shared preferences.
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+
+    final response = await http.post(
+        Uri.parse('${Const.BASE_URl}/notice/create'),
+        headers: {'Authorization': 'Bearer $getToken'},
+        body: {"name": name, "description": about});
+    final res = json.decode(response.body);
+    Message message = Message.fromJson(res);
+    print(res.toString());
+
+    try {
+      if (response.statusCode == 200) {
+        print(message);
+        return right(message);
+      } else {
+        return left(res.toString());
+      }
+    } catch (e) {
+      return left(e.toString());
+    }
+  }
+
 //******    view All notice by username    ********* */
   Future<Either<String, NoticesResponse>> viewNoticeByUsername() async {
     // Obtain shared preferences.
