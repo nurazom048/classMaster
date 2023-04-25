@@ -8,6 +8,7 @@ import 'package:table/widgets/appWidget/appText.dart';
 import '../../../../core/dialogs/Alart_dialogs.dart';
 import '../../../../main.dart';
 import '../../../../widgets/heder/hederTitle.dart';
+import '../widgets/notice_row.dart';
 
 class ViewAllRecentNotice extends StatelessWidget {
   const ViewAllRecentNotice({super.key});

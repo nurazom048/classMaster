@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Account/accounu_ui/save_screen.dart';
 import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
-import 'package:table/widgets/appWidget/rutin_box/rutin_box_by_id.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/widgets/rutin_box/rutin_box_by_id.dart';
 import 'package:table/widgets/progress_indicator.dart';
 
 import '../../../../core/dialogs/Alart_dialogs.dart';

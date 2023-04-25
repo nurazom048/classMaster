@@ -3,19 +3,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/bottom_items/Add/addClassScreen.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/chack_status_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/see_all_req_controller.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/screen/dailog/logngPress.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/screen/widgets/seeAllCaotensList.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/screen/widgets/select_account.dart';
-import 'package:table/ui/bottom_items/Add/addPriode.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/utils/logngPress.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/members_controllers.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/widgets/select_account.dart';
 import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/widgets/text%20and%20buttons/squareButton.dart';
-import '../../../../../../core/dialogs/Alart_dialogs.dart';
-import '../widgets/seeAllMembers.dart';
+import '../../../../../core/dialogs/Alart_dialogs.dart';
+import '../widgets/seeAllCaotensList.dart';
 
 class RutinDialog extends LongPressDialog {
   //**********     ChackStatusUser_BottomSheet       **********/
@@ -125,32 +122,6 @@ class RutinDialog extends LongPressDialog {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   SqureButton(
-                                    icon: Icons.add,
-                                    text: "Add Priode",
-                                    ontap: () => Navigator.push(
-                                      context,
-                                      CupertinoPageRoute(
-                                        fullscreenDialog: true,
-                                        builder: (context) => AppPriodePage(
-                                          rutinId: rutinId,
-                                          rutinName: rutinName,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  SqureButton(
-                                    icon: Icons.add,
-                                    text: "Add Class",
-                                    ontap: () => Navigator.push(
-                                      context,
-                                      CupertinoPageRoute(
-                                        fullscreenDialog: true,
-                                        builder: (context) =>
-                                            AddClassSceen(rutinId: rutinId),
-                                      ),
-                                    ),
-                                  ),
-                                  SqureButton(
                                     icon: Icons.person_add_alt_1,
                                     text: "Add captens",
                                     ontap: () {
@@ -216,28 +187,6 @@ class RutinDialog extends LongPressDialog {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  SqureButton(
-                                      icon: Icons.person_remove,
-                                      text: "remove members",
-                                      color: Colors.redAccent,
-                                      ontap: () {
-                                        return Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  seeAllMembers(
-                                                rutinId: rutinId,
-                                                buttotext: "Remove Member",
-                                                onUsername:
-                                                    (seleted_username, _) {
-                                                  members.removeMember(context,
-                                                      seleted_username);
-                                                  print(
-                                                      "select member $seleted_username");
-                                                },
-                                              ),
-                                            ));
-                                      }),
                                   SqureButton(
                                     icon: Icons.person_remove,
                                     color: Colors.redAccent,

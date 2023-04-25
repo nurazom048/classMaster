@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:table/helper/constant/AppColor.dart';
 import 'package:table/ui/bottom_items/Home/home_req/rutinReq.dart';
+import 'package:table/widgets/appWidget/appText.dart';
+import 'package:table/widgets/appWidget/buttons/cupertinoButttons.dart';
 import 'package:table/widgets/heder/hederTitle.dart';
-import '../../../helper/constant/AppColor.dart';
-import '../../../widgets/appWidget/TextFromFild.dart';
-import '../../../widgets/appWidget/appText.dart';
-import '../../../widgets/appWidget/buttons/cupertinoButttons.dart';
+
+import '../../../../widgets/appWidget/TextFromFild.dart';
 
 class CreaeNewRutine extends StatelessWidget {
   CreaeNewRutine({super.key});

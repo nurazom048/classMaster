@@ -3,10 +3,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/screen/dailog/rutin_dialog.dart';
-import '../../../../Add/addClassScreen.dart';
-import '../../controller/Rutin_controller.dart';
-import '../../controller/priodeController.dart';
+import 'package:table/ui/bottom_items/Add/screens/addClassScreen.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/utils/rutin_dialog.dart';
+import '../controller/Rutin_controller.dart';
+import '../controller/priodeController.dart';
 
 class LongPressDialog {
 //

@@ -1,29 +1,24 @@
 // ignore_for_file: curly_braces_in_flow_control_structures, unnecessary_null_comparison
 
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/core/component/component_improts.dart';
 import 'package:table/core/dialogs/Alart_dialogs.dart';
 import 'package:table/helper/constant/AppColor.dart';
-import 'package:table/models/Account_models.dart';
+import 'package:table/ui/bottom_items/Add/screens/addClassScreen.dart';
+import 'package:table/ui/bottom_items/Add/screens/addPriode.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/members_controllers.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/see_all_req_controller.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/screen/widgets/account_card_widgets.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/screen/widgets/seeAllCaotensList.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/dash_border_button.dart';
 import 'package:table/widgets/AccoundCardRow.dart';
-import 'package:table/widgets/appWidget/buttons/capsule_button.dart';
 import 'package:table/widgets/progress_indicator.dart';
-
 import '../../../../../widgets/appWidget/TextFromFild.dart';
 import '../../../../../widgets/appWidget/appText.dart';
 import '../../../../../widgets/hedding_row.dart';
 import '../../../../../widgets/heder/hederTitle.dart';
 import '../../../../auth_Section/utils/Login_validation.dart';
-import '../../../../server/rutinReq.dart';
+import '../widgets/account_card_widgets.dart';
+import '../widgets/priode_widget.dart';
+import '../widgets/seeAllCaotensList.dart';
 
 class ViewMore extends StatefulWidget {
   final String rutinId;
@@ -82,7 +77,7 @@ class _ViewMoreState extends State<ViewMore> with TickerProviderStateMixin {
           )
         ],
         body: TabBarView(controller: controller, children: [
-          const ClassListPage(),
+          ClassListPage(rutinId: widget.rutinId, rutinName: widget.rutinId),
           MemberList(rutinId: widget.rutinId),
           seeAllcaptensList(
               onUsername: (onUsername, o) {}, rutinId: widget.rutinId)
@@ -95,7 +90,10 @@ class _ViewMoreState extends State<ViewMore> with TickerProviderStateMixin {
 }
 
 class ClassListPage extends ConsumerWidget {
-  const ClassListPage({super.key});
+  final rutinId;
+  final String rutinName;
+  const ClassListPage(
+      {super.key, required this.rutinId, required this.rutinName});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -103,11 +101,37 @@ class ClassListPage extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         children: [
-          const Text("Priode List"),
-          Column(
-            children: List.generate(2, (index) => const ClassRow()),
+          HeddingRow(
+            hedding: "Priode List",
+            second_Hedding: "23 members",
+            margin: EdgeInsets.zero,
+            buttonText: "Add Priode",
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      AppPriodePage(rutinId: rutinId, rutinName: rutinName),
+                ),
+              );
+            },
           ),
-          const Text("Class List"),
+          Row(
+            children: List.generate(2, (index) => PriodeWidget()),
+          ),
+          HeddingRow(
+            hedding: "Class List",
+            second_Hedding: "23 members",
+            margin: EdgeInsets.zero,
+            buttonText: "Add Class",
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => AddClassSceen(rutinId: rutinId)),
+              );
+            },
+          ),
           Column(
             children: List.generate(4, (index) => const ClassRow()),
           ),
@@ -125,8 +149,8 @@ class MemberList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, _) {
       //! provider
-      final all_members = ref.watch(all_members_provider(rutinId));
-      final all_request = ref.watch(seeAllRequestControllerProvider(rutinId));
+      final allMembers = ref.watch(all_members_provider(rutinId));
+      final allRequest = ref.watch(seeAllRequestControllerProvider(rutinId));
       final seeAllJonReq =
           ref.read(seeAllRequestControllerProvider(rutinId).notifier);
       return ListView(
@@ -158,7 +182,7 @@ class MemberList extends StatelessWidget {
               children: [
                 Container(
                     height: 200,
-                    child: all_request.when(
+                    child: allRequest.when(
                         data: (data) {
                           if (data == null) return const Text(" data null");
                           if (data.listAccounts.isEmpty)
@@ -205,7 +229,7 @@ class MemberList extends StatelessWidget {
           ),
           //
 
-          all_members.when(
+          allMembers.when(
             data: (data) {
               if (data == null || data.message == null)
                 return const Text("null");

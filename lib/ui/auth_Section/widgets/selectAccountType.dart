@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:table/widgets/appWidget/buttons/cupertinoButttons.dart';
 import '../../../helper/constant/AppColor.dart';
 import '../../../widgets/heder/hederTitle.dart';
-import '../new Auuth_Screen/Login_Screen.dart';
 
 class SelectAccounType extends StatefulWidget {
   final void Function(String?)? onAccountType;

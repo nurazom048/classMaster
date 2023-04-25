@@ -3,8 +3,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/dialogs/Alart_dialogs.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/request/rutin_request.dart';
 import '../../../../../models/chackStatusModel.dart';
-import '../request/Rutin_request/rutin_request.dart';
 
 //.... Controller...//
 final chackStatusUser_provider = FutureProvider.family

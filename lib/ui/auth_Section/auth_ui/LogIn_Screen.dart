@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
+import 'package:table/ui/auth_Section/auth_ui/SiginUp_Screen.dart';
 import 'package:table/ui/auth_Section/utils/Login_validation.dart';
 import 'package:table/widgets/appWidget/appText.dart';
 import 'package:table/widgets/appWidget/buttons/cupertinoButttons.dart';
@@ -65,7 +66,7 @@ class LogingScreen extends ConsumerWidget {
                   )
                 else
                   CupertinoButtonCustom(
-                    padding: EdgeInsets.symmetric(horizontal: 40),
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
                     textt: "Log In",
                     onPressed: () async {
                       if (formKey.currentState?.validate() ?? false) {
@@ -73,7 +74,15 @@ class LogingScreen extends ConsumerWidget {
                             _passwordController.text, context);
                       }
                     },
-                  )
+                  ),
+                TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SignUpScreen()),
+                      );
+                    },
+                    child: const Text("create a new account"))
               ],
             ),
           ),

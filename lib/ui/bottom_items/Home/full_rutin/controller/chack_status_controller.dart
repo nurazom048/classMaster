@@ -5,9 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/dialogs/Alart_dialogs.dart';
 import 'package:table/models/chackStatusModel.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/request/Rutin_request/rutin_request.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/member_request.dart';
-import '../../../../../widgets/Alart.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/request/rutin_request.dart';
 
 //! providers
 final chackStatusControllerProvider = StateNotifierProvider.autoDispose

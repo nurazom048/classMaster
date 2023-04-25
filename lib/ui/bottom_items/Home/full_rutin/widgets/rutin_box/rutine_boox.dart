@@ -10,13 +10,13 @@ import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summat_screens/sum
 import 'package:table/widgets/appWidget/appText.dart';
 import 'package:table/widgets/appWidget/buttons/Expende_button.dart';
 import 'package:table/widgets/appWidget/buttons/capsule_button.dart';
-import 'package:table/widgets/appWidget/rutin_box/rutin_card_row.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/widgets/rutin_box/rutin_card_row.dart';
 import 'package:table/widgets/mini_account_row.dart';
 // ignore: unused_import
 import 'package:table/widgets/progress_indicator.dart';
-import '../../../ui/bottom_items/Home/full_rutin/controller/chack_status_controller.dart';
-import '../dottted_divider.dart';
-import '../selectDayRow.dart';
+import '../../controller/chack_status_controller.dart';
+import '../../../../../../widgets/appWidget/dottted_divider.dart';
+import '../../../../../../widgets/appWidget/selectDayRow.dart';
 
 class RutinBox extends StatefulWidget {
   final dynamic onTap;

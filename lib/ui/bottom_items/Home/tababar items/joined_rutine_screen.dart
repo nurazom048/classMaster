@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/screen/dailog/rutin_dialog.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/utils/rutin_dialog.dart';
 import '../../../../core/dialogs/Alart_dialogs.dart';
 import '../../../../helper/constant/AppColor.dart';
-import '../../../../widgets/appWidget/rutin_box/rutin_box_by_id.dart';
+import '../full_rutin/widgets/rutin_box/rutin_box_by_id.dart';
 import '../../../../widgets/progress_indicator.dart';
 import '../home_req/uploaded_rutine_controller.dart';
 

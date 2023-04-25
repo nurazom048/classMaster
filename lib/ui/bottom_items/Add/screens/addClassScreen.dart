@@ -5,18 +5,18 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:table/core/dialogs/Alart_dialogs.dart';
+import 'package:table/helper/constant/AppColor.dart';
+import 'package:table/helper/constant/constant.dart';
+import 'package:table/models/class_model.dart';
 import 'package:table/ui/bottom_items/Add/request/class_request.dart';
 import 'package:table/ui/bottom_items/Add/utils/add_class_validation.dart';
 import 'package:table/widgets/appWidget/appText.dart';
+import 'package:table/widgets/appWidget/buttons/cupertinoButttons.dart';
+import 'package:table/widgets/daySelectDropdowen.dart';
+import 'package:table/widgets/heder/hederTitle.dart';
 import 'package:table/widgets/text%20and%20buttons/mytext.dart';
-import '../../../core/dialogs/Alart_dialogs.dart';
-import '../../../helper/constant/AppColor.dart';
-import '../../../helper/constant/constant.dart';
-import '../../../models/class_model.dart';
-import '../../../widgets/appWidget/TextFromFild.dart';
-import '../../../widgets/appWidget/buttons/cupertinoButttons.dart';
-import '../../../widgets/daySelectDropdowen.dart';
-import '../../../widgets/heder/hederTitle.dart';
+import '../../../../widgets/appWidget/TextFromFild.dart';
 
 class AddClassSceen extends StatefulWidget {
   final String rutinId;

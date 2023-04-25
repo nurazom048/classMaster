@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../helper/constant/AppColor.dart';
-import '../../../widgets/appWidget/TextFromFild.dart';
-import '../../../widgets/appWidget/appText.dart';
-import '../../../widgets/appWidget/buttons/cupertinoButttons.dart';
-import '../../../widgets/heder/hederTitle.dart';
-import '../Home/notice/createNoticeController.dart';
+import 'package:table/helper/constant/AppColor.dart';
+import 'package:table/ui/bottom_items/Home/notice/createNoticeController.dart';
+import 'package:table/widgets/appWidget/TextFromFild.dart';
+import 'package:table/widgets/appWidget/appText.dart';
+import 'package:table/widgets/appWidget/buttons/cupertinoButttons.dart';
+import 'package:table/widgets/heder/hederTitle.dart';
 
 class CreateNoticeBoard extends StatelessWidget {
   CreateNoticeBoard({super.key});
@@ -54,7 +53,7 @@ class CreateNoticeBoard extends StatelessWidget {
                           .watch(noticeBoardCreater_provider)
                           .createNoticeBoardLoader;
                       return isCreatingNoticeBoard
-                          ? CircularProgressIndicator()
+                          ? const CircularProgressIndicator()
                           : CupertinoButtonCustom(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 20),

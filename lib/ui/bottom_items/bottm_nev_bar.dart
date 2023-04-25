@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:table/ui/bottom_items/Account/widgets/my_divider.dart';
-import 'package:table/ui/bottom_items/Add/add__Notice__Screen.dart';
-import 'package:table/ui/bottom_items/Add/create_new_rutine.dart';
+import 'package:table/ui/bottom_items/Add/screens/add__Notice__Screen.dart';
+import 'package:table/ui/bottom_items/Add/screens/create_new_rutine.dart';
+import 'package:table/ui/bottom_items/Add/screens/create_notice_board.dart';
 import 'package:table/ui/bottom_items/tab_bar.dart';
 
 import 'Account/accounu_ui/Account_screen.dart';
-import 'Add/create_notice_board.dart';
 import 'Home/home_screen/Home_screen.dart';
 
 List<Widget> pages = [

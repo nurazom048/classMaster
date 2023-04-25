@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
+import 'package:table/core/dialogs/Alart_dialogs.dart';
 import 'package:table/helper/constant/AppColor.dart';
+import 'package:table/models/messageModel.dart';
+import 'package:table/ui/auth_Section/auth_req/auth_req.dart';
 import 'package:table/ui/auth_Section/utils/singUp_validation.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/appWidget/buttons/cupertinoButttons.dart';
@@ -101,6 +105,7 @@ class SignUpScreen extends ConsumerWidget {
                 onPressed: () {
                   if (formKey.currentState?.validate() ?? false) {
                     print("validate");
+                    createAccount(context);
                   }
                 },
               )
@@ -109,5 +114,15 @@ class SignUpScreen extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  void createAccount(context) async {
+    Either<String, Message> res = await AuthReq.createAccount(context,
+        name: nameController.text,
+        username: usernameController.text,
+        password: passwordController.text);
+
+    res.fold((l) => Alart.showSnackBar(context, l),
+        (r) => Alart.showSnackBar(context, r.message));
   }
 }

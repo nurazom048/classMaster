@@ -4,14 +4,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/screen/dailog/rutin_dialog.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/utils/rutin_dialog.dart';
 import 'package:table/ui/bottom_items/Home/home_req/uploaded_rutine_controller.dart';
 import 'package:table/ui/bottom_items/Home/notice/noticeRequest.dart';
 import 'package:table/ui/bottom_items/Home/notice/viewAllRecentNotice.dart';
-import 'package:table/widgets/appWidget/rutin_box/rutin_box_by_id.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/widgets/rutin_box/rutin_box_by_id.dart';
+import 'package:table/ui/bottom_items/Home/widgets/recent_notice_title.dart';
 import '../../../../core/dialogs/Alart_dialogs.dart';
 import '../../../../main.dart';
+import '../../../../models/notice bord/recentNotice.dart';
 import '../widgets/custom_title_bar.dart';
+import '../widgets/notice_row.dart';
 
 class HomeScreen extends ConsumerWidget {
   HomeScreen({Key? key});
@@ -31,7 +34,7 @@ class HomeScreen extends ConsumerWidget {
               children: [
                 const ChustomTitleBar("title"),
 
-                RecentNotice(
+                RecentNoticeTitle(
                   //
                   onTap: () {
                     Navigator.push(

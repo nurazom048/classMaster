@@ -4,7 +4,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/messageModel.dart';
 import 'package:http/http.dart' as http;
-import '../../../../../../helper/constant/constant.dart';
+import '../../../../../helper/constant/constant.dart';
 
 //... provider...//
 final priodeRequestProvider = Provider<PriodeRequest>((ref) => PriodeRequest());

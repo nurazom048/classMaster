@@ -2,21 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/dialogs/Alart_dialogs.dart';
+import 'package:table/helper/constant/AppColor.dart';
 import 'package:table/ui/bottom_items/Home/notice/noticeRequest.dart';
-import '../../../helper/constant/AppColor.dart';
-import '../../../widgets/appWidget/TextFromFild.dart';
-import '../../../widgets/appWidget/appText.dart';
-import '../../../widgets/appWidget/buttons/cupertinoButttons.dart';
+import 'package:table/widgets/appWidget/TextFromFild.dart';
+import 'package:table/widgets/appWidget/appText.dart';
+import 'package:table/widgets/appWidget/buttons/cupertinoButttons.dart';
 import 'package:table/helper/picker.dart';
-
-import '../../../widgets/heder/hederTitle.dart';
+import 'package:table/widgets/heder/hederTitle.dart';
 
 class AddNoticeScreen extends ConsumerWidget {
   AddNoticeScreen({super.key});
 
   final _formKey = GlobalKey<FormState>();
-  TextEditingController descriptionController = TextEditingController();
-  TextEditingController noticeTitleController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController noticeTitleController = TextEditingController();
   String? id;
   String? pdfPath;
 

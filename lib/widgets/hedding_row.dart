@@ -10,6 +10,7 @@ class HeddingRow extends StatelessWidget {
   final String? buttonText;
   final dynamic onTap;
   final double? paddingTop;
+  final EdgeInsetsGeometry? margin;
 
   const HeddingRow({
     required this.hedding,
@@ -17,6 +18,7 @@ class HeddingRow extends StatelessWidget {
     this.paddingTop,
     this.onTap,
     this.buttonText,
+    this.margin,
     super.key,
   });
 
@@ -25,7 +27,7 @@ class HeddingRow extends StatelessWidget {
     return Container(
       height: 60,
       padding: EdgeInsets.symmetric(vertical: 10),
-      margin: const EdgeInsets.symmetric(vertical: 10),
+      margin: margin ?? const EdgeInsets.symmetric(vertical: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

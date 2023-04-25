@@ -9,18 +9,18 @@ import 'package:table/ui/bottom_items/Account/widgets/my_divider.dart';
 import 'package:table/widgets/appWidget/appText.dart';
 import 'package:table/widgets/appWidget/buttons/Expende_button.dart';
 import 'package:table/widgets/appWidget/buttons/capsule_button.dart';
-import 'package:table/widgets/appWidget/rutin_box/rutin_card_row.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/widgets/rutin_box/rutin_card_row.dart';
 import 'package:table/widgets/mini_account_row.dart';
 
-import '../../../core/dialogs/Alart_dialogs.dart';
-import '../../../models/Account_models.dart';
-import '../../../models/ClsassDetailsModel.dart';
-import '../../../ui/bottom_items/Home/full_rutin/controller/chack_status_controller.dart';
-import '../../../ui/bottom_items/Home/full_rutin/screen/view_more_screen.dart';
-import '../../../ui/bottom_items/Home/full_rutin/sunnary/summat_screens/summary_screen.dart';
-import '../../../ui/server/rutinReq.dart';
-import '../dottted_divider.dart';
-import '../selectDayRow.dart';
+import '../../../../../../core/dialogs/Alart_dialogs.dart';
+import '../../../../../../models/Account_models.dart';
+import '../../../../../../models/ClsassDetailsModel.dart';
+import '../../controller/chack_status_controller.dart';
+import '../../screen/view_more_screen.dart';
+import '../../sunnary/summat_screens/summary_screen.dart';
+import '../../../../../server/rutinReq.dart';
+import '../../../../../../widgets/appWidget/dottted_divider.dart';
+import '../../../../../../widgets/appWidget/selectDayRow.dart';
 
 class RutinBoxByIdSkelton extends StatelessWidget {
   const RutinBoxByIdSkelton({
