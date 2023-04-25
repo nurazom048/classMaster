@@ -57,6 +57,7 @@ dependencies:
   dotted_line: ^3.1.0
   font_awesome_flutter: ^10.4.0
   syncfusion_flutter_pdfviewer: ^19.4.47-beta
+  shimmer: ^2.0.0
 
 dev_dependencies:
   flutter_test:

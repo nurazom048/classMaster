@@ -28,10 +28,7 @@ class _SaveScreenState extends State<SaveScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          child: views[intali],
-        ),
+        body: views[intali],
         floatingActionButton: DotLineTabbar(
             tabs: const [
               'Save Rutine',

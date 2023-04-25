@@ -67,7 +67,7 @@ class _TopTabController extends State<TabBatView>
                   controller: _controller,
                   // ignore: prefer_const_literals_to_create_immutables
                   children: [
-                    const HomeScreen(),
+                    HomeScreen(),
                     const JoinedRutineScreen(),
                     const Text("notification"),
                   ],

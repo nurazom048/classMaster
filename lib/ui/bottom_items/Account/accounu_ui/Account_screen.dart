@@ -116,7 +116,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  const allUploadesRutinesMini()),
+                                  const AllUploadesRutinesMini()),
                         );
                       },
                     ),

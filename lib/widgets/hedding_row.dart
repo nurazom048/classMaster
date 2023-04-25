@@ -1,11 +1,13 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:table/widgets/appWidget/buttons/capsule_button.dart';
 import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 
 class HeddingRow extends StatelessWidget {
   final String hedding;
   final String? second_Hedding;
+  final String? buttonText;
   final dynamic onTap;
   final double? paddingTop;
 
@@ -14,22 +16,51 @@ class HeddingRow extends StatelessWidget {
     this.second_Hedding = "",
     this.paddingTop,
     this.onTap,
+    this.buttonText,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: paddingTop ?? 8),
-      margin: const EdgeInsets.symmetric(horizontal: 3),
+      height: 60,
+      padding: EdgeInsets.symmetric(vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          MyText(hedding, padding: const EdgeInsets.all(0)),
-          TextButton(
-              onPressed: onTap,
-              child: Text(second_Hedding ?? '',
-                  style: const TextStyle(color: Colors.blue)))
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                hedding,
+                style: const TextStyle(
+                  fontFamily: 'Open Sans',
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14.0,
+                  height: 19.07 / 14.0,
+                  color: Color(0xFF0168FF),
+                ),
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                second_Hedding ?? '',
+                style: const TextStyle(
+                    fontFamily: 'Open Sans',
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                    height: 1.33,
+                    color: Color(0xffa7a7a7)),
+                textAlign: TextAlign.right,
+              ),
+            ],
+          ),
+          if (buttonText != null)
+            CapsuleButton(
+              buttonText ?? '',
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              onTap: onTap,
+            ),
         ],
       ),
     );

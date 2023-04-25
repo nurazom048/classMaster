@@ -109,7 +109,7 @@ class _SearchPAgeState extends State<SearchPAge> with TickerProviderStateMixin {
                           itemCount: data.routine.length,
                           itemBuilder: (context, index) {
                             return RutinBoxById(
-                                rutinNmae: data.routine[index].name,
+                                rutinName: data.routine[index].name,
                                 onTapMore: () {},
                                 rutinId: data.routine[index].id);
                           },

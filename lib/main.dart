@@ -38,41 +38,34 @@ class MyApp extends StatelessWidget {
 }
 
 class RecentNotice extends StatelessWidget {
-  const RecentNotice({Key? key, required this.child, required this.onTap});
-  final Widget child;
+  const RecentNotice({Key? key, required this.onTap});
+
   final dynamic onTap;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const AppText("Recent Notices", fontSize: 24)
-                  .heding(fontWeight: FontWeight.normal),
-              ExpendedButton(
-                text: "View More ",
-                icon: Icons.arrow_forward_ios,
-                onTap: onTap,
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Container(
-            padding: const EdgeInsets.all(10),
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.black12,
-              borderRadius: BorderRadius.circular(5),
+    return SizedBox(
+      height: 55,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const AppText("Recent Notices", fontSize: 24)
+                    .heding(fontWeight: FontWeight.normal),
+                ExpendedButton(
+                  text: "View More ",
+                  icon: Icons.arrow_forward_ios,
+                  onTap: onTap,
+                ),
+              ],
             ),
-            child: child,
-          ),
-          const SizedBox(height: 30),
-        ],
+            const SizedBox(height: 10),
+          ],
+        ),
       ),
     );
   }
@@ -127,49 +120,51 @@ class NoticeRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DateTime dt = DateTime.parse(date);
-    return Column(
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              DateFormat('dd MMM yy').format(dt).toString(),
-              style: const TextStyle(
-                fontFamily: 'Inter',
-                fontSize: 18,
-                height: 1.86,
-                color: Color(0xFF333333),
-              ),
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(
-                title,
+    return Container(
+      height: 60,
+      child: Column(
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                DateFormat('dd MMM yy').format(dt).toString(),
                 style: const TextStyle(
                   fontFamily: 'Inter',
-                  fontSize: 20,
+                  fontSize: 18,
                   height: 1.86,
                   color: Color(0xFF333333),
                 ),
               ),
-            ),
-            IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                        builder: (context) => NoticeViewScreen(
-                              notice: notice,
-                            )),
-                  );
-                },
-                icon: const Icon(Icons.arrow_forward)),
-          ],
-        ),
-        const SizedBox(height: 5),
-        const DotedDivider(),
-      ],
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 20,
+                    height: 1.86,
+                    color: Color(0xFF333333),
+                  ),
+                ),
+              ),
+              IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                          builder: (context) => NoticeViewScreen(
+                                notice: notice,
+                              )),
+                    );
+                  },
+                  icon: const Icon(Icons.arrow_forward)),
+            ],
+          ),
+          const SizedBox(height: 5),
+          const DotedDivider(),
+        ],
+      ),
     );
-    ;
   }
 }

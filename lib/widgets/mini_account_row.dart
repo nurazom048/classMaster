@@ -12,25 +12,31 @@ class MiniAccountInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        SizedBox(width: 14),
-        CircleAvatar(
-            backgroundImage: NetworkImage(accountData?.image ?? "N"),
-            radius: 22),
-        const Spacer(flex: 1),
-        Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // name ad user name
-              AppText(accountData?.name ?? "", fontSize: 17).heding(),
-              AppText(accountData?.username ?? '', fontSize: 16).heding()
-            ]),
-        const Spacer(flex: 8),
-        IconButton(
-            onPressed: onTapMore ?? () {}, icon: const Icon(Icons.more_vert))
-      ],
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      height: 60,
+      // color: Colors.black12,
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 24,
+            backgroundColor: Colors.red,
+            backgroundImage: NetworkImage(accountData?.image ?? ""),
+          ),
+          const SizedBox(width: 10),
+          Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // name ad user name
+                AppText(accountData?.name ?? "", fontSize: 17).heding(),
+                AppText(accountData?.username ?? "", fontSize: 16).heding()
+              ]),
+          const Spacer(),
+          IconButton(
+              onPressed: onTapMore ?? () {}, icon: const Icon(Icons.more_vert))
+        ],
+      ),
     );
   }
 }

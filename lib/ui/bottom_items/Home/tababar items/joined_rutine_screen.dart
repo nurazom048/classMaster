@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/dailog/rutin_dialog.dart';
-import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
-
 import '../../../../core/dialogs/Alart_dialogs.dart';
 import '../../../../helper/constant/AppColor.dart';
 import '../../../../widgets/appWidget/rutin_box/rutin_box_by_id.dart';
 import '../../../../widgets/progress_indicator.dart';
+import '../home_req/uploaded_rutine_controller.dart';
 
 final currentPageProvider = StateProvider((ref) => 1);
 
@@ -26,7 +24,7 @@ class JoinedRutineScreen extends StatelessWidget {
             //! provider
             final pages = ref.watch(currentPageProvider);
 
-            final uploaded_rutin = ref.watch(uploaded_rutin_provider(pages));
+            final uploaded_rutin = ref.watch(uploadedRutinsControllerProvider);
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,7 +52,7 @@ class JoinedRutineScreen extends StatelessWidget {
                                   if (lenght.isNotEmpty) {
                                     return RutinBoxById(
                                       rutinId: data.rutins[index].id,
-                                      rutinNmae: data.rutins[index].name,
+                                      rutinName: data.rutins[index].name,
                                       onTapMore: () => RutinDialog
                                           .ChackStatusUser_BottomSheet(
                                               context,

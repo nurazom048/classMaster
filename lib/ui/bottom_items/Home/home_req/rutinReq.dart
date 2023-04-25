@@ -17,15 +17,13 @@ class RutinReqest {
 
     final response = await http.post(
         Uri.parse('${Const.BASE_URl}/rutin/create'),
-        body: {"name": rutinName.text},
+        body: {"name": rutinName.toString()},
         headers: {'Authorization': 'Bearer $getToken'});
 
     try {
       if (response.statusCode == 200) {
         final res = json.decode(response.body);
 
-        //print response
-        // print("rutin created successfully");
         print(res);
         return right(null);
       } else {

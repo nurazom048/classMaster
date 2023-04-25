@@ -9,7 +9,7 @@ import 'Add/create_notice_board.dart';
 import 'Home/home_screen/Home_screen.dart';
 
 List<Widget> pages = [
-  const HomeScreen(),
+  HomeScreen(),
   const Text("Add Screen"),
   const AccountScreen()
 ];

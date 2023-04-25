@@ -17,10 +17,6 @@ final save_rutins_provider =
     FutureProvider.family<SaveRutineResponse, int>((ref, page) {
   return ref.read(home_req_provider).savedRutins(pages: page);
 });
-final uploaded_rutin_provider =
-    FutureProvider.family<ListOfUploadedRutins, int>((ref, pages) {
-  return ref.read(home_req_provider).uplodedRutins(pages: pages);
-});
 
 final joined_rutin_provider =
     FutureProvider.family<JoinedRutines, int>((ref, pages) {

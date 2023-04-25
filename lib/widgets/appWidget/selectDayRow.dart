@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../helper/constant/AppColor.dart';
 
 class SelectDayRow extends StatefulWidget {
-  final void Function(int?)? selectedDay;
+  final void Function(int) selectedDay;
 
   const SelectDayRow({super.key, required this.selectedDay});
 
@@ -37,7 +37,7 @@ class _SelectDayRowState extends State<SelectDayRow> {
                     selectedDays = index;
                   });
 
-                  widget.selectedDay?.call(index);
+                  widget.selectedDay.call(index);
                 },
               )),
     );
