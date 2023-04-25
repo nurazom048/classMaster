@@ -1,3 +1,5 @@
+// ignore_for_file: curly_braces_in_flow_control_structures, unnecessary_null_comparison
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -8,6 +10,7 @@ import 'package:table/core/dialogs/Alart_dialogs.dart';
 import 'package:table/helper/constant/AppColor.dart';
 import 'package:table/models/Account_models.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/members_controllers.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/controller/see_all_req_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/widgets/account_card_widgets.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/widgets/seeAllCaotensList.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/dash_border_button.dart';
@@ -114,82 +117,113 @@ class ClassListPage extends ConsumerWidget {
   }
 }
 
-class MemberList extends ConsumerWidget {
+class MemberList extends StatelessWidget {
   final String rutinId;
   MemberList({super.key, required this.rutinId});
   final TextEditingController _emailController = TextEditingController();
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    //! provider
-    final all_members = ref.watch(all_members_provider(rutinId));
-
-    return ListView(
-      physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.symmetric(horizontal: 26),
-      children: [
-        AppTextFromField(
-          margin: EdgeInsets.zero,
-          controller: _emailController,
-          hint: "Invite Student",
-          labelText: "Enter email address",
-          validator: (value) => LoginValidation.validateEmail(value),
-        ),
-        const SizedBox(height: 20),
-        const DashBorderButton(),
-        const SizedBox(height: 30),
-
-        //... Members...//
-        HeddingRow(
-          hedding: "Join Requests",
-          second_Hedding: "see more",
-          buttonText: "Accept All",
-          onTap: () {},
-        ),
-
-        Container(
-          height: 200,
-          child: Column(
-            children: [
-              Container(
-                height: 200,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return const AccountCard();
-                  },
-                ),
-              ),
-            ],
+  Widget build(BuildContext context) {
+    return Consumer(builder: (context, ref, _) {
+      //! provider
+      final all_members = ref.watch(all_members_provider(rutinId));
+      final all_request = ref.watch(seeAllRequestControllerProvider(rutinId));
+      final seeAllJonReq =
+          ref.read(seeAllRequestControllerProvider(rutinId).notifier);
+      return ListView(
+        physics: const NeverScrollableScrollPhysics(),
+        padding: const EdgeInsets.symmetric(horizontal: 26),
+        children: [
+          AppTextFromField(
+            margin: EdgeInsets.zero,
+            controller: _emailController,
+            hint: "Invite Student",
+            labelText: "Enter email address",
+            validator: (value) => LoginValidation.validateEmail(value),
           ),
-        ),
+          const SizedBox(height: 20),
+          const DashBorderButton(),
+          const SizedBox(height: 30),
 
-        ///
-        ///
+          //... Members...//
+          HeddingRow(
+            hedding: "Join Requests",
+            second_Hedding: "see more",
+            buttonText: "Accept All",
+            onTap: () {},
+          ),
 
-        const HeddingRow(
-          hedding: "All Members",
-          second_Hedding: "23 members",
-        ),
-        //
+          Container(
+            height: 200,
+            child: Column(
+              children: [
+                Container(
+                    height: 200,
+                    child: all_request.when(
+                        data: (data) {
+                          if (data == null) return const Text(" data null");
+                          if (data.listAccounts.isEmpty)
+                            return const Text("No new request ");
+                          return ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: data.listAccounts.length,
+                            itemBuilder: (context, index) {
+                              return AccountCard(
+                                accountData: data.listAccounts[index],
 
-        all_members.when(
-          data: (data) {
-            if (data == null || data.message == null) return const Text("null");
-            return SizedBox(
-              height: 140,
-              child: ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: data.Members!.length,
-                  itemBuilder: (context, index) =>
-                      AccountCardRow(accountData: data.Members![index])),
-            );
-          },
-          error: (error, stackTrace) => Alart.handleError(context, error),
-          loading: () => const Progressindicator(),
-        ),
-      ],
-    );
+                                // acsept or reject members
+                                acceptUsername: () {
+                                  print(data.listAccounts[index].username);
+                                  seeAllJonReq.acceptMember(
+                                      ref,
+                                      data.listAccounts[index].username,
+                                      context);
+                                },
+                                onRejectUsername: () {
+                                  print(data.listAccounts[index].username);
+                                  seeAllJonReq.rejectMembers(
+                                      ref,
+                                      data.listAccounts[index].username,
+                                      context);
+                                },
+                              );
+                            },
+                          );
+                        },
+                        error: (error, stackTrace) =>
+                            Alart.handleError(context, error),
+                        loading: () => const Text("data"))),
+              ],
+            ),
+          ),
+
+          ///
+          ///
+
+          const HeddingRow(
+            hedding: "All Members",
+            second_Hedding: "23 members",
+          ),
+          //
+
+          all_members.when(
+            data: (data) {
+              if (data == null || data.message == null)
+                return const Text("null");
+              return SizedBox(
+                height: 140,
+                child: ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: data.Members!.length,
+                    itemBuilder: (context, index) =>
+                        AccountCardRow(accountData: data.Members![index])),
+              );
+            },
+            error: (error, stackTrace) => Alart.handleError(context, error),
+            loading: () => const Progressindicator(),
+          ),
+        ],
+      );
+    });
   }
 }
 

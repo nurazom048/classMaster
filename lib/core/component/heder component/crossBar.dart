@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class CrossBar extends StatelessWidget {
   final BuildContext context;
+  final dynamic ontap;
   final Color? color;
-  const CrossBar(this.context, {super.key, this.color});
+  const CrossBar(this.context, {super.key, this.color, this.ontap});
 
   @override
   Widget build(BuildContext contextt) {
@@ -11,7 +12,7 @@ class CrossBar extends StatelessWidget {
       margin: const EdgeInsets.only(top: 0.2),
       alignment: Alignment.centerLeft,
       child: CloseButton(
-        onPressed: () => Navigator.pop(context),
+        onPressed: ontap ?? () => Navigator.pop(context),
         color: color ?? Colors.black,
       ),
     );

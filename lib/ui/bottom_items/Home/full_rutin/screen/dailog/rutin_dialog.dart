@@ -8,12 +8,10 @@ import 'package:table/ui/bottom_items/Home/full_rutin/controller/chack_status_co
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/see_all_req_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/dailog/logngPress.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/widgets/seeAllCaotensList.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/screen/widgets/see_all_request.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/widgets/select_account.dart';
 import 'package:table/ui/bottom_items/Add/addPriode.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/members_controllers.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/screen/view_more_details.dart';
 import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/widgets/text%20and%20buttons/squareButton.dart';
 import '../../../../../../core/dialogs/Alart_dialogs.dart';
@@ -105,18 +103,18 @@ class RutinDialog extends LongPressDialog {
                                           !(chackStatus.value?.isSave ??
                                               false));
                                     }),
-                                SqureButton(
-                                  icon: Icons.more_horiz,
-                                  text: 'view more',
-                                  ontap: () => Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                      fullscreenDialog: true,
-                                      builder: (context) =>
-                                          ViewMorepage(rutinId),
-                                    ),
-                                  ),
-                                ),
+                                // SqureButton(
+                                //   icon: Icons.more_horiz,
+                                //   text: 'view more',
+                                //   ontap: () => Navigator.push(
+                                //     context,
+                                //     CupertinoPageRoute(
+                                //       fullscreenDialog: true,
+                                //       builder: (context) =>
+                                //           ViewMorepage(rutinId),
+                                //     ),
+                                //   ),
+                                // ),
                               ],
                             ),
                             const Divider(height: 20),
@@ -187,32 +185,6 @@ class RutinDialog extends LongPressDialog {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  SqureButton(
-                                      icon: Icons.groups_2,
-                                      count: data.sentRequestCount,
-                                      text: "see all request",
-                                      ontap: () => Navigator.push(
-                                          context,
-                                          CupertinoPageRoute(
-                                              fullscreenDialog: true,
-                                              builder: (context) =>
-                                                  SeeAllRequest(
-                                                    rutin_id: rutinId,
-                                                    onRejectUsername:
-                                                        (username) {
-                                                      seeAllJonReq
-                                                          .rejectMembers(
-                                                              ref,
-                                                              username,
-                                                              context);
-                                                    },
-                                                    acceptUsername: (username) {
-                                                      seeAllJonReq.acceptMember(
-                                                          ref,
-                                                          username,
-                                                          context);
-                                                    },
-                                                  )))),
                                   SqureButton(
                                       icon: Icons.person_add_alt_1,
                                       text: "Add members",
