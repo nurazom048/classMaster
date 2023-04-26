@@ -1,5 +1,6 @@
 // ignore_for_file: curly_braces_in_flow_control_structures, unnecessary_null_comparison
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/dialogs/Alart_dialogs.dart';
@@ -11,18 +12,22 @@ import 'package:table/ui/bottom_items/Home/full_rutin/controller/see_all_req_con
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/dash_border_button.dart';
 import 'package:table/widgets/AccoundCardRow.dart';
 import 'package:table/widgets/progress_indicator.dart';
+import '../../../../../models/ClsassDetailsModel.dart';
 import '../../../../../widgets/appWidget/TextFromFild.dart';
 import '../../../../../widgets/appWidget/appText.dart';
 import '../../../../../widgets/hedding_row.dart';
 import '../../../../../widgets/heder/hederTitle.dart';
 import '../../../../auth_Section/utils/Login_validation.dart';
+import '../../../../server/rutinReq.dart';
+import '../sunnary/summat_screens/summary_screen.dart';
 import '../widgets/account_card_widgets.dart';
+import '../widgets/class_row.dart';
 import '../widgets/priode_widget.dart';
 import '../widgets/seeAllCaotensList.dart';
 
 class ViewMore extends StatefulWidget {
   final String rutinId;
-  ViewMore({Key? key, required this.rutinId}) : super(key: key);
+  const ViewMore({Key? key, required this.rutinId}) : super(key: key);
 
   @override
   _ViewMoreState createState() => _ViewMoreState();
@@ -49,7 +54,7 @@ class _ViewMoreState extends State<ViewMore> with TickerProviderStateMixin {
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           SliverToBoxAdapter(
-            child: Container(
+            child: SizedBox(
               height: 270,
               width: 300,
               child: Column(
@@ -90,13 +95,15 @@ class _ViewMoreState extends State<ViewMore> with TickerProviderStateMixin {
 }
 
 class ClassListPage extends ConsumerWidget {
-  final rutinId;
+  final String rutinId;
   final String rutinName;
   const ClassListPage(
       {super.key, required this.rutinId, required this.rutinName});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    print(rutinId);
+    final rutinDetals = ref.watch(rutins_detalis_provider(rutinId));
     return Scaffold(
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -117,7 +124,7 @@ class ClassListPage extends ConsumerWidget {
             },
           ),
           Row(
-            children: List.generate(2, (index) => PriodeWidget()),
+            children: List.generate(2, (index) => const PriodeWidget()),
           ),
           HeddingRow(
             hedding: "Class List",
@@ -132,9 +139,37 @@ class ClassListPage extends ConsumerWidget {
               );
             },
           ),
-          Column(
-            children: List.generate(4, (index) => const ClassRow()),
-          ),
+          SizedBox(
+              height: 300,
+              child: rutinDetals.when(
+                data: (data) {
+                  if (data == null || data.classes == null)
+                    return const Text("Null");
+                  return ListView.builder(
+                    itemCount: data.classes.allClass.length,
+                    itemBuilder: (context, index) {
+                      Day classes = data.classes.allClass[index];
+                      return ClassRow(
+                        id: classes.id,
+                        className: classes.name,
+                        ontap: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => SummaryScreen(
+                                classId: classes.classId,
+                                day: classes,
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
+                error: (error, stackTrace) => Alart.handleError(context, error),
+                loading: () => const Text("Loding"),
+              )),
         ],
       ),
     );
@@ -248,30 +283,5 @@ class MemberList extends StatelessWidget {
         ],
       );
     });
-  }
-}
-
-class ClassRow extends StatelessWidget {
-  const ClassRow({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 50,
-      margin: const EdgeInsets.symmetric(vertical: 5),
-      width: MediaQuery.of(context).size.width - 10,
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10), color: Colors.white),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const AppText("English", color: Colors.black).heding(),
-          const Icon(Icons.arrow_forward)
-        ],
-      ),
-    );
   }
 }

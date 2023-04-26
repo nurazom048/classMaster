@@ -1,0 +1,37 @@
+import 'package:flutter/material.dart';
+
+import '../../../../../widgets/appWidget/appText.dart';
+
+class ClassRow extends StatelessWidget {
+  const ClassRow({
+    super.key,
+    required this.id,
+    required this.className,
+    required this.ontap,
+  });
+  final String className;
+  final String id;
+  final dynamic ontap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 50,
+      margin: const EdgeInsets.symmetric(vertical: 5),
+      width: MediaQuery.of(context).size.width - 10,
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10), color: Colors.white),
+      child: InkWell(
+        onTap: ontap,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            AppText(className, color: Colors.black).heding(),
+            const Icon(Icons.arrow_forward)
+          ],
+        ),
+      ),
+    );
+  }
+}

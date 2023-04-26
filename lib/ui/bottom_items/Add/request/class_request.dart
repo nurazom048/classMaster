@@ -10,7 +10,8 @@ import '../../../../helper/constant/constant.dart';
 import 'package:table/models/class_model.dart';
 
 class ClassRequest {
-  Future<void> addClass(String rutinId, context, ClassModel classModel) async {
+  static Future<void> addClass(
+      String rutinId, context, ClassModel classModel) async {
     print("from add");
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -25,8 +26,6 @@ class ClassRequest {
         "start": classModel.startingPeriod.toString(),
         "end": classModel.endingPeriod.toString(),
         "num": classModel.weekday.toString(),
-        "start_time": classModel.startTime.toString(),
-        "end_time": classModel.endTime.toString(),
       }, headers: {
         'Authorization': 'Bearer $getToken'
       });

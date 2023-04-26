@@ -24,7 +24,7 @@ class Rutin_Req {
     try {
       final response = await http.get(url);
       var res = json.decode(response.body);
-      //  print(res);
+      // print(res);
 
       // print("rutins_class_and_priode" + response.body);
 

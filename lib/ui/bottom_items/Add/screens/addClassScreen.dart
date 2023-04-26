@@ -67,6 +67,7 @@ class _AddClassSceenState extends State<AddClassSceen> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.rutinId);
     return Scaffold(
       backgroundColor: const Color(0xFFEFF6FF),
       body: Padding(
@@ -110,14 +111,9 @@ class _AddClassSceenState extends State<AddClassSceen> {
                   }),
 
               ///.... room number
+
               AppTextFromField(
-                controller: _instructorController,
-                hint: "Classroom Number",
-                labelText: "EnterClassroom Number in this day",
-                validator: (value) => AddClassValidator.roomNumber(value),
-              ),
-              AppTextFromField(
-                controller: _instructorController,
+                controller: _roomController,
                 hint: "Classroom Number",
                 labelText: "EnterClassroom Number in this day",
                 validator: (value) => AddClassValidator.roomNumber(value),
@@ -202,9 +198,8 @@ class _AddClassSceenState extends State<AddClassSceen> {
                 textt: "Create Class",
                 color: AppColor.nokiaBlue,
                 onPressed: () async {
-                  if (_formKey.currentState!.validate() &&
-                      st != null &&
-                      et != null) {
+                  print("object");
+                  if (_formKey.currentState!.validate()) {
                     _onTapToButton();
                   }
                 },
@@ -218,6 +213,7 @@ class _AddClassSceenState extends State<AddClassSceen> {
   }
 
   void _onTapToButton() {
+    print("ontap");
     widget.isEdit == true
         ? ClassRequest().editClass(
             context,
@@ -233,7 +229,7 @@ class _AddClassSceenState extends State<AddClassSceen> {
               startTime: st!,
               endTime: et!,
             ))
-        : ClassRequest().addClass(
+        : ClassRequest.addClass(
             widget.rutinId,
             context,
             ClassModel(
@@ -244,8 +240,8 @@ class _AddClassSceenState extends State<AddClassSceen> {
               startingPeriod: int.parse(_startPeriodController.text),
               endingPeriod: int.parse(_endPeriodController.text),
               weekday: _selectedDay,
-              startTime: st!,
-              endTime: et!,
+              startTime: startTime,
+              endTime: startTime,
             ));
   }
 

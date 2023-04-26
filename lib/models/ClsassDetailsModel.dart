@@ -34,6 +34,7 @@ class NewClassDetailsModel {
 
 class NewClasses {
   NewClasses({
+    required this.allClass,
     required this.sunday,
     required this.monday,
     required this.tuesday,
@@ -42,6 +43,7 @@ class NewClasses {
     required this.friday,
     required this.saturday,
   });
+  List<Day> allClass;
 
   List<Day> sunday;
   List<Day> monday;
@@ -52,6 +54,7 @@ class NewClasses {
   List<Day> saturday;
 
   factory NewClasses.fromJson(Map<String?, dynamic> json) => NewClasses(
+        allClass: List<Day>.from(json["allClass"].map((x) => Day.fromJson(x))),
         sunday: List<Day>.from(json["Sunday"].map((x) => Day.fromJson(x))),
         monday: List<Day>.from(json["Monday"].map((x) => Day.fromJson(x))),
         tuesday: List<Day>.from(json["Tuesday"].map((x) => Day.fromJson(x))),
