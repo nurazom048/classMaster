@@ -23,7 +23,6 @@ class _AppPriodePageState extends State<AppPriodePage> {
   DateTime? et;
 
   List<Map<String, dynamic>> priodeList = [];
-  bool showAddPriode = false;
 
   @override
   Widget build(BuildContext context) {
@@ -55,17 +54,6 @@ class _AppPriodePageState extends State<AppPriodePage> {
                       ),
 
                       ///
-                      ///
-                      ///
-                      ///
-                      TextButton(
-                          onPressed: () {
-                            setState(() {
-                              showAddPriode = !showAddPriode;
-                            });
-                            print(priodeList);
-                          },
-                          child: const Text("Add Priode")),
 
                       //
                       Column(
@@ -103,39 +91,38 @@ class _AppPriodePageState extends State<AppPriodePage> {
 
                       //
 
-                      if (showAddPriode == true)
-                        Column(
-                          children: List.generate(1, (context) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(" Set New priode time here ",
-                                    textScaleFactor: 1.5),
-                                const SizedBox(height: 10),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    SelectTime(
-                                      width: 170,
-                                      time_text: "start_time",
-                                      time: startTime,
-                                      show: show,
-                                      onTap: _selectStartTime,
-                                    ),
-                                    SelectTime(
-                                      width: 170,
-                                      time_text: "end time",
-                                      time: endTime,
-                                      show: show,
-                                      onTap: _selectEndTime,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            );
-                          }),
-                        ),
+                      Column(
+                        children: List.generate(1, (context) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(" Set New priode time here ",
+                                  textScaleFactor: 1.5),
+                              const SizedBox(height: 10),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SelectTime(
+                                    width: 170,
+                                    time_text: "start_time",
+                                    time: startTime,
+                                    show: show,
+                                    onTap: _selectStartTime,
+                                  ),
+                                  SelectTime(
+                                    width: 170,
+                                    time_text: "end time",
+                                    time: endTime,
+                                    show: show,
+                                    onTap: _selectEndTime,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          );
+                        }),
+                      ),
 
                       //
                     ],
