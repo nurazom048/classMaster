@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../../helper/constant/AppColor.dart';
 import '../../../../../../widgets/appWidget/appText.dart';
 
 class PriodeWidget extends StatelessWidget {
-  const PriodeWidget({
+  PriodeWidget({
+    required this.startTime,
+    required this.endTime,
+    required this.priodeNumber,
     super.key,
   });
 
+  final DateTime startTime, endTime;
+  final num priodeNumber;
+
   @override
   Widget build(BuildContext context) {
+    String formatTime(DateTime dateTime) {
+      return DateFormat('h:mm a').format(dateTime);
+    }
+
     // Text(
     //                     formatTime(
     //                       mypriodelist[index]["start_time"],
@@ -18,8 +29,8 @@ class PriodeWidget extends StatelessWidget {
     //                 Text(formatTime(mypriodelist[index]["end_time"]),
     //                     style: const TextStyle(fontSize: 10)),
     return Container(
-      margin: const EdgeInsets.only(right: 10, bottom: 10),
-      height: 130,
+      //margin: const EdgeInsets.only(right: 10, bottom: 10),
+      height: 110,
       width: 130,
       child: Stack(
         children: [
@@ -29,11 +40,11 @@ class PriodeWidget extends StatelessWidget {
             child: CircleAvatar(
               radius: 24,
               backgroundColor: AppColor.nokiaBlue,
-              child: AppText("1st", color: Colors.white).heding(),
+              child: AppText("${priodeNumber}st", color: Colors.white).heding(),
             ),
           ),
           Positioned(
-            bottom: 0,
+            top: 40,
             child: Container(
                 height: 90,
                 padding: EdgeInsets.symmetric(vertical: 10),
@@ -45,8 +56,8 @@ class PriodeWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     SizedBox(height: 10),
-                    AppText("8:45").heding(),
-                    AppText("8:45").heding(),
+                    AppText(formatTime(startTime)).heding(),
+                    AppText(formatTime(endTime)).heding(),
                   ],
                 )),
           ),

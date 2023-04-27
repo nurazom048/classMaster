@@ -4,12 +4,18 @@ import 'package:fpdart/fpdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/messageModel.dart';
 import 'package:http/http.dart' as http;
+import 'package:table/models/priode/all_priode_models.dart';
 import '../../../../../helper/constant/constant.dart';
 
 //... provider...//
 final priodeRequestProvider = Provider<PriodeRequest>((ref) => PriodeRequest());
 
 //
+final allPriodeProvider =
+    FutureProvider.family<Either<Message, AllPriodeList>, String>(
+        (ref, rutinId) async {
+  return ref.read(priodeRequestProvider).allPriode(rutinId);
+});
 
 class PriodeRequest {
 //... Delete  Priode request....//
@@ -35,6 +41,7 @@ class PriodeRequest {
         throw Exception(res);
       }
     } catch (e) {
+      print(e);
       return left(e.toString());
     }
   }
@@ -71,6 +78,31 @@ class PriodeRequest {
     } catch (e) {
       print("s $e");
       return left(e.toString());
+    }
+  }
+
+  ///
+  ///
+  ///
+  Future<Either<Message, AllPriodeList>> allPriode(String rutinId) async {
+    var url = Uri.parse('${Const.BASE_URl}/rutin/all_priode/$rutinId');
+
+    try {
+      final response = await http.get(url);
+
+      var res = json.decode(response.body);
+      print(res);
+      Message message = Message.fromJson(res);
+      AllPriodeList allPriode = AllPriodeList.fromJson(res);
+
+      if (response.statusCode == 200) {
+        return right(allPriode);
+      } else {
+        return left(message);
+      }
+    } catch (e) {
+      print("s $e");
+      return left(Message(message: e.toString()));
     }
   }
 }

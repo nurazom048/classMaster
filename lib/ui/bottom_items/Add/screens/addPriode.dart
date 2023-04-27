@@ -26,6 +26,7 @@ class _AppPriodePageState extends State<AppPriodePage> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.rutinId);
     return SafeArea(
       child: Scaffold(
         body: Consumer(builder: (context, ref, _) {
@@ -42,8 +43,9 @@ class _AppPriodePageState extends State<AppPriodePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      const SizedBox(height: 20),
                       const Text(
-                        'Add Priode Screen',
+                        'Add A New \nPriode Here',
                         style: TextStyle(
                           fontFamily: 'Open Sans',
                           fontWeight: FontWeight.w300,
@@ -52,6 +54,7 @@ class _AppPriodePageState extends State<AppPriodePage> {
                           color: Colors.black,
                         ),
                       ),
+                      const SizedBox(height: 20),
 
                       ///
 
@@ -91,12 +94,14 @@ class _AppPriodePageState extends State<AppPriodePage> {
 
                       //
 
+                      const SizedBox(height: 20),
+
                       Column(
                         children: List.generate(1, (context) {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(" Set New priode time here ",
+                              const Text("Priode Number 1",
                                   textScaleFactor: 1.5),
                               const SizedBox(height: 10),
                               Row(
@@ -138,12 +143,12 @@ class _AppPriodePageState extends State<AppPriodePage> {
                     textt: "Add Priode",
                     onPressed: () async {
                       if (st != null && et != null) {
-                        priodeList.add({
-                          "start_time": st,
-                          "end_time": et,
-                          "priode_number":
-                              priodeList.isEmpty ? 1 : priodeList.length + 1,
-                        });
+                        // priodeList.add({
+                        //   "start_time": st,
+                        //   "end_time": et,
+                        //   "priode_number":
+                        //       priodeList.isEmpty ? 1 : priodeList.length + 1,
+                        // });
                         setState(() {});
                         print(priodeList);
 

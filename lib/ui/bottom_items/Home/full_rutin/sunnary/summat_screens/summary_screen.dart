@@ -1,15 +1,10 @@
 // ignore_for_file: avoid_print
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:table/models/ClsassDetailsModel.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summat_screens/add_summary.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/sunnary%20Controller/summary_controller.dart';
+import 'package:table/widgets/appWidget/appText.dart';
 import 'package:table/widgets/heder/hederTitle.dart';
-import '../../../../../../core/dialogs/Alart_dialogs.dart';
-import '../../../../../../models/summaryModels.dart';
 
 class SummaryScreen extends StatelessWidget {
   final String classId;
@@ -27,75 +22,54 @@ class SummaryScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) =>[
-
-
-
-
-          ],
-          body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            // AppBar...
-            HeaderTitle(day?.room ?? '', context),
-
-            // Class information
-            ClasInfoBox(
-              instructorname: day?.instuctorName ?? "",
-              roomnumber: day?.room ?? '',
-              sunjectcode: day?.subjectcode ?? '',
-            ),
-            const Divider(height: 5),
-            Container(
-              padding: const EdgeInsets.all(20),
-              height: MediaQuery.of(context).size.height - 210,
-              width: double.infinity,
-              color: Colors.black12,
-              child: Consumer(builder: (context, ref, _) {
-                ////
-                final lstSummary = ref.watch(sunnaryControllerProvider(classId));
-
-                List<Summary> summary = [];
-
-                return Stack(
-                  children: [
-                    lstSummary.when(
-                      data: (data) {
-                        summary.addAll(data.summaries);
-
-                        newScroll();
-
-                        return ListView.builder(
-                          padding: const EdgeInsets.only(bottom: 100),
-                          shrinkWrap: true,
-                          reverse: false,
-                          controller: scrollController,
-                          itemCount: summary.length,
-                          itemBuilder: (context, index) => SummaryContaner(
-                            text: summary[index].text,
-                            date: summary[index].time.toString(),
-                            is_last: 0 == index,
-                          ),
-                        );
-                      },
-                      error: (error, stackTrace) =>
-                          Alart.handleError(context, error),
-                      loading: () =>
-                      const Center(child: CircularProgressIndicator()),
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+            SliverToBoxAdapter(
+              child: Container(
+                  alignment: Alignment.bottomCenter,
+                  height: 200,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        HeaderTitle("", context),
+                        const SizedBox(height: 20),
+                        AppText(day?.name ?? '').title(),
+                        AppText(day?.name ?? '', color: Colors.blue).heding(),
+                      ],
                     ),
-                  ],
-                );
-              }),
-            )
-          ]),
-        ),
+                  )),
+            ),
+          ],
+          body: Column(
+            children: [
+              ///
 
-        //... Add summary icon.....//
-        floatingActionButton: AddSummary(
-          onTap: () => Navigator.push(
-            context,
-            CupertinoPageRoute(
-                fullscreenDialog: true,
-                builder: (context) => AddSummaryScreen(classId: classId)),
+              Container(
+                height: 400,
+                child: ListView.builder(
+                  itemCount: 2,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        Text("data"),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
+
+          ///
+
+          //... Add summary icon.....//
+          // floatingActionButton: AddSummary(
+          //   onTap: () => Navigator.push(
+          //     context,
+          //     CupertinoPageRoute(
+          //         fullscreenDialog: true,
+          //         builder: (context) => AddSummaryScreen(classId: classId)),
         ),
       ),
     );
@@ -254,3 +228,64 @@ class ClasInfoBox extends StatelessWidget {
     );
   }
 }
+// NestedScrollView(
+//           headerSliverBuilder: (context, innerBoxIsScrolled) =>[
+
+
+
+
+//           ],
+//           body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+//             // AppBar...
+//             HeaderTitle(day?.room ?? '', context),
+
+//             // Class information
+//             ClasInfoBox(
+//               instructorname: day?.instuctorName ?? "",
+//               roomnumber: day?.room ?? '',
+//               sunjectcode: day?.subjectcode ?? '',
+//             ),
+//             const Divider(height: 5),
+//             Container(
+//               padding: const EdgeInsets.all(20),
+//               height: MediaQuery.of(context).size.height - 210,
+//               width: double.infinity,
+//               color: Colors.black12,
+//               child: Consumer(builder: (context, ref, _) {
+//                 ////
+//                 final lstSummary = ref.watch(sunnaryControllerProvider(classId));
+
+//                 List<Summary> summary = [];
+
+//                 return Stack(
+//                   children: [
+//                     lstSummary.when(
+//                       data: (data) {
+//                         summary.addAll(data.summaries);
+
+//                         newScroll();
+
+//                         return ListView.builder(
+//                           padding: const EdgeInsets.only(bottom: 100),
+//                           shrinkWrap: true,
+//                           reverse: false,
+//                           controller: scrollController,
+//                           itemCount: summary.length,
+//                           itemBuilder: (context, index) => SummaryContaner(
+//                             text: summary[index].text,
+//                             date: summary[index].time.toString(),
+//                             is_last: 0 == index,
+//                           ),
+//                         );
+//                       },
+//                       error: (error, stackTrace) =>
+//                           Alart.handleError(context, error),
+//                       loading: () =>
+//                       const Center(child: CircularProgressIndicator()),
+//                     ),
+//                   ],
+//                 );
+//               }),
+//             )
+//           ]),
+//         ),
