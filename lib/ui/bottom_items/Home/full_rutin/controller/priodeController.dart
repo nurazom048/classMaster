@@ -2,6 +2,7 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table/models/priode/all_priode_models.dart';
 import 'package:table/ui/server/rutinReq.dart';
 import '../../../../../core/dialogs/Alart_dialogs.dart';
 import '../request/priode_request.dart';
@@ -20,8 +21,7 @@ class priodeClassController extends StateNotifier<bool> {
   //....deletePriode
   void deletePriode(WidgetRef ref, BuildContext context, String priodeId,
       String rutinId) async {
-    var deleteRes =
-        await ref.read(priodeRequestProvider).deletePriode(priodeId);
+    var deleteRes = await PriodeRequest().deletePriode(priodeId);
 
     deleteRes.fold(
       (l) {
@@ -29,7 +29,7 @@ class priodeClassController extends StateNotifier<bool> {
         return Alart.errorAlartDilog(context, l);
       },
       (r) {
-        ref.refresh(rutins_detalis_provider(rutinId));
+        ref.refresh(allPriodeProvider(rutinId));
         state = false;
 
         Alart.showSnackBar(context, r.message);
@@ -39,22 +39,42 @@ class priodeClassController extends StateNotifier<bool> {
 
   //
   //....addPriode...//
-  void addPriode(
-      WidgetRef ref, Map<String, dynamic> item, String rutinId, context) async {
-    var addRes =
-        await ref.watch(priodeRequestProvider).addPriode(item, rutinId);
+  void addPriode(WidgetRef ref, context, String rutinId, DateTime StartTime,
+      DateTime EndTime) async {
+    var addRes = await PriodeRequest().addPriode(rutinId, StartTime, EndTime);
     print("i am from cont");
 
     addRes.fold(
       (l) {
-        //    state = false;
+        // state = false;
         return Alart.errorAlartDilog(context, l);
       },
       (r) {
-        ref.refresh(rutins_detalis_provider(rutinId));
         //state = false;
-
+        ref.refresh(allPriodeProvider(rutinId));
         Alart.showSnackBar(context, r.message);
+        Navigator.pop(context);
+      },
+    );
+  }
+
+  //....Eddit priode...//
+  void edditPriode(WidgetRef ref, context, String rutinId, String priodeId,
+      DateTime startTime, DateTime endTime) async {
+    var eddidPriode =
+        await PriodeRequest().edditPriode(priodeId, startTime, endTime);
+    print("i am from cont");
+
+    eddidPriode.fold(
+      (l) {
+        // state = false;
+        return Alart.errorAlartDilog(context, l);
+      },
+      (r) {
+        //state = false;
+        ref.refresh(allPriodeProvider(rutinId));
+        Alart.showSnackBar(context, r.message);
+        Navigator.pop(context);
       },
     );
   }

@@ -226,7 +226,7 @@ class _RutinBoxState extends State<RutinBoxById> {
       final chackStatusNotifier =
           ref.watch(chackStatusControllerProvider(widget.rutinId).notifier);
       return Container(
-        height: 450,
+        height: 455,
         margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
         padding: const EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(

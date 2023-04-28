@@ -52,7 +52,16 @@ class SummaryScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return Column(
                       children: [
-                        Text("data"),
+                        FilledButton.tonalIcon(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                Colors.blue.shade200),
+                          ),
+                          onPressed: () {},
+                          icon: const Icon(Icons.telegram),
+                          label: const Text("Send request"),
+                        ),
+                        const Text("data"),
                       ],
                     );
                   },
@@ -137,8 +146,8 @@ class SummaryContaner extends StatelessWidget {
 
     if (flutteDate.day == now.day && flutteDate.month == now.month) {
       displayDate = "Today";
-    } else if (flutteDate.day == now.subtract(Duration(days: 1)).day &&
-        flutteDate.month == now.subtract(Duration(days: 1)).month) {
+    } else if (flutteDate.day == now.subtract(const Duration(days: 1)).day &&
+        flutteDate.month == now.subtract(const Duration(days: 1)).month) {
       displayDate = "Yesterday";
     } else {
       displayDate = "${flutteDate.day} $month";

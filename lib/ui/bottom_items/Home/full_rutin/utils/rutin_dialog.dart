@@ -14,7 +14,7 @@ import 'package:table/widgets/text%20and%20buttons/squareButton.dart';
 import '../../../../../core/dialogs/Alart_dialogs.dart';
 import '../widgets/seeAllCaotensList.dart';
 
-class RutinDialog extends LongPressDialog {
+class RutinDialog {
   //**********     ChackStatusUser_BottomSheet       **********/
   static ChackStatusUser_BottomSheet(BuildContext context, rutinId, rutinName) {
     showModalBottomSheet(
