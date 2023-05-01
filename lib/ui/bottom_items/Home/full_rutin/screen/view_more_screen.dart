@@ -96,27 +96,36 @@ class _ViewMoreState extends State<ViewMore> with TickerProviderStateMixin {
   }
 }
 
-class ClassListPage extends StatelessWidget {
+final totlPriodeCountProvider = StateProvider<int>((ref) => 0);
+
+class ClassListPage extends StatefulWidget {
   final String rutinId;
   final String rutinName;
   const ClassListPage(
       {super.key, required this.rutinId, required this.rutinName});
 
   @override
+  State<ClassListPage> createState() => _ClassListPageState();
+}
+
+int? totalMemberCount;
+int? totalPriodeCount;
+
+class _ClassListPageState extends State<ClassListPage> {
+  @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, _) {
-      int? totlpriode;
+      print(widget.rutinId);
+      final rutinDetals = ref.watch(rutins_detalis_provider(widget.rutinId));
+      final allPriode = ref.watch(allPriodeProvider(widget.rutinId));
 
-      print(rutinId);
-      final rutinDetals = ref.watch(rutins_detalis_provider(rutinId));
-      final allPriode = ref.watch(allPriodeProvider(rutinId));
       return Scaffold(
         body: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           children: [
             HeddingRow(
               hedding: "Priode List",
-              second_Hedding: "$totlpriode ",
+              second_Hedding: "$totalPriodeCount  priode",
               margin: EdgeInsets.zero,
               buttonText: "Add Priode",
               onTap: () {
@@ -124,9 +133,9 @@ class ClassListPage extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => AppPriodePage(
-                      rutinId: rutinId,
-                      rutinName: rutinName,
-                      totalpriode: totlpriode,
+                      rutinId: widget.rutinId,
+                      rutinName: widget.rutinName,
+                      totalpriode: totalPriodeCount,
                     ),
                   ),
                 );
@@ -139,19 +148,32 @@ class ClassListPage extends StatelessWidget {
                     return data.fold(
                         (l) => Alart.handleError(context, l.message), (r) {
                       print(r);
+
                       return ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: r.priodes.length,
                         itemBuilder: (context, index) {
                           String priodeId = r.priodes[index].id;
+
+                          int length = r.priodes.length;
+
+                          if (totalPriodeCount == null) {
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              // Add Your Code here.
+                              setState(() {
+                                totalPriodeCount = length;
+                              });
+                            });
+                          }
+
                           return PriodeWidget(
                             priodeNumber: r.priodes[index].priodeNumber,
                             startTime: r.priodes[index].startTime,
                             endTime: r.priodes[index].endTime,
                             //
                             onLongpress: () {
-                              PriodeAlart.logPressOnPriode(
-                                  context, priodeId, rutinId, r.priodes[index]);
+                              PriodeAlart.logPressOnPriode(context, priodeId,
+                                  widget.rutinId, r.priodes[index]);
                             },
                           );
                         },
@@ -164,14 +186,15 @@ class ClassListPage extends StatelessWidget {
             ),
             HeddingRow(
               hedding: "Class List",
-              second_Hedding: "23 members",
+              second_Hedding: "${totalMemberCount}  classes",
               margin: EdgeInsets.zero,
               buttonText: "Add Class",
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => AddClassScreen(routineId: rutinId)),
+                      builder: (context) =>
+                          AddClassScreen(routineId: widget.rutinId)),
                 );
               },
             ),
@@ -181,10 +204,27 @@ class ClassListPage extends StatelessWidget {
                   data: (data) {
                     if (data == null || data.classes == null)
                       return const Text("Null");
+
                     return ListView.builder(
                       itemCount: data.classes.allClass.length,
                       itemBuilder: (context, index) {
                         Day day = data.classes.allClass[index];
+                        int length = data.classes.allClass.length;
+                        //
+                        // Future.delayed(Duration(seconds: 1), () {
+                        //   setState(() {
+                        //     totalMemberCount = length;
+                        //   });
+                        // });
+                        if (totalMemberCount == null) {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            // Add Your Code here.
+                            setState(() {
+                              totalMemberCount = length;
+                            });
+                          });
+                        }
+
                         return ClassRow(
                           id: day.id,
                           className: day.classId.name,
@@ -194,7 +234,7 @@ class ClassListPage extends StatelessWidget {
                             PriodeAlart.logPressClass(context,
                                 classId:
                                     data.classes.allClass[index].classId.id,
-                                rutinId: rutinId);
+                                rutinId: widget.rutinId);
                           },
 
                           ontap: () {
