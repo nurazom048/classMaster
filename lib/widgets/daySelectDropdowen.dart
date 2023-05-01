@@ -32,53 +32,36 @@ class DayDropdown extends StatelessWidget {
       sevendays.length,
       (index) => DropdownMenuItem(
         value: index,
-        child: Text(sevendays[index]),
+        child: Text(sevendays[index], style: TextStyle(fontSize: 18)),
       ),
     );
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 26),
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 11),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 20),
-            child: Text(
-              "Select Day ",
-              style: TextStyle(
-                  fontFamily: 'Open Sans',
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16.0,
-                  height: 1.3,
-                  color: AppColor.nokiaBlue),
-            ),
+          Text(
+            "Select Day ",
+            style: TextStyle(
+                fontFamily: 'Open Sans',
+                fontStyle: FontStyle.normal,
+                fontWeight: FontWeight.w600,
+                fontSize: 16.0,
+                height: 1.3,
+                color: AppColor.nokiaBlue),
           ),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: AppColor.nokiaBlue),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: DropdownButtonFormField(
-                    items: _dayItems,
-                    onChanged: (value) => onChanged(value ?? 0),
-                    decoration: InputDecoration(
-                      hintText: labelText,
-                      border: InputBorder.none,
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 12),
-                    ),
-                  ),
-                ),
-                IconButton(
-                  onPressed: onPressed,
-                  icon: Icon(Icons.calendar_today),
-                ),
-              ],
+          const SizedBox(height: 10),
+          DropdownButtonFormField(
+            items: _dayItems,
+            onChanged: (value) => onChanged(value ?? 0),
+            decoration: InputDecoration(
+              hintText: labelText,
+              hintStyle: TextStyle(fontSize: 18, color: AppColor.nokiaBlue),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: AppColor.nokiaBlue)),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 12),
             ),
           ),
         ],

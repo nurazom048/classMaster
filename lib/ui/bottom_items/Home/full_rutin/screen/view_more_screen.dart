@@ -188,6 +188,13 @@ class ClassListPage extends StatelessWidget {
                         return ClassRow(
                           id: classes.id,
                           className: classes.name,
+
+                          //
+                          onLongPress: () {
+                            PriodeAlart.logPressClass(context,
+                                classId: classes.classId, rutinId: rutinId);
+                          },
+
                           ontap: () {
                             Navigator.push(
                               context,

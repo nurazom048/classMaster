@@ -13,7 +13,11 @@ import '../controller/priodeController.dart';
 class PriodeAlart {
 //
   //! **********     long press to class       *********//
-  static Future<dynamic> editDelele(BuildContext context, classId) {
+  static Future<dynamic> logPressClass(
+    BuildContext context, {
+    rutinId,
+    classId,
+  }) {
     return showCupertinoModalPopup(
       context: context,
       builder: (context) => Consumer(builder: (context, ref, _) {
@@ -21,26 +25,33 @@ class PriodeAlart {
           title: const Text(" Do you want to.. ",
               style: TextStyle(fontSize: 22, color: Colors.black87)),
           actions: [
-            CupertinoActionSheetAction(
-                child: const Text("Eddit"), // go to eddit
+// Eddit
 
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                          fullscreenDialog: true,
-                          builder: (context) => AddClassSceen(
-                                rutinId: "rutinId",
-                                classId: classId,
-                                isEdit: true,
-                              )));
-                }),
             CupertinoActionSheetAction(
-              child: const Text("Remove", style: TextStyle(color: Colors.red)),
+              child: Text("Eddit Class ",
+                  style: TextStyle(color: AppColor.nokiaBlue)),
               onPressed: () {
-                ref
-                    .watch(RutinControllerProvider.notifier)
-                    .deleteClass(classId, context);
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    fullscreenDialog: true,
+                    builder: (context) => AddClassSceen(
+                      rutinId: rutinId,
+                      classId: classId,
+                      isEdit: true,
+                    ),
+                  ),
+                );
+              },
+            ),
+// ddelete
+            CupertinoActionSheetAction(
+              child: const Text("Remove class",
+                  style: TextStyle(color: Colors.red)),
+              onPressed: () {
+                // ref
+                //     .watch(priodeController.notifier)
+                //     .deletePriode(ref, context, priodeId, rutinId);
 
                 Navigator.pop(context);
               },

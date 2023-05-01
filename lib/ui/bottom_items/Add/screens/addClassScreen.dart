@@ -1,34 +1,42 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, no_leading_underscores_for_local_identifiers
 
 import 'dart:convert';
 //import 'package:flutter_svg/svg.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/core/dialogs/Alart_dialogs.dart';
 import 'package:table/helper/constant/AppColor.dart';
 import 'package:table/helper/constant/constant.dart';
 import 'package:table/models/class_model.dart';
 import 'package:table/ui/bottom_items/Add/request/class_request.dart';
 import 'package:table/ui/bottom_items/Add/utils/add_class_validation.dart';
+import 'package:table/ui/bottom_items/Add/widgets/addWeekdayButton.dart';
+import 'package:table/ui/bottom_items/Add/widgets/expanded_weekday.dart';
+import 'package:table/ui/bottom_items/Add/widgets/select_priode_number.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/request/weekday_req.dart';
 import 'package:table/widgets/appWidget/appText.dart';
 import 'package:table/widgets/appWidget/buttons/cupertinoButttons.dart';
+import 'package:table/widgets/appWidget/dottted_divider.dart';
 import 'package:table/widgets/daySelectDropdowen.dart';
 import 'package:table/widgets/heder/hederTitle.dart';
-import 'package:table/widgets/text%20and%20buttons/mytext.dart';
+import '../../../../models/messageModel.dart';
+import '../../../../models/rutins/class/findClassModel.dart';
 import '../../../../widgets/appWidget/TextFromFild.dart';
+import '../../Home/full_rutin/controller/weekday_controller.dart';
 
 class AddClassSceen extends StatefulWidget {
   final String rutinId;
   final String? rutinName;
   final String? classId;
   final bool? isEdit;
-  const AddClassSceen(
-      {super.key,
-      required this.rutinId,
-      this.classId,
-      this.isEdit = false,
-      this.rutinName});
+  AddClassSceen({
+    super.key,
+    required this.rutinId,
+    this.classId,
+    this.isEdit = false,
+    this.rutinName,
+  });
 
   @override
   State<AddClassSceen> createState() => _AddClassSceenState();
@@ -44,7 +52,7 @@ class _AddClassSceenState extends State<AddClassSceen> {
   final _endPeriodController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   late DateTime startTime = DateTime.now();
-  late DateTime endTime = DateTime.now().add(Duration(minutes: 30));
+  late DateTime endTime = DateTime.now().add(const Duration(minutes: 30));
 
   bool show = false;
 
@@ -56,6 +64,10 @@ class _AddClassSceenState extends State<AddClassSceen> {
   DateTime? st;
   DateTime? et;
   //
+  // List<Weekday>? weekdays;
+
+  int startPriode = 1;
+  int endPriode = 1;
 
   @override
   void initState() {
@@ -68,148 +80,149 @@ class _AddClassSceenState extends State<AddClassSceen> {
   @override
   Widget build(BuildContext context) {
     print(widget.rutinId);
-    return Scaffold(
-      backgroundColor: const Color(0xFFEFF6FF),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            primary: true,
-            // physics: NeverScrollableScrollPhysics(),
-            children: <Widget>[
-              HeaderTitle(widget.rutinName ?? '', context),
-              SizedBox(height: 40),
-
-              const AppText("  Add Class").title(),
-
-              AppTextFromField(
-                controller: _className,
-                hint: "Class name",
-                labelText: "Enter class name",
-                validator: (value) => AddClassValidator.className(value),
-              ),
-              AppTextFromField(
-                controller: _instructorController,
-                hint: "Instructor Name",
-                labelText: "Enter Instructor Name",
-                validator: (value) => AddClassValidator.instructorName(value),
-              ),
-
-              AppTextFromField(
-                controller: _subCodeController,
-                hint: "Subject Name",
-                labelText: "Subject Name",
-                validator: (value) => AddClassValidator.subCode(value),
-              ),
-
-              DayDropdown(
-                  labelText: "labelText",
-                  onPressed: () {},
-                  onChanged: (selected_day) {
-                    print(selected_day);
-                  }),
-
-              ///.... room number
-
-              AppTextFromField(
-                controller: _roomController,
-                hint: "Classroom Number",
-                labelText: "EnterClassroom Number in this day",
-                validator: (value) => AddClassValidator.roomNumber(value),
-              ),
-
-              const MyText("Start and end Time"),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 2.2,
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      maxLength: 1,
-                      controller: _startPeriodController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(7),
-                          borderSide: const BorderSide(
-                            color: Colors.black12,
-                          ),
-                        ),
-                        hintText: "Start period",
+    return Consumer(builder: (context, ref, _) {
+      //! provider
+      var weekdayListProvider =
+          ref.watch(weekayControllerStateProvider(widget.classId ?? ''));
+      return Scaffold(
+        backgroundColor: const Color(0xFFEFF6FF),
+        body: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: <Widget>[
+                      HeaderTitle(widget.rutinName ?? '', context),
+                      const SizedBox(height: 40),
+                      widget.isEdit == true
+                          ? const AppText("Eddit Class   ").title()
+                          : const AppText("Add Class ").title(),
+                      const SizedBox(height: 20),
+                      AppTextFromField(
+                        controller: _className,
+                        hint: "Class name",
+                        labelText: "Enter class name",
+                        validator: (value) =>
+                            AddClassValidator.className(value),
                       ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Start period cannot be empty";
-                        } else if (int.tryParse(value) == null ||
-                            int.parse(value) <= 0) {
-                          return "Start period must be a positive integer";
-                        } else {
-                          int start = int.parse(value);
-                          int end =
-                              int.tryParse(_endPeriodController.text) ?? 0;
-                          if (start > end) {
-                            return "Start period must be less than end period";
-                          }
-                          return null;
-                        }
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 2.2,
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      maxLength: 1,
-                      controller: _endPeriodController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(7),
-                          borderSide: const BorderSide(
-                            color: Colors.black12,
-                          ),
-                        ),
-                        hintText: "End period",
+                      AppTextFromField(
+                        controller: _instructorController,
+                        hint: "Instructor Name",
+                        labelText: "Enter Instructor Name",
+                        validator: (value) =>
+                            AddClassValidator.instructorName(value),
                       ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "End period cannot be empty";
-                        } else if (int.tryParse(value) == null ||
-                            int.parse(value) <= 0) {
-                          return "End period must be a positive integer";
-                        } else {
-                          int start =
-                              int.tryParse(_startPeriodController.text) ?? 0;
-                          int end = int.parse(value);
-                          if (start > end) {
-                            return "End period must be greater than start period";
+                      AppTextFromField(
+                        controller: _subCodeController,
+                        hint: "Subject Name",
+                        labelText: "Subject Name",
+                        validator: (value) => AddClassValidator.subCode(value),
+                      ),
+                      const SizedBox(height: 20),
+                      if (widget.isEdit == true) ...[
+                        weekdayListProvider.when(
+                            data: (data) {
+                              if (data == null) {}
+                              return Column(
+                                children: List.generate(
+                                  data.weekdays.length,
+                                  (index) => Container(
+                                    margin:
+                                        const EdgeInsets.symmetric(vertical: 5),
+                                    child: ExpanedWeekDay(
+                                      weekday: data.weekdays[index],
+                                      roomController: _roomController,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                            error: (error, stackTrace) =>
+                                Alart.handleError(context, error),
+                            loading: () => Container(
+                                  height: 100,
+                                  width: 100,
+                                  child: Text("Loding"),
+                                )),
+
+                        // Column(
+                        //   children: List.generate(
+                        //     weekdays?.length ?? 0,
+                        //     (index) => Container(
+                        //       margin: const EdgeInsets.symmetric(vertical: 5),
+                        //       child: ExpanedWeekDay(
+                        //         weekday: weekdays?[index],
+                        //         roomController: _roomController,
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+
+                        AddWeekdayButton(onPressed: () {
+                          _showAddWeekdayModal(context, widget.classId);
+                        }),
+                      ] else
+                        Column(
+                          children: [
+                            DayDropdown(
+                                labelText: "labelText",
+                                onPressed: () {},
+                                onChanged: (selectedDay) {
+                                  print(selectedDay);
+                                }),
+
+                            ///.... room number
+
+                            const SizedBox(height: 30),
+
+                            //
+                            PeriodNumberSelector(
+                              hint: " Select Start Period",
+                              subhit: " Select End Period",
+                              lenghht: 3,
+                              onStartSelacted: (number) {
+                                startPriode = number;
+                              },
+                              onEndSelacted: (number) {
+                                endPriode = number;
+                              },
+                            ),
+
+                            //
+                            AppTextFromField(
+                              controller: _roomController,
+                              hint: "Classroom Number",
+                              labelText: "EnterClassroom Number in this day",
+                              validator: (value) =>
+                                  AddClassValidator.roomNumber(value),
+                            ),
+                          ],
+                        ),
+                      const SizedBox(height: 30),
+                      CupertinoButtonCustom(
+                        padding: const EdgeInsets.symmetric(horizontal: 25),
+                        textt: "Create Class",
+                        color: AppColor.nokiaBlue,
+                        onPressed: () async {
+                          print("object");
+                          if (_formKey.currentState!.validate()) {
+                            _onTapToButton();
                           }
-                          return null;
-                        }
-                      },
-                    ),
+                        },
+                      ),
+                      const SizedBox(height: 200),
+                    ],
                   ),
-                ],
+                ),
               ),
-
-              const SizedBox(height: 10),
-
-              CupertinoButtonCustom(
-                textt: "Create Class",
-                color: AppColor.nokiaBlue,
-                onPressed: () async {
-                  print("object");
-                  if (_formKey.currentState!.validate()) {
-                    _onTapToButton();
-                  }
-                },
-              ),
-              const SizedBox(height: 200),
-            ],
-          ),
+            ),
+          ],
         ),
-      ),
-    );
+      );
+    });
   }
 
   void _onTapToButton() {
@@ -223,11 +236,11 @@ class _AddClassSceenState extends State<AddClassSceen> {
               instructorName: _instructorController.text,
               roomNumber: _roomController.text,
               subjectCode: _subCodeController.text,
-              startingPeriod: int.parse(_startPeriodController.text),
-              endingPeriod: int.parse(_endPeriodController.text),
+              startingPeriod: startPriode,
+              endingPeriod: endPriode,
               weekday: _selectedDay,
-              startTime: st!,
-              endTime: et!,
+              startTime: startTime,
+              endTime: startTime,
             ))
         : ClassRequest.addClass(
             widget.rutinId,
@@ -247,48 +260,28 @@ class _AddClassSceenState extends State<AddClassSceen> {
 
   //
   // find class
-  Future<void> findClass() async {
-    // Obtain shared preferences.
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
-
+  Future<FindClass?> findClass() async {
+    print("classId: ${widget.classId}");
+    Uri uri = Uri.parse('${Const.BASE_URl}/class/find/class/${widget.classId}');
     try {
-      final response = await http.get(
-          Uri.parse('${Const.BASE_URl}/class/find/class/${widget.classId}'),
-          headers: {'Authorization': 'Bearer $getToken'});
+      final response = await http.get(uri);
 
       //.. responce
       if (response.statusCode == 200) {
-        var decodedres = json.decode(response.body);
-        //
-        _className.text = json.decode(response.body)["classs"]["name"];
-        _instructorController.text =
-            json.decode(response.body)["classs"]["instuctor_name"];
-        _roomController.text = json.decode(response.body)["classs"]["room"];
-        _subCodeController.text =
-            json.decode(response.body)["classs"]["subjectcode"];
+        print(response.body);
+        FindClass foundClass = FindClass.fromJson(json.decode(response.body));
+
+        _className.text = foundClass.classs.name;
+        _instructorController.text = foundClass.classs.instuctorName;
+        _roomController.text = foundClass.classs.room;
+        _subCodeController.text = foundClass.classs.subjectCode;
 
         //
         setState(() {
-          _selectedDay = json.decode(response.body)["classs"]["weekday"];
-          startTime = DateTime.parse(
-              json.decode(response.body)["classs"]["start_time"]);
-          endTime =
-              DateTime.parse(json.decode(response.body)["classs"]["end_time"]);
-
-          //
-          startTimeDemo = DateTime.parse(
-              json.decode(response.body)["classs"]["start_time"]);
-          endTimDemo =
-              DateTime.parse(json.decode(response.body)["classs"]["end_time"]);
-
           show = true;
 
-          //
-          _startPeriodController.text =
-              json.decode(response.body)["classs"]["start"].toString();
-          _endPeriodController.text =
-              json.decode(response.body)["classs"]["end"].toString();
+          // print(json.decode(response.body));
+          // weekdays = foundClass.weekdays;
         });
       } else {
         throw Exception('Failed to load data');
@@ -297,7 +290,84 @@ class _AddClassSceenState extends State<AddClassSceen> {
       Alart.handleError(context, e.toString());
     }
   }
-}
 
-///
-///
+  //
+
+  void _showAddWeekdayModal(BuildContext context, classId) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          int _start = 1;
+          int _end = 1;
+          int? _number;
+          final _roomCon = TextEditingController();
+          final _weekdayFromKey = GlobalKey<FormState>();
+
+          return AlertDialog(
+            content: SingleChildScrollView(
+              child: Form(
+                key: _weekdayFromKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    DayDropdown(
+                        labelText: "select day",
+                        onPressed: () {},
+                        onChanged: (selectedDay) {
+                          _number = selectedDay;
+                        }),
+                    const SizedBox(height: 5),
+                    PeriodNumberSelector(
+                      hint: " Select Start Period",
+                      subhit: " Select End Period",
+                      lenghht: 3,
+                      onStartSelacted: (number) {
+                        _start = number;
+                      },
+                      onEndSelacted: (number) {
+                        _end = number;
+                      },
+                    ),
+                    AppTextFromField(
+                      controller: _roomCon,
+                      hint: "Classroom Number",
+                      labelText: "EnterClassroom Number in this day",
+                      validator: (value) => AddClassValidator.roomNumber(value),
+                    ),
+                    const SizedBox(height: 30),
+                    CupertinoButtonCustom(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      textt: "Add Weekday",
+                      widget: const Text(
+                        "Add Weekday",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                      color: AppColor.nokiaBlue,
+                      onPressed: () async {
+                        print("object");
+                        if (_weekdayFromKey.currentState!.validate() &&
+                            _number != null) {
+                          print("validate");
+                          Message _res = await WeekdaRequest.addWeekday(
+                              classId,
+                              _number.toString(),
+                              _start.toString(),
+                              _end.toString());
+
+                          Alart.showSnackBar(context, _res.message);
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 30),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+  }
+}
