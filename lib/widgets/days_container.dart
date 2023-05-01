@@ -59,8 +59,8 @@ class DaysContaner extends ConsumerWidget {
                         context,
                         CupertinoPageRoute(
                             fullscreenDialog: true,
-                            builder: (context) => AddClassSceen(
-                                  rutinId: rutinId ?? '',
+                            builder: (context) => AddClassScreen(
+                                  routineId: rutinId ?? '',
                                 )));
                   },
                   icon: const Icon(Icons.add))

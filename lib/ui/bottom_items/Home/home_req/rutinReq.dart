@@ -5,12 +5,13 @@ import 'package:http/http.dart' as http;
 import 'package:fpdart/fpdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/helper/constant/constant.dart';
+import 'package:table/models/messageModel.dart';
 
 //
 
 class RutinReqest {
 //******    Create Rutins    ********* */
-  Future<Either<String, void>> creatRutin({rutinName}) async {
+  static Future<Either<Message, Message>> creatRutin({rutinName}) async {
     // Obtain shared preferences.
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
@@ -21,16 +22,18 @@ class RutinReqest {
         headers: {'Authorization': 'Bearer $getToken'});
 
     try {
-      if (response.statusCode == 200) {
-        final res = json.decode(response.body);
+      final res = json.decode(response.body);
+      Message message = Message.fromJson(res);
 
+      //
+      if (response.statusCode == 200) {
         print(res);
-        return right(null);
+        return right(message);
       } else {
-        return right(null);
+        return left(message);
       }
     } catch (e) {
-      return left(e.toString());
+      return left(Message(message: e.toString()));
     }
   }
 }

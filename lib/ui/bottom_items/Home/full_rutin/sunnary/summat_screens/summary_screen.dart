@@ -34,8 +34,9 @@ class SummaryScreen extends StatelessWidget {
                       children: [
                         HeaderTitle("", context),
                         const SizedBox(height: 20),
-                        AppText(day?.name ?? '').title(),
-                        AppText(day?.name ?? '', color: Colors.blue).heding(),
+                        AppText(day?.classId.name ?? '').title(),
+                        AppText(day?.classId.name ?? '', color: Colors.blue)
+                            .heding(),
                       ],
                     ),
                   )),

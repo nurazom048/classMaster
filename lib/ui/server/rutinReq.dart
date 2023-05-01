@@ -19,15 +19,13 @@ class Rutin_Req {
 
   ///.......... For all Class and priodes........///
   Future<NewClassDetailsModel?> rutins_class_and_priode(String rutinId) async {
+    print(rutinId);
     var url = Uri.parse("${Const.BASE_URl}/class/$rutinId/all/class");
 
     try {
       final response = await http.get(url);
       var res = json.decode(response.body);
-      // print(res);
-
-      // print("rutins_class_and_priode" + response.body);
-
+      //  print(res);
       if (response.statusCode == 200) {
         var classDetalis = NewClassDetailsModel.fromJson(res);
 

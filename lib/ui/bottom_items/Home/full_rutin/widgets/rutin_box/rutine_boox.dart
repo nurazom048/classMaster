@@ -196,7 +196,7 @@ class _RutinBoxState extends State<RutinBox> {
       context,
       CupertinoPageRoute(
           builder: (context) => SummaryScreen(
-                classId: day?.classId ?? "",
+                classId: day?.classId.id ?? "",
                 day: day,
               )),
     );

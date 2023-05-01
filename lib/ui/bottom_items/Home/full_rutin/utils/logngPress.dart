@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/helper/constant/AppColor.dart';
 import 'package:table/models/priode/all_priode_models.dart';
-import 'package:table/ui/bottom_items/Add/screens/addClassScreen.dart';
+import '../../../Add/request/class_request.dart';
+import '../../../Add/screens/addClassScreen.dart';
 import '../../../Add/screens/addPriode.dart';
-import '../controller/Rutin_controller.dart';
 import '../controller/priodeController.dart';
 
 class PriodeAlart {
@@ -15,8 +15,8 @@ class PriodeAlart {
   //! **********     long press to class       *********//
   static Future<dynamic> logPressClass(
     BuildContext context, {
-    rutinId,
-    classId,
+    required String rutinId,
+    required String classId,
   }) {
     return showCupertinoModalPopup(
       context: context,
@@ -35,8 +35,8 @@ class PriodeAlart {
                   context,
                   CupertinoPageRoute(
                     fullscreenDialog: true,
-                    builder: (context) => AddClassSceen(
-                      rutinId: rutinId,
+                    builder: (context) => AddClassScreen(
+                      routineId: rutinId,
                       classId: classId,
                       isEdit: true,
                     ),
@@ -49,11 +49,7 @@ class PriodeAlart {
               child: const Text("Remove class",
                   style: TextStyle(color: Colors.red)),
               onPressed: () {
-                // ref
-                //     .watch(priodeController.notifier)
-                //     .deletePriode(ref, context, priodeId, rutinId);
-
-                Navigator.pop(context);
+                ClassRequest.deleteClass(context, ref, classId, rutinId);
               },
             ),
           ],

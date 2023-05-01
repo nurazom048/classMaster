@@ -46,7 +46,7 @@ class RutineCardInfoRow extends StatelessWidget {
                     SizedBox(
                       width: MediaQuery.of(context).size.width / 2.1,
                       child: Text(
-                        day?.name ?? "subject Name ",
+                        day?.classId.subjectcode ?? "subject Name ",
                         maxLines: 1,
                         textScaleFactor: 1.2,
                         style: const TextStyle(
@@ -61,7 +61,7 @@ class RutineCardInfoRow extends StatelessWidget {
                     //
 
                     Text(
-                      '\n- ${day?.instuctorName ?? "instuctorName"}',
+                      '\n- ${day?.classId.instuctorName ?? "instuctorName"}',
                       textScaleFactor: 1.2,
                       maxLines: 2,
                       style: const TextStyle(

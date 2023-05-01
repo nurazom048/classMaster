@@ -27,7 +27,7 @@ class ChustomTitleBar extends StatelessWidget {
     String dayOfWeek = DateFormat('EEEE').format(now);
     String date = DateFormat('MM/dd/yy').format(now);
     return Container(
-      height: 60,
+      height: 62,
       color: Colors.white,
       padding: const EdgeInsets.all(9.0),
       child: Row(

@@ -28,17 +28,17 @@ class WeekdaRequest {
       if (response.statusCode == 200) {
         return right(wekkdaylist);
       } else {
-        throw left(error);
+        return left(error);
       }
     } catch (e) {
       print(e);
-      throw left(Message(message: e.toString()));
+      return left(Message(message: e.toString()));
     }
   }
 
   //
-  static Future<Message> addWeekday(
-      String classId, String num, String start, String end) async {
+  static Future<Either<Message, Message>> addWeekday(String classId,
+      String? room, String num, String start, String end) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 
@@ -46,18 +46,43 @@ class WeekdaRequest {
       final response = await http.post(
           Uri.parse('${Const.BASE_URl}/class/weakday/add/$classId'),
           headers: {'Authorization': 'Bearer $getToken'},
-          body: {"num": num, "start": start, "end": end});
+          body: {"num": num, "room": room, "start": start, "end": end});
 
       var res = Message.fromJson(jsonDecode(response.body));
 
       if (response.statusCode == 200) {
-        return res;
+        return right(res);
       } else {
-        throw Exception(res.message);
+        return left(res);
       }
     } catch (e) {
       print(e);
-      throw Exception(e);
+      return left(Message(message: e.toString()));
+    }
+  }
+
+// delete weekday
+
+  static Future<Either<Message, WeekdayList>> deletWeekday(String id) async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+
+    try {
+      final response = await http.delete(
+        Uri.parse('${Const.BASE_URl}/class/weakday/delete/$id'),
+        headers: {'Authorization': 'Bearer $getToken'},
+      );
+      Message error = Message.fromJson(jsonDecode(response.body));
+      WeekdayList wekkdaylist = WeekdayList.fromJson(jsonDecode(response.body));
+
+      if (response.statusCode == 200) {
+        return right(wekkdaylist);
+      } else {
+        return left(error);
+      }
+    } catch (e) {
+      print(e);
+      return left(Message(message: e.toString()));
     }
   }
 }

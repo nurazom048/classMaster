@@ -171,7 +171,7 @@ class ClassListPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => AddClassSceen(rutinId: rutinId)),
+                      builder: (context) => AddClassScreen(routineId: rutinId)),
                 );
               },
             ),
@@ -184,15 +184,17 @@ class ClassListPage extends StatelessWidget {
                     return ListView.builder(
                       itemCount: data.classes.allClass.length,
                       itemBuilder: (context, index) {
-                        Day classes = data.classes.allClass[index];
+                        Day day = data.classes.allClass[index];
                         return ClassRow(
-                          id: classes.id,
-                          className: classes.name,
+                          id: day.id,
+                          className: day.classId.name,
 
                           //
                           onLongPress: () {
                             PriodeAlart.logPressClass(context,
-                                classId: classes.classId, rutinId: rutinId);
+                                classId:
+                                    data.classes.allClass[index].classId.id,
+                                rutinId: rutinId);
                           },
 
                           ontap: () {
@@ -200,8 +202,8 @@ class ClassListPage extends StatelessWidget {
                               context,
                               CupertinoPageRoute(
                                 builder: (context) => SummaryScreen(
-                                  classId: classes.classId,
-                                  day: classes,
+                                  classId: day.id,
+                                  day: day,
                                 ),
                               ),
                             );
