@@ -9,14 +9,12 @@ import 'package:table/models/messageModel.dart';
 import '../../../../../../models/summaryModels.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
-import 'dart:io';
-import 'package:http/http.dart' as http;
-//... Providers....//
 
+//... Providers....//
 final summaryReqProvider = Provider<SummayReuest>((ref) => SummayReuest());
 
-final getSumarisProvider = FutureProvider.autoDispose
-    .family<SummayModels, String>((ref, classId) async {
+final getSumarisProvider =
+    FutureProvider.autoDispose.family<Summary, String>((ref, classId) async {
   return ref.read(summaryReqProvider).getSummaryList(classId);
 });
 
@@ -74,7 +72,7 @@ class SummayReuest {
 
   /// get summary........///
 
-  Future<SummayModels> getSummaryList(classId) async {
+  Future<Summary> getSummaryList(classId) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
     var url = Uri.parse('${Const.BASE_URl}/summary/$classId');
@@ -86,7 +84,7 @@ class SummayReuest {
 
       if (response.statusCode == 200) {
         var res = json.decode(response.body);
-        var listOsSummary = SummayModels.fromJson(res);
+        var listOsSummary = Summary.fromJson(res);
 
         return listOsSummary;
       } else {

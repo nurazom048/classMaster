@@ -2,8 +2,11 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:table/core/dialogs/Alart_dialogs.dart';
 import 'package:table/models/ClsassDetailsModel.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summary_request/summary_request.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summat_screens/add_summary.dart';
 import 'package:table/widgets/appWidget/dottted_divider.dart';
 import 'package:table/widgets/heder/hederTitle.dart';
@@ -56,6 +59,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
   @override
   Widget build(BuildContext context) {
     print("ClassId : ${widget.classId}");
+
     return SafeArea(
       child: Scaffold(
         body: NestedScrollView(
@@ -66,25 +70,35 @@ class _SummaryScreenState extends State<SummaryScreen> {
           body: Container(
             color: Colors.black12,
             height: MediaQuery.of(context).size.height,
-            child: Column(
-              children: [
-                Expanded(
-                  flex: 10,
-                  child: ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    //reverse: true,
-                    itemCount: chats.length,
-                    itemBuilder: (context, index) {
-                      final chat = chats[index];
-                      return ChatsDribles(
-                          name: chat['name'],
-                          messaage: chat['messaage'],
-                          imageLinks: List<String?>.from(chat['imageLinks']));
-                    },
+            child: Consumer(builder: (context, ref, _) {
+              final allSummary =
+                  ref.watch(getSumarisProvider("644f8bc80f3ee6456717f61e"));
+              return Column(
+                children: [
+                  Expanded(
+                    flex: 10,
+                    child: allSummary.when(
+                        data: (data) {
+                          return ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            //reverse: true,
+                            itemCount: data.summaryItems.length,
+                            itemBuilder: (context, index) {
+                              return ChatsDribles(
+                                name: data.summaryItems[index].text,
+                                messaage: data.summaryItems[index].text,
+                                imageLinks: data.summaryItems[index].imageLinks,
+                              );
+                            },
+                          );
+                        },
+                        error: (error, stackTrace) =>
+                            Alart.handleError(context, error),
+                        loading: () => Text("data")),
                   ),
-                ),
-              ],
-            ),
+                ],
+              );
+            }),
           ),
 
           ///
@@ -122,7 +136,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
 class ChatsDribles extends StatelessWidget {
   final String name;
   final String messaage;
-  final List<String?> imageLinks;
+  final List<String> imageLinks;
 
   const ChatsDribles({
     Key? key,
@@ -246,7 +260,7 @@ class ChatsDribles extends StatelessWidget {
                       color: Colors.black12,
                       shape: BoxShape.rectangle,
                     ),
-                    child: Image(image: NetworkImage(imageLinks[index] ?? ''))),
+                    child: Image(image: NetworkImage(imageLinks[index]))),
               ),
             ),
             SizedBox(height: 20)
