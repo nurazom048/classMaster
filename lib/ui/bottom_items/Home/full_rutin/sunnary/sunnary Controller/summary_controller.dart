@@ -40,16 +40,16 @@ class SummaryController extends StateNotifier<AsyncValue<SummayModels>> {
   }
 
   //.. add summary..
-  void addSummary(WidgetRef ref, classId, summatText, context) async {
-    var res = summaryReq.addSummary(classId, summatText);
+  // void addSummary(WidgetRef ref, classId, summatText, context) async {
+  // //  var res = summaryReq.addSummary(classId, summatText);
 
-    res.catchError((error) => Alart.handleError(context, error));
-    res.then((value) {
-      state = AsyncData(state.value!.copyWith(
-        summaries: [...state.value!.summaries, value],
-      ));
-      Navigator.pop(context);
-      return Alart.showSnackBar(context, "added");
-    });
-  }
+  //   res.catchError((error) => Alart.handleError(context, error));
+  //   res.then((value) {
+  //     state = AsyncData(state.value!.copyWith(
+  //       summaries: [...state.value!.summaries, value],
+  //     ));
+  //     Navigator.pop(context);
+  //     return Alart.showSnackBar(context, "added");
+  //   });
+  // }
 }

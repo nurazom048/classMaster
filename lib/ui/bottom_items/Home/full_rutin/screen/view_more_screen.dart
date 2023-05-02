@@ -242,7 +242,7 @@ class _ClassListPageState extends State<ClassListPage> {
                               context,
                               CupertinoPageRoute(
                                 builder: (context) => SummaryScreen(
-                                  classId: day.id,
+                                  classId: day.classId.id,
                                   day: day,
                                 ),
                               ),

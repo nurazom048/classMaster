@@ -1,8 +1,10 @@
 // ignore_for_file: avoid_print
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table/models/ClsassDetailsModel.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summat_screens/add_summary.dart';
 import 'package:table/widgets/appWidget/dottted_divider.dart';
 import 'package:table/widgets/heder/hederTitle.dart';
 
@@ -10,7 +12,7 @@ import '../../widgets/rutin_box/rutin_card_row.dart';
 import '../widgets/add_summary_button.dart';
 import '../widgets/summary_header.dart';
 
-class SummaryScreen extends StatelessWidget {
+class SummaryScreen extends StatefulWidget {
   final String classId;
   final Day? day;
 
@@ -19,6 +21,12 @@ class SummaryScreen extends StatelessWidget {
     required this.classId,
     this.day,
   });
+
+  @override
+  State<SummaryScreen> createState() => _SummaryScreenState();
+}
+
+class _SummaryScreenState extends State<SummaryScreen> {
   final scrollController = ScrollController();
 
   final List<Map<String, dynamic>> chats = [
@@ -47,6 +55,7 @@ class SummaryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("ClassId : ${widget.classId}");
     return SafeArea(
       child: Scaffold(
         body: NestedScrollView(
@@ -62,7 +71,8 @@ class SummaryScreen extends StatelessWidget {
                 Expanded(
                   flex: 10,
                   child: ListView.builder(
-                    // reverse: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    //reverse: true,
                     itemCount: chats.length,
                     itemBuilder: (context, index) {
                       final chat = chats[index];
@@ -83,27 +93,30 @@ class SummaryScreen extends StatelessWidget {
         //... Add summary icon.....//
         floatingActionButton: AddSummaryButton(
           onTap: () {
-            // return Navigator.push(
-            // context,
-            // CupertinoPageRoute(
-            //     fullscreenDialog: true,
-            //     builder: (context) => AddSummaryScreen(classId: classId)),
-            //     );
+            print("onTAp");
+            // Map<String, dynamic> newMessage = {
+            //   'name': 'John Doe new',
+            //   'messaage': 'Hello, how are you?',
+            //   'imageLinks': [
+            //     'https://images.unsplash.com/photo-1682687220247-9f786e34d472?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80',
+            //     'https://images.unsplash.com/photo-1682687220247-9f786e34d472?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80'
+            //   ]
+            // };
+            // setState(() {
+            //   chats.add(newMessage);
+            // });
+
+            return Navigator.push(
+              context,
+              CupertinoPageRoute(
+                  fullscreenDialog: true,
+                  builder: (context) => AddSummaryScreen()),
+            );
           },
         ),
       ),
     );
   }
-
-  // void newScroll() {
-  //   WidgetsBinding.instance.addPostFrameCallback((_) {
-  //     scrollController.animateTo(
-  //       scrollController.position.maxScrollExtent,
-  //       duration: const Duration(milliseconds: 500),
-  //       curve: Curves.easeInOut,
-  //     );
-  //   });
-  // }
 }
 
 class ChatsDribles extends StatelessWidget {

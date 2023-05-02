@@ -23,7 +23,7 @@ class FullRutineView extends StatelessWidget {
           final rutinDetals = ref.watch(rutins_detalis_provider(rutinId));
           return Column(
             children: [
-              CustomTopBar(rutinName),
+              //  CustomTopBar(rutinName),
               rutinDetals.when(
                 data: (data) {
                   return RutinBox(
