@@ -3,8 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table/models/ClsassDetailsModel.dart';
-import 'package:table/widgets/appWidget/appText.dart';
+import 'package:table/widgets/appWidget/dottted_divider.dart';
 import 'package:table/widgets/heder/hederTitle.dart';
+
+import '../../widgets/rutin_box/rutin_card_row.dart';
+import '../widgets/add_summary_button.dart';
+import '../widgets/summary_header.dart';
 
 class SummaryScreen extends StatelessWidget {
   final String classId;
@@ -17,82 +21,226 @@ class SummaryScreen extends StatelessWidget {
   });
   final scrollController = ScrollController();
 
+  final List<Map<String, dynamic>> chats = [
+    {
+      'name': 'John Doe',
+      'messaage': 'Hello, how are you?',
+      'imageLinks': [
+        'https://images.unsplash.com/photo-1682687220247-9f786e34d472?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80',
+        'https://images.unsplash.com/photo-1682687220247-9f786e34d472?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80'
+      ]
+    },
+    {
+      'name': 'Jane Smith',
+      'messaage': 'I am fine, thanks. How about you?',
+      'imageLinks': [
+        'https://images.unsplash.com/photo-1682687220247-9f786e34d472?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80'
+      ]
+    },
+    {
+      'name': 'Bob Johnson',
+      'messaage': 'I am doing great. Thanks for asking!',
+      'imageLinks': []
+    },
+    // Add more dummy data as needed
+  ];
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: NestedScrollView(
+          floatHeaderSlivers: true,
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            SliverToBoxAdapter(
-              child: Container(
-                  alignment: Alignment.bottomCenter,
-                  height: 200,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        HeaderTitle("", context),
-                        const SizedBox(height: 20),
-                        AppText(day?.classId.name ?? '').title(),
-                        AppText(day?.classId.name ?? '', color: Colors.blue)
-                            .heding(),
-                      ],
-                    ),
-                  )),
-            ),
+            const SliverToBoxAdapter(child: SummaryHeader()),
           ],
-          body: Column(
-            children: [
-              ///
-
-              Container(
-                height: 400,
-                child: ListView.builder(
-                  itemCount: 2,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        FilledButton.tonalIcon(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Colors.blue.shade200),
-                          ),
-                          onPressed: () {},
-                          icon: const Icon(Icons.telegram),
-                          label: const Text("Send request"),
-                        ),
-                        const Text("data"),
-                      ],
-                    );
-                  },
+          body: Container(
+            color: Colors.black12,
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              children: [
+                Expanded(
+                  flex: 10,
+                  child: ListView.builder(
+                    // reverse: true,
+                    itemCount: chats.length,
+                    itemBuilder: (context, index) {
+                      final chat = chats[index];
+                      return ChatsDribles(
+                          name: chat['name'],
+                          messaage: chat['messaage'],
+                          imageLinks: List<String?>.from(chat['imageLinks']));
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
 
           ///
+        ),
 
-          //... Add summary icon.....//
-          // floatingActionButton: AddSummary(
-          //   onTap: () => Navigator.push(
-          //     context,
-          //     CupertinoPageRoute(
-          //         fullscreenDialog: true,
-          //         builder: (context) => AddSummaryScreen(classId: classId)),
+        //... Add summary icon.....//
+        floatingActionButton: AddSummaryButton(
+          onTap: () {
+            // return Navigator.push(
+            // context,
+            // CupertinoPageRoute(
+            //     fullscreenDialog: true,
+            //     builder: (context) => AddSummaryScreen(classId: classId)),
+            //     );
+          },
         ),
       ),
     );
   }
 
-  void newScroll() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      scrollController.animateTo(
-        scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 500),
-        curve: Curves.easeInOut,
-      );
-    });
+  // void newScroll() {
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     scrollController.animateTo(
+  //       scrollController.position.maxScrollExtent,
+  //       duration: const Duration(milliseconds: 500),
+  //       curve: Curves.easeInOut,
+  //     );
+  //   });
+  // }
+}
+
+class ChatsDribles extends StatelessWidget {
+  final String name;
+  final String messaage;
+  final List<String?> imageLinks;
+
+  const ChatsDribles({
+    Key? key,
+    required this.name,
+    required this.messaage,
+    required this.imageLinks,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      // color: Colors.blueAccent,
+      constraints: BoxConstraints(
+          minHeight: 350, minWidth: double.infinity, maxHeight: 400),
+      child: Container(
+        width: 310,
+        height: 70,
+        margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 30)
+            .copyWith(bottom: 70),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: const Color(0xFFE4F0FF),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: const Color(0xFFD9D9D9)),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(width: 8),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      name,
+                      textScaleFactor: 1.4,
+                      style: const TextStyle(
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12,
+                        color: Colors.black,
+                      ),
+                    ),
+                    const Text(
+                      '07/04/23, Wednesday',
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12,
+                        color: Color(0xFF0168FF),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    SizedBox(
+                        height: 8, width: 150, child: const DotedDivider()),
+                    const SizedBox(height: 4),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width - 80,
+                      child: Text(
+                        messaage,
+                        textScaleFactor: 1.3,
+                        style: const TextStyle(
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14,
+                          height: 1.43,
+                          color: Colors.black,
+                        ),
+                        maxLines: 4,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+                const Spacer(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const SizedBox(height: 4),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: const [
+                        Text(
+                          'state',
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                            color: Color(0xFF4F4F4F),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+
+            ///
+            ///
+            ///
+            Spacer(),
+
+            Container(
+              // color: Colors.blueAccent,
+              constraints: BoxConstraints(minHeight: 0, maxHeight: 100),
+
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: imageLinks.length,
+                itemBuilder: (context, index) => Container(
+                    alignment: Alignment.centerLeft,
+                    width: 100,
+                    height: 100,
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    decoration: const BoxDecoration(
+                      color: Colors.black12,
+                      shape: BoxShape.rectangle,
+                    ),
+                    child: Image(image: NetworkImage(imageLinks[index] ?? ''))),
+              ),
+            ),
+            SizedBox(height: 20)
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -158,91 +306,9 @@ class SummaryContaner extends StatelessWidget {
   }
 }
 
-class AddSummary extends StatelessWidget {
-  final dynamic onTap;
-  const AddSummary({
-    Key? key,
-    this.onTap,
-  }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        decoration: BoxDecoration(
-          color: Colors.white70,
-          border: Border.all(
-            color: Colors.white,
-            width: 1.0,
-          ),
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: const [
-            Text(
-              ' Add Summary',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Icon(Icons.add),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class ClasInfoBox extends StatelessWidget {
-  const ClasInfoBox({
-    Key? key,
-    required this.instructorname,
-    required this.roomnumber,
-    required this.sunjectcode,
-  }) : super(key: key);
-
-  final String instructorname;
-  final String roomnumber;
-  final String sunjectcode;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 130,
-      width: double.infinity,
-      color: Colors.black12,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const SizedBox(height: 40),
-                Text("InstractorName   :  "
-                    "$instructorname"),
-                Text("  subject Code     :"
-                    "     $roomnumber"),
-                Text("Room Name    :   "
-                    "$sunjectcode "),
-                // Text(DateFormat('EEEE').format(yourDate).toString()),
-              ],
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
 // NestedScrollView(
 //           headerSliverBuilder: (context, innerBoxIsScrolled) =>[
-
-
-
 
 //           ],
 //           body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

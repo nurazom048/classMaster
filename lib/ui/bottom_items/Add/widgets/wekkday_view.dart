@@ -64,7 +64,7 @@ class weekdayView extends StatelessWidget {
                 height: 1.3,
                 color: AppColor.nokiaBlue),
           ),
-          AppText(weekday.room ?? '').title(),
+          AppText(weekday.room).title(),
           const SizedBox(height: 20),
         ],
       ),

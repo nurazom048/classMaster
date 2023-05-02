@@ -7,7 +7,9 @@ class RutineCardInfoRow extends StatelessWidget {
   final Day? day;
   final bool? isFrist;
   final dynamic onTap;
-  const RutineCardInfoRow({super.key, this.isFrist, this.onTap, this.day});
+  final Widget? taill;
+  const RutineCardInfoRow(
+      {super.key, this.isFrist, this.onTap, this.day, this.taill});
   String formatTime(DateTime? time) {
     return DateFormat.jm().format(time ?? DateTime.now());
   }
@@ -26,6 +28,7 @@ class RutineCardInfoRow extends StatelessWidget {
               //  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                // if (taill == null)
                 Text(
                   '${formatTime(day?.startTime)}\n-\n${formatTime(day?.endTime)}',
                   textScaleFactor: 1.2,
@@ -39,56 +42,82 @@ class RutineCardInfoRow extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 //
-                const Spacer(),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 2.1,
-                      child: Text(
-                        day?.classId.subjectcode ?? "subject Name ",
-                        maxLines: 1,
-                        textScaleFactor: 1.2,
-                        style: const TextStyle(
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12,
-                          height: 1.1,
-                          color: Color(0xFF4F4F4F),
-                        ),
-                      ),
-                    ),
-                    //
+                SizedBox(width: 15),
 
-                    Text(
-                      '\n- ${day?.classId.instuctorName ?? "instuctorName"}',
-                      textScaleFactor: 1.2,
-                      maxLines: 2,
-                      style: const TextStyle(
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12,
-                        height: 1.1,
-                        color: Color(0xFF0168FF),
-                      ),
-                    ),
-                  ],
+                TitleAndSubtile(
+                  title: day?.classId.instuctorName ?? " instuctorName ",
+                  subtitle: day?.classId.subjectcode ?? "instuctorName",
                 ),
+
                 const Spacer(),
+                if (taill != null)
+                  const VerticalDivider(thickness: 4, color: Colors.red),
 
                 //
-                InkWell(
-                    onTap: onTap ?? () {},
-                    child: Container(
-                        padding: const EdgeInsets.only(right: 2),
-                        alignment: AlignmentDirectional.center,
-                        child: const Icon(Icons.arrow_forward_ios)))
+                taill ??
+                    InkWell(
+                        onTap: onTap ?? () {},
+                        child: Container(
+                            padding: const EdgeInsets.only(right: 2),
+                            alignment: AlignmentDirectional.center,
+                            child: const Icon(Icons.arrow_forward_ios)))
               ],
             ),
           ),
           const DotedDivider(),
         ],
       ),
+    );
+  }
+}
+
+class TitleAndSubtile extends StatelessWidget {
+  const TitleAndSubtile({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    this.crossAxisAlignment,
+    this.sbtitleSize,
+    this.textScaleFactor,
+  });
+
+  final String title;
+  final String subtitle;
+  final CrossAxisAlignment? crossAxisAlignment;
+  final double? sbtitleSize, textScaleFactor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.start,
+      children: [
+        Text(
+          " $title",
+          maxLines: 1,
+          textScaleFactor: 1.2,
+          style: const TextStyle(
+            fontFamily: 'Inter',
+            fontWeight: FontWeight.w500,
+            fontSize: 12,
+            height: 1.1,
+            color: Color(0xFF4F4F4F),
+          ),
+        ),
+
+        //
+        Text(
+          textScaleFactor == null ? '\n- $subtitle' : subtitle,
+          textScaleFactor: textScaleFactor ?? 1.2,
+          maxLines: 2,
+          style: TextStyle(
+            fontFamily: 'Inter',
+            fontWeight: FontWeight.w500,
+            fontSize: sbtitleSize ?? 12,
+            height: 1.3,
+            color: Color(0xFF0168FF),
+          ),
+        ),
+      ],
     );
   }
 }
