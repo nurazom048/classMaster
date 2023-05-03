@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/bottom_items/Home/notice/noticeRequest.dart';
 import 'package:table/widgets/appWidget/appText.dart';
 
-import '../../../../core/dialogs/Alart_dialogs.dart';
-import '../../../../main.dart';
-import '../../../../widgets/heder/hederTitle.dart';
-import '../widgets/notice_row.dart';
+import '../../../../../core/dialogs/Alart_dialogs.dart';
+import '../../../../../widgets/heder/hederTitle.dart';
+import '../../widgets/notice_row.dart';
+import '../notice controller/virew_recent_notice_controller.dart';
 
 class ViewAllRecentNotice extends StatelessWidget {
   const ViewAllRecentNotice({super.key});
@@ -17,7 +14,7 @@ class ViewAllRecentNotice extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Consumer(builder: (context, ref, _) {
-        final recentNoticeList = ref.watch(recentNoticeProvider);
+        final recentNoticeList = ref.watch(recentNoticeController);
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,7 +22,7 @@ class ViewAllRecentNotice extends StatelessWidget {
             HeaderTitle("Back to Home", context),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: const AppText("view All \nrecent notice").title(),
+              child: const AppText("All \nrecent notice..").title(),
             ),
             recentNoticeList.when(
                 data: (data) {

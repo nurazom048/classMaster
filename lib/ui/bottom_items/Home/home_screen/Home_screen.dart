@@ -3,16 +3,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/utils/rutin_dialog.dart';
 import 'package:table/ui/bottom_items/Home/home_req/uploaded_rutine_controller.dart';
-import 'package:table/ui/bottom_items/Home/notice/noticeRequest.dart';
-import 'package:table/ui/bottom_items/Home/notice/viewAllRecentNotice.dart';
+import 'package:table/ui/bottom_items/Home/notice/notice%20controller/noticeRequest.dart';
+import 'package:table/ui/bottom_items/Home/notice/screens/viewAllRecentNotice.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/rutin_box/rutin_box_by_id.dart';
 import 'package:table/ui/bottom_items/Home/widgets/recent_notice_title.dart';
 import '../../../../core/dialogs/Alart_dialogs.dart';
-import '../../../../main.dart';
-import '../notice/models/notice bord/recentNotice.dart';
 import '../widgets/custom_title_bar.dart';
 import '../widgets/notice_row.dart';
 
@@ -46,7 +43,7 @@ class HomeScreen extends ConsumerWidget {
                 ),
 
                 Container(
-                  height: 160,
+                  height: 140,
                   margin: const EdgeInsets.symmetric(horizontal: 18),
                   padding: const EdgeInsets.all(10),
                   width: double.infinity,
@@ -58,9 +55,9 @@ class HomeScreen extends ConsumerWidget {
                         return data.fold(
                             (error) => Alart.handleError(context, error),
                             (r) => ListView.builder(
-                                  //physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: r.notices.length >= 3
-                                      ? 3
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: r.notices.length >= 2
+                                      ? 2
                                       : r.notices.length,
                                   itemBuilder: (context, index) {
                                     return NoticeRow(

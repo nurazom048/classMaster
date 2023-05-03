@@ -9,8 +9,8 @@ import 'package:table/helper/constant/constant.dart';
 import 'package:table/models/messageModel.dart';
 import 'package:table/ui/bottom_items/Home/notice/models/notice%20bord/ceatedNoticeBordName.dart';
 
-import 'models/notice bord/listOfnotice model.dart';
-import 'models/notice bord/recentNotice.dart';
+import '../models/notice bord/listOfnotice model.dart';
+import '../models/notice bord/recentNotice.dart';
 
 final viewNoticeByUsernameProvider =
     FutureProvider<Either<String, NoticesResponse>>((ref) async {

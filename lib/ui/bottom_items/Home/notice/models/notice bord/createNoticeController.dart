@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/controller/chack_status_controller.dart';
-import '../../../../core/dialogs/Alart_dialogs.dart';
-import 'noticeRequest.dart';
+import '../../../../../../core/dialogs/Alart_dialogs.dart';
+import '../../notice controller/noticeRequest.dart';
 
 final noticeBoardCreater_provider = ChangeNotifierProvider.autoDispose(
     (ref) => CreateNoticeBoard(ref.read(noticeReqProvider)));
