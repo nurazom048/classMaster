@@ -9,9 +9,10 @@ import 'package:table/ui/bottom_items/Home/full_rutin/request/member_request.dar
 import 'package:table/ui/bottom_items/Home/full_rutin/request/rutin_request.dart';
 
 //! providers
-final chackStatusControllerProvider = StateNotifierProvider.autoDispose
-    .family<ChackStatusController, AsyncValue<CheckStatusModel>, String>(
-        (ref, rutinId) {
+final chackStatusControllerProvider = StateNotifierProvider.family<
+    ChackStatusController,
+    AsyncValue<CheckStatusModel>,
+    String>((ref, rutinId) {
   return ChackStatusController(ref, rutinId, ref.read(FullRutinProvider),
       ref.read(memberRequestProvider));
 });

@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:table/core/dialogs/Alart_dialogs.dart';
 import 'package:table/models/ClsassDetailsModel.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summat_screens/add_summary.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/sunnary_section/summat_screens/add_summary.dart';
 import 'package:table/widgets/appWidget/dottted_divider.dart';
 import '../sunnary Controller/summary_controller.dart';
 import '../widgets/add_summary_button.dart';

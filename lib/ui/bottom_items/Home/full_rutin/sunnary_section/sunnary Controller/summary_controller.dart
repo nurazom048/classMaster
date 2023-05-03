@@ -3,8 +3,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:table/models/messageModel.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/models/all_summary_models.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summary_request/summary_request.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/sunnary_section/models/all_summary_models.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/sunnary_section/summary_request/summary_request.dart';
 import '../../../../../../core/dialogs/Alart_dialogs.dart';
 
 // providers

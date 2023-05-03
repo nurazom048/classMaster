@@ -7,8 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:table/core/dialogs/Alart_dialogs.dart';
 import 'package:table/models/messageModel.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summary_request/summary_request.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/sunnary%20Controller/summary_controller.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/sunnary_section/summary_request/summary_request.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/sunnary_section/sunnary%20Controller/summary_controller.dart';
 import 'package:table/widgets/heder/hederTitle.dart';
 
 import '../../../../../../helper/helper_fun.dart';

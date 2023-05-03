@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table/ui/bottom_items/Account/account_request/account_request.dart';
+import 'package:table/ui/bottom_items/Account/models/Account_models.dart';
 import 'package:table/widgets/appWidget/TextFromFild.dart';
 import 'package:table/widgets/pickImage.dart';
 import '../../../../widgets/heder/hederTitle.dart';
@@ -18,11 +19,12 @@ class EdditAccount extends StatefulWidget {
 
 class _EdditAccountState extends State<EdditAccount> {
   //.. Controllers
-  final nameController = TextEditingController();
-  final emailController = TextEditingController();
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController aboutController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   //
   final nameFocusNode = FocusNode();
@@ -32,6 +34,14 @@ class _EdditAccountState extends State<EdditAccount> {
   final confirmPasswordFocusNode = FocusNode();
 
   String? imagePath;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _lodedataBeforeBuild();
+  }
+
   //
   @override
   Widget build(BuildContext context) {
@@ -56,14 +66,14 @@ class _EdditAccountState extends State<EdditAccount> {
                 focusNode: nameFocusNode,
                 onFieldSubmitted: (_) => emailFocusNode.requestFocus(),
               ),
-              AppTextFromField(
-                controller: emailController,
-                hint: "Email",
-                labelText: "Enter email address",
-                validator: (value) => SignUpValidation.validateEmail(value),
-                focusNode: emailFocusNode,
-                onFieldSubmitted: (_) => usernameFocusNode.requestFocus(),
-              ),
+              // AppTextFromField(
+              //   controller: emailController,
+              //   hint: "Email",
+              //   labelText: "Enter email address",
+              //   validator: (value) => SignUpValidation.validateEmail(value),
+              //   focusNode: emailFocusNode,
+              //   onFieldSubmitted: (_) => usernameFocusNode.requestFocus(),
+              // ),
               AppTextFromField(
                 controller: usernameController,
                 hint: "username",
@@ -71,6 +81,15 @@ class _EdditAccountState extends State<EdditAccount> {
                 validator: (value) => SignUpValidation.validateUsername(value),
                 focusNode: usernameFocusNode,
                 onFieldSubmitted: (_) => passwordFocusNode.requestFocus(),
+              ),
+
+              AppTextFromField(
+                controller: aboutController,
+                hint: "About",
+                labelText: "Couse a User for your Account",
+                //  validator: (value) => SignUpValidation.validateUsername(value),
+                // focusNode: usernameFocusNode,
+                // onFieldSubmitted: (_) => passwordFocusNode.requestFocus(),
               ),
               // AppTextFromField(
               //   controller: passwordController,
@@ -97,8 +116,13 @@ class _EdditAccountState extends State<EdditAccount> {
                   color: Colors.blue,
                   child: const Text('Eddit Account'),
                   onPressed: () async {
-                    await AccountReq().updateAccount(context,
-                        name: nameController.text, imagePath: imagePath);
+                    await AccountReq.updateAccount(
+                      context,
+                      nameController.text,
+                      usernameController.text,
+                      aboutController.text,
+                      imagePath: imagePath,
+                    );
                   }),
               const SizedBox(height: 70),
             ],
@@ -106,5 +130,16 @@ class _EdditAccountState extends State<EdditAccount> {
         ),
       ),
     );
+  }
+
+  void _lodedataBeforeBuild() async {
+    AccountModels? accountData = await AccountReq().accountData(null);
+    if (accountData != null) {
+      nameController.text = accountData.name ?? '';
+      emailController.text = accountData.name ?? '';
+      usernameController.text = accountData.username ?? '';
+      passwordController.text = accountData.password ?? '';
+      confirmPasswordController.text = accountData.password ?? '';
+    }
   }
 }

@@ -41,36 +41,54 @@ class AccountReq {
       }
     } catch (e) {
       print(e);
-      throw Exception(e);
+      return Future.error(e);
     }
   }
 
-  // update Account .....//
+//********************* update Account     ********************************//
+  static Future<void> updateAccount(context, name, username, about,
+      {String? imagePath}) async {
+    try {
+      // Get token from shared preferences
+      final prefs = await SharedPreferences.getInstance();
+      final String? getToken = prefs.getString('Token');
 
-  Future<void> updateAccount(context, {name, imagePath}) async {
-    // get image
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
+      // Create URL
+      final url = Uri.parse('${Const.BASE_URl}/account/eddit');
 
-    final url = Uri.parse('${Const.BASE_URl}/account/eddit');
+      // Create request
+      final request = http.MultipartRequest('POST', url);
 
-    // 1.. request
-    final request = http.MultipartRequest('POST', url);
+      // Set authorization header
+      request.headers.addAll({'Authorization': 'Bearer $getToken'});
 
-    request.headers.addAll({'Authorization': 'Bearer $getToken'});
+      // Add fields to request
+      request.fields['name'] = name;
+      request.fields['username'] = username;
+      request.fields['about'] = about;
 
-    request.fields['image'] = name;
-    if (imagePath != null) {
-      final imagePart = await http.MultipartFile.fromPath('image', imagePath);
-      print("image path");
-      request.files.add(imagePart);
-    }
+      // Add image to request if imagePath is provided
+      if (imagePath != null) {
+        final image = await http.MultipartFile.fromPath('image', imagePath);
+        request.files.add(image);
+      }
 
-    final response = await request.send();
-    if (response.statusCode != 200) {
-      print('Account updated successfully');
-    } else {
-      print('Failed to update account: ${response.statusCode}');
+      // Send request and get response
+      var streamedResponse = await request.send();
+      var response = await http.Response.fromStream(streamedResponse);
+
+      // Parse response body
+      final result = jsonDecode(response.body) as Map<String, dynamic>;
+
+      // Check status code
+      if (streamedResponse.statusCode == 200) {
+        print('Account updated successfully');
+      } else {
+        print('Failed to update account: ${streamedResponse.statusCode}');
+      }
+    } catch (e) {
+      // Handle errors
+      print('Error updating account: $e');
     }
   }
 }

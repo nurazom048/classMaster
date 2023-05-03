@@ -21,7 +21,7 @@ import '../../../../../widgets/hedding_row.dart';
 import '../../../../../widgets/heder/hederTitle.dart';
 import '../../../../auth_Section/utils/Login_validation.dart';
 import '../../../../server/rutinReq.dart';
-import '../sunnary/summat_screens/summary_screen.dart';
+import '../sunnary_section/summat_screens/summary_screen.dart';
 import '../widgets/account_card_widgets.dart';
 import '../widgets/class_row.dart';
 import '../widgets/priode_widget.dart';

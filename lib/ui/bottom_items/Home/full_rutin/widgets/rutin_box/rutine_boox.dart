@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/dialogs/Alart_dialogs.dart';
 import 'package:table/ui/bottom_items/Account/models/Account_models.dart';
 import 'package:table/models/ClsassDetailsModel.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summat_screens/summary_screen.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/sunnary_section/summat_screens/summary_screen.dart';
 import 'package:table/widgets/appWidget/appText.dart';
 import 'package:table/widgets/appWidget/buttons/Expende_button.dart';
 import 'package:table/widgets/appWidget/buttons/capsule_button.dart';
