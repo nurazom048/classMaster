@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:table/widgets/appWidget/buttons/capsule_button.dart';
-import 'package:table/widgets/text%20and%20buttons/mytext.dart';
 
 class HeddingRow extends StatelessWidget {
   final String hedding;

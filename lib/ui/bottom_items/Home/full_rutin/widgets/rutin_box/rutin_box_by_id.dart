@@ -38,7 +38,6 @@ class RutinBoxById extends StatefulWidget {
 class _RutinBoxState extends State<RutinBoxById> {
   List<Day?> listOfDays = [];
   late int lenght = 0;
-
   int gSelatDAy = 0;
 
   @override

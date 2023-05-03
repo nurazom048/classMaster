@@ -6,7 +6,7 @@ import 'package:table/ui/bottom_items/Home/full_rutin/widgets/seeAllCaotensList.
 import 'package:table/ui/bottom_items/search/search_request/search_request.dart';
 import 'package:table/widgets/AccoundCardRow.dart';
 import 'package:table/widgets/progress_indicator.dart';
-import 'package:table/widgets/searchBarCustom.dart';
+import 'package:table/ui/bottom_items/search/widgets/searchBarCustom.dart';
 import '../../../../../../core/dialogs/Alart_dialogs.dart';
 
 class SeelectAccount extends ConsumerWidget {

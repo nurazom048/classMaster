@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/helper/constant/AppColor.dart';
 import 'package:table/ui/bottom_items/Account/models/Account_models.dart';
 import 'package:table/ui/bottom_items/Account/accounu_ui/Account_screen.dart';
-import 'package:table/widgets/days_container.dart';
 
 class AccountCardRow extends ConsumerWidget {
   AccountCardRow({
@@ -36,7 +35,7 @@ class AccountCardRow extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bool isEdditingMood = ref.watch(isEditingModd);
+    // final bool isEdditingMood = ref.watch(isEditingModd);
     return InkWell(
       onTap: buttotext == null
           ? () => Navigator.push(
@@ -104,12 +103,12 @@ class AccountCardRow extends ConsumerWidget {
               // Text("$buttotext"),
 
               const Spacer(flex: 24),
-              if (removeCapten != null && isEdditingMood == true)
-                IconButton(
-                  onPressed: removeCapten,
-                  icon: const Icon(Icons.delete_rounded,
-                      color: CupertinoColors.systemRed),
-                ),
+              // if (removeCapten != null && isEdditingMood == true)
+              IconButton(
+                onPressed: removeCapten,
+                icon: const Icon(Icons.delete_rounded,
+                    color: CupertinoColors.systemRed),
+              ),
 
               if (buttotext != null)
                 TextButton(

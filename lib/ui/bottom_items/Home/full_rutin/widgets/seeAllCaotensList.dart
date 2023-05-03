@@ -8,7 +8,7 @@ import 'package:table/ui/bottom_items/Home/full_rutin/widgets/dash_border_button
 import 'package:table/widgets/AccoundCardRow.dart';
 import 'package:table/widgets/appWidget/TextFromFild.dart';
 import 'package:table/widgets/progress_indicator.dart';
-import 'package:table/widgets/searchBarCustom.dart';
+import 'package:table/ui/bottom_items/search/widgets/searchBarCustom.dart';
 
 import '../../../../../../core/dialogs/Alart_dialogs.dart';
 import '../../../../../../widgets/hedding_row.dart';
