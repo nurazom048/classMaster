@@ -9,7 +9,8 @@ import '../../../../../../core/dialogs/Alart_dialogs.dart';
 // providers
 
 final sunnaryControllerProvider = StateNotifierProvider.autoDispose
-    .family<SummaryController, AsyncValue<SummaryItem>, String>((ref, classId) {
+    .family<SummaryController, AsyncValue<AllSummaryModel>, String>(
+        (ref, classId) {
   return SummaryController(ref, classId, ref.watch(summaryReqProvider));
 });
 
@@ -17,7 +18,7 @@ final sunnaryControllerProvider = StateNotifierProvider.autoDispose
 
 //
 //
-class SummaryController extends StateNotifier<AsyncValue<SummaryItem>> {
+class SummaryController extends StateNotifier<AsyncValue<AllSummaryModel>> {
   SummayReuest summaryReq;
   var ref;
   String classId;

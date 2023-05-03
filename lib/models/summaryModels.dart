@@ -1,114 +1,82 @@
-class Summary {
-  final String message;
-  final List<SummaryItem> summaryItems;
+class AllSummaryModel {
+  String message;
+  List<Summary> summaries;
 
-  Summary({
+  AllSummaryModel({
     required this.message,
-    required this.summaryItems,
+    required this.summaries,
   });
 
-  factory Summary.fromJson(Map<String, dynamic> json) {
-    List<SummaryItem> summaryItems = [];
-    for (final item in json['summarys']) {
-      summaryItems.add(SummaryItem.fromJson(item));
-    }
-    return Summary(
+  factory AllSummaryModel.fromJson(Map<String, dynamic> json) {
+    List<dynamic> summaryList = json['summaries'];
+    List<Summary> summaries =
+        summaryList.map((s) => Summary.fromJson(s)).toList();
+
+    return AllSummaryModel(
       message: json['message'],
-      summaryItems: summaryItems,
+      summaries: summaries,
     );
   }
 }
 
-class SummaryItem {
-  final String id;
-  final String ownerId;
-  final String text;
-  final List<String> imageLinks;
-  final String routineId;
-  final String classId;
-  final int v;
+class Summary {
+  String id;
+  OwnerId ownerId;
+  String text;
+  List<String> imageLinks;
+  String routineId;
+  String classId;
+  List<String> imageUrls;
 
-  SummaryItem({
+  Summary({
     required this.id,
     required this.ownerId,
     required this.text,
     required this.imageLinks,
     required this.routineId,
     required this.classId,
-    required this.v,
+    required this.imageUrls,
   });
 
-  factory SummaryItem.fromJson(Map<String, dynamic> json) {
-    return SummaryItem(
+  factory Summary.fromJson(Map<String, dynamic> json) {
+    List<dynamic> imageLinkList = json['imageLinks'];
+    List<String> imageLinks =
+        imageLinkList.map((link) => link.toString()).toList();
+
+    List<dynamic> imageUrlList = json['imageUrls'];
+    List<String> imageUrls = imageUrlList.map((url) => url.toString()).toList();
+
+    return Summary(
       id: json['_id'],
-      ownerId: json['ownerId'],
+      ownerId: OwnerId.fromJson(json['ownerId']),
       text: json['text'],
-      imageLinks: List<String>.from(json['imageLinks']),
+      imageLinks: imageLinks,
       routineId: json['routineId'],
       classId: json['classId'],
-      v: json['__v'],
+      imageUrls: imageUrls,
     );
   }
 }
 
+class OwnerId {
+  String id;
+  String username;
+  String name;
+  String image;
 
+  OwnerId({
+    required this.id,
+    required this.username,
+    required this.name,
+    required this.image,
+  });
 
-
-
-
-
-
-
-
-
-
-// class SummayModels {
-//   SummayModels({required this.summaries});
-
-//   List<Summary> summaries;
-
-//   factory SummayModels.fromJson(Map<String, dynamic> json) => SummayModels(
-//         summaries: List<Summary>.from(
-//             json["summaries"].map((x) => Summary.fromJson(x))),
-//       );
-
-//   SummayModels copyWith({List<Summary>? summaries}) {
-//     return SummayModels(summaries: summaries ?? this.summaries);
-//   }
-// }
-
-// class Summary {
-//   Summary({
-//     required this.text,
-//     required this.id,
-//     required this.time,
-//   });
-
-//   String text;
-//   String id;
-//   DateTime time;
-
-//   factory Summary.fromJson(Map<String, dynamic> json) => Summary(
-//         text: json["text"],
-//         id: json["_id"],
-//         time: DateTime.parse(json["time"]),
-//       );
-
-//   Map<String, dynamic> toJson() => {
-//         "text": text,
-//         "_id": id,
-//         "time": time.toIso8601String(),
-//       };
-
-//   Summary copyWith({
-//     String? text,
-//     String? id,
-//     DateTime? time,
-//   }) {
-//     return Summary(
-//       text: text ?? this.text,
-//       id: id ?? this.id,
-//       time: time ?? this.time,
-//     );
-//   }
-// }
+  factory OwnerId.fromJson(Map<String, dynamic> json) {
+    return OwnerId(
+      id: json['_id'],
+      username: json['username'],
+      name: json['name'],
+      image: json['image'],
+    );
+  }
+}

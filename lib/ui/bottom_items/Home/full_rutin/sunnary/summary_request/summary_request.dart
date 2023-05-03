@@ -13,8 +13,8 @@ import 'dart:async';
 //... Providers....//
 final summaryReqProvider = Provider<SummayReuest>((ref) => SummayReuest());
 
-final getSumarisProvider =
-    FutureProvider.autoDispose.family<Summary, String>((ref, classId) async {
+final getSumarisProvider = FutureProvider.autoDispose
+    .family<AllSummaryModel, String>((ref, classId) async {
   return ref.read(summaryReqProvider).getSummaryList(classId);
 });
 
@@ -72,7 +72,7 @@ class SummayReuest {
 
   /// get summary........///
 
-  Future<Summary> getSummaryList(classId) async {
+  Future<AllSummaryModel> getSummaryList(classId) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
     var url = Uri.parse('${Const.BASE_URl}/summary/$classId');
@@ -84,14 +84,14 @@ class SummayReuest {
 
       if (response.statusCode == 200) {
         var res = json.decode(response.body);
-        var listOsSummary = Summary.fromJson(res);
+        var listOsSummary = AllSummaryModel.fromJson(res);
 
         return listOsSummary;
       } else {
         return throw Exception("faild to load data");
       }
     } catch (e) {
-      throw Exception(e);
+      return throw Exception(e);
     }
   }
 }

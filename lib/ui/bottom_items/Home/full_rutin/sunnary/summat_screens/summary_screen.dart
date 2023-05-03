@@ -9,9 +9,6 @@ import 'package:table/models/ClsassDetailsModel.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summary_request/summary_request.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summat_screens/add_summary.dart';
 import 'package:table/widgets/appWidget/dottted_divider.dart';
-import 'package:table/widgets/heder/hederTitle.dart';
-
-import '../../widgets/rutin_box/rutin_card_row.dart';
 import '../widgets/add_summary_button.dart';
 import '../widgets/summary_header.dart';
 
@@ -32,30 +29,6 @@ class SummaryScreen extends StatefulWidget {
 class _SummaryScreenState extends State<SummaryScreen> {
   final scrollController = ScrollController();
 
-  final List<Map<String, dynamic>> chats = [
-    {
-      'name': 'John Doe',
-      'messaage': 'Hello, how are you?',
-      'imageLinks': [
-        'https://images.unsplash.com/photo-1682687220247-9f786e34d472?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80',
-        'https://images.unsplash.com/photo-1682687220247-9f786e34d472?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80'
-      ]
-    },
-    {
-      'name': 'Jane Smith',
-      'messaage': 'I am fine, thanks. How about you?',
-      'imageLinks': [
-        'https://images.unsplash.com/photo-1682687220247-9f786e34d472?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80'
-      ]
-    },
-    {
-      'name': 'Bob Johnson',
-      'messaage': 'I am doing great. Thanks for asking!',
-      'imageLinks': []
-    },
-    // Add more dummy data as needed
-  ];
-
   @override
   Widget build(BuildContext context) {
     print("ClassId : ${widget.classId}");
@@ -71,8 +44,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
             color: Colors.black12,
             height: MediaQuery.of(context).size.height,
             child: Consumer(builder: (context, ref, _) {
-              final allSummary =
-                  ref.watch(getSumarisProvider("644f8bc80f3ee6456717f61e"));
+              final allSummary = ref.watch(getSumarisProvider(widget.classId));
               return Column(
                 children: [
                   Expanded(
@@ -82,12 +54,12 @@ class _SummaryScreenState extends State<SummaryScreen> {
                           return ListView.builder(
                             physics: NeverScrollableScrollPhysics(),
                             //reverse: true,
-                            itemCount: data.summaryItems.length,
+                            itemCount: data.summaries.length,
                             itemBuilder: (context, index) {
                               return ChatsDribles(
-                                name: data.summaryItems[index].text,
-                                messaage: data.summaryItems[index].text,
-                                imageLinks: data.summaryItems[index].imageLinks,
+                                name: data.summaries[index].text,
+                                messaage: data.summaries[index].text,
+                                imageLinks: data.summaries[index].imageUrls,
                               );
                             },
                           );
@@ -252,15 +224,18 @@ class ChatsDribles extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 itemCount: imageLinks.length,
                 itemBuilder: (context, index) => Container(
-                    alignment: Alignment.centerLeft,
-                    width: 100,
-                    height: 100,
-                    margin: const EdgeInsets.symmetric(horizontal: 10),
-                    decoration: const BoxDecoration(
-                      color: Colors.black12,
-                      shape: BoxShape.rectangle,
-                    ),
-                    child: Image(image: NetworkImage(imageLinks[index]))),
+                  alignment: Alignment.centerLeft,
+                  width: 100,
+                  height: 100,
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  decoration: const BoxDecoration(
+                    color: Colors.black12,
+                    shape: BoxShape.rectangle,
+                  ),
+                  child: Image(
+                    image: NetworkImage(imageLinks[index]),
+                  ),
+                ),
               ),
             ),
             SizedBox(height: 20)
