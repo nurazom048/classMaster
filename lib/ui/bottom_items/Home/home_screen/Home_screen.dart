@@ -10,6 +10,7 @@ import 'package:table/ui/bottom_items/Home/notice/screens/viewAllRecentNotice.da
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/rutin_box/rutin_box_by_id.dart';
 import 'package:table/ui/bottom_items/Home/widgets/recent_notice_title.dart';
 import '../../../../core/dialogs/Alart_dialogs.dart';
+import '../full_rutin/widgets/sceltons/rutinebox_id_scelton.dart';
 import '../widgets/custom_title_bar.dart';
 import '../widgets/notice_row.dart';
 
@@ -132,7 +133,7 @@ class HomeScreen extends ConsumerWidget {
                                     ),
                                   ),
                                   data.currentPage == data.totalPages
-                                      ? SizedBox.shrink()
+                                      ? const SizedBox.shrink()
                                       : const RutinBoxByIdSkelton(),
                                 ],
                               );

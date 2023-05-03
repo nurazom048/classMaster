@@ -1,13 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 import 'package:table/ui/auth_Section/auth_ui/SiginUp_Screen.dart';
 import 'package:table/ui/auth_Section/utils/Login_validation.dart';
 import 'package:table/widgets/appWidget/appText.dart';
 import 'package:table/widgets/appWidget/buttons/cupertinoButttons.dart';
+import '../../../helper/constant/AppColor.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/heder/hederTitle.dart';
+
+Future<bool> isToken() async {
+  //
+  final prefs = await SharedPreferences.getInstance();
+  final String? getToken = prefs.getString('Token');
+  print("getToken");
+
+  print(getToken);
+
+  if (getToken != null) {
+    return true;
+  }
+  return false;
+}
 
 class LogingScreen extends ConsumerWidget {
   LogingScreen({super.key});
@@ -67,6 +83,7 @@ class LogingScreen extends ConsumerWidget {
                 else
                   CupertinoButtonCustom(
                     padding: const EdgeInsets.symmetric(horizontal: 40),
+                    color: AppColor.nokiaBlue,
                     textt: "Log In",
                     onPressed: () async {
                       if (formKey.currentState?.validate() ?? false) {
