@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/dialogs/Alart_dialogs.dart';
-import 'package:table/models/Account_models.dart';
+import 'package:table/ui/bottom_items/Account/models/Account_models.dart';
 import 'package:table/models/ClsassDetailsModel.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summat_screens/summary_screen.dart';
 import 'package:table/widgets/appWidget/appText.dart';

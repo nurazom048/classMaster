@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:table/helper/constant/AppColor.dart';
-import 'package:table/models/notice%20bord/recentNotice.dart';
+import 'package:table/ui/bottom_items/Home/notice/models/notice%20bord/recentNotice.dart';
 import 'package:table/ui/bottom_items/Home/notice/viewPDF.dart';
 import 'package:table/widgets/appWidget/appText.dart';
 

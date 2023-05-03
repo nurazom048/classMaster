@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:table/helper/constant/constant.dart';
 
-import '../../../../models/Account_models.dart';
+import '../models/Account_models.dart';
 
 final AccountReqProvider = Provider<AccountReq>((ref) {
   return AccountReq();

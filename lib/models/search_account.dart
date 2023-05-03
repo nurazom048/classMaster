@@ -1,4 +1,4 @@
-import 'package:table/models/Account_models.dart';
+import 'package:table/ui/bottom_items/Account/models/Account_models.dart';
 
 class AccountsResponse {
   List<AccountModels>? accounts;

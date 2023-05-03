@@ -12,7 +12,7 @@ import 'package:table/ui/bottom_items/Home/full_rutin/widgets/rutin_box/rutin_bo
 import 'package:table/ui/bottom_items/Home/widgets/recent_notice_title.dart';
 import '../../../../core/dialogs/Alart_dialogs.dart';
 import '../../../../main.dart';
-import '../../../../models/notice bord/recentNotice.dart';
+import '../notice/models/notice bord/recentNotice.dart';
 import '../widgets/custom_title_bar.dart';
 import '../widgets/notice_row.dart';
 

@@ -13,7 +13,7 @@ import 'package:table/ui/bottom_items/Home/full_rutin/widgets/rutin_box/rutin_ca
 import 'package:table/widgets/mini_account_row.dart';
 
 import '../../../../../../core/dialogs/Alart_dialogs.dart';
-import '../../../../../../models/Account_models.dart';
+import '../../../../Account/models/Account_models.dart';
 import '../../../../../../models/ClsassDetailsModel.dart';
 import '../../controller/chack_status_controller.dart';
 import '../../screen/view_more_screen.dart';

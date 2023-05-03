@@ -6,9 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:table/core/dialogs/Alart_dialogs.dart';
 import 'package:table/models/ClsassDetailsModel.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summary_request/summary_request.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summat_screens/add_summary.dart';
 import 'package:table/widgets/appWidget/dottted_divider.dart';
+import '../sunnary Controller/summary_controller.dart';
 import '../widgets/add_summary_button.dart';
 import '../widgets/summary_header.dart';
 
@@ -44,7 +44,9 @@ class _SummaryScreenState extends State<SummaryScreen> {
             color: Colors.black12,
             height: MediaQuery.of(context).size.height,
             child: Consumer(builder: (context, ref, _) {
-              final allSummary = ref.watch(getSumarisProvider(widget.classId));
+              //! provider
+              final allSummary =
+                  ref.watch(sunnaryControllerProvider(widget.classId));
               return Column(
                 children: [
                   Expanded(
@@ -52,8 +54,8 @@ class _SummaryScreenState extends State<SummaryScreen> {
                     child: allSummary.when(
                         data: (data) {
                           return ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
-                            //reverse: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            // reverse: true,
                             itemCount: data.summaries.length,
                             itemBuilder: (context, index) {
                               return ChatsDribles(
@@ -66,7 +68,8 @@ class _SummaryScreenState extends State<SummaryScreen> {
                         },
                         error: (error, stackTrace) =>
                             Alart.handleError(context, error),
-                        loading: () => Text("data")),
+                        loading: () =>
+                            const Center(child: CircularProgressIndicator())),
                   ),
                 ],
               );
@@ -80,23 +83,13 @@ class _SummaryScreenState extends State<SummaryScreen> {
         floatingActionButton: AddSummaryButton(
           onTap: () {
             print("onTAp");
-            // Map<String, dynamic> newMessage = {
-            //   'name': 'John Doe new',
-            //   'messaage': 'Hello, how are you?',
-            //   'imageLinks': [
-            //     'https://images.unsplash.com/photo-1682687220247-9f786e34d472?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80',
-            //     'https://images.unsplash.com/photo-1682687220247-9f786e34d472?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80'
-            //   ]
-            // };
-            // setState(() {
-            //   chats.add(newMessage);
-            // });
 
             return Navigator.push(
               context,
               CupertinoPageRoute(
                   fullscreenDialog: true,
-                  builder: (context) => AddSummaryScreen()),
+                  builder: (context) =>
+                      AddSummaryScreen(classId: widget.classId)),
             );
           },
         ),
@@ -105,6 +98,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
   }
 }
 
+//////////////////////////////////////
 class ChatsDribles extends StatelessWidget {
   final String name;
   final String messaage;
@@ -121,7 +115,7 @@ class ChatsDribles extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       // color: Colors.blueAccent,
-      constraints: BoxConstraints(
+      constraints: const BoxConstraints(
           minHeight: 350, minWidth: double.infinity, maxHeight: 400),
       child: Container(
         width: 310,
@@ -165,8 +159,8 @@ class ChatsDribles extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    SizedBox(
-                        height: 8, width: 150, child: const DotedDivider()),
+                    const SizedBox(
+                        height: 8, width: 150, child: DotedDivider()),
                     const SizedBox(height: 4),
                     SizedBox(
                       width: MediaQuery.of(context).size.width - 80,
@@ -214,11 +208,11 @@ class ChatsDribles extends StatelessWidget {
             ///
             ///
             ///
-            Spacer(),
+            const Spacer(),
 
             Container(
               // color: Colors.blueAccent,
-              constraints: BoxConstraints(minHeight: 0, maxHeight: 100),
+              constraints: const BoxConstraints(minHeight: 0, maxHeight: 100),
 
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -238,7 +232,7 @@ class ChatsDribles extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 20)
+            const SizedBox(height: 20)
           ],
         ),
       ),
@@ -288,82 +282,22 @@ class SummaryContaner extends StatelessWidget {
       ),
     );
   }
-
-  String _formatDate(DateTime flutteDate) {
-    var now = DateTime.now();
-    var formatter = DateFormat('MMM');
-    var month = formatter.format(flutteDate);
-    var displayDate;
-
-    if (flutteDate.day == now.day && flutteDate.month == now.month) {
-      displayDate = "Today";
-    } else if (flutteDate.day == now.subtract(const Duration(days: 1)).day &&
-        flutteDate.month == now.subtract(const Duration(days: 1)).month) {
-      displayDate = "Yesterday";
-    } else {
-      displayDate = "${flutteDate.day} $month";
-    }
-
-    return displayDate;
-  }
 }
 
+String _formatDate(DateTime flutteDate) {
+  var now = DateTime.now();
+  var formatter = DateFormat('MMM');
+  var month = formatter.format(flutteDate);
+  var displayDate;
 
-// NestedScrollView(
-//           headerSliverBuilder: (context, innerBoxIsScrolled) =>[
+  if (flutteDate.day == now.day && flutteDate.month == now.month) {
+    displayDate = "Today";
+  } else if (flutteDate.day == now.subtract(const Duration(days: 1)).day &&
+      flutteDate.month == now.subtract(const Duration(days: 1)).month) {
+    displayDate = "Yesterday";
+  } else {
+    displayDate = "${flutteDate.day} $month";
+  }
 
-//           ],
-//           body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-//             // AppBar...
-//             HeaderTitle(day?.room ?? '', context),
-
-//             // Class information
-//             ClasInfoBox(
-//               instructorname: day?.instuctorName ?? "",
-//               roomnumber: day?.room ?? '',
-//               sunjectcode: day?.subjectcode ?? '',
-//             ),
-//             const Divider(height: 5),
-//             Container(
-//               padding: const EdgeInsets.all(20),
-//               height: MediaQuery.of(context).size.height - 210,
-//               width: double.infinity,
-//               color: Colors.black12,
-//               child: Consumer(builder: (context, ref, _) {
-//                 ////
-//                 final lstSummary = ref.watch(sunnaryControllerProvider(classId));
-
-//                 List<Summary> summary = [];
-
-//                 return Stack(
-//                   children: [
-//                     lstSummary.when(
-//                       data: (data) {
-//                         summary.addAll(data.summaries);
-
-//                         newScroll();
-
-//                         return ListView.builder(
-//                           padding: const EdgeInsets.only(bottom: 100),
-//                           shrinkWrap: true,
-//                           reverse: false,
-//                           controller: scrollController,
-//                           itemCount: summary.length,
-//                           itemBuilder: (context, index) => SummaryContaner(
-//                             text: summary[index].text,
-//                             date: summary[index].time.toString(),
-//                             is_last: 0 == index,
-//                           ),
-//                         );
-//                       },
-//                       error: (error, stackTrace) =>
-//                           Alart.handleError(context, error),
-//                       loading: () =>
-//                       const Center(child: CircularProgressIndicator()),
-//                     ),
-//                   ],
-//                 );
-//               }),
-//             )
-//           ]),
-//         ),
+  return displayDate;
+}

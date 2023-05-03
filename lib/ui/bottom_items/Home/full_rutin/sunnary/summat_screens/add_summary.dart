@@ -8,13 +8,16 @@ import 'package:fpdart/fpdart.dart';
 import 'package:table/core/dialogs/Alart_dialogs.dart';
 import 'package:table/models/messageModel.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/summary_request/summary_request.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/sunnary/sunnary%20Controller/summary_controller.dart';
 import 'package:table/widgets/heder/hederTitle.dart';
 
 import '../../../../../../helper/helper_fun.dart';
 import '../../../../../../widgets/appWidget/appText.dart';
 
 class AddSummaryScreen extends ConsumerStatefulWidget {
-  const AddSummaryScreen({super.key});
+  const AddSummaryScreen({super.key, required this.classId});
+
+  final String classId;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -24,10 +27,9 @@ class AddSummaryScreen extends ConsumerStatefulWidget {
 //
 final _summaryController = TextEditingController();
 Map<String, dynamic>? newMessage;
-List<String> imageLinks = [
-  //  'https://images.unsplash.com/photo-1682687220247-9f786e34d472?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80',
-  // 'https://images.unsplash.com/photo-1682687220247-9f786e34d472?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80'
-];
+
+//
+List<String> imageLinks = [];
 
 class _AddSummaryScreenState extends ConsumerState<AddSummaryScreen> {
   @override
@@ -45,7 +47,9 @@ class _AddSummaryScreenState extends ConsumerState<AddSummaryScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 22),
                 child: Consumer(builder: (context, ref, _) {
-                  //
+                  //! provider
+                  final addSummary = ref
+                      .read(sunnaryControllerProvider(widget.classId).notifier);
 
                   return Column(
                     children: [
@@ -68,7 +72,7 @@ class _AddSummaryScreenState extends ConsumerState<AddSummaryScreen> {
                       Container(
                         // color: Colors.blueAccent,
                         constraints:
-                            BoxConstraints(minHeight: 0, maxHeight: 100),
+                            const BoxConstraints(minHeight: 0, maxHeight: 100),
 
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
@@ -102,7 +106,7 @@ class _AddSummaryScreenState extends ConsumerState<AddSummaryScreen> {
                               });
                             }
                           },
-                          icon: Icon(Icons.add)),
+                          icon: const Icon(Icons.add)),
                       const SizedBox(height: 20),
 
                       // create button
@@ -116,15 +120,9 @@ class _AddSummaryScreenState extends ConsumerState<AddSummaryScreen> {
                               'imageLinks': imageLinks
                             };
 
-                            Either<Message, Message> res =
-                                await SummayReuest.addSummaryRequest(
-                                    'John Doe new', imageLinks);
-
-                            //
-                            res.fold(
-                                (error) => Alart.errorAlartDilog(
-                                    context, error.message),
-                                (r) => Alart.showSnackBar(context, r.message));
+                            // add summary
+                            addSummary.addSummarys(ref, context,
+                                _summaryController.text, imageLinks);
 
                             // print(newMessage.toString());
                           }),
@@ -139,36 +137,3 @@ class _AddSummaryScreenState extends ConsumerState<AddSummaryScreen> {
     );
   }
 }
-
-
-
-// class AddSummaryScreen extends StatefulWidget {
-//   AddSummaryScreen({
-//     super.key,
-//   });
-
-//   @override
-//   State<AddSummaryScreen> createState() => _AddSummaryScreenState();
-// }
-
-// class _AddSummaryScreenState extends State<AddSummaryScreen> {
-//   final _summaryController = TextEditingController();
-
-//   Map<String, dynamic>? newMessage;
-
-//   List<String> imageLinks = [
-//     //  'https://images.unsplash.com/photo-1682687220247-9f786e34d472?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80',
-//     // 'https://images.unsplash.com/photo-1682687220247-9f786e34d472?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80'
-//   ];
-// //
-//   @override
-//   Widget build(BuildContext context) {
-//     return SafeArea(
-//       child:
-//     );
-//   }
-// }
-// // ref
-// //     .read(sunnaryControllerProvider(classId).notifier)
-// //     .addSummary(ref, classId, _summaryController.text,
-// //         context);

@@ -1,6 +1,6 @@
 //***********************   MiniAccountInfo*******************/
 import 'package:flutter/material.dart';
-import 'package:table/models/Account_models.dart';
+import 'package:table/ui/bottom_items/Account/models/Account_models.dart';
 import 'package:table/widgets/appWidget/appText.dart';
 
 class MiniAccountInfo extends StatelessWidget {

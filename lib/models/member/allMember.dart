@@ -1,4 +1,4 @@
-import '../Account_models.dart';
+import '../../ui/bottom_items/Account/models/Account_models.dart';
 
 class AllMember {
   String? message;
