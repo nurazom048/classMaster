@@ -78,9 +78,7 @@ class HomeScreen extends ConsumerWidget {
 
                 uploaded_rutins.when(
                   data: (data) {
-                    if (data == null) {
-                      return const Text("Data not found");
-                    }
+                    if (data == null) return const Text("Data not found");
 
                     void scrollListener() {
                       if (scrollController.position.pixels ==

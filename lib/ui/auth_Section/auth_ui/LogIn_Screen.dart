@@ -92,14 +92,35 @@ class LogingScreen extends ConsumerWidget {
                       }
                     },
                   ),
-                TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SignUpScreen()),
-                      );
-                    },
-                    child: const Text("create a new account"))
+                Container(
+                  alignment: Alignment.center,
+                  child: Column(
+                    children: [
+                      TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SignUpScreen()),
+                            );
+                          },
+                          child: const Text(
+                              "create a new account for your sellf")),
+
+                      //
+                      TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SignUpScreen()),
+                            );
+                          },
+                          child:
+                              const Text("create a new account for academy")),
+                    ],
+                  ),
+                )
               ],
             ),
           ),

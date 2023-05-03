@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:table/core/dialogs/Alart_dialogs.dart';
 import 'package:table/helper/constant/AppColor.dart';
 import 'package:table/models/messageModel.dart';
+import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 import 'package:table/ui/auth_Section/auth_req/auth_req.dart';
 import 'package:table/ui/auth_Section/utils/singUp_validation.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
@@ -31,6 +33,9 @@ class SignUpScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    //! PROVIDER
+    final loding = ref.watch(authController_provider);
+
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -40,9 +45,6 @@ class SignUpScreen extends ConsumerWidget {
             children: [
               HeaderTitle("Log In", context),
               const SizedBox(height: 10),
-
-              ///
-              ///
 
               Form(
                 key: formKey,
@@ -97,32 +99,40 @@ class SignUpScreen extends ConsumerWidget {
                   ],
                 ),
               ),
-              //
+//_______________ Crete Buttons__________//
               const SizedBox(height: 30),
-              CupertinoButtonCustom(
-                color: AppColor.nokiaBlue,
-                textt: "Sign up",
-                onPressed: () {
-                  if (formKey.currentState?.validate() ?? false) {
-                    print("validate");
-                    createAccount(context);
-                  }
-                },
-              )
+
+              if (loding != null && loding == true)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CupertinoButton(
+                      onPressed: () {},
+                      child: const CircularProgressIndicator(),
+                    ),
+                  ],
+                )
+              else
+                CupertinoButtonCustom(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  color: AppColor.nokiaBlue,
+                  textt: "Sign up",
+                  onPressed: () {
+                    if (formKey.currentState?.validate() ?? false) {
+                      // create account
+                      ref.read(authController_provider.notifier).createAccount(
+                            context: context,
+                            name: nameController.text,
+                            username: usernameController.text,
+                            password: passwordController.text,
+                          );
+                    }
+                  },
+                )
             ],
           ),
         ),
       ),
     );
-  }
-
-  void createAccount(context) async {
-    Either<String, Message> res = await AuthReq.createAccount(context,
-        name: nameController.text,
-        username: usernameController.text,
-        password: passwordController.text);
-
-    res.fold((l) => Alart.showSnackBar(context, l),
-        (r) => Alart.showSnackBar(context, r.message));
   }
 }

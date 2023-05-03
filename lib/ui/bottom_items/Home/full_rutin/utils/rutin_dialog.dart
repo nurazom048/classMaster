@@ -4,8 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/chack_status_controller.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/controller/see_all_req_controller.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/utils/logngPress.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/members_controllers.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/select_account.dart';
@@ -17,11 +15,13 @@ import '../widgets/seeAllCaotensList.dart';
 class RutinDialog {
   //**********     ChackStatusUser_BottomSheet       **********/
   static ChackStatusUser_BottomSheet(BuildContext context, rutinId, rutinName) {
+    // show bottom sheet modal to check user status
     showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
+          // bottom sheet layout
           return Container(
-            padding: const EdgeInsets.symmetric(vertical: 30),
+            padding: const EdgeInsets.symmetric(vertical: 50),
             decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
@@ -30,13 +30,11 @@ class RutinDialog {
               ),
             ),
             child: Consumer(builder: (context, ref, _) {
-              //! providers
+              // state providers
               final chackStatus =
                   ref.watch(chackStatusControllerProvider(rutinId));
-              final seeAllJonReq =
-                  ref.read(seeAllRequestControllerProvider(rutinId).notifier);
 
-              //!.. providers with notifier
+              // state providers with notifier
               final chackStatusNotifier =
                   ref.watch(chackStatusControllerProvider(rutinId).notifier);
               final members =
@@ -50,188 +48,143 @@ class RutinDialog {
                       data: (data) {
                         String status = chackStatus.value?.activeStatus ?? '';
 
-                        return SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Column(children: [
-//? _____________________ (1st row )=>  join , save , view more________________________________//
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                if (status == "joined")
-                                  SqureButton(
-                                    icon: Icons.logout,
-                                    inActiveText: "leave",
-                                    color: Colors.redAccent,
-                                    text: data.activeStatus,
-                                    ontap: () {
-                                      return Alart.errorAlertDialogCallBack(
-                                          context,
-                                          "are you sure you want to leave",
-                                          onConfirm: (bool isYes) {
-                                        //  Navigator.pop(context);
-
-                                        chackStatusNotifier
-                                            .leaveMember(context);
-                                      });
+                        return Wrap(
+                          runSpacing: 20,
+                          alignment: WrapAlignment.center,
+                          children: [
+                            if (status == "joined")
+                              SqureButton(
+                                icon: Icons.logout,
+                                inActiveText: "leave",
+                                color: Colors.redAccent,
+                                text: data.activeStatus,
+                                ontap: () {
+                                  return Alart.errorAlertDialogCallBack(
+                                    context,
+                                    "are you sure you want to leave",
+                                    onConfirm: (bool isYes) {
+                                      chackStatusNotifier.leaveMember(context);
                                     },
-                                  )
-                                else
-                                  SqureButton(
-                                      icon: Icons.people_rounded,
-                                      inActiveIcon: Icons.telegram,
-                                      inActiveText: status,
-                                      status: status == "request_pending"
-                                          ? true
-                                          : false,
-                                      text: status,
-                                      ontap: () {
-                                        chackStatusNotifier
-                                            .sendReqController(context);
-                                      }),
-                                SqureButton(
-                                    inActiveIcon: Icons.bookmark_added,
-                                    icon: Icons.bookmark_add_sharp,
-                                    text: 'Save',
-                                    inActiveText: "add to save",
-                                    status: chackStatus.value?.isSave,
-                                    ontap: () {
-                                      chackStatusNotifier.saveUnsave(
-                                          context,
-                                          !(chackStatus.value?.isSave ??
-                                              false));
-                                    }),
-                                // SqureButton(
-                                //   icon: Icons.more_horiz,
-                                //   text: 'view more',
-                                //   ontap: () => Navigator.push(
-                                //     context,
-                                //     CupertinoPageRoute(
-                                //       fullscreenDialog: true,
-                                //       builder: (context) =>
-                                //           ViewMorepage(rutinId),
-                                //     ),
-                                //   ),
-                                // ),
-                              ],
+                                  );
+                                },
+                              )
+                            else
+                              SqureButton(
+                                icon: Icons.people_rounded,
+                                inActiveIcon: Icons.telegram,
+                                inActiveText: status,
+                                status:
+                                    status == "request_pending" ? true : false,
+                                text: status,
+                                ontap: () {
+                                  chackStatusNotifier
+                                      .sendReqController(context);
+                                },
+                              ),
+                            SqureButton(
+                              inActiveIcon: Icons.bookmark_added,
+                              icon: Icons.bookmark_add_sharp,
+                              text: 'Save',
+                              inActiveText: "add to save",
+                              status: chackStatus.value?.isSave,
+                              ontap: () {
+                                chackStatusNotifier.saveUnsave(
+                                  context,
+                                  !(chackStatus.value?.isSave ?? false),
+                                );
+                              },
                             ),
-                            const Divider(height: 20),
-/* ___________________________ (2nd row )=>  add priode , add class , add capten________________________________*/
-
                             if (data.isCaptain || data.isOwner) ...[
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SqureButton(
-                                    icon: Icons.person_add_alt_1,
-                                    text: "Add captens",
-                                    ontap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                SeelectAccount(
-                                                  addCapten: true,
-                                                  buttotext: "Add captens",
-                                                  onUsername: (seleted_username,
-                                                      setPosition) {
-                                                    members.AddCapten(
-                                                        rutinId,
-                                                        setPosition,
-                                                        seleted_username,
-                                                        context);
-                                                    print(
-                                                        "hi an cll back $seleted_username");
-                                                  },
-                                                )),
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ],
-                            const Divider(height: 20),
-/* ___________________________ (3rd row )=>  see all request ,add member ________________________________*/
-
-                            if (data.isCaptain || data.isOwner)
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SqureButton(
-                                      icon: Icons.person_add_alt_1,
-                                      text: "Add members",
-                                      ontap: () {
-                                        return Navigator.push(
-                                          context,
-                                          CupertinoPageRoute(
-                                            fullscreenDialog: true,
-                                            builder: (context) =>
-                                                SeelectAccount(
-                                              buttotext: "Add member",
-                                              onUsername:
-                                                  (seleted_username, _) {
-                                                members.addMember(
-                                                    seleted_username, context);
-                                                print(
-                                                    "hi an cll back $seleted_username");
-                                              },
-                                            ),
-                                          ),
-                                        );
-                                      }),
-                                ],
-                              ),
-                            const Divider(height: 20),
-/* ___________________________ (last row )=>  remove member , remove capten ,delete rutin________________________________*/
-
-                            if (data.isCaptain || data.isOwner)
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SqureButton(
-                                    icon: Icons.person_remove,
-                                    color: Colors.redAccent,
-                                    text: "remove captens",
-                                    ontap: () {
-                                      return Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                seeAllcaptensList(
-                                              rutinId: rutinId,
-                                              buttotext: "Remove capten",
-                                              Color: Colors.red,
-                                              onUsername:
-                                                  (seleted_username, _) {
-                                                members.removeMember(
-                                                    context, seleted_username);
-                                                print(
-                                                    "select member $seleted_username");
-                                              },
-                                            ),
-                                          ));
-                                    },
-                                  ),
-                                  if (data.isOwner == true) ...[
-                                    SqureButton(
-                                      icon: Icons.delete,
-                                      text: "Delete",
-                                      color: Colors.red,
-                                      ontap: () =>
-                                          Alart.errorAlertDialogCallBack(
-                                        context,
-                                        "Are you sure to delete",
-                                        onConfirm: (isyes) {
-                                          ref
-                                              .watch(RutinControllerProvider
-                                                  .notifier)
-                                              .deleteRutin(rutinId, context);
+                              SqureButton(
+                                icon: Icons.person_add_alt_1,
+                                text: "Add captens",
+                                ontap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SeelectAccount(
+                                        addCapten: true,
+                                        buttotext: "Add captens",
+                                        onUsername:
+                                            (seleted_username, setPosition) {
+                                          members.AddCapten(
+                                            rutinId,
+                                            setPosition,
+                                            seleted_username,
+                                            context,
+                                          );
                                         },
                                       ),
-                                    )
-                                  ]
-                                ],
-                              )
-                          ]),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                            if (data.isCaptain || data.isOwner) ...[
+                              SqureButton(
+                                icon: Icons.person_add_alt_1,
+                                text: "Add members",
+                                ontap: () {
+                                  return Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                      fullscreenDialog: true,
+                                      builder: (context) => SeelectAccount(
+                                        buttotext: "Add member",
+                                        onUsername: (seleted_username, _) {
+                                          members.addMember(
+                                              seleted_username, context);
+                                        },
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                            if (data.isCaptain || data.isOwner) ...[
+                              SqureButton(
+                                icon: Icons.person_remove,
+                                color: Colors.redAccent,
+                                text: "remove captens",
+                                ontap: () {
+                                  return Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => seeAllcaptensList(
+                                        rutinId: rutinId,
+                                        buttotext: "Remove capten",
+                                        Color: Colors.red,
+                                        onUsername: (seleted_username, _) {
+                                          members.removeMember(
+                                              context, seleted_username);
+                                        },
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                              if (data.isOwner == true) ...[
+                                SqureButton(
+                                  icon: Icons.delete,
+                                  text: "Delete",
+                                  color: Colors.red,
+                                  ontap: () => Alart.errorAlertDialogCallBack(
+                                    context,
+                                    "Are you sure to delete",
+                                    onConfirm: (isyes) {
+                                      ref
+                                          .watch(
+                                              RutinControllerProvider.notifier)
+                                          .deleteRutin(
+                                            rutinId,
+                                            context,
+                                          );
+                                    },
+                                  ),
+                                )
+                              ]
+                            ],
+                          ],
                         );
                       },
                       loading: () => Container(

@@ -41,8 +41,8 @@ class AuthReq {
       {required name, required username, required password}) async {
     try {
       //... send request
-      final response = await http
-          .post(Uri.parse('http://192.168.31.229:3000/auth/create'), body: {
+      final response =
+          await http.post(Uri.parse('${Const.BASE_URl}/auth/create'), body: {
         "name": name,
         "username": username,
         "password": password,

@@ -73,14 +73,15 @@ class _RutinBoxState extends State<RutinBoxById> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  ViewMore(rutinId: widget.rutinId)),
-                        );
-                      },
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ViewMore(
+                            rutinId: widget.rutinId,
+                            rutineName: widget.rutinName,
+                          ),
+                        ),
+                      ),
                       child: AppText(widget.rutinName, fontSize: 22).title(),
                     ),
                     //
@@ -158,13 +159,15 @@ class _RutinBoxState extends State<RutinBoxById> {
                             children: List.generate(
                               listOfDays.length,
                               (index) {
-                                return listOfDays.isNotEmpty
-                                    ? RutineCardInfoRow(
-                                        isFrist: index == 0,
-                                        day: listOfDays[index],
-                                        onTap: () => ontap(listOfDays[index]),
-                                      )
-                                    : const Text("No Class");
+                                if (listOfDays.isNotEmpty) {
+                                  return RutineCardInfoRow(
+                                    isFrist: index == 0,
+                                    day: listOfDays[index],
+                                    onTap: () => ontap(listOfDays[index]),
+                                  );
+                                } else {
+                                  return const Text("No Class");
+                                }
                               },
                             ),
                           ),

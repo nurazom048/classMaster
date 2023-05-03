@@ -29,7 +29,14 @@ import '../widgets/seeAllCaotensList.dart';
 
 class ViewMore extends StatefulWidget {
   final String rutinId;
-  const ViewMore({Key? key, required this.rutinId}) : super(key: key);
+  final String rutineName;
+  final String? owenerName;
+  const ViewMore(
+      {Key? key,
+      required this.rutinId,
+      required this.rutineName,
+      this.owenerName})
+      : super(key: key);
 
   @override
   _ViewMoreState createState() => _ViewMoreState();
@@ -63,8 +70,9 @@ class _ViewMoreState extends State<ViewMore> with TickerProviderStateMixin {
                 children: [
                   HeaderTitle("Rutine", context),
                   const SizedBox(height: 40),
-                  const AppText("CSE BATCH 23").title(),
-                  const AppText("khulna polytechnic institute").heding(),
+                  AppText(widget.rutineName.toUpperCase()).title(),
+                  AppText(widget.owenerName ?? "khulna polytechnic institute")
+                      .heding(),
                   const SizedBox(height: 30),
                   SizedBox(
                     height: 40,

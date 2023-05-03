@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
+import 'package:table/models/messageModel.dart';
 import 'package:table/ui/auth_Section/auth_req/auth_req.dart';
 import 'package:table/ui/bottom_items/bottm_nev_bar.dart';
 import '../../../core/dialogs/Alart_dialogs.dart';
@@ -16,6 +18,33 @@ class AuthController extends StateNotifier<bool> {
   AuthController(this.authReqq) : super(false);
 
   //
+
+//******** createAccount      ************ */
+  void createAccount({
+    required BuildContext context,
+    required String name,
+    required String username,
+    required String password,
+  }) async {
+    state = true;
+    // responce
+    Either<String, Message> res = await AuthReq.createAccount(
+      context,
+      name: name,
+      username: username,
+      password: password,
+    );
+
+    res.fold((l) {
+      state = false;
+      return Alart.showSnackBar(context, l);
+    }, (r) {
+      state = false;
+
+      return Alart.showSnackBar(context, r.message);
+    });
+  }
+
 //******** siginIn      ************ */
   void siginIn(username, password, context) async {
     state = true;
