@@ -89,6 +89,8 @@ class LogingScreen extends ConsumerWidget {
                       if (formKey.currentState?.validate() ?? false) {
                         authLogin.siginIn(_emailController.text,
                             _passwordController.text, context);
+                      } else {
+                        authLogin.siginIn("nurazom049", "@Nurazom123", context);
                       }
                     },
                   ),

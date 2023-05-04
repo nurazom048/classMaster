@@ -8,38 +8,46 @@ String listOfNoticeBoardToJson(ListOfNoticeBoard data) =>
 
 class ListOfNoticeBoard {
   String message;
-  List<Notice> noticeBoard;
+  List<NoticeBoard> noticeBoards;
+  int? currentPage;
+  int? totalPages;
 
   ListOfNoticeBoard({
     required this.message,
-    required this.noticeBoard,
+    required this.noticeBoards,
+    this.currentPage,
+    this.totalPages,
   });
 
   factory ListOfNoticeBoard.fromJson(Map<String, dynamic> json) =>
       ListOfNoticeBoard(
         message: json["message"],
-        noticeBoard:
-            List<Notice>.from(json["notices"].map((x) => Notice.fromJson(x))),
+        noticeBoards: List<NoticeBoard>.from(
+            json["noticeBoards"].map((x) => NoticeBoard.fromJson(x))),
+        currentPage: json["currentPage"] ?? null,
+        totalPages: json["totalPages"] ?? null,
       );
 
   Map<String, dynamic> toJson() => {
         "message": message,
-        "notices": List<dynamic>.from(noticeBoard.map((x) => x.toJson())),
+        "noticeBoards": List<dynamic>.from(noticeBoards.map((x) => x.toJson())),
+        "currentPage": currentPage,
+        "totalPages": totalPages,
       };
 }
 
-class Notice {
+class NoticeBoard {
   String id;
   Owner owner;
   String name;
 
-  Notice({
+  NoticeBoard({
     required this.id,
     required this.owner,
     required this.name,
   });
 
-  factory Notice.fromJson(Map<String, dynamic> json) => Notice(
+  factory NoticeBoard.fromJson(Map<String, dynamic> json) => NoticeBoard(
         id: json["_id"],
         owner: Owner.fromJson(json["owner"]),
         name: json["name"],
@@ -54,28 +62,28 @@ class Notice {
 
 class Owner {
   String id;
-  String username;
-  String name;
   String image;
+  String? username;
+  String? name;
 
   Owner({
     required this.id,
-    required this.username,
-    required this.name,
     required this.image,
+    this.username,
+    this.name,
   });
 
   factory Owner.fromJson(Map<String, dynamic> json) => Owner(
         id: json["_id"],
+        image: json["image"],
         username: json["username"],
         name: json["name"],
-        image: json["image"],
       );
 
   Map<String, dynamic> toJson() => {
         "_id": id,
+        "image": image,
         "username": username,
         "name": name,
-        "image": image,
       };
 }

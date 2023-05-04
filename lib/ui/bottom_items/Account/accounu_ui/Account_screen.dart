@@ -17,7 +17,7 @@ import '../../../../core/dialogs/Alart_dialogs.dart';
 import '../../../../core/component/component_improts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../Home/notice/screens/notice Board/notice_bord _screen.dart';
+import '../../Home/notice/screens/notice Board/uploadedNoticeBord_bord _screen.dart';
 
 class AccountScreen extends StatefulWidget {
   final String? accountUsername;

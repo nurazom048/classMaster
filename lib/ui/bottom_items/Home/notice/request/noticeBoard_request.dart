@@ -30,14 +30,16 @@ class NoticeBoardRequest {
 
     try {
       final res = json.decode(response.body);
-      Message message = Message.fromJson(json.decode(response.body));
+      print(res);
+
       if (response.statusCode == 200) {
-        print(res);
         return ListOfNoticeBoard.fromJson(res);
       } else {
+        Message message = Message.fromJson(json.decode(response.body));
         return throw Future.error(message.message);
       }
     } catch (e) {
+      print(e);
       return throw Future.error(e);
     }
   }

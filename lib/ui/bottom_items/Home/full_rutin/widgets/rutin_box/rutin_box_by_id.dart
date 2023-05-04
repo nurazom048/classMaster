@@ -228,55 +228,44 @@ class _RutinBoxState extends State<RutinBoxById> {
   ) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Add Your Code here.
-      switch (gSelatDAy) {
-        case 0:
-          setState(() {
-            listOfDays = sun;
-          });
 
-          break;
+      if (mounted) {
+        switch (gSelatDAy) {
+          case 0:
+            setState(() => listOfDays = sun);
 
-        case 1:
-          setState(() {
-            listOfDays = mon;
-          });
+            break;
 
-          break;
+          case 1:
+            setState(() => listOfDays = mon);
 
-        case 2:
-          setState(() {
-            listOfDays = tue;
-          });
+            break;
 
-          break;
+          case 2:
+            setState(() => listOfDays = tue);
 
-        case 3:
-          setState(() {
-            listOfDays = wed;
-          });
+            break;
 
-          break;
+          case 3:
+            setState(() => listOfDays = wed);
 
-        case 4:
-          setState(() {
-            listOfDays = thu;
-          });
+            break;
 
-          break;
+          case 4:
+            setState(() => listOfDays = thu);
 
-        case 5:
-          setState(() {
-            listOfDays = fri;
-          });
+            break;
 
-          break;
+          case 5:
+            setState(() => listOfDays = fri);
 
-        case 6:
-          setState(() {
-            listOfDays = sat;
-          });
+            break;
 
-          break;
+          case 6:
+            setState(() => listOfDays = sat);
+
+            break;
+        }
       }
     });
   }
