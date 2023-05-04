@@ -4,10 +4,12 @@ import 'package:table/helper/helper_fun.dart';
 
 class PickImage extends StatefulWidget {
   final dynamic onTap;
+  late String? netWorkIamge;
   final Function(String?) onImagePathSelected; // new property
-  const PickImage({
+  PickImage({
     this.onTap,
     required this.onImagePathSelected,
+    required this.netWorkIamge,
     Key? key,
   }) : super(key: key);
 
@@ -20,16 +22,26 @@ class _PickImageState extends State<PickImage> {
 
   @override
   Widget build(BuildContext context) {
+    print("from ipic ${widget.netWorkIamge}");
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5),
       width: 114,
       child: Stack(
         children: [
-          CircleAvatar(
-            radius: 80,
-            backgroundImage: _image != null ? FileImage(_image!) : null,
-            child: _image == null ? const Icon(Icons.person) : null,
-          ),
+          // show picked file image
+          if (_image != null)
+            CircleAvatar(
+              radius: 80,
+              backgroundImage: _image != null ? FileImage(_image!) : null,
+            )
+
+          // show user network image
+          else if (widget.netWorkIamge != null)
+            CircleAvatar(
+              radius: 80,
+              backgroundImage: NetworkImage(widget.netWorkIamge ?? ''),
+            ),
+
           Positioned(
             bottom: 17,
             right: -1,

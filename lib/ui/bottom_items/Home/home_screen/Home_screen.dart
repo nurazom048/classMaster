@@ -56,10 +56,8 @@ class HomeScreen extends ConsumerWidget {
                         return data.fold(
                             (error) => Alart.handleError(context, error),
                             (r) => ListView.builder(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: r.notices.length >= 2
-                                      ? 2
-                                      : r.notices.length,
+                                  // physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: r.notices.length,
                                   itemBuilder: (context, index) {
                                     return NoticeRow(
                                       notice: r.notices[index],

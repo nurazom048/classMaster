@@ -83,16 +83,21 @@ class AddNoticeScreen extends ConsumerWidget {
                           child: CupertinoButtonCustom(
                             color: AppColor.nokiaBlue,
                             textt: "Add Notice",
-                            onPressed: () {
+                            onPressed: () async {
+                              print("pdf path : $pdfPath");
+                              if (pdfPath == null)
+                                Alart.errorAlartDilog(context, "select pdf");
                               if (_formKey.currentState!.validate() &&
                                   id != null) {
                                 print("validate $pdfPath");
-                                NoticeRequest().addNotice(
+                                String res = await NoticeRequest().addNotice(
                                   content_name: noticeTitleController.text,
                                   description: descriptionController.text,
                                   noticeId: id,
                                   pdf_file: pdfPath,
                                 );
+
+                                Alart.showSnackBar(context, res);
                               }
                             },
                           ),

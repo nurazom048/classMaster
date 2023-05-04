@@ -100,7 +100,8 @@ class NoticeRequest {
         print(res);
         return right(RecentNotice.fromJson(res));
       } else {
-        return left("error");
+        Message message = Message.fromJson(json.decode(response.body));
+        return left(message.message);
       }
     } catch (e) {
       return left(e.toString());

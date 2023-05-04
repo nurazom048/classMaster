@@ -34,10 +34,12 @@ class _EdditAccountState extends State<EdditAccount> {
   final confirmPasswordFocusNode = FocusNode();
 
   String? imagePath;
+  late String? netWorkImage;
 
   @override
   void initState() {
     super.initState();
+    netWorkImage = '';
 
     _lodedataBeforeBuild();
   }
@@ -52,11 +54,14 @@ class _EdditAccountState extends State<EdditAccount> {
           child: Column(
             children: [
               HeaderTitle("Eddit Account", context),
+
               PickImage(
+                netWorkIamge: netWorkImage,
                 onImagePathSelected: (inagePath) async {
                   imagePath = inagePath;
 
                   print("path paici vai $imagePath");
+                  print("path paici vai $netWorkImage");
                 },
               ),
               AppTextFromField(
@@ -140,6 +145,12 @@ class _EdditAccountState extends State<EdditAccount> {
       usernameController.text = accountData.username ?? '';
       passwordController.text = accountData.password ?? '';
       confirmPasswordController.text = accountData.password ?? '';
+      netWorkImage = accountData.image ?? '';
+      aboutController.text = accountData.about ?? '';
+
+      print(accountData.image);
+
+      setState(() {});
     }
   }
 }
