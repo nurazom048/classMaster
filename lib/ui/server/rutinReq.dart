@@ -33,7 +33,7 @@ class Rutin_Req {
       }
     } catch (e) {
       print(e.toString());
-      throw Exception(e);
+      return throw Future.error(e);
     }
   }
 }
