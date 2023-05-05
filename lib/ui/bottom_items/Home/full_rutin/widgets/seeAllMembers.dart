@@ -7,6 +7,7 @@ import 'package:table/widgets/AccoundCardRow.dart';
 import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/ui/bottom_items/search/widgets/searchBarCustom.dart';
 import '../../../../../../core/dialogs/Alart_dialogs.dart';
+import 'package:flutter/material.dart' as ma;
 
 final serachStringProvidder = StateProvider((ref) => "");
 
@@ -53,7 +54,7 @@ class seeAllMembers extends ConsumerWidget {
                         color: Colors.red,
                       );
                     } else {
-                      return const Center(child: Text("No Account found"));
+                      return const Center(child: ma.Text("No Account found"));
                     }
                   },
                 );

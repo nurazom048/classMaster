@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/dialogs/Alart_dialogs.dart';
 import 'package:table/widgets/heder/hederTitle.dart';
+import 'package:flutter/material.dart' as ma;
 
 import '../../../../Account/accounu_ui/save_screen.dart';
 import '../../request/noticeBoard_request.dart';
@@ -41,7 +42,7 @@ class UploadedNoticeBordScreen extends ConsumerWidget {
                   },
                   error: (error, stackTrace) =>
                       Alart.handleError(context, error),
-                  loading: () => const Text("loding"))),
+                  loading: () => const ma.Text("loding"))),
         ],
       ),
     );

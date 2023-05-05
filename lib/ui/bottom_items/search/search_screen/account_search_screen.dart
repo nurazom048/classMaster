@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/search/search_screen/search_page.dart';
+import 'package:flutter/material.dart' as ma;
 
 import '../../../../core/dialogs/Alart_dialogs.dart';
 import '../../../../widgets/AccoundCardRow.dart';
@@ -32,7 +33,7 @@ class AccountSearchScreen extends ConsumerWidget {
                                 accountData: r.accounts![index]);
                           } else {
                             return const Center(
-                                child: Text("No Account found"));
+                                child: ma.Text("No Account found"));
                           }
                         },
                       ));

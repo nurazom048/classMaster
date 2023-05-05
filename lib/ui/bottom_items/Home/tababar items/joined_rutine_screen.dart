@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/utils/rutin_dialog.dart';
+
+import 'package:flutter/material.dart' as ma;
+
 import '../../../../core/dialogs/Alart_dialogs.dart';
 import '../../../../helper/constant/AppColor.dart';
 import '../full_rutin/widgets/rutin_box/rutin_box_by_id.dart';
@@ -60,7 +63,7 @@ class JoinedRutineScreen extends StatelessWidget {
                                               data.rutins[index].name),
                                     );
                                   } else {
-                                    return const Text(
+                                    return const ma.Text(
                                         "You Dont Have any Rutin created");
                                   }
                                 },

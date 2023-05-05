@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/helper/constant/AppColor.dart';
+import 'package:flutter/material.dart' as ma;
+
 import 'package:table/models/priode/all_priode_models.dart';
 import '../../../Add/request/class_request.dart';
 import '../../../Add/screens/addClassScreen.dart';
@@ -22,13 +24,13 @@ class PriodeAlart {
       context: context,
       builder: (context) => Consumer(builder: (context, ref, _) {
         return CupertinoActionSheet(
-          title: const Text(" Do you want to.. ",
+          title: const ma.Text(" Do you want to.. ",
               style: TextStyle(fontSize: 22, color: Colors.black87)),
           actions: [
 // Eddit
 
             CupertinoActionSheetAction(
-              child: Text("Eddit Class ",
+              child: ma.Text("Eddit Class ",
                   style: TextStyle(color: AppColor.nokiaBlue)),
               onPressed: () {
                 Navigator.push(
@@ -46,7 +48,7 @@ class PriodeAlart {
             ),
 // ddelete
             CupertinoActionSheetAction(
-              child: const Text("Remove class",
+              child: const ma.Text("Remove class",
                   style: TextStyle(color: Colors.red)),
               onPressed: () {
                 ClassRequest.deleteClass(context, ref, classId, rutinId);
@@ -54,7 +56,7 @@ class PriodeAlart {
             ),
           ],
           cancelButton: CupertinoActionSheetAction(
-            child: const Text("cancel"),
+            child: const ma.Text("cancel"),
             onPressed: () => Navigator.pop(context),
           ),
         );
@@ -70,13 +72,14 @@ class PriodeAlart {
       context: context,
       builder: (context) => Consumer(builder: (context, ref, _) {
         return CupertinoActionSheet(
-          title: const Text(" Do you want to.. ",
+          title: const ma.Text(" Do you want to.. ",
               style: TextStyle(fontSize: 22, color: Colors.black87)),
           actions: [
 // Eddit
 
             CupertinoActionSheetAction(
-              child: Text("Eddit", style: TextStyle(color: AppColor.nokiaBlue)),
+              child:
+                  ma.Text("Eddit", style: TextStyle(color: AppColor.nokiaBlue)),
               onPressed: () {
                 Navigator.push(
                     context,
@@ -92,7 +95,8 @@ class PriodeAlart {
             ),
 // ddelete
             CupertinoActionSheetAction(
-              child: const Text("Remove", style: TextStyle(color: Colors.red)),
+              child:
+                  const ma.Text("Remove", style: TextStyle(color: Colors.red)),
               onPressed: () {
                 ref
                     .watch(priodeController.notifier)
@@ -103,7 +107,7 @@ class PriodeAlart {
             ),
           ],
           cancelButton: CupertinoActionSheetAction(
-            child: const Text("cancel"),
+            child: const ma.Text("cancel"),
             onPressed: () => Navigator.pop(context),
           ),
         );

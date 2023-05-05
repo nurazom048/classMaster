@@ -7,6 +7,7 @@ import 'package:table/ui/bottom_items/Home/full_rutin/request/priode_request.dar
 import 'package:table/widgets/appWidget/buttons/cupertinoButttons.dart';
 import 'package:table/widgets/heder/hederTitle.dart';
 import 'package:table/widgets/select_time.dart';
+import 'package:flutter/material.dart' as ma;
 
 class AppPriodePage extends StatefulWidget {
   const AppPriodePage({
@@ -63,7 +64,7 @@ class _AppPriodePageState extends State<AppPriodePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 20),
-                      const Text(
+                      const ma.Text(
                         'Add A New \nPriode Here',
                         style: TextStyle(
                           fontFamily: 'Open Sans',
@@ -82,7 +83,7 @@ class _AppPriodePageState extends State<AppPriodePage> {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Priode Number $priodeList  ",
+                              ma.Text("Priode Number $priodeList  ",
                                   textScaleFactor: 1.5),
                               const SizedBox(height: 10),
                               Row(

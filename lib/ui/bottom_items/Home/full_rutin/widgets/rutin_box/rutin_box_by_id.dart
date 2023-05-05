@@ -8,6 +8,7 @@ import 'package:table/widgets/appWidget/buttons/Expende_button.dart';
 import 'package:table/widgets/appWidget/buttons/capsule_button.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/rutin_box/rutin_card_row.dart';
 import 'package:table/widgets/mini_account_row.dart';
+import 'package:flutter/material.dart' as ma;
 
 import '../../../../../../core/dialogs/Alart_dialogs.dart';
 import '../../../../../../models/ClsassDetailsModel.dart';
@@ -118,7 +119,7 @@ class _RutinBoxState extends State<RutinBoxById> {
                         },
                         error: (error, stackTrace) =>
                             Alart.handleError(context, error),
-                        loading: () => const Text("data")),
+                        loading: () => const ma.Text("data")),
                   ],
                 ),
               ),
@@ -138,7 +139,7 @@ class _RutinBoxState extends State<RutinBoxById> {
               }),
               rutinDetals.when(
                   data: (data) {
-                    if (data == null) return const Text("id null");
+                    if (data == null) return const ma.Text("id null");
 
                     List<Day?> sun = data.classes.sunday;
                     List<Day?> mon = data.classes.monday;
@@ -165,7 +166,7 @@ class _RutinBoxState extends State<RutinBoxById> {
                                     onTap: () => ontap(listOfDays[index]),
                                   );
                                 } else {
-                                  return const Text("No Class");
+                                  return const ma.Text("No Class");
                                 }
                               },
                             ),
@@ -198,7 +199,7 @@ class _RutinBoxState extends State<RutinBoxById> {
                   },
                   error: (error, stackTrace) =>
                       Alart.handleError(context, error),
-                  loading: () => const Text("data")),
+                  loading: () => const ma.Text("data")),
             ]),
       );
     });

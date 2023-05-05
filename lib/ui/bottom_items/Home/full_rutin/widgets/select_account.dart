@@ -8,6 +8,7 @@ import 'package:table/widgets/AccoundCardRow.dart';
 import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/ui/bottom_items/search/widgets/searchBarCustom.dart';
 import '../../../../../../core/dialogs/Alart_dialogs.dart';
+import 'package:flutter/material.dart' as ma;
 
 class SeelectAccount extends ConsumerWidget {
   const SeelectAccount(
@@ -56,7 +57,7 @@ class SeelectAccount extends ConsumerWidget {
                               buttotext: buttotext,
                               color: color,
                             )
-                          : const Center(child: Text("No Account found"));
+                          : const Center(child: ma.Text("No Account found"));
                     },
                   );
                 });

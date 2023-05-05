@@ -16,6 +16,8 @@ import 'package:table/ui/bottom_items/Add/widgets/select_priode_number.dart';
 import 'package:table/widgets/appWidget/appText.dart';
 import 'package:table/widgets/appWidget/buttons/cupertinoButttons.dart';
 import 'package:table/widgets/daySelectDropdowen.dart';
+import 'package:flutter/material.dart' as ma;
+
 import 'package:table/widgets/heder/hederTitle.dart';
 import '../../../../models/rutins/class/findClassModel.dart';
 import '../../../../widgets/appWidget/TextFromFild.dart';
@@ -157,7 +159,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                             loading: () => const SizedBox(
                                   height: 100,
                                   width: 100,
-                                  child: const Text("Loding"),
+                                  child: const ma.Text("Loding"),
                                 )),
                         AddWeekdayButton(onPressed: () {
                           WeekdayUtils.addWeekday(context, widget.classId);

@@ -7,6 +7,8 @@ import 'package:table/ui/auth_Section/auth_ui/SiginUp_Screen.dart';
 import 'package:table/ui/auth_Section/utils/Login_validation.dart';
 import 'package:table/widgets/appWidget/appText.dart';
 import 'package:table/widgets/appWidget/buttons/cupertinoButttons.dart';
+import 'package:flutter/material.dart' as ma;
+
 import '../../../helper/constant/AppColor.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/heder/hederTitle.dart';
@@ -106,7 +108,7 @@ class LogingScreen extends ConsumerWidget {
                                   builder: (context) => SignUpScreen()),
                             );
                           },
-                          child: const Text(
+                          child: const ma.Text(
                               "create a new account for your sellf")),
 
                       //
@@ -118,8 +120,8 @@ class LogingScreen extends ConsumerWidget {
                                   builder: (context) => SignUpScreen()),
                             );
                           },
-                          child:
-                              const Text("create a new account for academy")),
+                          child: const ma.Text(
+                              "create a new account for academy")),
                     ],
                   ),
                 )

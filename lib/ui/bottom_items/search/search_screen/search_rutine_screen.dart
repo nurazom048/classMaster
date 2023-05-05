@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/search/search_screen/search_page.dart';
 import 'package:table/widgets/progress_indicator.dart';
+import 'package:flutter/material.dart' as ma;
 
 import '../../../../core/dialogs/Alart_dialogs.dart';
 import '../../Home/full_rutin/widgets/rutin_box/rutin_box_by_id.dart';
@@ -34,7 +35,7 @@ class SearchRutineScreen extends ConsumerWidget {
                               rutinId: data.routine[index].id);
                         },
                       )
-                    : const Text("no Rutin Found"));
+                    : const ma.Text("no Rutin Found"));
           },
           error: (error, stackTrace) => Alart.handleError(context, error),
           loading: () => const Progressindicator(),

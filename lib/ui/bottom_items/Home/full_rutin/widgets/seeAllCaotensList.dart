@@ -9,6 +9,7 @@ import 'package:table/widgets/AccoundCardRow.dart';
 import 'package:table/widgets/appWidget/TextFromFild.dart';
 import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/ui/bottom_items/search/widgets/searchBarCustom.dart';
+import 'package:flutter/material.dart' as ma;
 
 import '../../../../../../core/dialogs/Alart_dialogs.dart';
 import '../../../../../../widgets/hedding_row.dart';
@@ -80,7 +81,7 @@ class seeAllcaptensList extends ConsumerWidget {
                         //
                       );
                     } else {
-                      return const Center(child: Text("No Account found"));
+                      return const Center(child: ma.Text("No Account found"));
                     }
                   },
                 );

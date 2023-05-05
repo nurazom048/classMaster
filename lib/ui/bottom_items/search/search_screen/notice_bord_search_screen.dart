@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/search/search_request/notice_bord_search.dart';
 import 'package:table/ui/bottom_items/search/search_screen/search_page.dart';
+import 'package:flutter/material.dart' as ma;
 
 import '../../../../core/dialogs/Alart_dialogs.dart';
 import '../../Account/accounu_ui/save_screen.dart';
@@ -34,7 +35,7 @@ class NoticeBordSearch extends ConsumerWidget {
               );
             },
             error: (error, stackTrace) => Alart.handleError(context, error),
-            loading: () => const Text("loding")),
+            loading: () => const ma.Text("loding")),
       ),
     );
   }

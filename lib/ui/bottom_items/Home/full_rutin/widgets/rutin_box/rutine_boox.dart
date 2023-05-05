@@ -12,6 +12,8 @@ import 'package:table/widgets/appWidget/buttons/Expende_button.dart';
 import 'package:table/widgets/appWidget/buttons/capsule_button.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/rutin_box/rutin_card_row.dart';
 import 'package:table/widgets/mini_account_row.dart';
+import 'package:flutter/material.dart' as ma;
+
 // ignore: unused_import
 import 'package:table/widgets/progress_indicator.dart';
 import '../../controller/chack_status_controller.dart';
@@ -111,7 +113,7 @@ class _RutinBoxState extends State<RutinBox> {
                   },
                   error: (error, stackTrace) =>
                       Alart.handleError(context, error),
-                  loading: () => const Text("data")),
+                  loading: () => const ma.Text("data")),
             ],
           );
         }),
@@ -169,7 +171,7 @@ class _RutinBoxState extends State<RutinBox> {
                       day: listOfDays[index],
                       onTap: () => ontap(listOfDays[index]),
                     )
-                  : const Text("No Class");
+                  : const ma.Text("No Class");
             },
           ),
         ),

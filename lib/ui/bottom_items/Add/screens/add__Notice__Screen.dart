@@ -9,6 +9,7 @@ import 'package:table/widgets/appWidget/appText.dart';
 import 'package:table/widgets/appWidget/buttons/cupertinoButttons.dart';
 import 'package:table/helper/picker.dart';
 import 'package:table/widgets/heder/hederTitle.dart';
+import 'package:flutter/material.dart' as ma;
 
 class AddNoticeScreen extends ConsumerWidget {
   AddNoticeScreen({super.key});
@@ -35,7 +36,7 @@ class AddNoticeScreen extends ConsumerWidget {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20.0)
                               .copyWith(top: 25),
-                          child: const Text(
+                          child: const ma.Text(
                             "Add A New \nNotice",
                             style: TextStyle(
                               fontFamily: 'Open Sans',
@@ -141,7 +142,7 @@ class _UploadPDFB_ButtonState extends State<UploadPDFB_Button> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+            const ma.Text(
               'Upload Notice File (PDF)',
               style: TextStyle(
                 fontFamily: 'Open Sans',
@@ -193,7 +194,7 @@ class _MyDropdownButtonState extends State<MyDropdownButton> {
         child: noticeBoardList.when(
           data: (data) {
             if (data == null)
-              return const Text("No Notice Board is not  created");
+              return const ma.Text("No Notice Board is not  created");
 
             return DropdownButtonHideUnderline(
               child: GestureDetector(
@@ -240,7 +241,7 @@ class _MyDropdownButtonState extends State<MyDropdownButton> {
             );
           },
           error: (error, stackTrace) => Alart.handleError(context, error),
-          loading: () => const Text("Loading"),
+          loading: () => const ma.Text("Loading"),
         ),
       );
     });

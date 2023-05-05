@@ -26,6 +26,7 @@ import '../widgets/account_card_widgets.dart';
 import '../widgets/class_row.dart';
 import '../widgets/priode_widget.dart';
 import '../widgets/seeAllCaotensList.dart';
+import 'package:flutter/material.dart' as ma;
 
 class ViewMore extends StatefulWidget {
   final String rutinId;
@@ -81,9 +82,9 @@ class _ViewMoreState extends State<ViewMore> with TickerProviderStateMixin {
                         labelColor: AppColor.nokiaBlue,
                         unselectedLabelColor: Colors.black,
                         tabs: const [
-                          Tab(child: Text("Class List")),
-                          Tab(child: Text("Members")),
-                          Tab(child: Text("Captens")),
+                          Tab(child: ma.Text("Class List")),
+                          Tab(child: ma.Text("Members")),
+                          Tab(child: ma.Text("Captens")),
                         ]),
                   ),
                 ],
@@ -190,7 +191,7 @@ class _ClassListPageState extends State<ClassListPage> {
                   },
                   error: (error, stackTrace) =>
                       Alart.handleError(context, error),
-                  loading: () => Text("loding")),
+                  loading: () => ma.Text("loding")),
             ),
             HeddingRow(
               hedding: "Class List",
@@ -211,7 +212,7 @@ class _ClassListPageState extends State<ClassListPage> {
                 child: rutinDetals.when(
                   data: (data) {
                     if (data == null || data.classes == null)
-                      return const Text("Null");
+                      return const ma.Text("Null");
 
                     return ListView.builder(
                       itemCount: data.classes.allClass.length,
@@ -262,7 +263,7 @@ class _ClassListPageState extends State<ClassListPage> {
                   },
                   error: (error, stackTrace) =>
                       Alart.handleError(context, error),
-                  loading: () => const Text("Loding"),
+                  loading: () => const ma.Text("Loding"),
                 )),
           ],
         ),
@@ -314,9 +315,9 @@ class MemberList extends StatelessWidget {
                     height: 200,
                     child: allRequest.when(
                         data: (data) {
-                          if (data == null) return const Text(" data null");
+                          if (data == null) return const ma.Text(" data null");
                           if (data.listAccounts.isEmpty)
-                            return const Text("No new request ");
+                            return const ma.Text("No new request ");
                           return ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: data.listAccounts.length,
@@ -345,7 +346,7 @@ class MemberList extends StatelessWidget {
                         },
                         error: (error, stackTrace) =>
                             Alart.handleError(context, error),
-                        loading: () => const Text("data"))),
+                        loading: () => const ma.Text("data"))),
               ],
             ),
           ),
@@ -362,7 +363,7 @@ class MemberList extends StatelessWidget {
           allMembers.when(
             data: (data) {
               if (data == null || data.message == null)
-                return const Text("null");
+                return const ma.Text("null");
               return SizedBox(
                 height: 140,
                 child: ListView.builder(

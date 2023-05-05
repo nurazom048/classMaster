@@ -4,6 +4,7 @@ import 'package:table/helper/constant/AppColor.dart';
 import 'package:table/ui/bottom_items/Add/utils/add_class_validation.dart';
 import 'package:table/ui/bottom_items/Add/widgets/select_priode_number.dart';
 import 'package:table/widgets/appWidget/buttons/cupertinoButttons.dart';
+import 'package:flutter/material.dart' as ma;
 
 import '../../../../widgets/appWidget/TextFromFild.dart';
 import '../../../../widgets/daySelectDropdowen.dart';
@@ -57,7 +58,7 @@ class WeekdayUtils {
                       return CupertinoButtonCustom(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         textt: "Add Weekday",
-                        widget: const Text(
+                        widget: const ma.Text(
                           "Add Weekday",
                           style: TextStyle(
                             color: Colors.white,

@@ -1,4 +1,5 @@
 // ignore_for_file: avoid_print
+import 'package:flutter/material.dart' as ma;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -139,7 +140,7 @@ class ChatsDribles extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    ma.Text(
                       name,
                       textScaleFactor: 1.4,
                       style: const TextStyle(
@@ -149,7 +150,7 @@ class ChatsDribles extends StatelessWidget {
                         color: Colors.black,
                       ),
                     ),
-                    const Text(
+                    const ma.Text(
                       '07/04/23, Wednesday',
                       style: TextStyle(
                         fontFamily: 'Inter',
@@ -164,7 +165,7 @@ class ChatsDribles extends StatelessWidget {
                     const SizedBox(height: 4),
                     SizedBox(
                       width: MediaQuery.of(context).size.width - 80,
-                      child: Text(
+                      child: ma.Text(
                         messaage,
                         textScaleFactor: 1.3,
                         style: const TextStyle(
@@ -189,7 +190,7 @@ class ChatsDribles extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: const [
-                        Text(
+                        ma.Text(
                           'state',
                           style: TextStyle(
                             fontFamily: 'Inter',
@@ -267,7 +268,7 @@ class SummaryContaner extends StatelessWidget {
         children: [
           Align(
             alignment: Alignment.topLeft,
-            child: Text(
+            child: ma.Text(
               text,
               style: const TextStyle(
                   fontSize: 18,
@@ -277,7 +278,7 @@ class SummaryContaner extends StatelessWidget {
           ),
           Align(
               alignment: Alignment.bottomRight,
-              child: Text(_formatDate(flutteDate))),
+              child: ma.Text(_formatDate(flutteDate))),
         ],
       ),
     );

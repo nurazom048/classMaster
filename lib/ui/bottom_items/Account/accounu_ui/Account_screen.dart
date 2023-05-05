@@ -2,6 +2,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as ma;
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Account/account_request/account_request.dart';
 import 'package:table/ui/bottom_items/Account/accounu_ui/all_uploadeade_rutines.dart';
@@ -12,6 +14,7 @@ import 'package:table/ui/bottom_items/Account/utils/account_utils.dart';
 import 'package:table/ui/bottom_items/Account/widgets/my_container_button.dart';
 import 'package:table/ui/bottom_items/Account/widgets/my_divider.dart';
 import 'package:table/ui/bottom_items/Account/widgets/tiled_boutton.dart';
+import 'package:table/ui/bottom_items/Home/notice/screens/view_more_noticeBord.dart';
 import 'package:table/widgets/AccountCard.dart';
 import '../../../../core/dialogs/Alart_dialogs.dart';
 import '../../../../core/component/component_improts.dart';
@@ -53,7 +56,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     print(data);
 
                     if (data == null) {
-                      return const Text("null");
+                      return const ma.Text("null");
                     } else {
                       return AccountCard(
                         ProfilePicture: data.image ?? '',
@@ -64,7 +67,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   },
                   error: (error, stackTrace) =>
                       Alart.handleError(context, error),
-                  loading: () => const Text("loding"),
+                  loading: () => const ma.Text("loding"),
                 ),
                 /////////////////////
 
@@ -160,7 +163,15 @@ class _AccountScreenState extends State<AccountScreen> {
                 MyContainerButton(
                   const Icon(Icons.settings_outlined),
                   "Sattings",
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ViewMoreNoticeBord(
+                            noticeBoardName: "noticeBoardName", id: "id"),
+                      ),
+                    );
+                  },
                 ),
                 MyContainerButton(const Icon(Icons.logout_outlined), "Sign out",
                     color: Colors.red,

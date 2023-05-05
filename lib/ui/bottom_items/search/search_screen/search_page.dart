@@ -6,6 +6,7 @@ import 'package:table/ui/bottom_items/search/search_screen/account_search_screen
 import 'package:table/ui/bottom_items/search/search_screen/notice_bord_search_screen.dart';
 import 'package:table/ui/bottom_items/search/search_screen/search_rutine_screen.dart';
 import 'package:table/ui/bottom_items/search/widgets/searchBarCustom.dart';
+import 'package:flutter/material.dart' as ma;
 
 //! search String provider
 final Serarch_String_Provider = StateProvider<String>((ref) => "x");
@@ -57,15 +58,15 @@ class _SearchPAgeState extends State<SearchPAge> with TickerProviderStateMixin {
                   tabs: const [
                     Padding(
                         padding: EdgeInsets.all(8.0),
-                        child: Text("Rutins ",
+                        child: ma.Text("Rutins ",
                             style: TextStyle(color: Colors.black))),
                     Padding(
                         padding: EdgeInsets.all(8.0),
-                        child: Text("Account ",
+                        child: ma.Text("Account ",
                             style: TextStyle(color: Colors.black))),
                     Padding(
                         padding: EdgeInsets.all(8.0),
-                        child: Text("Notice Board ",
+                        child: ma.Text("Notice Board ",
                             style: TextStyle(color: Colors.black))),
                   ],
                 ),

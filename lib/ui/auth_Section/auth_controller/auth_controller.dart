@@ -57,8 +57,8 @@ class AuthController extends StateNotifier<bool> {
       },
       (r) {
         state = false;
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const BottomNevBar()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => BottomNevBar()));
         Alart.showSnackBar(context, r);
       },
     );

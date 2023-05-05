@@ -4,6 +4,7 @@ import 'package:table/core/dialogs/Alart_dialogs.dart';
 import 'package:table/ui/bottom_items/Account/accounu_ui/save_rutins_screen.dart';
 import 'package:table/widgets/appWidget/appText.dart';
 import 'package:table/widgets/appWidget/dottted_divider.dart';
+import 'package:flutter/material.dart' as ma;
 
 import '../../../server/rutinReq.dart';
 import '../../Home/full_rutin/controller/chack_status_controller.dart';
@@ -19,7 +20,7 @@ int intali = 0;
 
 List<Widget> views = [
   const SaveRutinsScreen(),
-  Text("data2"),
+  ma.Text("data2"),
 ];
 
 class _SaveScreenState extends State<SaveScreen> {
@@ -109,7 +110,7 @@ class MyTabDotUnderline extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Tab(
-              child: Text(
+              child: ma.Text(
                 title,
                 style: TextStyle(
                   color: color,
@@ -180,7 +181,7 @@ class MiniRutineCard extends StatelessWidget {
                       },
                       error: (error, stackTrace) =>
                           Alart.handleError(context, error),
-                      loading: () => Text("Loading")),
+                      loading: () => ma.Text("Loading")),
                 ),
               ],
             ),
@@ -195,10 +196,11 @@ class MiniRutineCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     //  crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(owerName,
+                      ma.Text(owerName,
                           style: const TextStyle(
                               fontSize: 23, fontWeight: FontWeight.w400)),
-                      Text(" @$username", style: const TextStyle(fontSize: 15)),
+                      ma.Text(" @$username",
+                          style: const TextStyle(fontSize: 15)),
                     ],
                   ),
                 ),
@@ -277,10 +279,11 @@ class MiniNoticeCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     //  crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(owerName,
+                      ma.Text(owerName,
                           style: const TextStyle(
                               fontSize: 23, fontWeight: FontWeight.w400)),
-                      Text(" @$username", style: const TextStyle(fontSize: 15)),
+                      ma.Text(" @$username",
+                          style: const TextStyle(fontSize: 15)),
                     ],
                   ),
                 ),

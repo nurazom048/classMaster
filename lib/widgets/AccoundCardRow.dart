@@ -2,6 +2,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as ma;
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/helper/constant/AppColor.dart';
 import 'package:table/ui/bottom_items/Account/models/Account_models.dart';
@@ -69,7 +71,7 @@ class AccountCardRow extends ConsumerWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text.rich(
+                  ma.Text.rich(
                     TextSpan(
                         text: "${accountData.name}",
                         style: const TextStyle(
@@ -88,7 +90,7 @@ class AccountCardRow extends ConsumerWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 3.0, left: 10),
-                    child: Text(
+                    child: ma.Text(
                         accountData.position != null
                             ? '${accountData.position}'
                             : "",
@@ -100,7 +102,7 @@ class AccountCardRow extends ConsumerWidget {
                   ),
                 ],
               ),
-              // Text("$buttotext"),
+              // ma.Text("$buttotext"),
 
               const Spacer(flex: 24),
               // if (removeCapten != null && isEdditingMood == true)
@@ -115,7 +117,7 @@ class AccountCardRow extends ConsumerWidget {
                     onPressed: addCaptem == true
                         ? () => addCaptenAlart(context)
                         : () => onUsername(accountData.username, ""),
-                    child: Text(buttotext ?? "",
+                    child: ma.Text(buttotext ?? "",
                         style: TextStyle(color: color ?? Colors.blue))),
               const Spacer(flex: 2),
             ],
@@ -132,7 +134,7 @@ class AccountCardRow extends ConsumerWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Set a position"),
+          title: const ma.Text("Set a position"),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -146,7 +148,7 @@ class AccountCardRow extends ConsumerWidget {
                 child: CupertinoButton(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   color: Colors.blue,
-                  child: const Text("add as acpten"),
+                  child: const ma.Text("add as acpten"),
                   onPressed: () {
                     onUsername(accountData.username, position.text);
                     print(position.text);

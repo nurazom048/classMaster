@@ -2,14 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpdart/fpdart.dart';
-import 'package:table/core/dialogs/Alart_dialogs.dart';
-import 'package:table/models/messageModel.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/sunnary_section/summary_request/summary_request.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/sunnary_section/sunnary%20Controller/summary_controller.dart';
 import 'package:table/widgets/heder/hederTitle.dart';
+import 'package:flutter/material.dart' as ma;
 
 import '../../../../../../helper/helper_fun.dart';
 import '../../../../../../widgets/appWidget/appText.dart';
@@ -112,7 +108,7 @@ class _AddSummaryScreenState extends ConsumerState<AddSummaryScreen> {
                       // create button
                       CupertinoButton(
                           color: Colors.blue,
-                          child: const Text('Create'),
+                          child: const ma.Text('Create'),
                           onPressed: () async {
                             newMessage = {
                               'name': 'John Doe new',
