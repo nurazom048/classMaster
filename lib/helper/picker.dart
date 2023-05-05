@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types
+
 import 'package:file_picker/file_picker.dart';
 import 'package:table/helper/helper_fun.dart';
 

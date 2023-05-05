@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AddWeekdayButton extends StatelessWidget {
   final Function() onPressed;
 
-  AddWeekdayButton({Key? key, required this.onPressed}) : super(key: key);
+  const AddWeekdayButton({Key? key, required this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class AddWeekdayButton extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisSize: MainAxisSize.min,
-          children: [
+          children: const [
             Icon(Icons.add),
             SizedBox(width: 5),
             Text('Add Weekday', style: TextStyle(fontSize: 16)),

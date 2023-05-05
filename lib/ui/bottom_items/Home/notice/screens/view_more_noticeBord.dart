@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:table/ui/bottom_items/Home/notice/screens/view%20more%20notice%20Bord/list_of_notice.dart';
 import 'package:table/ui/bottom_items/Home/notice/screens/view%20more%20notice%20Bord/notice_board_memberrs.dart';
-import 'package:table/widgets/heder/hederTitle.dart';
+import 'package:table/widgets/heder/heder_title.dart';
 
-import '../../../../../helper/constant/AppColor.dart';
+import '../../../../../helper/constant/app_color.dart';
 import '../../../../../widgets/appWidget/appText.dart';
 
 class ViewMoreNoticeBord extends StatefulWidget {

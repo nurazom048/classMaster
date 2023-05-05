@@ -4,7 +4,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/helper/constant/constant.dart';
-import 'package:table/models/messageModel.dart';
+import 'package:table/models/message_model.dart';
 import '../models/all_summary_models.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';

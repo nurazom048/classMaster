@@ -8,8 +8,8 @@ import 'package:table/ui/bottom_items/Home/full_rutin/controller/members_control
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/select_account.dart';
 import 'package:table/widgets/progress_indicator.dart';
-import 'package:table/widgets/text%20and%20buttons/squareButton.dart';
-import '../../../../../core/dialogs/Alart_dialogs.dart';
+import '../../../../../core/dialogs/alart_dialogs.dart';
+import '../../../../../widgets/text and buttons/square_button.dart';
 import '../widgets/seeAllCaotensList.dart';
 
 class RutinDialog {

@@ -1,6 +1,8 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 
-import '../../helper/constant/AppColor.dart';
+import '../../helper/constant/app_color.dart';
 
 class AppTextFromField extends StatelessWidget {
   const AppTextFromField({
@@ -51,7 +53,7 @@ class AppTextFromField extends StatelessWidget {
             keyboardType: keyboardType,
             decoration: InputDecoration(
               labelText: labelText ?? "Enter your full $hint ",
-              errorStyle: TextStyle(
+              errorStyle: const TextStyle(
                   fontSize: 17,
                   letterSpacing: 1,
                   decorationStyle: TextDecorationStyle.solid),

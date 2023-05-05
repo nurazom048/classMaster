@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/sunnary_section/sunnary%20Controller/summary_controller.dart';
-import 'package:table/widgets/heder/hederTitle.dart';
+import 'package:table/widgets/heder/heder_title.dart';
 import 'package:flutter/material.dart' as ma;
 
 import '../../../../../../helper/helper_fun.dart';

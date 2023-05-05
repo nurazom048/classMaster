@@ -1,17 +1,16 @@
-
 import 'package:flutter/material.dart';
 
 /// *************AppbarCustom***************************/
 class AppbarCustom extends StatelessWidget {
-  String title;
-  dynamic ontap;
-  double? size;
-  IconData? ledingicon;
-  Widget? actionIcon;
-  double buttompadding;
-  double toppadding;
+  final String title;
+  final dynamic ontap;
+  final double? size;
+  final IconData? ledingicon;
+  final Widget? actionIcon;
+  final double buttompadding;
+  final double toppadding;
 
-  AppbarCustom({
+  const AppbarCustom({
     this.ontap,
     this.ledingicon,
     required this.title,
@@ -34,7 +33,7 @@ class AppbarCustom extends StatelessWidget {
           // InkWell(
           //     onTap: ontap ?? (() => Navigator.pop(context)),
           //     child: Icon(ledingicon ?? Icons.clear, size: 27.0)),
-          Text("$title",
+          Text(title,
               style: TextStyle(
                   fontSize: size ?? 20.0, fontWeight: FontWeight.w800)),
           const Spacer(flex: 20),

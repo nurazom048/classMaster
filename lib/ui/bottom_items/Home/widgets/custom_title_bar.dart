@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table/ui/bottom_items/search/search_screen/search_page.dart';
 
-import '../../../../helper/constant/AppColor.dart';
+import '../../../../helper/constant/app_color.dart';
 
 class ChustomTitleBar extends StatelessWidget {
   final String title;

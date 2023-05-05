@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:table/models/messageModel.dart';
+import 'package:table/models/message_model.dart';
 import 'package:table/ui/server/rutinReq.dart';
-import '../../../../core/dialogs/Alart_dialogs.dart';
+import '../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../helper/constant/constant.dart';
 import 'package:table/models/class_model.dart';
 

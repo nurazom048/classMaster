@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:fpdart/fpdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/helper/constant/constant.dart';
-import 'package:table/models/messageModel.dart';
+import 'package:table/models/message_model.dart';
 import 'package:table/ui/bottom_items/Home/notice/models/notice%20bord/ceatedNoticeBordName.dart';
 
 import '../models/notice bord/listOfnotice model.dart';

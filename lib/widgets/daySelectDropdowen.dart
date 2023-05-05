@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../helper/constant/AppColor.dart';
+import '../helper/constant/app_color.dart';
 
 class DayDropdown extends StatelessWidget {
   final String labelText;
@@ -28,11 +28,11 @@ class DayDropdown extends StatelessWidget {
     ];
 
     // Define the list of dropdown menu items using sevendays list
-    final List<DropdownMenuItem<int>> _dayItems = List.generate(
+    final List<DropdownMenuItem<int>> dayItems = List.generate(
       sevendays.length,
       (index) => DropdownMenuItem(
         value: index,
-        child: Text(sevendays[index], style: TextStyle(fontSize: 18)),
+        child: Text(sevendays[index], style: const TextStyle(fontSize: 18)),
       ),
     );
 
@@ -53,7 +53,7 @@ class DayDropdown extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           DropdownButtonFormField(
-            items: _dayItems,
+            items: dayItems,
             onChanged: (value) => onChanged(value ?? 0),
             decoration: InputDecoration(
               hintText: labelText,

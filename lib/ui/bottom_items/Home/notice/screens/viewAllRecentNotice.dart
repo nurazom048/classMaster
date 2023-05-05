@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/widgets/appWidget/appText.dart';
 import 'package:flutter/material.dart' as ma;
 
-import '../../../../../core/dialogs/Alart_dialogs.dart';
-import '../../../../../widgets/heder/hederTitle.dart';
+import '../../../../../core/dialogs/alart_dialogs.dart';
+import '../../../../../widgets/heder/heder_title.dart';
 import '../../widgets/notice_row.dart';
 import '../notice controller/virew_recent_notice_controller.dart';
 

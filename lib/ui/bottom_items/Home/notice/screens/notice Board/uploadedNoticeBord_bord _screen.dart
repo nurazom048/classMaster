@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/core/dialogs/Alart_dialogs.dart';
-import 'package:table/widgets/heder/hederTitle.dart';
+import 'package:table/core/dialogs/alart_dialogs.dart';
+import 'package:table/widgets/heder/heder_title.dart';
 import 'package:flutter/material.dart' as ma;
 
 import '../../../../Account/accounu_ui/save_screen.dart';

@@ -5,9 +5,9 @@ import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/rutin_box/rutin_box_by_id.dart';
 import 'package:table/widgets/progress_indicator.dart';
 
-import '../../../../core/dialogs/Alart_dialogs.dart';
+import '../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../widgets/appWidget/appText.dart';
-import '../../../../widgets/heder/hederTitle.dart';
+import '../../../../widgets/heder/heder_title.dart';
 
 class SaveRutinsScreen extends StatelessWidget {
   const SaveRutinsScreen({super.key});

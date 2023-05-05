@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as ma;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/helper/constant/AppColor.dart';
+import 'package:table/helper/constant/app_color.dart';
 import 'package:table/ui/bottom_items/Account/models/Account_models.dart';
-import 'package:table/ui/bottom_items/Account/accounu_ui/Account_screen.dart';
+import 'package:table/ui/bottom_items/Account/accounu_ui/account_screen.dart';
 
 class AccountCardRow extends ConsumerWidget {
   AccountCardRow({

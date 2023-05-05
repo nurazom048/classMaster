@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:table/core/dialogs/Alart_dialogs.dart';
+import 'package:table/core/dialogs/alart_dialogs.dart';
 import 'package:table/models/rutins/weekday/weekday_list.dart';
-import '../../../../../models/messageModel.dart';
+import '../../../../../models/message_model.dart';
 import '../request/weekday_req.dart';
 
 //! providers

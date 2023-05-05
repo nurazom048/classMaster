@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table/widgets/appWidget/dottted_divider.dart';
-import '../../../../../../models/ClsassDetailsModel.dart';
+import '../../../../../../models/class_details_model.dart';
 
 class RutineCardInfoRow extends StatelessWidget {
   final Day? day;

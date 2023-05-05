@@ -1,13 +1,12 @@
-// ignore_for_file: unused_local_variable
+// ignore_for_file: unused_local_variable, avoid_print
 
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:table/helper/constant/constant.dart';
-import 'package:table/models/messageModel.dart';
+import 'package:table/models/message_model.dart';
 
 class AuthReq {
   //........ Login .........//
@@ -61,4 +60,4 @@ class AuthReq {
   }
 }
 
-final auth_req_provider = Provider((ref) => AuthReq());
+final authReqProvider = Provider((ref) => AuthReq());

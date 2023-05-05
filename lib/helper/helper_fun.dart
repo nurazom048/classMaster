@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, unnecessary_null_comparison, deprecated_member_use
 
 import 'dart:io';
 import 'package:flutter_image_compress/flutter_image_compress.dart';

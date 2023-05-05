@@ -1,5 +1,3 @@
-// ignore_for_file: non_constant_identifier_names, must_be_immutable
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as ma;
@@ -16,8 +14,8 @@ import 'package:table/ui/bottom_items/Account/widgets/my_divider.dart';
 import 'package:table/ui/bottom_items/Account/widgets/tiled_boutton.dart';
 import 'package:table/ui/bottom_items/Home/notice/screens/view_more_noticeBord.dart';
 import 'package:table/widgets/AccountCard.dart';
-import '../../../../core/dialogs/Alart_dialogs.dart';
-import '../../../../core/component/component_improts.dart';
+import '../../../../core/component/heder component/appbaar_custom.dart';
+import '../../../../core/dialogs/alart_dialogs.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../Home/notice/screens/notice Board/uploadedNoticeBord_bord _screen.dart';
@@ -50,7 +48,7 @@ class _AccountScreenState extends State<AccountScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //... AppBar.....//
-                AppbarCustom(title: "    Account"),
+                const AppbarCustom(title: "    Account"),
                 accountData.when(
                   data: (data) {
                     print(data);

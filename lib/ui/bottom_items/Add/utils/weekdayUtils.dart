@@ -1,10 +1,12 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/helper/constant/AppColor.dart';
+import 'package:table/helper/constant/app_color.dart';
 import 'package:table/ui/bottom_items/Add/utils/add_class_validation.dart';
 import 'package:table/ui/bottom_items/Add/widgets/select_priode_number.dart';
-import 'package:table/widgets/appWidget/buttons/cupertinoButttons.dart';
 import 'package:flutter/material.dart' as ma;
+import 'package:table/widgets/appWidget/buttons/cupertino_butttons.dart';
 
 import '../../../../widgets/appWidget/TextFromFild.dart';
 import '../../../../widgets/daySelectDropdowen.dart';

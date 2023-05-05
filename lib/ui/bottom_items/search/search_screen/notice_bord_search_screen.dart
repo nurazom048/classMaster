@@ -4,7 +4,7 @@ import 'package:table/ui/bottom_items/search/search_request/notice_bord_search.d
 import 'package:table/ui/bottom_items/search/search_screen/search_page.dart';
 import 'package:flutter/material.dart' as ma;
 
-import '../../../../core/dialogs/Alart_dialogs.dart';
+import '../../../../core/dialogs/alart_dialogs.dart';
 import '../../Account/accounu_ui/save_screen.dart';
 
 class NoticeBordSearch extends ConsumerWidget {

@@ -1,7 +1,4 @@
-// ignore_for_file: non_constant_identifier_names
-
 import 'package:table/models/rutins/rutins.dart';
-import 'dart:convert';
 
 class ListOfSaveRutins {
   ListOfSaveRutins({

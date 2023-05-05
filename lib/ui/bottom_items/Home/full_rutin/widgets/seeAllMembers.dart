@@ -6,7 +6,7 @@ import 'package:table/ui/bottom_items/Home/full_rutin/request/member_request.dar
 import 'package:table/widgets/AccoundCardRow.dart';
 import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/ui/bottom_items/search/widgets/searchBarCustom.dart';
-import '../../../../../../core/dialogs/Alart_dialogs.dart';
+import '../../../../../core/dialogs/alart_dialogs.dart';
 import 'package:flutter/material.dart' as ma;
 
 final serachStringProvidder = StateProvider((ref) => "");

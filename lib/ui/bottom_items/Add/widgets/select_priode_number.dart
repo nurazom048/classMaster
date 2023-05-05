@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:table/helper/constant/AppColor.dart';
-import 'package:table/ui/bottom_items/Add/widgets/priodeSelcetButtons.dart';
+import 'package:table/helper/constant/app_color.dart';
+import 'package:table/ui/bottom_items/Add/widgets/priode_select_buttons.dart';
 
 class PeriodNumberSelector extends StatefulWidget {
   final void Function(int)? onStartSelacted;

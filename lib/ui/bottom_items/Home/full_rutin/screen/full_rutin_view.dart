@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/server/rutinReq.dart';
 import 'package:table/widgets/progress_indicator.dart';
-import '../../../../../core/dialogs/Alart_dialogs.dart';
+import '../../../../../core/dialogs/alart_dialogs.dart';
 import '../widgets/rutin_box/rutine_boox.dart';
 import '../utils/rutin_dialog.dart';
 

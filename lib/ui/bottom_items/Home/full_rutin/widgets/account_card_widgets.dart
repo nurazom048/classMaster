@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:table/core/component/heder%20component/crossBar.dart';
-import 'package:table/helper/constant/AppColor.dart';
+import 'package:table/helper/constant/app_color.dart';
 import 'package:table/ui/bottom_items/Account/models/Account_models.dart';
 import 'package:table/widgets/appWidget/appText.dart';
 import 'package:table/widgets/appWidget/buttons/capsule_button.dart';
+
+import '../../../../../core/component/heder component/cross_bar.dart';
 
 class AccountCard extends StatelessWidget {
   const AccountCard({

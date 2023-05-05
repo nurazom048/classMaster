@@ -10,7 +10,7 @@ import 'package:table/ui/bottom_items/Home/notice/notice%20controller/noticeRequ
 import 'package:table/ui/bottom_items/Home/notice/screens/viewAllRecentNotice.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/rutin_box/rutin_box_by_id.dart';
 import 'package:table/ui/bottom_items/Home/widgets/recent_notice_title.dart';
-import '../../../../core/dialogs/Alart_dialogs.dart';
+import '../../../../core/dialogs/alart_dialogs.dart';
 import '../full_rutin/widgets/sceltons/rutinebox_id_scelton.dart';
 import '../widgets/custom_title_bar.dart';
 import '../widgets/notice_row.dart';

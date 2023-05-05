@@ -77,8 +77,6 @@ class PriodeContaner extends StatelessWidget {
   Widget crossContainerPriode(num currentPriodeNumber, num priviusPriodeNum) {
     num size = (currentPriodeNumber - priviusPriodeNum);
 
-    print(size);
-
     double width = size * 100;
 
     return size.isNegative || width == 0 || size == 1
@@ -102,12 +100,12 @@ class PriodeContaner extends StatelessWidget {
                     child: Column(
                       children: [
                         Text("($i)"),
-                        Divider(
+                        const Divider(
                           color: Colors.black87,
                           height: 10,
                           thickness: .5,
                         ),
-                        Icon(Icons.clear),
+                        const Icon(Icons.clear),
                       ],
                     ),
                   ),

@@ -1,17 +1,18 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
-import 'package:table/ui/auth_Section/auth_ui/SiginUp_Screen.dart';
-import 'package:table/ui/auth_Section/utils/Login_validation.dart';
+import 'package:table/ui/auth_Section/utils/login_validation.dart';
 import 'package:table/widgets/appWidget/appText.dart';
-import 'package:table/widgets/appWidget/buttons/cupertinoButttons.dart';
-import 'package:flutter/material.dart' as ma;
 
-import '../../../helper/constant/AppColor.dart';
+import '../../../helper/constant/app_color.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
-import '../../../widgets/heder/hederTitle.dart';
+import '../../../widgets/appWidget/buttons/cupertino_butttons.dart';
+import '../../../widgets/heder/heder_title.dart';
+import '../auth_controller/auth_controller.dart';
+import 'SiginUp_Screen.dart';
 
 Future<bool> isToken() async {
   //
@@ -108,7 +109,7 @@ class LogingScreen extends ConsumerWidget {
                                   builder: (context) => SignUpScreen()),
                             );
                           },
-                          child: const ma.Text(
+                          child: const Text(
                               "create a new account for your sellf")),
 
                       //
@@ -120,8 +121,8 @@ class LogingScreen extends ConsumerWidget {
                                   builder: (context) => SignUpScreen()),
                             );
                           },
-                          child: const ma.Text(
-                              "create a new account for academy")),
+                          child:
+                              const Text("create a new account for academy")),
                     ],
                   ),
                 )

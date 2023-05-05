@@ -1,11 +1,11 @@
-// ignore_for_file: use_build_context_synchronously, no_leading_underscores_for_local_identifiers
+// ignore_for_file: use_build_context_synchronously, no_leading_underscores_for_local_identifiers, avoid_print
 
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:table/core/dialogs/Alart_dialogs.dart';
-import 'package:table/helper/constant/AppColor.dart';
+import 'package:table/core/dialogs/alart_dialogs.dart';
+import 'package:table/helper/constant/app_color.dart';
 import 'package:table/helper/constant/constant.dart';
 import 'package:table/models/class_model.dart';
 import 'package:table/ui/bottom_items/Add/request/class_request.dart';
@@ -14,13 +14,13 @@ import 'package:table/ui/bottom_items/Add/utils/weekdayUtils.dart';
 import 'package:table/ui/bottom_items/Add/widgets/addWeekdayButton.dart';
 import 'package:table/ui/bottom_items/Add/widgets/select_priode_number.dart';
 import 'package:table/widgets/appWidget/appText.dart';
-import 'package:table/widgets/appWidget/buttons/cupertinoButttons.dart';
 import 'package:table/widgets/daySelectDropdowen.dart';
 import 'package:flutter/material.dart' as ma;
 
-import 'package:table/widgets/heder/hederTitle.dart';
-import '../../../../models/rutins/class/findClassModel.dart';
+import 'package:table/widgets/heder/heder_title.dart';
+import '../../../../models/rutins/class/find_class_model.dart';
 import '../../../../widgets/appWidget/TextFromFild.dart';
+import '../../../../widgets/appWidget/buttons/cupertino_butttons.dart';
 import '../../Home/full_rutin/controller/weekday_controller.dart';
 import '../widgets/wekkday_view.dart';
 
@@ -30,7 +30,7 @@ class AddClassScreen extends StatefulWidget {
   final String? classId;
   final bool? isEdit;
 
-  AddClassScreen({
+  const AddClassScreen({
     required this.routineId,
     this.classId,
     this.isEdit = false,
@@ -143,7 +143,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                                   (index) => Container(
                                     margin:
                                         const EdgeInsets.symmetric(vertical: 5),
-                                    child: weekdayView(
+                                    child: WeekdayView(
                                       weekday: data.weekdays[index],
 
                                       // delete weekday
@@ -287,6 +287,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
     } catch (e) {
       Alart.handleError(context, e.toString());
     }
+    return null;
   }
 
   _deleteOntap(String id, WidgetRef ref) {

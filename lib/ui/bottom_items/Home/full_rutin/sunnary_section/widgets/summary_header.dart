@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../widgets/heder/hederTitle.dart';
+import '../../../../../../widgets/heder/heder_title.dart';
 import '../../widgets/rutin_box/rutin_card_row.dart';
 
 class SummaryHeader extends StatelessWidget {

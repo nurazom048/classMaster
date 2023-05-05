@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:table/helper/constant/constant.dart';
 import 'package:http/http.dart' as http;
-import 'package:table/models/messageModel.dart';
+import 'package:table/models/message_model.dart';
 import '../../../../models/rutins/search_rutin.dart';
 import '../../../../models/search_account.dart';
 

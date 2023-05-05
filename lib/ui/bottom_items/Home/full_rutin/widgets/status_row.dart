@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/chack_status_controller.dart';
-import 'package:table/widgets/text%20and%20buttons/squareButton.dart';
 
-import '../../../../../../core/dialogs/Alart_dialogs.dart';
+import '../../../../../core/dialogs/alart_dialogs.dart';
+import '../../../../../widgets/text and buttons/square_button.dart';
 
 class StatusRow extends ConsumerWidget {
   final String rutinId;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:table/widgets/appWidget/buttons/cupertino_butttons.dart';
 //import 'package:flutter_svg/flutter_svg.dart';
-import 'package:table/widgets/appWidget/buttons/cupertinoButttons.dart';
-import '../../../helper/constant/AppColor.dart';
-import '../../../widgets/heder/hederTitle.dart';
+import '../../../helper/constant/app_color.dart';
+import '../../../widgets/heder/heder_title.dart';
 
 class SelectAccounType extends StatefulWidget {
   final void Function(String?)? onAccountType;

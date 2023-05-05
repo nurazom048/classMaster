@@ -4,9 +4,9 @@ import 'package:table/ui/bottom_items/Account/accounu_ui/save_screen.dart';
 import 'package:table/ui/bottom_items/Home/home_req/uploaded_rutine_controller.dart';
 import 'package:table/widgets/progress_indicator.dart';
 
-import '../../../../core/dialogs/Alart_dialogs.dart';
+import '../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../widgets/appWidget/appText.dart';
-import '../../../../widgets/heder/hederTitle.dart';
+import '../../../../widgets/heder/heder_title.dart';
 
 class AllUploadesRutinesMini extends StatelessWidget {
   const AllUploadesRutinesMini({super.key});

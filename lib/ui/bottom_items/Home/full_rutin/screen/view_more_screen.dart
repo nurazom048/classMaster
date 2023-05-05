@@ -1,12 +1,12 @@
-// ignore_for_file: curly_braces_in_flow_control_structures, unnecessary_null_comparison
+// ignore_for_file: curly_braces_in_flow_control_structures, unnecessary_null_comparison, avoid_print
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/core/dialogs/Alart_dialogs.dart';
-import 'package:table/helper/constant/AppColor.dart';
-import 'package:table/ui/bottom_items/Add/screens/addClassScreen.dart';
-import 'package:table/ui/bottom_items/Add/screens/addPriode.dart';
+import 'package:table/core/dialogs/alart_dialogs.dart';
+import 'package:table/helper/constant/app_color.dart';
+import 'package:table/ui/bottom_items/Add/screens/add_class_screen.dart';
+import 'package:table/ui/bottom_items/Add/screens/add_priode.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/members_controllers.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/see_all_req_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/priode_request.dart';
@@ -14,12 +14,12 @@ import 'package:table/ui/bottom_items/Home/full_rutin/utils/logngPress.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/dash_border_button.dart';
 import 'package:table/widgets/AccoundCardRow.dart';
 import 'package:table/widgets/progress_indicator.dart';
-import '../../../../../models/ClsassDetailsModel.dart';
+import '../../../../../models/class_details_model.dart';
 import '../../../../../widgets/appWidget/TextFromFild.dart';
 import '../../../../../widgets/appWidget/appText.dart';
 import '../../../../../widgets/hedding_row.dart';
-import '../../../../../widgets/heder/hederTitle.dart';
-import '../../../../auth_Section/utils/Login_validation.dart';
+import '../../../../../widgets/heder/heder_title.dart';
+import '../../../../auth_Section/utils/login_validation.dart';
 import '../../../../server/rutinReq.dart';
 import '../sunnary_section/summat_screens/summary_screen.dart';
 import '../widgets/account_card_widgets.dart';
@@ -40,6 +40,7 @@ class ViewMore extends StatefulWidget {
       : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _ViewMoreState createState() => _ViewMoreState();
 }
 
@@ -191,11 +192,11 @@ class _ClassListPageState extends State<ClassListPage> {
                   },
                   error: (error, stackTrace) =>
                       Alart.handleError(context, error),
-                  loading: () => ma.Text("loding")),
+                  loading: () => const ma.Text("loding")),
             ),
             HeddingRow(
               hedding: "Class List",
-              second_Hedding: "${totalMemberCount}  classes",
+              second_Hedding: "$totalMemberCount  classes",
               margin: EdgeInsets.zero,
               buttonText: "Add Class",
               onTap: () {
@@ -307,11 +308,11 @@ class MemberList extends StatelessWidget {
             onTap: () {},
           ),
 
-          Container(
+          SizedBox(
             height: 200,
             child: Column(
               children: [
-                Container(
+                SizedBox(
                     height: 200,
                     child: allRequest.when(
                         data: (data) {
@@ -368,9 +369,9 @@ class MemberList extends StatelessWidget {
                 height: 140,
                 child: ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: data.Members!.length,
+                    itemCount: data.members!.length,
                     itemBuilder: (context, index) =>
-                        AccountCardRow(accountData: data.Members![index])),
+                        AccountCardRow(accountData: data.members![index])),
               );
             },
             error: (error, stackTrace) => Alart.handleError(context, error),

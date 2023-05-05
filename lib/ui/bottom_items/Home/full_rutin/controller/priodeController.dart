@@ -2,9 +2,7 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/models/priode/all_priode_models.dart';
-import 'package:table/ui/server/rutinReq.dart';
-import '../../../../../core/dialogs/Alart_dialogs.dart';
+import '../../../../../core/dialogs/alart_dialogs.dart';
 import '../request/priode_request.dart';
 
 //.. prvider...//

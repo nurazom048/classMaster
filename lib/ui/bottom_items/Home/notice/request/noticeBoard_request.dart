@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:table/models/messageModel.dart';
+import 'package:table/models/message_model.dart';
 import 'package:table/ui/bottom_items/Home/notice/models/list_noticeboard.dart';
 import 'package:http/http.dart' as http;
 

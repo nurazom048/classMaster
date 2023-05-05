@@ -1,13 +1,14 @@
 // ignore_for_file: avoid_print
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/core/dialogs/Alart_dialogs.dart';
+import 'package:table/core/dialogs/alart_dialogs.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/priodeController.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/priode_request.dart';
-import 'package:table/widgets/appWidget/buttons/cupertinoButttons.dart';
-import 'package:table/widgets/heder/hederTitle.dart';
+import 'package:table/widgets/heder/heder_title.dart';
 import 'package:table/widgets/select_time.dart';
 import 'package:flutter/material.dart' as ma;
+
+import '../../../../widgets/appWidget/buttons/cupertino_butttons.dart';
 
 class AppPriodePage extends StatefulWidget {
   const AppPriodePage({
@@ -92,14 +93,14 @@ class _AppPriodePageState extends State<AppPriodePage> {
                                 children: [
                                   SelectTime(
                                     width: 170,
-                                    time_text: "start_time",
+                                    timeText: "start_time",
                                     time: startTime,
                                     show: show,
                                     onTap: _selectStartTime,
                                   ),
                                   SelectTime(
                                     width: 170,
-                                    time_text: "end time",
+                                    timeText: "end time",
                                     time: endTime,
                                     show: show,
                                     onTap: _selectEndTime,

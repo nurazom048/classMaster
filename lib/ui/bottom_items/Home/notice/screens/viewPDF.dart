@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import '../../../../../widgets/heder/hederTitle.dart';
+import '../../../../../widgets/heder/heder_title.dart';
 
 class ViewPDf extends StatefulWidget {
   final String pdfLink;

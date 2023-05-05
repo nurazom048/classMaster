@@ -3,13 +3,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/helper/constant/AppColor.dart';
+import 'package:table/helper/constant/app_color.dart';
 import 'package:flutter/material.dart' as ma;
 
 import 'package:table/models/priode/all_priode_models.dart';
 import '../../../Add/request/class_request.dart';
-import '../../../Add/screens/addClassScreen.dart';
-import '../../../Add/screens/addPriode.dart';
+import '../../../Add/screens/add_class_screen.dart';
+import '../../../Add/screens/add_priode.dart';
 import '../controller/priodeController.dart';
 
 class PriodeAlart {

@@ -9,11 +9,11 @@ class SelectTime extends StatelessWidget {
   dynamic onTap;
   late DateTime time;
   final double width;
-  String time_text;
+  final String timeText;
   SelectTime(
       {super.key,
       required this.onTap,
-      required this.time_text,
+      required this.timeText,
       required this.time,
       required this.show,
       required this.width});
@@ -23,7 +23,7 @@ class SelectTime extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AppText(time_text).heding(),
+        AppText(timeText).heding(),
         const SizedBox(height: 10),
         Container(
           height: 50,
@@ -38,7 +38,7 @@ class SelectTime extends StatelessWidget {
               children: [
                 const Spacer(flex: 1),
                 Text(
-                  show ? DateFormat.jm().format(time) : time_text,
+                  show ? DateFormat.jm().format(time) : timeText,
                   style: const TextStyle(fontSize: 16),
                 ),
                 const Spacer(flex: 4),

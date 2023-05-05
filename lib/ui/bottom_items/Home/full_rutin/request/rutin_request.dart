@@ -6,8 +6,8 @@ import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/helper/constant/constant.dart';
-import 'package:table/models/chackStatusModel.dart';
-import '../../../../../../../models/messageModel.dart';
+import 'package:table/models/chack_status_model.dart';
+import '../../../../../models/message_model.dart';
 
 //*** Providers  ******   */
 final FullRutinProvider = Provider((ref) => FullRutinrequest());

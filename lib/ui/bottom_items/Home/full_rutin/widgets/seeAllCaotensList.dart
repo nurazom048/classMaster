@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/auth_Section/utils/Login_validation.dart';
+import 'package:table/ui/auth_Section/utils/login_validation.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/member_request.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/dash_border_button.dart';
 import 'package:table/widgets/AccoundCardRow.dart';
@@ -11,7 +11,7 @@ import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/ui/bottom_items/search/widgets/searchBarCustom.dart';
 import 'package:flutter/material.dart' as ma;
 
-import '../../../../../../core/dialogs/Alart_dialogs.dart';
+import '../../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../../../widgets/hedding_row.dart';
 
 final serachStringProvidder = StateProvider((ref) => "");

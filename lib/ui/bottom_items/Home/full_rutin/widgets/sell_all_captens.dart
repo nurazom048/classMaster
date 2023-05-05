@@ -6,7 +6,7 @@ import 'package:table/ui/bottom_items/Home/full_rutin/controller/members_control
 import 'package:table/widgets/AccoundCardRow.dart';
 import 'package:table/widgets/progress_indicator.dart';
 
-import '../../../../../core/dialogs/Alart_dialogs.dart';
+import '../../../../../core/dialogs/alart_dialogs.dart';
 
 class SeeeAllCaptens extends ConsumerWidget {
   String rutinId;
@@ -31,10 +31,10 @@ class SeeeAllCaptens extends ConsumerWidget {
                 data: (data) {
                   return data != null
                       ? ListView.builder(
-                          itemCount: data.Members?.length ?? 0,
+                          itemCount: data.members?.length ?? 0,
                           itemBuilder: (context, index) {
                             return AccountCardRow(
-                                accountData: data.Members![index]);
+                                accountData: data.members![index]);
                           })
                       : Container();
                 },

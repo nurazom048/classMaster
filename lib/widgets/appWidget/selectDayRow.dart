@@ -1,5 +1,6 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
-import '../../helper/constant/AppColor.dart';
+import '../../helper/constant/app_color.dart';
 
 class SelectDayRow extends StatefulWidget {
   final void Function(int) selectedDay;

@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/core/dialogs/Alart_dialogs.dart';
-import 'package:table/models/membersModels.dart';
+import 'package:table/core/dialogs/alart_dialogs.dart';
+import 'package:table/models/members_models.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/member_request.dart';
-import '../../../../../models/messageModel.dart';
+import '../../../../../models/message_model.dart';
 
 //! ** Providers ****/
 final memberControllerProvider =

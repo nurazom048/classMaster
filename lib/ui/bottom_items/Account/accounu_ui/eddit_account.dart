@@ -6,7 +6,7 @@ import 'package:table/ui/bottom_items/Account/account_request/account_request.da
 import 'package:table/ui/bottom_items/Account/models/Account_models.dart';
 import 'package:table/widgets/appWidget/TextFromFild.dart';
 import 'package:table/widgets/pickImage.dart';
-import '../../../../widgets/heder/hederTitle.dart';
+import '../../../../widgets/heder/heder_title.dart';
 import '../../../auth_Section/utils/singUp_validation.dart';
 
 class EdditAccount extends StatefulWidget {

@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:table/helper/helper_fun.dart';
@@ -18,11 +20,11 @@ class PickImage extends StatefulWidget {
 }
 
 class _PickImageState extends State<PickImage> {
+  // ignore: avoid_init_to_null
   late File? _image = null;
 
   @override
   Widget build(BuildContext context) {
-    print("from ipic ${widget.netWorkIamge}");
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5),
       width: 114,

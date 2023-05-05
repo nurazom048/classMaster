@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:table/helper/constant/constant.dart';
-import 'package:table/models/rutins/listOfSaveRutin.dart';
+import 'package:table/models/rutins/list_of_save_rutin.dart';
 import '../../../../models/rutins/jponed_rutins_model.dart';
 import '../../../../models/rutins/saveRutine.dart';
 

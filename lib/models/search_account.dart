@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_collection_literals
+
 import 'package:table/ui/bottom_items/Account/models/Account_models.dart';
 
 class AccountsResponse {

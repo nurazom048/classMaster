@@ -1,4 +1,4 @@
-import '../class/findClassModel.dart';
+import '../class/find_class_model.dart';
 
 class WeekdayList {
   final String message;

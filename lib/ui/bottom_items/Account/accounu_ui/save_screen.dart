@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/core/dialogs/Alart_dialogs.dart';
+import 'package:table/core/dialogs/alart_dialogs.dart';
 import 'package:table/ui/bottom_items/Account/accounu_ui/save_rutins_screen.dart';
 import 'package:table/widgets/appWidget/appText.dart';
 import 'package:table/widgets/appWidget/dottted_divider.dart';

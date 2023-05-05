@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:table/models/rutins/search_rutin.dart';
 
 class SaveRutineResponse {

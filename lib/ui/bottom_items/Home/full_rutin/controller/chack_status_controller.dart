@@ -1,9 +1,9 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, prefer_const_constructors
+// ignore_for_file: prefer_typing_uninitialized_variables, prefer_const_constructors, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/core/dialogs/Alart_dialogs.dart';
-import 'package:table/models/chackStatusModel.dart';
+import 'package:table/core/dialogs/alart_dialogs.dart';
+import 'package:table/models/chack_status_model.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/member_request.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/rutin_request.dart';

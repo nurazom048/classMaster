@@ -3,13 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:table/models/messageModel.dart';
+import 'package:table/models/message_model.dart';
 import 'package:table/ui/auth_Section/auth_req/auth_req.dart';
 import 'package:table/ui/bottom_items/bottm_nev_bar.dart';
-import '../../../core/dialogs/Alart_dialogs.dart';
+import '../../../core/dialogs/alart_dialogs.dart';
 
 final authController_provider = StateNotifierProvider.autoDispose(
-    (ref) => AuthController(ref.watch(auth_req_provider)));
+    (ref) => AuthController(ref.watch(authReqProvider)));
 
 //
 
@@ -58,7 +58,7 @@ class AuthController extends StateNotifier<bool> {
       (r) {
         state = false;
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => BottomNevBar()));
+            context, MaterialPageRoute(builder: (context) => BottomNavBar()));
         Alart.showSnackBar(context, r);
       },
     );

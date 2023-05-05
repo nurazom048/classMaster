@@ -6,11 +6,11 @@ import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/helper/constant/constant.dart';
-import 'package:table/models/captens/listOfCaptens.dart';
-import 'package:table/models/membersModels.dart';
+import 'package:table/models/captens/list_of_captens.dart';
+import 'package:table/models/members_models.dart';
 import 'package:table/models/seeAllRequestModel.dart';
-import '../../../../../models/member/allMember.dart';
-import '../../../../../models/messageModel.dart';
+import '../../../../../models/member/all_members.dart';
+import '../../../../../models/message_model.dart';
 
 final memberRequestProvider = Provider((ref) => memberRequest());
 

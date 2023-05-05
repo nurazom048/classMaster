@@ -3,21 +3,21 @@ import 'package:table/ui/bottom_items/Account/models/Account_models.dart';
 class MembersModel {
   String? message;
   int? count;
-  List<AccountModels>? Members;
+  List<AccountModels>? members;
 
   MembersModel({
     required this.message,
     this.count = 0,
-    this.Members = const [],
+    this.members = const [],
   });
 
   MembersModel.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     count = json['count'] ?? 0;
-    Members = [];
+    members = [];
     if (json['members'] != null) {
       json['members'].forEach((requestData) {
-        Members?.add(AccountModels.fromJson(requestData));
+        members?.add(AccountModels.fromJson(requestData));
       });
     }
   }

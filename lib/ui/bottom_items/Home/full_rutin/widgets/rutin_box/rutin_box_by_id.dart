@@ -10,8 +10,8 @@ import 'package:table/ui/bottom_items/Home/full_rutin/widgets/rutin_box/rutin_ca
 import 'package:table/widgets/mini_account_row.dart';
 import 'package:flutter/material.dart' as ma;
 
-import '../../../../../../core/dialogs/Alart_dialogs.dart';
-import '../../../../../../models/ClsassDetailsModel.dart';
+import '../../../../../../core/dialogs/alart_dialogs.dart';
+import '../../../../../../models/class_details_model.dart';
 import '../../controller/chack_status_controller.dart';
 import '../../screen/view_more_screen.dart';
 import '../../sunnary_section/summat_screens/summary_screen.dart';

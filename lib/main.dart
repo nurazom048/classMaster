@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'firebase_options.dart';
-import 'ui/auth_Section/auth_ui/LogIn_Screen.dart';
+import 'ui/auth_Section/auth_ui/logIn_screen.dart';
 
 //
 

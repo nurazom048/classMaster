@@ -1,15 +1,17 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
-import 'package:table/helper/constant/AppColor.dart';
-import 'package:table/models/rutins/class/findClassModel.dart';
+import 'package:table/helper/constant/app_color.dart';
+import 'package:table/models/rutins/class/find_class_model.dart';
 import 'package:table/ui/bottom_items/Add/widgets/select_priode_number.dart';
 import 'package:table/widgets/appWidget/appText.dart';
 import '../../../../widgets/appWidget/dottted_divider.dart';
 
-class weekdayView extends StatelessWidget {
+class WeekdayView extends StatelessWidget {
   final Weekday weekday;
   final dynamic onTap;
 
-  weekdayView({
+  WeekdayView({
     Key? key,
     required this.weekday,
     required this.onTap,
