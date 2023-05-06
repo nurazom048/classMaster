@@ -1,30 +1,31 @@
 // ignore_for_file: avoid_print
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as ma;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/dialogs/alart_dialogs.dart';
+import 'package:table/helper/constant/app_color.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/priodeController.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/priode_request.dart';
 import 'package:table/widgets/heder/heder_title.dart';
 import 'package:table/widgets/select_time.dart';
-import 'package:flutter/material.dart' as ma;
-
-import '../../../../widgets/appWidget/buttons/cupertino_butttons.dart';
+import 'package:table/widgets/appWidget/buttons/cupertino_butttons.dart';
 
 class AppPriodePage extends StatefulWidget {
   const AppPriodePage({
-    super.key,
+    Key? key,
     required this.rutinId,
     this.rutinName,
-    required this.totalpriode,
-    this.isEddit = false,
-    this.priode_id,
-  });
+    required this.totalPriode,
+    this.isEdit = false,
+    this.priodeId,
+  }) : super(key: key);
+
   final String rutinId;
   final String? rutinName;
-  final int? totalpriode;
-  final bool? isEddit;
+  final int totalPriode;
+  final bool isEdit;
+  final String? priodeId;
 
-  final String? priode_id;
   @override
   State<AppPriodePage> createState() => _AppPriodePageState();
 }
@@ -36,132 +37,114 @@ class _AppPriodePageState extends State<AppPriodePage> {
   DateTime? st;
   DateTime? et;
 
-  List<Map<String, dynamic>> priodeList = [];
-
   @override
   void initState() {
     super.initState();
-
-    insartEdditedvalu();
+    insartEditedValue();
   }
 
   @override
   Widget build(BuildContext context) {
-    print(widget.rutinId);
+    int periodNumber = widget.totalPriode == 0 ? 1 : widget.totalPriode + 1;
+
     return SafeArea(
       child: Scaffold(
-        body: Consumer(builder: (context, ref, _) {
-          return SingleChildScrollView(
-            padding: const EdgeInsets.only(bottom: 300),
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                HeaderTitle(" ${widget.priode_id}", context),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0)
-                      .copyWith(top: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 20),
-                      const ma.Text(
-                        'Add A New \nPriode Here',
-                        style: TextStyle(
-                          fontFamily: 'Open Sans',
-                          fontWeight: FontWeight.w300,
-                          fontSize: 36,
-                          height: 49 / 36,
-                          color: Colors.black,
+        body: Column(
+          children: [
+            // Header
+            HeaderTitle(widget.priodeId ?? '', context),
+            Consumer(builder: (context, ref, _) {
+              return SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 20),
+                    const Text(
+                      'Add A New Priode Here',
+                      style: TextStyle(
+                        fontFamily: 'Open Sans',
+                        fontWeight: FontWeight.w300,
+                        fontSize: 36,
+                        height: 49 / 36,
+                        color: Colors.black,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    ma.Text(
+                      'Priode Number $periodNumber',
+                      textScaleFactor: 1.5,
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SelectTime(
+                          width: 170,
+                          timeText: 'Start Time',
+                          time: startTime,
+                          show: show,
+                          onTap: _selectStartTime,
                         ),
-                      ),
-                      const SizedBox(height: 20),
+                        SelectTime(
+                          width: 170,
+                          timeText: 'End Time',
+                          time: endTime,
+                          show: show,
+                          onTap: _selectEndTime,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 100),
+                    if (widget.isEdit == false)
+                      CupertinoButtonCustom(
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          color: AppColor.nokiaBlue,
+                          textt: "Add Priode",
+                          onPressed: () async {
+                            setState(() {});
 
-                      const SizedBox(height: 20),
+                            //
 
-                      Column(
-                        children: List.generate(1, (context) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ma.Text("Priode Number $priodeList  ",
-                                  textScaleFactor: 1.5),
-                              const SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  SelectTime(
-                                    width: 170,
-                                    timeText: "start_time",
-                                    time: startTime,
-                                    show: show,
-                                    onTap: _selectStartTime,
-                                  ),
-                                  SelectTime(
-                                    width: 170,
-                                    timeText: "end time",
-                                    time: endTime,
-                                    show: show,
-                                    onTap: _selectEndTime,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          );
-                        }),
-                      ),
+                            if (st != null && et != null) {
+                              ref.watch(priodeController.notifier).addPriode(
+                                  ref,
+                                  context,
+                                  widget.rutinId,
+                                  startTime,
+                                  endTime);
+                            }
 
-                      //
-                    ],
-                  ),
+                            //
+                          })
+                    else
+                      CupertinoButtonCustom(
+                          textt: "Eddit priode",
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          color: AppColor.nokiaBlue,
+                          onPressed: () async {
+                            print("Ontap to eddir");
+
+                            // setState(() {});
+                            if (st != null && et != null) {
+                              ref.watch(priodeController.notifier).edditPriode(
+                                    ref,
+                                    context,
+                                    widget.rutinId,
+                                    widget.priodeId ?? '',
+                                    startTime,
+                                    endTime,
+                                  );
+                            }
+                            //
+                          }),
+                  ],
                 ),
-
-                //
-
-                const SizedBox(height: 30),
-
-                if (widget.isEddit == false)
-                  CupertinoButtonCustom(
-                      //  padding: const EdgeInsets.symmetric(horizontal: 150),
-                      textt: "Add Priode",
-                      onPressed: () async {
-                        setState(() {});
-                        print(priodeList);
-
-                        //
-
-                        if (st != null && et != null) {
-                          ref.watch(priodeController.notifier).addPriode(
-                              ref, context, widget.rutinId, startTime, endTime);
-                        }
-
-                        //
-                      })
-                else
-                  CupertinoButtonCustom(
-                      textt: "Eddit priode",
-                      onPressed: () async {
-                        print("Ontap to eddir");
-
-                        // setState(() {});
-                        print(priodeList);
-                        if (st != null && et != null) {
-                          ref.watch(priodeController.notifier).edditPriode(
-                                ref,
-                                context,
-                                widget.rutinId,
-                                widget.priode_id ?? '',
-                                startTime,
-                                endTime,
-                              );
-                        }
-                        //
-                      }),
-              ],
-            ),
-          );
-        }),
+              );
+            }),
+          ],
+        ),
       ),
     );
   }
@@ -228,9 +211,9 @@ class _AppPriodePageState extends State<AppPriodePage> {
     }
   }
 
-  void insartEdditedvalu() async {
-    if (widget.isEddit == true) {
-      var addRes = await PriodeRequest().findPriodebYid(widget.priode_id ?? '');
+  void insartEditedValue() async {
+    if (widget.isEdit == true) {
+      var addRes = await PriodeRequest().findPriodebYid(widget.priodeId ?? '');
       print("i am from cont");
 
       addRes.fold(

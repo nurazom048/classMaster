@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' as rp;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:table/ui/bottom_items/Account/widgets/my_divider.dart';
+import 'package:table/ui/bottom_items/Account/widgets/setting_options.dart';
 import 'package:table/ui/bottom_items/Add/screens/add__Notice__Screen.dart';
 import 'package:table/ui/bottom_items/Add/screens/create_new_rutine.dart';
+import 'package:table/widgets/appWidget/dottted_divider.dart';
 
 import '../../helper/constant/app_color.dart';
 import 'Account/accounu_ui/account_screen.dart';
@@ -24,53 +26,61 @@ class BottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return rp.Consumer(builder: (context, ref, _) {
-      //! provider
       final index = ref.watch(bottomNavBarIndexProvider);
+
+      final hideNavBar = ref.watch(hideNevBarOnScrooingProvider);
 
       return Scaffold(
         body: pages[index],
-        bottomNavigationBar: Container(
-          width: 340,
-          height: 64,
-          margin: const EdgeInsets.symmetric(horizontal: 26, vertical: 0)
-              .copyWith(bottom: 20),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(63),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              //! bottom nev bar items
-              TabCustom(
-                label: "Home",
-                icon: Icons.home_filled,
-                isSelected: index == 0,
-                onTap: () {
-                  ref
-                      .watch(bottomNavBarIndexProvider.notifier)
-                      .update((state) => 0);
-                },
+        bottomNavigationBar: AnimatedOpacity(
+          duration: const Duration(milliseconds: 300),
+          opacity: hideNavBar ? 0.0 : 1.0,
+          child: Visibility(
+            visible: !hideNavBar,
+            child: Container(
+              width: 340,
+              height: 64,
+              margin: const EdgeInsets.symmetric(horizontal: 26, vertical: 0)
+                  .copyWith(bottom: 20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(63),
               ),
-              InkWell(
-                onTap: () => _showBottomSheet(context),
-                child: CircleAvatar(
-                  radius: 20,
-                  backgroundColor: AppColor.nokiaBlue,
-                  child: const Icon(Icons.add, color: Colors.white),
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TabCustom(
+                    label: "Home",
+                    icon: Icons.home_filled,
+                    isSelected: index == 0,
+                    onTap: () {
+                      ref
+                          .watch(bottomNavBarIndexProvider.notifier)
+                          .update((state) => 0);
+                    },
+                  ),
+                  InkWell(
+                    onLongPress: () => bottomSheet(context),
+                    onTap: () => _showBottomSheet(context),
+                    child: CircleAvatar(
+                      radius: 20,
+                      backgroundColor: AppColor.nokiaBlue,
+                      child: const Icon(Icons.add, color: Colors.white),
+                    ),
+                  ),
+                  TabCustom(
+                    label: "Account",
+                    icon: Icons.person_outline_outlined,
+                    isSelected: index == 2,
+                    onTap: () {
+                      ref
+                          .watch(bottomNavBarIndexProvider.notifier)
+                          .update((state) => 2);
+                    },
+                  ),
+                ],
               ),
-              TabCustom(
-                label: "Account",
-                icon: Icons.person_outline_outlined,
-                isSelected: index == 2,
-                onTap: () {
-                  ref
-                      .watch(bottomNavBarIndexProvider.notifier)
-                      .update((state) => 2);
-                },
-              ),
-            ],
+            ),
           ),
         ),
       );
@@ -120,6 +130,50 @@ class TabCustom extends StatelessWidget {
       ),
     );
   }
+}
+
+//..........Choose attachment .. bottomSheet
+bottomSheet(BuildContext context) {
+  showModalBottomSheet(
+      elevation: 0,
+      barrierColor: Colors.black.withAlpha(1),
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: 300,
+          width: MediaQuery.of(context).size.width,
+          child: Card(
+            margin: const EdgeInsets.all(18.0),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                SeetingOption(
+                  title: "Send request",
+                  onTap: () {},
+                  icon: Icons.telegram_outlined,
+                ),
+                // /////
+                SeetingOption(
+                  title: "Send request",
+                  onTap: () {},
+                  icon: Icons.telegram_outlined,
+                ),
+                // /////
+                SeetingOption(
+                  title: "Send request",
+                  onTap: () {},
+                  icon: Icons.telegram_outlined,
+                ),
+                // /////
+                const DotedDivider(),
+              ],
+            ),
+          ),
+        );
+      });
 }
 
 _showBottomSheet(BuildContext context) {

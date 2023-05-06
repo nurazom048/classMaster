@@ -86,10 +86,10 @@ class PriodeAlart {
                     CupertinoPageRoute(
                         fullscreenDialog: true,
                         builder: (context) => AppPriodePage(
-                              totalpriode: 1,
+                              totalPriode: 1,
                               rutinId: rutinId,
-                              priode_id: Priode.id,
-                              isEddit: true,
+                              priodeId: Priode.id,
+                              isEdit: true,
                             )));
               },
             ),

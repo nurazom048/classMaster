@@ -145,7 +145,7 @@ class _ClassListPageState extends State<ClassListPage> {
                     builder: (context) => AppPriodePage(
                       rutinId: widget.rutinId,
                       rutinName: widget.rutinName,
-                      totalpriode: totalPriodeCount,
+                      totalPriode: totalPriodeCount ?? 0,
                     ),
                   ),
                 );
