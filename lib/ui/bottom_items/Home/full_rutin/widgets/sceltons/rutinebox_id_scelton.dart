@@ -111,49 +111,61 @@ class RutinBoxByIdSkelton extends StatelessWidget {
             ),
           ),
           // const SizedBox(height: 16),
-          Row(
-            children: [
-              const CircleAvatar(
-                radius: 24,
-                backgroundColor: Colors.black,
-              ),
-              const SizedBox(width: 10),
-              Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // name ad user name
-                    Container(
-                      margin: const EdgeInsets.symmetric(vertical: 5),
-                      height: 20,
-                      width: MediaQuery.of(context).size.width / 3,
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                    ),
-
-                    Container(
-                      margin: const EdgeInsets.symmetric(vertical: 5),
-                      height: 18,
-                      width: MediaQuery.of(context).size.width / 3,
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                    ),
-                  ]),
-              const Spacer(),
-              IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.more_vert,
-                    color: Colors.black,
-                  ))
-            ],
-          ),
+          AccounScelton(),
         ]),
       ),
+    );
+  }
+}
+
+class AccounScelton extends StatelessWidget {
+  const AccounScelton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        const SizedBox(width: 10),
+        const CircleAvatar(
+          radius: 24,
+          backgroundColor: Colors.black12,
+        ),
+        const SizedBox(width: 10),
+        Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // name ad user name
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 6),
+                height: 15,
+                width: MediaQuery.of(context).size.width / 3,
+                decoration: BoxDecoration(
+                  color: Colors.black12,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+              ),
+
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 6),
+                height: 15,
+                width: MediaQuery.of(context).size.width / 3,
+                decoration: BoxDecoration(
+                  color: Colors.black12,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+              ),
+            ]),
+        const Spacer(),
+        IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.more_vert,
+              color: Colors.black12,
+            ))
+      ],
     );
   }
 }

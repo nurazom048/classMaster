@@ -7,6 +7,7 @@ import 'package:table/ui/bottom_items/Home/full_rutin/controller/chack_status_co
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/members_controllers.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/select_account.dart';
+import 'package:table/widgets/appWidget/dottted_divider.dart';
 import 'package:table/widgets/progress_indicator.dart';
 import '../../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../../widgets/text and buttons/square_button.dart';
@@ -197,5 +198,92 @@ class RutinDialog {
             }),
           );
         });
+  }
+
+  //
+
+  static rutineNotficationSeleect(BuildContext context) {
+    showModalBottomSheet(
+      elevation: 0,
+      barrierColor: Colors.black.withAlpha(1),
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: 250,
+          width: 350,
+          child: Card(
+            color: Colors.white,
+            margin: const EdgeInsets.all(18.0)
+                .copyWith(left: 30, right: 30, bottom: 30),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                // Container(
+                //   margin: const EdgeInsets.symmetric(horizontal: 11, vertical: 5),
+                //   height: 40,
+                //   child: Row(
+                //     children: const [
+                //       Icon(Icons.check_box_outline_blank_rounded),
+                //       SizedBox(width: 10),
+                //       Icon(Icons.attach_file),
+                //       SizedBox(width: 10),
+                //       Text("Choose Attachment"),
+                //     ],
+                //   ),
+                // ),
+                Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 11, vertical: 5),
+                  height: 40,
+                  child: Row(
+                    children: const [
+                      Icon(Icons.check_box_outline_blank_rounded),
+                      SizedBox(width: 10),
+                      Icon(Icons.notifications_active),
+                      SizedBox(width: 10),
+                      Text("Notification On"),
+                    ],
+                  ),
+                ),
+                Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 11, vertical: 5),
+                  height: 40,
+                  child: Row(
+                    children: const [
+                      Icon(Icons.check_box_outline_blank_rounded),
+                      SizedBox(width: 10),
+                      Icon(Icons.notifications_off),
+                      SizedBox(width: 10),
+                      Text("Notification Off",
+                          style: TextStyle(color: Colors.red)),
+                    ],
+                  ),
+                ),
+                const DotedDivider(),
+                Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 11, vertical: 5),
+                  height: 40,
+                  child: Row(
+                    children: const [
+                      SizedBox(width: 10),
+                      Icon(Icons.logout_sharp),
+                      SizedBox(width: 10),
+                      Text("Leave Routine",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500, color: Colors.red)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }

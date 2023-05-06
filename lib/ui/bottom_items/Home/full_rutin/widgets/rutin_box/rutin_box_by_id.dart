@@ -3,12 +3,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/widgets/notification_buton.dart';
 import 'package:table/widgets/appWidget/appText.dart';
-import 'package:table/widgets/appWidget/buttons/Expende_button.dart';
 import 'package:table/widgets/appWidget/buttons/capsule_button.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/rutin_box/rutin_card_row.dart';
+import 'package:table/widgets/appWidget/dottted_divider.dart';
 import 'package:table/widgets/mini_account_row.dart';
-import 'package:flutter/material.dart' as ma;
 
 import '../../../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../../../models/class_details_model.dart';
@@ -17,257 +17,249 @@ import '../../screen/view_more_screen.dart';
 import '../../sunnary_section/summat_screens/summary_screen.dart';
 import '../../../../../server/rutinReq.dart';
 import '../../../../../../widgets/appWidget/selectDayRow.dart';
+import '../../utils/rutin_dialog.dart';
+import '../sceltons/rutinebox_id_scelton.dart';
 
-class RutinBoxById extends StatefulWidget {
-  final dynamic onTap;
+//! provider
+final gSelectedDayProvider = StateProvider<int>((ref) {
+  return DateTime.now().weekday;
+});
+final listOfDayStateProvider = StateProvider<List<Day?>>((ref) => []);
 
+class RutinBoxById extends ConsumerWidget {
   final String rutinName;
   final String rutinId;
   final dynamic onTapMore;
+
   const RutinBoxById({
-    super.key,
-    this.onTap,
+    Key? key,
     required this.rutinName,
     required this.onTapMore,
     required this.rutinId,
-  });
+  }) : super(key: key);
 
   @override
-  State<RutinBoxById> createState() => _RutinBoxState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Get providers
+    final chackStatus = ref.watch(chackStatusControllerProvider(rutinId));
+    final rutinDetails = ref.watch(rutins_detalis_provider(rutinId));
+    String status = chackStatus.value?.activeStatus ?? '';
 
-class _RutinBoxState extends State<RutinBoxById> {
-  List<Day?> listOfDays = [];
-  late int lenght = 0;
-  int gSelatDAy = 0;
+    List<Day?> listOfDays = ref.watch(listOfDayStateProvider);
+    int gSelectedDay = ref.watch(gSelectedDayProvider);
 
-  @override
-  Widget build(BuildContext context) {
-    return Consumer(builder: (context, ref, _) {
-      //! providers
-      final chackStatus =
-          ref.watch(chackStatusControllerProvider(widget.rutinId));
-      //? Provider
-      final rutinDetals = ref.watch(rutins_detalis_provider(widget.rutinId));
-      String status = chackStatus.value?.activeStatus ?? '';
+    // Get notifier
+    final chackStatusNotifier =
+        ref.watch(chackStatusControllerProvider(rutinId).notifier);
 
-      //! notifier
-      final chackStatusNotifier =
-          ref.watch(chackStatusControllerProvider(widget.rutinId).notifier);
-      return Container(
-        height: 455,
-        margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
-        padding: const EdgeInsets.symmetric(vertical: 5),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(6),
-        ),
-        child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
+    return Container(
+      height: 455,
+      margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
             children: [
+              // Top section
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    // Rutin name
                     InkWell(
                       onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => ViewMore(
-                            rutinId: widget.rutinId,
-                            rutineName: widget.rutinName,
+                            rutinId: rutinId,
+                            rutineName: rutinName,
                           ),
                         ),
                       ),
-                      child: AppText(widget.rutinName, fontSize: 22).title(),
+                      child: AppText(rutinName, fontSize: 22).title(),
                     ),
-                    //
 
+                    // Notification button or request button
                     chackStatus.when(
-                        data: (data) {
-                          if (status == "joined") {
-                            return CapsuleButton(
-                              "Leave",
-                              color: Colors.red,
-                              icon: Icons.logout,
-                              onTap: () {
-                                return Alart.errorAlertDialogCallBack(
-                                  context,
-                                  "are you sure you want to leave",
-                                  onConfirm: (bool isYes) {
-                                    //  Navigator.pop(context);
-
-                                    chackStatusNotifier.leaveMember(context);
-                                  },
-                                );
-                              },
-                            );
-                          } else {
-                            return CapsuleButton(
-                              status == "not_joined" ? "send request" : status,
-                              icon: status == "request_pending"
-                                  ? null
-                                  : Icons.telegram,
-                              onTap: () {
-                                chackStatusNotifier.sendReqController(context);
-                              },
-                            );
-                          }
-                        },
-                        error: (error, stackTrace) =>
-                            Alart.handleError(context, error),
-                        loading: () => const ma.Text("data")),
+                      data: (data) {
+                        if (status == "joined") {
+                          return NotificationButton(
+                            icon: Icons.notifications_active,
+                            onTap: () =>
+                                RutinDialog.rutineNotficationSeleect(context),
+                          );
+                        } else {
+                          return CapsuleButton(
+                            status == "not_joined" ? "send request" : status,
+                            icon: status == "request_pending"
+                                ? null
+                                : Icons.telegram,
+                            onTap: () {
+                              chackStatusNotifier.sendReqController(context);
+                            },
+                          );
+                        }
+                      },
+                      error: (error, stackTrace) =>
+                          Alart.handleError(context, error),
+                      loading: () => const Text("data"),
+                    ),
                   ],
                 ),
               ),
 
-              //
+              // Divider
 
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4),
-                child: Divider(
-                  thickness: 2,
-                  color: Colors.blue.shade200,
-                ),
+              MyDivider(
+                padding: const EdgeInsets.symmetric(vertical: 13)
+                    .copyWith(bottom: 3),
               ),
 
+              // Select day row
               SelectDayRow(selectedDay: (selectedDay) {
-                gSelatDAy = selectedDay;
+                ref
+                    .watch(gSelectedDayProvider.notifier)
+                    .update((state) => selectedDay);
               }),
-              rutinDetals.when(
+
+              // Rutin info and owner info
+              rutinDetails.when(
+                data: (data) {
+                  if (data == null) return const Text("id null");
+
+                  List<Day?> sun = data.classes.sunday;
+                  List<Day?> mon = data.classes.monday;
+                  List<Day?> tue = data.classes.tuesday;
+
+                  List<Day?> wed = data.classes.wednesday;
+                  List<Day?> thu = data.classes.thursday;
+                  List<Day?> fri = data.classes.friday;
+                  List<Day?> sat = data.classes.saturday;
+                  _selectDays(
+                      ref, gSelectedDay, sun, mon, tue, wed, thu, fri, sat);
+
+                  return Container(
+                    margin: const EdgeInsets.only(top: 15),
+                    constraints: const BoxConstraints(minHeight: 200),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: List.generate(
+                        listOfDays.length,
+                        (index) {
+                          if (listOfDays.isNotEmpty) {
+                            return RutineCardInfoRow(
+                              isFrist: index == 0,
+                              day: listOfDays[index],
+                              onTap: () => onTap(listOfDays[index], context),
+                            );
+                          } else {
+                            return const Text("No Class");
+                          }
+                        },
+                      ),
+                    ),
+                  );
+                },
+                error: (error, stackTrace) => Alart.handleError(context, error),
+                loading: () => const Text("_______________________________"),
+              ),
+
+              const SizedBox(height: 5)
+            ],
+          ),
+
+          //
+          Column(
+            children: [
+              MyDivider(
+                padding: const EdgeInsets.symmetric(vertical: 10)
+                    .copyWith(bottom: 3),
+              ),
+              rutinDetails.when(
                   data: (data) {
-                    if (data == null) return const ma.Text("id null");
+                    if (data == null) {}
 
-                    List<Day?> sun = data.classes.sunday;
-                    List<Day?> mon = data.classes.monday;
-                    List<Day?> tue = data.classes.tuesday;
-                    List<Day?> wed = data.classes.wednesday;
-                    List<Day?> thu = data.classes.thursday;
-                    List<Day?> fri = data.classes.friday;
-                    List<Day?> sat = data.classes.saturday;
-                    _selectDays(gSelatDAy, sun, mon, tue, wed, thu, fri, sat);
-
-                    return Column(
-                      children: [
-                        const SizedBox(height: 15),
-                        Container(
-                          constraints: const BoxConstraints(minHeight: 200),
-                          child: Column(
-                            children: List.generate(
-                              listOfDays.length,
-                              (index) {
-                                if (listOfDays.isNotEmpty) {
-                                  return RutineCardInfoRow(
-                                    isFrist: index == 0,
-                                    day: listOfDays[index],
-                                    onTap: () => ontap(listOfDays[index]),
-                                  );
-                                } else {
-                                  return const ma.Text("No Class");
-                                }
-                              },
-                            ),
-                          ),
-                        ),
-
-                        ExpendedButton(onTap: () {
-                          setState(() {
-                            if (lenght == listOfDays.length) {
-                              lenght = 2;
-                            } else {
-                              lenght = listOfDays.length;
-                            }
-                          });
-                        }),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 0),
-                          child: Divider(
-                            thickness: 2,
-                            color: Colors.blue.shade200,
-                          ),
-                        ),
-                        //
-
-                        MiniAccountInfo(
-                            accountData: data.owner,
-                            onTapMore: widget.onTapMore),
-                      ],
+                    return MiniAccountInfo(
+                      accountData: data?.owner,
+                      onTapMore: onTapMore,
                     );
                   },
                   error: (error, stackTrace) =>
                       Alart.handleError(context, error),
-                  loading: () => const ma.Text("data")),
-            ]),
-      );
-    });
-  }
-
-  ontap(Day? day) {
-    Navigator.push(
-      context,
-      CupertinoPageRoute(
-          builder: (context) => SummaryScreen(
-                classId: day?.classId.id ?? "",
-                day: day,
-              )),
+                  loading: () => const AccounScelton()),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
-  //
-  _selectDays(
-    selectedDay,
-    List<Day?> sun,
-    List<Day?> mon,
-    List<Day?> tue,
-    List<Day?> wed,
-    List<Day?> thu,
-    List<Day?> fri,
-    List<Day?> sat,
-  ) {
+// Navigate to the SummaryScreen when a day is tapped
+  void onTap(Day? day, context) {
+    Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) => SummaryScreen(
+          classId: day?.classId.id ?? "",
+          day: day,
+        ),
+      ),
+    );
+  }
+
+// Update the list of days to display based on the selected day
+  void _selectDays(WidgetRef ref, selectedDay, List<Day?> sun, mon, tue, wed,
+      thu, fri, sat) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Add Your Code here.
+      List<Day?> newListOfDays;
 
-      if (mounted) {
-        switch (gSelatDAy) {
-          case 0:
-            setState(() => listOfDays = sun);
+      switch (ref.watch(gSelectedDayProvider)) {
+        case 0:
+          newListOfDays = sun;
+          break;
 
-            break;
+        case 1:
+          newListOfDays = mon;
+          break;
 
-          case 1:
-            setState(() => listOfDays = mon);
+        case 2:
+          newListOfDays = tue;
+          break;
 
-            break;
+        case 3:
+          newListOfDays = wed;
+          break;
 
-          case 2:
-            setState(() => listOfDays = tue);
+        case 4:
+          newListOfDays = thu;
+          break;
 
-            break;
+        case 5:
+          newListOfDays = fri;
+          break;
 
-          case 3:
-            setState(() => listOfDays = wed);
+        case 6:
+          newListOfDays = sat;
+          break;
 
-            break;
-
-          case 4:
-            setState(() => listOfDays = thu);
-
-            break;
-
-          case 5:
-            setState(() => listOfDays = fri);
-
-            break;
-
-          case 6:
-            setState(() => listOfDays = sat);
-
-            break;
-        }
+        default:
+          // If the selected day is not valid, use an empty list
+          newListOfDays = [];
+          break;
       }
+
+      // Only update the state if the component is still mounted
+      ref
+          .watch(listOfDayStateProvider.notifier)
+          .update((state) => newListOfDays);
     });
   }
 }
+
+///////

@@ -60,7 +60,6 @@ class BottomNavBar extends StatelessWidget {
                     },
                   ),
                   InkWell(
-                    onLongPress: () => bottomSheet(context),
                     onTap: () => _showBottomSheet(context),
                     child: CircleAvatar(
                       radius: 20,
@@ -130,50 +129,6 @@ class TabCustom extends StatelessWidget {
       ),
     );
   }
-}
-
-//..........Choose attachment .. bottomSheet
-bottomSheet(BuildContext context) {
-  showModalBottomSheet(
-      elevation: 0,
-      barrierColor: Colors.black.withAlpha(1),
-      backgroundColor: Colors.transparent,
-      context: context,
-      builder: (BuildContext context) {
-        return SizedBox(
-          height: 300,
-          width: MediaQuery.of(context).size.width,
-          child: Card(
-            margin: const EdgeInsets.all(18.0),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                SeetingOption(
-                  title: "Send request",
-                  onTap: () {},
-                  icon: Icons.telegram_outlined,
-                ),
-                // /////
-                SeetingOption(
-                  title: "Send request",
-                  onTap: () {},
-                  icon: Icons.telegram_outlined,
-                ),
-                // /////
-                SeetingOption(
-                  title: "Send request",
-                  onTap: () {},
-                  icon: Icons.telegram_outlined,
-                ),
-                // /////
-                const DotedDivider(),
-              ],
-            ),
-          ),
-        );
-      });
 }
 
 _showBottomSheet(BuildContext context) {
@@ -273,6 +228,88 @@ _showBottomSheet(BuildContext context) {
               },
             ),
           ],
+        ),
+      );
+    },
+  );
+}
+
+rutineNotficationSeleect(BuildContext context) {
+  showModalBottomSheet(
+    elevation: 0,
+    barrierColor: Colors.black.withAlpha(1),
+    backgroundColor: Colors.transparent,
+    context: context,
+    builder: (BuildContext context) {
+      return SizedBox(
+        height: 250,
+        width: 350,
+        child: Card(
+          color: Colors.white,
+          margin: const EdgeInsets.all(18.0)
+              .copyWith(left: 30, right: 30, bottom: 30),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              // Container(
+              //   margin: const EdgeInsets.symmetric(horizontal: 11, vertical: 5),
+              //   height: 40,
+              //   child: Row(
+              //     children: const [
+              //       Icon(Icons.check_box_outline_blank_rounded),
+              //       SizedBox(width: 10),
+              //       Icon(Icons.attach_file),
+              //       SizedBox(width: 10),
+              //       Text("Choose Attachment"),
+              //     ],
+              //   ),
+              // ),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 11, vertical: 5),
+                height: 40,
+                child: Row(
+                  children: const [
+                    Icon(Icons.check_box_outline_blank_rounded),
+                    SizedBox(width: 10),
+                    Icon(Icons.notifications_active),
+                    SizedBox(width: 10),
+                    Text("Notification On"),
+                  ],
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 11, vertical: 5),
+                height: 40,
+                child: Row(
+                  children: const [
+                    Icon(Icons.check_box_outline_blank_rounded),
+                    SizedBox(width: 10),
+                    Icon(Icons.notifications_off),
+                    SizedBox(width: 10),
+                    Text("Notification Off",
+                        style: TextStyle(color: Colors.red)),
+                  ],
+                ),
+              ),
+              const DotedDivider(),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 11, vertical: 5),
+                height: 40,
+                child: Row(
+                  children: const [
+                    SizedBox(width: 10),
+                    Icon(Icons.logout_sharp),
+                    SizedBox(width: 10),
+                    Text("Leave Routine",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, color: Colors.red)),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       );
     },
