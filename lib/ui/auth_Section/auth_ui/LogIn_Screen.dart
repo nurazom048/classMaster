@@ -1,24 +1,22 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, unrelated_type_equality_checks
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/ui/auth_Section/utils/login_validation.dart';
 import 'package:table/ui/auth_Section/widgets/create_account_button.dart';
-import 'package:table/ui/bottom_items/Account/widgets/my_divider.dart';
 import 'package:table/widgets/appWidget/appText.dart';
+import 'package:table/widgets/progress_indicator.dart';
 
 import '../../../helper/constant/app_color.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/appWidget/buttons/cupertino_butttons.dart';
-import '../../../widgets/appWidget/dottted_divider.dart';
 import '../../../widgets/heder/heder_title.dart';
 import '../auth_controller/auth_controller.dart';
+import '../auth_controller/google_auth_controller.dart';
 import '../widgets/or.dart';
 import '../widgets/social_login_button.dart';
-import 'SiginUp_Screen.dart';
 
 // package
 import 'package:google_sign_in/google_sign_in.dart';
@@ -111,24 +109,59 @@ class LogingScreen extends ConsumerWidget {
 
                 const CreateAccountPopUpButton(),
 
-                OR(),
+                const OR(),
 
                 ///
                 ///
-                SocialLoginButton(onTap: () async {
-                  await GoogleSignIn().signIn();
+                ref.watch(gooleAuthControllerProvider).lodging == true
+                    ? const SizedBox(
+                        height: 20, width: 20, child: Progressindicator())
+                    : SocialLoginButton(onTap: () async {
+                        print("opntap");
 
-                  print("opntap");
-                  // Future<void> _handleSignIn() async {
-                  //   try {
-                  //   } catch (error) {
-                  //     print(error);
-                  //   }
-                  // }
-                }),
+                        ref.read(gooleAuthControllerProvider).signin(context);
+
+                        if (ref
+                                .watch(gooleAuthControllerProvider)
+                                .googleAccount !=
+                            null) {}
+                      }),
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class CreadiantialScreen extends ConsumerWidget {
+  const CreadiantialScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    //! provider
+    final googleUser = ref.watch(gooleAuthControllerProvider).googleAccount;
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          // crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            if (googleUser != null && googleUser.photoUrl != null)
+              CircleAvatar(
+                radius: 30,
+                backgroundImage: NetworkImage(googleUser.photoUrl!),
+              ),
+            Text("id: ${googleUser?.id}"),
+            Text("Name: ${googleUser?.displayName}"),
+            Text("Email: ${googleUser?.email}"),
+            //
+
+            Text("Heder: ${googleUser?.authHeaders}"),
+            Text("server auth: ${googleUser?.serverAuthCode}"),
+          ],
         ),
       ),
     );

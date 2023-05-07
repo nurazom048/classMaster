@@ -3,9 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/widgets/notification_buton.dart';
 import 'package:table/widgets/appWidget/appText.dart';
-import 'package:table/widgets/appWidget/buttons/capsule_button.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/rutin_box/rutin_card_row.dart';
 import 'package:table/widgets/appWidget/dottted_divider.dart';
 import 'package:table/widgets/mini_account_row.dart';
@@ -16,14 +14,16 @@ import '../../controller/chack_status_controller.dart';
 import '../../screen/view_more_screen.dart';
 import '../../sunnary_section/summat_screens/summary_screen.dart';
 import '../../../../../server/rutinReq.dart';
-import '../../../../../../widgets/appWidget/selectDayRow.dart';
+import '../../../../../../widgets/appWidget/select_day_row.dart';
 import '../../utils/rutin_dialog.dart';
 import '../sceltons/rutinebox_id_scelton.dart';
+import '../send_request_button.dart';
 
 //! provider
 final gSelectedDayProvider = StateProvider<int>((ref) {
   return DateTime.now().weekday;
 });
+
 final listOfDayStateProvider = StateProvider<List<Day?>>((ref) => []);
 
 class RutinBoxById extends ConsumerWidget {
@@ -88,23 +88,21 @@ class RutinBoxById extends ConsumerWidget {
                     // Notification button or request button
                     chackStatus.when(
                       data: (data) {
-                        if (status == "joined") {
-                          return NotificationButton(
-                            icon: Icons.notifications_active,
-                            onTap: () =>
-                                RutinDialog.rutineNotficationSeleect(context),
-                          );
-                        } else {
-                          return CapsuleButton(
-                            status == "not_joined" ? "send request" : status,
-                            icon: status == "request_pending"
-                                ? null
-                                : Icons.telegram,
-                            onTap: () {
-                              chackStatusNotifier.sendReqController(context);
-                            },
-                          );
-                        }
+                        return SendReqButton(
+                          isNotSendRequest: status == "not_joined",
+                          isPending: status == "request_pending",
+                          isMember: true,
+                          notificationOff: false,
+                          sendRequest: () {
+                            chackStatusNotifier.sendReqController(context);
+                          },
+                          showPanel: () {
+                            RutinDialog.rutineNotficationSeleect(
+                              context,
+                              rutinId,
+                            );
+                          },
+                        );
                       },
                       error: (error, stackTrace) =>
                           Alart.handleError(context, error),
@@ -115,7 +113,6 @@ class RutinBoxById extends ConsumerWidget {
               ),
 
               // Divider
-
               MyDivider(
                 padding: const EdgeInsets.symmetric(vertical: 13)
                     .copyWith(bottom: 3),
@@ -123,6 +120,7 @@ class RutinBoxById extends ConsumerWidget {
 
               // Select day row
               SelectDayRow(selectedDay: (selectedDay) {
+                print("thee day is : $selectedDay");
                 ref
                     .watch(gSelectedDayProvider.notifier)
                     .update((state) => selectedDay);
@@ -136,11 +134,11 @@ class RutinBoxById extends ConsumerWidget {
                   List<Day?> sun = data.classes.sunday;
                   List<Day?> mon = data.classes.monday;
                   List<Day?> tue = data.classes.tuesday;
-
                   List<Day?> wed = data.classes.wednesday;
                   List<Day?> thu = data.classes.thursday;
                   List<Day?> fri = data.classes.friday;
                   List<Day?> sat = data.classes.saturday;
+
                   _selectDays(
                       ref, gSelectedDay, sun, mon, tue, wed, thu, fri, sat);
 
@@ -167,14 +165,16 @@ class RutinBoxById extends ConsumerWidget {
                   );
                 },
                 error: (error, stackTrace) => Alart.handleError(context, error),
-                loading: () => const Text("_______________________________"),
+                loading: () => const Text(
+                  "______________________________________________",
+                ),
               ),
 
               const SizedBox(height: 5)
             ],
           ),
 
-          //
+          // Bottom section
           Column(
             children: [
               MyDivider(
@@ -182,84 +182,83 @@ class RutinBoxById extends ConsumerWidget {
                     .copyWith(bottom: 3),
               ),
               rutinDetails.when(
-                  data: (data) {
-                    if (data == null) {}
+                data: (data) {
+                  if (data == null) {}
 
-                    return MiniAccountInfo(
-                      accountData: data?.owner,
-                      onTapMore: onTapMore,
-                    );
-                  },
-                  error: (error, stackTrace) =>
-                      Alart.handleError(context, error),
-                  loading: () => const AccounScelton()),
+                  return MiniAccountInfo(
+                    accountData: data?.owner,
+                    onTapMore: onTapMore,
+                  );
+                },
+                error: (error, stackTrace) => Alart.handleError(context, error),
+                loading: () => const AccounScelton(),
+              ),
             ],
           ),
         ],
       ),
     );
   }
+}
 
 // Navigate to the SummaryScreen when a day is tapped
-  void onTap(Day? day, context) {
-    Navigator.push(
-      context,
-      CupertinoPageRoute(
-        builder: (context) => SummaryScreen(
-          classId: day?.classId.id ?? "",
-          day: day,
-        ),
+void onTap(Day? day, context) {
+  Navigator.push(
+    context,
+    CupertinoPageRoute(
+      builder: (context) => SummaryScreen(
+        classId: day?.classId.id ?? "",
+        day: day,
       ),
-    );
-  }
+    ),
+  );
+}
 
 // Update the list of days to display based on the selected day
-  void _selectDays(WidgetRef ref, selectedDay, List<Day?> sun, mon, tue, wed,
-      thu, fri, sat) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      List<Day?> newListOfDays;
+void _selectDays(
+    WidgetRef ref, selectedDay, List<Day?> sun, mon, tue, wed, thu, fri, sat) {
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    List<Day?> newListOfDays;
 
-      switch (ref.watch(gSelectedDayProvider)) {
-        case 0:
-          newListOfDays = sun;
-          break;
+    switch (ref.watch(gSelectedDayProvider)) {
+      case 0:
+        newListOfDays = sun;
+        break;
 
-        case 1:
-          newListOfDays = mon;
-          break;
+      case 1:
+        newListOfDays = mon;
+        break;
 
-        case 2:
-          newListOfDays = tue;
-          break;
+      case 2:
+        newListOfDays = tue;
+        break;
 
-        case 3:
-          newListOfDays = wed;
-          break;
+      case 3:
+        newListOfDays = wed;
+        break;
 
-        case 4:
-          newListOfDays = thu;
-          break;
+      case 4:
+        newListOfDays = thu;
+        break;
 
-        case 5:
-          newListOfDays = fri;
-          break;
+      case 5:
+        newListOfDays = fri;
+        break;
 
-        case 6:
-          newListOfDays = sat;
-          break;
+      case 6:
+        newListOfDays = sat;
+        break;
 
-        default:
-          // If the selected day is not valid, use an empty list
-          newListOfDays = [];
-          break;
-      }
+      default:
+        // If the selected day is not valid, use an empty list
+        newListOfDays = [];
+        break;
+    }
 
-      // Only update the state if the component is still mounted
-      ref
-          .watch(listOfDayStateProvider.notifier)
-          .update((state) => newListOfDays);
-    });
-  }
+    // Only update the state if the component is still mounted
+    ref.watch(listOfDayStateProvider.notifier).update((state) => newListOfDays);
+  });
 }
+
 
 ///////

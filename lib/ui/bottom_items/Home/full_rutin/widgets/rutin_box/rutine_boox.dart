@@ -18,7 +18,7 @@ import 'package:flutter/material.dart' as ma;
 import 'package:table/widgets/progress_indicator.dart';
 import '../../controller/chack_status_controller.dart';
 import '../../../../../../widgets/appWidget/dottted_divider.dart';
-import '../../../../../../widgets/appWidget/selectDayRow.dart';
+import '../../../../../../widgets/appWidget/select_day_row.dart';
 
 class RutinBox extends StatefulWidget {
   final dynamic onTap;

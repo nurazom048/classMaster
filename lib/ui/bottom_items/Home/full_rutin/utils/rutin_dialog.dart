@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/chack_status_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/members_controllers.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/widgets/chekbox_selector_button.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/select_account.dart';
 import 'package:table/widgets/appWidget/dottted_divider.dart';
 import 'package:table/widgets/progress_indicator.dart';
@@ -202,7 +203,7 @@ class RutinDialog {
 
   //
 
-  static rutineNotficationSeleect(BuildContext context) {
+  static rutineNotficationSeleect(BuildContext context, String rutineId) {
     showModalBottomSheet(
       elevation: 0,
       barrierColor: Colors.black.withAlpha(1),
@@ -218,69 +219,57 @@ class RutinDialog {
                 .copyWith(left: 30, right: 30, bottom: 30),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                // Container(
-                //   margin: const EdgeInsets.symmetric(horizontal: 11, vertical: 5),
-                //   height: 40,
-                //   child: Row(
-                //     children: const [
-                //       Icon(Icons.check_box_outline_blank_rounded),
-                //       SizedBox(width: 10),
-                //       Icon(Icons.attach_file),
-                //       SizedBox(width: 10),
-                //       Text("Choose Attachment"),
-                //     ],
-                //   ),
-                // ),
-                Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 11, vertical: 5),
-                  height: 40,
-                  child: Row(
-                    children: const [
-                      Icon(Icons.check_box_outline_blank_rounded),
-                      SizedBox(width: 10),
-                      Icon(Icons.notifications_active),
-                      SizedBox(width: 10),
-                      Text("Notification On"),
-                    ],
+            child: Consumer(builder: (context, ref, _) {
+              //!provider
+              // state providers
+              final chackStatus =
+                  ref.watch(chackStatusControllerProvider(rutineId));
+
+              // state providers with notifier
+              final chackStatusNotifier =
+                  ref.watch(chackStatusControllerProvider(rutineId).notifier);
+              final members =
+                  ref.read(memberControllerProvider(rutineId).notifier);
+
+              //
+              String status = chackStatus.value?.activeStatus ?? '';
+
+              bool notificationOn = status == "request_pending" ? true : false;
+
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ChackBoxSelector(
+                    isChacked: notificationOn,
+                    icon: Icons.notifications_active,
+                    text: "notifications_active",
+                    onTap: () {},
                   ),
-                ),
-                Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 11, vertical: 5),
-                  height: 40,
-                  child: Row(
-                    children: const [
-                      Icon(Icons.check_box_outline_blank_rounded),
-                      SizedBox(width: 10),
-                      Icon(Icons.notifications_off),
-                      SizedBox(width: 10),
-                      Text("Notification Off",
-                          style: TextStyle(color: Colors.red)),
-                    ],
+                  ChackBoxSelector(
+                    isChacked: !notificationOn,
+                    icon: Icons.notifications_off,
+                    text: "Notification Off",
+                    color: Colors.red,
+                    onTap: () {},
                   ),
-                ),
-                const DotedDivider(),
-                Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 11, vertical: 5),
-                  height: 40,
-                  child: Row(
-                    children: const [
-                      SizedBox(width: 10),
-                      Icon(Icons.logout_sharp),
-                      SizedBox(width: 10),
-                      Text("Leave Routine",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, color: Colors.red)),
-                    ],
+                  const MyDivider(),
+                  ChackBoxSelector(
+                    icon: Icons.logout_sharp,
+                    text: "Leave Routine",
+                    color: Colors.red,
+                    onTap: () {
+                      Alart.errorAlertDialogCallBack(
+                        context,
+                        "are you sure you want to leave",
+                        onConfirm: (bool isYes) {
+                          chackStatusNotifier.leaveMember(context);
+                        },
+                      );
+                    },
                   ),
-                ),
-              ],
-            ),
+                ],
+              );
+            }),
           ),
         );
       },

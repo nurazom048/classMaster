@@ -22,7 +22,14 @@ class _SelectDayRowState extends State<SelectDayRow> {
     "Sat",
   ];
 
-  int selectedDays = DateTime.now().toLocal().weekday;
+  late int selectedDays;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedDays = DateTime.now().weekday;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,14 +64,17 @@ class SelectDayChip extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
+    // '${DateTime.now().subtract(Duration(days: 6)).day}'),
     return InkWell(
         onTap: onTap,
         child: isSelected == true
             ? Container(
                 padding: const EdgeInsets.symmetric(vertical: 6),
-                child: Text(text,
-                    textScaleFactor: 1.6,
-                    style: TextStyle(color: AppColor.nokiaBlue)),
+                child: Text(
+                  text,
+                  textScaleFactor: 1.6,
+                  style: TextStyle(color: AppColor.nokiaBlue),
+                ),
               )
             : Padding(
                 padding:
