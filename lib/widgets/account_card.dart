@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class AccountCard extends StatelessWidget {
-  dynamic ontapLogOut;
-  String name, username, ProfilePicture;
-  AccountCard(
+  final dynamic ontapLogOut;
+  final String name, username, profilepicture;
+  const AccountCard(
       {super.key,
       required this.name,
       required this.username,
-      required this.ProfilePicture,
+      required this.profilepicture,
       this.ontapLogOut});
 
   @override
@@ -21,7 +21,7 @@ class AccountCard extends StatelessWidget {
           CircleAvatar(
             radius: 40,
             backgroundColor: Colors.red,
-            backgroundImage: NetworkImage(ProfilePicture),
+            backgroundImage: NetworkImage(profilepicture),
           ),
           const Spacer(flex: 4),
           Padding(

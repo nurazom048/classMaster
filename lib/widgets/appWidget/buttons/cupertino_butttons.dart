@@ -30,7 +30,7 @@ class CupertinoButtonCustom extends StatelessWidget {
 
         onPressed: onPressed,
         child: isLoding == true
-            ? Progressindicator()
+            ? const Progressindicator()
             : widget ??
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -20,7 +20,7 @@ class _ViewPDfState extends State<ViewPDf> {
         body: Column(
           children: [
             appBar(context),
-            Container(
+            SizedBox(
               height: MediaQuery.of(context).size.height - 100,
               child: SfPdfViewer.network(
                 widget.pdfLink,

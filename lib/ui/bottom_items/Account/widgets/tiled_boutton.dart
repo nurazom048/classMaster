@@ -3,13 +3,12 @@
 import 'package:flutter/material.dart';
 
 class Tilesbutton extends StatelessWidget {
-  String text;
+  final String text;
+  final Widget icon;
+  final dynamic onTap;
 
-  Widget icon;
-
-  dynamic onTap;
-
-  Tilesbutton(this.text, this.icon, {Key? key, this.onTap}) : super(key: key);
+  const Tilesbutton(this.text, this.icon, {Key? key, this.onTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

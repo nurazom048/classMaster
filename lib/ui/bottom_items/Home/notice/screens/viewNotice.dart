@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:table/helper/constant/app_color.dart';
 import 'package:table/ui/bottom_items/Home/notice/models/notice%20bord/recentNotice.dart';
-import 'package:table/ui/bottom_items/Home/notice/screens/viewPDF.dart';
-import 'package:table/widgets/appWidget/appText.dart';
+import 'package:table/ui/bottom_items/Home/notice/screens/view_pdf_.dart';
+import 'package:table/widgets/appWidget/app_text.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart' as fa;
 import '../../../../../widgets/heder/heder_title.dart';
 
@@ -40,8 +40,6 @@ class NoticeViewScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) {
-                          print(notice.pdf[index].url);
-
                           return ViewPDf(
                             pdfLink: notice.pdf[index].url,
                           );
@@ -97,7 +95,7 @@ class ViewPdfButton extends StatelessWidget {
               color: AppColor.nokiaBlue,
               size: 22,
             ),
-            AppText('      Open Pdf', fontSize: 15).title(),
+            const AppText('      Open Pdf', fontSize: 15).title(),
           ],
         ),
       ),

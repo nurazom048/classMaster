@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -27,9 +26,10 @@ class GooleAuthController extends ChangeNotifier {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CreadiantialScreen(),
+        builder: (context) => const CreadiantialScreen(),
       ),
     );
+    // ignore: avoid_print
     print(googleAccount);
     lodging = false;
     notifyListeners();

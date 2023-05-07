@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:table/helper/constant/constant.dart';
 
-import '../models/Account_models.dart';
+import '../models/account_models.dart';
 
 final AccountReqProvider = Provider<AccountReq>((ref) {
   return AccountReq();
@@ -33,7 +33,6 @@ class AccountReq {
     try {
       final response =
           await http.post(url, headers: {'Authorization': 'Bearer $getToken'});
-      final res = json.decode(response.body);
       print(response.body);
 
       if (response.statusCode == 200) {
@@ -43,6 +42,7 @@ class AccountReq {
       print(e);
       return Future.error(e);
     }
+    return null;
   }
 
 //********************* update Account     ********************************//
@@ -78,6 +78,7 @@ class AccountReq {
       var response = await http.Response.fromStream(streamedResponse);
 
       // Parse response body
+      // ignore: unused_local_variable
       final result = jsonDecode(response.body) as Map<String, dynamic>;
 
       // Check status code

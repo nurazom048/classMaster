@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:table/widgets/appWidget/appText.dart';
+import 'package:table/widgets/appWidget/app_text.dart';
 
 class SelectTime extends StatelessWidget {
   bool show;

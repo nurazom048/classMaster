@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/bottom_items/Account/accounu_ui/save_screen.dart';
 import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/rutin_box/rutin_box_by_id.dart';
 import 'package:table/widgets/progress_indicator.dart';
 
 import '../../../../core/dialogs/alart_dialogs.dart';
-import '../../../../widgets/appWidget/appText.dart';
+import '../../../../widgets/appWidget/app_text.dart';
 import '../../../../widgets/heder/heder_title.dart';
 
 class SaveRutinsScreen extends StatelessWidget {
@@ -17,11 +16,11 @@ class SaveRutinsScreen extends StatelessWidget {
     return Consumer(builder: (context, ref, _) {
       final saveRutine = ref.watch(save_rutins_provider(1));
       return NestedScrollView(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         floatHeaderSlivers: true,
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           SliverToBoxAdapter(
-            child: Container(
+            child: SizedBox(
               height: 200,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,7 +38,7 @@ class SaveRutinsScreen extends StatelessWidget {
             data: (data) {
               return Expanded(
                 child: ListView.builder(
-                  padding: EdgeInsets.only(bottom: 100),
+                  padding: const EdgeInsets.only(bottom: 100),
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: data.savedRoutines.length,
                   itemBuilder: (context, index) {

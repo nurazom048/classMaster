@@ -6,7 +6,7 @@ import 'package:flutter/material.dart' as ma;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/helper/constant/app_color.dart';
-import 'package:table/ui/bottom_items/Account/models/Account_models.dart';
+import 'package:table/ui/bottom_items/Account/models/account_models.dart';
 import 'package:table/ui/bottom_items/Account/accounu_ui/account_screen.dart';
 
 class AccountCardRow extends ConsumerWidget {
@@ -151,7 +151,6 @@ class AccountCardRow extends ConsumerWidget {
                   child: const ma.Text("add as acpten"),
                   onPressed: () {
                     onUsername(accountData.username, position.text);
-                    print(position.text);
                   },
                 ),
               ),

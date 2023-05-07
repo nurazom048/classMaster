@@ -42,6 +42,7 @@ class ClassRequest {
       if (response.statusCode == 200) {
         final res = json.decode(response.body);
         Navigator.pop(context);
+        // ignore: unused_result
         ref.refresh(rutins_detalis_provider(rutinId));
         //print response
         print("rutin created successfully");
@@ -87,6 +88,7 @@ class ClassRequest {
         print("rutin created successfully");
         Alart.showSnackBar(context, message.message);
         Navigator.pop(context);
+        // ignore: unused_result
         ref.refresh(rutins_detalis_provider(rutinId));
         print(res);
       } else {
@@ -120,6 +122,7 @@ class ClassRequest {
       if (response.statusCode == 200) {
         print("rutin created successfully");
         Alart.showSnackBar(context, message.message);
+        // ignore: unused_result
         ref.refresh(rutins_detalis_provider(rutinId));
 
         print(res);

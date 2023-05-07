@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/helper/constant/app_color.dart';
 import 'package:table/ui/bottom_items/Home/notice/models/notice%20bord/createNoticeController.dart';
 import 'package:table/widgets/appWidget/TextFromFild.dart';
-import 'package:table/widgets/appWidget/appText.dart';
+import 'package:table/widgets/appWidget/app_text.dart';
 import 'package:table/widgets/appWidget/buttons/cupertino_butttons.dart';
 import 'package:table/widgets/heder/heder_title.dart';
 

@@ -8,9 +8,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/helper/constant/constant.dart';
 import 'package:table/models/captens/list_of_captens.dart';
 import 'package:table/models/members_models.dart';
-import 'package:table/models/seeAllRequestModel.dart';
 import '../../../../../models/member/all_members.dart';
 import '../../../../../models/message_model.dart';
+import '../../../../../models/see_all_request_model.dart';
 
 final memberRequestProvider = Provider((ref) => memberRequest());
 
@@ -180,7 +180,7 @@ class memberRequest {
     //
     final response = await http.post(url);
     var res = ListCptens.fromJson(jsonDecode(response.body));
-    print("req from  leave member ${res}");
+    print("req from  leave member $res");
 
     try {
       if (response.statusCode == 200) {
@@ -225,6 +225,7 @@ class memberRequest {
       );
 
       if (response.statusCode == 200) {
+        // ignore: unnecessary_null_comparison
         if (response.body != null) {
           SeeAllRequestModel res =
               SeeAllRequestModel.fromJson(jsonDecode(response.body));

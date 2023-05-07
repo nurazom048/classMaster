@@ -3,9 +3,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table/ui/bottom_items/Account/account_request/account_request.dart';
-import 'package:table/ui/bottom_items/Account/models/Account_models.dart';
+import 'package:table/ui/bottom_items/Account/models/account_models.dart';
 import 'package:table/widgets/appWidget/TextFromFild.dart';
-import 'package:table/widgets/pickImage.dart';
+import 'package:table/widgets/pick_image.dart';
 import '../../../../widgets/heder/heder_title.dart';
 import '../../../auth_Section/utils/singUp_validation.dart';
 
@@ -60,7 +60,9 @@ class _EdditAccountState extends State<EdditAccount> {
                 onImagePathSelected: (inagePath) async {
                   imagePath = inagePath;
 
+                  // ignore: avoid_print
                   print("path paici vai $imagePath");
+                  // ignore: avoid_print
                   print("path paici vai $netWorkImage");
                 },
               ),
@@ -148,6 +150,7 @@ class _EdditAccountState extends State<EdditAccount> {
       netWorkImage = accountData.image ?? '';
       aboutController.text = accountData.about ?? '';
 
+      // ignore: avoid_print
       print(accountData.image);
 
       setState(() {});

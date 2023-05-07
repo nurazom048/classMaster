@@ -5,8 +5,7 @@ import '../../../../../../widgets/hedding_row.dart';
 
 class NoticeBoardMembersScreen extends StatelessWidget {
   final String rutinId;
-  NoticeBoardMembersScreen({super.key, required this.rutinId});
-  final TextEditingController _emailController = TextEditingController();
+  const NoticeBoardMembersScreen({super.key, required this.rutinId});
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, _) {
@@ -27,7 +26,7 @@ class NoticeBoardMembersScreen extends StatelessWidget {
             onTap: () {},
           ),
 
-          Container(
+          SizedBox(
             height: 200,
             child: Column(
               children: [

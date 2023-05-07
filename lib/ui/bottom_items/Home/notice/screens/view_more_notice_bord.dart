@@ -4,7 +4,7 @@ import 'package:table/ui/bottom_items/Home/notice/screens/view%20more%20notice%2
 import 'package:table/widgets/heder/heder_title.dart';
 
 import '../../../../../helper/constant/app_color.dart';
-import '../../../../../widgets/appWidget/appText.dart';
+import '../../../../../widgets/appWidget/app_text.dart';
 
 class ViewMoreNoticeBord extends StatefulWidget {
   final String noticeBoardName;
@@ -60,7 +60,7 @@ class _ViewMoreState extends State<ViewMoreNoticeBord>
                         controller: controller,
                         labelColor: AppColor.nokiaBlue,
                         unselectedLabelColor: Colors.black,
-                        tabs: [
+                        tabs: const [
                           Tab(child: Text("Notice")),
                           Tab(child: Text("Members")),
                         ]),
@@ -70,11 +70,9 @@ class _ViewMoreState extends State<ViewMoreNoticeBord>
             ),
           )
         ],
-        body: TabBarView(controller: controller, children: [
-          const ListOfNoticeScreen(),
-          NoticeBoardMembersScreen(
-            rutinId: "",
-          )
+        body: TabBarView(controller: controller, children: const [
+          ListOfNoticeScreen(),
+          NoticeBoardMembersScreen(rutinId: "")
         ]),
       ),
 

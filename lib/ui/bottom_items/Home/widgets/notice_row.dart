@@ -18,7 +18,7 @@ class NoticeRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DateTime dt = DateTime.parse(date);
-    return Container(
+    return SizedBox(
       height: 60,
       child: Column(
         children: [

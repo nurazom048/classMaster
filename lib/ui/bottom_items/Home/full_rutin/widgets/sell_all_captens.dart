@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/members_controllers.dart';
-import 'package:table/widgets/AccoundCardRow.dart';
+import 'package:table/widgets/accound_card_row.dart';
 import 'package:table/widgets/progress_indicator.dart';
 
 import '../../../../../core/dialogs/alart_dialogs.dart';

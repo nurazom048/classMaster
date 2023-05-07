@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 class LoginValidation {
   //final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 

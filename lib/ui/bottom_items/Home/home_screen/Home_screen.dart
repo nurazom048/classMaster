@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/utils/rutin_dialog.dart';
 import 'package:table/ui/bottom_items/Home/home_req/uploaded_rutine_controller.dart';
 import 'package:table/ui/bottom_items/Home/notice/notice%20controller/noticeRequest.dart';
-import 'package:table/ui/bottom_items/Home/notice/screens/viewAllRecentNotice.dart';
+import 'package:table/ui/bottom_items/Home/notice/screens/view_all_recent_notice.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/rutin_box/rutin_box_by_id.dart';
 import 'package:table/ui/bottom_items/Home/widgets/recent_notice_title.dart';
 import '../../../../core/dialogs/alart_dialogs.dart';

@@ -1,6 +1,5 @@
 // ignore_for_file: must_be_immutable// ignore_for_file: must_be_immutable, use_key_in_widget_constructors, camel_case_types, must_be_immutable
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table/ui/bottom_items/Account/widgets/setting_options.dart';
 import 'package:table/widgets/heder/heder_title.dart';

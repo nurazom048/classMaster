@@ -12,11 +12,11 @@ import 'package:table/ui/bottom_items/Home/full_rutin/controller/see_all_req_con
 import 'package:table/ui/bottom_items/Home/full_rutin/request/priode_request.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/utils/logngPress.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/dash_border_button.dart';
-import 'package:table/widgets/AccoundCardRow.dart';
+import 'package:table/widgets/accound_card_row.dart';
 import 'package:table/widgets/progress_indicator.dart';
 import '../../../../../models/class_details_model.dart';
 import '../../../../../widgets/appWidget/TextFromFild.dart';
-import '../../../../../widgets/appWidget/appText.dart';
+import '../../../../../widgets/appWidget/app_text.dart';
 import '../../../../../widgets/hedding_row.dart';
 import '../../../../../widgets/heder/heder_title.dart';
 import '../../../../auth_Section/utils/login_validation.dart';

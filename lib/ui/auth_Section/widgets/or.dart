@@ -23,8 +23,8 @@ class OR extends StatelessWidget {
             style: TextStyle(fontSize: 17),
           ),
           SizedBox(
-            child: const MyDivider(),
             width: MediaQuery.of(context).size.width / 2 - 50,
+            child: const MyDivider(),
           ),
         ],
       ),

@@ -8,7 +8,7 @@ import 'package:table/widgets/heder/heder_title.dart';
 import 'package:flutter/material.dart' as ma;
 
 import '../../../../../../helper/helper_fun.dart';
-import '../../../../../../widgets/appWidget/appText.dart';
+import '../../../../../../widgets/appWidget/app_text.dart';
 
 class AddSummaryScreen extends ConsumerStatefulWidget {
   const AddSummaryScreen({super.key, required this.classId});

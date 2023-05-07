@@ -25,9 +25,8 @@ class JoinedRutineScreen extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           child: Consumer(builder: (context, ref, _) {
             //! provider
-            final pages = ref.watch(currentPageProvider);
 
-            final uploaded_rutin = ref.watch(uploadedRutinsControllerProvider);
+            final uploadedRutin = ref.watch(uploadedRutinsControllerProvider);
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,7 +42,7 @@ class JoinedRutineScreen extends StatelessWidget {
                       children: [
                         SingleChildScrollView(
                           scrollDirection: Axis.vertical,
-                          child: uploaded_rutin.when(
+                          child: uploadedRutin.when(
                             data: (data) {
                               // data
                               var lenght = data.rutins;

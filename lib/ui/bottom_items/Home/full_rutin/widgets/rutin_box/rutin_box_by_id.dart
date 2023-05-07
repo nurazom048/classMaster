@@ -3,7 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/widgets/appWidget/appText.dart';
+import 'package:table/widgets/appWidget/app_text.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/rutin_box/rutin_card_row.dart';
 import 'package:table/widgets/appWidget/dottted_divider.dart';
 import 'package:table/widgets/mini_account_row.dart';

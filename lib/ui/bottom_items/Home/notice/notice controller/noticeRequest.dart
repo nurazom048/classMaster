@@ -9,7 +9,7 @@ import 'package:table/helper/constant/constant.dart';
 import 'package:table/models/message_model.dart';
 import 'package:table/ui/bottom_items/Home/notice/models/notice%20bord/ceatedNoticeBordName.dart';
 
-import '../models/notice bord/listOfnotice model.dart';
+import '../models/notice bord/list_of_notice model.dart';
 import '../models/notice bord/recentNotice.dart';
 
 final viewNoticeByUsernameProvider =
@@ -97,7 +97,6 @@ class NoticeRequest {
       if (response.statusCode == 200) {
         final res = json.decode(response.body);
 
-        print(res);
         return right(RecentNotice.fromJson(res));
       } else {
         Message message = Message.fromJson(json.decode(response.body));
@@ -160,7 +159,6 @@ class NoticeRequest {
     try {
       if (response.statusCode == 200) {
         final responseBody = await response.stream.bytesToString();
-        print(responseBody);
         return responseBody;
       } else {
         throw "Server error";

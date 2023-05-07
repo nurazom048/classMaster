@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/widgets/appWidget/appText.dart';
+import 'package:table/widgets/appWidget/app_text.dart';
 import 'package:flutter/material.dart' as ma;
 
 import '../../../../../core/dialogs/alart_dialogs.dart';

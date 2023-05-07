@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:table/widgets/appWidget/appText.dart';
+import 'package:table/widgets/appWidget/app_text.dart';
 
 import '../../../../widgets/appWidget/buttons/Expende_button.dart';
 
 class RecentNoticeTitle extends StatelessWidget {
-  const RecentNoticeTitle({Key? key, required this.onTap});
-
   final dynamic onTap;
+  const RecentNoticeTitle({super.key, required this.onTap});
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(

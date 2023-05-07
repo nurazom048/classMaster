@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_collection_literals
 
-import '../../ui/bottom_items/Account/models/Account_models.dart';
+import '../../ui/bottom_items/Account/models/account_models.dart';
 
 class AllMember {
   String? message;

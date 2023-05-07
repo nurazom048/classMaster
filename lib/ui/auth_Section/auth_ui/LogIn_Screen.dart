@@ -1,12 +1,10 @@
-// ignore_for_file: avoid_print, unrelated_type_equality_checks
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/ui/auth_Section/utils/login_validation.dart';
 import 'package:table/ui/auth_Section/widgets/create_account_button.dart';
-import 'package:table/widgets/appWidget/appText.dart';
+import 'package:table/widgets/appWidget/app_text.dart';
 import 'package:table/widgets/progress_indicator.dart';
 
 import '../../../helper/constant/app_color.dart';
@@ -18,15 +16,14 @@ import '../auth_controller/google_auth_controller.dart';
 import '../widgets/or.dart';
 import '../widgets/social_login_button.dart';
 
-// package
-import 'package:google_sign_in/google_sign_in.dart';
-
 Future<bool> isToken() async {
   //
   final prefs = await SharedPreferences.getInstance();
   final String? getToken = prefs.getString('Token');
+  // ignore: avoid_print
   print("getToken");
 
+  // ignore: avoid_print
   print(getToken);
 
   if (getToken != null) {
@@ -117,8 +114,6 @@ class LogingScreen extends ConsumerWidget {
                     ? const SizedBox(
                         height: 20, width: 20, child: Progressindicator())
                     : SocialLoginButton(onTap: () async {
-                        print("opntap");
-
                         ref.read(gooleAuthControllerProvider).signin(context);
 
                         if (ref

@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/search/search_screen/account_search_screen.dart';
 import 'package:table/ui/bottom_items/search/search_screen/notice_bord_search_screen.dart';
 import 'package:table/ui/bottom_items/search/search_screen/search_rutine_screen.dart';
-import 'package:table/ui/bottom_items/search/widgets/searchBarCustom.dart';
+import 'package:table/ui/bottom_items/search/widgets/search_bar_custom.dart';
 import 'package:flutter/material.dart' as ma;
 
 //! search String provider

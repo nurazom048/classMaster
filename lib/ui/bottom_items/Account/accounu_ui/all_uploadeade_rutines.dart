@@ -5,7 +5,7 @@ import 'package:table/ui/bottom_items/Home/home_req/uploaded_rutine_controller.d
 import 'package:table/widgets/progress_indicator.dart';
 
 import '../../../../core/dialogs/alart_dialogs.dart';
-import '../../../../widgets/appWidget/appText.dart';
+import '../../../../widgets/appWidget/app_text.dart';
 import '../../../../widgets/heder/heder_title.dart';
 
 class AllUploadesRutinesMini extends StatelessWidget {
@@ -46,7 +46,7 @@ class AllUploadesRutinesMini extends StatelessWidget {
                     },
                     error: (error, stackTrace) =>
                         Alart.handleError(context, error),
-                    loading: () => Container(
+                    loading: () => const SizedBox(
                           height: 30,
                           width: 30,
                           child: Progressindicator(),

@@ -4,7 +4,7 @@ import 'package:table/ui/bottom_items/search/search_screen/search_page.dart';
 import 'package:flutter/material.dart' as ma;
 
 import '../../../../core/dialogs/alart_dialogs.dart';
-import '../../../../widgets/AccoundCardRow.dart';
+import '../../../../widgets/accound_card_row.dart';
 import '../../../../widgets/progress_indicator.dart';
 import '../search_request/search_request.dart';
 

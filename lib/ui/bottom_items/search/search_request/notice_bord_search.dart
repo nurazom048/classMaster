@@ -20,14 +20,13 @@ class NoticeBordSearchRequest {
       final response = await http.post(url);
       var res = json.decode(response.body);
 
-      print(res);
-
       if (response.statusCode == 200) {
         return ListOfNoticeBoard.fromJson(json.decode(response.body));
       } else {
         return throw Future.error(res.toString());
       }
     } catch (e) {
+      // ignore: avoid_print
       print(e.toString());
       return throw Future.error(e);
     }

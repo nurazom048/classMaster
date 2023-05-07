@@ -3,7 +3,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/member_request.dart';
 import '../../../../../core/dialogs/alart_dialogs.dart';
-import '../../../../../models/seeAllRequestModel.dart';
+import '../../../../../models/see_all_request_model.dart';
 
 //! Provider
 final seeAllRequestControllerProvider = StateNotifierProvider.autoDispose

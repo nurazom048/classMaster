@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/seeAllCaotensList.dart';
 import 'package:table/ui/bottom_items/search/search_request/search_request.dart';
-import 'package:table/widgets/AccoundCardRow.dart';
+import 'package:table/widgets/accound_card_row.dart';
 import 'package:table/widgets/progress_indicator.dart';
-import 'package:table/ui/bottom_items/search/widgets/searchBarCustom.dart';
+import 'package:table/ui/bottom_items/search/widgets/search_bar_custom.dart';
 import '../../../../../core/dialogs/alart_dialogs.dart';
 import 'package:flutter/material.dart' as ma;
 

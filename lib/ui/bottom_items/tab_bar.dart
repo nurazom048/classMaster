@@ -1,10 +1,8 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:table/helper/constant/app_color.dart';
-import 'package:table/ui/bottom_items/search/search_screen/search_page.dart';
-
 import 'Home/home_screen/Home_screen.dart';
-import 'package:intl/intl.dart';
-
 import 'Home/tababar items/joined_rutine_screen.dart';
 
 class TabBatView extends StatefulWidget {
@@ -20,7 +18,7 @@ class _TopTabController extends State<TabBatView>
   Widget build(BuildContext context) {
     // provider
 
-    TabController _controller = TabController(vsync: this, length: 3);
+    TabController controller = TabController(vsync: this, length: 3);
 
     return SafeArea(
       child: Scaffold(
@@ -52,19 +50,19 @@ class _TopTabController extends State<TabBatView>
                   //  indicatorWeight: 0.00001,
                   isScrollable: true,
                   labelPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  controller: _controller,
+                  controller: controller,
                   physics: const BouncingScrollPhysics(),
-                  tabs: [
-                    const Tab(child: Text("Joined Rutine")),
-                    const Tab(child: Text("Joined notice")),
-                    const Tab(child: Text("Notification")),
+                  tabs: const [
+                    Tab(child: Text("Joined Rutine")),
+                    Tab(child: Text("Joined notice")),
+                    Tab(child: Text("Notification")),
                   ],
                 ),
               ),
               // tabbar view
               Expanded(
                 child: TabBarView(
-                  controller: _controller,
+                  controller: controller,
                   // ignore: prefer_const_literals_to_create_immutables
                   children: [
                     HomeScreen(),

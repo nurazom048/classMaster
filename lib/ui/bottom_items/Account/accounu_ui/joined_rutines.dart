@@ -5,11 +5,11 @@ import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
 import 'package:table/widgets/progress_indicator.dart';
 
 import '../../../../core/dialogs/alart_dialogs.dart';
-import '../../../../widgets/appWidget/appText.dart';
+import '../../../../widgets/appWidget/app_text.dart';
 import '../../../../widgets/heder/heder_title.dart';
 
-class joinedRutines extends StatelessWidget {
-  const joinedRutines({super.key});
+class JoinedRutinesScreen extends StatelessWidget {
+  const JoinedRutinesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class joinedRutines extends StatelessWidget {
             const SizedBox(height: 15),
             Expanded(
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 5),
+                margin: const EdgeInsets.symmetric(horizontal: 5),
                 child: JoinedRutines.when(
                     data: (data) {
                       return ListView.builder(
@@ -45,7 +45,7 @@ class joinedRutines extends StatelessWidget {
                     },
                     error: (error, stackTrace) =>
                         Alart.handleError(context, error),
-                    loading: () => Container(
+                    loading: () => const SizedBox(
                           height: 30,
                           width: 30,
                           child: Progressindicator(),

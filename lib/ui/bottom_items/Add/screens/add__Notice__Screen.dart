@@ -7,7 +7,7 @@ import 'package:table/core/dialogs/alart_dialogs.dart';
 import 'package:table/helper/constant/app_color.dart';
 import 'package:table/ui/bottom_items/Home/notice/notice%20controller/noticeRequest.dart';
 import 'package:table/widgets/appWidget/TextFromFild.dart';
-import 'package:table/widgets/appWidget/appText.dart';
+import 'package:table/widgets/appWidget/app_text.dart';
 import 'package:table/helper/picker.dart';
 import 'package:table/widgets/heder/heder_title.dart';
 import 'package:flutter/material.dart' as ma;

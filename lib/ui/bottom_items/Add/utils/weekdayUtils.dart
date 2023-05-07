@@ -9,7 +9,7 @@ import 'package:flutter/material.dart' as ma;
 import 'package:table/widgets/appWidget/buttons/cupertino_butttons.dart';
 
 import '../../../../widgets/appWidget/TextFromFild.dart';
-import '../../../../widgets/daySelectDropdowen.dart';
+import '../../../../widgets/day_select_dropdowen.dart';
 import '../../Home/full_rutin/controller/weekday_controller.dart';
 
 class WeekdayUtils {

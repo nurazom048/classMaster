@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/dialogs/alart_dialogs.dart';
 import 'package:table/ui/bottom_items/Account/accounu_ui/save_rutins_screen.dart';
-import 'package:table/widgets/appWidget/appText.dart';
+import 'package:table/widgets/appWidget/app_text.dart';
 import 'package:table/widgets/appWidget/dottted_divider.dart';
 import 'package:flutter/material.dart' as ma;
 
@@ -20,7 +20,7 @@ int intali = 0;
 
 List<Widget> views = [
   const SaveRutinsScreen(),
-  ma.Text("data2"),
+  const Text("data2"),
 ];
 
 class _SaveScreenState extends State<SaveScreen> {
@@ -38,6 +38,7 @@ class _SaveScreenState extends State<SaveScreen> {
               setState(() {
                 intali = selectedIndex ?? 0;
               });
+              // ignore: avoid_print
               print("Selected index $selectedIndex");
             }),
       ),
@@ -46,7 +47,7 @@ class _SaveScreenState extends State<SaveScreen> {
 }
 
 class DotLineTabbar extends StatefulWidget {
-  DotLineTabbar({
+  const DotLineTabbar({
     required this.tabs,
     required this.onSelected,
     super.key,
@@ -103,7 +104,7 @@ class MyTabDotUnderline extends StatelessWidget {
     final color = isSelected ? Colors.blue : Colors.black;
     return InkWell(
       onTap: onTap,
-      child: Container(
+      child: SizedBox(
         width: MediaQuery.of(context).size.width / 2,
         height: 50,
         child: Column(
@@ -181,7 +182,7 @@ class MiniRutineCard extends StatelessWidget {
                       },
                       error: (error, stackTrace) =>
                           Alart.handleError(context, error),
-                      loading: () => ma.Text("Loading")),
+                      loading: () => const Text("Loading")),
                 ),
               ],
             ),

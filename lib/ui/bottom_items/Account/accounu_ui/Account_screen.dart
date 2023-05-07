@@ -12,13 +12,13 @@ import 'package:table/ui/bottom_items/Account/utils/account_utils.dart';
 import 'package:table/ui/bottom_items/Account/widgets/my_container_button.dart';
 import 'package:table/ui/bottom_items/Account/widgets/my_divider.dart';
 import 'package:table/ui/bottom_items/Account/widgets/tiled_boutton.dart';
-import 'package:table/ui/bottom_items/Home/notice/screens/view_more_noticeBord.dart';
-import 'package:table/widgets/AccountCard.dart';
+import 'package:table/ui/bottom_items/Home/notice/screens/view_more_notice_bord.dart';
+import 'package:table/widgets/account_card.dart';
 import '../../../../core/component/heder component/appbaar_custom.dart';
 import '../../../../core/dialogs/alart_dialogs.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../Home/notice/screens/notice Board/uploadedNoticeBord_bord _screen.dart';
+import '../../Home/notice/screens/notice Board/uploaded_notice_bord _screen.dart';
 import '../Settings/setting_screen.dart';
 
 //! hiddeBotom nev on scroll
@@ -41,6 +41,7 @@ class AccountScreen extends StatelessWidget {
             onNotification: (scrollNotification) {
               // Logic of scrollNotification
               if (scrollNotification is ScrollStartNotification) {
+                // ignore: avoid_print
                 print("Scroll Started");
 
                 WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -49,7 +50,6 @@ class AccountScreen extends StatelessWidget {
                       .update((state) => true);
                 });
               } else if (scrollNotification is ScrollUpdateNotification) {
-                String message = 'Scroll Updated';
                 // print(message);
               } else if (scrollNotification is ScrollEndNotification) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -59,6 +59,7 @@ class AccountScreen extends StatelessWidget {
                 });
 
                 String message = 'Scroll Ended';
+                // ignore: avoid_print
                 print(message);
               }
               return true;
@@ -69,168 +70,159 @@ class AccountScreen extends StatelessWidget {
               child: Consumer(builder: (context, ref, _) {
                 final accountData =
                     ref.watch(accountDataProvider(accountUsername));
-                return GestureDetector(
-                  onTapUp: (t) {
-                    print('scrolling has stopped $t');
-                  },
-                  onTapDown: (b) {
-                    print('scrolling has started $b');
-                  },
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      //... AppBar.....//
-                      const AppbarCustom(title: "    Account"),
-                      accountData.when(
-                        data: (data) {
-                          print(data);
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    //... AppBar.....//
+                    const AppbarCustom(title: "    Account"),
+                    accountData.when(
+                      data: (data) {
+                        if (data == null) {
+                          return const ma.Text("null");
+                        } else {
+                          return AccountCard(
+                            profilepicture: data.image ?? '',
+                            name: data.name ?? '',
+                            username: data.username ?? '',
+                          );
+                        }
+                      },
+                      error: (error, stackTrace) =>
+                          Alart.handleError(context, error),
+                      loading: () => const ma.Text("loding"),
+                    ),
+                    /////////////////////
 
-                          if (data == null) {
-                            return const ma.Text("null");
-                          } else {
-                            return AccountCard(
-                              ProfilePicture: data.image ?? '',
-                              name: data.name ?? '',
-                              username: data.username ?? '',
+                    const SizedBox(height: 10),
+                    MyContainerButton(
+                      const FaIcon(FontAwesomeIcons.pen),
+                      "Eddit Profile",
+                      onTap: () => Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => EdditAccount(
+                            accountUsername: accountUsername ?? "",
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    MyContainerButton(
+                      const Icon(Icons.person_add_alt_1_outlined),
+                      "invitation",
+                      onTap: () => Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => EdditAccount(
+                            accountUsername: accountUsername ?? "",
+                          ),
+                        ),
+                      ),
+                    ),
+                    MyDividerr(thickness: 1.0, height: 1.0),
+                    //*********************** Tilesbutton*****************************/
+                    Container(
+                      alignment: Alignment.center,
+                      child: Wrap(alignment: WrapAlignment.start, children: [
+                        Tilesbutton(
+                          "\nJoined Rutines",
+                          // ignore: deprecated_member_use
+                          const FaIcon(FontAwesomeIcons.history),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const JoinedRutinesScreen()),
                             );
-                          }
-                        },
-                        error: (error, stackTrace) =>
-                            Alart.handleError(context, error),
-                        loading: () => const ma.Text("loding"),
-                      ),
-                      /////////////////////
-
-                      const SizedBox(height: 10),
-                      MyContainerButton(
-                        const FaIcon(FontAwesomeIcons.pen),
-                        "Eddit Profile",
-                        onTap: () => Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (context) => EdditAccount(
-                              accountUsername: accountUsername ?? "",
-                            ),
-                          ),
+                          },
                         ),
-                      ),
-                      const SizedBox(height: 10),
-                      MyContainerButton(
-                        const Icon(Icons.person_add_alt_1_outlined),
-                        "invitation",
-                        onTap: () => Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (context) => EdditAccount(
-                              accountUsername: accountUsername ?? "",
-                            ),
-                          ),
+                        Tilesbutton(
+                          "Uploades Rutines",
+                          const FaIcon(FontAwesomeIcons.cableCar),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const AllUploadesRutinesMini()),
+                            );
+                          },
                         ),
-                      ),
-                      MyDividerr(thickness: 1.0, height: 1.0),
-                      //*********************** Tilesbutton*****************************/
-                      Container(
-                        alignment: Alignment.center,
-                        child: Wrap(alignment: WrapAlignment.start, children: [
-                          Tilesbutton(
-                            "\nJoined Rutines",
-                            const FaIcon(FontAwesomeIcons.history),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const joinedRutines()),
-                              );
-                            },
+                        Tilesbutton(
+                          "Saved",
+                          const FaIcon(
+                            FontAwesomeIcons.bookmark,
                           ),
-                          Tilesbutton(
-                            "Uploades Rutines",
-                            const FaIcon(FontAwesomeIcons.cableCar),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const AllUploadesRutinesMini()),
-                              );
-                            },
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const UploadedNoticeBordScreen()),
+                            );
+                          },
+                        ),
+
+                        Tilesbutton(
+                          "Notice Board",
+                          const FaIcon(
+                            FontAwesomeIcons.bookmark,
                           ),
-                          Tilesbutton(
-                            "Saved",
-                            const FaIcon(
-                              FontAwesomeIcons.bookmark,
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const UploadedNoticeBordScreen()),
-                              );
-                            },
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const SaveScreen()),
+                            );
+                          },
+                        ),
+
+                        //
+                      ]),
+                    ),
+                    MyDividerr(thickness: 1.0, height: 1.0),
+
+                    /// ********Sattings ******//
+                    MyContainerButton(
+                      const Icon(Icons.settings_outlined),
+                      "Sattings",
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ViewMoreNoticeBord(
+                                noticeBoardName: "noticeBoardName", id: "id"),
                           ),
+                        );
+                      },
+                    ),
 
-                          Tilesbutton(
-                            "Notice Board",
-                            const FaIcon(
-                              FontAwesomeIcons.bookmark,
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const SaveScreen()),
-                              );
-                            },
+                    MyContainerButton(
+                      const Icon(Icons.settings_outlined),
+                      "Sattings",
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SettingsPage(),
                           ),
+                        );
+                      },
+                    ),
+                    MyContainerButton(
+                        const Icon(Icons.logout_outlined), "Sign out",
+                        color: Colors.red,
+                        onTap: () =>
+                            AccoutUtils.showConfirmationDialog(context)),
 
-                          //
-                        ]),
-                      ),
-                      MyDividerr(thickness: 1.0, height: 1.0),
-
-                      /// ********Sattings ******//
-                      MyContainerButton(
-                        const Icon(Icons.settings_outlined),
-                        "Sattings",
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ViewMoreNoticeBord(
-                                  noticeBoardName: "noticeBoardName", id: "id"),
-                            ),
-                          );
-                        },
-                      ),
-
-                      MyContainerButton(
-                        const Icon(Icons.settings_outlined),
-                        "Sattings",
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SettingsPage(),
-                            ),
-                          );
-                        },
-                      ),
-                      MyContainerButton(
-                          const Icon(Icons.logout_outlined), "Sign out",
-                          color: Colors.red,
-                          onTap: () =>
-                              AccoutUtils.showConfirmationDialog(context)),
-
-                      MyDividerr(thickness: 1.0, height: 1.0),
-                      MyContainerButton(
-                        const Icon(Icons.help_rounded),
-                        "About",
-                        onTap: () {},
-                      ),
-                    ],
-                  ),
+                    MyDividerr(thickness: 1.0, height: 1.0),
+                    MyContainerButton(
+                      const Icon(Icons.help_rounded),
+                      "About",
+                      onTap: () {},
+                    ),
+                  ],
                 );
               }),
             ),

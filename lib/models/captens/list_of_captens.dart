@@ -1,6 +1,6 @@
 // ignore_for_file: avoid_function_literals_in_foreach_calls
 
-import 'package:table/ui/bottom_items/Account/models/Account_models.dart';
+import 'package:table/ui/bottom_items/Account/models/account_models.dart';
 
 class ListCptens {
   ListCptens({

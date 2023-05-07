@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../widgets/appWidget/appText.dart';
+import '../../../../../widgets/appWidget/app_text.dart';
 
 class ClassRow extends StatelessWidget {
   const ClassRow({

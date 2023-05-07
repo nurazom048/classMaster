@@ -5,10 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/auth_Section/utils/login_validation.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/member_request.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/dash_border_button.dart';
-import 'package:table/widgets/AccoundCardRow.dart';
+import 'package:table/widgets/accound_card_row.dart';
 import 'package:table/widgets/appWidget/TextFromFild.dart';
 import 'package:table/widgets/progress_indicator.dart';
-import 'package:table/ui/bottom_items/search/widgets/searchBarCustom.dart';
+import 'package:table/ui/bottom_items/search/widgets/search_bar_custom.dart';
 import 'package:flutter/material.dart' as ma;
 
 import '../../../../../core/dialogs/alart_dialogs.dart';

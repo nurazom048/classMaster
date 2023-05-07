@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../../../widgets/appWidget/appText.dart';
+import '../../../../../widgets/appWidget/app_text.dart';
 import '../../../../../helper/constant/app_color.dart';
 
 class PriodeWidget extends StatelessWidget {

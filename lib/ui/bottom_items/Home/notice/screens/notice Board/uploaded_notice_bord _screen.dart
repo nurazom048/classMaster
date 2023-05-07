@@ -1,5 +1,3 @@
-// ignore_for_file: curly_braces_in_flow_control_structures, unnecessary_null_comparison
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/dialogs/alart_dialogs.dart';
@@ -7,7 +5,7 @@ import 'package:table/widgets/heder/heder_title.dart';
 import 'package:flutter/material.dart' as ma;
 
 import '../../../../Account/accounu_ui/save_screen.dart';
-import '../../request/noticeBoard_request.dart';
+import '../../request/notice_board_request.dart';
 
 class UploadedNoticeBordScreen extends ConsumerWidget {
   const UploadedNoticeBordScreen({super.key});
