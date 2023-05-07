@@ -3,16 +3,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/ui/auth_Section/utils/login_validation.dart';
+import 'package:table/ui/auth_Section/widgets/create_account_button.dart';
+import 'package:table/ui/bottom_items/Account/widgets/my_divider.dart';
 import 'package:table/widgets/appWidget/appText.dart';
 
 import '../../../helper/constant/app_color.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/appWidget/buttons/cupertino_butttons.dart';
+import '../../../widgets/appWidget/dottted_divider.dart';
 import '../../../widgets/heder/heder_title.dart';
 import '../auth_controller/auth_controller.dart';
+import '../widgets/or.dart';
+import '../widgets/social_login_button.dart';
 import 'SiginUp_Screen.dart';
+
+// package
+import 'package:google_sign_in/google_sign_in.dart';
 
 Future<bool> isToken() async {
   //
@@ -97,35 +106,26 @@ class LogingScreen extends ConsumerWidget {
                       }
                     },
                   ),
-                Container(
-                  alignment: Alignment.center,
-                  child: Column(
-                    children: [
-                      TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SignUpScreen()),
-                            );
-                          },
-                          child: const Text(
-                              "create a new account for your sellf")),
 
-                      //
-                      TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SignUpScreen()),
-                            );
-                          },
-                          child:
-                              const Text("create a new account for academy")),
-                    ],
-                  ),
-                )
+                //
+
+                const CreateAccountPopUpButton(),
+
+                OR(),
+
+                ///
+                ///
+                SocialLoginButton(onTap: () async {
+                  await GoogleSignIn().signIn();
+
+                  print("opntap");
+                  // Future<void> _handleSignIn() async {
+                  //   try {
+                  //   } catch (error) {
+                  //     print(error);
+                  //   }
+                  // }
+                }),
               ],
             ),
           ),

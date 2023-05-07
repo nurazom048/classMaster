@@ -9,7 +9,8 @@ import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/heder/heder_title.dart';
 
 class SignUpScreen extends ConsumerWidget {
-  SignUpScreen({super.key});
+  SignUpScreen({super.key, this.isAcademy});
+  final bool? isAcademy;
 
   final nameController = TextEditingController();
   final emailController = TextEditingController();
@@ -48,7 +49,7 @@ class SignUpScreen extends ConsumerWidget {
                   children: [
                     AppTextFromField(
                       controller: nameController,
-                      hint: "Name",
+                      hint: isAcademy == true ? "Academy Name" : "Name",
                       validator: (value) =>
                           SignUpValidation.validateName(value),
                       focusNode: nameFocusNode,

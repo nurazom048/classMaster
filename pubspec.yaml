@@ -57,6 +57,7 @@ dependencies:
   font_awesome_flutter: ^10.4.0
   syncfusion_flutter_pdfviewer: ^21.2.3
   shimmer: ^2.0.0
+  google_sign_in: ^6.1.0
 
 dev_dependencies:
   flutter_test:
