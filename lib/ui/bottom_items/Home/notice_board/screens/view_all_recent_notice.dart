@@ -1,12 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table/ui/bottom_items/Home/notice_board/screens/viewNotice.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 import 'package:flutter/material.dart' as ma;
 
 import '../../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../../widgets/heder/heder_title.dart';
-import '../../widgets/notice_row.dart';
 import '../notice controller/virew_recent_notice_controller.dart';
+import '../widgets/simple_notice_card.dart';
 
 class ViewAllRecentNotice extends StatelessWidget {
   const ViewAllRecentNotice({super.key});
@@ -34,10 +36,21 @@ class ViewAllRecentNotice extends StatelessWidget {
                             child: Column(
                               children: List.generate(
                                 r.notices.length,
-                                (index) => NoticeRow(
-                                  notice: r.notices[index],
-                                  date: r.notices[index].time.toString(),
-                                  title: r.notices[index].contentName,
+                                (index) => SimpleNoticeCard(
+                                  id: r.notices[index].id,
+                                  dateTime: r.notices[index].time,
+                                  noticeName: r.notices[index].contentName,
+                                  onLongPress: () {},
+                                  ontap: () {
+                                    Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                        builder: (context) => NoticeViewScreen(
+                                          notice: r.notices[index],
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
                             ),

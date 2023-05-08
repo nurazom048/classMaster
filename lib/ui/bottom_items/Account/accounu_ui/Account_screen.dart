@@ -1,24 +1,21 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as ma;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import 'package:table/ui/bottom_items/Account/account_request/account_request.dart';
 import 'package:table/ui/bottom_items/Account/accounu_ui/all_uploadeade_rutines.dart';
-import 'package:table/ui/bottom_items/Account/accounu_ui/eddit_account.dart';
 import 'package:table/ui/bottom_items/Account/accounu_ui/joined_rutines.dart';
 import 'package:table/ui/bottom_items/Account/accounu_ui/save_screen.dart';
 import 'package:table/ui/bottom_items/Account/utils/account_utils.dart';
 import 'package:table/ui/bottom_items/Account/widgets/my_container_button.dart';
 import 'package:table/ui/bottom_items/Account/widgets/my_divider.dart';
 import 'package:table/ui/bottom_items/Account/widgets/tiled_boutton.dart';
-import 'package:table/ui/bottom_items/Home/notice/screens/view_more_notice_bord.dart';
+import 'package:table/ui/bottom_items/Home/notice_board/screens/notice%20Board/uploaded_notice_bord%20_screen.dart';
 import 'package:table/widgets/account_card.dart';
 import '../../../../core/component/heder component/appbaar_custom.dart';
 import '../../../../core/dialogs/alart_dialogs.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../Home/notice/screens/notice Board/uploaded_notice_bord _screen.dart';
 import '../Settings/setting_screen.dart';
 
 //! hiddeBotom nev on scroll
@@ -78,7 +75,7 @@ class AccountScreen extends StatelessWidget {
                     accountData.when(
                       data: (data) {
                         if (data == null) {
-                          return const ma.Text("null");
+                          return const Text("null");
                         } else {
                           return AccountCard(
                             profilepicture: data.image ?? '',
@@ -89,7 +86,7 @@ class AccountScreen extends StatelessWidget {
                       },
                       error: (error, stackTrace) =>
                           Alart.handleError(context, error),
-                      loading: () => const ma.Text("loding"),
+                      loading: () => const Text("loding"),
                     ),
                     /////////////////////
 
@@ -97,27 +94,13 @@ class AccountScreen extends StatelessWidget {
                     MyContainerButton(
                       const FaIcon(FontAwesomeIcons.pen),
                       "Eddit Profile",
-                      onTap: () => Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                          builder: (context) => EdditAccount(
-                            accountUsername: accountUsername ?? "",
-                          ),
-                        ),
-                      ),
+                      onTap: () => Get.to(const JoinedRutinesScreen()),
                     ),
                     const SizedBox(height: 10),
                     MyContainerButton(
                       const Icon(Icons.person_add_alt_1_outlined),
                       "invitation",
-                      onTap: () => Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                          builder: (context) => EdditAccount(
-                            accountUsername: accountUsername ?? "",
-                          ),
-                        ),
-                      ),
+                      onTap: () => Get.to(const JoinedRutinesScreen()),
                     ),
                     MyDividerr(thickness: 1.0, height: 1.0),
                     //*********************** Tilesbutton*****************************/
@@ -128,54 +111,23 @@ class AccountScreen extends StatelessWidget {
                           "\nJoined Rutines",
                           // ignore: deprecated_member_use
                           const FaIcon(FontAwesomeIcons.history),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const JoinedRutinesScreen()),
-                            );
-                          },
+                          onTap: () => Get.to(const JoinedRutinesScreen()),
                         ),
                         Tilesbutton(
-                          "Uploades Rutines",
+                          "My Uploades Rutines",
                           const FaIcon(FontAwesomeIcons.cableCar),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const AllUploadesRutinesMini()),
-                            );
-                          },
+                          onTap: () => Get.to(const AllUploadesRutinesMini()),
                         ),
                         Tilesbutton(
                           "Saved",
-                          const FaIcon(
-                            FontAwesomeIcons.bookmark,
-                          ),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const UploadedNoticeBordScreen()),
-                            );
-                          },
+                          const FaIcon(FontAwesomeIcons.bookmark),
+                          onTap: () => Get.to(const SaveScreen()),
                         ),
 
                         Tilesbutton(
-                          "Notice Board",
-                          const FaIcon(
-                            FontAwesomeIcons.bookmark,
-                          ),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const SaveScreen()),
-                            );
-                          },
+                          " My uploaded Notice Board",
+                          const FaIcon(FontAwesomeIcons.calendar),
+                          onTap: () => Get.to(const UploadedNoticeBordScreen()),
                         ),
 
                         //
@@ -184,31 +136,11 @@ class AccountScreen extends StatelessWidget {
                     MyDividerr(thickness: 1.0, height: 1.0),
 
                     /// ********Sattings ******//
-                    MyContainerButton(
-                      const Icon(Icons.settings_outlined),
-                      "Sattings",
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ViewMoreNoticeBord(
-                                noticeBoardName: "noticeBoardName", id: "id"),
-                          ),
-                        );
-                      },
-                    ),
 
                     MyContainerButton(
                       const Icon(Icons.settings_outlined),
                       "Sattings",
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SettingsPage(),
-                          ),
-                        );
-                      },
+                      onTap: () => Get.to(SettingsPage()),
                     ),
                     MyContainerButton(
                         const Icon(Icons.logout_outlined), "Sign out",
@@ -222,6 +154,8 @@ class AccountScreen extends StatelessWidget {
                       "About",
                       onTap: () {},
                     ),
+
+                    const SizedBox(height: 100),
                   ],
                 );
               }),

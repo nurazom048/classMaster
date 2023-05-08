@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:table/constant/app_color.dart';
-import 'Home/home_screen/Home_screen.dart';
+import 'Home/home_screen/home_screen.dart';
 import 'Home/tababar items/joined_rutine_screen.dart';
 
 class TabBatView extends StatefulWidget {

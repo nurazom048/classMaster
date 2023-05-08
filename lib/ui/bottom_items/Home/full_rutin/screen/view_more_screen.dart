@@ -220,12 +220,7 @@ class _ClassListPageState extends State<ClassListPage> {
                       itemBuilder: (context, index) {
                         Day day = data.classes.allClass[index];
                         int length = data.classes.allClass.length;
-                        //
-                        // Future.delayed(Duration(seconds: 1), () {
-                        //   setState(() {
-                        //     totalMemberCount = length;
-                        //   });
-                        // });
+
                         if (totalMemberCount == null) {
                           WidgetsBinding.instance.addPostFrameCallback((_) {
                             // Add Your Code here.

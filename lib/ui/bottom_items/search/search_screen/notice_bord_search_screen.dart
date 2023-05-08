@@ -5,7 +5,7 @@ import 'package:table/ui/bottom_items/search/search_screen/search_page.dart';
 import 'package:flutter/material.dart' as ma;
 
 import '../../../../core/dialogs/alart_dialogs.dart';
-import '../../Account/accounu_ui/save_screen.dart';
+import '../../Home/notice_board/widgets/notice_board_card.dart';
 
 class NoticeBordSearch extends ConsumerWidget {
   const NoticeBordSearch({super.key});

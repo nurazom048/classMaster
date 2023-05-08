@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/bottom_items/Home/notice/request/notice_board_request.dart';
+import 'package:table/ui/bottom_items/Home/notice_board/widgets/notice_board_card.dart';
 import 'package:table/widgets/heder/heder_title.dart';
 import 'package:flutter/material.dart' as ma;
 
 import '../../../../../../core/dialogs/alart_dialogs.dart';
-import '../../../../Account/accounu_ui/save_screen.dart';
+import '../../request/notice_board_request.dart';
 
 class JoinedNoticeBoardScreen extends ConsumerWidget {
   const JoinedNoticeBoardScreen({super.key});

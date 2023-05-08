@@ -1,7 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:table/ui/bottom_items/Home/notice/models/notice%20bord/recentNotice.dart';
-import 'package:table/ui/bottom_items/Home/notice/notice%20controller/noticeRequest.dart';
+
+import '../models/notice bord/recentNotice.dart';
+import 'noticeRequest.dart';
 
 //! Provider
 final recentNoticeController = StateNotifierProvider.autoDispose<

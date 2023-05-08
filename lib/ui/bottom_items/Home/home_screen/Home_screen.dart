@@ -6,13 +6,13 @@ import 'package:flutter/material.dart' as ma;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/utils/rutin_dialog.dart';
 import 'package:table/ui/bottom_items/Home/home_req/uploaded_rutine_controller.dart';
-import 'package:table/ui/bottom_items/Home/notice/notice%20controller/noticeRequest.dart';
-import 'package:table/ui/bottom_items/Home/notice/screens/view_all_recent_notice.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/widgets/rutin_box/rutin_box_by_id.dart';
 import 'package:table/ui/bottom_items/Home/widgets/recent_notice_title.dart';
 import '../../../../core/dialogs/alart_dialogs.dart';
 import '../../Account/accounu_ui/account_screen.dart';
+import '../full_rutin/widgets/rutin_box/rutin_box_by_id.dart';
 import '../full_rutin/widgets/sceltons/rutinebox_id_scelton.dart';
+import '../notice_board/notice controller/virew_recent_notice_controller.dart';
+import '../notice_board/screens/view_all_recent_notice.dart';
 import '../widgets/custom_title_bar.dart';
 import '../widgets/notice_row.dart';
 
@@ -24,7 +24,7 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     //! provider
     final uploaded_rutins = ref.watch(uploadedRutinsControllerProvider);
-    final recentNoticeList = ref.watch(recentNoticeProvider);
+    final recentNoticeList = ref.watch(recentNoticeController);
     return SafeArea(
         child: Scaffold(
             backgroundColor: const Color(0xFFF2F2F2),
@@ -59,7 +59,7 @@ class HomeScreen extends ConsumerWidget {
                 controller: scrollController,
                 children: [
                   const ChustomTitleBar("title"),
-
+//___________ recent notices _________________//
                   RecentNoticeTitle(
                     //
                     onTap: () {

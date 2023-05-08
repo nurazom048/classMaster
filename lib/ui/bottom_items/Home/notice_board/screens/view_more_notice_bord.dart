@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:table/ui/bottom_items/Home/notice/screens/view%20more%20notice%20Bord/list_of_notice.dart';
-import 'package:table/ui/bottom_items/Home/notice/screens/view%20more%20notice%20Bord/notice_board_memberrs.dart';
+import 'package:table/ui/bottom_items/Home/notice_board/screens/view%20more%20notice%20Bord/list_of_notice.dart';
+import 'package:table/ui/bottom_items/Home/notice_board/screens/view%20more%20notice%20Bord/notice_board_memberrs.dart';
 import 'package:table/widgets/heder/heder_title.dart';
 
 import '../../../../../constant/app_color.dart';
@@ -61,7 +61,7 @@ class _ViewMoreState extends State<ViewMoreNoticeBord>
                         labelColor: AppColor.nokiaBlue,
                         unselectedLabelColor: Colors.black,
                         tabs: const [
-                          Tab(child: Text("Notice")),
+                          Tab(child: Text("Notices")),
                           Tab(child: Text("Members")),
                         ]),
                   ),
@@ -70,9 +70,9 @@ class _ViewMoreState extends State<ViewMoreNoticeBord>
             ),
           )
         ],
-        body: TabBarView(controller: controller, children: const [
-          ListOfNoticeScreen(),
-          NoticeBoardMembersScreen(rutinId: "")
+        body: TabBarView(controller: controller, children: [
+          const ListOfNoticeScreen(),
+          NoticeBoardMembersScreen(noticeBoardId: widget.id)
         ]),
       ),
 

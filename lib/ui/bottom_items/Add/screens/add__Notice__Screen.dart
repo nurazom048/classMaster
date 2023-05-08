@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/dialogs/alart_dialogs.dart';
-import 'package:table/ui/bottom_items/Home/notice/notice%20controller/noticeRequest.dart';
+import 'package:table/ui/bottom_items/Home/notice_board/notice%20controller/noticeRequest.dart';
 import 'package:table/widgets/appWidget/TextFromFild.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 import 'package:table/helper/picker.dart';
@@ -197,8 +197,9 @@ class _MyDropdownButtonState extends State<MyDropdownButton> {
         ),
         child: noticeBoardList.when(
           data: (data) {
+            // ignore: unnecessary_null_comparison
             if (data == null)
-              return const ma.Text("No Notice Board is not  created");
+              return const Text("No Notice Board is not  created");
 
             return DropdownButtonHideUnderline(
               child: GestureDetector(

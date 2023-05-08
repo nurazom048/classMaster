@@ -4,8 +4,9 @@ import 'package:table/core/dialogs/alart_dialogs.dart';
 import 'package:table/widgets/heder/heder_title.dart';
 import 'package:flutter/material.dart' as ma;
 
-import '../../../../Account/accounu_ui/save_screen.dart';
 import '../../request/notice_board_request.dart';
+import '../../widgets/notice_board_card.dart';
+import '../view_more_notice_bord.dart';
 
 class UploadedNoticeBordScreen extends ConsumerWidget {
   const UploadedNoticeBordScreen({super.key});
@@ -27,13 +28,29 @@ class UploadedNoticeBordScreen extends ConsumerWidget {
                     return ListView.builder(
                       itemCount: data.noticeBoards.length,
                       itemBuilder: (context, index) {
-                        return MiniNoticeCard(
-                          rutineName: data.noticeBoards[index].name,
-                          owerName: data.noticeBoards[index].owner.name ?? '',
-                          image: data.noticeBoards[index].owner.image,
-                          username:
-                              data.noticeBoards[index].owner.username ?? '',
-                          rutinId: data.noticeBoards[index].id,
+                        return InkWell(
+                          child: MiniNoticeCard(
+                            rutineName: data.noticeBoards[index].name,
+                            owerName: data.noticeBoards[index].owner.name ?? '',
+                            image: data.noticeBoards[index].owner.image,
+                            username:
+                                data.noticeBoards[index].owner.username ?? '',
+                            rutinId: data.noticeBoards[index].id,
+                          ),
+
+                          //
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ViewMoreNoticeBord(
+                                  id: data.noticeBoards[index].id,
+                                  noticeBoardName:
+                                      data.noticeBoards[index].name,
+                                ),
+                              ),
+                            );
+                          },
                         );
                       },
                     );

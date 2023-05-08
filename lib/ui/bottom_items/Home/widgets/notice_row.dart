@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:table/ui/bottom_items/Home/notice/models/notice%20bord/recentNotice.dart';
-import 'package:table/ui/bottom_items/Home/notice/screens/viewNotice.dart';
+import 'package:table/ui/bottom_items/Home/notice_board/models/notice%20bord/recentNotice.dart';
+import 'package:table/ui/bottom_items/Home/notice_board/screens/viewNotice.dart';
 import 'package:table/widgets/appWidget/dottted_divider.dart';
 
 class NoticeRow extends StatelessWidget {
@@ -23,7 +23,7 @@ class NoticeRow extends StatelessWidget {
       child: Column(
         children: [
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
                 DateFormat('dd MMM yy').format(dt).toString(),
@@ -51,9 +51,10 @@ class NoticeRow extends StatelessWidget {
                     Navigator.push(
                       context,
                       CupertinoPageRoute(
-                          builder: (context) => NoticeViewScreen(
-                                notice: notice,
-                              )),
+                        builder: (context) => NoticeViewScreen(
+                          notice: notice,
+                        ),
+                      ),
                     );
                   },
                   icon: const Icon(Icons.arrow_forward)),

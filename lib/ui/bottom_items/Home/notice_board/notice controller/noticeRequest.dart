@@ -1,4 +1,4 @@
-// ignore_for_file: unused_local_variable
+// ignore_for_file: unused_local_variable, avoid_print
 
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:fpdart/fpdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/message_model.dart';
-import 'package:table/ui/bottom_items/Home/notice/models/notice%20bord/ceatedNoticeBordName.dart';
+import 'package:table/ui/bottom_items/Home/notice_board/models/notice%20bord/ceatedNoticeBordName.dart';
 
 import '../../../../../constant/constant.dart';
 import '../models/notice bord/list_of_notice model.dart';
@@ -25,7 +25,7 @@ final recentNoticeProvider =
 
 // recet notice
 final createdNoticeBoardNmae =
-    FutureProvider<CreatedNoticeBoardByMe>((ref) async {
+    FutureProvider<NoticeBoardListModel>((ref) async {
   return ref.read(noticeReqProvider).cretedNoticeBoardNAme();
 });
 
@@ -92,11 +92,12 @@ class NoticeRequest {
     final response = await http.post(
         Uri.parse('${Const.BASE_URl}/notice/recent'),
         headers: {'Authorization': 'Bearer $getToken'});
+    final res = json.decode(response.body);
+
+    print(res);
 
     try {
       if (response.statusCode == 200) {
-        final res = json.decode(response.body);
-
         return right(RecentNotice.fromJson(res));
       } else {
         Message message = Message.fromJson(json.decode(response.body));
@@ -108,7 +109,7 @@ class NoticeRequest {
   }
 
   //******    createTedNoticeBoardNAme    ********* */
-  Future<CreatedNoticeBoardByMe> cretedNoticeBoardNAme() async {
+  Future<NoticeBoardListModel> cretedNoticeBoardNAme() async {
     // Obtain shared preferences.
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
@@ -117,12 +118,14 @@ class NoticeRequest {
         Uri.parse('${Const.BASE_URl}/notice/all_notice_board'),
         headers: {'Authorization': 'Bearer $getToken'});
 
+    final Map<String, dynamic> res = json.decode(response.body);
+
+// Print the response body
+    print("All notice board: $res");
+
     try {
       if (response.statusCode == 200) {
-        final res = json.decode(response.body);
-
-        print(res);
-        return CreatedNoticeBoardByMe.fromJson(res);
+        return NoticeBoardListModel.fromJson(res as Map<String, dynamic>);
       } else {
         throw "";
       }

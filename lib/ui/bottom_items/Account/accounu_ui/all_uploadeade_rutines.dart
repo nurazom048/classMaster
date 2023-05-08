@@ -15,6 +15,7 @@ class AllUploadesRutinesMini extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Consumer(builder: (context, ref, _) {
+        //!provider
         final allUploadesRutinesMini =
             ref.watch(uploadedRutinsControllerProvider);
         return Column(
@@ -40,6 +41,8 @@ class AllUploadesRutinesMini extends StatelessWidget {
                             owerName: data.rutins[index].owner.name ?? "",
                             image: data.rutins[index].owner.id,
                             username: data.rutins[index].owner.username,
+
+                            //
                           );
                         },
                       );

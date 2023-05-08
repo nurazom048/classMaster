@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' as rp;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:table/ui/bottom_items/Account/widgets/my_divider.dart';
-import 'package:table/ui/bottom_items/Account/widgets/setting_options.dart';
 import 'package:table/ui/bottom_items/Add/screens/add__Notice__Screen.dart';
 import 'package:table/ui/bottom_items/Add/screens/create_new_rutine.dart';
 import 'package:table/widgets/appWidget/dottted_divider.dart';
@@ -10,7 +9,7 @@ import 'package:table/widgets/appWidget/dottted_divider.dart';
 import '../../constant/app_color.dart';
 import 'Account/accounu_ui/account_screen.dart';
 import 'Add/screens/create_notice_board.dart';
-import 'Home/home_screen/Home_screen.dart';
+import 'Home/home_screen/home_screen.dart';
 
 final bottomNavBarIndexProvider = rp.StateProvider<int>((ref) => 0);
 

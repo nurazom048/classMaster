@@ -1,4 +1,4 @@
-import 'package:table/ui/bottom_items/Home/notice/models/notice%20bord/recentNotice.dart';
+import 'package:table/ui/bottom_items/Home/notice_board/models/notice%20bord/recentNotice.dart';
 
 class NoticesResponse {
   String message;
