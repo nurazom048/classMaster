@@ -7,7 +7,7 @@ import 'package:table/ui/bottom_items/Add/screens/add__Notice__Screen.dart';
 import 'package:table/ui/bottom_items/Add/screens/create_new_rutine.dart';
 import 'package:table/widgets/appWidget/dottted_divider.dart';
 
-import '../../helper/constant/app_color.dart';
+import '../../constant/app_color.dart';
 import 'Account/accounu_ui/account_screen.dart';
 import 'Add/screens/create_notice_board.dart';
 import 'Home/home_screen/Home_screen.dart';

@@ -5,10 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:fpdart/fpdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:table/helper/constant/constant.dart';
 import 'package:table/models/message_model.dart';
 import 'package:table/ui/bottom_items/Home/notice/models/notice%20bord/ceatedNoticeBordName.dart';
 
+import '../../../../../constant/constant.dart';
 import '../models/notice bord/list_of_notice model.dart';
 import '../models/notice bord/recentNotice.dart';
 

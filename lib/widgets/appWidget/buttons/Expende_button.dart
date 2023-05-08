@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import '../../../helper/constant/app_color.dart';
+import '../../../constant/app_color.dart';
 
 class ExpendedButton extends StatelessWidget {
   final dynamic onTap;

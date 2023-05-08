@@ -2,11 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:table/core/dialogs/alart_dialogs.dart';
 import 'package:table/models/chack_status_model.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/member_request.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/rutin_request.dart';
+
+import '../../../../../models/message_model.dart';
+import '../request/rutine_notification.dart';
 
 //! providers
 final chackStatusControllerProvider = StateNotifierProvider.family<
@@ -14,7 +18,7 @@ final chackStatusControllerProvider = StateNotifierProvider.family<
     AsyncValue<CheckStatusModel>,
     String>((ref, rutinId) {
   return ChackStatusController(ref, rutinId, ref.read(FullRutinProvider),
-      ref.read(memberRequestProvider));
+      ref.read(memberRequestProvider), ref.read(notificationReqProvider));
 });
 
 //? Controllers
@@ -25,8 +29,9 @@ class ChackStatusController
   String rutinId;
   FullRutinrequest fullRutinReq;
   memberRequest memberRequests;
-  ChackStatusController(
-      this.ref, this.rutinId, this.fullRutinReq, this.memberRequests)
+  RutineNotification rutineNotification;
+  ChackStatusController(this.ref, this.rutinId, this.fullRutinReq,
+      this.memberRequests, this.rutineNotification)
       : super(AsyncLoading()) {
     getStatus();
   }
@@ -77,6 +82,38 @@ class ChackStatusController
       (response) {
         state = AsyncData(
             state.value!.copyWith(activeStatus: response.activeStatus));
+
+        Alart.showSnackBar(context, response.message);
+      },
+    );
+  }
+//
+
+//***********  notificationOff  *********** */
+  void notificationOff(context) async {
+    final Either<String, Message> result =
+        await rutineNotification.notificationOff(rutinId);
+
+    result.fold(
+      (errorMessage) => Alart.errorAlartDilog(context, errorMessage),
+      (response) {
+        state = AsyncData(
+            state.value!.copyWith(notificationOff: response.notificationOff));
+
+        Alart.showSnackBar(context, response.message);
+      },
+    );
+  }
+
+//***********  notificationOn  *********** */
+  void notificationOn(context) async {
+    final result = await rutineNotification.notificationOn(rutinId);
+
+    result.fold(
+      (errorMessage) => Alart.errorAlartDilog(context, errorMessage),
+      (response) {
+        state = AsyncData(
+            state.value!.copyWith(notificationOff: response.notificationOff));
 
         Alart.showSnackBar(context, response.message);
       },

@@ -5,8 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:table/core/dialogs/alart_dialogs.dart';
-import 'package:table/helper/constant/app_color.dart';
-import 'package:table/helper/constant/constant.dart';
 import 'package:table/models/class_model.dart';
 import 'package:table/ui/bottom_items/Add/request/class_request.dart';
 import 'package:table/ui/bottom_items/Add/utils/add_class_validation.dart';
@@ -18,6 +16,8 @@ import 'package:table/widgets/day_select_dropdowen.dart';
 import 'package:flutter/material.dart' as ma;
 
 import 'package:table/widgets/heder/heder_title.dart';
+import '../../../../constant/app_color.dart';
+import '../../../../constant/constant.dart';
 import '../../../../models/rutins/class/find_class_model.dart';
 import '../../../../widgets/appWidget/TextFromFild.dart';
 import '../../../../widgets/appWidget/buttons/cupertino_butttons.dart';

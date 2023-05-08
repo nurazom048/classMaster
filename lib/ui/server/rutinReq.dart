@@ -3,8 +3,9 @@
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-import 'package:table/helper/constant/constant.dart';
 import 'package:table/models/class_details_model.dart';
+
+import '../../constant/constant.dart';
 
 final Rutin_Req_provider = Provider<Rutin_Req>((ref) => Rutin_Req());
 

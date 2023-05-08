@@ -44,6 +44,7 @@ class RutinBoxById extends ConsumerWidget {
     final chackStatus = ref.watch(chackStatusControllerProvider(rutinId));
     final rutinDetails = ref.watch(rutins_detalis_provider(rutinId));
     String status = chackStatus.value?.activeStatus ?? '';
+    bool notification_Off = chackStatus.value?.notificationOff ?? false;
 
     List<Day?> listOfDays = ref.watch(listOfDayStateProvider);
     int gSelectedDay = ref.watch(gSelectedDayProvider);
@@ -92,7 +93,7 @@ class RutinBoxById extends ConsumerWidget {
                           isNotSendRequest: status == "not_joined",
                           isPending: status == "request_pending",
                           isMember: true,
-                          notificationOff: false,
+                          notificationOff: notification_Off,
                           sendRequest: () {
                             chackStatusNotifier.sendReqController(context);
                           },

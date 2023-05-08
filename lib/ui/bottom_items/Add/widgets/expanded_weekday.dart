@@ -5,7 +5,7 @@ import 'package:table/ui/bottom_items/Add/widgets/select_priode_number.dart';
 import 'package:table/widgets/appWidget/TextFromFild.dart';
 import 'package:table/widgets/appWidget/dottted_divider.dart';
 
-import '../../../../helper/constant/app_color.dart';
+import '../../../../constant/app_color.dart';
 
 class ExpanedWeekDay extends StatelessWidget {
   final Weekday? weekday;

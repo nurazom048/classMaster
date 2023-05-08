@@ -7,7 +7,7 @@ import 'package:table/models/message_model.dart';
 import 'package:table/ui/bottom_items/Home/notice/models/list_noticeboard.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../../../helper/constant/constant.dart';
+import '../../../../../constant/constant.dart';
 
 //
 final uploadedNoticeBoardProvider =

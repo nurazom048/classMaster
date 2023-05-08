@@ -5,7 +5,7 @@ import 'package:table/ui/bottom_items/Home/full_rutin/utils/rutin_dialog.dart';
 import 'package:flutter/material.dart' as ma;
 
 import '../../../../core/dialogs/alart_dialogs.dart';
-import '../../../../helper/constant/app_color.dart';
+import '../../../../constant/app_color.dart';
 import '../full_rutin/widgets/rutin_box/rutin_box_by_id.dart';
 import '../../../../widgets/progress_indicator.dart';
 import '../home_req/uploaded_rutine_controller.dart';

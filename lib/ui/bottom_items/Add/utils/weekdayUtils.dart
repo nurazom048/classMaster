@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/helper/constant/app_color.dart';
+import 'package:table/constant/app_color.dart';
 import 'package:table/ui/bottom_items/Add/utils/add_class_validation.dart';
 import 'package:table/ui/bottom_items/Add/widgets/select_priode_number.dart';
 import 'package:flutter/material.dart' as ma;

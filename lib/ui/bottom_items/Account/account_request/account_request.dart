@@ -4,8 +4,8 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:table/helper/constant/constant.dart';
 
+import '../../../../constant/constant.dart';
 import '../models/account_models.dart';
 
 final AccountReqProvider = Provider<AccountReq>((ref) {

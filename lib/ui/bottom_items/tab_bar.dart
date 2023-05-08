@@ -1,7 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:table/helper/constant/app_color.dart';
+import 'package:table/constant/app_color.dart';
 import 'Home/home_screen/Home_screen.dart';
 import 'Home/tababar items/joined_rutine_screen.dart';
 

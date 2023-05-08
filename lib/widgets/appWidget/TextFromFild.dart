@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../../helper/constant/app_color.dart';
+import '../../constant/app_color.dart';
 
 class AppTextFromField extends StatelessWidget {
   const AppTextFromField({

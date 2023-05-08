@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import '../../../helper/constant/app_color.dart';
+import '../../../constant/app_color.dart';
 
 class CapsuleButton extends StatelessWidget {
   final dynamic onTap;

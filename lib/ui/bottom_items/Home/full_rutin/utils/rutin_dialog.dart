@@ -234,23 +234,27 @@ class RutinDialog {
               //
               String status = chackStatus.value?.activeStatus ?? '';
 
-              bool notificationOn = status == "request_pending" ? true : false;
-
+              bool notificationOff =
+                  chackStatus.value?.notificationOff ?? false;
               return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ChackBoxSelector(
-                    isChacked: notificationOn,
+                    isChacked: !notificationOff,
                     icon: Icons.notifications_active,
                     text: "notifications_active",
-                    onTap: () {},
+                    onTap: () {
+                      chackStatusNotifier.notificationOn(context);
+                    },
                   ),
                   ChackBoxSelector(
-                    isChacked: !notificationOn,
+                    isChacked: notificationOff,
                     icon: Icons.notifications_off,
                     text: "Notification Off",
                     color: Colors.red,
-                    onTap: () {},
+                    onTap: () {
+                      chackStatusNotifier.notificationOff(context);
+                    },
                   ),
                   const MyDivider(),
                   ChackBoxSelector(

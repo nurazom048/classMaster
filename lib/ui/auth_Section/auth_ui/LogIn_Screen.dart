@@ -7,7 +7,7 @@ import 'package:table/ui/auth_Section/widgets/create_account_button.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 import 'package:table/widgets/progress_indicator.dart';
 
-import '../../../helper/constant/app_color.dart';
+import '../../../constant/app_color.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/appWidget/buttons/cupertino_butttons.dart';
 import '../../../widgets/heder/heder_title.dart';

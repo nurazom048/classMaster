@@ -3,11 +3,9 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:table/helper/constant/constant.dart';
-// ignore: unused_import
-import 'package:table/models/rutins/class/find_class_model.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../../../constant/constant.dart';
 import '../../../../../models/message_model.dart';
 import '../../../../../models/rutins/weekday/weekday_list.dart';
 

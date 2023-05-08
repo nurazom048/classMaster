@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:table/widgets/appWidget/buttons/cupertino_butttons.dart';
-import '../../../helper/constant/app_color.dart';
+import '../../../constant/app_color.dart';
 import '../../../widgets/heder/heder_title.dart';
 
 class SelectAccounType extends StatefulWidget {

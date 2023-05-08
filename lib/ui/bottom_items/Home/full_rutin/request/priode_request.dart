@@ -5,7 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/message_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:table/models/priode/all_priode_models.dart';
-import '../../../../../helper/constant/constant.dart';
+
+import '../../../../../constant/constant.dart';
 
 //... provider...//
 final priodeRequestProvider = Provider<PriodeRequest>((ref) => PriodeRequest());

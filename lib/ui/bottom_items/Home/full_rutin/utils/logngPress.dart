@@ -3,7 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/helper/constant/app_color.dart';
+import 'package:table/constant/app_color.dart';
 import 'package:flutter/material.dart' as ma;
 
 import 'package:table/models/priode/all_priode_models.dart';

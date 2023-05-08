@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/dialogs/alart_dialogs.dart';
-import 'package:table/helper/constant/app_color.dart';
 import 'package:table/ui/bottom_items/Home/notice/notice%20controller/noticeRequest.dart';
 import 'package:table/widgets/appWidget/TextFromFild.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
@@ -12,6 +11,7 @@ import 'package:table/helper/picker.dart';
 import 'package:table/widgets/heder/heder_title.dart';
 import 'package:flutter/material.dart' as ma;
 
+import '../../../../constant/app_color.dart';
 import '../../../../widgets/appWidget/buttons/cupertino_butttons.dart';
 
 class AddNoticeScreen extends ConsumerWidget {

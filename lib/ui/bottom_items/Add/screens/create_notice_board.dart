@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/helper/constant/app_color.dart';
+import 'package:table/constant/app_color.dart';
 import 'package:table/ui/bottom_items/Home/notice/models/notice%20bord/createNoticeController.dart';
 import 'package:table/widgets/appWidget/TextFromFild.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
