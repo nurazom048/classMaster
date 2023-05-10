@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Account/accounu_ui/save_screen.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/widgets/rutin_box/rutin_box_by_id.dart';
 import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
 import 'package:table/widgets/progress_indicator.dart';
 
@@ -15,7 +16,7 @@ class JoinedRutinesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Consumer(builder: (context, ref, _) {
-        final JoinedRutines = ref.watch(joined_rutin_provider(1));
+        final joinedRutines = ref.watch(joined_rutin_provider(1));
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -27,18 +28,17 @@ class JoinedRutinesScreen extends StatelessWidget {
             Expanded(
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 5),
-                child: JoinedRutines.when(
+                child: joinedRutines.when(
                     data: (data) {
                       return ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: data.routines.length,
                         itemBuilder: (context, index) {
-                          return MiniRutineCard(
+                          return RutinBoxById(
+                            rutinName: data.routines[index].name,
                             rutinId: data.routines[index].id,
-                            rutineName: data.routines[index].name,
-                            owerName: data.routines[index].owner.name,
-                            image: data.routines[index].owner.id,
-                            username: data.routines[index].owner.username,
+                            //
+                            onTapMore: () {},
                           );
                         },
                       );

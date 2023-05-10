@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/bottom_items/Account/accounu_ui/save_screen.dart';
 import 'package:table/ui/bottom_items/Home/home_req/uploaded_rutine_controller.dart';
 import 'package:table/widgets/progress_indicator.dart';
 
 import '../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../widgets/appWidget/app_text.dart';
 import '../../../../widgets/heder/heder_title.dart';
+import '../../Home/full_rutin/widgets/rutin_box/rutin_box_by_id.dart';
 
 class AllUploadesRutinesMini extends StatelessWidget {
   const AllUploadesRutinesMini({super.key});
@@ -35,14 +35,11 @@ class AllUploadesRutinesMini extends StatelessWidget {
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: data.rutins.length,
                         itemBuilder: (context, index) {
-                          return MiniRutineCard(
+                          return RutinBoxById(
+                            rutinName: data.rutins[index].name,
                             rutinId: data.rutins[index].id,
-                            rutineName: data.rutins[index].name,
-                            owerName: data.rutins[index].owner.name ?? "",
-                            image: data.rutins[index].owner.id,
-                            username: data.rutins[index].owner.username,
-
                             //
+                            onTapMore: () {},
                           );
                         },
                       );

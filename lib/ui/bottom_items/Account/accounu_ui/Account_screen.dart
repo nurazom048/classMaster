@@ -17,6 +17,7 @@ import '../../../../core/dialogs/alart_dialogs.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../Settings/setting_screen.dart';
+import 'eddit_account.dart';
 
 //! hiddeBotom nev on scroll
 final hideNevBarOnScrooingProvider =
@@ -94,7 +95,7 @@ class AccountScreen extends StatelessWidget {
                     MyContainerButton(
                       const FaIcon(FontAwesomeIcons.pen),
                       "Eddit Profile",
-                      onTap: () => Get.to(const JoinedRutinesScreen()),
+                      onTap: () => Get.to(const EdditAccount()),
                     ),
                     const SizedBox(height: 10),
                     MyContainerButton(

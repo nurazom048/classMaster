@@ -39,12 +39,14 @@ class _ViewMoreState extends State<ViewMoreNoticeBord>
 
   @override
   Widget build(BuildContext context) {
+    // ignore: avoid_print
+    print("NoticeBoardId : ${widget.id}");
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           SliverToBoxAdapter(
             child: SizedBox(
-              height: 270,
+              height: 250,
               width: 300,
               child: Column(
                 children: [
@@ -71,7 +73,7 @@ class _ViewMoreState extends State<ViewMoreNoticeBord>
           )
         ],
         body: TabBarView(controller: controller, children: [
-          const ListOfNoticeScreen(),
+          ListOfNoticeScreen(noticeBoardId: widget.id),
           NoticeBoardMembersScreen(noticeBoardId: widget.id)
         ]),
       ),

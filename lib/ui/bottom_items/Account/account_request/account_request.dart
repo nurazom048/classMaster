@@ -14,12 +14,12 @@ final AccountReqProvider = Provider<AccountReq>((ref) {
 //
 final accountDataProvider =
     FutureProvider.family<AccountModels?, String?>((ref, username) async {
-  return ref.read(AccountReqProvider).accountData(username);
+  return ref.read(AccountReqProvider).accountData(username: username);
 });
 
 class AccountReq {
 //... Account data...//
-  Future<AccountModels?> accountData(String? username) async {
+  Future<AccountModels?> accountData({String? username}) async {
     print("req usrname  : $username");
 
     final prefs = await SharedPreferences.getInstance();

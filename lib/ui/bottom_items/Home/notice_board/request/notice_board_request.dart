@@ -8,6 +8,8 @@ import 'package:http/http.dart' as http;
 
 import '../../../../../constant/constant.dart';
 import '../models/list_noticeboard.dart';
+import '../models/notice bord/recentNotice.dart';
+import '../models/notices models/list_ofz_notices.dart';
 
 //
 final uploadedNoticeBoardProvider =
@@ -67,6 +69,36 @@ class NoticeBoardRequest {
         return throw Future.error(message.message);
       }
     } catch (e) {
+      return throw Future.error(e);
+    }
+  }
+
+  //
+
+  //******    joinedNoticeList    ********* */
+  Future<ListOfNoticesModel> getNoticesByNoticeBoardId(
+      String noticeBoardId) async {
+    // Obtain shared preferences.
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+
+    final response = await http.get(
+        Uri.parse('${Const.BASE_URl}/notice/$noticeBoardId/notices'),
+        headers: {'Authorization': 'Bearer $getToken'});
+
+    try {
+      if (response.statusCode == 200) {
+        final res = json.decode(response.body);
+
+        print(res);
+        return ListOfNoticesModel.fromJson(res);
+      } else {
+        //
+        Message message = Message.fromJson(json.decode(response.body));
+        return throw Future.error(message.message);
+      }
+    } catch (e) {
+      print(e);
       return throw Future.error(e);
     }
   }

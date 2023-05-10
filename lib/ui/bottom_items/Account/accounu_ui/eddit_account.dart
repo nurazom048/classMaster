@@ -10,8 +10,7 @@ import '../../../../widgets/heder/heder_title.dart';
 import '../../../auth_Section/utils/singUp_validation.dart';
 
 class EdditAccount extends StatefulWidget {
-  final String accountUsername;
-  const EdditAccount({super.key, required this.accountUsername});
+  const EdditAccount({super.key});
 
   @override
   State<EdditAccount> createState() => _EdditAccountState();
@@ -140,7 +139,7 @@ class _EdditAccountState extends State<EdditAccount> {
   }
 
   void _lodedataBeforeBuild() async {
-    AccountModels? accountData = await AccountReq().accountData(null);
+    AccountModels? accountData = await AccountReq().accountData();
     if (accountData != null) {
       nameController.text = accountData.name ?? '';
       emailController.text = accountData.name ?? '';
@@ -152,7 +151,7 @@ class _EdditAccountState extends State<EdditAccount> {
 
       // ignore: avoid_print
       print(accountData.image);
-
+      if (!mounted) {}
       setState(() {});
     }
   }
