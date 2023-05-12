@@ -55,7 +55,7 @@ class _ViewMoreState extends State<ViewMoreNoticeBord>
                   AppText(widget.noticeBoardName.toUpperCase()).title(),
                   AppText(widget.about ?? "khulna polytechnic institute")
                       .heding(),
-                  const SizedBox(height: 30),
+                  // const SizedBox(height: 30),
                   SizedBox(
                     height: 40,
                     child: TabBar(

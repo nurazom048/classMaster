@@ -30,12 +30,13 @@ class UploadedNoticeBordScreen extends ConsumerWidget {
                       itemBuilder: (context, index) {
                         return InkWell(
                           child: MiniNoticeCard(
-                            rutineName: data.noticeBoards[index].name,
-                            owerName: data.noticeBoards[index].owner.name ?? '',
+                            noticeBoardId: data.noticeBoards[index].id,
+                            noticeBoarName: data.noticeBoards[index].name,
+                            ownerName:
+                                data.noticeBoards[index].owner.name ?? '',
                             image: data.noticeBoards[index].owner.image,
                             username:
                                 data.noticeBoards[index].owner.username ?? '',
-                            rutinId: data.noticeBoards[index].id,
                           ),
 
                           //

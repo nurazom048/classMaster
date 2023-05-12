@@ -6,7 +6,10 @@ import '../request/notice_board_request.dart';
 //! provider
 final listofNoticesProvider = StateNotifierProvider.family<ListOfNotoces,
     AsyncValue<ListOfNoticesModel>, String>((ref, noticeBoardId) {
-  return ListOfNotoces(ref.read(noticeBoardRequestProvider), noticeBoardId);
+  return ListOfNotoces(
+    ref.read(noticeBoardRequestProvider),
+    noticeBoardId,
+  );
 });
 
 //

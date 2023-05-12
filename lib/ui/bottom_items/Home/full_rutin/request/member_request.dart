@@ -135,7 +135,7 @@ class memberRequest {
           await http.post(url, headers: {'Authorization': 'Bearer $getToken'});
 
       var res = Message.fromJson(jsonDecode(response.body));
-      print("req from  sendRequest $res");
+      print("req from  sendRequest ${jsonDecode(response.body)}");
 
       if (response.statusCode == 200) {
         return right(res);

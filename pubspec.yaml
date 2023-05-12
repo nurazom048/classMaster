@@ -59,6 +59,7 @@ dependencies:
   shimmer: ^2.0.0
   google_sign_in: ^6.1.0
   get: ^4.6.5
+  awesome_notifications: ^0.6.19
 
 dev_dependencies:
   flutter_test:

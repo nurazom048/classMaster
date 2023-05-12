@@ -1,13 +1,16 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:table/sevices/notification%20services/awn_package.dart';
 import 'package:table/ui/auth_Section/utils/login_validation.dart';
 import 'package:table/ui/auth_Section/widgets/create_account_button.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 import 'package:table/widgets/progress_indicator.dart';
 
 import '../../../constant/app_color.dart';
+import '../../../sevices/notification services/local_notifications.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/appWidget/buttons/cupertino_butttons.dart';
 import '../../../widgets/heder/heder_title.dart';
@@ -16,117 +19,165 @@ import '../auth_controller/google_auth_controller.dart';
 import '../widgets/or.dart';
 import '../widgets/social_login_button.dart';
 
-Future<bool> isToken() async {
-  //
-  final prefs = await SharedPreferences.getInstance();
-  final String? getToken = prefs.getString('Token');
-  // ignore: avoid_print
-  print("getToken");
+class LogingScreen extends StatefulWidget {
+  LogingScreen({super.key});
 
-  // ignore: avoid_print
-  print(getToken);
-
-  if (getToken != null) {
-    return true;
-  }
-  return false;
+  @override
+  State<LogingScreen> createState() => _LogingScreenState();
 }
 
-class LogingScreen extends ConsumerWidget {
-  LogingScreen({super.key});
+class _LogingScreenState extends State<LogingScreen> {
+  //
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final authLogin = ref.watch(authController_provider.notifier);
-    final loding = ref.watch(authController_provider);
-    return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.only(bottom: 400),
-          child: Form(
-            key: formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                HeaderTitle("Log In", context, onTap: () {}),
-                const SizedBox(height: 40),
+  void initState() {
+    super.initState();
 
-                const AppText("   Login To Continue").title(),
+    AwsomNotificationSetup.takePermiton(context);
+  }
 
-                const SizedBox(height: 30),
+  @override
+  Widget build(BuildContext context) {
+    return Consumer(builder: (context, ref, _) {
+      //
+      final authLogin = ref.watch(authController_provider.notifier);
+      final loding = ref.watch(authController_provider);
 
-                ///
+      return SafeArea(
+        child: Scaffold(
+          body: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.only(bottom: 400),
+            child: Form(
+              key: formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  HeaderTitle("Log In", context, onTap: () {}),
+                  const SizedBox(height: 40),
+                  const AppText("   Login To Continue").title(),
+                  const SizedBox(height: 30),
 
-                AppTextFromField(
-                  controller: _emailController,
-                  hint: "Email",
-                  labelText: "Enter email address",
-                  validator: (value) => LoginValidation.validateEmail(value),
-                ),
+                  ///
 
-                AppTextFromField(
-                  controller: _passwordController,
-                  hint: "password",
-                  labelText: "Enter a valid password",
-                  validator: (value) => LoginValidation.validatePassword(value),
-                ),
-
-                //
-                const SizedBox(height: 30),
-
-                if (loding != null && loding == true)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CupertinoButton(
-                        onPressed: () {},
-                        child: const CircularProgressIndicator(),
-                      ),
-                    ],
-                  )
-                else
-                  CupertinoButtonCustom(
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
-                    color: AppColor.nokiaBlue,
-                    textt: "Log In",
-                    onPressed: () async {
-                      if (formKey.currentState?.validate() ?? false) {
-                        authLogin.siginIn(_emailController.text,
-                            _passwordController.text, context);
-                      } else {
-                        authLogin.siginIn("nurazom049", "@Nurazom123", context);
-                      }
-                    },
+                  AppTextFromField(
+                    controller: _emailController,
+                    hint: "Email",
+                    labelText: "Enter email address",
+                    validator: (value) => LoginValidation.validateEmail(value),
                   ),
 
-                //
+                  AppTextFromField(
+                    controller: _passwordController,
+                    hint: "password",
+                    labelText: "Enter a valid password",
+                    validator: (value) =>
+                        LoginValidation.validatePassword(value),
+                  ),
 
-                const CreateAccountPopUpButton(),
+                  //
+                  const SizedBox(height: 30),
 
-                const OR(),
+                  if (loding != null && loding == true)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CupertinoButton(
+                          onPressed: () {},
+                          child: const CircularProgressIndicator(),
+                        ),
+                      ],
+                    )
+                  else
+                    CupertinoButtonCustom(
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      color: AppColor.nokiaBlue,
+                      textt: "Log In",
+                      onPressed: () async {
+                        if (formKey.currentState?.validate() ?? false) {
+                          authLogin.siginIn(_emailController.text,
+                              _passwordController.text, context);
+                        } else {
+                          authLogin.siginIn(
+                              "nurazom049", "@Nurazom123", context);
+                        }
+                      },
+                    ),
 
-                ///
-                ///
-                ref.watch(gooleAuthControllerProvider).lodging == true
-                    ? const SizedBox(
-                        height: 20, width: 20, child: Progressindicator())
-                    : SocialLoginButton(onTap: () async {
-                        ref.read(gooleAuthControllerProvider).signin(context);
+                  //
 
-                        if (ref
-                                .watch(gooleAuthControllerProvider)
-                                .googleAccount !=
-                            null) {}
-                      }),
-              ],
+                  const CreateAccountPopUpButton(),
+
+                  TextButton(
+                    onPressed: () async {
+                      AwsomNotificationSetup.takePermiton(context);
+                      // print("TEST NOTIFICATIOM");
+                      // await AwesomeNotifications().createNotification(
+                      //   // Create notification content
+                      //   content: NotificationContent(
+                      //     id: 1,
+                      //     channelKey: 'basic_channel',
+                      //     title: 'Notification',
+                      //     body: 'This is a scheduled notification',
+                      //     notificationLayout: NotificationLayout.Default,
+                      //   ),
+                      // );
+
+                      print("ontap");
+                      List<WeekdayTime> weekdayTimes = [
+                        WeekdayTime(
+                          weekday: DateTime.sunday,
+                          times: [
+                            DateTime(DateTime.now().year, DateTime.now().month,
+                                DateTime.now().day, 12, 0),
+                          ],
+                        ),
+                        WeekdayTime(
+                          weekday: DateTime.friday,
+                          times: [
+                            DateTime.now().copyWith(minute: 57),
+                          ],
+                        ),
+                        WeekdayTime(
+                          weekday: DateTime.friday,
+                          times: [
+                            DateTime.now()
+                                .copyWith(minute: DateTime.now().minute + 1),
+                          ],
+                        ),
+                      ];
+
+                      LocalNotification.scheduleNotifications(
+                          context, weekdayTimes);
+                    },
+                    child: const Text("Show notification on sudwle"),
+                  ),
+
+                  const OR(),
+
+                  ///
+                  ///
+                  ref.watch(gooleAuthControllerProvider).lodging == true
+                      ? const SizedBox(
+                          height: 20, width: 20, child: Progressindicator())
+                      : SocialLoginButton(onTap: () async {
+                          ref.read(gooleAuthControllerProvider).signin(context);
+
+                          if (ref
+                                  .watch(gooleAuthControllerProvider)
+                                  .googleAccount !=
+                              null) {}
+                        }),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
 

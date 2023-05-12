@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 
 import '../models/notice bord/recentNotice.dart';
-import 'noticeRequest.dart';
+import '../request/noticeboard_noticeRequest.dart';
 
 //! Provider
 final recentNoticeController = StateNotifierProvider.autoDispose<

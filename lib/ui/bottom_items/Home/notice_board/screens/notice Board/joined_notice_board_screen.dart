@@ -27,12 +27,12 @@ class JoinedNoticeBoardScreen extends ConsumerWidget {
                       itemCount: data.noticeBoards.length,
                       itemBuilder: (context, index) {
                         return MiniNoticeCard(
-                          rutineName: data.noticeBoards[index].name,
-                          owerName: data.noticeBoards[index].owner.name ?? '',
+                          noticeBoarName: data.noticeBoards[index].name,
+                          noticeBoardId: data.noticeBoards[index].id,
+                          ownerName: data.noticeBoards[index].owner.name ?? '',
                           image: data.noticeBoards[index].owner.image,
                           username:
                               data.noticeBoards[index].owner.username ?? '',
-                          rutinId: data.noticeBoards[index].id,
                         );
                       },
                     );

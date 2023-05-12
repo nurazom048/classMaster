@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/bottom_items/Account/models/Account_models.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/account_card_widgets.dart';
 
 import '../../../../../../core/dialogs/Alart_dialogs.dart';
+import '../../../../../../widgets/accound_card_row.dart';
 import '../../../../../../widgets/hedding_row.dart';
-import '../../notice controller/notice_board_request_controller.dart';
+import '../../../../../../widgets/progress_indicator.dart';
+import '../../notice controller/finalMEmbers_controller.dart';
+import '../../notice controller/noticeboard_join_controller.dart';
 
 class NoticeBoardMembersScreen extends StatelessWidget {
   final String noticeBoardId;
@@ -15,9 +17,12 @@ class NoticeBoardMembersScreen extends StatelessWidget {
     return Consumer(builder: (context, ref, _) {
       //! provider
 
-      // final allMembers = ref.watch(all_members_provider(rutinId));
-      final allRequest =
-          ref.watch(noticeBoardJoinRequestControllerProvider(noticeBoardId));
+      final allMembers = ref.watch(finalMemberConollerList(noticeBoardId));
+      final memberRequest =
+          ref.watch(noticeboardJoinRequestController(noticeBoardId));
+// notifier
+      final memberRequestNotifier =
+          ref.watch(noticeboardJoinRequestController(noticeBoardId).notifier);
       // final seeAllJonReq =
       //     ref.read(seeAllRequestControllerProvider(rutinId).notifier);
       return ListView(
@@ -38,7 +43,7 @@ class NoticeBoardMembersScreen extends StatelessWidget {
               children: [
                 SizedBox(
                     height: 200,
-                    child: allRequest.when(
+                    child: memberRequest.when(
                         data: (data) {
                           print("data");
                           // return const Text(" data ");
@@ -49,23 +54,18 @@ class NoticeBoardMembersScreen extends StatelessWidget {
                             scrollDirection: Axis.horizontal,
                             itemCount: data.joinRequests.length,
                             itemBuilder: (context, index) {
+                              String id = data.joinRequests[index].sId ?? '';
                               return AccountCard(
                                 accountData: data.joinRequests[index],
 
                                 // acsept or reject members
                                 acceptUsername: () {
-                                  // print(data.joinRequests[index].username);
-                                  // seeAllJonReq.acceptMember(
-                                  //     ref,
-                                  //     data.listAccounts[index].username,
-                                  //     context);
+                                  memberRequestNotifier.acceptRequest(
+                                      id, context, ref);
                                 },
                                 onRejectUsername: () {
-                                  // print(data.joinRequests[index].username);
-                                  // seeAllJonReq.rejectMembers(
-                                  //     ref,
-                                  //    data.joinRequests[index].username,
-                                  //     context);
+                                  memberRequestNotifier.rejectMembers(
+                                      id, context, ref);
                                 },
                               );
                             },
@@ -87,22 +87,22 @@ class NoticeBoardMembersScreen extends StatelessWidget {
           ),
           //
 
-          // allMembers.when(
-          //   data: (data) {
-          //     if (data == null || data.message == null)
-          //       return const Text("null");
-          //     return SizedBox(
-          //       height: 140,
-          //       child: ListView.builder(
-          //           physics: const NeverScrollableScrollPhysics(),
-          //           itemCount: data.Members!.length,
-          //           itemBuilder: (context, index) =>
-          //               AccountCardRow(accountData: data.Members![index])),
-          //     );
-          //   },
-          //   error: (error, stackTrace) => Alart.handleError(context, error),
-          //   loading: () => const Progressindicator(),
-          // ),
+          allMembers.when(
+            data: (data) {
+              return SizedBox(
+                height: 140,
+                child: ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: data.members.length,
+                  itemBuilder: (context, index) => AccountCardRow(
+                    accountData: data.members[index],
+                  ),
+                ),
+              );
+            },
+            error: (error, stackTrace) => Alart.handleError(context, error),
+            loading: () => const Progressindicator(),
+          ),
         ],
       );
     });

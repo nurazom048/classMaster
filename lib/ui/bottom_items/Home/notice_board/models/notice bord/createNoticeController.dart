@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../core/dialogs/alart_dialogs.dart';
-import '../../notice controller/noticeRequest.dart';
+import '../../request/noticeboard_noticeRequest.dart';
 
 final noticeBoardCreater_provider = ChangeNotifierProvider.autoDispose(
     (ref) => CreateNoticeBoard(ref.read(noticeReqProvider)));
