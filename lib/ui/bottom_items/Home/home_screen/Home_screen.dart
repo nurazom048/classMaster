@@ -66,7 +66,7 @@ class HomeScreen extends ConsumerWidget {
                       Navigator.push(
                         context,
                         CupertinoPageRoute(
-                            builder: (context) => const ViewAllRecentNotice()),
+                            builder: (context) => ViewAllRecentNotice()),
                       );
                     },
                   ),
@@ -81,19 +81,19 @@ class HomeScreen extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(5)),
                     child: recentNoticeList.when(
                         data: (data) {
-                          return data.fold(
-                              (error) => Alart.handleError(context, error),
-                              (r) => ListView.builder(
-                                    // physics: const NeverScrollableScrollPhysics(),
-                                    itemCount: r.notices.length,
-                                    itemBuilder: (context, index) {
-                                      return NoticeRow(
-                                        notice: r.notices[index],
-                                        date: r.notices[index].time.toString(),
-                                        title: r.notices[index].contentName,
-                                      );
-                                    },
-                                  ));
+                          return ListView.builder(
+                            // physics: const NeverScrollableScrollPhysics(),
+                            itemCount: data.notices.length >= 2
+                                ? 2
+                                : data.notices.length,
+                            itemBuilder: (context, index) {
+                              return NoticeRow(
+                                notice: data.notices[index],
+                                date: data.notices[index].time.toString(),
+                                title: data.notices[index].contentName,
+                              );
+                            },
+                          );
                         },
                         error: (error, stackTrace) =>
                             Alart.handleError(context, error),
@@ -108,8 +108,7 @@ class HomeScreen extends ConsumerWidget {
 
                       void scrollListener() {
                         if (scrollController.position.pixels ==
-                                scrollController.position.maxScrollExtent &&
-                            data.currentPage! < data.totalPages!) {
+                            scrollController.position.maxScrollExtent) {
                           ref
                               .watch(uploadedRutinsControllerProvider.notifier)
                               .loadMore(data.currentPage);

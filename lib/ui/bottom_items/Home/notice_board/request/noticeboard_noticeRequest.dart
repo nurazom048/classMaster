@@ -1,4 +1,3 @@
-
 // ignore_for_file: unused_local_variable, avoid_print
 
 import 'dart:convert';
@@ -19,8 +18,7 @@ final viewNoticeByUsernameProvider =
 });
 
 // recet notice
-final recentNoticeProvider =
-    FutureProvider<Either<String, RecentNotice>>((ref) async {
+final recentNoticeProvider = FutureProvider<RecentNotice>((ref) async {
   return ref.read(noticeReqProvider).recentNotice();
 });
 
@@ -85,13 +83,15 @@ class NoticeRequest {
   }
 
   //******    recentNotice    ********* */
-  Future<Either<String, RecentNotice>> recentNotice() async {
+  Future<RecentNotice> recentNotice({dynamic page}) async {
     // Obtain shared preferences.
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 
+    String morepage = page == null ? '' : "?page=$page";
+
     final response = await http.post(
-        Uri.parse('${Const.BASE_URl}/notice/recent'),
+        Uri.parse('${Const.BASE_URl}/notice/recent$morepage'),
         headers: {'Authorization': 'Bearer $getToken'});
     final res = json.decode(response.body);
 
@@ -99,13 +99,13 @@ class NoticeRequest {
 
     try {
       if (response.statusCode == 200) {
-        return right(RecentNotice.fromJson(res));
+        return RecentNotice.fromJson(res);
       } else {
         Message message = Message.fromJson(json.decode(response.body));
-        return left(message.message);
+        throw Future.error(message.message);
       }
     } catch (e) {
-      return left(e.toString());
+      throw Future.error(e);
     }
   }
 

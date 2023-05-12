@@ -27,6 +27,22 @@ class RecentNotice {
       totalCount: json['totalCount'],
     );
   }
+
+  RecentNotice copyWith({
+    String? message,
+    List<Notice>? notices,
+    int? currentPage,
+    int? totalPages,
+    int? totalCount,
+  }) {
+    return RecentNotice(
+      message: message ?? this.message,
+      notices: notices ?? this.notices,
+      currentPage: currentPage ?? this.currentPage,
+      totalPages: totalPages ?? this.totalPages,
+      totalCount: totalCount ?? this.totalCount,
+    );
+  }
 }
 
 class Notice {
@@ -61,6 +77,24 @@ class Notice {
       time: DateTime.parse(json['time']),
     );
   }
+
+  Notice copyWith({
+    String? id,
+    String? contentName,
+    List<Pdf>? pdf,
+    String? description,
+    NoticeBoard? noticeBoard,
+    DateTime? time,
+  }) {
+    return Notice(
+      id: id ?? this.id,
+      contentName: contentName ?? this.contentName,
+      pdf: pdf ?? this.pdf,
+      description: description ?? this.description,
+      noticeBoard: noticeBoard ?? this.noticeBoard,
+      time: time ?? this.time,
+    );
+  }
 }
 
 class Pdf {
@@ -75,6 +109,16 @@ class Pdf {
       id: json['_id'],
     );
   }
+
+  Pdf copyWith({
+    String? url,
+    String? id,
+  }) {
+    return Pdf(
+      url: url ?? this.url,
+      id: id ?? this.id,
+    );
+  }
 }
 
 class NoticeBoard {
@@ -87,6 +131,16 @@ class NoticeBoard {
     return NoticeBoard(
       id: json['_id'],
       name: json['name'],
+    );
+  }
+
+  NoticeBoard copyWith({
+    String? id,
+    String? name,
+  }) {
+    return NoticeBoard(
+      id: id ?? this.id,
+      name: name ?? this.name,
     );
   }
 }

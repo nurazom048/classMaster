@@ -1,18 +1,17 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpdart/fpdart.dart';
+import 'package:table/core/dialogs/alart_dialogs.dart';
 
 import '../models/notice bord/recentNotice.dart';
 import '../request/noticeboard_noticeRequest.dart';
 
 //! Provider
 final recentNoticeController = StateNotifierProvider.autoDispose<
-    UploadedRutinsController, AsyncValue<Either<String, RecentNotice>>>((ref) {
+    UploadedRutinsController, AsyncValue<RecentNotice>>((ref) {
   return UploadedRutinsController(ref.read(noticeReqProvider));
 });
 
 ///
-class UploadedRutinsController
-    extends StateNotifier<AsyncValue<Either<String, RecentNotice>>> {
+class UploadedRutinsController extends StateNotifier<AsyncValue<RecentNotice>> {
   NoticeRequest noticeRequest;
   UploadedRutinsController(this.noticeRequest) : super(const AsyncLoading()) {
     _init();
@@ -28,27 +27,24 @@ class UploadedRutinsController
     }
   }
 
-// // loade pore data
-//   void loadMore(page) async {
-//     try {
-//       final newData = await noticeRequest.uplodedRutins(pages: page + 1);
+// loade pore data
+  void loadMore(page, context) async {
+    try {
+      final RecentNotice newData =
+          await noticeRequest.recentNotice(page: page + 1);
 
-//       // ignore: avoid_print
-//       print(
-//           "total ${newData.totalPages} : giver page ${page} newcp ${newData.currentPage}   ");
-//       // Check if the new data's page number is greater than the current page number
-//       if (newData.currentPage! > state.value!.currentPage!) {
-//         int? totalPages = newData.totalPages ?? 1;
-//         if (newData.currentPage! <= totalPages) {
-//           // add new rutins to list and change the page number
-//           List<Routine> rutins = state.value!.rutins..addAll(newData.rutins);
-//           state = AsyncData(state.value!
-//               .copyWith(rutins: rutins, currentPage: newData.currentPage));
-//         }
-//       }
-//     } catch (e) {
-//       print(e.toString());
-//       state = throw Exception(e);
-//     }
-  //}
+      print(
+          "total ${newData.totalPages} : giver page $page newcp ${newData.currentPage}   ");
+
+      if (newData.currentPage != state.value?.currentPage) {
+        List<Notice> notices = List.from(
+            state.value!.notices); // Create a new list with existing notices
+        notices.addAll(newData.notices); // Add new notices to the list
+        state = AsyncData(state.value!
+            .copyWith(notices: notices, currentPage: newData.currentPage));
+      }
+    } catch (error) {
+      Alart.handleError(context, error);
+    }
+  }
 }
