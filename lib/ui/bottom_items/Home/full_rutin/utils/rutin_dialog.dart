@@ -12,7 +12,7 @@ import 'package:table/widgets/appWidget/dottted_divider.dart';
 import 'package:table/widgets/progress_indicator.dart';
 import '../../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../../widgets/text and buttons/square_button.dart';
-import '../widgets/seeAllCaotensList.dart';
+import '../screen/viewMore/seeAllCaotensList.dart';
 
 class RutinDialog {
   //**********     ChackStatusUser_BottomSheet       **********/
@@ -245,6 +245,7 @@ class RutinDialog {
                     text: "notifications_active",
                     onTap: () {
                       chackStatusNotifier.notificationOn(context);
+                      Navigator.pop(context);
                     },
                   ),
                   ChackBoxSelector(
@@ -254,6 +255,7 @@ class RutinDialog {
                     color: Colors.red,
                     onTap: () {
                       chackStatusNotifier.notificationOff(context);
+                      Navigator.pop(context);
                     },
                   ),
                   const MyDivider(),

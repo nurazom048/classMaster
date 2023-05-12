@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:table/ui/bottom_items/Add/widgets/priode_select_buttons.dart';
 
 import '../../../../constant/app_color.dart';
+import '../widgets/add_squrebuttons.dart';
 
 class PeriodNumberSelector extends StatefulWidget {
   final void Function(int)? onStartSelacted;
@@ -10,6 +11,7 @@ class PeriodNumberSelector extends StatefulWidget {
   final String hint;
   final String subhit;
   final int lenghht;
+  final dynamic ontapToadd;
 
   const PeriodNumberSelector({
     Key? key,
@@ -18,6 +20,7 @@ class PeriodNumberSelector extends StatefulWidget {
     required this.hint,
     required this.subhit,
     required this.lenghht,
+    this.ontapToadd,
   }) : super(key: key);
 
   @override
@@ -65,14 +68,19 @@ class _PeriodNumberSelectorState extends State<PeriodNumberSelector> {
                 color: AppColor.nokiaBlue),
           ),
           Row(
-            children: List.generate(
-              widget.lenghht,
-              (index) => PeriodNumberButton(
-                periodNumber: index + 1,
-                isSelected: IntialselectedNumber == index,
-                onSelected: () => _handleNumberSelected(index),
+            children: [
+              Row(
+                children: List.generate(
+                  widget.lenghht,
+                  (index) => PeriodNumberButton(
+                    periodNumber: index + 1,
+                    isSelected: IntialselectedNumber == index,
+                    onSelected: () => _handleNumberSelected(index),
+                  ),
+                ),
               ),
-            ),
+              newMethod()
+            ],
           ),
           const SizedBox(height: 5),
           Text(
@@ -86,17 +94,29 @@ class _PeriodNumberSelectorState extends State<PeriodNumberSelector> {
                 color: AppColor.nokiaBlue),
           ),
           Row(
-            children: List.generate(
-              widget.lenghht,
-              (index) => PeriodNumberButton(
-                periodNumber: index + 1,
-                isSelected: intalEnd == index,
-                onSelected: () => _enthandeler(index),
+            children: [
+              Row(
+                children: List.generate(
+                  widget.lenghht,
+                  (index) => PeriodNumberButton(
+                    periodNumber: index + 1,
+                    isSelected: intalEnd == index,
+                    onSelected: () => _enthandeler(index),
+                  ),
+                ),
               ),
-            ),
+              newMethod(),
+            ],
           ),
         ],
       ),
+    );
+  }
+
+  AddSquareButton newMethod() {
+    return AddSquareButton(
+      onTap: widget.ontapToadd,
+      isVisible: widget.ontapToadd == null ? false : true,
     );
   }
 }

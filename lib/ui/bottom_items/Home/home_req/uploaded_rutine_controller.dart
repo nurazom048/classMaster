@@ -20,13 +20,10 @@ class UploadedRutinsController
   _init() async {
     try {
       final res = await homeReq.uplodedRutins(pages: 1);
-      if (mounted) {
-        state = AsyncData(res);
-      }
+      state = AsyncData(res);
     } catch (e) {
-      if (mounted) {
-        state = throw Exception(e);
-      }
+      if (!mounted) return;
+      state = throw Exception(e);
     }
   }
 

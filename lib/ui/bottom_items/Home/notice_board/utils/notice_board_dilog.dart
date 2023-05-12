@@ -50,6 +50,7 @@ class NoticeboardDilog {
                     text: "notifications_active",
                     onTap: () {
                       chackStatusNotifier.notificationOn(context);
+                      Navigator.pop(context);
                     },
                   ),
                   ChackBoxSelector(
@@ -59,12 +60,13 @@ class NoticeboardDilog {
                     color: Colors.red,
                     onTap: () {
                       chackStatusNotifier.notificationOff(context);
+                      Navigator.pop(context);
                     },
                   ),
                   const MyDivider(),
                   ChackBoxSelector(
                     icon: Icons.logout_sharp,
-                    text: "Leave Routine",
+                    text: "Leave",
                     color: Colors.red,
                     onTap: () {
                       Alart.errorAlertDialogCallBack(

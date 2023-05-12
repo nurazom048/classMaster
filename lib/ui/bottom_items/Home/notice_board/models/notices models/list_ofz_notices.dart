@@ -1,6 +1,9 @@
 import 'dart:convert';
 
 import '../notice bord/recentNotice.dart';
+import 'dart:convert';
+
+import '../notice bord/recentNotice.dart';
 
 ListOfNoticesModel listOfNoticesModelFromJson(String str) =>
     ListOfNoticesModel.fromJson(json.decode(str));
@@ -29,6 +32,22 @@ class ListOfNoticesModel {
         totalPages: json["totalPages"],
         totalCount: json["totalCount"],
       );
+
+  ListOfNoticesModel copyWith({
+    String? message,
+    List<Notice>? notices,
+    int? currentPage,
+    int? totalPages,
+    int? totalCount,
+  }) {
+    return ListOfNoticesModel(
+      message: message ?? this.message,
+      notices: notices ?? this.notices,
+      currentPage: currentPage ?? this.currentPage,
+      totalPages: totalPages ?? this.totalPages,
+      totalCount: totalCount ?? this.totalCount,
+    );
+  }
 }
 
 class Notice {
@@ -59,4 +78,24 @@ class Notice {
         visibility: json["visibility"],
         time: DateTime.parse(json["time"]),
       );
+
+  Notice copyWith({
+    String? id,
+    String? contentName,
+    List<Pdf>? pdf,
+    String? description,
+    NoticeBoard? noticeBoard,
+    String? visibility,
+    DateTime? time,
+  }) {
+    return Notice(
+      id: id ?? this.id,
+      contentName: contentName ?? this.contentName,
+      pdf: pdf ?? this.pdf,
+      description: description ?? this.description,
+      noticeBoard: noticeBoard ?? this.noticeBoard,
+      visibility: visibility ?? this.visibility,
+      time: time ?? this.time,
+    );
+  }
 }

@@ -10,6 +10,7 @@ class ViewMoreNoticeBord extends StatefulWidget {
   final String noticeBoardName;
   final String id;
   final String? about;
+
   const ViewMoreNoticeBord({
     Key? key,
     required this.noticeBoardName,
@@ -24,6 +25,7 @@ class ViewMoreNoticeBord extends StatefulWidget {
 class _ViewMoreState extends State<ViewMoreNoticeBord>
     with TickerProviderStateMixin {
   late TabController controller;
+  final scrollController = ScrollController();
 
   @override
   void initState() {
@@ -39,10 +41,15 @@ class _ViewMoreState extends State<ViewMoreNoticeBord>
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> view = [
+      ListOfNoticeScreen(noticeBoardId: widget.id),
+      NoticeBoardMembersScreen(noticeBoardId: widget.id),
+    ];
     // ignore: avoid_print
     print("NoticeBoardId : ${widget.id}");
     return Scaffold(
       body: NestedScrollView(
+        physics: NeverScrollableScrollPhysics(),
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           SliverToBoxAdapter(
             child: SizedBox(
@@ -59,18 +66,19 @@ class _ViewMoreState extends State<ViewMoreNoticeBord>
                   SizedBox(
                     height: 40,
                     child: TabBar(
-                        controller: controller,
-                        labelColor: AppColor.nokiaBlue,
-                        unselectedLabelColor: Colors.black,
-                        tabs: const [
-                          Tab(child: Text("Notices")),
-                          Tab(child: Text("Members")),
-                        ]),
+                      controller: controller,
+                      labelColor: AppColor.nokiaBlue,
+                      unselectedLabelColor: Colors.black,
+                      tabs: const [
+                        Tab(child: Text("Notices")),
+                        Tab(child: Text("Members")),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
-          )
+          ),
         ],
         body: TabBarView(controller: controller, children: [
           ListOfNoticeScreen(noticeBoardId: widget.id),

@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/widgets/seeAllCaotensList.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/screen/viewMore/seeAllCaotensList.dart';
 import 'package:table/ui/bottom_items/search/search_request/search_request.dart';
 import 'package:table/widgets/accound_card_row.dart';
 import 'package:table/widgets/progress_indicator.dart';

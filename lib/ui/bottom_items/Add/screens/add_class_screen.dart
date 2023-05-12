@@ -2,11 +2,13 @@
 
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:table/core/dialogs/alart_dialogs.dart';
 import 'package:table/models/class_model.dart';
 import 'package:table/ui/bottom_items/Add/request/class_request.dart';
+import 'package:table/ui/bottom_items/Add/screens/add_priode.dart';
 import 'package:table/ui/bottom_items/Add/utils/add_class_validation.dart';
 import 'package:table/ui/bottom_items/Add/utils/weekdayUtils.dart';
 import 'package:table/ui/bottom_items/Add/widgets/addWeekdayButton.dart';
@@ -22,6 +24,8 @@ import '../../../../models/rutins/class/find_class_model.dart';
 import '../../../../widgets/appWidget/TextFromFild.dart';
 import '../../../../widgets/appWidget/buttons/cupertino_butttons.dart';
 import '../../Home/full_rutin/controller/weekday_controller.dart';
+import '../../Home/full_rutin/screen/viewMore/class_list.dart';
+import '../../Home/full_rutin/screen/viewMore/view_more_screen.dart';
 import '../widgets/wekkday_view.dart';
 
 class AddClassScreen extends StatefulWidget {
@@ -181,12 +185,20 @@ class _AddClassScreenState extends State<AddClassScreen> {
                             PeriodNumberSelector(
                               hint: " Select Start Period",
                               subhit: " Select End Period",
-                              lenghht: 3,
+                              lenghht: ref.read(totalPriodeCountProvider),
                               onStartSelacted: (number) {
                                 startPeriod = number;
                               },
                               onEndSelacted: (number) {
                                 endPeriod = number;
+                              },
+                              ontapToadd: () {
+                                Get.to(
+                                    AppPriodePage(
+                                        rutinId: widget.routineId,
+                                        totalPriode:
+                                            ref.read(totalPriodeCountProvider)),
+                                    transition: Transition.rightToLeft);
                               },
                             ),
 

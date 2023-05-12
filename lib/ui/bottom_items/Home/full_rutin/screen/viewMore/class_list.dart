@@ -1,0 +1,182 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table/ui/bottom_items/Add/screens/add_class_screen.dart';
+
+import '../../../../../../core/dialogs/Alart_dialogs.dart';
+import '../../../../../../models/class_details_model.dart';
+import '../../../../../../widgets/hedding_row.dart';
+import '../../../../../server/rutinReq.dart';
+import '../../../../Add/screens/add_priode.dart';
+import '../../request/priode_request.dart';
+import '../../sunnary_section/summat_screens/summary_screen.dart';
+import '../../utils/logngPress.dart';
+import '../../widgets/class_row.dart';
+import '../../widgets/priode_widget.dart';
+
+final totalPriodeCountProvider = StateProvider<int>((ref) => 0);
+
+class ClassListPage extends StatefulWidget {
+  final String rutinId;
+  final String rutinName;
+  const ClassListPage(
+      {super.key, required this.rutinId, required this.rutinName});
+
+  @override
+  State<ClassListPage> createState() => _ClassListPageState();
+}
+
+int? totalMemberCount;
+int? totalPriodeCount;
+
+class _ClassListPageState extends State<ClassListPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer(builder: (context, ref, _) {
+      print(widget.rutinId);
+      final rutinDetals = ref.watch(rutins_detalis_provider(widget.rutinId));
+      final allPriode = ref.watch(allPriodeProvider(widget.rutinId));
+
+      return Scaffold(
+        body: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          children: [
+            HeddingRow(
+              hedding: "Priode List",
+              second_Hedding: "$totalPriodeCount  priode",
+              margin: EdgeInsets.zero,
+              buttonText: "Add Priode",
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AppPriodePage(
+                      rutinId: widget.rutinId,
+                      rutinName: widget.rutinName,
+                      totalPriode: totalPriodeCount ?? 0,
+                    ),
+                  ),
+                );
+              },
+            ),
+            SizedBox(
+              height: 140,
+              child: allPriode.when(
+                  data: (data) {
+                    return data.fold(
+                        (l) => Alart.handleError(context, l.message), (r) {
+                      print(r);
+
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: r.priodes.length,
+                        itemBuilder: (context, index) {
+                          String priodeId = r.priodes[index].id;
+
+                          int length = r.priodes.length;
+
+                          if (totalPriodeCount == null) {
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              if (!mounted) {}
+                              // Add Your Code here.
+                              setState(() {
+                                totalPriodeCount = length;
+                              });
+
+                              ref
+                                  .read(totalPriodeCountProvider.notifier)
+                                  .update((state) => length);
+                            });
+                          }
+
+                          return PriodeWidget(
+                            priodeNumber: r.priodes[index].priodeNumber,
+                            startTime: r.priodes[index].startTime,
+                            endTime: r.priodes[index].endTime,
+                            //
+                            onLongpress: () {
+                              PriodeAlart.logPressOnPriode(context, priodeId,
+                                  widget.rutinId, r.priodes[index]);
+                            },
+                          );
+                        },
+                      );
+                    });
+                  },
+                  error: (error, stackTrace) =>
+                      Alart.handleError(context, error),
+                  loading: () => const Text("loding")),
+            ),
+            HeddingRow(
+              hedding: "Class List",
+              second_Hedding: "$totalMemberCount  classes",
+              margin: EdgeInsets.zero,
+              buttonText: "Add Class",
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          AddClassScreen(routineId: widget.rutinId)),
+                );
+              },
+            ),
+            SizedBox(
+                height: 300,
+                child: rutinDetals.when(
+                  data: (data) {
+                    if (data == null || data.classes == null)
+                      return const Text("Null");
+
+                    return ListView.builder(
+                      itemCount: data.classes.allClass.length,
+                      itemBuilder: (context, index) {
+                        Day day = data.classes.allClass[index];
+                        int length = data.classes.allClass.length;
+
+                        if (totalMemberCount == null) {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            // Add Your Code here.
+                            setState(() {
+                              totalMemberCount = length;
+                            });
+                          });
+                        }
+
+                        return ClassRow(
+                          id: day.id,
+                          className: day.classId.name,
+
+                          //
+                          onLongPress: () {
+                            PriodeAlart.logPressClass(context,
+                                classId:
+                                    data.classes.allClass[index].classId.id,
+                                rutinId: widget.rutinId);
+                          },
+
+                          ontap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => SummaryScreen(
+                                  classId: day.classId.id,
+                                  day: day,
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
+                  error: (error, stackTrace) =>
+                      Alart.handleError(context, error),
+                  loading: () => const Text("Loding"),
+                )),
+          ],
+        ),
+      );
+    });
+  }
+}

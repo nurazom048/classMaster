@@ -82,21 +82,23 @@ class NoticeBoardRequest {
 
   //
 
-  //******    joinedNoticeList    ********* */
-  Future<ListOfNoticesModel> getNoticesByNoticeBoardId(
-      String noticeBoardId) async {
+  //******    getNoticesByNoticeBoardId    ********* */
+  Future<ListOfNoticesModel> getNoticesByNoticeBoardId(String noticeBoardId,
+      {dynamic page}) async {
+    print("frpm request");
     // Obtain shared preferences.
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 
-    final response = await http.get(
-        Uri.parse('${Const.BASE_URl}/notice/$noticeBoardId/notices'),
-        headers: {'Authorization': 'Bearer $getToken'});
+    String more = page != null ? "?page=$page" : "";
 
+    final response = await http.get(
+        Uri.parse('${Const.BASE_URl}/notice/$noticeBoardId/notices$more'),
+        headers: {'Authorization': 'Bearer $getToken'});
+    final res = json.decode(response.body);
+    print(res);
     try {
       if (response.statusCode == 200) {
-        final res = json.decode(response.body);
-
         print(res);
         return ListOfNoticesModel.fromJson(res);
       } else {

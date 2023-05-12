@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../core/dialogs/Alart_dialogs.dart';
 import '../models/notices models/list_ofz_notices.dart';
 import '../request/notice_board_request.dart';
 
@@ -13,7 +15,6 @@ final listofNoticesProvider = StateNotifierProvider.family<ListOfNotoces,
 });
 
 //
-
 class ListOfNotoces extends StateNotifier<AsyncValue<ListOfNoticesModel>> {
   final NoticeBoardRequest noticeBoardRequest;
   final String noticeBoardId;
@@ -26,11 +27,32 @@ class ListOfNotoces extends StateNotifier<AsyncValue<ListOfNoticesModel>> {
     try {
       final res =
           await noticeBoardRequest.getNoticesByNoticeBoardId(noticeBoardId);
+
+      if (!mounted) {}
       state = AsyncData(res);
     } catch (e) {
-      state = throw Future.error(e);
+      // state = AsyncError(e);
     }
   }
 
-  //
+  void loadMore(int page, BuildContext context) async {
+    try {
+      final ListOfNoticesModel newData = await noticeBoardRequest
+          .getNoticesByNoticeBoardId(noticeBoardId, page: page + 1);
+
+      print(
+          "total ${newData.totalPages} : given page $page new cp ${newData.currentPage}");
+
+      if (newData.currentPage != state.value?.currentPage) {
+        List<Notice> notices = List.from(state.value!.notices);
+        notices.addAll(newData.notices);
+        state = AsyncData(state.value!.copyWith(
+          notices: notices,
+          currentPage: newData.currentPage,
+        ));
+      }
+    } catch (error) {
+      Alart.handleError(context, error);
+    }
+  }
 }

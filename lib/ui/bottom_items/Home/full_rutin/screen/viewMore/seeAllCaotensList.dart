@@ -11,8 +11,8 @@ import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/ui/bottom_items/search/widgets/search_bar_custom.dart';
 import 'package:flutter/material.dart' as ma;
 
-import '../../../../../core/dialogs/alart_dialogs.dart';
-import '../../../../../../widgets/hedding_row.dart';
+import '../../../../../../core/dialogs/alart_dialogs.dart';
+import '../../../../../../../widgets/hedding_row.dart';
 
 final serachStringProvidder = StateProvider((ref) => "");
 

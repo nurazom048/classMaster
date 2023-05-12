@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -117,7 +118,14 @@ class AccountScreen extends StatelessWidget {
                         Tilesbutton(
                           "My Uploades Rutines",
                           const FaIcon(FontAwesomeIcons.cableCar),
-                          onTap: () => Get.to(const AllUploadesRutinesMini()),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) =>
+                                      const AllUploadesRutinesMini()),
+                            );
+                          },
                         ),
                         Tilesbutton(
                           "Saved",
@@ -128,7 +136,14 @@ class AccountScreen extends StatelessWidget {
                         Tilesbutton(
                           " My uploaded Notice Board",
                           const FaIcon(FontAwesomeIcons.calendar),
-                          onTap: () => Get.to(const UploadedNoticeBordScreen()),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) =>
+                                      const UploadedNoticeBordScreen()),
+                            );
+                          },
                         ),
 
                         //
