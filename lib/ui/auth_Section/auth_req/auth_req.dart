@@ -59,6 +59,35 @@ class AuthReq {
       return left(e.toString());
     }
   }
+
+  //***************  Account data  *************//
+  Future<Either<String, Message>> changePassword(
+    String oldPassword,
+    String newPassword,
+  ) async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+
+    var url = Uri.parse('${Const.BASE_URl}/account/eddit/changepassword');
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Authorization': 'Bearer $getToken'},
+        body: {"oldPassword": oldPassword, "newPassword": newPassword},
+      );
+      print(jsonDecode(response.body));
+
+      Message message = Message.fromJson(json.decode(response.body));
+      if (response.statusCode == 200) {
+        return right(message);
+      } else {
+        return left(message.message);
+      }
+    } catch (e) {
+      return left(e.toString());
+    }
+  }
 }
 
 final authReqProvider = Provider((ref) => AuthReq());

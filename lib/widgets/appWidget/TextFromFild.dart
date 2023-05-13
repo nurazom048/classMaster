@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 
 import '../../constant/app_color.dart';
 
-class AppTextFromField extends StatelessWidget {
-  const AppTextFromField({
+// ignore: must_be_immutable
+class AppTextFromField extends StatefulWidget {
+  AppTextFromField({
     super.key,
     required this.controller,
     required this.hint,
@@ -15,6 +16,7 @@ class AppTextFromField extends StatelessWidget {
     this.focusNode,
     this.keyboardType,
     this.margin,
+    this.obscureText,
   });
 
   //
@@ -25,17 +27,23 @@ class AppTextFromField extends StatelessWidget {
   final dynamic onFieldSubmitted, keyboardType;
   final FocusNode? focusNode;
   final EdgeInsetsGeometry? margin;
+  bool? obscureText;
 
+  @override
+  State<AppTextFromField> createState() => _AppTextFromFieldState();
+}
+
+class _AppTextFromFieldState extends State<AppTextFromField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: margin ??
+      margin: widget.margin ??
           const EdgeInsets.symmetric(horizontal: 24).copyWith(top: 34),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            hint,
+            widget.hint,
             style: TextStyle(
                 fontFamily: 'Open Sans',
                 fontStyle: FontStyle.normal,
@@ -46,13 +54,25 @@ class AppTextFromField extends StatelessWidget {
           ),
           //
           TextFormField(
-            controller: controller,
-            focusNode: focusNode,
-            onFieldSubmitted: onFieldSubmitted,
-            validator: validator,
-            keyboardType: keyboardType,
+            controller: widget.controller,
+            focusNode: widget.focusNode,
+            onFieldSubmitted: widget.onFieldSubmitted,
+            validator: widget.validator,
+            keyboardType: widget.keyboardType,
+            obscureText: widget.obscureText ?? false,
             decoration: InputDecoration(
-              labelText: labelText ?? "Enter your full $hint ",
+              suffixIcon: widget.obscureText != null
+                  ? InkWell(
+                      onTap: () {
+                        setState(() {
+                          widget.obscureText = !widget.obscureText!;
+                        });
+                      },
+                      child: widget.obscureText == false
+                          ? const Icon(Icons.visibility)
+                          : const Icon(Icons.visibility_off))
+                  : null,
+              labelText: widget.labelText ?? "Enter your ${widget.hint} ",
               errorStyle: const TextStyle(
                   fontSize: 17,
                   letterSpacing: 1,

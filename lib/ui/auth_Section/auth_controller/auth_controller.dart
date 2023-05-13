@@ -63,4 +63,22 @@ class AuthController extends StateNotifier<bool> {
       },
     );
   }
+
+//******** changepassword  ************ */
+  void changepassword(oldPassword, newPassword, context) async {
+    state = true;
+    final res = await authReqq.changePassword(oldPassword, newPassword);
+
+    res.fold(
+      (l) {
+        state = false;
+        return Alart.errorAlartDilog(context, l);
+      },
+      (r) {
+        state = false;
+
+        Alart.showSnackBar(context, r.message);
+      },
+    );
+  }
 }

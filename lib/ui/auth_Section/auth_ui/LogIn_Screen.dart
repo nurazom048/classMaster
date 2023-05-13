@@ -1,8 +1,6 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/sevices/notification%20services/awn_package.dart';
 import 'package:table/ui/auth_Section/utils/login_validation.dart';
 import 'package:table/ui/auth_Section/widgets/create_account_button.dart';
@@ -20,7 +18,7 @@ import '../widgets/or.dart';
 import '../widgets/social_login_button.dart';
 
 class LogingScreen extends StatefulWidget {
-  LogingScreen({super.key});
+  const LogingScreen({super.key});
 
   @override
   State<LogingScreen> createState() => _LogingScreenState();
@@ -72,6 +70,7 @@ class _LogingScreenState extends State<LogingScreen> {
 
                   AppTextFromField(
                     controller: _passwordController,
+                    obscureText: true,
                     hint: "password",
                     labelText: "Enter a valid password",
                     validator: (value) =>
@@ -102,7 +101,7 @@ class _LogingScreenState extends State<LogingScreen> {
                               _passwordController.text, context);
                         } else {
                           authLogin.siginIn(
-                              "nurazom049", "@Nurazom123", context);
+                              "nurazom049", "@Nurazam123", context);
                         }
                       },
                     ),

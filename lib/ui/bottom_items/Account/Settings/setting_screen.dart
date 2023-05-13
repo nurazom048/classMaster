@@ -1,9 +1,11 @@
 // ignore_for_file: must_be_immutable// ignore_for_file: must_be_immutable, use_key_in_widget_constructors, camel_case_types, must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:table/ui/bottom_items/Account/widgets/setting_options.dart';
 import 'package:table/widgets/heder/heder_title.dart';
 
+import '../../../auth_Section/auth_ui/change_password.dart';
 import '../utils/settings_utils.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -41,7 +43,10 @@ class SettingsPage extends StatelessWidget {
                 SeetingOption(
                   title: 'Change password',
                   icon: Icons.lock,
-                  onTap: () {},
+                  onTap: () => Get.to(
+                    () => ChangePasswordPage(),
+                    transition: Transition.rightToLeft,
+                  ),
                 ),
                 SeetingOption(
                     title: 'Theem',
