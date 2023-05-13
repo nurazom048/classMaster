@@ -19,15 +19,13 @@ class UploadedRutinsController extends StateNotifier<AsyncValue<RecentNotice>> {
 
   /// get all recent notice
   _init() async {
+    if (!mounted) return;
+
     try {
       final res = await noticeRequest.recentNotice();
-      if (!mounted) {}
-
       state = AsyncData(res);
-    } catch (e) {
-      if (!mounted) {}
-
-      state = throw Exception(e);
+    } catch (err, stack) {
+      state = AsyncValue.error(err, stack);
     }
   }
 

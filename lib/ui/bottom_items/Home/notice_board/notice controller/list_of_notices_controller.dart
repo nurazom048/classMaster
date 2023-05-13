@@ -24,14 +24,15 @@ class ListOfNotoces extends StateNotifier<AsyncValue<ListOfNoticesModel>> {
   }
 
   getStatus() async {
+    if (!mounted) return;
+
     try {
       final res =
           await noticeBoardRequest.getNoticesByNoticeBoardId(noticeBoardId);
 
-      if (!mounted) {}
       state = AsyncData(res);
-    } catch (e) {
-      // state = AsyncError(e);
+    } catch (err, stack) {
+      state = AsyncValue.error(err, stack);
     }
   }
 

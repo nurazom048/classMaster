@@ -31,16 +31,14 @@ class SeeAllRequestControllerClass
   }
 
   void getAllRequestList() async {
+    if (mounted) return;
+
     try {
       final res = await memberRequests.sell_all_request(rutinId);
 
-      if (mounted) {
-        state = AsyncData(res);
-      }
-    } catch (e) {
-      if (mounted) {
-        state = throw Exception(e);
-      }
+      state = AsyncData(res);
+    } catch (err, stack) {
+      state = AsyncValue.error(err, stack);
     }
   }
 //... Accept request.....//

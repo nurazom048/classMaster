@@ -25,7 +25,7 @@ final noticeBoardStatusProvider = StateNotifierProvider.family<
 
 class NoticeBoaardStatusProvider
     extends StateNotifier<AsyncValue<CheckStatusModel>> {
-  var ref;
+  Ref ref;
   String noticeBoardId;
   NoticeBoardRequest noticeBoardRequest;
   final NoticeBoardNotificationRequest notificanRequest;
@@ -40,21 +40,12 @@ class NoticeBoaardStatusProvider
 
   getStatus() async {
     try {
-      AsyncValue<CheckStatusModel> res =
-          await ref.watch(noticeBoardchackStatusUser_provider(noticeBoardId));
+      final CheckStatusModel data =
+          await ref.read(noticeBoardRequestProvider).chackStatus(noticeBoardId);
 
-      res.when(
-          data: (data) {
-            state = AsyncData(data);
-          },
-          error: (error, stackTrace) {
-            print(error.toString());
-            state = AsyncError(error, stackTrace);
-          },
-          loading: () {});
-    } catch (e) {
-      print(e.toString());
-      state = throw Exception(e);
+      state = AsyncData(data);
+    } catch (err, stack) {
+      state = AsyncValue.error(err, stack);
     }
   }
 

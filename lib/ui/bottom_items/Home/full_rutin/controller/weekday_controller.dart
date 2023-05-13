@@ -24,12 +24,13 @@ class WeeekDayControllerClass extends StateNotifier<AsyncValue<WeekdayList>> {
   }
 
   void getStatus() async {
-    Either<Message, WeekdayList> res =
-        await WeekdaRequest.showWeekdayList(classId);
+    try {
+      final WeekdayList data = await WeekdaRequest.showWeekdayList(classId);
 
-    res.fold((error) {}, (data) {
-      state = AsyncData(data);
-    });
+      state = AsyncValue.data(data);
+    } catch (err, stack) {
+      state = AsyncValue.error(err, stack);
+    }
   }
 
   // add weekday

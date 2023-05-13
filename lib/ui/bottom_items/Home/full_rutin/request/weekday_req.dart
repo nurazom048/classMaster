@@ -13,8 +13,7 @@ final weekdayReqProvider = Provider<WeekdaRequest>((ref) => WeekdaRequest());
 
 //
 class WeekdaRequest {
-  static Future<Either<Message, WeekdayList>> showWeekdayList(
-      String classId) async {
+  static Future<WeekdayList> showWeekdayList(String classId) async {
     try {
       final response = await http.get(
         Uri.parse('${Const.BASE_URl}/class/weakday/show/$classId'),
@@ -24,13 +23,12 @@ class WeekdaRequest {
       WeekdayList wekkdaylist = WeekdayList.fromJson(jsonDecode(response.body));
 
       if (response.statusCode == 200) {
-        return right(wekkdaylist);
+        return wekkdaylist;
       } else {
-        return left(error);
+        throw Future.error(error);
       }
-    } catch (e) {
-      print(e);
-      return left(Message(message: e.toString()));
+    } catch (error) {
+      throw Future.error(error);
     }
   }
 

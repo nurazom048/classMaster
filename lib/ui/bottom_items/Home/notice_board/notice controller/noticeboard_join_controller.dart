@@ -35,14 +35,11 @@ class NoticeBoardJoinClass
     try {
       final res = await noticeboardJoinReq.joinedNoticeList(noticeBoardId);
 
-      if (mounted) {
-        state = AsyncData(res);
-      }
-    } catch (e) {
-      print(e);
-      if (mounted) {
-        state = throw Exception(e);
-      }
+      if (mounted) return;
+      state = AsyncData(res);
+    } catch (err, stack) {
+      if (mounted) return;
+      state = AsyncValue.error(err, stack);
     }
   }
 //... Accept request.....//
