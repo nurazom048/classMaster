@@ -155,7 +155,7 @@ class RutinDialog {
                                       builder: (context) => seeAllcaptensList(
                                         rutinId: rutinId,
                                         buttotext: "Remove capten",
-                                        Color: Colors.red,
+                                        color: Colors.red,
                                         onUsername: (seleted_username, _) {
                                           members.removeMember(
                                               context, seleted_username);

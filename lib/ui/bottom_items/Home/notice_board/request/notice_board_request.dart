@@ -50,7 +50,7 @@ class NoticeBoardRequest {
       }
     } catch (e) {
       print(e);
-      return throw Future.error(e);
+      throw Future.error(e);
     }
   }
 

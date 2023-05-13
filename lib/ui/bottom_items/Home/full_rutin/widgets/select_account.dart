@@ -2,13 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table/core/component/Loaders.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/viewMore/seeAllCaotensList.dart';
-import 'package:table/ui/bottom_items/search/search_request/search_request.dart';
+import 'package:table/ui/bottom_items/search/search%20controller/search_account_controller.dart';
 import 'package:table/widgets/accound_card_row.dart';
-import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/ui/bottom_items/search/widgets/search_bar_custom.dart';
-import '../../../../../core/dialogs/alart_dialogs.dart';
 import 'package:flutter/material.dart' as ma;
+
+import '../../../../../core/dialogs/Alart_dialogs.dart';
 
 class SeelectAccount extends ConsumerWidget {
   const SeelectAccount(
@@ -25,51 +26,43 @@ class SeelectAccount extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final searchString = ref.watch(serachStringProvidder);
-    final search_Account = ref.watch(search_Account_Provider(searchString));
+    final search_Account = ref.watch(searchAccountController(searchString));
 
     return SafeArea(
-      child: Scaffold(
-        body: Column(children: [
-          Expanded(
-            flex: 2,
-            child: SearchBarCustom(onChanged: (v) {
-              ref.read(serachStringProvidder.notifier).update((state) => v);
-            }),
+        child: Scaffold(
+      body: Column(children: [
+        Expanded(
+          flex: 2,
+          child: SearchBarCustom(onChanged: (v) {
+            ref.read(serachStringProvidder.notifier).update((state) => v);
+          }),
+        ),
+        Expanded(
+          flex: 13,
+          child: search_Account.when(
+            data: (data) {
+              if (data == null) {}
+              return ListView.builder(
+                itemCount: data.accounts?.length,
+                itemBuilder: (context, index) {
+                  return data.accounts!.isNotEmpty
+                      ? AccountCardRow(
+                          accountData: data.accounts![index],
+                          addCaptem: addCapten,
+                          onUsername: (username, position) =>
+                              onUsername(username, position),
+                          buttotext: buttotext,
+                          color: color,
+                        )
+                      : const Center(child: ma.Text("No Account found"));
+                },
+              );
+            },
+            error: (error, stackTrace) => Alart.handleError(context, error),
+            loading: () => Loaders.center(),
           ),
-          Expanded(
-            flex: 13,
-            child: search_Account.when(
-              data: (data) {
-                return data.fold((error) {
-                  return Alart.showSnackBar(context, error);
-                }, (r) {
-                  var lenght = r.accounts?.length ?? 0;
-
-                  return ListView.builder(
-                    itemCount: lenght,
-                    itemBuilder: (context, index) {
-                      return r.accounts!.isNotEmpty
-                          ? AccountCardRow(
-                              accountData: r.accounts![index],
-                              addCaptem: addCapten,
-                              onUsername: (username, position) =>
-                                  onUsername(username, position),
-                              buttotext: buttotext,
-                              color: color,
-                            )
-                          : const Center(child: ma.Text("No Account found"));
-                    },
-                  );
-                });
-              },
-              error: (error, stackTrace) => Alart.handleError(context, error),
-              loading: () => const Center(
-                  child: SizedBox(
-                      height: 100, width: 100, child: Progressindicator())),
-            ),
-          )
-        ]),
-      ),
-    );
+        ),
+      ]),
+    ));
   }
 }

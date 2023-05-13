@@ -49,7 +49,7 @@ class _ViewMoreState extends State<ViewMoreNoticeBord>
     print("NoticeBoardId : ${widget.id}");
     return Scaffold(
       body: NestedScrollView(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           SliverToBoxAdapter(
             child: SizedBox(

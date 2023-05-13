@@ -75,7 +75,6 @@ class SummayReuest {
 
       if (response.statusCode == 200) {
         var listOsSummary = AllSummaryModel.fromJson(res);
-
         return listOsSummary;
       } else {
         return Future.error("faild to load data");

@@ -34,7 +34,7 @@ class MiniNoticeCard extends ConsumerWidget {
     return Container(
       height: 120,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+      //margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
       decoration: BoxDecoration(
         color: Colors.black12,
         borderRadius: BorderRadius.circular(10),

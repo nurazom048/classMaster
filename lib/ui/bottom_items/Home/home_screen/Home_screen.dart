@@ -97,7 +97,7 @@ class HomeScreen extends ConsumerWidget {
                         },
                         error: (error, stackTrace) =>
                             Alart.handleError(context, error),
-                        loading: () => ma.Text("loding")),
+                        loading: () => const Text("loding")),
                   ),
 
                   // uploaded rutines

@@ -1,41 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/bottom_items/search/search_request/notice_bord_search.dart';
 import 'package:table/ui/bottom_items/search/search_screen/search_page.dart';
-import 'package:flutter/material.dart' as ma;
 
 import '../../../../core/dialogs/alart_dialogs.dart';
 import '../../Home/notice_board/widgets/notice_board_card.dart';
+import '../search controller/noticeborrd_search_controller.dart';
 
 class NoticeBordSearch extends ConsumerWidget {
-  const NoticeBordSearch({super.key});
+  // ignore: use_key_in_widget_constructors
+  const NoticeBordSearch({Key? key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    //! provider
+    // Provider
     final searchText = ref.watch(Serarch_String_Provider);
-    final noticeBoardList = ref.watch(noticeSearchProvider(searchText));
+    final noticeBoardList = ref.watch(searchNoticeBoardController(searchText));
+
     return SizedBox(
       height: 500,
       width: MediaQuery.of(context).size.width,
-      child: SizedBox(
-        child: noticeBoardList.when(
-            data: (data) {
-              return ListView.builder(
-                itemCount: data.noticeBoards.length,
-                itemBuilder: (context, index) {
-                  return MiniNoticeCard(
-                    noticeBoarName: "",
-                    ownerName: data.noticeBoards[index].owner.name ?? '',
-                    image: data.noticeBoards[index].owner.image,
-                    username: data.noticeBoards[index].owner.username ?? '',
-                    noticeBoardId: data.noticeBoards[index].id,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth > 0) {
+            return SizedBox(
+              width: constraints.maxWidth,
+              child: noticeBoardList.when(
+                data: (data) {
+                  if (data == null) {}
+                  return ListView.builder(
+                    itemCount: data.noticeBoards.length,
+                    itemBuilder: (context, index) {
+                      print(data);
+                      return MiniNoticeCard(
+                        noticeBoarName: data.noticeBoards[index].name,
+                        ownerName: data.noticeBoards[index].owner.name,
+                        image: data.noticeBoards[index].owner.image,
+                        username: data.noticeBoards[index].owner.username,
+                        noticeBoardId: data.noticeBoards[index].id,
+                      );
+                    },
                   );
                 },
-              );
-            },
-            error: (error, stackTrace) => Alart.handleError(context, error),
-            loading: () => const ma.Text("loding")),
+                error: (error, stackTrace) => Alart.handleError(context, error),
+                loading: () => const Text("Loading"),
+              ),
+            );
+          } else {
+            return Container();
+          }
+        },
       ),
     );
   }

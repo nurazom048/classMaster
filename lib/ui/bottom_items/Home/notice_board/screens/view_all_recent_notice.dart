@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table/core/component/Loaders.dart';
 import 'package:table/ui/bottom_items/Home/notice_board/screens/viewNotice.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 
@@ -28,7 +29,7 @@ class ViewAllRecentNotice extends ConsumerWidget {
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  child: const AppText("All \nrecent notice..").title(),
+                  child: const AppText("All \nrecent notice.....").title(),
                 ),
               ],
             ),
@@ -84,7 +85,7 @@ class ViewAllRecentNotice extends ConsumerWidget {
             );
           },
           error: (error, stackTrace) => Alart.handleError(context, error),
-          loading: () => const CircularProgressIndicator(),
+          loading: () => Loaders.center(),
         ),
       ),
     );

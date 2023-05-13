@@ -2,13 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table/core/component/Loaders.dart';
 import 'package:table/ui/auth_Section/utils/login_validation.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/member_request.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/dash_border_button.dart';
 import 'package:table/widgets/accound_card_row.dart';
 import 'package:table/widgets/appWidget/TextFromFild.dart';
 import 'package:table/widgets/progress_indicator.dart';
-import 'package:table/ui/bottom_items/search/widgets/search_bar_custom.dart';
 import 'package:flutter/material.dart' as ma;
 
 import '../../../../../../core/dialogs/alart_dialogs.dart';
@@ -21,12 +21,12 @@ class seeAllcaptensList extends ConsumerWidget {
       {super.key,
       required this.onUsername,
       required this.rutinId,
-      this.Color,
+      this.color,
       this.buttotext});
 
   //
   final String rutinId;
-  final Color;
+  final color;
   final String? buttotext;
   final Function(String?, String?) onUsername;
 
@@ -40,57 +40,34 @@ class seeAllcaptensList extends ConsumerWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Column(children: [
-          Container(
-            height: 170,
-            child: Column(
-              children: [
-                // SearchBarCustom(onChanged: (v) {
-                //   ref.read(serachStringProvidder.notifier).update((state) => v);
-                // }),
-                AppTextFromField(
-                  margin: EdgeInsets.zero,
-                  controller: _emailController,
-                  hint: "Invite Captens",
-                  labelText: "Enter email address or username ",
-                  validator: (value) => LoginValidation.validateEmail(value),
-                ),
-                const SizedBox(height: 20),
-                const DashBorderButton(),
-              ],
-            ),
-          ),
           const HeddingRow(hedding: "All Captens", second_Hedding: "see more"),
-          Expanded(
-            child: allCapten.when(
-              data: (data) {
-                var lenght = data.captains.length;
-                return ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: lenght,
-                  itemBuilder: (context, index) {
-                    var account = data.captains[index];
+          allCapten.when(
+            data: (data) {
+              var lenght = data.captains.length;
+              return ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: lenght,
+                itemBuilder: (context, index) {
+                  var account = data.captains[index];
 
-                    if (data != null || lenght != null) {
-                      return AccountCardRow(
-                        accountData: account,
-                        onUsername: (username, position) =>
-                            onUsername(username, position),
-                        buttotext: buttotext,
-                        color: Color,
+                  if (data != null || lenght != null) {
+                    return AccountCardRow(
+                      accountData: account,
+                      onUsername: (username, position) =>
+                          onUsername(username, position),
+                      buttotext: buttotext,
+                      color: color,
 
-                        //
-                      );
-                    } else {
-                      return const Center(child: ma.Text("No Account found"));
-                    }
-                  },
-                );
-              },
-              error: (error, stackTrace) => Alart.handleError(context, error),
-              loading: () => const Center(
-                  child: SizedBox(
-                      height: 100, width: 100, child: Progressindicator())),
-            ),
+                      //
+                    );
+                  } else {
+                    return const Center(child: ma.Text("No Account found"));
+                  }
+                },
+              );
+            },
+            error: (error, stackTrace) => Alart.handleError(context, error),
+            loading: () => Loaders.center(),
           )
         ]),
       ),

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:table/ui/bottom_items/Account/account_request/account_request.dart';
@@ -127,6 +126,7 @@ class AccountScreen extends StatelessWidget {
                             );
                           },
                         ),
+
                         Tilesbutton(
                           "Saved",
                           const FaIcon(FontAwesomeIcons.bookmark),
@@ -147,6 +147,19 @@ class AccountScreen extends StatelessWidget {
                         ),
 
                         //
+
+                        Tilesbutton(
+                          " My joined Notice Board",
+                          const FaIcon(FontAwesomeIcons.calendar),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) =>
+                                      const UploadedNoticeBordScreen()),
+                            );
+                          },
+                        ),
                       ]),
                     ),
                     MyDividerr(thickness: 1.0, height: 1.0),

@@ -17,7 +17,7 @@ final sunnaryControllerProvider = StateNotifierProvider.autoDispose
 //
 class SummaryController extends StateNotifier<AsyncValue<AllSummaryModel>> {
   SummayReuest summaryReq;
-  var ref;
+  Ref ref;
   String classId;
   SummaryController(this.ref, this.classId, this.summaryReq)
       : super(const AsyncLoading()) {
@@ -29,11 +29,9 @@ class SummaryController extends StateNotifier<AsyncValue<AllSummaryModel>> {
   getlist() async {
     try {
       AllSummaryModel res = await summaryReq.getSummaryList(classId);
-
-      state = AsyncData(res);
-    } catch (e) {
-      print("vai ami error $e ");
-      state = throw Exception(e);
+      state = AsyncValue.data(res);
+    } catch (err, stack) {
+      state = AsyncValue.error(err, stack);
     }
   }
 

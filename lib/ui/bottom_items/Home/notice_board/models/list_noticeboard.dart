@@ -3,37 +3,40 @@ import 'dart:convert';
 ListOfNoticeBoard listOfNoticeBoardFromJson(String str) =>
     ListOfNoticeBoard.fromJson(json.decode(str));
 
-String listOfNoticeBoardToJson(ListOfNoticeBoard data) =>
-    json.encode(data.toJson());
-
 class ListOfNoticeBoard {
   String message;
   List<NoticeBoard> noticeBoards;
-  int? currentPage;
-  int? totalPages;
+  int currentPage;
+  int totalPages;
 
   ListOfNoticeBoard({
     required this.message,
     required this.noticeBoards,
-    this.currentPage,
-    this.totalPages,
+    required this.currentPage,
+    required this.totalPages,
   });
+
+  ListOfNoticeBoard copyWith({
+    String? message,
+    List<NoticeBoard>? noticeBoards,
+    int? currentPage,
+    int? totalPages,
+  }) =>
+      ListOfNoticeBoard(
+        message: message ?? this.message,
+        noticeBoards: noticeBoards ?? this.noticeBoards,
+        currentPage: currentPage ?? this.currentPage,
+        totalPages: totalPages ?? this.totalPages,
+      );
 
   factory ListOfNoticeBoard.fromJson(Map<String, dynamic> json) =>
       ListOfNoticeBoard(
         message: json["message"],
         noticeBoards: List<NoticeBoard>.from(
             json["noticeBoards"].map((x) => NoticeBoard.fromJson(x))),
-        currentPage: json["currentPage"] ?? null,
-        totalPages: json["totalPages"] ?? null,
+        currentPage: json["currentPage"] ?? 0,
+        totalPages: json["totalPages"] ?? 0,
       );
-
-  Map<String, dynamic> toJson() => {
-        "message": message,
-        "noticeBoards": List<dynamic>.from(noticeBoards.map((x) => x.toJson())),
-        "currentPage": currentPage,
-        "totalPages": totalPages,
-      };
 }
 
 class NoticeBoard {
@@ -46,6 +49,17 @@ class NoticeBoard {
     required this.owner,
     required this.name,
   });
+
+  NoticeBoard copyWith({
+    String? id,
+    Owner? owner,
+    String? name,
+  }) =>
+      NoticeBoard(
+        id: id ?? this.id,
+        owner: owner ?? this.owner,
+        name: name ?? this.name,
+      );
 
   factory NoticeBoard.fromJson(Map<String, dynamic> json) => NoticeBoard(
         id: json["_id"],
@@ -62,28 +76,41 @@ class NoticeBoard {
 
 class Owner {
   String id;
+  String username;
+  String name;
   String image;
-  String? username;
-  String? name;
 
   Owner({
     required this.id,
+    required this.username,
+    required this.name,
     required this.image,
-    this.username,
-    this.name,
   });
+
+  Owner copyWith({
+    String? id,
+    String? username,
+    String? name,
+    String? image,
+  }) =>
+      Owner(
+        id: id ?? this.id,
+        username: username ?? this.username,
+        name: name ?? this.name,
+        image: image ?? this.image,
+      );
 
   factory Owner.fromJson(Map<String, dynamic> json) => Owner(
         id: json["_id"],
-        image: json["image"],
         username: json["username"],
         name: json["name"],
+        image: json["image"],
       );
 
   Map<String, dynamic> toJson() => {
         "_id": id,
-        "image": image,
         "username": username,
         "name": name,
+        "image": image,
       };
 }
