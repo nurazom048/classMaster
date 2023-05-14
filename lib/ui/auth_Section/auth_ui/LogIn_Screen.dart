@@ -125,32 +125,35 @@ class _LogingScreenState extends State<LogingScreen> {
                       //   ),
                       // );
 
-                      print("ontap");
-                      List<WeekdayTime> weekdayTimes = [
-                        WeekdayTime(
-                          weekday: DateTime.sunday,
-                          times: [
-                            DateTime(DateTime.now().year, DateTime.now().month,
-                                DateTime.now().day, 12, 0),
-                          ],
-                        ),
-                        WeekdayTime(
-                          weekday: DateTime.friday,
-                          times: [
-                            DateTime.now().copyWith(minute: 57),
-                          ],
-                        ),
-                        WeekdayTime(
-                          weekday: DateTime.friday,
-                          times: [
-                            DateTime.now()
-                                .copyWith(minute: DateTime.now().minute + 1),
-                          ],
-                        ),
-                      ];
+                      // print("ontap");
 
-                      LocalNotification.scheduleNotifications(
-                          context, weekdayTimes);
+                      // print(DateTime.now()
+                      //     .toLocal()
+                      //     .copyWith(minute: 53, second: 1));
+                      // List<WeekdayTime> weekdayTimes = [
+                      //   WeekdayTime(
+                      //     weekday: DateTime.now().weekday,
+                      //     times: [
+                      //       DateTime.now().toLocal().copyWith(minute: 56),
+                      //     ],
+                      //   ),
+                      //   WeekdayTime(
+                      //     weekday: DateTime.friday,
+                      //     times: [
+                      //       DateTime.now().copyWith(minute: 57),
+                      //     ],
+                      //   ),
+                      //   WeekdayTime(
+                      //     weekday: DateTime.friday,
+                      //     times: [
+                      //       DateTime.now()
+                      //           .copyWith(minute: DateTime.now().minute + 1),
+                      //     ],
+                      //   ),
+                      // ];
+
+                      // LocalNotification.scheduleNotifications(
+                      //     context, weekdayTimes);
                     },
                     child: const Text("Show notification on sudwle"),
                   ),

@@ -27,7 +27,6 @@ class ChangePasswordPage extends ConsumerWidget {
     final authController = ref.watch(authController_provider.notifier);
 
     return Scaffold(
-      //  appBar: AppBar(title: const Text('Change Password')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Form(

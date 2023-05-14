@@ -84,7 +84,7 @@ class _ClassListPageState extends State<ClassListPage> {
                               });
 
                               ref
-                                  .read(totalPriodeCountProvider.notifier)
+                                  .watch(totalPriodeCountProvider.notifier)
                                   .update((state) => length);
                             });
                           }

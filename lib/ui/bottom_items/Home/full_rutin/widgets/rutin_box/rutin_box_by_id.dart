@@ -10,6 +10,7 @@ import 'package:table/widgets/mini_account_row.dart';
 
 import '../../../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../../../models/class_details_model.dart';
+import '../../../../../../sevices/notification services/local_notifications.dart';
 import '../../controller/chack_status_controller.dart';
 import '../../screen/viewMore/view_more_screen.dart';
 import '../../sunnary_section/summat_screens/summary_screen.dart';
@@ -142,6 +143,8 @@ class RutinBoxById extends ConsumerWidget {
 
                   _selectDays(
                       ref, gSelectedDay, sun, mon, tue, wed, thu, fri, sat);
+
+                  LocalNotification.scheduleNotifications(context, sun);
 
                   return Container(
                     margin: const EdgeInsets.only(top: 15),
