@@ -124,44 +124,55 @@ class HomeScreen extends ConsumerWidget {
                         padding: const EdgeInsets.only(bottom: 100),
                         itemCount: data.rutins.length,
                         itemBuilder: (context, index) {
+                          return RutinBoxById(
+                            rutinId: data.rutins[index].id,
+                            rutinName: data.rutins[index].name,
+                            onTapMore: () =>
+                                RutinDialog.ChackStatusUser_BottomSheet(
+                              context,
+                              data.rutins[index].id,
+                              data.rutins[index].name,
+                            ),
+                          );
+
                           if (data.rutins.length - 1 != index) {
-                            return RutinBoxById(
-                              rutinId: data.rutins[index].id,
-                              rutinName: data.rutins[index].name,
-                              onTapMore: () =>
-                                  RutinDialog.ChackStatusUser_BottomSheet(
-                                context,
-                                data.rutins[index].id,
-                                data.rutins[index].name,
-                              ),
-                            );
+                            // return RutinBoxById(
+                            //   rutinId: data.rutins[index].id,
+                            //   rutinName: data.rutins[index].name,
+                            //   onTapMore: () =>
+                            //       RutinDialog.ChackStatusUser_BottomSheet(
+                            //     context,
+                            //     data.rutins[index].id,
+                            //     data.rutins[index].name,
+                            //   ),
+                            // );
                           }
                           {
-                            return ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              padding: const EdgeInsets.only(bottom: 100),
-                              itemCount: 1,
-                              itemBuilder: (context, index) {
-                                return Column(
-                                  children: [
-                                    RutinBoxById(
-                                      rutinId: data.rutins[index].id,
-                                      rutinName: data.rutins[index].name,
-                                      onTapMore: () => RutinDialog
-                                          .ChackStatusUser_BottomSheet(
-                                        context,
-                                        data.rutins[index].id,
-                                        data.rutins[index].name,
-                                      ),
-                                    ),
-                                    data.currentPage == data.totalPages
-                                        ? const SizedBox.shrink()
-                                        : const RutinBoxByIdSkelton(),
-                                  ],
-                                );
-                              },
-                            );
+                            // return ListView.builder(
+                            //   shrinkWrap: true,
+                            //   physics: const NeverScrollableScrollPhysics(),
+                            //   padding: const EdgeInsets.only(bottom: 100),
+                            //   itemCount: 1,
+                            //   itemBuilder: (context, index) {
+                            //     return Column(
+                            //       children: [
+                            //         RutinBoxById(
+                            //           rutinId: data.rutins[index].id,
+                            //           rutinName: data.rutins[index].name,
+                            //           onTapMore: () => RutinDialog
+                            //               .ChackStatusUser_BottomSheet(
+                            //             context,
+                            //             data.rutins[index].id,
+                            //             data.rutins[index].name,
+                            //           ),
+                            //         ),
+                            //         data.currentPage == data.totalPages
+                            //             ? const SizedBox.shrink()
+                            //             : const RutinBoxByIdSkelton(),
+                            //       ],
+                            //     );
+                            //   },
+                            // );
                           }
                         },
                       );

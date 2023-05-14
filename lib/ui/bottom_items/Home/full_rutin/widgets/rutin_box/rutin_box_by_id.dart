@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,18 +22,22 @@ import '../sceltons/rutinebox_id_scelton.dart';
 import '../send_request_button.dart';
 
 //! provider
-final gSelectedDayProvider = StateProvider<int>((ref) {
-  return DateTime.now().weekday;
-});
+// final gSelectedDayProvider = StateProvider<int>((ref) {
+//   return DateTime.now().weekday;
+// });
 
-final listOfDayStateProvider = StateProvider<List<Day?>>((ref) => []);
+// final listOfDayStateProvider = StateProvider<List<Day?>>((ref) => []);
 
-class RutinBoxById extends ConsumerWidget {
+class RutinBoxById extends StatefulWidget {
   final String rutinName;
   final String rutinId;
   final dynamic onTapMore;
+  List<Day?> listOfDayState = [];
+  List<Day?> allDays = [];
 
-  const RutinBoxById({
+  int gSelectedDay = DateTime.now().weekday;
+
+  RutinBoxById({
     Key? key,
     required this.rutinName,
     required this.onTapMore,
@@ -40,168 +45,294 @@ class RutinBoxById extends ConsumerWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // Get providers
-    final chackStatus = ref.watch(chackStatusControllerProvider(rutinId));
-    final rutinDetails = ref.watch(rutins_detalis_provider(rutinId));
-    String status = chackStatus.value?.activeStatus ?? '';
-    bool notification_Off = chackStatus.value?.notificationOff ?? false;
+  State<RutinBoxById> createState() => _RutinBoxByIdState();
+}
 
-    List<Day?> listOfDays = ref.watch(listOfDayStateProvider);
-    int gSelectedDay = ref.watch(gSelectedDayProvider);
+class _RutinBoxByIdState extends State<RutinBoxById> {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer(builder: (context, ref, _) {
+      // Get providers
+      final chackStatus =
+          ref.watch(chackStatusControllerProvider(widget.rutinId));
+      final rutinDetails = ref.watch(rutins_detalis_provider(widget.rutinId));
+      String status = chackStatus.value?.activeStatus ?? '';
+      bool notification_Off = chackStatus.value?.notificationOff ?? false;
 
-    // Get notifier
-    final chackStatusNotifier =
-        ref.watch(chackStatusControllerProvider(rutinId).notifier);
+      // List<Day?> widget.listOfDayState = ref.watch(listOfDayStateProvider);
 
-    return Container(
-      height: 455,
-      margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
-      padding: const EdgeInsets.symmetric(vertical: 5),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(6),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            children: [
-              // Top section
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // Rutin name
-                    InkWell(
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ViewMore(
-                            rutinId: rutinId,
-                            rutineName: rutinName,
+      // Get notifier
+      final chackStatusNotifier =
+          ref.watch(chackStatusControllerProvider(widget.rutinId).notifier);
+      return Container(
+        height: 455,
+        margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              children: [
+                // Top section
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Rutin name
+                      InkWell(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ViewMore(
+                              rutinId: widget.rutinId,
+                              rutineName: widget.rutinName,
+                            ),
                           ),
                         ),
+                        child: AppText(widget.rutinName, fontSize: 22).title(),
                       ),
-                      child: AppText(rutinName, fontSize: 22).title(),
-                    ),
+                      TextButton(
+                          onPressed: () async {
+                            if (widget.listOfDayState.isNotEmpty) {
+                              // LocalNotification.scheduleNotifications(
+                              //     widget.allDays);
+                              print("ontap to on");
+                              await AwesomeNotifications().createNotification(
+                                content: NotificationContent(
+                                  id: 1,
+                                  channelKey: 'basic_channel',
+                                  title: '} class is going to start...😊',
+                                  body: 'Room: \nPeriod: }',
+                                  notificationLayout:
+                                      NotificationLayout.Default,
+                                  payload: {'data': 'notification_'},
+                                ),
+                                // schedule: NotificationCalendar(
+                                //   // weekday: weekday,
+                                //   hour: 16,
+                                //   minute: DateTime.now().minute,
+                                //   allowWhileIdle: true,
+                                // ),
+                                actionButtons: [
+                                  NotificationActionButton(
+                                    key: 'dismiss',
+                                    label: 'Dismiss',
+                                  ),
+                                ],
+                              );
 
-                    // Notification button or request button
-                    chackStatus.when(
-                      data: (data) {
-                        return SendReqButton(
-                          isNotSendRequest: status == "not_joined",
-                          isPending: status == "request_pending",
-                          isMember: true,
-                          notificationOff: notification_Off,
-                          sendRequest: () {
-                            chackStatusNotifier.sendReqController(context);
+                              //
+                            }
                           },
-                          showPanel: () {
-                            RutinDialog.rutineNotficationSeleect(
-                              context,
-                              rutinId,
-                            );
-                          },
-                        );
-                      },
-                      error: (error, stackTrace) =>
-                          Alart.handleError(context, error),
-                      loading: () => const Text("data"),
-                    ),
-                  ],
-                ),
-              ),
-
-              // Divider
-              MyDivider(
-                padding: const EdgeInsets.symmetric(vertical: 13)
-                    .copyWith(bottom: 3),
-              ),
-
-              // Select day row
-              SelectDayRow(selectedDay: (selectedDay) {
-                print("thee day is : $selectedDay");
-                ref
-                    .watch(gSelectedDayProvider.notifier)
-                    .update((state) => selectedDay);
-              }),
-
-              // Rutin info and owner info
-              rutinDetails.when(
-                data: (data) {
-                  if (data == null) return const Text("id null");
-
-                  List<Day?> sun = data.classes.sunday;
-                  List<Day?> mon = data.classes.monday;
-                  List<Day?> tue = data.classes.tuesday;
-                  List<Day?> wed = data.classes.wednesday;
-                  List<Day?> thu = data.classes.thursday;
-                  List<Day?> fri = data.classes.friday;
-                  List<Day?> sat = data.classes.saturday;
-
-                  _selectDays(
-                      ref, gSelectedDay, sun, mon, tue, wed, thu, fri, sat);
-
-                  LocalNotification.scheduleNotifications(context, sun);
-
-                  return Container(
-                    margin: const EdgeInsets.only(top: 15),
-                    constraints: const BoxConstraints(minHeight: 200),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: List.generate(
-                        listOfDays.length,
-                        (index) {
-                          if (listOfDays.isNotEmpty) {
-                            return RutineCardInfoRow(
-                              isFrist: index == 0,
-                              day: listOfDays[index],
-                              onTap: () => onTap(listOfDays[index], context),
-                            );
-                          } else {
-                            return const Text("No Class");
-                          }
+                          child: Text("on")),
+                      // Notification button or request button
+                      chackStatus.when(
+                        data: (data) {
+                          return SendReqButton(
+                            isNotSendRequest: status == "not_joined",
+                            isPending: status == "request_pending",
+                            isMember: true,
+                            notificationOff: notification_Off,
+                            sendRequest: () {
+                              chackStatusNotifier.sendReqController(context);
+                            },
+                            showPanel: () {
+                              RutinDialog.rutineNotficationSeleect(
+                                context,
+                                widget.rutinId,
+                              );
+                            },
+                          );
                         },
+                        error: (error, stackTrace) =>
+                            Alart.handleError(context, error),
+                        loading: () => const Text("data"),
                       ),
-                    ),
-                  );
-                },
-                error: (error, stackTrace) => Alart.handleError(context, error),
-                loading: () => const Text(
-                  "______________________________________________",
+                    ],
+                  ),
                 ),
-              ),
 
-              const SizedBox(height: 5)
-            ],
-          ),
+                // Divider
+                MyDivider(
+                  padding: const EdgeInsets.symmetric(vertical: 13)
+                      .copyWith(bottom: 3),
+                ),
 
-          // Bottom section
-          Column(
-            children: [
-              MyDivider(
-                padding: const EdgeInsets.symmetric(vertical: 10)
-                    .copyWith(bottom: 3),
-              ),
-              rutinDetails.when(
-                data: (data) {
-                  if (data == null) {}
+                // Select day row
+                SelectDayRow(selectedDay: (selectedDay) {
+                  print("thee day is : $selectedDay");
+                  setState(() {
+                    if (widget.gSelectedDay != selectedDay) {
+                      widget.gSelectedDay = selectedDay;
+                    }
+                  });
+                }),
 
-                  return MiniAccountInfo(
-                    accountData: data?.owner,
-                    onTapMore: onTapMore,
-                  );
-                },
-                error: (error, stackTrace) => Alart.handleError(context, error),
-                loading: () => const AccounScelton(),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+                // Rutin info and owner info
+                rutinDetails.when(
+                  data: (data) {
+                    if (data == null) return const Text("id null");
+
+                    List<Day?> sun = data.classes.sunday;
+                    List<Day?> mon = data.classes.monday;
+                    List<Day?> tue = data.classes.tuesday;
+                    List<Day?> wed = data.classes.wednesday;
+                    List<Day?> thu = data.classes.thursday;
+                    List<Day?> fri = data.classes.friday;
+                    List<Day?> sat = data.classes.saturday;
+
+                    //
+                    widget.allDays.addAll(sun);
+                    widget.allDays.addAll(mon);
+                    widget.allDays.addAll(tue);
+                    widget.allDays.addAll(wed);
+                    widget.allDays.addAll(thu);
+                    widget.allDays.addAll(fri);
+                    widget.allDays.addAll(sat);
+
+                    selectDays(
+                        sun, mon, tue, wed, thu, fri, sat, notification_Off);
+// // // notifican on
+                    // // notification
+                    // seduleNotifications(notification_Off, context, sun, mon,
+                    //     tue, wed, thu, fri, sat);
+
+                    return Container(
+                      margin: const EdgeInsets.only(top: 15),
+                      constraints: const BoxConstraints(minHeight: 200),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: List.generate(
+                          widget.listOfDayState.length,
+                          (index) {
+                            if (widget.listOfDayState.isNotEmpty) {
+                              return RutineCardInfoRow(
+                                isFrist: index == 0,
+                                day: widget.listOfDayState[index],
+                                onTap: () => onTap(
+                                    widget.listOfDayState[index], context),
+                              );
+                            } else {
+                              return const Text("No Class");
+                            }
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                  error: (error, stackTrace) =>
+                      Alart.handleError(context, error),
+                  loading: () => const Text(
+                    "______________________________________________",
+                  ),
+                ),
+
+                const SizedBox(height: 5)
+              ],
+            ),
+
+            // Bottom section
+            Column(
+              children: [
+                MyDivider(
+                  padding: const EdgeInsets.symmetric(vertical: 10)
+                      .copyWith(bottom: 3),
+                ),
+                rutinDetails.when(
+                  data: (data) {
+                    if (data == null) {}
+
+                    return MiniAccountInfo(
+                      accountData: data?.owner,
+                      onTapMore: widget.onTapMore,
+                    );
+                  },
+                  error: (error, stackTrace) =>
+                      Alart.handleError(context, error),
+                  loading: () => const AccounScelton(),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    });
+  }
+
+  // void seduleNotifications(
+  //     bool notificationOff,
+  //     BuildContext context,
+  //     List<Day?> sun,
+  //     List<Day?> mon,
+  //     List<Day?> tue,
+  //     List<Day?> wed,
+  //     List<Day?> thu,
+  //     List<Day?> fri,
+  //     List<Day?> sat) {
+  //   if (notificationOff == false && widget.listOfDayState.isNotEmpty) {
+  //   }
+  // }
+
+  void selectDays(
+      List<Day?> sun,
+      List<Day?> mon,
+      List<Day?> tue,
+      List<Day?> wed,
+      List<Day?> thu,
+      List<Day?> fri,
+      List<Day?> sat,
+      notification_Off) {
+    return WidgetsBinding.instance.addPostFrameCallback((_) {
+      List<Day?> newListOfDays;
+
+      switch (widget.gSelectedDay) {
+        case 0:
+          newListOfDays = sun;
+          break;
+
+        case 1:
+          newListOfDays = mon;
+          break;
+
+        case 2:
+          newListOfDays = tue;
+          break;
+
+        case 3:
+          newListOfDays = wed;
+          break;
+
+        case 4:
+          newListOfDays = thu;
+          break;
+
+        case 5:
+          newListOfDays = fri;
+          break;
+
+        case 6:
+          newListOfDays = sat;
+          break;
+
+        default:
+          // If the selected day is not valid, use an empty list
+          newListOfDays = [];
+          break;
+      }
+
+      // Only update the state if the component is still mounted
+      setState(
+        () {
+          widget.listOfDayState = newListOfDays;
+        },
+      );
+      // ref.watch(listOfDayStateProvider.notifier).update((state) => newListOfDays);
+    });
   }
 }
 
@@ -218,51 +349,7 @@ void onTap(Day? day, context) {
   );
 }
 
-// Update the list of days to display based on the selected day
-void _selectDays(
-    WidgetRef ref, selectedDay, List<Day?> sun, mon, tue, wed, thu, fri, sat) {
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    List<Day?> newListOfDays;
 
-    switch (ref.watch(gSelectedDayProvider)) {
-      case 0:
-        newListOfDays = sun;
-        break;
-
-      case 1:
-        newListOfDays = mon;
-        break;
-
-      case 2:
-        newListOfDays = tue;
-        break;
-
-      case 3:
-        newListOfDays = wed;
-        break;
-
-      case 4:
-        newListOfDays = thu;
-        break;
-
-      case 5:
-        newListOfDays = fri;
-        break;
-
-      case 6:
-        newListOfDays = sat;
-        break;
-
-      default:
-        // If the selected day is not valid, use an empty list
-        newListOfDays = [];
-        break;
-    }
-
-    // Only update the state if the component is still mounted
-    ref.watch(listOfDayStateProvider.notifier).update((state) => newListOfDays);
-  });
-}
 
 
 ///////

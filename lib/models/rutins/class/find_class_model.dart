@@ -66,7 +66,7 @@ class Classs {
 }
 
 class Weekday {
-  String id;
+  dynamic id;
   String routineId;
   String classId;
   String room;
@@ -87,7 +87,7 @@ class Weekday {
   });
 
   factory Weekday.fromJson(Map<String, dynamic> json) => Weekday(
-        id: json["_id"],
+        id: json["_id"].toString(),
         routineId: json["routine_id"],
         classId: json["class_id"],
         room: json["room"],
@@ -98,7 +98,7 @@ class Weekday {
       );
 
   Map<String, dynamic> toJson() => {
-        "_id": id,
+        "_id": id.toHexString(),
         "routine_id": routineId,
         "class_id": classId,
         "room": room,

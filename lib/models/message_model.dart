@@ -14,7 +14,8 @@ class Message {
     return Message(
       message: json['message'],
       save: json['save'],
-      activeStatus: json['activeStatus'],
+      activeStatus:
+          json['activeStatus'] != null ? json['activeStatus'].toString() : null,
       notificationOff: json['notification_Off'] ?? false,
     );
   }

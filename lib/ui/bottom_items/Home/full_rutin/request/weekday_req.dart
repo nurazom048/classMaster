@@ -18,7 +18,7 @@ class WeekdaRequest {
       final response = await http.get(
         Uri.parse('${Const.BASE_URl}/class/weakday/show/$classId'),
       );
-
+      print(jsonDecode(response.body));
       Message error = Message.fromJson(jsonDecode(response.body));
       WeekdayList wekkdaylist = WeekdayList.fromJson(jsonDecode(response.body));
 

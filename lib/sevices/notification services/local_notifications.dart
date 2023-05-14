@@ -1,51 +1,61 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:flutter/material.dart';
-
 import '../../models/class_details_model.dart';
 
-// class WeekdayTime {
-//   final int weekday;
-//   final List<Day> times;
-
-//   WeekdayTime({required this.weekday, required this.times});
-// }
-
-///
 class LocalNotification {
-  // Schedule notifications based on the provided weekday and time information
-  static void scheduleNotifications(
-      BuildContext context, List<Day?> weekdayTimes) async {
-    // ignore: avoid_print
-    print("${DateTime.now()}");
+  static void scheduleNotifications(List<Day?> days) async {
+    print("Ontap local on");
+    for (int i = 0; i < days.length - 1; i++) {
+      //
 
-    for (int i = 0; i < weekdayTimes.length; i++) {
-      // WeekdayTime weekdayTime = weekdayTimes[i];
-      int weekday = weekdayTimes[i]?.num ?? 0;
+      if (days[i]?.num == null || days[i]?.startTime == null) {
+        print("Not create $i");
+      } else {
+        if (i > days.length || i == days.length) {}
+        print(" create $i");
+        int weekday = days[i]!.num;
+        print(weekday);
 
-      // Schedule the notification
-      await AwesomeNotifications().createNotification(
-        content: NotificationContent(
-          id: i,
-          channelKey: 'basic_channel',
-          title: 'Class Start ${weekdayTimes[i]?.classId.name}',
-          body:
-              'This is a scheduled notification for $weekday at ${weekdayTimes[i]?.num}',
-          notificationLayout: NotificationLayout.Default,
-          payload: {'data': 'notification_'},
-        ),
-        schedule: NotificationCalendar(
-          // weekday: weekdayTimes[i].weekday,
-          minute: weekdayTimes[i]?.startTime.hour,
-          // minute: DateTime.now().toLocal().minute + 1
-          // repeats: true,
-        ),
-        actionButtons: [
-          NotificationActionButton(
-            key: 'dismiss',
-            label: 'Dismiss',
+        // Calculate the next occurrence of the selected weekday
+        DateTime now = DateTime.now();
+        DateTime nextDate = DateTime.utc(
+          now.year,
+          now.month,
+          now.day,
+          days[i]?.startTime.hour ?? 0,
+          days[i]?.startTime.minute ?? 0,
+        ).add(Duration(days: ((weekday - now.weekday + 7) % 7)));
+
+        // await AwesomeNotifications().cancelAllSchedules();
+
+        // for (int i = 0; i < days.length; i++) {
+        //   if (days[i]?.num == null || days[i]?.startTime == null) {
+        //     print("Not create");
+        //   } else {
+        // Schedule the notification
+        await AwesomeNotifications().createNotification(
+          content: NotificationContent(
+            id: i,
+            channelKey: 'basic_channel',
+            title: '${days[i]?.classId.name} class is going to start...😊',
+            body:
+                'Room: ${days[i]?.room} \nInstructor: ${days[i]?.classId.instuctorName} \nPeriod: ${days[i]?.start}',
+            notificationLayout: NotificationLayout.Default,
+            payload: {'data': 'notification_'},
           ),
-        ],
-      );
+          schedule: NotificationCalendar(
+            // weekday: weekday,
+            hour: nextDate.hour,
+            minute: nextDate.minute,
+            allowWhileIdle: true,
+          ),
+          actionButtons: [
+            NotificationActionButton(
+              key: 'dismiss',
+              label: 'Dismiss',
+            ),
+          ],
+        );
+      }
     }
   }
 }

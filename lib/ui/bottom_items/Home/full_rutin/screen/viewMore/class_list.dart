@@ -53,6 +53,7 @@ class _ClassListPageState extends State<ClassListPage> {
                     builder: (context) => AppPriodePage(
                       rutinId: widget.rutinId,
                       rutinName: widget.rutinName,
+                      isEdit: false,
                       totalPriode: totalPriodeCount ?? 0,
                     ),
                   ),
@@ -116,8 +117,10 @@ class _ClassListPageState extends State<ClassListPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          AddClassScreen(routineId: widget.rutinId)),
+                      builder: (context) => AddClassScreen(
+                            routineId: widget.rutinId,
+                            isEdit: false,
+                          )),
                 );
               },
             ),
