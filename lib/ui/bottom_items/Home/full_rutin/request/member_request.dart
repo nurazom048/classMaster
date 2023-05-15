@@ -119,6 +119,33 @@ class memberRequest {
     }
   }
 
+  Future<String?> removeCaptensReq(rutinid, username) async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+    print("hi i am calling req $rutinid  $username");
+
+    final url = Uri.parse('${Const.BASE_URl}/rutin/cap10/remove');
+
+    final response = await http.delete(url,
+        headers: {'Authorization': 'Bearer $getToken'},
+        body: {"rutinid": rutinid, "username": username});
+
+    var res = jsonDecode(response.body)['message'];
+
+    print("add cap10 req :$res");
+    try {
+      if (response.statusCode == 200) {
+        print(res);
+        return res;
+      } else {
+        return res;
+      }
+    } catch (e) {
+      print(e);
+      return e.toString();
+    }
+  }
+
   Future<Either<String, Message>> sendRequest(rutin_id) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');

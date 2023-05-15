@@ -17,8 +17,13 @@ final chackStatusControllerProvider = StateNotifierProvider.family<
     ChackStatusController,
     AsyncValue<CheckStatusModel>,
     String>((ref, rutinId) {
-  return ChackStatusController(ref, rutinId, ref.read(FullRutinProvider),
-      ref.read(memberRequestProvider), ref.read(notificationReqProvider));
+  return ChackStatusController(
+    ref,
+    rutinId,
+    ref.read(FullRutinProvider),
+    ref.read(memberRequestProvider),
+    ref.read(notificationReqProvider),
+  );
 });
 
 //? Controllers

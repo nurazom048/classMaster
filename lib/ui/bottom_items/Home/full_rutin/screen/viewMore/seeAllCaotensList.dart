@@ -8,6 +8,8 @@ import 'package:table/widgets/accound_card_row.dart';
 
 import '../../../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../../../../widgets/hedding_row.dart';
+import '../../controller/chack_status_controller.dart';
+import '../../controller/members_controllers.dart';
 
 final serachStringProvidder = StateProvider((ref) => "");
 
@@ -27,8 +29,11 @@ class SeeAllCaptainsList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    //! provider
     final allCaptains = ref.watch(allCaptenProvider(routineId));
 
+    final chackStatus = ref.watch(chackStatusControllerProvider(routineId));
+    final bool isOwner = chackStatus.value?.isOwner ?? false;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 18),
       child: Column(
@@ -50,6 +55,16 @@ class SeeAllCaptainsList extends ConsumerWidget {
                                 onUsername(username, position),
                             buttotext: buttonText,
                             color: color,
+                            suffix: isOwner == true
+                                ? IconButton(
+                                    onPressed: () => _removeCaptens(
+                                        context, ref, account.username),
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                    ),
+                                  )
+                                : null,
                           );
                         },
                       )
@@ -62,5 +77,12 @@ class SeeAllCaptainsList extends ConsumerWidget {
         ],
       ),
     );
+  }
+// _removeCaptens
+
+  _removeCaptens(context, WidgetRef ref, username) {
+    ref
+        .watch(memberControllerProvider(routineId).notifier)
+        .removeCapten(routineId, username, context);
   }
 }

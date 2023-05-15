@@ -15,16 +15,16 @@ void accountActions(BuildContext context, WidgetRef ref,
     context: context,
     position: const RelativeRect.fromLTRB(120, 535, 0, 0),
     items: [
-      if (isOwner == true)
-        const PopupMenuItem(
-          value: 'kickout',
-          child: Text('Kickout', style: TextStyle(color: Colors.red)),
-        ),
-      if (isOwner == true || isCaptain == true)
-        const PopupMenuItem(
-          value: 'make_captains',
-          child: Text('Make Captains', style: TextStyle(color: Colors.blue)),
-        ),
+      //  if (isOwner == true)
+      const PopupMenuItem(
+        value: 'kickout',
+        child: Text('Kickout', style: TextStyle(color: Colors.red)),
+      ),
+      //  if (isOwner == true || isCaptain == true)
+      const PopupMenuItem(
+        value: 'make_captains',
+        child: Text('Make Captains', style: TextStyle(color: Colors.blue)),
+      ),
     ],
     elevation: 8.0,
   );

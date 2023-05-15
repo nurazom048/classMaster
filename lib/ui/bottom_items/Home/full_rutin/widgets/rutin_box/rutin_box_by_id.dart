@@ -62,10 +62,10 @@ class _RutinBoxByIdState extends State<RutinBoxById> {
       final rutinDetails = ref.watch(rutins_detalis_provider(widget.rutinId));
       String status = chackStatus.value?.activeStatus ?? '';
       bool notificationOff = chackStatus.value?.notificationOff ?? false;
-
       // Get notifier
       final chackStatusNotifier =
           ref.watch(chackStatusControllerProvider(widget.rutinId).notifier);
+
       return Container(
         height: 455,
         margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 5),

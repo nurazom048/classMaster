@@ -33,6 +33,12 @@ class MemberController extends StateNotifier<bool> {
     Alart.showSnackBar(context, message);
   }
 
+  void removeCapten(rutinId, username, context) async {
+    final message = await memberRequests.removeCaptensReq(rutinId, username);
+
+    Alart.showSnackBar(context, message);
+  }
+
 //...  select and remove member .....//
   void removeMembers(BuildContext context, username) async {
     Future<Message> message = memberRequests.removeMemberReq(rutinId, username);
