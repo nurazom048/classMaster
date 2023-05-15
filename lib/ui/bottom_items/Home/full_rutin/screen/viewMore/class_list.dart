@@ -5,9 +5,11 @@ import 'package:table/ui/bottom_items/Add/screens/add_class_screen.dart';
 
 import '../../../../../../core/dialogs/Alart_dialogs.dart';
 import '../../../../../../models/class_details_model.dart';
+import '../../../../../../sevices/notification services/local_notifications.dart';
 import '../../../../../../widgets/hedding_row.dart';
 import '../../../../../server/rutinReq.dart';
 import '../../../../Add/screens/add_priode.dart';
+import '../../controller/chack_status_controller.dart';
 import '../../request/priode_request.dart';
 import '../../sunnary_section/summat_screens/summary_screen.dart';
 import '../../utils/logngPress.dart';
@@ -36,6 +38,11 @@ class _ClassListPageState extends State<ClassListPage> {
       print(widget.rutinId);
       final rutinDetals = ref.watch(rutins_detalis_provider(widget.rutinId));
       final allPriode = ref.watch(allPriodeProvider(widget.rutinId));
+
+      //
+      final chackStatus =
+          ref.watch(chackStatusControllerProvider(widget.rutinId));
+      bool notification_Off = chackStatus.value?.notificationOff ?? false;
 
       return Scaffold(
         body: ListView(
@@ -128,8 +135,16 @@ class _ClassListPageState extends State<ClassListPage> {
                 height: 300,
                 child: rutinDetals.when(
                   data: (data) {
-                    if (data == null || data.classes == null)
+                    if (data == null) {
                       return const Text("Null");
+                    }
+                    // notification
+                    if (notification_Off == false) {
+                      print("CAll sudule notification");
+
+                      LocalNotification.scheduleNotifications(
+                          data.classes.allClass);
+                    }
 
                     return ListView.builder(
                       itemCount: data.classes.allClass.length,

@@ -1,6 +1,5 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,7 +10,6 @@ import 'package:table/widgets/mini_account_row.dart';
 
 import '../../../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../../../models/class_details_model.dart';
-import '../../../../../../sevices/notification services/local_notifications.dart';
 import '../../controller/chack_status_controller.dart';
 import '../../screen/viewMore/view_more_screen.dart';
 import '../../sunnary_section/summat_screens/summary_screen.dart';
@@ -50,6 +48,12 @@ class RutinBoxById extends StatefulWidget {
 
 class _RutinBoxByIdState extends State<RutinBoxById> {
   @override
+  void initState() {
+    super.initState();
+    widget.gSelectedDay = DateTime.now().weekday;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, _) {
       // Get providers
@@ -57,9 +61,7 @@ class _RutinBoxByIdState extends State<RutinBoxById> {
           ref.watch(chackStatusControllerProvider(widget.rutinId));
       final rutinDetails = ref.watch(rutins_detalis_provider(widget.rutinId));
       String status = chackStatus.value?.activeStatus ?? '';
-      bool notification_Off = chackStatus.value?.notificationOff ?? false;
-
-      // List<Day?> widget.listOfDayState = ref.watch(listOfDayStateProvider);
+      bool notificationOff = chackStatus.value?.notificationOff ?? false;
 
       // Get notifier
       final chackStatusNotifier =
@@ -96,40 +98,7 @@ class _RutinBoxByIdState extends State<RutinBoxById> {
                         ),
                         child: AppText(widget.rutinName, fontSize: 22).title(),
                       ),
-                      TextButton(
-                          onPressed: () async {
-                            if (widget.listOfDayState.isNotEmpty) {
-                              // LocalNotification.scheduleNotifications(
-                              //     widget.allDays);
-                              print("ontap to on");
-                              await AwesomeNotifications().createNotification(
-                                content: NotificationContent(
-                                  id: 1,
-                                  channelKey: 'basic_channel',
-                                  title: '} class is going to start...😊',
-                                  body: 'Room: \nPeriod: }',
-                                  notificationLayout:
-                                      NotificationLayout.Default,
-                                  payload: {'data': 'notification_'},
-                                ),
-                                // schedule: NotificationCalendar(
-                                //   // weekday: weekday,
-                                //   hour: 16,
-                                //   minute: DateTime.now().minute,
-                                //   allowWhileIdle: true,
-                                // ),
-                                actionButtons: [
-                                  NotificationActionButton(
-                                    key: 'dismiss',
-                                    label: 'Dismiss',
-                                  ),
-                                ],
-                              );
 
-                              //
-                            }
-                          },
-                          child: Text("on")),
                       // Notification button or request button
                       chackStatus.when(
                         data: (data) {
@@ -137,7 +106,7 @@ class _RutinBoxByIdState extends State<RutinBoxById> {
                             isNotSendRequest: status == "not_joined",
                             isPending: status == "request_pending",
                             isMember: true,
-                            notificationOff: notification_Off,
+                            notificationOff: notificationOff,
                             sendRequest: () {
                               chackStatusNotifier.sendReqController(context);
                             },
@@ -187,20 +156,8 @@ class _RutinBoxByIdState extends State<RutinBoxById> {
                     List<Day?> sat = data.classes.saturday;
 
                     //
-                    widget.allDays.addAll(sun);
-                    widget.allDays.addAll(mon);
-                    widget.allDays.addAll(tue);
-                    widget.allDays.addAll(wed);
-                    widget.allDays.addAll(thu);
-                    widget.allDays.addAll(fri);
-                    widget.allDays.addAll(sat);
 
-                    selectDays(
-                        sun, mon, tue, wed, thu, fri, sat, notification_Off);
-// // // notifican on
-                    // // notification
-                    // seduleNotifications(notification_Off, context, sun, mon,
-                    //     tue, wed, thu, fri, sat);
+                    selectDays(sun, mon, tue, wed, thu, fri, sat);
 
                     return Container(
                       margin: const EdgeInsets.only(top: 15),
@@ -264,29 +221,15 @@ class _RutinBoxByIdState extends State<RutinBoxById> {
     });
   }
 
-  // void seduleNotifications(
-  //     bool notificationOff,
-  //     BuildContext context,
-  //     List<Day?> sun,
-  //     List<Day?> mon,
-  //     List<Day?> tue,
-  //     List<Day?> wed,
-  //     List<Day?> thu,
-  //     List<Day?> fri,
-  //     List<Day?> sat) {
-  //   if (notificationOff == false && widget.listOfDayState.isNotEmpty) {
-  //   }
-  // }
-
   void selectDays(
-      List<Day?> sun,
-      List<Day?> mon,
-      List<Day?> tue,
-      List<Day?> wed,
-      List<Day?> thu,
-      List<Day?> fri,
-      List<Day?> sat,
-      notification_Off) {
+    List<Day?> sun,
+    List<Day?> mon,
+    List<Day?> tue,
+    List<Day?> wed,
+    List<Day?> thu,
+    List<Day?> fri,
+    List<Day?> sat,
+  ) {
     return WidgetsBinding.instance.addPostFrameCallback((_) {
       List<Day?> newListOfDays;
 
@@ -331,7 +274,6 @@ class _RutinBoxByIdState extends State<RutinBoxById> {
           widget.listOfDayState = newListOfDays;
         },
       );
-      // ref.watch(listOfDayStateProvider.notifier).update((state) => newListOfDays);
     });
   }
 }

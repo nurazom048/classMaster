@@ -8,7 +8,6 @@ import 'package:table/widgets/appWidget/app_text.dart';
 import 'package:table/widgets/progress_indicator.dart';
 
 import '../../../constant/app_color.dart';
-import '../../../sevices/notification services/local_notifications.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/appWidget/buttons/cupertino_butttons.dart';
 import '../../../widgets/heder/heder_title.dart';
@@ -109,54 +108,6 @@ class _LogingScreenState extends State<LogingScreen> {
                   //
 
                   const CreateAccountPopUpButton(),
-
-                  TextButton(
-                    onPressed: () async {
-                      AwsomNotificationSetup.takePermiton(context);
-                      // print("TEST NOTIFICATIOM");
-                      // await AwesomeNotifications().createNotification(
-                      //   // Create notification content
-                      //   content: NotificationContent(
-                      //     id: 1,
-                      //     channelKey: 'basic_channel',
-                      //     title: 'Notification',
-                      //     body: 'This is a scheduled notification',
-                      //     notificationLayout: NotificationLayout.Default,
-                      //   ),
-                      // );
-
-                      // print("ontap");
-
-                      // print(DateTime.now()
-                      //     .toLocal()
-                      //     .copyWith(minute: 53, second: 1));
-                      // List<WeekdayTime> weekdayTimes = [
-                      //   WeekdayTime(
-                      //     weekday: DateTime.now().weekday,
-                      //     times: [
-                      //       DateTime.now().toLocal().copyWith(minute: 56),
-                      //     ],
-                      //   ),
-                      //   WeekdayTime(
-                      //     weekday: DateTime.friday,
-                      //     times: [
-                      //       DateTime.now().copyWith(minute: 57),
-                      //     ],
-                      //   ),
-                      //   WeekdayTime(
-                      //     weekday: DateTime.friday,
-                      //     times: [
-                      //       DateTime.now()
-                      //           .copyWith(minute: DateTime.now().minute + 1),
-                      //     ],
-                      //   ),
-                      // ];
-
-                      // LocalNotification.scheduleNotifications(
-                      //     context, weekdayTimes);
-                    },
-                    child: const Text("Show notification on sudwle"),
-                  ),
 
                   const OR(),
 
