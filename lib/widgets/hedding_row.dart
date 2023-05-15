@@ -5,7 +5,7 @@ import 'package:table/widgets/appWidget/buttons/capsule_button.dart';
 
 class HeddingRow extends StatelessWidget {
   final String hedding;
-  final String? second_Hedding;
+  final String? secondHeading;
   final String? buttonText;
   final dynamic onTap;
   final double? paddingTop;
@@ -13,7 +13,7 @@ class HeddingRow extends StatelessWidget {
 
   const HeddingRow({
     required this.hedding,
-    this.second_Hedding = "",
+    this.secondHeading = "",
     this.paddingTop,
     this.onTap,
     this.buttonText,
@@ -45,7 +45,7 @@ class HeddingRow extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               Text(
-                second_Hedding ?? '',
+                secondHeading ?? '',
                 style: const TextStyle(
                     fontFamily: 'Open Sans',
                     fontWeight: FontWeight.w600,

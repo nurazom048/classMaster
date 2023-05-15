@@ -77,8 +77,8 @@ class _ViewMoreState extends State<ViewMore> with TickerProviderStateMixin {
         body: TabBarView(controller: controller, children: [
           ClassListPage(rutinId: widget.rutinId, rutinName: widget.rutinId),
           MemberList(rutinId: widget.rutinId),
-          seeAllcaptensList(
-              onUsername: (onUsername, o) {}, rutinId: widget.rutinId)
+          SeeAllCaptainsList(
+              onUsername: (onUsername, o) {}, routineId: widget.rutinId)
         ]),
       ),
 

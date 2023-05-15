@@ -32,7 +32,7 @@ class NoticeBoardMembersScreen extends StatelessWidget {
           //... Members...//
           HeddingRow(
             hedding: "Join Requests",
-            second_Hedding: "see more",
+            secondHeading: "see more",
             buttonText: "Accept All",
             onTap: () {},
           ),
@@ -45,8 +45,6 @@ class NoticeBoardMembersScreen extends StatelessWidget {
                     height: 200,
                     child: memberRequest.when(
                         data: (data) {
-                          print("data");
-                          // return const Text(" data ");
                           if (data.joinRequests.isEmpty) {
                             return const Text("No new request ");
                           }
@@ -83,7 +81,7 @@ class NoticeBoardMembersScreen extends StatelessWidget {
 
           const HeddingRow(
             hedding: "All Members",
-            second_Hedding: "24 members",
+            secondHeading: "24 members",
           ),
           //
 

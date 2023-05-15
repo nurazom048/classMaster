@@ -60,6 +60,7 @@ dependencies:
   google_sign_in: ^6.1.0
   get: ^4.6.5
   awesome_notifications: ^0.6.19
+  custom_pop_up_menu: ^1.2.4
 
 dev_dependencies:
   flutter_test:

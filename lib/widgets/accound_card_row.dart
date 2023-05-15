@@ -50,7 +50,7 @@ class AccountCardRow extends ConsumerWidget {
               )
           : () {},
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(8)),
         height: 70,
@@ -102,17 +102,20 @@ class AccountCardRow extends ConsumerWidget {
                   ),
                 ],
               ),
-              // ma.Text("$buttotext"),
 
               const Spacer(flex: 24),
               // if (removeCapten != null && isEdditingMood == true)
-              IconButton(
-                onPressed: removeCapten,
-                icon: const Icon(Icons.delete_rounded,
-                    color: CupertinoColors.systemRed),
-              ),
 
-              if (buttotext != null)
+              suffix ?? const SizedBox.shrink(),
+
+              if (removeCapten != null)
+                IconButton(
+                  onPressed: removeCapten,
+                  icon: const Icon(Icons.delete_rounded,
+                      color: CupertinoColors.systemRed),
+                ),
+
+              if (buttotext != null && suffix == null)
                 TextButton(
                     onPressed: addCaptem == true
                         ? () => addCaptenAlart(context)

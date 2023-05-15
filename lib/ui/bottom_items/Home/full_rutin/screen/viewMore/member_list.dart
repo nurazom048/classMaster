@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table/core/component/loaders.dart';
 
 import '../../../../../../core/dialogs/Alart_dialogs.dart';
 import '../../../../../../widgets/accound_card_row.dart';
 import '../../../../../../widgets/appWidget/TextFromFild.dart';
 import '../../../../../../widgets/hedding_row.dart';
-import '../../../../../../widgets/progress_indicator.dart';
 import '../../../../../auth_Section/utils/login_validation.dart';
 import '../../controller/members_controllers.dart';
 import '../../controller/see_all_req_controller.dart';
+import '../../utils/popup.dart';
 import '../../widgets/account_card_widgets.dart';
 import '../../widgets/dash_border_button.dart';
 
@@ -28,6 +29,8 @@ class MemberList extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 26),
         children: [
+          //____________________________________Invite___________________________________//
+
           AppTextFromField(
             margin: EdgeInsets.zero,
             controller: _emailController,
@@ -39,10 +42,11 @@ class MemberList extends StatelessWidget {
           const DashBorderButton(),
           const SizedBox(height: 30),
 
-          //... Members...//
+          //____________________________________Requests___________________________________//
+
           HeddingRow(
             hedding: "Join Requests",
-            second_Hedding: "see more",
+            secondHeading: "see more",
             buttonText: "Accept All",
             onTap: () {},
           ),
@@ -55,9 +59,12 @@ class MemberList extends StatelessWidget {
                     height: 200,
                     child: allRequest.when(
                         data: (data) {
-                          if (data == null) return const Text(" data null");
-                          if (data.listAccounts.isEmpty)
+                          if (data == null) {
+                            return const Text(" data null");
+                          }
+                          if (data.listAccounts.isEmpty) {
                             return const Text("No new request ");
+                          }
                           return ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: data.listAccounts.length,
@@ -67,14 +74,12 @@ class MemberList extends StatelessWidget {
 
                                 // acsept or reject members
                                 acceptUsername: () {
-                                  print(data.listAccounts[index].username);
                                   seeAllJonReq.acceptMember(
                                       ref,
                                       data.listAccounts[index].username,
                                       context);
                                 },
                                 onRejectUsername: () {
-                                  print(data.listAccounts[index].username);
                                   seeAllJonReq.rejectMembers(
                                       ref,
                                       data.listAccounts[index].username,
@@ -92,29 +97,60 @@ class MemberList extends StatelessWidget {
           ),
 
           ///
+          //____________________________________Members___________________________________//
           ///
 
           const HeddingRow(
             hedding: "All Members",
-            second_Hedding: "23 members",
+            secondHeading: "23 members",
           ),
-          //
 
           allMembers.when(
             data: (data) {
-              if (data == null || data.message == null)
+              if (data == null || data.message == null) {
                 return const Text("null");
+              }
               return SizedBox(
                 height: 140,
                 child: ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: data.members!.length,
-                    itemBuilder: (context, index) =>
-                        AccountCardRow(accountData: data.members![index])),
+                    itemBuilder: (context, index) => AccountCardRow(
+                          accountData: data.members![index],
+                          suffix: IconButton(
+                            onPressed: () {
+                              accountActions(context, ref,
+                                  rutinId: rutinId,
+                                  username:
+                                      data.members?[index].username ?? '');
+                            },
+                            // onPressed: () {
+                            //   print("tap");
+                            //   CustomPopupMenu(
+                            //       menuBuilder: () => Column(
+                            //             children: const [
+                            //               Text("data"),
+                            //               // PopupMenuItem(
+                            //               //   value: 'kickout',
+                            //               //   child: Text('Kickout'),
+                            //               // ),
+                            //             ],
+                            //           ),
+                            //       pressType: PressType.singleClick,
+                            //       child: Container(
+                            //         child: Icon(Icons.add_circle_outline,
+                            //             color: Colors.white),
+                            //         padding: const EdgeInsets.all(20),
+                            //       ));
+                            // },
+
+                            icon: const Icon(Icons.more_vert),
+                          ),
+                        )),
               );
             },
             error: (error, stackTrace) => Alart.handleError(context, error),
-            loading: () => const Progressindicator(),
+            loading: () => Loaders.center(),
           ),
         ],
       );

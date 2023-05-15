@@ -92,20 +92,16 @@ class memberRequest {
   }
 
   //.... add cap10s.../
-  Future<String?> addCaptensReq(rutinid, position, username) async {
+  Future<String?> addCaptensReq(rutinid, username) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
-    print("hi i am calling req $rutinid , $position $username");
+    print("hi i am calling req $rutinid  $username");
 
     final url = Uri.parse('${Const.BASE_URl}/rutin/cap10/add');
 
-    final response = await http.post(url, headers: {
-      'Authorization': 'Bearer $getToken'
-    }, body: {
-      "rutinid": rutinid,
-      "position": position ?? "ist cap 10 ",
-      "username": username
-    });
+    final response = await http.post(url,
+        headers: {'Authorization': 'Bearer $getToken'},
+        body: {"rutinid": rutinid, "username": username});
 
     var res = jsonDecode(response.body)['message'];
 

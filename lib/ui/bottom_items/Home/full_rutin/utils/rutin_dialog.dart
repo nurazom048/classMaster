@@ -111,7 +111,6 @@ class RutinDialog {
                                             (seleted_username, setPosition) {
                                           members.AddCapten(
                                             rutinId,
-                                            setPosition,
                                             seleted_username,
                                             context,
                                           );
@@ -152,9 +151,9 @@ class RutinDialog {
                                   return Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => seeAllcaptensList(
-                                        rutinId: rutinId,
-                                        buttotext: "Remove capten",
+                                      builder: (context) => SeeAllCaptainsList(
+                                        routineId: rutinId,
+                                        buttonText: "Remove capten",
                                         color: Colors.red,
                                         onUsername: (seleted_username, _) {
                                           members.removeMember(

@@ -26,9 +26,8 @@ class MemberController extends StateNotifier<bool> {
   MemberController(this.memberRequests, this.rutinId) : super(false);
 
   //******** AddCapten   ************** */
-  void AddCapten(rutinid, position, username, context) async {
-    final message =
-        await memberRequests.addCaptensReq(rutinid, position, username);
+  void AddCapten(rutinId, username, context) async {
+    final message = await memberRequests.addCaptensReq(rutinId, username);
     //  print("from comtroller : $message");
 
     Alart.showSnackBar(context, message);

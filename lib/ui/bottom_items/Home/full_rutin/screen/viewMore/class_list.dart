@@ -50,7 +50,7 @@ class _ClassListPageState extends State<ClassListPage> {
           children: [
             HeddingRow(
               hedding: "Priode List",
-              second_Hedding: "$totalPriodeCount  priode",
+              secondHeading: "$totalPriodeCount  priode",
               margin: EdgeInsets.zero,
               buttonText: "Add Priode",
               onTap: () {
@@ -117,7 +117,7 @@ class _ClassListPageState extends State<ClassListPage> {
             ),
             HeddingRow(
               hedding: "Class List",
-              second_Hedding: "$totalMemberCount  classes",
+              secondHeading: "$totalMemberCount  classes",
               margin: EdgeInsets.zero,
               buttonText: "Add Class",
               onTap: () {
