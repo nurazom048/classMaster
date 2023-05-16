@@ -91,7 +91,7 @@ class MemberList extends StatelessWidget {
                         },
                         error: (error, stackTrace) =>
                             Alart.handleError(context, error),
-                        loading: () => const Text("data"))),
+                        loading: () => Loaders.center())),
               ],
             ),
           ),
