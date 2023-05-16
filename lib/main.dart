@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:table/ui/auth_Section/auth_ui/LogIn_Screen.dart';
+import 'package:table/ui/auth_Section/auth_ui/logIn_screen.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFFEFF6FF),
         primarySwatch: Colors.blue,
       ),
-      home: LogingScreen(),
+      home: const LogingScreen(),
     );
   }
 }

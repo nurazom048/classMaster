@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/component/loaders.dart';
 
-import '../../../../../../core/dialogs/Alart_dialogs.dart';
+import '../../../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../../../widgets/accound_card_row.dart';
 import '../../../../../../widgets/appWidget/TextFromFild.dart';
 import '../../../../../../widgets/hedding_row.dart';

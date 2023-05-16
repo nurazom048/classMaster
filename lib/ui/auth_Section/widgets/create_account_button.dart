@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:table/ui/auth_Section/auth_ui/SiginUp_Screen.dart';
+import 'package:table/ui/auth_Section/auth_ui/siginup_screen.dart';
 
 class CreateAccountPopUpButton extends StatelessWidget {
   const CreateAccountPopUpButton({

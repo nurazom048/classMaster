@@ -10,12 +10,9 @@ import 'package:table/models/class_model.dart';
 import 'package:table/ui/bottom_items/Add/request/class_request.dart';
 import 'package:table/ui/bottom_items/Add/screens/add_priode.dart';
 import 'package:table/ui/bottom_items/Add/utils/add_class_validation.dart';
-import 'package:table/ui/bottom_items/Add/utils/weekdayUtils.dart';
-import 'package:table/ui/bottom_items/Add/widgets/addWeekdayButton.dart';
 import 'package:table/ui/bottom_items/Add/widgets/select_priode_number.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 import 'package:table/widgets/day_select_dropdowen.dart';
-import 'package:flutter/material.dart' as ma;
 
 import 'package:table/widgets/heder/heder_title.dart';
 import '../../../../constant/app_color.dart';
@@ -23,10 +20,8 @@ import '../../../../constant/constant.dart';
 import '../../../../models/rutins/class/find_class_model.dart';
 import '../../../../widgets/appWidget/TextFromFild.dart';
 import '../../../../widgets/appWidget/buttons/cupertino_butttons.dart';
-import '../../Home/full_rutin/controller/weekday_controller.dart';
 import '../../Home/full_rutin/screen/viewMore/class_list.dart';
-import '../../Home/full_rutin/screen/viewMore/view_more_screen.dart';
-import '../widgets/wekkday_view.dart';
+import '../widgets/show_wekday_widgets.dart';
 
 class AddClassScreen extends StatefulWidget {
   final String routineId;
@@ -86,9 +81,6 @@ class _AddClassScreenState extends State<AddClassScreen> {
   Widget build(BuildContext context) {
     print(widget.routineId);
     return Consumer(builder: (context, ref, _) {
-      //! provider
-      var weekdayListProvider =
-          ref.watch(weekayControllerStateProvider(widget.classId ?? ''));
       return Scaffold(
         backgroundColor: const Color(0xFFEFF6FF),
         body: CustomScrollView(
@@ -136,39 +128,10 @@ class _AddClassScreenState extends State<AddClassScreen> {
                       ),
                       const SizedBox(height: 20),
 
-                      // weekday
-                      if (widget.isEdit == true) ...[
-                        weekdayListProvider.when(
-                            data: (data) {
-                              if (data == null) {}
-                              return Column(
-                                children: List.generate(
-                                  data.weekdays.length,
-                                  (index) => Container(
-                                    margin:
-                                        const EdgeInsets.symmetric(vertical: 5),
-                                    child: WeekdayView(
-                                      weekday: data.weekdays[index],
-
-                                      // delete weekday
-                                      onTap: () => _deleteOntap(
-                                          data.weekdays[index].id, ref),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                            error: (error, stackTrace) =>
-                                Alart.handleError(context, error),
-                            loading: () => const SizedBox(
-                                  height: 100,
-                                  width: 100,
-                                  child: const ma.Text("Loding"),
-                                )),
-                        AddWeekdayButton(onPressed: () {
-                          WeekdayUtils.addWeekday(context, widget.classId);
-                        }),
-                      ] else
+                      //! weekday list when eddit
+                      if (widget.isEdit == true && widget.classId != null)
+                        ShowWeekdayWidgets(classId: widget.classId!)
+                      else
                         Column(
                           children: [
                             DayDropdown(
@@ -302,11 +265,5 @@ class _AddClassScreenState extends State<AddClassScreen> {
     return null;
   }
 
-  _deleteOntap(String id, WidgetRef ref) {
-    print(id);
-    ref
-        .read(weekayControllerStateProvider(widget.classId ?? '').notifier)
-        .deleteWeekday(context, id);
-  }
   //
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/chack_status_controller.dart';
-import '../../../../../core/dialogs/Alart_dialogs.dart';
+import '../../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../../widgets/appWidget/app_text.dart';
 import '../../full_rutin/widgets/send_request_button.dart';
 import '../notice controller/notice_boaed_satus_controller.dart';

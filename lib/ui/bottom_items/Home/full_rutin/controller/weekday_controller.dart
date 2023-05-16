@@ -24,6 +24,7 @@ class WeeekDayControllerClass extends StateNotifier<AsyncValue<WeekdayList>> {
   }
 
   void getStatus() async {
+    if (!mounted) return;
     try {
       final WeekdayList data = await WeekdaRequest.showWeekdayList(classId);
 

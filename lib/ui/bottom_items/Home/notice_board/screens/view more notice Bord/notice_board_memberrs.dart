@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/account_card_widgets.dart';
 
-import '../../../../../../core/dialogs/Alart_dialogs.dart';
+import '../../../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../../../widgets/accound_card_row.dart';
 import '../../../../../../widgets/hedding_row.dart';
 import '../../../../../../widgets/progress_indicator.dart';

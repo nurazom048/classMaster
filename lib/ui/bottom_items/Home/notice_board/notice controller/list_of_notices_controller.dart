@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../core/dialogs/Alart_dialogs.dart';
+import '../../../../../core/dialogs/alart_dialogs.dart';
 import '../models/notices models/list_ofz_notices.dart';
 import '../request/notice_board_request.dart';
 

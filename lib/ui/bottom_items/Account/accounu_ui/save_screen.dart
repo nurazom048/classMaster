@@ -152,7 +152,6 @@ class MiniRutineCard extends StatelessWidget {
       final chackStatusNotifier =
           ref.watch(chackStatusControllerProvider(rutinId).notifier);
       //? Provider
-      final rutinDetals = ref.watch(rutins_detalis_provider(rutinId));
       String status = chackStatus.value?.activeStatus ?? '';
       return Container(
         height: 120,

@@ -107,8 +107,6 @@ class ClassRequest {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 
-    print("from eddit");
-
     try {
       final response = await http.delete(
         Uri.parse('${Const.BASE_URl}/class/delete/$classId'),
@@ -127,9 +125,10 @@ class ClassRequest {
 
         print(res);
       } else {
-        throw Exception('Failed to load data');
+        throw Exception(json.decode(response.body));
       }
     } catch (e) {
+      print(e);
       Alart.handleError(context, e.toString());
     }
   }

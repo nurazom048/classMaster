@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Add/screens/add_class_screen.dart';
 
-import '../../../../../../core/dialogs/Alart_dialogs.dart';
+import '../../../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../../../models/class_details_model.dart';
 import '../../../../../../sevices/notification services/local_notifications.dart';
 import '../../../../../../widgets/hedding_row.dart';
@@ -73,8 +73,6 @@ class _ClassListPageState extends State<ClassListPage> {
                   data: (data) {
                     return data.fold(
                         (l) => Alart.handleError(context, l.message), (r) {
-                      print(r);
-
                       return ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: r.priodes.length,
@@ -124,10 +122,11 @@ class _ClassListPageState extends State<ClassListPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => AddClassScreen(
-                            routineId: widget.rutinId,
-                            isEdit: false,
-                          )),
+                    builder: (context) => AddClassScreen(
+                      routineId: widget.rutinId,
+                      isEdit: false,
+                    ),
+                  ),
                 );
               },
             ),
@@ -155,9 +154,7 @@ class _ClassListPageState extends State<ClassListPage> {
                         if (totalMemberCount == null) {
                           WidgetsBinding.instance.addPostFrameCallback((_) {
                             // Add Your Code here.
-                            setState(() {
-                              totalMemberCount = length;
-                            });
+                            setState(() => totalMemberCount = length);
                           });
                         }
 
@@ -167,10 +164,11 @@ class _ClassListPageState extends State<ClassListPage> {
 
                           //
                           onLongPress: () {
-                            PriodeAlart.logPressClass(context,
-                                classId:
-                                    data.classes.allClass[index].classId.id,
-                                rutinId: widget.rutinId);
+                            PriodeAlart.logPressClass(
+                              context,
+                              classId: data.classes.allClass[index].classId.id,
+                              rutinId: widget.rutinId,
+                            );
                           },
 
                           ontap: () {

@@ -30,7 +30,7 @@ class WeekdayView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 17),
+      margin: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
           color: const Color(0x0fa7cbff),
           border: Border.all(color: AppColor.nokiaBlue),
@@ -56,18 +56,26 @@ class WeekdayView extends StatelessWidget {
             },
           ),
           const SizedBox(height: 20),
-          Text(
-            "   Classroom Number",
-            style: TextStyle(
-                fontFamily: 'Open Sans',
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.w600,
-                fontSize: 16.0,
-                height: 1.3,
-                color: AppColor.nokiaBlue),
+          Padding(
+            padding: const EdgeInsets.only(left: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Classroom Number",
+                  style: TextStyle(
+                      fontFamily: 'Open Sans',
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16.0,
+                      height: 1.3,
+                      color: AppColor.nokiaBlue),
+                ),
+                AppText(weekday.room).title(),
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
-          AppText(weekday.room).title(),
-          const SizedBox(height: 20),
         ],
       ),
     );
