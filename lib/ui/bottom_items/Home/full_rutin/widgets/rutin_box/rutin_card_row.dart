@@ -42,7 +42,7 @@ class RutineCardInfoRow extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 //
-                SizedBox(width: 15),
+                const SizedBox(width: 15),
 
                 TitleAndSubtile(
                   title: day?.classId.instuctorName ?? " instuctorName ",
@@ -114,7 +114,7 @@ class TitleAndSubtile extends StatelessWidget {
             fontWeight: FontWeight.w500,
             fontSize: sbtitleSize ?? 12,
             height: 1.3,
-            color: Color(0xFF0168FF),
+            color: const Color(0xFF0168FF),
           ),
         ),
       ],

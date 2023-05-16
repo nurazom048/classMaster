@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, unnecessary_null_comparison
+// ignore_for_file: non_constant_identifier_names, unnecessary_null_comparison, avoid_print
 
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

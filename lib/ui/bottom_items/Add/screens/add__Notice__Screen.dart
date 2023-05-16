@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, use_build_context_synchronously
+// ignore_for_file: avoid_print, use_build_context_synchronously, must_be_immutable, camel_case_types, library_private_types_in_public_api
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +21,7 @@ class AddNoticeScreen extends ConsumerWidget {
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController noticeTitleController = TextEditingController();
   String? id;
-  String? pdfPath;
+  String? pdfpath;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -76,9 +76,9 @@ class AddNoticeScreen extends ConsumerWidget {
                         ),
                         const SizedBox(height: 60),
                         UploadPDFB_Button(
-                          onSelected: (thePath) {
-                            print("expected path $thePath");
-                            pdfPath = thePath;
+                          onSelected: (thepath) {
+                            print("expected path $thepath");
+                            pdfpath = thepath;
                           },
                         ),
                         const SizedBox(height: 60),
@@ -88,18 +88,18 @@ class AddNoticeScreen extends ConsumerWidget {
                             color: AppColor.nokiaBlue,
                             textt: "Add Notice",
                             onPressed: () async {
-                              print("pdf path : $pdfPath");
-                              if (pdfPath == null) {
+                              print("pdf path : $pdfpath");
+                              if (pdfpath == null) {
                                 Alart.errorAlartDilog(context, "select pdf");
                               }
                               if (_formKey.currentState!.validate() &&
                                   id != null) {
-                                print("validate $pdfPath");
+                                print("validate $pdfpath");
                                 String res = await NoticeRequest().addNotice(
                                   content_name: noticeTitleController.text,
                                   description: descriptionController.text,
                                   noticeId: id,
-                                  pdf_file: pdfPath,
+                                  pdf_file: pdfpath,
                                 );
 
                                 Alart.showSnackBar(context, res);
@@ -135,10 +135,10 @@ class _UploadPDFB_ButtonState extends State<UploadPDFB_Button> {
       margin: const EdgeInsets.symmetric(horizontal: 20),
       child: CupertinoButton(
         onPressed: () async {
-          String? PAth = await picker.pickPDFFile();
+          String? path = await picker.pickPDFFile();
           print("The apth is ");
-          print(PAth);
-          widget.onSelected(PAth);
+          print(path);
+          widget.onSelected(path);
         },
         color: const Color(0xFFEEF4FC),
         borderRadius: BorderRadius.circular(8),
@@ -198,8 +198,9 @@ class _MyDropdownButtonState extends State<MyDropdownButton> {
         child: noticeBoardList.when(
           data: (data) {
             // ignore: unnecessary_null_comparison
-            if (data == null)
+            if (data == null) {
               return const Text("No Notice Board is not  created");
+            }
 
             return DropdownButtonHideUnderline(
               child: GestureDetector(

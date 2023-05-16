@@ -70,10 +70,8 @@ class WeekdayUtils {
                         ),
                         color: AppColor.nokiaBlue,
                         onPressed: () async {
-                          print("object");
                           if (_weekdayFromKey.currentState!.validate() &&
                               _number != null) {
-                            print("validate");
                             ref
                                 .watch(weekayControllerStateProvider(classId)
                                     .notifier)

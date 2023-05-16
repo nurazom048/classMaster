@@ -103,7 +103,7 @@ class AccountScreen extends StatelessWidget {
                       "invitation",
                       onTap: () => Get.to(const JoinedRutinesScreen()),
                     ),
-                    MyDividerr(thickness: 1.0, height: 1.0),
+                    const MyDividerr(thickness: 1.0, height: 1.0),
                     //*********************** Tilesbutton*****************************/
                     Container(
                       alignment: Alignment.center,
@@ -162,7 +162,7 @@ class AccountScreen extends StatelessWidget {
                         ),
                       ]),
                     ),
-                    MyDividerr(thickness: 1.0, height: 1.0),
+                    const MyDividerr(thickness: 1.0, height: 1.0),
 
                     /// ********Sattings ******//
 
@@ -177,7 +177,7 @@ class AccountScreen extends StatelessWidget {
                         onTap: () =>
                             AccoutUtils.showConfirmationDialog(context)),
 
-                    MyDividerr(thickness: 1.0, height: 1.0),
+                    const MyDividerr(thickness: 1.0, height: 1.0),
                     MyContainerButton(
                       const Icon(Icons.help_rounded),
                       "About",

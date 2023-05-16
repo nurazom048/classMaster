@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:table/core/dialogs/alart_dialogs.dart';
-import 'package:table/ui/bottom_items/Home/notice_board/screens/viewNotice.dart';
+import 'package:table/ui/bottom_items/Home/notice_board/screens/view_notice_screen.dart';
 
 import '../../models/notice bord/recentNotice.dart';
 import '../../notice controller/list_of_notices_controller.dart';
@@ -33,7 +33,7 @@ class ListOfNoticeScreen extends ConsumerWidget {
                   void scrollListener() {
                     if (scrollController.position.pixels ==
                         scrollController.position.maxScrollExtent) {
-                      print("reached the end");
+                      // print("reached the end");
                       ref
                           .watch(listofNoticesProvider(noticeBoardId).notifier)
                           .loadMore(data.currentPage, context);

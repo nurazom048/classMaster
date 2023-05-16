@@ -48,9 +48,11 @@ class ExpanedWeekDay extends StatelessWidget {
             subhit: "Select End Period",
             lenghht: 3,
             onStartSelacted: (number) {
+              // ignore: avoid_print
               print(number);
             },
             onEndSelacted: (number) {
+              // ignore: avoid_print
               print(number);
             },
           ),

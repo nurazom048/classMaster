@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 /// ************MyDividerr************** */
 class MyDividerr extends StatelessWidget {
-  double? thickness;
-  double? height;
-  dynamic toppadding;
-  dynamic buttompadding;
+  final double? thickness;
+  final double? height;
+  final dynamic toppadding;
+  final dynamic buttompadding;
 
-  MyDividerr(
+  const MyDividerr(
       {this.thickness = 0.5,
       this.height = 0.5,
       this.toppadding = 15.00,

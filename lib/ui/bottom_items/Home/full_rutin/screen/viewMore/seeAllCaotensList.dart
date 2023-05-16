@@ -8,7 +8,6 @@ import 'package:table/widgets/accound_card_row.dart';
 
 import '../../../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../../../../widgets/hedding_row.dart';
-import '../../../../Account/models/Account_models.dart';
 import '../../controller/chack_status_controller.dart';
 import '../../controller/members_controllers.dart';
 
@@ -32,7 +31,6 @@ class SeeAllCaptainsList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     //! provider
     final allCaptains = ref.watch(allCaptenProvider(routineId));
-
     final chackStatus = ref.watch(chackStatusControllerProvider(routineId));
     final bool isOwner = chackStatus.value?.isOwner ?? false;
     return Padding(

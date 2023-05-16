@@ -111,7 +111,7 @@ class RutinBoxByIdSkelton extends StatelessWidget {
             ),
           ),
           // const SizedBox(height: 16),
-          AccounScelton(),
+          const AccounScelton(),
         ]),
       ),
     );

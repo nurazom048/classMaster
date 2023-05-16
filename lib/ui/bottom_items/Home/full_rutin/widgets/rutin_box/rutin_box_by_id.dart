@@ -134,7 +134,6 @@ class _RutinBoxByIdState extends State<RutinBoxById> {
 
                 // Select day row
                 SelectDayRow(selectedDay: (selectedDay) {
-                  print("thee day is : $selectedDay");
                   setState(() {
                     if (widget.gSelectedDay != selectedDay) {
                       widget.gSelectedDay = selectedDay;

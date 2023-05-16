@@ -41,10 +41,6 @@ class _ViewMoreState extends State<ViewMoreNoticeBord>
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> view = [
-      ListOfNoticeScreen(noticeBoardId: widget.id),
-      NoticeBoardMembersScreen(noticeBoardId: widget.id),
-    ];
     // ignore: avoid_print
     print("NoticeBoardId : ${widget.id}");
     return Scaffold(

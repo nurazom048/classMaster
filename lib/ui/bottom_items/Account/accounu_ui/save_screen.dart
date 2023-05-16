@@ -6,7 +6,6 @@ import 'package:table/widgets/appWidget/app_text.dart';
 import 'package:table/widgets/appWidget/dottted_divider.dart';
 import 'package:flutter/material.dart' as ma;
 
-import '../../../server/rutinReq.dart';
 import '../../Home/full_rutin/controller/chack_status_controller.dart';
 
 class SaveScreen extends StatefulWidget {
@@ -152,7 +151,6 @@ class MiniRutineCard extends StatelessWidget {
       final chackStatusNotifier =
           ref.watch(chackStatusControllerProvider(rutinId).notifier);
       //? Provider
-      String status = chackStatus.value?.activeStatus ?? '';
       return Container(
         height: 120,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),

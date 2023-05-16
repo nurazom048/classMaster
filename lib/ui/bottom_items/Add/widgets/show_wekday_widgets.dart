@@ -5,8 +5,8 @@ import 'package:table/ui/bottom_items/Add/widgets/wekkday_view.dart';
 import '../../../../core/component/Loaders.dart';
 import '../../../../core/dialogs/alart_dialogs.dart';
 import '../../Home/full_rutin/controller/weekday_controller.dart';
-import '../utils/weekdayUtils.dart';
-import 'addWeekdayButton.dart';
+import '../utils/weekday_utils.dart';
+import 'add_weekday_button.dart';
 
 class ShowWeekdayWidgets extends ConsumerWidget {
   final String classId;

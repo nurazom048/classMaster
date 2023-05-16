@@ -2,7 +2,6 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as ma;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/utils/rutin_dialog.dart';
 import 'package:table/ui/bottom_items/Home/home_req/uploaded_rutine_controller.dart';
@@ -104,7 +103,7 @@ class HomeScreen extends ConsumerWidget {
 
                   uploaded_rutins.when(
                     data: (data) {
-                      if (data == null) return const ma.Text("Data not found");
+                      if (data == null) return const Text("Data not found");
 
                       void scrollListener() {
                         if (scrollController.position.pixels ==

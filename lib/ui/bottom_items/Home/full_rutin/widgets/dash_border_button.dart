@@ -15,7 +15,7 @@ class DashBorderButton extends StatelessWidget {
       radius: const Radius.circular(20),
       padding: const EdgeInsets.all(6),
       color: AppColor.nokiaBlue,
-      dashPattern: [6, 6], // set the dash pattern
+      dashPattern: const [6, 6], // set the dash pattern
       strokeWidth: 1,
 
       child: Center(

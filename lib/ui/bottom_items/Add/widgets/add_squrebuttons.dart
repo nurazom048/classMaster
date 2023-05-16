@@ -22,9 +22,9 @@ class AddSquareButton extends StatelessWidget {
             height: 46,
             margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 5),
             decoration: BoxDecoration(
-              border: Border.all(color: Color(0xFF0168FF), width: 1),
+              border: Border.all(color: const Color(0xFF0168FF), width: 1),
               borderRadius: BorderRadius.circular(4),
-              color: Color(0xFFEEF4FC),
+              color: const Color(0xFFEEF4FC),
             ),
             child: const Center(
               child: Text(

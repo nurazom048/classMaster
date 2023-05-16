@@ -22,7 +22,7 @@ class PriodeWidget extends StatelessWidget {
       return DateFormat('h:mm a').format(dateTime);
     }
 
-    return Container(
+    return SizedBox(
       //margin: const EdgeInsets.only(right: 10, bottom: 10),
       height: 110,
       width: 130,
@@ -43,7 +43,7 @@ class PriodeWidget extends StatelessWidget {
               onLongPress: onLongpress,
               child: Container(
                   height: 90,
-                  padding: EdgeInsets.symmetric(vertical: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   width: 130,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
@@ -51,7 +51,7 @@ class PriodeWidget extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       AppText(formatTime(startTime)).heding(),
                       AppText(formatTime(endTime)).heding(),
                     ],

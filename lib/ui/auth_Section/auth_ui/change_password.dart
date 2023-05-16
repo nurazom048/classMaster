@@ -10,15 +10,15 @@ import '../auth_controller/auth_controller.dart';
 import '../utils/change_pw_validator.dart';
 
 class ChangePasswordPage extends ConsumerWidget {
-  ChangePasswordPage({Key? key});
+  ChangePasswordPage({super.key});
 
-  final TextEditingController _currentPasswordController =
+  //
+  final TextEditingController currentPasswordController =
       TextEditingController();
-  final TextEditingController _newPasswordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
+  final TextEditingController newPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
       TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //!provider
@@ -30,14 +30,14 @@ class ChangePasswordPage extends ConsumerWidget {
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Form(
-          key: _formKey,
+          key: formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               HeaderTitle("Change Password", context),
               const SizedBox(height: 40),
               AppTextFromField(
-                controller: _currentPasswordController,
+                controller: currentPasswordController,
                 obscureText: true,
                 hint: 'Current Password',
                 validator: (valu) =>
@@ -45,7 +45,7 @@ class ChangePasswordPage extends ConsumerWidget {
               ),
               const SizedBox(height: 16),
               AppTextFromField(
-                controller: _newPasswordController,
+                controller: newPasswordController,
                 obscureText: true,
                 hint: 'New Password',
                 validator: (valu) =>
@@ -53,11 +53,11 @@ class ChangePasswordPage extends ConsumerWidget {
               ),
               const SizedBox(height: 16),
               AppTextFromField(
-                controller: _confirmPasswordController,
+                controller: confirmPasswordController,
                 obscureText: true,
                 hint: 'Confirm New Password',
                 validator: (valu) => ChangePwValidator.validateConfirmPassword(
-                    valu, _newPasswordController.text),
+                    valu, newPasswordController.text),
               ),
               const SizedBox(height: 100),
               if (loding != null && loding == true)
@@ -76,10 +76,10 @@ class ChangePasswordPage extends ConsumerWidget {
                   color: AppColor.nokiaBlue,
                   textt: "Change Password",
                   onPressed: () async {
-                    if (_formKey.currentState?.validate() ?? false) {
+                    if (formKey.currentState?.validate() ?? false) {
                       authController.changepassword(
-                        _currentPasswordController.text,
-                        _confirmPasswordController.text,
+                        currentPasswordController.text,
+                        confirmPasswordController.text,
                         context,
                       );
                     } else {}

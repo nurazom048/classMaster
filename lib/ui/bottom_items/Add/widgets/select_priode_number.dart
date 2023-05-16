@@ -28,13 +28,13 @@ class PeriodNumberSelector extends StatefulWidget {
 }
 
 class _PeriodNumberSelectorState extends State<PeriodNumberSelector> {
-  int IntialselectedNumber = 0;
+  int intialselectedNumber = 0;
   int intalEnd = 0;
 
   void _handleNumberSelected(int number) {
-    if (number != IntialselectedNumber) {
+    if (number != intialselectedNumber) {
       setState(() {
-        IntialselectedNumber = number;
+        intialselectedNumber = number;
       });
     }
     widget.onStartSelacted?.call(number + 1);
@@ -74,7 +74,7 @@ class _PeriodNumberSelectorState extends State<PeriodNumberSelector> {
                   widget.lenghht,
                   (index) => PeriodNumberButton(
                     periodNumber: index + 1,
-                    isSelected: IntialselectedNumber == index,
+                    isSelected: intialselectedNumber == index,
                     onSelected: () => _handleNumberSelected(index),
                   ),
                 ),

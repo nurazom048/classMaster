@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/component/Loaders.dart';
-import 'package:table/ui/bottom_items/Home/notice_board/screens/viewNotice.dart';
+import 'package:table/ui/bottom_items/Home/notice_board/screens/view_notice_screen.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 
 import '../../../../../core/dialogs/alart_dialogs.dart';

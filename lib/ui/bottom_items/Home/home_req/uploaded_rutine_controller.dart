@@ -34,7 +34,7 @@ class UploadedRutinsController
 
       // ignore: avoid_print
       print(
-          "total ${newData.totalPages} : giver page ${page} newcp ${newData.currentPage}   ");
+          "total ${newData.totalPages} : giver page $page newcp ${newData.currentPage}   ");
       // Check if the new data's page number is greater than the current page number
       if (newData.currentPage! > state.value!.currentPage!) {
         int? totalPages = newData.totalPages ?? 1;

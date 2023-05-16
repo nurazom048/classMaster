@@ -29,11 +29,6 @@ class FinalNoticeBoardMembersController
     getMembersList();
   }
 
-  void dispose() {
-    // Clean up any resources here
-    super.dispose();
-  }
-
   Future<void> getMembersList() async {
     if (!mounted) return;
     try {

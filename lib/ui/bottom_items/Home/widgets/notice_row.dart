@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table/ui/bottom_items/Home/notice_board/models/notice%20bord/recentNotice.dart';
-import 'package:table/ui/bottom_items/Home/notice_board/screens/viewNotice.dart';
+import 'package:table/ui/bottom_items/Home/notice_board/screens/view_notice_screen.dart';
 import 'package:table/widgets/appWidget/dottted_divider.dart';
 
 class NoticeRow extends StatelessWidget {
