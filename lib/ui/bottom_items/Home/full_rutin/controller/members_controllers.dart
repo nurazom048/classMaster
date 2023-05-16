@@ -14,7 +14,7 @@ final memberControllerProvider =
             MemberController(ref.read(memberRequestProvider), rutinId));
 
 final all_members_provider =
-    FutureProvider.family.autoDispose<MembersModel?, String>((ref, rutin_id) {
+    FutureProvider.autoDispose.family<MembersModel?, String>((ref, rutin_id) {
   return ref.watch(memberRequestProvider).all_members(rutin_id);
 });
 
@@ -59,5 +59,12 @@ class MemberController extends StateNotifier<bool> {
     final message = await memberRequests.removeMemberReq(rutinId, username);
 
     Alart.showSnackBar(context, message);
+  }
+
+  //******** kickedout member   ************** */
+  void kickeOutMember(memberid, context) async {
+    final message = await memberRequests.kickOut(rutinId, memberid);
+
+    Alart.showSnackBar(context, message.message);
   }
 }

@@ -121,8 +121,8 @@ class MemberList extends StatelessWidget {
                             onPressed: () {
                               accountActions(context, ref,
                                   rutinId: rutinId,
-                                  username:
-                                      data.members?[index].username ?? '');
+                                  username: data.members?[index].username ?? '',
+                                  memberid: data.members?[index].sId ?? '');
                             },
                             // onPressed: () {
                             //   print("tap");

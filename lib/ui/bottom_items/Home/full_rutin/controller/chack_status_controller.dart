@@ -13,10 +13,9 @@ import '../../../../../models/message_model.dart';
 import '../request/rutine_notification.dart';
 
 //! providers
-final chackStatusControllerProvider = StateNotifierProvider.family<
-    ChackStatusController,
-    AsyncValue<CheckStatusModel>,
-    String>((ref, rutinId) {
+final chackStatusControllerProvider = StateNotifierProvider.autoDispose
+    .family<ChackStatusController, AsyncValue<CheckStatusModel>, String>(
+        (ref, rutinId) {
   return ChackStatusController(
     ref,
     rutinId,

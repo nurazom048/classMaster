@@ -1,43 +1,26 @@
 // ignore_for_file: avoid_function_literals_in_foreach_calls
 
+import 'dart:convert';
 import 'package:table/ui/bottom_items/Account/models/account_models.dart';
 
+ListCptens listCptensFromJson(String str) =>
+    ListCptens.fromJson(json.decode(str));
+
 class ListCptens {
+  String message;
+  int count;
+  List<AccountModels> captains;
+
   ListCptens({
     required this.message,
     required this.count,
-    required this.totalPages,
-    required this.currentPage,
     required this.captains,
   });
 
-  String message;
-  int count;
-  int totalPages;
-  int currentPage;
-  List<AccountModels> captains;
-
-  factory ListCptens.fromJson(Map<String, dynamic> json) {
-    List<AccountModels> captainsList = [];
-    List<dynamic> captainsJson = json['captains'];
-    captainsJson.forEach((captainJson) {
-      Map<String, dynamic> cap10AcJson = captainJson['cap10Ac'];
-      AccountModels captain = AccountModels(
-          sId: captainJson['_id'],
-          username: cap10AcJson['username'],
-          name: cap10AcJson['name'],
-          password: null,
-          image: cap10AcJson['image'],
-          position: captainJson['position']);
-      captainsList.add(captain);
-    });
-
-    return ListCptens(
-      message: json["message"],
-      count: json["count"],
-      totalPages: json["totalPages"],
-      currentPage: json["currentPage"],
-      captains: captainsList,
-    );
-  }
+  factory ListCptens.fromJson(Map<String, dynamic> json) => ListCptens(
+        message: json["message"],
+        count: json["count"],
+        captains: List<AccountModels>.from(
+            json["captains"].map((x) => AccountModels.fromJson(x))),
+      );
 }

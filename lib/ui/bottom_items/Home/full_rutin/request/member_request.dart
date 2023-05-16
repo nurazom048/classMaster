@@ -70,7 +70,7 @@ class memberRequest {
     final String? getToken = prefs.getString('Token');
 
     var url =
-        Uri.parse('${Const.BASE_URl}/rutin/member/remove//$rutin_id/$username');
+        Uri.parse('${Const.BASE_URl}/rutin/member/remove/$rutin_id/$username');
 
     try {
       final response =
@@ -193,6 +193,32 @@ class memberRequest {
     }
   }
 
+//***********************   kickOut   ***********************/
+  Future<Message> kickOut(rutin_id, memberid) async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+
+    var url =
+        Uri.parse("${Const.BASE_URl}/rutin/member/kickout/$rutin_id/$memberid");
+
+    try {
+      final response = await http
+          .delete(url, headers: {'Authorization': 'Bearer $getToken'});
+      print("from kicked");
+      print(jsonDecode(response.body));
+
+      var res = Message.fromJson(jsonDecode(response.body));
+
+      if (response.statusCode == 200) {
+        return res;
+      } else {
+        throw Exception(res.toString());
+      }
+    } catch (e) {
+      return Message(message: e.toString());
+    }
+  }
+
   //
   Future<ListCptens> sellAllCaptemReq(String rutin_id) async {
     final prefs = await SharedPreferences.getInstance();
@@ -223,7 +249,7 @@ class memberRequest {
     //
     final response = await http.post(url);
     var res = AllMember.fromJson(jsonDecode(response.body));
-
+    print(jsonDecode(response.body));
     try {
       if (response.statusCode == 200) {
         return res;
@@ -237,16 +263,18 @@ class memberRequest {
   //... see all joi request ..............///
 
   //....sell all request ....//
-  Future<SeeAllRequestModel> sell_all_request(rutin_id) async {
+  Future<SeeAllRequestModel> see_all_request(rutin_id) async {
+    print("request canme to seeAll members $rutin_id");
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
-
+    Uri url =
+        Uri.parse('${Const.BASE_URl}/rutin/member/see_all_request/$rutin_id');
     try {
       final response = await http.post(
-        Uri.parse('${Const.BASE_URl}/rutin/member/see_all_request/$rutin_id'),
+        url,
         headers: {'Authorization': 'Bearer $getToken'},
       );
-
+      print(jsonDecode(response.body));
       if (response.statusCode == 200) {
         // ignore: unnecessary_null_comparison
         if (response.body != null) {
@@ -319,8 +347,8 @@ class memberRequest {
   }
 }
 
-final allCaptenProvider =
-    FutureProvider.family<ListCptens, String>((ref, rutin_id) async {
+final allCaptenProvider = FutureProvider.autoDispose
+    .family<ListCptens, String>((ref, rutin_id) async {
   return ref.watch(memberRequestProvider).sellAllCaptemReq(rutin_id);
 });
 final allMembersProvider =

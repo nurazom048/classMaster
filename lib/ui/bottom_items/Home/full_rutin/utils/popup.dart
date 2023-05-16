@@ -1,16 +1,21 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../controller/chack_status_controller.dart';
 import '../controller/members_controllers.dart';
+import '../controller/see_all_req_controller.dart';
 
 void accountActions(BuildContext context, WidgetRef ref,
-    {required String rutinId, required String username}) async {
+    {required String rutinId,
+    required String username,
+    required String memberid}) async {
   //! provider
   final chackStatus = ref.watch(chackStatusControllerProvider(rutinId));
   final bool isOwner = chackStatus.value?.isOwner ?? false;
   final bool isCaptain = chackStatus.value?.isCaptain ?? false;
-
+  final membersCon = ref.watch(memberControllerProvider(rutinId).notifier);
   final result = await showMenu(
     context: context,
     position: const RelativeRect.fromLTRB(120, 535, 0, 0),
@@ -32,13 +37,11 @@ void accountActions(BuildContext context, WidgetRef ref,
   if (result != null) {
     // Handle selected menu item
     if (result == 'kickout') {
-      // Perform kickout action
-      print('Kickout action');
+      // kicked member
+      membersCon.kickeOutMember(memberid, context);
     } else if (result == 'make_captains') {
-      ref
-          .watch(memberControllerProvider(rutinId).notifier)
-          .AddCapten(rutinId, username, context);
-      // Perform make captains action
+      // add member
+      membersCon.AddCapten(rutinId, username, context);
     }
   }
 }

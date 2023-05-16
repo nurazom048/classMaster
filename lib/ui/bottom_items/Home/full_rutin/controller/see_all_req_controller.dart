@@ -31,11 +31,10 @@ class SeeAllRequestControllerClass
   }
 
   void getAllRequestList() async {
-    if (mounted) return;
+    if (!mounted) return;
 
     try {
-      final res = await memberRequests.sell_all_request(rutinId);
-
+      final res = await memberRequests.see_all_request(rutinId);
       state = AsyncData(res);
     } catch (err, stack) {
       state = AsyncValue.error(err, stack);
