@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:table/ui/auth_Section/auth_ui/logIn_screen.dart';
+import 'package:table/ui/auth_Section/auth_ui/phone_number_screen.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFFEFF6FF),
         primarySwatch: Colors.blue,
       ),
-      home: const LogingScreen(),
+      home: PhoneNumberScreen(),
     );
   }
 }
