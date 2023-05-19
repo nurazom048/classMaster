@@ -6,8 +6,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:table/models/rutins/list_of_save_rutin.dart';
 import '../../../../constant/constant.dart';
+import '../../../../models/message_model.dart';
 import '../../../../models/rutins/jponed_rutins_model.dart';
 import '../../../../models/rutins/saveRutine.dart';
+import '../models/home_rutines_model.dart';
 
 //!.. Provider ...!//
 
@@ -100,6 +102,39 @@ class HomeReq {
       }
     } catch (e) {
       throw Exception(e.toString());
+    }
+  }
+
+  //********    homeRutines      *************/
+
+  Future<HomeRoutines> homeRutines({pages}) async {
+    String queryPage = "?page=$pages}";
+    String? username = "";
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+    final url = Uri.parse('${Const.BASE_URl}/rutin/home/' + queryPage);
+    final headers = {'Authorization': 'Bearer $getToken'};
+
+    try {
+      //
+      final response = await http.post(url, headers: headers);
+
+      //
+      final res = json.decode(response.body);
+      print(res);
+
+      HomeRoutines homeRutines = HomeRoutines.fromJson(res);
+
+      //
+      if (response.statusCode == 200) {
+        return homeRutines;
+      } else {
+        throw Future.error("eror");
+      }
+    } catch (e) {
+      print(e);
+
+      return Future.error(e);
     }
   }
 }

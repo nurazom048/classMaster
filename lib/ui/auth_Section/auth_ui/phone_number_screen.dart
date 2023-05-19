@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../constant/app_color.dart';
 import '../../../widgets/appWidget/buttons/cupertino_butttons.dart';
 import '../../../widgets/heder/heder_title.dart';
+import '../widgets/pnone_number_textfields.dart';
 import 'otp_screen.dart';
 
 class PhoneNumberScreen extends StatefulWidget {
@@ -15,6 +17,8 @@ class PhoneNumberScreen extends StatefulWidget {
 
 class _MyPhoneState extends State<PhoneNumberScreen> {
   TextEditingController countryController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -31,101 +35,78 @@ class _MyPhoneState extends State<PhoneNumberScreen> {
           child: Column(
             children: [
               HeaderTitle("Log In", context),
-              Container(
-                margin: const EdgeInsets.only(left: 25, right: 25),
-                alignment: Alignment.center,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // Image.asset(
-                    //   'assets/img1.png',
-                    //   width: 150,
-                    //   height: 150,
-                    // ),
-                    const SizedBox(height: 126),
-                    const Text(
-                      "Phone Verification",
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      "We need to register your phone without getting started!",
-                      style: TextStyle(
-                        fontSize: 16,
+              Form(
+                key: formKey,
+                child: Container(
+                  margin: const EdgeInsets.only(left: 25, right: 25),
+                  alignment: Alignment.center,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // Image.asset(
+                      //   'assets/img1.png',
+                      //   width: 150,
+                      //   height: 150,
+                      // ),
+                      const SizedBox(height: 126),
+                      const Text(
+                        "Phone Verification",
+                        style: TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.bold),
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 30),
-                    Container(
-                      height: 55,
-                      decoration: BoxDecoration(
-                          border: Border.all(width: 1, color: Colors.grey),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          SizedBox(
-                            width: 40,
-                            child: TextField(
-                              controller: countryController,
-                              keyboardType: TextInputType.number,
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                              ),
-                            ),
-                          ),
-                          const Text(
-                            "|",
-                            style: TextStyle(fontSize: 33, color: Colors.grey),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          const Expanded(
-                              child: TextField(
-                            keyboardType: TextInputType.phone,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: "Phone",
-                            ),
-                          ))
-                        ],
+                      const SizedBox(height: 10),
+                      const Text(
+                        "We need to register your phone without getting started!",
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                    ),
-                    const SizedBox(height: 60),
+                      const SizedBox(height: 30),
+                      PhoneNumberTextField(
+                        countryController: countryController,
+                        phoneNumberController: phoneNumberController,
+                        validator: (value) => validatePhoneNumber(value),
+                      ),
 
-                    CupertinoButtonCustom(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                      color: AppColor.nokiaBlue,
-                      textt: "Send the code",
-                      onPressed: () {
-                        Get.to(() => const OtpScreen());
-                        // if (formKey.currentState?.validate() ?? false) {
-                        // create account
+                      const SizedBox(height: 60),
 
-                        // }
-                      },
-                    ),
-                    // SizedBox(
-                    //   width: double.infinity,
-                    //   height: 45,
-                    //   child: ElevatedButton(
-                    //       style: ElevatedButton.styleFrom(
-                    //           backgroundColor: Colors.green.shade600,
-                    //           shape: RoundedRectangleBorder(
-                    //               borderRadius: BorderRadius.circular(10))),
-                    //       onPressed: () {
-                    //         // Navigator.pushNamed(context, 'verify');
-                    //         Get.to(() => const OtpScreen());
-                    //       },
-                    //       child: const Text("Send the code")),
-                    // )
-                  ],
+                      CupertinoButtonCustom(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        color: AppColor.nokiaBlue,
+                        textt: "Send the code",
+                        onPressed: () async {
+                          String fullphoneNum = countryController.text +
+                              phoneNumberController.text;
+                          if (formKey.currentState?.validate() ?? false) {
+                            // firebse send code to phone number
+                            await FirebaseAuth.instance.verifyPhoneNumber(
+                              //phone number
+                              phoneNumber: fullphoneNum,
+                              verificationCompleted:
+                                  (PhoneAuthCredential credential) {},
+                              verificationFailed: (FirebaseAuthException e) {},
+                              codeSent:
+                                  (String verificationId, int? resendToken) {
+                                // go to otp screen
+                                Get.to(
+                                  () => OtpScreen(
+                                    verificationId: verificationId,
+                                    phoneNumber: fullphoneNum,
+                                  ),
+                                );
+                              },
+                              codeAutoRetrievalTimeout:
+                                  (String verificationId) {},
+                            );
+
+                            // create account
+                          }
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -133,5 +114,21 @@ class _MyPhoneState extends State<PhoneNumberScreen> {
         ),
       ),
     );
+  }
+
+  String? validatePhoneNumber(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Phone number cannot be empty";
+    }
+
+    if (value.length != 11) {
+      return "Phone number should be 11 digits long";
+    }
+
+    if (!value.startsWith("01")) {
+      return "Phone number should start with '01'";
+    }
+
+    return null; // Return null if the input is valid
   }
 }

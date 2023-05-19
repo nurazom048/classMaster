@@ -17,6 +17,7 @@ class AppTextFromField extends StatefulWidget {
     this.keyboardType,
     this.margin,
     this.obscureText,
+    this.showOfftext,
   });
 
   //
@@ -27,6 +28,7 @@ class AppTextFromField extends StatefulWidget {
   final dynamic onFieldSubmitted, keyboardType;
   final FocusNode? focusNode;
   final EdgeInsetsGeometry? margin;
+  final String? showOfftext;
   bool? obscureText;
 
   @override
@@ -53,37 +55,49 @@ class _AppTextFromFieldState extends State<AppTextFromField> {
                 color: AppColor.nokiaBlue),
           ),
           //
-          TextFormField(
-            controller: widget.controller,
-            focusNode: widget.focusNode,
-            onFieldSubmitted: widget.onFieldSubmitted,
-            validator: widget.validator,
-            keyboardType: widget.keyboardType,
-            obscureText: widget.obscureText ?? false,
-            decoration: InputDecoration(
-              suffixIcon: widget.obscureText != null
-                  ? InkWell(
-                      onTap: () {
-                        setState(() {
-                          widget.obscureText = !widget.obscureText!;
-                        });
-                      },
-                      child: widget.obscureText == false
-                          ? const Icon(Icons.visibility)
-                          : const Icon(Icons.visibility_off))
-                  : null,
-              labelText: widget.labelText ?? "Enter your ${widget.hint} ",
-              errorStyle: const TextStyle(
-                  fontSize: 17,
-                  letterSpacing: 1,
-                  decorationStyle: TextDecorationStyle.solid),
-              border: const UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.blue, // Set the underline color here
+
+          if (widget.showOfftext == null)
+            TextFormField(
+              controller: widget.controller,
+              focusNode: widget.focusNode,
+              onFieldSubmitted: widget.onFieldSubmitted,
+              validator: widget.validator,
+              keyboardType: widget.keyboardType,
+              obscureText: widget.obscureText ?? false,
+              decoration: InputDecoration(
+                suffixIcon: widget.obscureText != null
+                    ? InkWell(
+                        onTap: () {
+                          setState(() {
+                            widget.obscureText = !widget.obscureText!;
+                          });
+                        },
+                        child: widget.obscureText == false
+                            ? const Icon(Icons.visibility)
+                            : const Icon(Icons.visibility_off))
+                    : null,
+                labelText: widget.labelText ?? "Enter your ${widget.hint} ",
+                errorStyle: const TextStyle(
+                    fontSize: 17,
+                    letterSpacing: 1,
+                    decorationStyle: TextDecorationStyle.solid),
+                border: const UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.blue, // Set the underline color here
+                  ),
                 ),
               ),
-            ),
-          ),
+            )
+          else
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Text(widget.showOfftext!),
+                ),
+              ],
+            )
         ],
       ),
     );

@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFFEFF6FF),
         primarySwatch: Colors.blue,
       ),
-      home: PhoneNumberScreen(),
+      home: LogingScreen(),
     );
   }
 }

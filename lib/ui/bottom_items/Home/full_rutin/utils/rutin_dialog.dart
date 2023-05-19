@@ -201,7 +201,6 @@ class RutinDialog {
   }
 
   //
-
   static rutineNotficationSeleect(BuildContext context, String rutineId) {
     showModalBottomSheet(
       elevation: 0,
@@ -209,73 +208,88 @@ class RutinDialog {
       backgroundColor: Colors.transparent,
       context: context,
       builder: (BuildContext context) {
-        return SizedBox(
-          height: 250,
-          width: 350,
-          child: Card(
-            color: Colors.white,
-            margin: const EdgeInsets.all(18.0)
-                .copyWith(left: 30, right: 30, bottom: 30),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            child: Consumer(builder: (context, ref, _) {
-              //!provider
-              // state providers
-              final chackStatus =
-                  ref.watch(chackStatusControllerProvider(rutineId));
+        return Consumer(
+          builder: (context, ref, _) {
+            bool notificationOff = false;
+            String status = '';
 
-              // state providers with notifier
-              final chackStatusNotifier =
-                  ref.watch(chackStatusControllerProvider(rutineId).notifier);
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              final chackStatus =
+                  ref.read(chackStatusControllerProvider(rutineId));
               final members =
                   ref.read(memberControllerProvider(rutineId).notifier);
 
-              //
-              String status = chackStatus.value?.activeStatus ?? '';
+              status = chackStatus.value?.activeStatus ?? '';
+              notificationOff = chackStatus.value?.notificationOff ?? false;
+            });
 
-              bool notificationOff =
-                  chackStatus.value?.notificationOff ?? false;
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ChackBoxSelector(
-                    isChacked: !notificationOff,
-                    icon: Icons.notifications_active,
-                    text: "notifications_active",
-                    onTap: () {
-                      chackStatusNotifier.notificationOn(context);
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ChackBoxSelector(
-                    isChacked: notificationOff,
-                    icon: Icons.notifications_off,
-                    text: "Notification Off",
-                    color: Colors.red,
-                    onTap: () {
-                      chackStatusNotifier.notificationOff(context);
-                      Navigator.pop(context);
-                    },
-                  ),
-                  const MyDivider(),
-                  ChackBoxSelector(
-                    icon: Icons.logout_sharp,
-                    text: "Leave Routine",
-                    color: Colors.red,
-                    onTap: () {
-                      Alart.errorAlertDialogCallBack(
-                        context,
-                        "are you sure you want to leave",
-                        onConfirm: (bool isYes) {
-                          chackStatusNotifier.leaveMember(context);
+            return SizedBox(
+              height: 250,
+              width: 350,
+              child: Card(
+                color: Colors.white,
+                margin: const EdgeInsets.all(18.0)
+                    .copyWith(left: 30, right: 30, bottom: 30),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
+                child: Consumer(builder: (context, ref, _) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ChackBoxSelector(
+                        isChacked: !notificationOff,
+                        icon: Icons.notifications_active,
+                        text: "notifications_active",
+                        onTap: () {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            ref
+                                .read(chackStatusControllerProvider(rutineId)
+                                    .notifier)
+                                .notificationOn(context);
+                          });
                         },
-                      );
-                    },
-                  ),
-                ],
-              );
-            }),
-          ),
+                      ),
+                      ChackBoxSelector(
+                        isChacked: notificationOff,
+                        icon: Icons.notifications_off,
+                        text: "Notification Off",
+                        color: Colors.red,
+                        onTap: () {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            ref
+                                .read(chackStatusControllerProvider(rutineId)
+                                    .notifier)
+                                .notificationOff(context);
+                          });
+                        },
+                      ),
+                      const MyDivider(),
+                      ChackBoxSelector(
+                        icon: Icons.logout_sharp,
+                        text: "Leave Routine",
+                        color: Colors.red,
+                        onTap: () {
+                          Alart.errorAlertDialogCallBack(
+                            context,
+                            "Are you sure you want to leave?",
+                            onConfirm: (bool isYes) {
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                ref
+                                    .read(
+                                        chackStatusControllerProvider(rutineId)
+                                            .notifier)
+                                    .leaveMember(context);
+                              });
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                }),
+              ),
+            );
+          },
         );
       },
     );

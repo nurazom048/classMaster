@@ -10,6 +10,7 @@ import '../../../../core/dialogs/alart_dialogs.dart';
 import '../../Account/accounu_ui/account_screen.dart';
 import '../full_rutin/widgets/rutin_box/rutin_box_by_id.dart';
 import '../full_rutin/widgets/sceltons/rutinebox_id_scelton.dart';
+import '../home_req/home_rutins_controller.dart';
 import '../notice_board/notice controller/virew_recent_notice_controller.dart';
 import '../notice_board/screens/view_all_recent_notice.dart';
 import '../widgets/custom_title_bar.dart';
@@ -22,7 +23,7 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //! provider
-    final uploaded_rutins = ref.watch(uploadedRutinsControllerProvider);
+    final homeRutins = ref.watch(homeRutinControllerProvider);
     final recentNoticeList = ref.watch(recentNoticeController);
     return SafeArea(
         child: Scaffold(
@@ -101,16 +102,16 @@ class HomeScreen extends ConsumerWidget {
 
                   // uploaded rutines
 
-                  uploaded_rutins.when(
+                  homeRutins.when(
                     data: (data) {
                       if (data == null) return const Text("Data not found");
 
                       void scrollListener() {
                         if (scrollController.position.pixels ==
                             scrollController.position.maxScrollExtent) {
-                          ref
-                              .watch(uploadedRutinsControllerProvider.notifier)
-                              .loadMore(data.currentPage);
+                          // ref
+                          //     .watch(uploadedRutinsControllerProvider.notifier)
+                          //     .loadMore(data.currentPage);
                         }
                       }
 
@@ -121,20 +122,20 @@ class HomeScreen extends ConsumerWidget {
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         padding: const EdgeInsets.only(bottom: 100),
-                        itemCount: data.rutins.length,
+                        itemCount: data.homeRoutines.length,
                         itemBuilder: (context, index) {
                           return RutinBoxById(
-                            rutinId: data.rutins[index].id,
-                            rutinName: data.rutins[index].name,
+                            rutinId: data.homeRoutines[index].rutineID.id,
+                            rutinName: data.homeRoutines[index].rutineID.name,
                             onTapMore: () =>
                                 RutinDialog.ChackStatusUser_BottomSheet(
                               context,
-                              data.rutins[index].id,
-                              data.rutins[index].name,
+                              data.homeRoutines[index].rutineID.id,
+                              data.homeRoutines[index].rutineID.name,
                             ),
                           );
 
-                          if (data.rutins.length - 1 != index) {
+                          if (data.homeRoutines.length - 1 != index) {
                             // return RutinBoxById(
                             //   rutinId: data.rutins[index].id,
                             //   rutinName: data.rutins[index].name,

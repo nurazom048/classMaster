@@ -18,10 +18,9 @@ class AuthReq {
           .post(loginUrl, body: {"username": username, "password": password});
 
       var message = json.decode(response.body)["message"];
-
+      print(json.decode(response.body));
       if (response.statusCode == 200) {
         final accountData = json.decode(response.body);
-        final routines = json.decode(response.body)["user"]["routines"];
 
         //... save token
         final prefs = await SharedPreferences.getInstance();
@@ -32,6 +31,7 @@ class AuthReq {
         return left(message.toString());
       }
     } catch (e) {
+      print(e);
       return left(e.toString());
     }
   }

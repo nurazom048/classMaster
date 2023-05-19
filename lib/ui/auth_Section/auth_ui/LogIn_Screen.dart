@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import 'package:table/sevices/notification%20services/awn_package.dart';
+import 'package:table/ui/auth_Section/auth_ui/phone_number_screen.dart';
 import 'package:table/ui/auth_Section/utils/login_validation.dart';
 import 'package:table/ui/auth_Section/widgets/create_account_button.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
@@ -116,14 +118,27 @@ class _LogingScreenState extends State<LogingScreen> {
                   ref.watch(gooleAuthControllerProvider).lodging == true
                       ? const SizedBox(
                           height: 20, width: 20, child: Progressindicator())
-                      : SocialLoginButton(onTap: () async {
-                          ref.read(gooleAuthControllerProvider).signin(context);
+                      : SocialLoginButton(
+                          onTap: () async {
+                            ref
+                                .read(gooleAuthControllerProvider)
+                                .signin(context);
 
-                          if (ref
-                                  .watch(gooleAuthControllerProvider)
-                                  .googleAccount !=
-                              null) {}
-                        }),
+                            if (ref
+                                    .watch(gooleAuthControllerProvider)
+                                    .googleAccount !=
+                                null) {}
+                          },
+                        ),
+
+                  // continue with phone
+
+                  SocialLoginButton(
+                    isphone: true,
+                    onTap: () async {
+                      Get.to(() => const PhoneNumberScreen());
+                    },
+                  ),
                 ],
               ),
             ),

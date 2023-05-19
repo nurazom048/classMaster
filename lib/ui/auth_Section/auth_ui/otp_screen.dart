@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
@@ -7,15 +8,19 @@ import 'package:table/widgets/hedding_row.dart';
 import '../../../constant/app_color.dart';
 import '../../../widgets/appWidget/buttons/cupertino_butttons.dart';
 import '../../../widgets/heder/heder_title.dart';
+import 'SiginUp_Screen.dart';
 
 class OtpScreen extends StatefulWidget {
-  const OtpScreen({Key? key}) : super(key: key);
+  final String verificationId;
+  final String? phoneNumber;
+  const OtpScreen({Key? key, required this.verificationId, this.phoneNumber})
+      : super(key: key);
 
   @override
   State<OtpScreen> createState() => _MyVerifyState();
 }
 
-String? pinucode;
+String? smsCode;
 
 class _MyVerifyState extends State<OtpScreen> {
   @override
@@ -45,6 +50,7 @@ class _MyVerifyState extends State<OtpScreen> {
         color: const Color.fromRGBO(234, 239, 243, 1),
       ),
     );
+    FirebaseAuth auth = FirebaseAuth.instance;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -88,7 +94,7 @@ class _MyVerifyState extends State<OtpScreen> {
                     onCompleted: (pin) {
                       print(pin);
                       setState(() {
-                        pinucode = pin;
+                        smsCode = pin;
                       });
                     },
                   ),
@@ -98,10 +104,27 @@ class _MyVerifyState extends State<OtpScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 4),
                     color: AppColor.nokiaBlue,
                     textt: "Verify Phone Number",
-                    onPressed: () {
+                    onPressed: () async {
                       // Get.to(() => const OtpScreen());
-                      if (pinucode != null) {
-                        // create account
+                      if (smsCode != null) {
+                        //  verifi otp then go to create account create account
+
+                        try {
+                          // verifi otp
+                          PhoneAuthCredential credential =
+                              PhoneAuthProvider.credential(
+                                  verificationId: widget.verificationId,
+                                  smsCode: smsCode!);
+
+                          // Sign the user in (or link) with the credential
+                          await auth.signInWithCredential(credential);
+                          //
+                          Alart.showSnackBar(context, "Verifi sucsess");
+                          Get.to(() => SignUpScreen(
+                              phoneNumberString: widget.phoneNumber));
+                        } catch (e) {
+                          Alart.showSnackBar(context, e.toString());
+                        }
                       } else {
                         Alart.showSnackBar(context, "Please EnterPin");
                       }
