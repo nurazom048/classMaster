@@ -54,13 +54,11 @@ class HomeReq {
 
   //
   //********    ListOfUploedRutins      *************/
-  Future<ListOfUploadedRutins> uplodedRutins({int pages = 1}) async {
-    String queryPage = "?page=$pages}";
+  Future<ListOfUploadedRutins> uplodedRutins({String? username}) async {
     String? username = "";
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
-    final url = Uri.parse(
-        '${Const.BASE_URl}/rutin/uploded_rutins/' + username + queryPage);
+    final url = Uri.parse('${Const.BASE_URl}/rutin/uploded_rutins/' + username);
     final headers = {'Authorization': 'Bearer $getToken'};
 
     //.. Request send
@@ -74,8 +72,8 @@ class HomeReq {
       } else {
         throw Exception("Failed to load saved routines");
       }
-    } catch (e) {
-      throw Exception(e.toString());
+    } catch (error) {
+      throw Future.error(error);
     }
   }
 
