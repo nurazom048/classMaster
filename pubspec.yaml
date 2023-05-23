@@ -62,6 +62,8 @@ dependencies:
   awesome_notifications: ^0.6.19
   custom_pop_up_menu: ^1.2.4
   pinput: ^2.2.31
+  carousel_slider: ^4.2.1
+  smooth_page_indicator: ^1.1.0
 
 dev_dependencies:
   flutter_test:

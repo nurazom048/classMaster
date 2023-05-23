@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import 'package:table/constant/app_color.dart';
 import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
+import 'package:table/ui/auth_Section/auth_ui/email_varification.screen.dart';
 import 'package:table/ui/auth_Section/utils/singUp_validation.dart';
 import 'package:table/widgets/appWidget/buttons/cupertino_butttons.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
@@ -144,17 +147,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 30),
                     color: AppColor.nokiaBlue,
                     textt: "Sign up",
-                    onPressed: () {
+                    onPressed: () async {
+                      Get.to(() => EmailVerificationScreen(
+                          email: "nurazom049@gmail.com"));
                       if (formKey.currentState?.validate() ?? false) {
-                        // create account
-                        ref
-                            .read(authController_provider.notifier)
-                            .createAccount(
-                              context: context,
-                              name: nameController.text,
-                              username: usernameController.text,
-                              password: passwordController.text,
-                            );
+                        Get.to(() => EmailVerificationScreen(
+                            email: emailController.text));
+// var emailAuth = 'someemail@domain.com';
+// FirebaseAuth.instance.sendSignInLinkToEmail(
+//         email: emailAuth, actionCodeSettings: acs)
+//     .catchError((onError) => print('Error sending email verification $onError'))
+//     .then((value) => print('Successfully sent email verification'));
+// });
+
+                        // // create account
+                        // ref
+                        //     .read(authController_provider.notifier)
+                        //     .createAccount(
+                        //       context: context,
+                        //       name: nameController.text,
+                        //       email: emailController.text,
+                        //       username: usernameController.text,
+                        //       password: passwordController.text,
+                        //     );
                       }
                     },
                   )

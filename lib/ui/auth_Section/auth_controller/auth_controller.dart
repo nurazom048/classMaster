@@ -25,19 +25,21 @@ class AuthController extends StateNotifier<bool> {
     required String name,
     required String username,
     required String password,
+    required String email,
   }) async {
     state = true;
     // responce
-    Either<String, Message> res = await AuthReq.createAccount(
+    Either<Message, Message> res = await AuthReq.createAccount(
       context,
       name: name,
       username: username,
       password: password,
+      email: email,
     );
 
     res.fold((l) {
       state = false;
-      return Alart.showSnackBar(context, l);
+      return Alart.showSnackBar(context, l.message);
     }, (r) {
       state = false;
 

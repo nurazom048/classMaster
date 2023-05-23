@@ -3,10 +3,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
+import 'package:table/core/component/loaders.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/utils/rutin_dialog.dart';
 import 'package:table/ui/bottom_items/Home/home_req/uploaded_rutine_controller.dart';
 import 'package:table/ui/bottom_items/Home/widgets/recent_notice_title.dart';
 import '../../../../core/dialogs/alart_dialogs.dart';
+import '../../../../main.dart';
 import '../../Account/accounu_ui/account_screen.dart';
 import '../full_rutin/widgets/rutin_box/rutin_box_by_id.dart';
 import '../full_rutin/widgets/sceltons/rutinebox_id_scelton.dart';
@@ -61,43 +64,46 @@ class HomeScreen extends ConsumerWidget {
                   const ChustomTitleBar("title"),
 //___________ recent notices _________________//
                   RecentNoticeTitle(
-                    //
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (context) => ViewAllRecentNotice()),
-                      );
-                    },
+                    onTap: () => Get.to(() => ViewAllRecentNotice(),
+                        transition: Transition.rightToLeftWithFade),
                   ),
 
-                  Container(
-                    height: 140,
-                    margin: const EdgeInsets.symmetric(horizontal: 18),
-                    padding: const EdgeInsets.all(10),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5)),
+                  SizedBox(
+                    height: 181,
                     child: recentNoticeList.when(
                         data: (data) {
-                          return ListView.builder(
-                            // physics: const NeverScrollableScrollPhysics(),
-                            itemCount: data.notices.length >= 2
-                                ? 2
-                                : data.notices.length,
-                            itemBuilder: (context, index) {
-                              return NoticeRow(
-                                notice: data.notices[index],
-                                date: data.notices[index].time.toString(),
-                                title: data.notices[index].contentName,
-                              );
-                            },
+                          int length = data.notices.length;
+                          return RecentNoticeSlider(
+                            list: <Widget>[
+                              RecentNoticeSliderItem(
+                                notice: data.notices,
+                                index: 1,
+                                conditon: length >= 2,
+                              ),
+
+                              //
+                              RecentNoticeSliderItem(
+                                notice: data.notices,
+                                index: 2,
+                                conditon: length >= 4,
+                              ), //
+                              RecentNoticeSliderItem(
+                                notice: data.notices,
+                                index: 3,
+                                conditon: length >= 6,
+                              ),
+
+                              RecentNoticeSliderItem(
+                                notice: data.notices,
+                                index: 4,
+                                conditon: length >= 8,
+                              ),
+                            ],
                           );
                         },
                         error: (error, stackTrace) =>
                             Alart.handleError(context, error),
-                        loading: () => const Text("loding")),
+                        loading: () => Loaders.center()),
                   ),
 
                   // uploaded rutines

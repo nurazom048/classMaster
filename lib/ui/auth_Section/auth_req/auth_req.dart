@@ -37,26 +37,31 @@ class AuthReq {
   }
 
   //  create a new account
-  static Future<Either<String, Message>> createAccount(context,
-      {required name, required username, required password}) async {
+  static Future<Either<Message, Message>> createAccount(context,
+      {required name,
+      required username,
+      required password,
+      required email}) async {
     try {
       //... send request
-      final response =
-          await http.post(Uri.parse('${Const.BASE_URl}/auth/create'), body: {
+      final response = await http
+          .post(Uri.parse('${Const.BASE_URl}/auth/create'), body: {
         "name": name,
         "username": username,
         "password": password,
+        "email": email
       });
 
       var res = json.decode(response.body);
       print(res);
       if (response.statusCode == 200) {
-        return right(Message.fromJson(json.decode(response.body)));
+        return right(Message.fromJson(res));
       } else {
-        return left(json.decode(response.body));
+        return right(Message.fromJson(res));
       }
     } catch (e) {
-      return left(e.toString());
+      print(e.toString());
+      return left(Message(message: e.toString()));
     }
   }
 
