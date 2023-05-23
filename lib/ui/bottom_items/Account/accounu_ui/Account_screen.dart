@@ -36,32 +36,9 @@ class AccountScreen extends StatelessWidget {
       child: Consumer(builder: (context, ref, _) {
         return Scaffold(
           body: NotificationListener<ScrollNotification>(
-            onNotification: (scrollNotification) {
-              // Logic of scrollNotification
-              if (scrollNotification is ScrollStartNotification) {
-                // ignore: avoid_print
-                print("Scroll Started");
-
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  ref
-                      .watch(hideNevBarOnScrooingProvider.notifier)
-                      .update((state) => true);
-                });
-              } else if (scrollNotification is ScrollUpdateNotification) {
-                // print(message);
-              } else if (scrollNotification is ScrollEndNotification) {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  ref
-                      .watch(hideNevBarOnScrooingProvider.notifier)
-                      .update((state) => false);
-                });
-
-                String message = 'Scroll Ended';
-                // ignore: avoid_print
-                print(message);
-              }
-              return true;
-            },
+            // hide bottom nev bar on scroll
+            onNotification: (scrollNotification) =>
+                handleScrollNotification(scrollNotification, ref),
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.only(bottom: 40),
@@ -194,4 +171,29 @@ class AccountScreen extends StatelessWidget {
       }),
     );
   }
+}
+
+bool handleScrollNotification(
+  ScrollNotification? scrollNotification,
+  WidgetRef ref,
+) {
+  // Logic of scrollNotification
+  if (scrollNotification is ScrollStartNotification) {
+    // ignore: avoid_print
+    print("Scroll Started");
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.watch(hideNevBarOnScrooingProvider.notifier).update((state) => true);
+    });
+  } else if (scrollNotification is ScrollUpdateNotification) {
+    // print(message);
+  } else if (scrollNotification is ScrollEndNotification) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.watch(hideNevBarOnScrooingProvider.notifier).update((state) => false);
+    });
+
+    String message = 'Scroll Ended';
+    print(message);
+  }
+  return true;
 }
