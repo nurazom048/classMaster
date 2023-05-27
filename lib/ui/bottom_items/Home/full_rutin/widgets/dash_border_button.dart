@@ -43,3 +43,53 @@ class DashBorderButton extends StatelessWidget {
     );
   }
 }
+
+class DashBorderButtonMoni extends StatelessWidget {
+  final String text;
+  final Widget icon;
+  const DashBorderButtonMoni(
+      {super.key, required this.text, required this.icon, required});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 140,
+      height: 34,
+      child: InkWell(
+        onTap: () {},
+        child: DottedBorder(
+          borderType: BorderType.RRect,
+          radius: const Radius.circular(20),
+          padding: const EdgeInsets.all(6),
+          color: AppColor.nokiaBlue,
+          dashPattern: const [6, 6], // set the dash pattern
+          strokeWidth: 1,
+
+          child: Center(
+            child: SizedBox(
+              // width: 80,
+              // height: 20,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '$text  ',
+                    style: const TextStyle(
+                      fontFamily: 'Open Sans',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15,
+                      height: 1.3,
+                      color: Color(0xFF0168FF),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  Icon(Icons.send, color: AppColor.nokiaBlue, size: 20),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

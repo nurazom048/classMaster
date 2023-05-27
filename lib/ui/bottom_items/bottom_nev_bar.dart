@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:table/ui/bottom_items/Account/widgets/my_divider.dart';
 import 'package:table/ui/bottom_items/Add/screens/add__Notice__Screen.dart';
 import 'package:table/ui/bottom_items/Add/screens/create_new_rutine.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/widgets/dash_border_button.dart';
 import 'package:table/widgets/appWidget/dottted_divider.dart';
 
 import '../../constant/app_color.dart';
@@ -130,105 +131,145 @@ class TabCustom extends StatelessWidget {
   }
 }
 
+// _showBottomSheet(BuildContext context) {
+//   showModalBottomSheet(
+//     context: context,
+//     builder: (BuildContext context) {
+//       return Container(
+//         height: 280.0,
+//         decoration: const BoxDecoration(
+//           color: Colors.white,
+//           borderRadius: BorderRadius.only(
+//             topLeft: Radius.circular(5.0),
+//             topRight: Radius.circular(5.0),
+//           ),
+//         ),
+//         child: Column(
+//           children: [
+//             Card(
+//               elevation: 2.0,
+//               shape: RoundedRectangleBorder(
+//                 borderRadius: BorderRadius.circular(5.0),
+//               ),
+//               child: Column(
+//                 children: [
+//                   ListTile(
+//                     leading: const Icon(Icons.note_add),
+//                     title: const Text(
+//                       'Create NoticeBoard',
+//                       style: TextStyle(
+//                         fontWeight: FontWeight.bold,
+//                         fontSize: 16.0,
+//                       ),
+//                     ),
+//                     onTap: () {
+//                       Navigator.push(
+//                         context,
+//                         MaterialPageRoute(
+//                             builder: (context) => CreateNoticeBoard()),
+//                       );
+//                       //
+// //  Navigator.pop(context);
+//                       // Handle add notice action here
+//                     },
+//                   ),
+//                   ListTile(
+//                     leading: const Icon(Icons.note_add),
+//                     title: const Text(
+//                       'Add Notice',
+//                       style: TextStyle(
+//                         fontWeight: FontWeight.bold,
+//                         fontSize: 16.0,
+//                       ),
+//                     ),
+//                     onTap: () {
+//                       Navigator.push(
+//                         context,
+//                         MaterialPageRoute(
+//                             builder: (context) => AddNoticeScreen()),
+//                       );
+//                       //
+// //  Navigator.pop(context);
+//                       // Handle add notice action here
+//                     },
+//                   ),
+//                   MyDividerr(),
+//                   ListTile(
+//                     leading: const Icon(Icons.note_add),
+//                     title: const Text(
+//                       'Create Routine',
+//                       style: TextStyle(
+//                         fontWeight: FontWeight.bold,
+//                         fontSize: 16.0,
+//                       ),
+//                     ),
+//                     onTap: () {
+//                       Navigator.push(
+//                         context,
+//                         MaterialPageRoute(
+//                             builder: (context) => CreaeNewRutine()),
+//                       );
+//                     },
+//                   ),
+//                 ],
+//               ),
+//             ),
+//             ListTile(
+//               leading: const Icon(Icons.cancel),
+//               title: const Text(
+//                 'Cancel',
+//                 style: TextStyle(
+//                   fontWeight: FontWeight.bold,
+//                   fontSize: 16.0,
+//                 ),
+//               ),
+//               onTap: () {
+//                 Navigator.pop(context);
+//               },
+//             ),
+//           ],
+//         ),
+//       );
+//     },
+//   );
+//}
+
 _showBottomSheet(BuildContext context) {
   showModalBottomSheet(
+    elevation: 0,
+    barrierColor: Colors.black.withAlpha(1),
+    backgroundColor: Colors.transparent,
     context: context,
     builder: (BuildContext context) {
-      return Container(
-        height: 280.0,
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(5.0),
-            topRight: Radius.circular(5.0),
-          ),
-        ),
-        child: Column(
-          children: [
-            Card(
-              elevation: 2.0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              child: Column(
-                children: [
-                  ListTile(
-                    leading: const Icon(Icons.note_add),
-                    title: const Text(
-                      'Create NoticeBoard',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.0,
-                      ),
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CreateNoticeBoard()),
-                      );
-                      //
-//  Navigator.pop(context);
-                      // Handle add notice action here
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.note_add),
-                    title: const Text(
-                      'Add Notice',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.0,
-                      ),
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AddNoticeScreen()),
-                      );
-                      //
-//  Navigator.pop(context);
-                      // Handle add notice action here
-                    },
-                  ),
-                  MyDividerr(),
-                  ListTile(
-                    leading: const Icon(Icons.note_add),
-                    title: const Text(
-                      'Create Routine',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.0,
-                      ),
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CreaeNewRutine()),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.cancel),
-              title: const Text(
-                'Cancel',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16.0,
+      return SizedBox(
+          height: 200,
+          width: 500,
+          child: Card(
+            color: Colors.white,
+            margin: const EdgeInsets.all(18.0)
+                .copyWith(left: 30, right: 30, bottom: 100),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+            child: const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    DashBorderButtonMoni(text: "Notice", icon: Icon(Icons.abc)),
+                    DashBorderButtonMoni(text: "Rutine", icon: Icon(Icons.abc)),
+                  ],
                 ),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-              },
+                // SizedBox(height: 20),
+                // Container(
+                //   color: Colors.red,
+                //   height: 100,
+                //   width: 100,
+                //   transform: Matrix4.rotationZ(0.8),
+                // ),
+              ],
             ),
-          ],
-        ),
-      );
+          ));
     },
   );
 }
@@ -268,8 +309,8 @@ rutineNotficationSeleect(BuildContext context) {
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 11, vertical: 5),
                 height: 40,
-                child: Row(
-                  children: const [
+                child: const Row(
+                  children: [
                     Icon(Icons.check_box_outline_blank_rounded),
                     SizedBox(width: 10),
                     Icon(Icons.notifications_active),
@@ -281,8 +322,8 @@ rutineNotficationSeleect(BuildContext context) {
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 11, vertical: 5),
                 height: 40,
-                child: Row(
-                  children: const [
+                child: const Row(
+                  children: [
                     Icon(Icons.check_box_outline_blank_rounded),
                     SizedBox(width: 10),
                     Icon(Icons.notifications_off),
@@ -296,8 +337,8 @@ rutineNotficationSeleect(BuildContext context) {
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 11, vertical: 5),
                 height: 40,
-                child: Row(
-                  children: const [
+                child: const Row(
+                  children: [
                     SizedBox(width: 10),
                     Icon(Icons.logout_sharp),
                     SizedBox(width: 10),

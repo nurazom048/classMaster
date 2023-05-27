@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,9 @@ import 'package:table/ui/auth_Section/utils/singUp_validation.dart';
 import 'package:table/widgets/appWidget/buttons/cupertino_butttons.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/heder/heder_title.dart';
+import 'package:email_auth/email_auth.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server.dart';
 
 class SignUpScreen extends StatefulWidget {
   SignUpScreen(
@@ -148,29 +153,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     color: AppColor.nokiaBlue,
                     textt: "Sign up",
                     onPressed: () async {
+                      //
+                      await FirebaseAuth.instance
+                          .createUserWithEmailAndPassword(
+                        email: "nurazom049@gmail.com",
+                        password: "@Nurazom123",
+                      );
+
+                      //
                       Get.to(() => EmailVerificationScreen(
                           email: "nurazom049@gmail.com"));
-                      if (formKey.currentState?.validate() ?? false) {
-                        Get.to(() => EmailVerificationScreen(
-                            email: emailController.text));
-// var emailAuth = 'someemail@domain.com';
-// FirebaseAuth.instance.sendSignInLinkToEmail(
-//         email: emailAuth, actionCodeSettings: acs)
-//     .catchError((onError) => print('Error sending email verification $onError'))
-//     .then((value) => print('Successfully sent email verification'));
-// });
 
-                        // // create account
-                        // ref
-                        //     .read(authController_provider.notifier)
-                        //     .createAccount(
-                        //       context: context,
-                        //       name: nameController.text,
-                        //       email: emailController.text,
-                        //       username: usernameController.text,
-                        //       password: passwordController.text,
-                        //     );
-                      }
+                      if (formKey.currentState?.validate() ?? false) {}
+                      // Get.to(() => EmailVerificationScreen(
+                      //     email: emailController.text));
+
+                      // // create account
+                      // ref
+                      //     .read(authController_provider.notifier)
+                      //     .createAccount(
+                      //       context: context,
+                      //       name: nameController.text,
+                      //       email: emailController.text,
+                      //       username: usernameController.text,
+                      //       password: passwordController.text,
+                      //     );
                     },
                   )
               ],
