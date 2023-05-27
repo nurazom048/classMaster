@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:table/widgets/appWidget/app_text.dart';
 
 import '../../constant/app_color.dart';
 
@@ -44,16 +45,7 @@ class _AppTextFromFieldState extends State<AppTextFromField> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            widget.hint,
-            style: TextStyle(
-                fontFamily: 'Open Sans',
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.w600,
-                fontSize: 16.0,
-                height: 1.3,
-                color: AppColor.nokiaBlue),
-          ),
+          Text(widget.hint, style: TS.opensensBlue()),
           //
 
           if (widget.showOfftext == null)

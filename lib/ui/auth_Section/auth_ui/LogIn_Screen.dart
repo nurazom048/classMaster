@@ -1,13 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:table/core/component/loaders.dart';
 import 'package:table/sevices/notification%20services/awn_package.dart';
-import 'package:table/ui/auth_Section/auth_ui/phone_number_screen.dart';
+import 'package:table/ui/auth_Section/auth_ui/SiginUp_Screen.dart';
 import 'package:table/ui/auth_Section/utils/login_validation.dart';
-import 'package:table/ui/auth_Section/widgets/create_account_button.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
-import 'package:table/widgets/progress_indicator.dart';
 
 import '../../../constant/app_color.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
@@ -16,7 +14,7 @@ import '../../../widgets/heder/heder_title.dart';
 import '../auth_controller/auth_controller.dart';
 import '../auth_controller/google_auth_controller.dart';
 import '../widgets/or.dart';
-import '../widgets/social_login_button.dart';
+import '../widgets/siginup_page_switch.dart';
 
 class LogingScreen extends StatefulWidget {
   const LogingScreen({super.key});
@@ -81,16 +79,15 @@ class _LogingScreenState extends State<LogingScreen> {
                   //
                   const SizedBox(height: 30),
 
+                  SiginUpSuicherButton(
+                    "",
+                    "Forgot your Password?",
+                    onTap: () => Get.to(() => SignUpScreen()),
+                  ),
+                  const SizedBox(height: 30),
+
                   if (loding != null && loding == true)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CupertinoButton(
-                          onPressed: () {},
-                          child: const CircularProgressIndicator(),
-                        ),
-                      ],
-                    )
+                    Loaders.button()
                   else
                     CupertinoButtonCustom(
                       padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -109,36 +106,40 @@ class _LogingScreenState extends State<LogingScreen> {
 
                   //
 
-                  const CreateAccountPopUpButton(),
-
                   const OR(),
 
-                  ///
-                  ///
-                  ref.watch(gooleAuthControllerProvider).lodging == true
-                      ? const SizedBox(
-                          height: 20, width: 20, child: Progressindicator())
-                      : SocialLoginButton(
-                          onTap: () async {
-                            ref
-                                .read(gooleAuthControllerProvider)
-                                .signin(context);
-
-                            if (ref
-                                    .watch(gooleAuthControllerProvider)
-                                    .googleAccount !=
-                                null) {}
-                          },
-                        ),
-
-                  // continue with phone
-
-                  SocialLoginButton(
-                    isphone: true,
-                    onTap: () async {
-                      Get.to(() => const PhoneNumberScreen());
-                    },
+                  SiginUpSuicherButton(
+                    "Do not have an account?",
+                    "Sign up",
+                    onTap: () => Get.to(() => SignUpScreen()),
                   ),
+
+                  ///
+                  ///
+                  // ref.watch(gooleAuthControllerProvider).lodging == true
+                  //     ? const SizedBox(
+                  //         height: 20, width: 20, child: Progressindicator())
+                  //     : SocialLoginButton(
+                  //         onTap: () async {
+                  //           ref
+                  //               .read(gooleAuthControllerProvider)
+                  //               .signin(context);
+
+                  //           if (ref
+                  //                   .watch(gooleAuthControllerProvider)
+                  //                   .googleAccount !=
+                  //               null) {}
+                  //         },
+                  //       ),
+
+                  // // continue with phone
+
+                  // SocialLoginButton(
+                  //   isphone: true,
+                  //   onTap: () async {
+                  //     Get.to(() => const PhoneNumberScreen());
+                  //   },
+                  // ),
                 ],
               ),
             ),

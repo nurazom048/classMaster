@@ -38,8 +38,7 @@ class CreateAccountPopUpButton extends StatelessWidget {
             } else if (value == 2) {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => SignUpScreen(isAcademy: true)),
+                MaterialPageRoute(builder: (context) => SignUpScreen()),
               );
             }
           }

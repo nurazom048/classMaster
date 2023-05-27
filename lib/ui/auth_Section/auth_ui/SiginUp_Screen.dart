@@ -1,25 +1,23 @@
 // ignore_for_file: avoid_print
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:table/constant/app_color.dart';
+import 'package:table/core/component/loaders.dart';
 import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 import 'package:table/ui/auth_Section/auth_ui/email_varification.screen.dart';
 import 'package:table/ui/auth_Section/utils/singUp_validation.dart';
 import 'package:table/widgets/appWidget/buttons/cupertino_butttons.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/heder/heder_title.dart';
-import 'package:email_auth/email_auth.dart';
-import 'package:mailer/mailer.dart';
-import 'package:mailer/smtp_server.dart';
+
+import '../widgets/siginup_page_switch.dart';
+import '../widgets/who_are_you_button.dart';
 
 class SignUpScreen extends StatefulWidget {
-  SignUpScreen(
-      {super.key, this.isAcademy, this.emaileadress, this.phoneNumberString});
-  final bool? isAcademy;
+  SignUpScreen({super.key, this.emaileadress, this.phoneNumberString});
   final String? emaileadress;
   final String? phoneNumberString;
 
@@ -57,6 +55,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
+  bool? isAcademy;
+  String? selectedAccountType;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -70,7 +71,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             padding: const EdgeInsets.only(bottom: 400),
             child: Column(
               children: [
-                HeaderTitle("Log In", context),
+                HeaderTitle("Sign Up", context),
                 const SizedBox(height: 10),
 
                 Form(
@@ -79,8 +80,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     children: [
                       AppTextFromField(
                         controller: nameController,
-                        hint:
-                            widget.isAcademy == true ? "Academy Name" : "Name",
+                        hint: isAcademy == true ? "Academy Name" : "Name",
                         validator: (value) =>
                             SignUpValidation.validateName(value),
                         focusNode: nameFocusNode,
@@ -131,6 +131,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         onFieldSubmitted: (_) =>
                             formKey.currentState?.validate(),
                       ),
+
+                      WhoAreYouButton(
+                        onAccountType: (accountType) {
+                          setState(() {
+                            selectedAccountType = accountType;
+                          });
+                          print(accountType);
+                        },
+                      ),
+
+                      const SizedBox(height: 27)
+
+                      ///
                     ],
                   ),
                 ),
@@ -138,15 +151,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(height: 30),
 
                 if (loding != null && loding == true)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CupertinoButton(
-                        onPressed: () {},
-                        child: const CircularProgressIndicator(),
-                      ),
-                    ],
-                  )
+                  Loaders.button()
                 else
                   CupertinoButtonCustom(
                     padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -154,32 +159,48 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     textt: "Sign up",
                     onPressed: () async {
                       //
-                      await FirebaseAuth.instance
-                          .createUserWithEmailAndPassword(
-                        email: "nurazom049@gmail.com",
-                        password: "@Nurazom123",
-                      );
 
-                      //
-                      Get.to(() => EmailVerificationScreen(
-                          email: "nurazom049@gmail.com"));
+                      if (formKey.currentState?.validate() ?? false) {
+                        // CREATE FIREBASE INSTANCE
+                        await FirebaseAuth.instance
+                            .createUserWithEmailAndPassword(
+                                email: "nurazom049@gmail.com",
+                                password: "@Nurazom123");
+                        // GO TO EMAIL VARIFI SCREEN
+                        Get.to(() => const EmailVerificationScreen(
+                            email: "nurazom049@gmail.com"));
 
-                      if (formKey.currentState?.validate() ?? false) {}
-                      // Get.to(() => EmailVerificationScreen(
-                      //     email: emailController.text));
-
-                      // // create account
-                      // ref
-                      //     .read(authController_provider.notifier)
-                      //     .createAccount(
-                      //       context: context,
-                      //       name: nameController.text,
-                      //       email: emailController.text,
-                      //       username: usernameController.text,
-                      //       password: passwordController.text,
-                      //     );
+                        // create account
+                        // ref
+                        //     .read(authController_provider.notifier)
+                        //     .createAccount(
+                        //       context: context,
+                        //       name: nameController.text,
+                        //       email: emailController.text,
+                        //       username: usernameController.text,
+                        //       password: passwordController.text,
+                        //     );
+                      }
                     },
-                  )
+                  ),
+
+                const SizedBox(height: 30),
+
+                SiginUpSuicherButton(
+                  "Already have an account?",
+                  "Log in",
+                  onTap: () => Get.to(() => SignUpScreen()),
+                ),
+
+                const SizedBox(height: 30),
+                // continue with phone
+
+                // SocialLoginButton(
+                //   isphone: true,
+                //   onTap: () async {
+                //     Get.to(() => const PhoneNumberScreen());
+                //   },
+                // ),
               ],
             ),
           );

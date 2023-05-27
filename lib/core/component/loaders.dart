@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Loaders {
@@ -9,4 +10,16 @@ class Loaders {
           child: CircularProgressIndicator(),
         ),
       );
+
+  static button() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CupertinoButton(
+          onPressed: () {},
+          child: const CircularProgressIndicator(),
+        ),
+      ],
+    );
+  }
 }

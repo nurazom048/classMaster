@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -8,7 +10,7 @@ import 'package:table/core/dialogs/alart_dialogs.dart';
 class EmailVerificationScreen extends StatefulWidget {
   final String email;
 
-  EmailVerificationScreen({required this.email});
+  const EmailVerificationScreen({super.key, required this.email});
 
   @override
   _EmailVerificationScreenState createState() =>
@@ -19,7 +21,6 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   FirebaseAuth _auth = FirebaseAuth.instance;
   User? _user;
   Timer? timer;
-  bool _showDialog = false;
 
   @override
   void initState() {
@@ -55,7 +56,6 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
       await _user!.sendEmailVerification();
     } catch (e) {
       print(e);
-      _showDialog = true;
       WidgetsBinding.instance?.addPostFrameCallback((_) {
         Alart.errorAlartDilog(context, '$e');
       });

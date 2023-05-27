@@ -19,7 +19,7 @@ class OR extends StatelessWidget {
             child: const MyDivider(),
           ),
           const Text(
-            "   or ",
+            "   or  ",
             style: TextStyle(fontSize: 17),
           ),
           SizedBox(
