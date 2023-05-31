@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:table/widgets/progress_indicator.dart';
+import 'package:table/core/component/loaders.dart';
 
 class CupertinoButtonCustom extends StatelessWidget {
   const CupertinoButtonCustom({
@@ -30,7 +30,7 @@ class CupertinoButtonCustom extends StatelessWidget {
 
         onPressed: onPressed,
         child: isLoding == true
-            ? const Progressindicator()
+            ? Loaders.center()
             : widget ??
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
 import 'package:table/core/dialogs/alart_dialogs.dart';
-import 'package:table/widgets/hedding_row.dart';
 
 import '../../../constant/app_color.dart';
 import '../../../widgets/appWidget/buttons/cupertino_butttons.dart';

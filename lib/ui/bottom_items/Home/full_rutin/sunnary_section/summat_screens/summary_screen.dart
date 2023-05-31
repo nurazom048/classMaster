@@ -17,7 +17,7 @@ class SummaryScreen extends StatefulWidget {
   final String classId;
   final Day? day;
 
-  SummaryScreen({
+  const SummaryScreen({
     super.key,
     required this.classId,
     this.day,
@@ -182,14 +182,14 @@ class ChatsDribles extends StatelessWidget {
                   ],
                 ),
                 const Spacer(),
-                Column(
+                const Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    const SizedBox(height: 4),
+                    SizedBox(height: 4),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: const [
+                      children: [
                         ma.Text(
                           'state',
                           style: TextStyle(

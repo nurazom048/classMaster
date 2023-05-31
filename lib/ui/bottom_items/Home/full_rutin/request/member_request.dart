@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:table/models/captens/list_of_captens.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/models/members_models.dart';
 import '../../../../../constant/constant.dart';
 import '../../../../../models/message_model.dart';

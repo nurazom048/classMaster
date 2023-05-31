@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/members_controllers.dart';
 import 'package:table/widgets/accound_card_row.dart';
-import 'package:table/widgets/progress_indicator.dart';
 
+import '../../../../../core/component/Loaders.dart';
 import '../../../../../core/dialogs/alart_dialogs.dart';
 import '../../../Account/models/account_models.dart';
 
@@ -46,8 +46,7 @@ class SeeAllMembers extends ConsumerWidget {
                       : Container();
                 },
                 error: (error, stackTrace) => Alart.handleError(context, error),
-                loading: () => Container(
-                    height: 200, width: 200, child: const Progressindicator()),
+                loading: () => Loaders.center(),
               ),
             ),
           ],

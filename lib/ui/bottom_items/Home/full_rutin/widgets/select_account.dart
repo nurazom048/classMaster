@@ -42,6 +42,7 @@ class SeelectAccount extends ConsumerWidget {
           flex: 13,
           child: search_Account.when(
             data: (data) {
+              // ignore: unnecessary_null_comparison
               if (data == null) {}
               return ListView.builder(
                 itemCount: data.accounts?.length,

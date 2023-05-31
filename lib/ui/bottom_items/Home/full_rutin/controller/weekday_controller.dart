@@ -1,3 +1,5 @@
+// ignore_for_file: unused_result
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
@@ -53,7 +55,6 @@ class WeeekDayControllerClass extends StateNotifier<AsyncValue<WeekdayList>> {
   //
   deleteWeekday(context, String id) async {
     Either<Message, WeekdayList> res = await WeekdaRequest.deletWeekday(id);
-    print(res);
 
     res.fold((error) {
       Alart.showSnackBar(context, error.message.toString());

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/home_req/uploaded_rutine_controller.dart';
-import 'package:table/widgets/progress_indicator.dart';
 
+import '../../../../core/component/Loaders.dart';
 import '../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../widgets/appWidget/app_text.dart';
 import '../../../../widgets/heder/heder_title.dart';
@@ -30,27 +30,24 @@ class AllUploadesRutinesMini extends StatelessWidget {
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 5),
                 child: allUploadesRutinesMini.when(
-                    data: (data) {
-                      return ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: data.rutins.length,
-                        itemBuilder: (context, index) {
-                          return RutinBoxById(
-                            rutinName: data.rutins[index].name,
-                            rutinId: data.rutins[index].id,
-                            //
-                            onTapMore: () {},
-                          );
-                        },
-                      );
-                    },
-                    error: (error, stackTrace) =>
-                        Alart.handleError(context, error),
-                    loading: () => const SizedBox(
-                          height: 30,
-                          width: 30,
-                          child: Progressindicator(),
-                        ),),
+                  data: (data) {
+                    return ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: data.rutins.length,
+                      itemBuilder: (context, index) {
+                        return RutinBoxById(
+                          rutinName: data.rutins[index].name,
+                          rutinId: data.rutins[index].id,
+                          //
+                          onTapMore: () {},
+                        );
+                      },
+                    );
+                  },
+                  error: (error, stackTrace) =>
+                      Alart.handleError(context, error),
+                  loading: () => Loaders.center(),
+                ),
               ),
             )
           ],

@@ -9,7 +9,7 @@ import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controlle
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/chekbox_selector_button.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/select_account.dart';
 import 'package:table/widgets/appWidget/dottted_divider.dart';
-import 'package:table/widgets/progress_indicator.dart';
+import '../../../../../core/component/Loaders.dart';
 import '../../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../../widgets/text and buttons/square_button.dart';
 
@@ -166,9 +166,7 @@ class RutinDialog {
                           ],
                         );
                       },
-                      loading: () => Container(
-                          alignment: Alignment.center,
-                          child: const Progressindicator(h: 100, w: 100)),
+                      loading: () => Loaders.center(),
                       error: (error, stackTrace) =>
                           Alart.handleError(context, error)),
                 ],

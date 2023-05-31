@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/member_request.dart';
 import 'package:table/widgets/accound_card_row.dart';
-import 'package:table/widgets/progress_indicator.dart';
 import 'package:table/ui/bottom_items/search/widgets/search_bar_custom.dart';
+import '../../../../../core/component/Loaders.dart';
 import '../../../../../core/dialogs/alart_dialogs.dart';
-import 'package:flutter/material.dart' as ma;
 
 import '../../../Account/models/account_models.dart';
 
@@ -61,15 +60,13 @@ class seeAllMembers extends ConsumerWidget {
                         color: Colors.red,
                       );
                     } else {
-                      return const Center(child: ma.Text("No Account found"));
+                      return const Center(child: Text("No Account found"));
                     }
                   },
                 );
               },
               error: (error, stackTrace) => Alart.handleError(context, error),
-              loading: () => const Center(
-                  child: SizedBox(
-                      height: 100, width: 100, child: Progressindicator())),
+              loading: () => Loaders.center(),
             ),
           )
         ]),

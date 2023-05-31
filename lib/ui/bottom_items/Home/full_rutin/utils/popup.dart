@@ -1,11 +1,10 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, unused_local_variable
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../controller/chack_status_controller.dart';
 import '../controller/members_controllers.dart';
-import '../controller/see_all_req_controller.dart';
 
 void accountActions(BuildContext context, WidgetRef ref,
     {required String rutinId,

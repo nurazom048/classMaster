@@ -54,7 +54,7 @@ class DashBorderButtonMoni extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 140,
       height: 34,
       child: InkWell(

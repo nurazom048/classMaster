@@ -80,7 +80,7 @@ class HomeScreen extends ConsumerWidget {
                       },
                       error: (error, stackTrace) =>
                           Alart.handleError(context, error),
-                      loading: () => RecentNoticeSliderScealton(),
+                      loading: () => const RecentNoticeSliderScealton(),
                     ),
                   ),
 

@@ -10,7 +10,7 @@ class SummaryHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
         height: 170,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

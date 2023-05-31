@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/rutin_box/rutin_box_by_id.dart';
 import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
-import 'package:table/widgets/progress_indicator.dart';
 
+import '../../../../core/component/Loaders.dart';
 import '../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../widgets/appWidget/app_text.dart';
 import '../../../../widgets/heder/heder_title.dart';
@@ -28,27 +28,24 @@ class JoinedRutinesScreen extends StatelessWidget {
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 5),
                 child: joinedRutines.when(
-                    data: (data) {
-                      return ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: data.routines.length,
-                        itemBuilder: (context, index) {
-                          return RutinBoxById(
-                            rutinName: data.routines[index].name,
-                            rutinId: data.routines[index].id,
-                            //
-                            onTapMore: () {},
-                          );
-                        },
-                      );
-                    },
-                    error: (error, stackTrace) =>
-                        Alart.handleError(context, error),
-                    loading: () => const SizedBox(
-                          height: 30,
-                          width: 30,
-                          child: Progressindicator(),
-                        )),
+                  data: (data) {
+                    return ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: data.routines.length,
+                      itemBuilder: (context, index) {
+                        return RutinBoxById(
+                          rutinName: data.routines[index].name,
+                          rutinId: data.routines[index].id,
+                          //
+                          onTapMore: () {},
+                        );
+                      },
+                    );
+                  },
+                  error: (error, stackTrace) =>
+                      Alart.handleError(context, error),
+                  loading: () => Loaders.center(),
+                ),
               ),
             )
           ],

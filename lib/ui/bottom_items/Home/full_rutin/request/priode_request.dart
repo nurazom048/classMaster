@@ -107,8 +107,8 @@ class PriodeRequest {
     }
   }
 
-  Future<Either<Message, AllPriode>> findPriodebYid(String priode_id) async {
-    var url = Uri.parse('${Const.BASE_URl}/rutin/priode/find/$priode_id');
+  Future<Either<Message, AllPriode>> findPriodebYid(String priodeId) async {
+    var url = Uri.parse('${Const.BASE_URl}/rutin/priode/find/$priodeId');
 
     try {
       final response = await http.get(url);

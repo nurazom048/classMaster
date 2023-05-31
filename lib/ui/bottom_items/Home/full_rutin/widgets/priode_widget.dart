@@ -23,6 +23,7 @@ class PriodeWidget extends StatelessWidget {
       return DateFormat('h:mm a').format(dateTime);
     }
 
+    // ignore: avoid_print
     print("is running ${running(startTime, endTime)}");
     Color scaffoldBackgroundColor = Theme.of(context).scaffoldBackgroundColor;
 
@@ -135,12 +136,12 @@ class PriodeWidget extends StatelessWidget {
   }
 
   ///
-  bool running(DateTime startTime, DateTime end_time) {
+  bool running(DateTime startTime, DateTime endTime) {
     DateTime current = DateTime.now().toLocal();
     DateTime newST = DateTime(current.year, current.month, current.day,
         startTime.hour, startTime.minute, 0);
     DateTime newET = DateTime(current.year, current.month, current.day,
-        end_time.hour, end_time.minute, 0);
+        endTime.hour, endTime.minute, 0);
 
     //
     if (current.isAfter(newST) && current.isBefore(newET)) {

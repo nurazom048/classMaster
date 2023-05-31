@@ -15,7 +15,7 @@ import '../../../../Add/screens/add_priode.dart';
 import '../../controller/chack_status_controller.dart';
 import '../../request/priode_request.dart';
 import '../../sunnary_section/summat_screens/summary_screen.dart';
-import '../../utils/logngPress.dart';
+import '../../utils/logng_press.dart';
 import '../../widgets/class_row.dart';
 import '../../widgets/priode_widget.dart';
 

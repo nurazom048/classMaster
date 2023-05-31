@@ -7,7 +7,7 @@ import 'package:table/constant/app_color.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/priodeController.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/priode_request.dart';
 import 'package:table/widgets/heder/heder_title.dart';
-import 'package:table/widgets/select_time.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/widgets/select_time.dart';
 import 'package:table/widgets/appWidget/buttons/cupertino_butttons.dart';
 
 class AppPriodePage extends StatefulWidget {

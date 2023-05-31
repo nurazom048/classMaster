@@ -4,9 +4,9 @@ import 'package:table/ui/bottom_items/search/search%20controller/search_account_
 import 'package:table/ui/bottom_items/search/search_screen/search_page.dart';
 import 'package:flutter/material.dart' as ma;
 
+import '../../../../core/component/Loaders.dart';
 import '../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../widgets/accound_card_row.dart';
-import '../../../../widgets/progress_indicator.dart';
 
 class AccountSearchScreen extends ConsumerWidget {
   const AccountSearchScreen({super.key});
@@ -19,22 +19,24 @@ class AccountSearchScreen extends ConsumerWidget {
 
     //
     return SizedBox(
-        height: 500,
-        width: MediaQuery.of(context).size.width,
-        child: searchAccounts.when(
-            data: (data) {
-              return ListView.builder(
-                itemCount: data.accounts?.length,
-                itemBuilder: (context, index) {
-                  if (data.accounts!.isNotEmpty) {
-                    return AccountCardRow(accountData: data.accounts![index]);
-                  } else {
-                    return const Center(child: ma.Text("No Account found"));
-                  }
-                },
-              );
+      height: 500,
+      width: MediaQuery.of(context).size.width,
+      child: searchAccounts.when(
+        data: (data) {
+          return ListView.builder(
+            itemCount: data.accounts?.length,
+            itemBuilder: (context, index) {
+              if (data.accounts!.isNotEmpty) {
+                return AccountCardRow(accountData: data.accounts![index]);
+              } else {
+                return const Center(child: ma.Text("No Account found"));
+              }
             },
-            error: (error, stackTrace) => Alart.handleError(context, error),
-            loading: () => const Progressindicator()));
+          );
+        },
+        error: (error, stackTrace) => Alart.handleError(context, error),
+        loading: () => Loaders.center(),
+      ),
+    );
   }
 }

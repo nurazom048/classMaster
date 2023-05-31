@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/search/search_screen/search_page.dart';
-import 'package:table/widgets/progress_indicator.dart';
 
+import '../../../../core/component/Loaders.dart';
 import '../../../../core/dialogs/alart_dialogs.dart';
 import '../../Home/full_rutin/widgets/rutin_box/rutin_box_by_id.dart';
 import '../search controller/search_rutine_controllers.dart';
@@ -33,7 +33,7 @@ class SearchRutineScreen extends ConsumerWidget {
             );
           },
           error: (error, stackTrace) => Alart.handleError(context, error),
-          loading: () => const Progressindicator(),
+          loading: () => Loaders.center(),
         ));
   }
 }

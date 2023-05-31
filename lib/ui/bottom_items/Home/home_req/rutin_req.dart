@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/message_model.dart';
 
 import '../../../../constant/constant.dart';
-import '../models/home_rutines_model.dart';
 
 //
 
@@ -29,6 +28,7 @@ class RutinReqest {
 
       //
       if (response.statusCode == 200) {
+        // ignore: avoid_print
         print(res);
         return right(message);
       } else {

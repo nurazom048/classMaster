@@ -41,11 +41,9 @@ class SummayReuest {
       // Send the request and wait for the response
 
       var streamedResponse = await request.send();
-      print("response");
 
       var rs = await http.Response.fromStream(streamedResponse);
       final result = jsonDecode(rs.body) as Map<String, dynamic>;
-      print(result);
 
       if (streamedResponse.statusCode == 201) {
         // print('Summary created successfully');

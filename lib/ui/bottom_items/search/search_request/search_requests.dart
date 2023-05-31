@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -37,7 +39,6 @@ class SearchRequests {
   //********* searchAccount   ************ *//
 
   Future<AccountsResponse> searchAccount(String valu) async {
-    print("valu pici vai : $valu");
     var url = Uri.parse('${Const.BASE_URl}/account/find?q=$valu');
 
     try {

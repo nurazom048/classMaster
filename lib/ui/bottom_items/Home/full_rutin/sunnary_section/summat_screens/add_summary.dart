@@ -94,13 +94,9 @@ class _AddSummaryScreenState extends ConsumerState<AddSummaryScreen> {
                             String? imagelink =
                                 await HelperMethods.pickAndCompressImage();
 
-                            if (imageLinks != null) {
-                              print("not null");
-
-                              setState(() {
-                                imageLinks.add(imagelink!);
-                              });
-                            }
+                            setState(() {
+                              imageLinks.add(imagelink!);
+                            });
                           },
                           icon: const Icon(Icons.add)),
                       const SizedBox(height: 20),

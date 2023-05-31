@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,7 +15,7 @@ import '../../widgets/member_account_card.dart';
 
 class MemberList extends StatelessWidget {
   final String rutinId;
-  MemberList({super.key, required this.rutinId});
+  const MemberList({super.key, required this.rutinId});
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, _) {
@@ -104,7 +106,7 @@ class MemberList extends StatelessWidget {
 
           allMembers.when(
             data: (data) {
-              if (data == null || data.message == null) {
+              if (data == null) {
                 return const Text("null");
               }
               return SizedBox(

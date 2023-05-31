@@ -6,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:table/models/rutins/list_of_save_rutin.dart';
 import '../../../../constant/constant.dart';
-import '../../../../models/message_model.dart';
 import '../../../../models/rutins/jponed_rutins_model.dart';
 import '../../../../models/rutins/saveRutine.dart';
 import '../models/home_rutines_model.dart';

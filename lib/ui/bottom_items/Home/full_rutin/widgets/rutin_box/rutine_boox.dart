@@ -15,7 +15,6 @@ import 'package:table/widgets/mini_account_row.dart';
 import 'package:flutter/material.dart' as ma;
 
 // ignore: unused_import
-import 'package:table/widgets/progress_indicator.dart';
 import '../../controller/chack_status_controller.dart';
 import '../../../../../../widgets/appWidget/dottted_divider.dart';
 import '../../../../../../widgets/appWidget/select_day_row.dart';
