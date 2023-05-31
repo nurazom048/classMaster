@@ -1,16 +1,21 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
 
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get/get.dart';
 import 'package:table/core/dialogs/alart_dialogs.dart';
+import 'package:table/ui/auth_Section/auth_ui/forgetpassword_screen.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
   final String email;
+  final bool? forgotPasswordState;
 
-  const EmailVerificationScreen({super.key, required this.email});
+  const EmailVerificationScreen({
+    super.key,
+    required this.email,
+    this.forgotPasswordState = false,
+  });
 
   @override
   _EmailVerificationScreenState createState() =>
@@ -26,7 +31,10 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   void initState() {
     super.initState();
     _user = _auth.currentUser;
+    // step:1 send Varification mail
     sendVerificationEmail(widget.email);
+
+    // step:2 Check is varified or not
     timer = Timer.periodic(const Duration(seconds: 5), (timer) {
       checkVerification();
     });
@@ -36,7 +44,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   void dispose() async {
     timer?.cancel();
     super.dispose();
-
+// Last step: make sure is anythik gos to worng then dont save the user ro firebase
     try {
       // on dispose time i user is not varified then remove the user from firebse
       User? user = FirebaseAuth.instance.currentUser;
@@ -56,7 +64,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
       await _user!.sendEmailVerification();
     } catch (e) {
       print(e);
-      WidgetsBinding.instance?.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         Alart.errorAlartDilog(context, '$e');
       });
     }
@@ -64,12 +72,25 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   //checkVerification
 
   Future<void> checkVerification() async {
+    print("Tomer start");
     User? user = FirebaseAuth.instance.currentUser;
 
     await user?.reload();
     timer?.cancel();
     if (user?.emailVerified == true) {
-      Get.to(() => HomeScreen());
+      // If for forgrt go to forget passsword screen else to to login screen
+
+      if (widget.forgotPasswordState == true) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ForgetPasswordScreen(email: widget.email),
+          ),
+        );
+      } else {
+        Alart.showSnackBar(context, "EmaiVarified Sucsesfull");
+        Navigator.pop(context);
+      }
     }
   }
 
@@ -97,33 +118,11 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () async {
-                checkVerification();
-                User? user = FirebaseAuth.instance.currentUser;
-
-                if (user?.emailVerified == false) {
-                  Alart.errorAlartDilog(
-                      context, "Please verify your email before proceeding");
-                }
-              },
+              onPressed: () async => checkVerification(),
               child: const Text('Check Verification'),
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
-      ),
-      body: const Center(
-        child: Text('You are logged in!'),
       ),
     );
   }

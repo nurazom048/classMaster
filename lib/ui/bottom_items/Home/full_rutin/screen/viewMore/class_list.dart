@@ -1,6 +1,9 @@
-import 'package:flutter/cupertino.dart';
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
+import 'package:table/core/component/loaders.dart';
 import 'package:table/ui/bottom_items/Add/screens/add_class_screen.dart';
 
 import '../../../../../../core/dialogs/alart_dialogs.dart';
@@ -17,118 +20,96 @@ import '../../widgets/class_row.dart';
 import '../../widgets/priode_widget.dart';
 
 final totalPriodeCountProvider = StateProvider<int>((ref) => 0);
+final totalClassCountProvider = StateProvider<int>((ref) => 0);
 
-class ClassListPage extends StatefulWidget {
+class ClassListPage extends StatelessWidget {
   final String rutinId;
   final String rutinName;
   const ClassListPage(
       {super.key, required this.rutinId, required this.rutinName});
 
   @override
-  State<ClassListPage> createState() => _ClassListPageState();
-}
-
-int? totalMemberCount;
-int? totalPriodeCount;
-
-class _ClassListPageState extends State<ClassListPage> {
-  @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, _) {
-      print(widget.rutinId);
-      final rutinDetals = ref.watch(rutins_detalis_provider(widget.rutinId));
-      final allPriode = ref.watch(allPriodeProvider(widget.rutinId));
+      print(rutinId);
 
-      //
-      final chackStatus =
-          ref.watch(chackStatusControllerProvider(widget.rutinId));
-      bool notification_Off = chackStatus.value?.notificationOff ?? false;
+      //! provider
+      final rutinDetals = ref.watch(rutins_detalis_provider(rutinId));
+      final allPriode = ref.watch(allPriodeProvider(rutinId));
+      final totalPriode = ref.watch(totalPriodeCountProvider);
+      final totalClass = ref.watch(totalClassCountProvider);
+
+      // notifiers
+      final chackStatus = ref.watch(chackStatusControllerProvider(rutinId));
+      bool notificationOff = chackStatus.value?.notificationOff ?? false;
+
+      final totalPriodeNotifier = ref.watch(totalPriodeCountProvider.notifier);
+      final totalClassNotifier = ref.watch(totalClassCountProvider.notifier);
 
       return Scaffold(
         body: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           children: [
+            //-----------------------   "Priode Listt" -------------------------//
+
             HeddingRow(
               hedding: "Priode List",
-              secondHeading: "$totalPriodeCount  priode",
+              secondHeading: "$totalPriode  priodes",
               margin: EdgeInsets.zero,
               buttonText: "Add Priode",
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AppPriodePage(
-                      rutinId: widget.rutinId,
-                      rutinName: widget.rutinName,
-                      isEdit: false,
-                      totalPriode: totalPriodeCount ?? 0,
-                    ),
-                  ),
-                );
-              },
+              onTap: () => Get.to(
+                () => AppPriodePage(
+                  rutinId: rutinId,
+                  rutinName: rutinName,
+                  isEdit: false,
+                  totalPriode: totalPriode,
+                ),
+              ),
             ),
             SizedBox(
               height: 140,
               child: allPriode.when(
-                  data: (data) {
-                    return data.fold(
-                        (l) => Alart.handleError(context, l.message), (r) {
-                      return ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: r.priodes.length,
-                        itemBuilder: (context, index) {
-                          String priodeId = r.priodes[index].id;
+                data: (data) {
+                  return data.fold((l) => Alart.handleError(context, l.message),
+                      (data) {
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: data.priodes.length,
+                      itemBuilder: (context, index) {
+                        String priodeId = data.priodes[index].id;
+                        int length = data.priodes.length;
 
-                          int length = r.priodes.length;
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          totalPriodeNotifier.update((state) => length);
+                        });
 
-                          if (totalPriodeCount == null) {
-                            WidgetsBinding.instance.addPostFrameCallback((_) {
-                              if (!mounted) {}
-                              // Add Your Code here.
-                              setState(() {
-                                totalPriodeCount = length;
-                              });
-
-                              ref
-                                  .watch(totalPriodeCountProvider.notifier)
-                                  .update((state) => length);
-                            });
-                          }
-
-                          return PriodeWidget(
-                            priodeNumber: r.priodes[index].priodeNumber,
-                            startTime: r.priodes[index].startTime,
-                            endTime: r.priodes[index].endTime,
-                            //
-                            onLongpress: () {
-                              PriodeAlart.logPressOnPriode(context, priodeId,
-                                  widget.rutinId, r.priodes[index]);
-                            },
-                          );
-                        },
-                      );
-                    });
-                  },
-                  error: (error, stackTrace) =>
-                      Alart.handleError(context, error),
-                  loading: () => const Text("loding")),
+                        return PriodeWidget(
+                          priodeNumber: data.priodes[index].priodeNumber,
+                          startTime: data.priodes[index].startTime,
+                          endTime: data.priodes[index].endTime,
+                          //
+                          onLongpress: () {
+                            PriodeAlart.logPressOnPriode(context, priodeId,
+                                rutinId, data.priodes[index]);
+                          },
+                        );
+                      },
+                    );
+                  });
+                },
+                error: (error, stackTrace) => Alart.handleError(context, error),
+                loading: () => Loaders.center(),
+              ),
             ),
+
+            //-----------------------   "Class List" -------------------------//
             HeddingRow(
               hedding: "Class List",
-              secondHeading: "$totalMemberCount  classes",
+              secondHeading: "$totalClass  classes",
               margin: EdgeInsets.zero,
               buttonText: "Add Class",
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AddClassScreen(
-                      routineId: widget.rutinId,
-                      isEdit: false,
-                    ),
-                  ),
-                );
-              },
+              onTap: () => Get.to(
+                  () => AddClassScreen(routineId: rutinId, isEdit: false)),
             ),
             SizedBox(
                 height: 300,
@@ -138,7 +119,7 @@ class _ClassListPageState extends State<ClassListPage> {
                       return const Text("Null");
                     }
                     // notification
-                    if (notification_Off == false) {
+                    if (notificationOff == false) {
                       print("CAll sudule notification");
 
                       LocalNotification.scheduleNotifications(
@@ -151,12 +132,10 @@ class _ClassListPageState extends State<ClassListPage> {
                         Day day = data.classes.allClass[index];
                         int length = data.classes.allClass.length;
 
-                        if (totalMemberCount == null) {
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            // Add Your Code here.
-                            setState(() => totalMemberCount = length);
-                          });
-                        }
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          // Add Your Code here.
+                          totalClassNotifier.update((state) => length);
+                        });
 
                         return ClassRow(
                           id: day.id,
@@ -167,28 +146,18 @@ class _ClassListPageState extends State<ClassListPage> {
                             PriodeAlart.logPressClass(
                               context,
                               classId: data.classes.allClass[index].classId.id,
-                              rutinId: widget.rutinId,
+                              rutinId: rutinId,
                             );
                           },
-
-                          ontap: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (context) => SummaryScreen(
-                                  classId: day.classId.id,
-                                  day: day,
-                                ),
-                              ),
-                            );
-                          },
+                          ontap: () => Get.to(() =>
+                              SummaryScreen(classId: day.classId.id, day: day)),
                         );
                       },
                     );
                   },
                   error: (error, stackTrace) =>
                       Alart.handleError(context, error),
-                  loading: () => const Text("Loding"),
+                  loading: () => Loaders.center(),
                 )),
           ],
         ),

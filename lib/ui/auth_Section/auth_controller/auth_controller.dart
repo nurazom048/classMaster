@@ -1,5 +1,6 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, use_build_context_synchronously
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
@@ -37,12 +38,12 @@ class AuthController extends StateNotifier<bool> {
       email: email,
     );
 
-    res.fold((l) {
+    res.fold((l) async {
       state = false;
+      await FirebaseAuth.instance.currentUser!.delete();
       return Alart.showSnackBar(context, l.message);
     }, (r) {
       state = false;
-
       return Alart.showSnackBar(context, r.message);
     });
   }
@@ -70,6 +71,27 @@ class AuthController extends StateNotifier<bool> {
   void changepassword(oldPassword, newPassword, context) async {
     state = true;
     final res = await authReqq.changePassword(oldPassword, newPassword);
+
+    res.fold(
+      (l) {
+        state = false;
+        return Alart.errorAlartDilog(context, l);
+      },
+      (r) {
+        state = false;
+
+        Alart.showSnackBar(context, r.message);
+      },
+    );
+  }
+
+//******** forotpasswprd  ************ */
+
+  void forgotPassword(newPassword, context,
+      {String? email, String? phone}) async {
+    state = true;
+    final res =
+        await authReqq.forgrtPassword(newPassword, email: email, phone: phone);
 
     res.fold(
       (l) {

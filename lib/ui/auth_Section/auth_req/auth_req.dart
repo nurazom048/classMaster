@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:table/models/message_model.dart';
@@ -84,6 +85,42 @@ class AuthReq {
       print(jsonDecode(response.body));
 
       Message message = Message.fromJson(json.decode(response.body));
+      if (response.statusCode == 200) {
+        return right(message);
+      } else {
+        return left(message.message);
+      }
+    } catch (e) {
+      return left(e.toString());
+    }
+  }
+
+  //
+
+  Future<Either<String, Message>> forgrtPassword(String newPassword,
+      {String? email, String? phone}) async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+
+    var url = Uri.parse('${Const.BASE_URl}/account/eddit/forgotPassword');
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Authorization': 'Bearer $getToken'},
+        body: {
+          "email": email.toString(),
+          "phone": phone.toString(),
+          "newPassword": newPassword
+        },
+      );
+
+      Message message = Message.fromJson(json.decode(response.body));
+
+      print("....................................");
+      print(jsonDecode(response.body));
+
+      print(json.decode(response.body));
       if (response.statusCode == 200) {
         return right(message);
       } else {

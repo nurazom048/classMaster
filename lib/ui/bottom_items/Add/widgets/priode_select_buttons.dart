@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 import '../../../../constant/app_color.dart';
+import '../../../../widgets/appWidget/app_text.dart';
 
 class PeriodNumberButton extends StatelessWidget {
   final int periodNumber;
@@ -29,15 +32,24 @@ class PeriodNumberButton extends StatelessWidget {
       ),
       child: IconButton(
         onPressed: onSelected,
-        icon: Text(
-          getPeriodText(periodNumber),
-          style: TextStyle(
-              color: isSelected == true
-                  ? Colors.white.withOpacity(0.5)
-                  : Colors.black,
+        icon: Wrap(direction: Axis.horizontal, children: [
+          Text(
+            "$periodNumber",
+            style: TS.opensensBlue(
+              color: isSelected == true ? Colors.white : Colors.black,
+              fontSize: 20,
               fontWeight:
-                  isSelected == true ? FontWeight.w700 : FontWeight.w400),
-        ),
+                  isSelected == true ? FontWeight.w700 : FontWeight.w400,
+            ),
+          ),
+          Text(
+            getSuffix(periodNumber.toInt()),
+            style: TextStyle(
+              color: isSelected == true ? Colors.white : Colors.black,
+              fontFeatures: const [FontFeature.superscripts()],
+            ),
+          ),
+        ]),
       ),
     );
   }

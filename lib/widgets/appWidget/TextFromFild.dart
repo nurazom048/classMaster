@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 
@@ -31,6 +32,45 @@ class AppTextFromField extends StatefulWidget {
   final EdgeInsetsGeometry? margin;
   final String? showOfftext;
   bool? obscureText;
+  // Multiline
+  multiline() {
+    return Container(
+      margin: margin ??
+          const EdgeInsets.symmetric(horizontal: 24).copyWith(top: 34),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(hint, style: TS.opensensBlue()),
+          const SizedBox(height: 15),
+          DottedBorder(
+            borderType: BorderType.RRect,
+            radius: const Radius.circular(8),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 10).copyWith(top: 0),
+            color: AppColor.nokiaBlue,
+            dashPattern: const [6, 6], // set the dash pattern
+            strokeWidth: 1,
+            child: TextFormField(
+              controller: controller,
+              maxLines: 5,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: labelText ?? "Enter your $hint ",
+                hintStyle: const TextStyle(
+                  fontFamily: 'Open Sans',
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w300,
+                  fontSize: 20,
+                  height: 1.27,
+                  color: Color(0xFF333333),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   State<AppTextFromField> createState() => _AppTextFromFieldState();

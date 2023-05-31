@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 
-import '../../../constant/app_color.dart';
-
 class SiginUpSuicherButton extends StatelessWidget {
   final String starttitle;
   final String endtitle;

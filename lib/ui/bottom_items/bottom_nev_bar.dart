@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' as rp;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:table/ui/bottom_items/Account/widgets/my_divider.dart';
+import 'package:get/get.dart';
 import 'package:table/ui/bottom_items/Add/screens/add__Notice__Screen.dart';
-import 'package:table/ui/bottom_items/Add/screens/create_new_rutine.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/dash_border_button.dart';
 import 'package:table/widgets/appWidget/dottted_divider.dart';
 
 import '../../constant/app_color.dart';
 import 'Account/accounu_ui/account_screen.dart';
-import 'Add/screens/create_notice_board.dart';
 import 'Home/home_screen/home_screen.dart';
 
 final bottomNavBarIndexProvider = rp.StateProvider<int>((ref) => 0);
@@ -250,14 +248,22 @@ _showBottomSheet(BuildContext context) {
                 .copyWith(left: 30, right: 30, bottom: 100),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-            child: const Column(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    DashBorderButtonMoni(text: "Notice", icon: Icon(Icons.abc)),
-                    DashBorderButtonMoni(text: "Rutine", icon: Icon(Icons.abc)),
+                    DashBorderButtonMoni(
+                      text: "Notice",
+                      icon: const Icon(Icons.abc),
+                      onTap: () => Get.to(() => AddNoticeScreen()),
+                    ),
+                    DashBorderButtonMoni(
+                      text: "Rutine",
+                      icon: const Icon(Icons.abc),
+                      onTap: () {},
+                    ),
                   ],
                 ),
                 // SizedBox(height: 20),
@@ -342,9 +348,11 @@ rutineNotficationSeleect(BuildContext context) {
                     SizedBox(width: 10),
                     Icon(Icons.logout_sharp),
                     SizedBox(width: 10),
-                    Text("Leave Routine",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, color: Colors.red)),
+                    Text(
+                      "Leave Routine",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500, color: Colors.red),
+                    ),
                   ],
                 ),
               ),

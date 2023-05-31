@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, use_build_context_synchronously
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:table/constant/app_color.dart';
 import 'package:table/core/component/loaders.dart';
+import 'package:table/core/dialogs/alart_dialogs.dart';
 import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 import 'package:table/ui/auth_Section/auth_ui/email_varification.screen.dart';
 import 'package:table/ui/auth_Section/utils/singUp_validation.dart';
@@ -159,27 +160,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     textt: "Sign up",
                     onPressed: () async {
                       //
-
                       if (formKey.currentState?.validate() ?? false) {
-                        // CREATE FIREBASE INSTANCE
-                        await FirebaseAuth.instance
-                            .createUserWithEmailAndPassword(
-                                email: "nurazom049@gmail.com",
-                                password: "@Nurazom123");
-                        // GO TO EMAIL VARIFI SCREEN
-                        Get.to(() => const EmailVerificationScreen(
-                            email: "nurazom049@gmail.com"));
-
-                        // create account
-                        // ref
-                        //     .read(authController_provider.notifier)
-                        //     .createAccount(
-                        //       context: context,
-                        //       name: nameController.text,
-                        //       email: emailController.text,
-                        //       username: usernameController.text,
-                        //       password: passwordController.text,
-                        //     );
+                        siginUp(ref);
                       }
                     },
                   ),
@@ -207,5 +189,38 @@ class _SignUpScreenState extends State<SignUpScreen> {
         }),
       ),
     );
+  }
+
+//
+  void siginUp(WidgetRef ref) async {
+    // If Email varified
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user?.emailVerified == true) {
+      ref.read(authController_provider.notifier).createAccount(
+            context: context,
+            name: nameController.text,
+            email: emailController.text,
+            username: usernameController.text,
+            password: passwordController.text,
+          );
+
+      await FirebaseAuth.instance.signOut();
+      Navigator.pop(context);
+    } else {
+      // CREATE FIREBASE INSTANCE
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: "@Nurazom123",
+        );
+
+        // GO TO EMAIL VARIFI SCREEN
+        Get.to(
+          () => EmailVerificationScreen(email: emailController.text),
+        );
+      } catch (e) {
+        Alart.showSnackBar(context, e);
+      }
+    }
   }
 }

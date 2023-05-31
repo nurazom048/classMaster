@@ -1,18 +1,16 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously, must_be_immutable, camel_case_types, library_private_types_in_public_api
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/dialogs/alart_dialogs.dart';
 import 'package:table/ui/bottom_items/Home/notice_board/request/noticeboard_noticeRequest.dart';
 import 'package:table/widgets/appWidget/TextFromFild.dart';
-import 'package:table/widgets/appWidget/app_text.dart';
-import 'package:table/helper/picker.dart';
 import 'package:table/widgets/heder/heder_title.dart';
 import 'package:flutter/material.dart' as ma;
 
 import '../../../../constant/app_color.dart';
 import '../../../../widgets/appWidget/buttons/cupertino_butttons.dart';
+import '../widgets/uploaded_pdf_button.dart';
 
 class AddNoticeScreen extends ConsumerWidget {
   AddNoticeScreen({super.key});
@@ -21,10 +19,11 @@ class AddNoticeScreen extends ConsumerWidget {
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController noticeTitleController = TextEditingController();
   String? id;
-  String? pdfpath;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    //!provider
+    final pdfpath = ref.watch(selectedPdfPathProvider);
     return SafeArea(
         child: Scaffold(
             body: SingleChildScrollView(
@@ -52,12 +51,12 @@ class AddNoticeScreen extends ConsumerWidget {
                             ),
                           ),
                         ),
-                        MyDropdownButton(
-                          onSelected: (iD) {
-                            print(iD);
-                            id = iD;
-                          },
-                        ),
+                        // SelectNoticeBoardDropDowen(
+                        //   onSelected: (iD) {
+                        //     print(iD);
+                        //     id = iD;
+                        //   },
+                        // ),
                         AppTextFromField(
                           controller: noticeTitleController,
                           hint: "Notice Title",
@@ -73,14 +72,10 @@ class AddNoticeScreen extends ConsumerWidget {
                           controller: descriptionController,
                           hint: "Notice Description",
                           labelText: "Describe what the notice is about.",
-                        ),
+                        ).multiline(),
                         const SizedBox(height: 60),
-                        UploadPDFB_Button(
-                          onSelected: (thepath) {
-                            print("expected path $thepath");
-                            pdfpath = thepath;
-                          },
-                        ),
+                        UploadPDFBButton(onSelected: (thepath) {}),
+
                         const SizedBox(height: 60),
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -109,147 +104,5 @@ class AddNoticeScreen extends ConsumerWidget {
                         ),
                       ],
                     )))));
-  }
-}
-
-class UploadPDFB_Button extends StatefulWidget {
-  final Function(String?) onSelected;
-
-  const UploadPDFB_Button({
-    required this.onSelected,
-    super.key,
-  });
-
-  @override
-  State<UploadPDFB_Button> createState() => _UploadPDFB_ButtonState();
-}
-
-class _UploadPDFB_ButtonState extends State<UploadPDFB_Button> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          color: const Color(0xFFEEF4FC),
-          border: Border.all(color: const Color(0xFF0168FF)),
-          borderRadius: BorderRadius.circular(8)),
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      child: CupertinoButton(
-        onPressed: () async {
-          String? path = await picker.pickPDFFile();
-          print("The apth is ");
-          print(path);
-          widget.onSelected(path);
-        },
-        color: const Color(0xFFEEF4FC),
-        borderRadius: BorderRadius.circular(8),
-        pressedOpacity: 0.8,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const ma.Text(
-              'Upload Notice File (PDF)',
-              style: TextStyle(
-                fontFamily: 'Open Sans',
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
-                height: 1.36,
-                color: Color(0xFF0168FF),
-              ),
-            ),
-            const SizedBox(width: 20),
-            Icon(Icons.file_upload_outlined, color: AppColor.nokiaBlue)
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class MyDropdownButton extends StatefulWidget {
-  final Function(String?) onSelected;
-
-  const MyDropdownButton({
-    Key? key,
-    required this.onSelected,
-  }) : super(key: key);
-
-  @override
-  _MyDropdownButtonState createState() => _MyDropdownButtonState();
-}
-
-class _MyDropdownButtonState extends State<MyDropdownButton> {
-  int? _selectedItemIndex;
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer(builder: (context, ref, _) {
-      final noticeBoardList = ref.watch(createdNoticeBoardNmae);
-
-      return Container(
-        width: 340,
-        height: 46,
-        margin: const EdgeInsets.symmetric(horizontal: 17).copyWith(top: 20),
-        padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
-        decoration: BoxDecoration(
-          color: const Color(0xFFEEF4FC),
-          border: Border.all(color: const Color(0xFF0168FF)),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: noticeBoardList.when(
-          data: (data) {
-            // ignore: unnecessary_null_comparison
-            if (data == null) {
-              return const Text("No Notice Board is not  created");
-            }
-
-            return DropdownButtonHideUnderline(
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {});
-                },
-                child: DropdownButton<int?>(
-                  value: _selectedItemIndex,
-                  onChanged: (int? newIndex) {
-                    setState(() {
-                      _selectedItemIndex = newIndex;
-                      if (_selectedItemIndex != null) {
-                        widget.onSelected(
-                            data.noticeBoards[_selectedItemIndex!].id);
-                      }
-                    });
-                  },
-                  items: [
-                    DropdownMenuItem(
-                      value: null,
-                      child: const AppText(
-                        'Select notice board',
-                        color: Colors.grey,
-                      ).heding(),
-                    ),
-                    ...data.noticeBoards
-                        .asMap()
-                        .map((index, notice) {
-                          return MapEntry(
-                            index,
-                            DropdownMenuItem<int>(
-                              value: index,
-                              child: AppText(
-                                notice.name,
-                              ).heding(),
-                            ),
-                          );
-                        })
-                        .values
-                        .toList(),
-                  ],
-                ),
-              ),
-            );
-          },
-          error: (error, stackTrace) => Alart.handleError(context, error),
-          loading: () => const ma.Text("Loading"),
-        ),
-      );
-    });
   }
 }

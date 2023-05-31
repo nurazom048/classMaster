@@ -47,8 +47,10 @@ class DashBorderButton extends StatelessWidget {
 class DashBorderButtonMoni extends StatelessWidget {
   final String text;
   final Widget icon;
+  final dynamic onTap;
+
   const DashBorderButtonMoni(
-      {super.key, required this.text, required this.icon, required});
+      {super.key, required this.text, required this.icon, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +58,7 @@ class DashBorderButtonMoni extends StatelessWidget {
       width: 140,
       height: 34,
       child: InkWell(
-        onTap: () {},
+        onTap: onTap,
         child: DottedBorder(
           borderType: BorderType.RRect,
           radius: const Radius.circular(20),

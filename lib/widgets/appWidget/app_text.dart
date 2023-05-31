@@ -48,14 +48,15 @@ class AppText {
 //______________TS_____________________//
 class TS {
 // open sens blue
-  static TextStyle opensensBlue() {
+  static TextStyle opensensBlue(
+      {Color? color, double? fontSize, FontWeight? fontWeight}) {
     return TextStyle(
       fontFamily: 'Open Sans',
       fontStyle: FontStyle.normal,
-      fontWeight: FontWeight.w600,
-      fontSize: 16.0,
+      fontWeight: fontWeight ?? FontWeight.w600,
+      fontSize: fontSize ?? 16.0,
       height: 1.3,
-      color: AppColor.nokiaBlue,
+      color: color ?? AppColor.nokiaBlue,
     );
   }
 }

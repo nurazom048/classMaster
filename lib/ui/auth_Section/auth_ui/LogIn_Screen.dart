@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
@@ -8,6 +9,7 @@ import 'package:table/ui/auth_Section/utils/login_validation.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 
 import '../../../constant/app_color.dart';
+import '../../../core/dialogs/alart_dialogs.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/appWidget/buttons/cupertino_butttons.dart';
 import '../../../widgets/heder/heder_title.dart';
@@ -15,6 +17,7 @@ import '../auth_controller/auth_controller.dart';
 import '../auth_controller/google_auth_controller.dart';
 import '../widgets/or.dart';
 import '../widgets/siginup_page_switch.dart';
+import 'email_varification.screen.dart';
 
 class LogingScreen extends StatefulWidget {
   const LogingScreen({super.key});
@@ -28,6 +31,7 @@ class _LogingScreenState extends State<LogingScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> emailkey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -60,11 +64,15 @@ class _LogingScreenState extends State<LogingScreen> {
 
                   ///
 
-                  AppTextFromField(
-                    controller: _emailController,
-                    hint: "Email",
-                    labelText: "Enter email address",
-                    validator: (value) => LoginValidation.validateEmail(value),
+                  Form(
+                    key: emailkey,
+                    child: AppTextFromField(
+                      controller: _emailController,
+                      hint: "Email",
+                      labelText: "Enter email address",
+                      validator: (value) =>
+                          LoginValidation.validateEmail(value),
+                    ),
                   ),
 
                   AppTextFromField(
@@ -79,11 +87,29 @@ class _LogingScreenState extends State<LogingScreen> {
                   //
                   const SizedBox(height: 30),
 
-                  SiginUpSuicherButton(
-                    "",
-                    "Forgot your Password?",
-                    onTap: () => Get.to(() => SignUpScreen()),
-                  ),
+                  SiginUpSuicherButton("", "Forgot your Password?",
+                      onTap: () async {
+                    if (emailkey.currentState?.validate() ?? false) {
+                      try {
+                        await FirebaseAuth.instance.signOut();
+                        await FirebaseAuth.instance.signInWithEmailAndPassword(
+                          email: "nurazom049@gmail.com",
+                          password: "@Nurazom123",
+                        );
+                        return Get.to(() => EmailVerificationScreen(
+                              email: _emailController.text,
+                              forgotPasswordState: true,
+                            ));
+                        // Get.to(() => ForgetPasswordScreen(
+                        //       email: _emailController.text,
+                        //     ));
+                      } on FirebaseAuthMultiFactorException catch (e) {
+                        Alart.showSnackBar(context, e);
+                      }
+
+                      // //
+                    }
+                  }),
                   const SizedBox(height: 30),
 
                   if (loding != null && loding == true)

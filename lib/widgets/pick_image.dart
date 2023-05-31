@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:table/helper/helper_fun.dart';
 
+// ignore: must_be_immutable
 class PickImage extends StatefulWidget {
   final dynamic onTap;
   late String? netWorkIamge;
