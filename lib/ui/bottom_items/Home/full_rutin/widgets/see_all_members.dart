@@ -7,6 +7,7 @@ import 'package:table/widgets/accound_card_row.dart';
 import 'package:table/widgets/progress_indicator.dart';
 
 import '../../../../../core/dialogs/alart_dialogs.dart';
+import '../../../Account/models/account_models.dart';
 
 class SeeAllMembers extends ConsumerWidget {
   String rutinId;
@@ -31,10 +32,16 @@ class SeeAllMembers extends ConsumerWidget {
                 data: (data) {
                   return data != null
                       ? ListView.builder(
-                          itemCount: data.members?.length ?? 0,
+                          itemCount: data.members.length,
                           itemBuilder: (context, index) {
                             return AccountCardRow(
-                                accountData: data.members![index]);
+                              accountData: AccountModels().copyWith(
+                                sId: data.members[index].id,
+                                image: data.members[index].image,
+                                name: data.members[index].name,
+                                username: data.members[index].username,
+                              ),
+                            );
                           })
                       : Container();
                 },

@@ -6,4 +6,7 @@ abstract class Const {
   // static String BASE_URl = "http://192.168.0.125:3000";
 
   //  image
+
+  static String accountimage =
+      "https://th.bing.com/th/id/OIP.iSu2RcCcdm78xbxNDJMJSgHaEo?pid=ImgDet&rs=1";
 }

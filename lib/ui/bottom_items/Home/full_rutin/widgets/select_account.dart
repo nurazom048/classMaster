@@ -3,13 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/component/Loaders.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/screen/viewMore/seeAllCaotensList.dart';
 import 'package:table/ui/bottom_items/search/search%20controller/search_account_controller.dart';
 import 'package:table/widgets/accound_card_row.dart';
 import 'package:table/ui/bottom_items/search/widgets/search_bar_custom.dart';
 import 'package:flutter/material.dart' as ma;
 
 import '../../../../../core/dialogs/alart_dialogs.dart';
+
+final serachStringProvidder = StateProvider((ref) => "");
 
 class SeelectAccount extends ConsumerWidget {
   const SeelectAccount(

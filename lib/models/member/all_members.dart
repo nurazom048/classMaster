@@ -2,14 +2,14 @@
 
 import '../../ui/bottom_items/Account/models/account_models.dart';
 
-class AllMember {
+class AllMemberModel {
   String? message;
   int? count;
   List<AccountModels>? members;
 
-  AllMember({this.message, this.count, this.members});
+  AllMemberModel({this.message, this.count, this.members});
 
-  AllMember.fromJson(Map<String, dynamic> json) {
+  AllMemberModel.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     count = json['count'];
     if (json['members'] != null) {

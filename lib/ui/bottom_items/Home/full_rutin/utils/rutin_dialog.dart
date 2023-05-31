@@ -12,7 +12,6 @@ import 'package:table/widgets/appWidget/dottted_divider.dart';
 import 'package:table/widgets/progress_indicator.dart';
 import '../../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../../widgets/text and buttons/square_button.dart';
-import '../screen/viewMore/seeAllCaotensList.dart';
 
 class RutinDialog {
   //**********     ChackStatusUser_BottomSheet       **********/
@@ -143,27 +142,6 @@ class RutinDialog {
                               ),
                             ],
                             if (data.isCaptain || data.isOwner) ...[
-                              SqureButton(
-                                icon: Icons.person_remove,
-                                color: Colors.redAccent,
-                                text: "remove captens",
-                                ontap: () {
-                                  return Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => SeeAllCaptainsList(
-                                        routineId: rutinId,
-                                        buttonText: "Remove capten",
-                                        color: Colors.red,
-                                        onUsername: (seleted_username, _) {
-                                          members.removeMember(
-                                              context, seleted_username);
-                                        },
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
                               if (data.isOwner == true) ...[
                                 SqureButton(
                                   icon: Icons.delete,

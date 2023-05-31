@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/dialogs/alart_dialogs.dart';
-import 'package:table/models/members_models.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/member_request.dart';
+import '../models/members_models.dart';
 import '../../../../../models/message_model.dart';
 
 //! ** Providers ****/
@@ -13,8 +13,8 @@ final memberControllerProvider =
         (ref, rutinId) =>
             MemberController(ref.read(memberRequestProvider), rutinId));
 
-final all_members_provider =
-    FutureProvider.autoDispose.family<MembersModel?, String>((ref, rutin_id) {
+final all_members_provider = FutureProvider.autoDispose
+    .family<RutineMembersModel?, String>((ref, rutin_id) {
   return ref.watch(memberRequestProvider).all_members(rutin_id);
 });
 

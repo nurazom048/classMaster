@@ -6,8 +6,6 @@ import '../../../../../../constant/app_color.dart';
 import '../../../../../../widgets/appWidget/app_text.dart';
 import '../../../../../../widgets/heder/heder_title.dart';
 import 'class_list.dart';
-import 'seeAllCaotensList.dart';
-import 'package:flutter/material.dart' as ma;
 
 class ViewMore extends StatefulWidget {
   final String rutinId;
@@ -31,7 +29,7 @@ class _ViewMoreState extends State<ViewMore> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    controller = TabController(length: 3, vsync: this);
+    controller = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -64,9 +62,8 @@ class _ViewMoreState extends State<ViewMore> with TickerProviderStateMixin {
                         labelColor: AppColor.nokiaBlue,
                         unselectedLabelColor: Colors.black,
                         tabs: const [
-                          Tab(child: ma.Text("Class List")),
-                          Tab(child: ma.Text("Members")),
-                          Tab(child: ma.Text("Captens")),
+                          Tab(child: Text("Class List")),
+                          Tab(child: Text("Members")),
                         ]),
                   ),
                 ],
@@ -77,8 +74,6 @@ class _ViewMoreState extends State<ViewMore> with TickerProviderStateMixin {
         body: TabBarView(controller: controller, children: [
           ClassListPage(rutinId: widget.rutinId, rutinName: widget.rutinId),
           MemberList(rutinId: widget.rutinId),
-          SeeAllCaptainsList(
-              onUsername: (onUsername, o) {}, routineId: widget.rutinId)
         ]),
       ),
 

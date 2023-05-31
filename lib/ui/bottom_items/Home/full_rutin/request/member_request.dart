@@ -6,9 +6,8 @@ import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/captens/list_of_captens.dart';
-import 'package:table/models/members_models.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/models/members_models.dart';
 import '../../../../../constant/constant.dart';
-import '../../../../../models/member/all_members.dart';
 import '../../../../../models/message_model.dart';
 import '../../../../../models/see_all_request_model.dart';
 
@@ -17,7 +16,7 @@ final memberRequestProvider = Provider((ref) => memberRequest());
 class memberRequest {
 //
 //**********************   rutin all _members    *********** */
-  Future<MembersModel?> all_members(rutin_id) async {
+  Future<RutineMembersModel?> all_members(rutin_id) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 
@@ -30,7 +29,7 @@ class memberRequest {
 
       if (response.statusCode == 200) {
         print(res);
-        return MembersModel.fromJson(res);
+        return RutineMembersModel.fromJson(res);
       } else {
         throw Exception("faild to load all member list ");
       }
@@ -219,36 +218,13 @@ class memberRequest {
     }
   }
 
-  //
-  Future<ListCptens> sellAllCaptemReq(String rutin_id) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
-
-    var url = Uri.parse("${Const.BASE_URl}/rutin/cap10/$rutin_id");
-
-    //
-    final response = await http.post(url);
-    var res = ListCptens.fromJson(jsonDecode(response.body));
-    print("req from  leave member $res");
-
-    try {
-      if (response.statusCode == 200) {
-        return res;
-      } else {
-        throw Exception(res.message);
-      }
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
-
   //....see All members........//
-  Future<AllMember> seeAllMemberReq(String rutin_id) async {
+  Future<RutineMembersModel> seeAllMemberReq(String rutin_id) async {
     var url = Uri.parse("${Const.BASE_URl}/rutin/member/$rutin_id");
 
     //
     final response = await http.post(url);
-    var res = AllMember.fromJson(jsonDecode(response.body));
+    var res = RutineMembersModel.fromJson(jsonDecode(response.body));
     print(jsonDecode(response.body));
     try {
       if (response.statusCode == 200) {
@@ -347,11 +323,7 @@ class memberRequest {
   }
 }
 
-final allCaptenProvider = FutureProvider.autoDispose
-    .family<ListCptens, String>((ref, rutin_id) async {
-  return ref.watch(memberRequestProvider).sellAllCaptemReq(rutin_id);
-});
 final allMembersProvider =
-    FutureProvider.family<AllMember, String>((ref, rutin_id) async {
+    FutureProvider.family<RutineMembersModel, String>((ref, rutin_id) async {
   return ref.watch(memberRequestProvider).seeAllMemberReq(rutin_id);
 });
