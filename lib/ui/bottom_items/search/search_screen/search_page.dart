@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/search/search_screen/account_search_screen.dart';
-import 'package:table/ui/bottom_items/search/search_screen/notice_bord_search_screen.dart';
 import 'package:table/ui/bottom_items/search/search_screen/search_rutine_screen.dart';
 import 'package:table/ui/bottom_items/search/widgets/search_bar_custom.dart';
 import 'package:flutter/material.dart' as ma;
@@ -27,7 +26,7 @@ class _SearchPAgeState extends State<SearchPAge> with TickerProviderStateMixin {
     super.initState();
     tabController = TabController(
       initialIndex: 0,
-      length: 3,
+      length: 2,
       vsync: this,
     );
   }
@@ -64,10 +63,6 @@ class _SearchPAgeState extends State<SearchPAge> with TickerProviderStateMixin {
                         padding: EdgeInsets.all(8.0),
                         child: ma.Text("Account ",
                             style: TextStyle(color: Colors.black))),
-                    Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: ma.Text("Notice Board ",
-                            style: TextStyle(color: Colors.black))),
                   ],
                 ),
               ),
@@ -81,7 +76,6 @@ class _SearchPAgeState extends State<SearchPAge> with TickerProviderStateMixin {
                 child: TabBarView(controller: tabController, children: const [
                   SearchRutineScreen(),
                   AccountSearchScreen(),
-                  NoticeBordSearch(),
                 ]),
               ),
             ],

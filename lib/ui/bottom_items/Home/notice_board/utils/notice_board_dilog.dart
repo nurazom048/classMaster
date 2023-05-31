@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../../widgets/appWidget/dottted_divider.dart';
 import '../../full_rutin/widgets/chekbox_selector_button.dart';
-import '../notice controller/notice_boaed_satus_controller.dart';
+import '../notice controller/noticeboard_satus_controller.dart';
 
 class NoticeboardDilog {
   //   notficationSeleect

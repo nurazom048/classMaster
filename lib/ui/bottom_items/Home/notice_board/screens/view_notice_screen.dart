@@ -5,7 +5,7 @@ import 'package:table/widgets/appWidget/app_text.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart' as fa;
 import '../../../../../constant/app_color.dart';
 import '../../../../../widgets/heder/heder_title.dart';
-import '../models/notice bord/recentNotice.dart';
+import '../models/recent_notice_model.dart';
 
 class NoticeViewScreen extends StatelessWidget {
   final Notice notice;
@@ -28,7 +28,7 @@ class NoticeViewScreen extends StatelessWidget {
               AppText(notice.contentName).heding(),
               const SizedBox(height: 20),
               AppText("Description", color: AppColor.nokiaBlue).heding(),
-              AppText(notice.description).heding(),
+              AppText(notice.description ?? '').heding(),
               const SizedBox(height: 20),
               AppText("pdf", color: AppColor.nokiaBlue).heding(),
               const SizedBox(height: 10),

@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/dialogs/alart_dialogs.dart';
-import 'package:table/ui/bottom_items/Home/notice_board/request/noticeboard_noticeRequest.dart';
+import 'package:table/ui/bottom_items/Home/notice_board/request/motice_request.dart';
 import 'package:table/widgets/appWidget/TextFromFild.dart';
 import 'package:table/widgets/heder/heder_title.dart';
 import 'package:flutter/material.dart' as ma;

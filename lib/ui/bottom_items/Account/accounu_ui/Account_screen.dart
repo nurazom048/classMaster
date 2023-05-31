@@ -10,7 +10,6 @@ import 'package:table/ui/bottom_items/Account/utils/account_utils.dart';
 import 'package:table/ui/bottom_items/Account/widgets/my_container_button.dart';
 import 'package:table/ui/bottom_items/Account/widgets/my_divider.dart';
 import 'package:table/ui/bottom_items/Account/widgets/tiled_boutton.dart';
-import 'package:table/ui/bottom_items/Home/notice_board/screens/notice%20Board/uploaded_notice_bord%20_screen.dart';
 import 'package:table/widgets/account_card.dart';
 import '../../../../core/component/heder component/appbaar_custom.dart';
 import '../../../../core/dialogs/alart_dialogs.dart';
@@ -110,33 +109,7 @@ class AccountScreen extends StatelessWidget {
                           onTap: () => Get.to(const SaveScreen()),
                         ),
 
-                        Tilesbutton(
-                          " My uploaded Notice Board",
-                          const FaIcon(FontAwesomeIcons.calendar),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) =>
-                                      const UploadedNoticeBordScreen()),
-                            );
-                          },
-                        ),
-
                         //
-
-                        Tilesbutton(
-                          " My joined Notice Board",
-                          const FaIcon(FontAwesomeIcons.calendar),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) =>
-                                      const UploadedNoticeBordScreen()),
-                            );
-                          },
-                        ),
                       ]),
                     ),
                     const MyDividerr(thickness: 1.0, height: 1.0),

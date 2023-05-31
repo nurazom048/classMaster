@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:table/core/dialogs/alart_dialogs.dart';
 import 'package:table/ui/bottom_items/Home/notice_board/screens/view_notice_screen.dart';
 
-import '../../models/notice bord/recentNotice.dart';
-import '../../notice controller/list_of_notices_controller.dart';
+import '../../models/recent_notice_model.dart';
+import '../../notice controller/virew_recent_notice_controller.dart';
 import '../../widgets/simple_notice_card.dart';
 
 ////////////////////////////////////
@@ -17,7 +17,7 @@ class ListOfNoticeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //! provider
-    final listOfNotices = ref.watch(listofNoticesProvider(noticeBoardId));
+    final listOfNotices = ref.watch(recentNoticeController);
     return SizedBox(
       height: 800,
       child: Padding(
@@ -35,7 +35,7 @@ class ListOfNoticeScreen extends ConsumerWidget {
                         scrollController.position.maxScrollExtent) {
                       // print("reached the end");
                       ref
-                          .watch(listofNoticesProvider(noticeBoardId).notifier)
+                          .watch(recentNoticeController.notifier)
                           .loadMore(data.currentPage, context);
                     }
                   }
@@ -57,8 +57,13 @@ class ListOfNoticeScreen extends ConsumerWidget {
                             id: data.notices[index].id,
                             contentName: data.notices[index].contentName,
                             pdf: data.notices[index].pdf,
-                            description: data.notices[index].description,
-                            noticeBoard: data.notices[index].noticeBoard,
+                            academyId: AcademyId(
+                              id: "id",
+                              username: "username",
+                              name: "name",
+                            ),
+                            // description: data.notices[index].description,
+                            // noticeBoard: data.notices[index].noticeBoard,
                             time: data.notices[index].time,
                           )),
                         ),
