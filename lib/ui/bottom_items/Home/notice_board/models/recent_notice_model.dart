@@ -46,7 +46,7 @@ class RecentNotice {
 class Notice {
   String id;
   String contentName;
-  List<Pdf> pdf;
+  String pdf;
   String? description;
   AcademyId academyId;
   DateTime time;
@@ -63,7 +63,7 @@ class Notice {
   Notice copyWith({
     String? id,
     String? contentName,
-    List<Pdf>? pdf,
+    String? pdf,
     String? description,
     AcademyId? academyId,
     DateTime? time,
@@ -80,7 +80,7 @@ class Notice {
   factory Notice.fromJson(Map<String, dynamic> json) => Notice(
         id: json["_id"],
         contentName: json["content_name"],
-        pdf: List<Pdf>.from(json["pdf"].map((x) => Pdf.fromJson(x))),
+        pdf: json["pdf"] == "" ? null : json["pdf"],
         description: json["description"],
         academyId: AcademyId.fromJson(json["academyID"]),
         time: DateTime.parse(json["time"]),
@@ -120,19 +120,4 @@ class AcademyId {
         "username": username,
         "name": name,
       };
-}
-
-class Pdf {
-  String url;
-  String id;
-
-  Pdf({
-    required this.url,
-    required this.id,
-  });
-
-  factory Pdf.fromJson(Map<String, dynamic> json) => Pdf(
-        url: json["url"],
-        id: json["_id"],
-      );
 }

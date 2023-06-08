@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 import '../notice_row.dart';
 
 class RecentNoticeSliderItem extends StatelessWidget {
-  const RecentNoticeSliderItem(
-      {super.key,
-      required this.notice,
-      required this.conditon,
-      required this.index});
+  const RecentNoticeSliderItem({
+    super.key,
+    required this.notice,
+    required this.conditon,
+    required this.index,
+  });
   final notice;
   final int index;
   final bool conditon;
@@ -32,8 +33,13 @@ class RecentNoticeSliderItem extends StatelessWidget {
                 notice: notice[index + 1],
                 date: notice[index + 1].time.toString(),
                 title: notice[index + 1].contentName,
-              )
+              ),
             ],
+            if (conditon == false) ...[
+              const Center(
+                child: Text("Join NoticeBoard to see Recent Notices"),
+              )
+            ]
           ]),
     );
   }

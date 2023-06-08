@@ -1,7 +1,4 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
@@ -11,23 +8,52 @@
             "type": "msedge",
             "webRoot": "${workspaceFolder}"
         },
-
         {
             "name": "table",
             "request": "launch",
-            "type": "dart"
-        },
-        // {
-        //     "name": "table (profile mode)",
-        //     "request": "launch",
-        //     "type": "dart",
-        //     "flutterMode": "profile"
-        // },
-        // {
-        //     "name": "table (release mode)",
-        //     "request": "launch",
-        //     "type": "dart",
-        //     "flutterMode": "release"
-        // }
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "--web-port",
+                "8080"
+            ],
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "FLUTTER_WEB_DEBUGGER": "true"
+            },
+            "preLaunchTask": "flutter run -d chrome"
+        }
     ]
 }
+// {
+//     // Use IntelliSense to learn about possible attributes.
+//     // Hover to view descriptions of existing attributes.
+//     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+//     "version": "0.2.0",
+//     "configurations": [
+//         {
+//             "name": "Attach to Edge",
+//             "port": 9222,
+//             "request": "attach",
+//             "type": "msedge",
+//             "webRoot": "${workspaceFolder}"
+//         },
+//         {
+//             "name": "table",
+//             "request": "launch",
+//             "type": "dart"
+//         },
+//         // {
+//         //     "name": "table (profile mode)",
+//         //     "request": "launch",
+//         //     "type": "dart",
+//         //     "flutterMode": "profile"
+//         // },
+//         // {
+//         //     "name": "table (release mode)",
+//         //     "request": "launch",
+//         //     "type": "dart",
+//         //     "flutterMode": "release"
+//         // }
+//     ]
+// }

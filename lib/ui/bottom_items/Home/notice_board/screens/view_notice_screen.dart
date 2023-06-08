@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:table/ui/bottom_items/Home/notice_board/screens/view_pdf_.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart' as fa;
@@ -32,23 +33,11 @@ class NoticeViewScreen extends StatelessWidget {
               const SizedBox(height: 20),
               AppText("pdf", color: AppColor.nokiaBlue).heding(),
               const SizedBox(height: 10),
-              Column(
-                children: List.generate(
-                  notice.pdf.length,
-                  (index) => ViewPdfButton(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) {
-                          return ViewPDf(
-                            pdfLink: notice.pdf[index].url,
-                          );
-                        }),
-                      );
-                    },
-                  ),
-                ),
-              )
+              ViewPdfButton(
+                onTap: () => Get.to(
+                    transition: Transition.rightToLeft,
+                    () => ViewPDf(pdfLink: notice.pdf)),
+              ),
             ],
           ),
         )

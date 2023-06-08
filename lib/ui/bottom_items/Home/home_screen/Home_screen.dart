@@ -53,7 +53,7 @@ class HomeScreen extends ConsumerWidget {
                           list: <Widget>[
                             RecentNoticeSliderItem(
                               notice: data.notices,
-                              index: 1,
+                              index: 0,
                               conditon: length >= 2,
                             ),
 
@@ -117,46 +117,6 @@ class HomeScreen extends ConsumerWidget {
                               data.homeRoutines[index].rutineID.name,
                             ),
                           );
-
-                          if (data.homeRoutines.length - 1 != index) {
-                            // return RutinBoxById(
-                            //   rutinId: data.rutins[index].id,
-                            //   rutinName: data.rutins[index].name,
-                            //   onTapMore: () =>
-                            //       RutinDialog.ChackStatusUser_BottomSheet(
-                            //     context,
-                            //     data.rutins[index].id,
-                            //     data.rutins[index].name,
-                            //   ),
-                            // );
-                          }
-                          {
-                            // return ListView.builder(
-                            //   shrinkWrap: true,
-                            //   physics: const NeverScrollableScrollPhysics(),
-                            //   padding: const EdgeInsets.only(bottom: 100),
-                            //   itemCount: 1,
-                            //   itemBuilder: (context, index) {
-                            //     return Column(
-                            //       children: [
-                            //         RutinBoxById(
-                            //           rutinId: data.rutins[index].id,
-                            //           rutinName: data.rutins[index].name,
-                            //           onTapMore: () => RutinDialog
-                            //               .ChackStatusUser_BottomSheet(
-                            //             context,
-                            //             data.rutins[index].id,
-                            //             data.rutins[index].name,
-                            //           ),
-                            //         ),
-                            //         data.currentPage == data.totalPages
-                            //             ? const SizedBox.shrink()
-                            //             : const RutinBoxByIdSkelton(),
-                            //       ],
-                            //     );
-                            //   },
-                            // );
-                          }
                         },
                       );
                     },
