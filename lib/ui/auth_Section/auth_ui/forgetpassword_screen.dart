@@ -18,7 +18,7 @@ import '../utils/change_pw_validator.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
   final String email;
-  ForgetPasswordScreen({super.key, required this.email});
+  const ForgetPasswordScreen({super.key, required this.email});
 
   @override
   State<ForgetPasswordScreen> createState() => _ForgetPasswordScreenState();

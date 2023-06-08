@@ -18,10 +18,10 @@ class AddWeekdayButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
           ),
         ),
-        child: Row(
+        child: const Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisSize: MainAxisSize.min,
-          children: const [
+          children: [
             Icon(Icons.add),
             SizedBox(width: 5),
             Text('Add Weekday', style: TextStyle(fontSize: 16)),

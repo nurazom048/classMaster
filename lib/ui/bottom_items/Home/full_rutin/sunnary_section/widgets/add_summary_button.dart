@@ -21,9 +21,9 @@ class AddSummaryButton extends StatelessWidget {
           ),
           borderRadius: BorderRadius.circular(20.0),
         ),
-        child: Row(
+        child: const Row(
           mainAxisSize: MainAxisSize.min,
-          children: const [
+          children: [
             Text(
               ' Add Summary',
               style: TextStyle(

@@ -44,7 +44,7 @@ class SettingsPage extends StatelessWidget {
                   title: 'Change password',
                   icon: Icons.lock,
                   onTap: () => Get.to(
-                    () => ChangePasswordPage(),
+                    () => const ChangePasswordPage(),
                     transition: Transition.rightToLeft,
                   ),
                 ),

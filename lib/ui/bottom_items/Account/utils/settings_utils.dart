@@ -11,8 +11,8 @@ class SettingsUtils {
             title: const Text('Select Theme'),
             actions: [
               CupertinoActionSheetAction(
-                child: Row(
-                  children: const <Widget>[
+                child: const Row(
+                  children: <Widget>[
                     Padding(
                       padding: EdgeInsets.only(right: 10),
                       child: Icon(CupertinoIcons.check_mark),
@@ -26,8 +26,8 @@ class SettingsUtils {
                 },
               ),
               CupertinoActionSheetAction(
-                child: Row(
-                  children: const <Widget>[
+                child: const Row(
+                  children: <Widget>[
                     Padding(
                         padding: EdgeInsets.only(right: 10),
                         child: Icon(CupertinoIcons.check_mark)),
@@ -40,8 +40,8 @@ class SettingsUtils {
                 },
               ),
               CupertinoActionSheetAction(
-                child: Row(
-                  children: const <Widget>[
+                child: const Row(
+                  children: <Widget>[
                     Padding(
                       padding: EdgeInsets.only(right: 10),
                       child: Icon(CupertinoIcons.check_mark),

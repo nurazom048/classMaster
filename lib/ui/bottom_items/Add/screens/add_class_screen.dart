@@ -29,7 +29,7 @@ class AddClassScreen extends StatefulWidget {
   final String? classId;
   final bool? isEdit;
 
-  const AddClassScreen({
+  const AddClassScreen({super.key, 
     required this.routineId,
     this.classId,
     this.isEdit = false,

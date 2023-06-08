@@ -31,7 +31,7 @@ class _WhoAreYouButtonState extends State<WhoAreYouButton> {
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   decoration: BoxDecoration(
                     color: selectedRole == "Student"
-                        ? Color(0xFF0168FF).withOpacity(0.18)
+                        ? const Color(0xFF0168FF).withOpacity(0.18)
                         : const Color(0xFFEEF4FC),
                     borderRadius: BorderRadius.circular(8.0),
                     border: Border.all(
@@ -47,7 +47,7 @@ class _WhoAreYouButtonState extends State<WhoAreYouButton> {
                       "Student",
                       style: TextStyle(
                         color: selectedRole != "Student"
-                            ? Color(0xFFA7CBFF)
+                            ? const Color(0xFFA7CBFF)
                             : const Color(0xFF0168FF),
                         fontWeight: FontWeight.w600,
                       ),
@@ -71,7 +71,7 @@ class _WhoAreYouButtonState extends State<WhoAreYouButton> {
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
                     color: selectedRole == "Academy"
-                        ? Color(0xFF0168FF).withOpacity(0.18)
+                        ? const Color(0xFF0168FF).withOpacity(0.18)
                         : const Color(0xFFEEF4FC),
                     borderRadius: BorderRadius.circular(8.0),
                     border: Border.all(

@@ -289,7 +289,7 @@ String _formatDate(DateTime flutteDate) {
   var now = DateTime.now();
   var formatter = DateFormat('MMM');
   var month = formatter.format(flutteDate);
-  var displayDate;
+  String displayDate;
 
   if (flutteDate.day == now.day && flutteDate.month == now.month) {
     displayDate = "Today";

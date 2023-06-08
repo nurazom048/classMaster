@@ -137,7 +137,7 @@ class _LogingScreenState extends State<LogingScreen> {
                   SiginUpSuicherButton(
                     "Do not have an account?",
                     "Sign up",
-                    onTap: () => Get.to(() => SignUpScreen()),
+                    onTap: () => Get.to(() => const SignUpScreen()),
                   ),
 
                   ///

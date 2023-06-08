@@ -77,6 +77,8 @@ class PeriodNumberButton extends StatelessWidget {
 }
 
 class PeriodSelectionScreen extends StatefulWidget {
+  const PeriodSelectionScreen({super.key});
+
   @override
   _PeriodSelectionScreenState createState() => _PeriodSelectionScreenState();
 }

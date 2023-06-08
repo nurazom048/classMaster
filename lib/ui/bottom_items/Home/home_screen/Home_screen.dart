@@ -1,5 +1,3 @@
-// ignore_for_file: non_constant_identifier_names, use_key_in_widget_constructors, unnecessary_null_comparison
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
@@ -18,7 +16,8 @@ import '../widgets/custom_title_bar.dart';
 import '../widgets/slider/recentnoticeslider.dart';
 
 class HomeScreen extends ConsumerWidget {
-  HomeScreen({Key? key});
+  HomeScreen({super.key});
+
   final scrollController = ScrollController();
 
   @override

@@ -18,7 +18,7 @@ import '../widgets/siginup_page_switch.dart';
 import '../widgets/who_are_you_button.dart';
 
 class SignUpScreen extends StatefulWidget {
-  SignUpScreen({super.key, this.emaileadress, this.phoneNumberString});
+  const SignUpScreen({super.key, this.emaileadress, this.phoneNumberString});
   final String? emaileadress;
   final String? phoneNumberString;
 
@@ -171,7 +171,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SiginUpSuicherButton(
                   "Already have an account?",
                   "Log in",
-                  onTap: () => Get.to(() => SignUpScreen()),
+                  onTap: () => Get.to(() => const SignUpScreen()),
                 ),
 
                 const SizedBox(height: 30),

@@ -31,7 +31,7 @@ class SocialLoginButton extends StatelessWidget {
               isphone == true
                   ? FontAwesomeIcons.phone
                   : FontAwesomeIcons.google,
-              color: Color(0xFF0168FF),
+              color: const Color(0xFF0168FF),
               size: 20,
             ),
             // Your content here
@@ -39,7 +39,7 @@ class SocialLoginButton extends StatelessWidget {
               isphone == true
                   ? 'Continue with Phone '
                   : "Continue with Google ",
-              style: TextStyle(
+              style: const TextStyle(
                 fontFamily: 'Open Sans',
                 fontStyle: FontStyle.normal,
                 fontWeight: FontWeight.w600,

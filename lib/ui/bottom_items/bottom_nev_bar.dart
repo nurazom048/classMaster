@@ -13,7 +13,7 @@ import 'Home/home_screen/home_screen.dart';
 final bottomNavBarIndexProvider = rp.StateProvider<int>((ref) => 0);
 
 class BottomNavBar extends StatelessWidget {
-  BottomNavBar({Key? key});
+  BottomNavBar({super.key});
 
   final List<Widget> pages = [
     HomeScreen(),
