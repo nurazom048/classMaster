@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
@@ -11,6 +13,7 @@ import 'package:table/ui/bottom_items/Home/widgets/slider/recentniticeslider_ite
 import '../../../../core/component/responsive.dart';
 import '../../../../core/dialogs/alart_dialogs.dart';
 import '../../Account/accounu_ui/Account_screen.dart';
+import '../../bottom_nev_bar.dart';
 import '../full_rutin/widgets/rutin_box/rutin_box_by_id.dart';
 import '../full_rutin/widgets/sceltons/rutinebox_id_scelton.dart';
 import '../home_req/home_rutins_controller.dart';
@@ -35,36 +38,37 @@ class HomeScreen extends ConsumerWidget {
         homeMobileView(ref, recentNoticeList, context, homeRutins);
 
     final _appBar = const ChustomTitleBar("title");
-    return SafeArea(
-        child: Responsive(
+    return Responsive(
       // Mobile view
-      mobile: Scaffold(
-          backgroundColor: const Color(0xFFF2F2F2),
-          body: homeMobileView(ref, recentNoticeList, context, homeRutins)),
+      mobile: SafeArea(
+        child: Scaffold(
+    backgroundColor: const Color(0xFFF2F2F2),
+    body: homeMobileView(ref, recentNoticeList, context, homeRutins),
+        ),
+      ),
 
       // Desktop view
       desktop: Scaffold(
-          body: Column(
-        children: [
-          _appBar,
-          Expanded(
-            child: Row(
-              children: [
-                // Drawer
-                const Expanded(flex: 1, child: MyDawer()),
-                // mobile
-
-                Expanded(
-                  flex: 3,
-                  child: Container(child: _mobileView, color: Colors.yellow),
-                ),
-                Expanded(flex: 1, child: Container(color: Colors.black)),
-              ],
+      body: Column(
+    children: [
+      _appBar,
+      Expanded(
+        child: Row(
+          children: [
+            // Drawer
+            const Expanded(flex: 1, child: MyDawer()),
+            // mobile
+            Expanded(
+              flex: 3,
+              child: Container(child: _mobileView, color: Colors.yellow),
             ),
-          ),
-        ],
+            Expanded(flex: 1, child: Container(color: Colors.black)),
+          ],
+        ),
+      ),
+    ],
       )),
-    ));
+    );
   }
 
 /////////////

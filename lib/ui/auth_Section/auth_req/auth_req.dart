@@ -3,9 +3,9 @@
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:table/models/message_model.dart';
+import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 
 import '../../../constant/constant.dart';
 
@@ -23,8 +23,7 @@ class AuthReq {
         final accountData = json.decode(response.body);
 
         //... save token
-        final prefs = await SharedPreferences.getInstance();
-        var savetoken = await prefs.setString('Token', accountData["token"]);
+        await AuthController.saveToken(accountData["token"]);
 
         return right(message);
       } else {
@@ -70,9 +69,7 @@ class AuthReq {
     String oldPassword,
     String newPassword,
   ) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
-
+    final String? getToken = await AuthController.getToken();
     var url = Uri.parse('${Const.BASE_URl}/account/eddit/changepassword');
 
     try {
@@ -98,8 +95,7 @@ class AuthReq {
 
   Future<Either<String, Message>> forgrtPassword(String newPassword,
       {String? email, String? phone}) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
+    final String? getToken = await AuthController.getToken();
 
     var url = Uri.parse('${Const.BASE_URl}/account/eddit/forgotPassword');
 

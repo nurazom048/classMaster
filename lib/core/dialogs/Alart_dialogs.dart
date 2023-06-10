@@ -36,7 +36,6 @@ abstract class Alart {
           actions: <Widget>[
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context).pop();
                 if (onConfirm != null) {
                   onConfirm(true);
                 }

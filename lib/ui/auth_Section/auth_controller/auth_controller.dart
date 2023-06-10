@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/message_model.dart';
 import 'package:table/ui/auth_Section/auth_req/auth_req.dart';
 import 'package:table/ui/bottom_items/bottom_nev_bar.dart';
@@ -104,5 +105,24 @@ class AuthController extends StateNotifier<bool> {
         Alart.showSnackBar(context, r.message);
       },
     );
+  }
+
+  // get Token
+  static Future<String?> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+    return getToken;
+  }
+
+// save token
+  static Future<void> saveToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('Token', token);
+  }
+
+  // remove remove
+  static Future<void> removeToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('Token');
   }
 }

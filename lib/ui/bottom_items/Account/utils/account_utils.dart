@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AccoutUtils {
-  static Future<void> showConfirmationDialog(context) async {
+  static Future<void> showConfirmationDialog(context,
+      {Function? onTapYes}) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -22,9 +23,7 @@ class AccoutUtils {
             CupertinoButton(
               child: const Text("Yes",
                   style: TextStyle(fontSize: 18, color: Colors.red)),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+              onPressed: () => onTapYes,
             ),
             CupertinoButton(
               child: const Text("No",

@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:table/ui/auth_Section/auth_ui/LogIn_Screen.dart';
 import 'package:table/ui/bottom_items/Account/account_request/account_request.dart';
 import 'package:table/ui/bottom_items/Account/accounu_ui/all_uploadeade_rutines.dart';
 import 'package:table/ui/bottom_items/Account/accounu_ui/joined_rutines.dart';
@@ -122,10 +124,11 @@ class AccountScreen extends StatelessWidget {
                       onTap: () => Get.to(SettingsPage()),
                     ),
                     MyContainerButton(
-                        const Icon(Icons.logout_outlined), "Sign out",
-                        color: Colors.red,
-                        onTap: () =>
-                            AccoutUtils.showConfirmationDialog(context)),
+                      const Icon(Icons.logout_outlined),
+                      "Sign out",
+                      color: Colors.red,
+                      onTap: () => logOut(context),
+                    ),
 
                     const MyDividerr(thickness: 1.0, height: 1.0),
                     MyContainerButton(
@@ -143,6 +146,21 @@ class AccountScreen extends StatelessWidget {
         );
       }),
     );
+  }
+
+  Future<void> logOut(context) async {
+    print("logout");
+
+    Alart.errorAlertDialogCallBack(context, "Are You Sure To logout ?",
+        onConfirm: (bool confirmed) async {
+      if (confirmed) {
+        // Remove token and navigate to the login screen
+        final prefs = await SharedPreferences.getInstance();
+        prefs.remove('Token');
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const LogingScreen()));
+      }
+    });
   }
 }
 
