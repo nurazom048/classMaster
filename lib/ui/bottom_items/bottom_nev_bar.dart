@@ -7,6 +7,7 @@ import 'package:table/ui/bottom_items/Home/full_rutin/widgets/dash_border_button
 import 'package:table/widgets/appWidget/dottted_divider.dart';
 
 import '../../constant/app_color.dart';
+import '../../core/component/responsive.dart';
 import 'Account/accounu_ui/account_screen.dart';
 import 'Home/home_screen/home_screen.dart';
 
@@ -20,13 +21,21 @@ class BottomNavBar extends StatelessWidget {
     const Text("Add Screen"),
     const AccountScreen(),
   ];
-
+// Add Button
+  static Widget add = CircleAvatar(
+    radius: 20,
+    backgroundColor: AppColor.nokiaBlue,
+    child: const Icon(Icons.add, color: Colors.white),
+  );
+// Add popup
+  static addpopup(BuildContext context) => _showBottomSheet(context);
   @override
   Widget build(BuildContext context) {
     return rp.Consumer(builder: (context, ref, _) {
       final index = ref.watch(bottomNavBarIndexProvider);
 
-      final hideNavBar = ref.watch(hideNevBarOnScrooingProvider);
+      final hideNavBar = ref.watch(hideNevBarOnScrooingProvider) ||
+          !Responsive.isMobile(context);
 
       return Scaffold(
         body: pages[index],

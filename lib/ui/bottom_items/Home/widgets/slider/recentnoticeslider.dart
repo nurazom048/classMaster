@@ -35,7 +35,7 @@ class RecentNoticeSlider extends StatelessWidget {
                   onPageChanged: (index, reason) {
                     carouselIndexNotifier.state = index;
                   },
-                  autoPlay: true,
+                  //autoPlay: true,
                 ),
                 items: list,
               ),

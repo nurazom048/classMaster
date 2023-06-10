@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -52,7 +53,6 @@ class NoticeRequest {
 
   //******    add notice     ********* */
   Future<String> addNotice({
-    String? noticeId,
     String? content_name,
     String? description,
     String? pdf_file,
@@ -60,20 +60,29 @@ class NoticeRequest {
     // Obtain shared preferences.
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
-    var url = Uri.parse('${Const.BASE_URl}/notice/add/$noticeId');
+    var url = Uri.parse('${Const.BASE_URl}/notice/add/');
 
     final request = http.MultipartRequest('POST', url);
-    request.headers.addAll({'Authorization': 'Bearer $getToken'});
+    request.headers.addAll({
+      'Authorization': 'Bearer $getToken',
+      "Access-Control-Allow-Origin": "*",
+    });
 
     request.fields['content_name'] = content_name ?? '';
     request.fields['description'] = description ?? '';
     if (pdf_file != null) {
-      final pdfPath = await http.MultipartFile.fromPath('pdf_file', pdf_file);
-      print("pdf path: $pdf_file");
-      request.files.add(pdfPath);
+      try {
+        final pdfPath = await http.MultipartFile.fromPath('pdf_file', pdf_file);
+        print("pdf path: $pdf_file");
+        request.files.add(pdfPath);
+      } catch (e) {
+        print("Eror***** : $e");
+      }
     }
 
     final response = await request.send();
+    print(await response.stream.bytesToString());
+    print(response.statusCode);
 
     try {
       if (response.statusCode == 200) {

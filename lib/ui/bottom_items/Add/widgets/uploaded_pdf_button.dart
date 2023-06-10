@@ -7,6 +7,7 @@ import '../../../../constant/app_color.dart';
 import '../../../../widgets/appWidget/app_text.dart';
 
 final selectedPdfPathProvider = StateProvider<String?>((ref) => null);
+// final newfilebytes = StateProvider<List<int>?>((ref) => null);
 
 class UploadPDFBButton extends StatelessWidget {
   final Function(String?) onSelected;
@@ -39,15 +40,16 @@ class UploadPDFBButton extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              FittedBox(
-                child: SizedBox(
-                  width: 200,
-                  child: Text(
-                    pdfpath ?? 'Upload Notice File (PDF)',
-                    style: TS.opensensBlue(),
-                  ),
+              // FittedBox(
+              //   child:
+              SizedBox(
+                width: 200,
+                child: Text(
+                  pdfpath ?? 'Upload Notice File (PDF)',
+                  style: TS.opensensBlue(),
                 ),
               ),
+              // ),
               const SizedBox(width: 20),
               Icon(Icons.file_upload_outlined, color: AppColor.nokiaBlue)
             ],

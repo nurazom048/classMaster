@@ -64,6 +64,8 @@ dependencies:
   pinput: ^2.2.31
   carousel_slider: ^4.2.1
   smooth_page_indicator: ^1.1.0
+  flutter_document_picker: ^5.2.3
+  flutter_dropzone: ^3.0.5
 
 dev_dependencies:
   flutter_test:
