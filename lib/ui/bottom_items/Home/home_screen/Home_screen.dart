@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/utils/rutin_dialog.dart';
 import 'package:table/ui/bottom_items/Home/models/home_rutines_model.dart';
 import 'package:table/ui/bottom_items/Home/notice_board/models/recent_notice_model.dart';
@@ -36,7 +37,7 @@ class HomeScreen extends ConsumerWidget {
     final _mobileView =
         homeMobileView(ref, recentNoticeList, context, homeRutins);
 
-    final _appBar = const ChustomTitleBar("title");
+    const _appBar = ChustomTitleBar("title");
     return Responsive(
       // Mobile view
       mobile: SafeArea(
@@ -76,9 +77,10 @@ class HomeScreen extends ConsumerWidget {
     return NotificationListener<ScrollNotification>(
       // hide bottom nev bar on scroll
       onNotification: (scrollNotification) =>
-          handleScrollNotification(scrollNotification, ref),
+          hideNevBarOnScroll(scrollNotification, ref),
       //
       child: ListView(
+        physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.only(bottom: 100),
         controller: scrollController,
         children: [
@@ -131,8 +133,6 @@ class HomeScreen extends ConsumerWidget {
 
           homeRutins.when(
             data: (data) {
-              if (data == null) return const Text("Data not found");
-
               void scrollListener() {
                 if (scrollController.position.pixels ==
                     scrollController.position.maxScrollExtent) {
@@ -163,15 +163,7 @@ class HomeScreen extends ConsumerWidget {
                 },
               );
             },
-            loading: () => ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.only(bottom: 100),
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return const RutinBoxByIdSkelton();
-              },
-            ),
+            loading: () => RUTINE_BOX_SKELTON,
             error: (error, stackTrace) => Alart.handleError(context, error),
           ),
         ],
@@ -182,10 +174,7 @@ class HomeScreen extends ConsumerWidget {
   //
 }
 
-bool handleScrollNotification(
-  ScrollNotification? scrollNotification,
-  WidgetRef ref,
-) {
+bool hideNevBarOnScroll(ScrollNotification? scrollNotification, WidgetRef ref) {
   // Logic of scrollNotification
   if (scrollNotification is ScrollStartNotification) {
     // ignore: avoid_print

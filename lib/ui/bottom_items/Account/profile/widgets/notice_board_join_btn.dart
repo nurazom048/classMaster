@@ -6,7 +6,7 @@ import '../../../Home/full_rutin/widgets/notification_buton.dart';
 
 class NoticeBoardJoineButton extends StatelessWidget {
   final bool isJoine;
-  final bool notificationOff;
+  final bool notificationOn;
   final VoidCallback showPanel;
   final VoidCallback onTapForJoine;
   final Color? color;
@@ -17,7 +17,7 @@ class NoticeBoardJoineButton extends StatelessWidget {
   const NoticeBoardJoineButton({
     Key? key,
     required this.isJoine,
-    required this.notificationOff,
+    required this.notificationOn,
     required this.showPanel,
     required this.onTapForJoine,
     this.color,
@@ -28,8 +28,9 @@ class NoticeBoardJoineButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    IconData nIcon =
-        notificationOff ? Icons.notifications_off : Icons.notifications_active;
+    IconData nIcon = notificationOn == true
+        ? Icons.notifications_active
+        : Icons.notifications_off;
     String text = isJoine == false ? "Join" : "Joined";
 
     return Column(

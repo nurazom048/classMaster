@@ -6,6 +6,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:table/models/message_model.dart';
 import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
+import 'package:table/ui/bottom_items/Account/models/account_models.dart';
 
 import '../../../constant/constant.dart';
 
@@ -22,8 +23,14 @@ class AuthReq {
       if (response.statusCode == 200) {
         final accountData = json.decode(response.body);
 
+        print(accountData);
+        print('*********************');
+        // print(accountModerl);
+
         //... save token
         await AuthController.saveToken(accountData["token"]);
+        await AuthController.saveAccountType(
+            accountData["account"]["account_type"]);
 
         return right(message);
       } else {

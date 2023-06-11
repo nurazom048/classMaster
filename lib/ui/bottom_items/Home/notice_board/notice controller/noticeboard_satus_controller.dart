@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, prefer_const_constructors, avoid_print
+// ignore_for_file: prefer_typing_uninitialized_variables, prefer_const_constructors, avoid_print, unnecessary_overrides
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,50 +7,55 @@ import 'package:table/models/chack_status_model.dart';
 import '../request/noticeboard_request.dart';
 
 //! providers
-final noticeBoardStatusProvider = StateNotifierProvider.family<
-    NoticeBoardStatusProvider,
-    AsyncValue<CheckStatusModel>,
-    String>((ref, noticeboardId) {
+final noticeBoardStatusProvider = StateNotifierProvider.autoDispose
+    .family<NoticeBoardStatusProvider, AsyncValue<CheckStatusModel>, String>(
+        (ref, academyID) {
   return NoticeBoardStatusProvider(
-    ref,
-    noticeboardId,
-    ref.read(noticeboardRequestProvider),
-  );
+      academyID, ref.read(noticeboardRequestProvider));
 });
 
 class NoticeBoardStatusProvider
     extends StateNotifier<AsyncValue<CheckStatusModel>> {
-  final reference;
-  final String noticeboardId;
+  final String academyID;
   final NoticeboardRequest noticeboardRequest;
 
   NoticeBoardStatusProvider(
-    this.reference,
-    this.noticeboardId,
+    this.academyID,
     this.noticeboardRequest,
   ) : super(AsyncLoading()) {
     getStatus();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   Future<void> getStatus() async {
     try {
       final CheckStatusModel data =
-          await noticeboardRequest.chackStatus(noticeboardId);
-      state = AsyncData(data);
+          await noticeboardRequest.chackStatus(academyID);
+
+      if (mounted) {
+        state = AsyncData(data);
+      }
     } catch (error, stackTrace) {
-      state = AsyncValue.error(error, stackTrace);
+      print("error: $error");
+      if (mounted) {
+        state = AsyncValue.error(error, stackTrace);
+      }
     }
   }
   //***********  join  *********** */
 
   Future<void> join(BuildContext context) async {
-    final result = await noticeboardRequest.sendRequest(noticeboardId);
+    final result = await noticeboardRequest.sendRequest(academyID);
 
     result.fold(
       (errorMessage) => Alart.errorAlartDilog(context, errorMessage),
       (response) {
         state = AsyncData(
-          state.value!.copyWith(activeStatus: "request_pending"),
+          state.value!.copyWith(activeStatus: "joined"),
         );
 
         Alart.showSnackBar(context, response.message);
@@ -60,13 +65,13 @@ class NoticeBoardStatusProvider
   //***********  notificationOff *********** */
 
   Future<void> notificationOff(BuildContext context) async {
-    final result = await noticeboardRequest.notificationOff(noticeboardId);
+    final result = await noticeboardRequest.notificationOff(academyID);
 
     result.fold(
       (errorMessage) => Alart.errorAlartDilog(context, errorMessage),
       (response) {
         state = AsyncData(
-          state.value!.copyWith(notificationOff: response.notificationOff),
+          state.value!.copyWith(notificationOn: false),
         );
 
         Alart.showSnackBar(context, response.message);
@@ -76,13 +81,13 @@ class NoticeBoardStatusProvider
 
   //***********  notificationOn  *********** */
   Future<void> notificationOn(BuildContext context) async {
-    final result = await noticeboardRequest.notificationOn(noticeboardId);
+    final result = await noticeboardRequest.notificationOn(academyID);
 
     result.fold(
       (errorMessage) => Alart.errorAlartDilog(context, errorMessage),
       (response) {
         state = AsyncData(
-          state.value!.copyWith(notificationOff: response.notificationOff),
+          state.value!.copyWith(notificationOn: true),
         );
 
         Alart.showSnackBar(context, response.message);
@@ -92,7 +97,7 @@ class NoticeBoardStatusProvider
   //***********  leaveMember *********** */
 
   Future<void> leaveMember(BuildContext context) async {
-    final result = await noticeboardRequest.leaveMember(noticeboardId);
+    final result = await noticeboardRequest.leaveMember(academyID);
 
     result.fold(
       (error) => Alart.showSnackBar(context, error.message),

@@ -9,6 +9,7 @@ import 'package:table/models/message_model.dart';
 import 'package:table/ui/auth_Section/auth_req/auth_req.dart';
 import 'package:table/ui/bottom_items/bottom_nev_bar.dart';
 import '../../../core/dialogs/alart_dialogs.dart';
+import '../auth_ui/LogIn_Screen.dart';
 
 final authController_provider = StateNotifierProvider.autoDispose(
     (ref) => AuthController(ref.watch(authReqProvider)));
@@ -124,5 +125,35 @@ class AuthController extends StateNotifier<bool> {
   static Future<void> removeToken() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('Token');
+  }
+
+  // LogOut
+  static Future<void> logOut(context) async {
+    Alart.errorAlertDialogCallBack(
+      context,
+      "Are You Sure To logout ?",
+      onConfirm: (bool confirmed) async {
+        if (confirmed) {
+          // Remove token and navigate to the login screen
+          final prefs = await SharedPreferences.getInstance();
+          prefs.remove('Token');
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const LogingScreen()));
+        }
+      },
+    );
+  }
+// get account Type
+
+  static Future<String?> getAccountType() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? type = prefs.getString('AccountType');
+    return type;
+  }
+// save account Type
+
+  static Future<void> saveAccountType(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('AccountType', token);
   }
 }

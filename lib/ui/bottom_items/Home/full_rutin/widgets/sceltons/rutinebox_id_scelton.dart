@@ -1,5 +1,17 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+
+final RUTINE_BOX_SKELTON = ListView.builder(
+  shrinkWrap: true,
+  physics: const NeverScrollableScrollPhysics(),
+  padding: const EdgeInsets.only(bottom: 100),
+  itemCount: 5,
+  itemBuilder: (context, index) {
+    return const RutinBoxByIdSkelton();
+  },
+);
 
 class RutinBoxByIdSkelton extends StatelessWidget {
   const RutinBoxByIdSkelton({
@@ -37,14 +49,7 @@ class RutinBoxByIdSkelton extends StatelessWidget {
                     borderRadius: BorderRadius.circular(6),
                   ),
                 ),
-                Container(
-                  height: 30,
-                  width: width * 0.2,
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
+                JoineScelton(width: width),
               ],
             ),
           ),
@@ -113,6 +118,27 @@ class RutinBoxByIdSkelton extends StatelessWidget {
           // const SizedBox(height: 16),
           const AccounScelton(),
         ]),
+      ),
+    );
+  }
+}
+
+class JoineScelton extends StatelessWidget {
+  const JoineScelton({
+    super.key,
+    required this.width,
+  });
+
+  final double width;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 30,
+      width: width * 0.2,
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(30),
       ),
     );
   }

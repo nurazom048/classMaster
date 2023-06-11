@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:table/ui/auth_Section/auth_ui/LogIn_Screen.dart';
+import 'package:table/core/component/loaders.dart';
+import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 import 'package:table/ui/bottom_items/Account/account_request/account_request.dart';
 import 'package:table/ui/bottom_items/Account/accounu_ui/save_screen.dart';
 import 'package:table/ui/bottom_items/Account/profile/profile_screen.dart';
@@ -14,6 +14,7 @@ import '../../../../core/component/heder component/appbaar_custom.dart';
 import '../../../../core/dialogs/alart_dialogs.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../Home/notice_board/screens/view_all_recent_notice.dart';
 import '../Settings/setting_screen.dart';
 import 'eddit_account.dart';
 
@@ -36,7 +37,9 @@ class AccountScreen extends StatelessWidget {
           body: NotificationListener<ScrollNotification>(
             // hide bottom nev bar on scroll
             onNotification: (scrollNotification) =>
-                handleScrollNotification(scrollNotification, ref),
+                hideNevBarOnScroll(scrollNotification, ref),
+
+            //
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.only(bottom: 40),
@@ -53,19 +56,18 @@ class AccountScreen extends StatelessWidget {
                         if (data == null) {
                           return const Text("null");
                         } else {
-                          return InkWell(
+                          return AccountCard(
+                            profilepicture: data.image ?? '',
+                            name: data.name ?? '',
+                            username: data.username ?? '',
                             onTap: () => Get.to(ProfileSCreen(academyID: null)),
-                            child: AccountCard(
-                              profilepicture: data.image ?? '',
-                              name: data.name ?? '',
-                              username: data.username ?? '',
-                            ),
                           );
                         }
                       },
                       error: (error, stackTrace) =>
                           Alart.handleError(context, error),
-                      loading: () => const Text("loding"),
+                      loading: () => SizedBox(
+                          height: 100, child: Center(child: Loaders.center())),
                     ),
                     /////////////////////
 
@@ -77,10 +79,26 @@ class AccountScreen extends StatelessWidget {
                       onTap: () => Get.to(const EdditAccount()),
                     ),
                     const SizedBox(height: 10),
-                    MyContainerButton(
-                      const Icon(Icons.calendar_month),
-                      "My NoticeBoard",
-                      onTap: () {},
+
+                    // My NoticeBoard
+
+                    FutureBuilder(
+                      future: AuthController.getAccountType(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return const SizedBox.shrink();
+                        } else if (snapshot.hasData &&
+                            snapshot.data != 'academy') {
+                          return MyContainerButton(
+                            const Icon(Icons.calendar_month),
+                            "My NoticeBoard",
+                            onTap: () => Get.to(() => ViewAllRecentNotice(),
+                                transition: Transition.rightToLeftWithFade),
+                          );
+                        } else {
+                          return const SizedBox.shrink();
+                        }
+                      },
                     ),
 
                     const MyDividerr(thickness: 1.0, height: 1.0),
@@ -110,7 +128,7 @@ class AccountScreen extends StatelessWidget {
                       const Icon(Icons.logout_outlined),
                       "Sign out",
                       color: Colors.red,
-                      onTap: () => logOut(context),
+                      onTap: () => AuthController.logOut(context),
                     ),
 
                     const MyDividerr(thickness: 1.0, height: 1.0),
@@ -130,27 +148,9 @@ class AccountScreen extends StatelessWidget {
       }),
     );
   }
-
-  Future<void> logOut(context) async {
-    print("logout");
-
-    Alart.errorAlertDialogCallBack(context, "Are You Sure To logout ?",
-        onConfirm: (bool confirmed) async {
-      if (confirmed) {
-        // Remove token and navigate to the login screen
-        final prefs = await SharedPreferences.getInstance();
-        prefs.remove('Token');
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const LogingScreen()));
-      }
-    });
-  }
 }
 
-bool handleScrollNotification(
-  ScrollNotification? scrollNotification,
-  WidgetRef ref,
-) {
+bool hideNevBarOnScroll(ScrollNotification? scrollNotification, WidgetRef ref) {
   // Logic of scrollNotification
   if (scrollNotification is ScrollStartNotification) {
     // ignore: avoid_print

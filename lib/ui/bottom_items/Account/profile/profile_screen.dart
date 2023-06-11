@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/component/loaders.dart';
 import 'package:table/ui/bottom_items/Account/account_request/account_request.dart';
-import 'package:table/ui/bottom_items/Account/profile/widgets/notice_board_join_btn.dart';
+import 'package:table/ui/bottom_items/Account/profile/widgets/noticeboard_header.widgets.dart';
 import 'package:table/ui/bottom_items/Account/profile/widgets/profile_top.widgetsl.dart';
 
 import '../../../../core/dialogs/alart_dialogs.dart';
@@ -38,6 +38,8 @@ class ProfileSCreen extends StatelessWidget {
       final allUploadesRutines =
           ref.watch(uploadedRutinsControllerProvider(username));
 
+      //
+
       return SafeArea(
         child: Scaffold(
           body: ListView(
@@ -54,68 +56,64 @@ class ProfileSCreen extends StatelessWidget {
               accountData.when(
                 data: (data) {
                   print("account type : ${data?.accountType}");
-                  return ProfileTop(accountData: data);
+                  return Column(
+                    children: [
+                      // Profile Top
+                      ProfileTop(accountData: data),
+
+                      // NoticeBoard
+
+                      if (data != null && data.accountType == "user") ...[
+                        NoticeBoardHeader(
+                            academyID: data.sId!, accountdata: data),
+                        SizedBox(
+                          height: 181,
+                          child: recentNoticeList.when(
+                            data: (data) {
+                              int length = data.notices.length;
+                              return RecentNoticeSlider(
+                                list: <Widget>[
+                                  RecentNoticeSliderItem(
+                                    notice: data.notices,
+                                    index: 0,
+                                    conditon: length >= 2,
+                                  ),
+
+                                  //
+                                  RecentNoticeSliderItem(
+                                    notice: data.notices,
+                                    index: 2,
+                                    conditon: length >= 4,
+                                  ), //
+                                  RecentNoticeSliderItem(
+                                    notice: data.notices,
+                                    index: 3,
+                                    conditon: length >= 6,
+                                  ),
+
+                                  RecentNoticeSliderItem(
+                                    notice: data.notices,
+                                    index: 4,
+                                    conditon: length >= 8,
+                                  ),
+                                ],
+                              );
+                            },
+                            error: (error, stackTrace) =>
+                                Alart.handleError(context, error),
+                            loading: () => const RecentNoticeSliderScealton(),
+                          ),
+                        ),
+                      ]
+                    ],
+                  );
                 },
                 error: (error, stackTrace) => Alart.handleError(context, error),
                 loading: () => Loaders.center(),
               ),
 
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("NoticeBoard", style: TS.heading()),
-                    NoticeBoardJoineButton(
-                      isJoine: false,
-                      notificationOff: true,
-                      showPanel: () {},
-                      onTapForJoine: () {},
-                    )
-                  ],
-                ),
-              ),
-
               //
-              SizedBox(
-                height: 181,
-                child: recentNoticeList.when(
-                  data: (data) {
-                    int length = data.notices.length;
-                    return RecentNoticeSlider(
-                      list: <Widget>[
-                        RecentNoticeSliderItem(
-                          notice: data.notices,
-                          index: 0,
-                          conditon: length >= 2,
-                        ),
 
-                        //
-                        RecentNoticeSliderItem(
-                          notice: data.notices,
-                          index: 2,
-                          conditon: length >= 4,
-                        ), //
-                        RecentNoticeSliderItem(
-                          notice: data.notices,
-                          index: 3,
-                          conditon: length >= 6,
-                        ),
-
-                        RecentNoticeSliderItem(
-                          notice: data.notices,
-                          index: 4,
-                          conditon: length >= 8,
-                        ),
-                      ],
-                    );
-                  },
-                  error: (error, stackTrace) =>
-                      Alart.handleError(context, error),
-                  loading: () => const RecentNoticeSliderScealton(),
-                ),
-              ),
               //********** Routines ***********************/
               Text("   Routines", style: TS.heading()),
               const SizedBox(height: 10),
@@ -141,15 +139,7 @@ class ProfileSCreen extends StatelessWidget {
                     },
                   );
                 },
-                loading: () => ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: const EdgeInsets.only(bottom: 100),
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                    return const RutinBoxByIdSkelton();
-                  },
-                ),
+                loading: () => RUTINE_BOX_SKELTON,
                 error: (error, stackTrace) => Alart.handleError(context, error),
               ),
             ],

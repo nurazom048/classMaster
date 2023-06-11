@@ -6,6 +6,7 @@ class CheckStatusModel {
   final int memberCount;
   final int sentRequestCount;
   final bool notificationOff;
+  final bool notificationOn;
 
   CheckStatusModel({
     required this.isOwner,
@@ -15,6 +16,7 @@ class CheckStatusModel {
     required this.memberCount,
     required this.sentRequestCount,
     required this.notificationOff,
+    required this.notificationOn,
   });
 
   factory CheckStatusModel.fromJson(Map<String, dynamic> json) {
@@ -26,6 +28,7 @@ class CheckStatusModel {
       memberCount: json['memberCount'] ?? 0,
       sentRequestCount: json['sentRequestCount'] ?? 0,
       notificationOff: json['notificationOff'] ?? false,
+      notificationOn: json['notificationOn'] ?? false,
     );
   }
 
@@ -37,6 +40,7 @@ class CheckStatusModel {
     int? memberCount,
     int? sentRequestCount,
     bool? notificationOff,
+    bool? notificationOn,
   }) {
     return CheckStatusModel(
       isOwner: isOwner ?? this.isOwner,
@@ -46,6 +50,7 @@ class CheckStatusModel {
       memberCount: memberCount ?? this.memberCount,
       sentRequestCount: sentRequestCount ?? this.sentRequestCount,
       notificationOff: notificationOff ?? this.notificationOff,
+      notificationOn: notificationOn ?? this.notificationOn,
     );
   }
 }

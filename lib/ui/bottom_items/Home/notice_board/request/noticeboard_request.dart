@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 
 import '../../../../../constant/constant.dart';
 import '../../../../../models/chack_status_model.dart';
@@ -22,7 +23,7 @@ class NoticeboardRequest {
 
     try {
       final response = await http.delete(
-        Uri.parse('${Const.BASE_URl}/notice/members/leave/$noticeBoardid/'),
+        Uri.parse('${Const.BASE_URl}/notice/leave/$noticeBoardid'),
         headers: {'Authorization': 'Bearer $getToken'},
       );
 
@@ -39,15 +40,18 @@ class NoticeboardRequest {
   }
 
   //
-  Future<CheckStatusModel> chackStatus(String noticeBoardId) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
+  Future<CheckStatusModel> chackStatus(String academyID) async {
+    final String? getToken = await AuthController.getToken();
+    print("**********call $academyID");
+
+    var url = Uri.parse('${Const.BASE_URl}/notice/status/$academyID');
 
     try {
       final response = await http.post(
-        Uri.parse('${Const.BASE_URl}/notice/status/$noticeBoardId'),
+        url,
         headers: {'Authorization': 'Bearer $getToken'},
       );
+      print("res  ${jsonDecode(response.body)}");
 
       if (response.statusCode == 200) {
         CheckStatusModel res =
@@ -55,7 +59,7 @@ class NoticeboardRequest {
         print("res  ${jsonDecode(response.body)}");
         return res;
       } else {
-        throw Exception("Response body is null");
+        throw Exception("Somthing went Worng");
       }
     } catch (e) {
       print(e);
@@ -69,7 +73,7 @@ class NoticeboardRequest {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 
-    var url = Uri.parse("${Const.BASE_URl}/notice/sendRequest/$noticeBoardId");
+    var url = Uri.parse("${Const.BASE_URl}/notice/join/$noticeBoardId");
 
     try {
       final response =

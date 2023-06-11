@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/component/Loaders.dart';
+import 'package:table/ui/bottom_items/Account/models/account_models.dart';
 import 'package:table/ui/bottom_items/Home/notice_board/screens/view_notice_screen.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 
@@ -11,11 +12,17 @@ import '../notice controller/virew_recent_notice_controller.dart';
 import '../widgets/simple_notice_card.dart';
 
 class ViewAllRecentNotice extends ConsumerWidget {
-  ViewAllRecentNotice({Key? key}) : super(key: key);
+  ViewAllRecentNotice({Key? key, this.accountData}) : super(key: key);
+
+  final AccountModels? accountData;
   final scrollController = ScrollController();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final recentNoticeList = ref.watch(recentNoticeController(null));
+    final String? academyID = accountData?.sId;
+    final String title = accountData?.name ?? "Back to Home";
+
+    //! View Recent Notices
+    final recentNoticeList = ref.watch(recentNoticeController(academyID));
 
     return Scaffold(
       body: NestedScrollView(
@@ -25,7 +32,7 @@ class ViewAllRecentNotice extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                HeaderTitle("Back to Home", context),
+                HeaderTitle(title, context),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 20),

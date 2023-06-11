@@ -98,4 +98,27 @@ abstract class Alart {
     });
     return Text(error.toString());
   }
+
+  //
+  static upcoming(context, {String? header, dynamic message}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        const String demmyMessage =
+            "We are working on this feature. It will be available very soon...";
+        return AlertDialog(
+          title: Text(header ?? 'Upcomming'),
+          content: Text(message == null ? demmyMessage : message.toString()),
+          actions: <Widget>[
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
