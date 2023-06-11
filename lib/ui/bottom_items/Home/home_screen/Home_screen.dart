@@ -13,7 +13,6 @@ import 'package:table/ui/bottom_items/Home/widgets/slider/recentniticeslider_ite
 import '../../../../core/component/responsive.dart';
 import '../../../../core/dialogs/alart_dialogs.dart';
 import '../../Account/accounu_ui/Account_screen.dart';
-import '../../bottom_nev_bar.dart';
 import '../full_rutin/widgets/rutin_box/rutin_box_by_id.dart';
 import '../full_rutin/widgets/sceltons/rutinebox_id_scelton.dart';
 import '../home_req/home_rutins_controller.dart';
@@ -31,7 +30,7 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     //! provider
     final homeRutins = ref.watch(homeRutinControllerProvider);
-    final recentNoticeList = ref.watch(recentNoticeController);
+    final recentNoticeList = ref.watch(recentNoticeController(null));
 
     //
     final _mobileView =
@@ -42,31 +41,31 @@ class HomeScreen extends ConsumerWidget {
       // Mobile view
       mobile: SafeArea(
         child: Scaffold(
-    backgroundColor: const Color(0xFFF2F2F2),
-    body: homeMobileView(ref, recentNoticeList, context, homeRutins),
+          backgroundColor: const Color(0xFFF2F2F2),
+          body: homeMobileView(ref, recentNoticeList, context, homeRutins),
         ),
       ),
 
       // Desktop view
       desktop: Scaffold(
-      body: Column(
-    children: [
-      _appBar,
-      Expanded(
-        child: Row(
-          children: [
-            // Drawer
-            const Expanded(flex: 1, child: MyDawer()),
-            // mobile
-            Expanded(
-              flex: 3,
-              child: Container(child: _mobileView, color: Colors.yellow),
+          body: Column(
+        children: [
+          _appBar,
+          Expanded(
+            child: Row(
+              children: [
+                // Drawer
+                const Expanded(flex: 1, child: MyDawer()),
+                // mobile
+                Expanded(
+                  flex: 3,
+                  child: Container(child: _mobileView, color: Colors.yellow),
+                ),
+                Expanded(flex: 1, child: Container(color: Colors.black)),
+              ],
             ),
-            Expanded(flex: 1, child: Container(color: Colors.black)),
-          ],
-        ),
-      ),
-    ],
+          ),
+        ],
       )),
     );
   }

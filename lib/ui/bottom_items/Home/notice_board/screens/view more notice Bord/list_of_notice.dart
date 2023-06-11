@@ -17,7 +17,7 @@ class ListOfNoticeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //! provider
-    final listOfNotices = ref.watch(recentNoticeController);
+    final listOfNotices = ref.watch(recentNoticeController(null));
     return SizedBox(
       height: 800,
       child: Padding(
@@ -35,7 +35,7 @@ class ListOfNoticeScreen extends ConsumerWidget {
                         scrollController.position.maxScrollExtent) {
                       // print("reached the end");
                       ref
-                          .watch(recentNoticeController.notifier)
+                          .watch(recentNoticeController(null).notifier)
                           .loadMore(data.currentPage, context);
                     }
                   }

@@ -8,7 +8,6 @@ import 'package:table/core/component/loaders.dart';
 import 'package:table/sevices/notification%20services/awn_package.dart';
 import 'package:table/ui/auth_Section/auth_ui/SiginUp_Screen.dart';
 import 'package:table/ui/auth_Section/utils/login_validation.dart';
-import 'package:table/ui/bottom_items/Home/home_screen/Home_screen.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 
 import '../../../constant/app_color.dart';

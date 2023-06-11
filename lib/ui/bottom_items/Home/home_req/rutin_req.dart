@@ -5,10 +5,18 @@ import 'package:http/http.dart' as http;
 import 'package:fpdart/fpdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/message_model.dart';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
 import '../../../../constant/constant.dart';
+import '../../../../models/rutins/list_of_save_rutin.dart';
 
-//
+//_________________________
+
+//uploadedRutinsControllerProvider
+final uploadedRutinsControllerProvider = FutureProvider.autoDispose
+    .family<ListOfUploadedRutins, String?>((ref, username) {
+  return ref.read(home_req_provider).uplodedRutins(username: username);
+});
 
 class RutinReqest {
 //******    Create Rutins    ********* */

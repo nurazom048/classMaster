@@ -1,7 +1,5 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously, must_be_immutable, camel_case_types, library_private_types_in_public_api
 
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/component/responsive.dart';
@@ -184,9 +182,6 @@ class DragtoSelectFile extends ConsumerWidget {
                 onTap: () async {
                   try {
                     final events = await controller1.pickFiles();
-                    if (events == null) {
-                      print("null");
-                    }
 
                     print("events: $events");
                     acceptfile(events[0], ref);

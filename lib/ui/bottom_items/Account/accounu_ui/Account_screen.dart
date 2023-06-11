@@ -1,14 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/ui/auth_Section/auth_ui/LogIn_Screen.dart';
 import 'package:table/ui/bottom_items/Account/account_request/account_request.dart';
-import 'package:table/ui/bottom_items/Account/accounu_ui/all_uploadeade_rutines.dart';
-import 'package:table/ui/bottom_items/Account/accounu_ui/joined_rutines.dart';
 import 'package:table/ui/bottom_items/Account/accounu_ui/save_screen.dart';
-import 'package:table/ui/bottom_items/Account/utils/account_utils.dart';
+import 'package:table/ui/bottom_items/Account/profile/profile_screen.dart';
 import 'package:table/ui/bottom_items/Account/widgets/my_container_button.dart';
 import 'package:table/ui/bottom_items/Account/widgets/my_divider.dart';
 import 'package:table/ui/bottom_items/Account/widgets/tiled_boutton.dart';
@@ -56,10 +53,13 @@ class AccountScreen extends StatelessWidget {
                         if (data == null) {
                           return const Text("null");
                         } else {
-                          return AccountCard(
-                            profilepicture: data.image ?? '',
-                            name: data.name ?? '',
-                            username: data.username ?? '',
+                          return InkWell(
+                            onTap: () => Get.to(ProfileSCreen(academyID: null)),
+                            child: AccountCard(
+                              profilepicture: data.image ?? '',
+                              name: data.name ?? '',
+                              username: data.username ?? '',
+                            ),
                           );
                         }
                       },
@@ -70,6 +70,7 @@ class AccountScreen extends StatelessWidget {
                     /////////////////////
 
                     const SizedBox(height: 10),
+
                     MyContainerButton(
                       const FaIcon(FontAwesomeIcons.pen),
                       "Eddit Profile",
@@ -77,34 +78,16 @@ class AccountScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     MyContainerButton(
-                      const Icon(Icons.person_add_alt_1_outlined),
-                      "invitation",
-                      onTap: () => Get.to(const JoinedRutinesScreen()),
+                      const Icon(Icons.calendar_month),
+                      "My NoticeBoard",
+                      onTap: () {},
                     ),
+
                     const MyDividerr(thickness: 1.0, height: 1.0),
                     //*********************** Tilesbutton*****************************/
                     Container(
                       alignment: Alignment.center,
                       child: Wrap(alignment: WrapAlignment.start, children: [
-                        Tilesbutton(
-                          "\nJoined Rutines",
-                          // ignore: deprecated_member_use
-                          const FaIcon(FontAwesomeIcons.history),
-                          onTap: () => Get.to(const JoinedRutinesScreen()),
-                        ),
-                        Tilesbutton(
-                          "My Uploades Rutines",
-                          const FaIcon(FontAwesomeIcons.cableCar),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) =>
-                                      const AllUploadesRutinesMini()),
-                            );
-                          },
-                        ),
-
                         Tilesbutton(
                           "Saved",
                           const FaIcon(FontAwesomeIcons.bookmark),

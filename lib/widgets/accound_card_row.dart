@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as ma;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import 'package:table/constant/app_color.dart';
 import 'package:table/ui/bottom_items/Account/models/account_models.dart';
-import 'package:table/ui/bottom_items/Account/accounu_ui/account_screen.dart';
+
+import '../ui/bottom_items/Account/profile/profile_screen.dart';
 
 class AccountCardRow extends ConsumerWidget {
   AccountCardRow({
@@ -39,13 +41,11 @@ class AccountCardRow extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // final bool isEdditingMood = ref.watch(isEditingModd);
     return InkWell(
-      onTap: buttotext == null
-          ? () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AccountScreen(
-                    accountUsername: accountData.username,
-                  ),
+      onTap: accountData.sId != null
+          ? () => Get.to(
+                ProfileSCreen(
+                  academyID: accountData.sId,
+                  username: accountData.username,
                 ),
               )
           : () {},

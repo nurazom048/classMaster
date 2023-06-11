@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 
 import '../../../../constant/constant.dart';
 import '../models/account_models.dart';
@@ -12,38 +13,60 @@ final AccountReqProvider = Provider<AccountReq>((ref) {
   return AccountReq();
 });
 //
+
 final accountDataProvider =
     FutureProvider.family<AccountModels?, String?>((ref, username) async {
-  return ref.read(AccountReqProvider).accountData(username: username);
+  return ref.watch(AccountReqProvider).getAccountData(username: username);
 });
 
 class AccountReq {
 //... Account data...//
-  Future<AccountModels?> accountData({String? username}) async {
-    print("req usrname  : $username");
-
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
-
-    //... Url for my account and others account
-    var url = username != null
-        ? Uri.parse('${Const.BASE_URl}/account/$username')
-        : Uri.parse('${Const.BASE_URl}/account/');
-
+  Future<AccountModels> getAccountData({String? username}) async {
     try {
-      final response =
-          await http.post(url, headers: {'Authorization': 'Bearer $getToken'});
+      final String? token = await AuthController.getToken();
+      final url = username != null
+          ? Uri.parse('${Const.BASE_URl}/account/$username')
+          : Uri.parse('${Const.BASE_URl}/account/');
+      final headers = {'Authorization': 'Bearer $token'};
+// Request
+      final response = await http.post(url, headers: headers);
       print(response.body);
 
       if (response.statusCode == 200) {
         return AccountModels.fromJson(json.decode(response.body));
+      } else {
+        throw 'Error retrieving account data';
       }
     } catch (e) {
       print(e);
-      return Future.error(e);
+      rethrow;
     }
-    return null;
   }
+
+  // Future<AccountModels> accountData({String? username}) async {
+  //   print("req usrname  : $username");
+
+  //   final String? getToken = await AuthController.getToken();
+
+  //   //... Url for my account and others account
+  //   var url = username != null
+  //       ? Uri.parse('${Const.BASE_URl}/account/$username')
+  //       : Uri.parse('${Const.BASE_URl}/account/');
+  //   Map<String, String>? headers = {'Authorization': 'Bearer $getToken'};
+  //   try {
+  //     final response = await http.post(url, headers: headers);
+  //     print(response.body);
+
+  //     if (response.statusCode == 200) {
+  //       return AccountModels.fromJson(json.decode(response.body));
+  //     } else {
+  //       throw "";
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //     return Future.error(e);
+  //   }
+  // }
 
 //********************* update Account     ********************************//
   static Future<void> updateAccount(context, name, username, about,

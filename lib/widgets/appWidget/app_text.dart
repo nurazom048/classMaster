@@ -19,15 +19,17 @@ class AppText {
   ///
   ///
   heding({FontWeight? fontWeight}) {
-    return Text(data,
-        style: TextStyle(
-          fontFamily: 'Open Sans',
-          fontStyle: FontStyle.normal,
-          fontWeight: fontWeight ?? FontWeight.w300,
-          fontSize: fontSize ?? 20,
-          height: 1.27,
-          color: color ?? const Color(0xFF333333),
-        ));
+    return Text(
+      data,
+      style: TextStyle(
+        fontFamily: 'Open Sans',
+        fontStyle: FontStyle.normal,
+        fontWeight: fontWeight ?? FontWeight.w300,
+        fontSize: fontSize ?? 20,
+        height: 1.27,
+        color: color ?? const Color(0xFF333333),
+      ),
+    );
   }
 
   //
@@ -47,6 +49,20 @@ class AppText {
 
 //______________TS_____________________//
 class TS {
+  // Headiding
+
+  static TextStyle heading(
+      {Color? color, double? fontSize, FontWeight? fontWeight}) {
+    return TextStyle(
+      fontFamily: 'Open Sans',
+      fontStyle: FontStyle.normal,
+      fontWeight: fontWeight ?? FontWeight.w300,
+      fontSize: fontSize ?? 24,
+      height: 1.27,
+      color: color ?? Colors.black,
+    );
+  }
+
 // open sens blue
   static TextStyle opensensBlue(
       {Color? color, double? fontSize, FontWeight? fontWeight}) {

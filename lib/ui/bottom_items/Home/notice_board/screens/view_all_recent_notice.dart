@@ -15,7 +15,7 @@ class ViewAllRecentNotice extends ConsumerWidget {
   final scrollController = ScrollController();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final recentNoticeList = ref.watch(recentNoticeController);
+    final recentNoticeList = ref.watch(recentNoticeController(null));
 
     return Scaffold(
       body: NestedScrollView(
@@ -42,7 +42,7 @@ class ViewAllRecentNotice extends ConsumerWidget {
                   scrollController.position.maxScrollExtent) {
                 print("reached the end");
                 ref
-                    .watch(recentNoticeController.notifier)
+                    .watch(recentNoticeController(null).notifier)
                     .loadMore(data.currentPage, context);
               }
             }

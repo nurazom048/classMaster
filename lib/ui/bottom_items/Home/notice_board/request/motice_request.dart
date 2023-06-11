@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,7 +29,7 @@ class NoticeRequest {
     final Uri recentNoticeUri =
         Uri.parse('${Const.BASE_URl}/notice/recent$morepage');
     final Uri viewNoticeByAcademyIDUri =
-        Uri.parse('${Const.BASE_URl}/notice/recent/academyID/$morepage');
+        Uri.parse('${Const.BASE_URl}/notice/recent/$academyID$morepage');
 
     final Uri requestUri =
         academyID == null ? recentNoticeUri : viewNoticeByAcademyIDUri;

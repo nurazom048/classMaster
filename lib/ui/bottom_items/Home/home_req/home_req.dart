@@ -6,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:table/models/rutins/list_of_save_rutin.dart';
 import '../../../../constant/constant.dart';
-import '../../../../models/rutins/jponed_rutins_model.dart';
 import '../../../../models/rutins/saveRutine.dart';
 import '../models/home_rutines_model.dart';
 
@@ -17,11 +16,6 @@ final home_req_provider = Provider<HomeReq>((ref) => HomeReq());
 final save_rutins_provider =
     FutureProvider.family<SaveRutineResponse, int>((ref, page) {
   return ref.read(home_req_provider).savedRutins(pages: page);
-});
-
-final joined_rutin_provider =
-    FutureProvider.family<JoinedRutines, int>((ref, pages) {
-  return ref.read(home_req_provider).joinedRutinsReq(pages: pages);
 });
 
 class HomeReq {
@@ -54,38 +48,14 @@ class HomeReq {
   //
   //********    ListOfUploedRutins      *************/
   Future<ListOfUploadedRutins> uplodedRutins({String? username}) async {
-    String? username = "";
+    final prams = username != null ? '/$username' : '';
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
-    final url = Uri.parse('${Const.BASE_URl}/rutin/uploded_rutins/' + username);
+    final url = Uri.parse('${Const.BASE_URl}/rutin/uploded_rutins' + prams);
     final headers = {'Authorization': 'Bearer $getToken'};
 
     //.. Request send
-    try {
-      final response = await http.post(url, headers: headers);
 
-      if (response.statusCode == 200) {
-        var res = json.decode(response.body);
-
-        return ListOfUploadedRutins.fromJson(res);
-      } else {
-        throw Exception("Failed to load saved routines");
-      }
-    } catch (error) {
-      throw Future.error(error);
-    }
-  }
-
-  //********    joinedRutinsReq      *************/
-  Future<JoinedRutines> joinedRutinsReq({int pages = 1}) async {
-    String queryPage = "?page=$pages}";
-    String? username = "";
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
-    final url = Uri.parse('${Const.BASE_URl}/rutin/joined');
-    final headers = {'Authorization': 'Bearer $getToken'};
-
-    //.. Request send
     try {
       final response = await http.post(url, headers: headers);
 
@@ -93,12 +63,12 @@ class HomeReq {
         var res = json.decode(response.body);
         print(res);
 
-        return JoinedRutines.fromJson(res);
+        return ListOfUploadedRutins.fromJson(res);
       } else {
         throw Exception("Failed to load saved routines");
       }
-    } catch (e) {
-      throw Exception(e.toString());
+    } catch (error) {
+      throw Future.error(error);
     }
   }
 

@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, unnecessary_null_comparison
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -139,7 +139,7 @@ class _EdditAccountState extends State<EdditAccount> {
   }
 
   void _lodedataBeforeBuild() async {
-    AccountModels? accountData = await AccountReq().accountData();
+    AccountModels? accountData = await AccountReq().getAccountData();
     if (accountData != null) {
       nameController.text = accountData.name ?? '';
       emailController.text = accountData.name ?? '';

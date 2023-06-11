@@ -5,22 +5,25 @@ import '../models/recent_notice_model.dart';
 import '../request/motice_request.dart';
 
 //! Provider
-final recentNoticeController = StateNotifierProvider.autoDispose<
-    UploadedRutinsController, AsyncValue<RecentNotice>>((ref) {
-  return UploadedRutinsController(ref.read(noticeReqProvider));
+final recentNoticeController = StateNotifierProvider.autoDispose
+    .family<UploadedRutinsController, AsyncValue<RecentNotice>, String?>(
+        (ref, academyID) {
+  return UploadedRutinsController(ref.read(noticeReqProvider), academyID);
 });
 
 ///
 class UploadedRutinsController extends StateNotifier<AsyncValue<RecentNotice>> {
   NoticeRequest noticeRequest;
-  UploadedRutinsController(this.noticeRequest) : super(const AsyncLoading()) {
+  String? academyID;
+  UploadedRutinsController(this.noticeRequest, this.academyID)
+      : super(const AsyncLoading()) {
     _init();
   }
 
   /// get all recent notice
   _init() async {
     try {
-      final res = await noticeRequest.recentNotice();
+      final res = await noticeRequest.recentNotice(academyID: academyID);
       if (!mounted) return;
 
       state = AsyncData(res);
