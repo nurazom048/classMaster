@@ -6,7 +6,6 @@ import 'package:api_cache_manager/models/cache_db_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:table/models/rutins/list_of_save_rutin.dart';
 import '../../../../constant/constant.dart';
 import '../../../../models/rutins/saveRutine.dart';
 import '../models/home_rutines_model.dart';
@@ -49,47 +48,51 @@ class HomeReq {
   }
 
   //
-  //********    ListOfUploedRutins      *************/
-  Future<ListOfUploadedRutins> uplodedRutins({String? username}) async {
-    final prams = username != null ? '/$username' : '';
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
-    final url = Uri.parse('${Const.BASE_URl}/rutin/uploded_rutins' + prams);
-    final headers = {'Authorization': 'Bearer $getToken'};
+  // //********    ListOfUploedRutins      *************/
+  // Future<ListOfUploadedRutins> uplodedRutins({String? username}) async {
+  //   final prams = username != null ? '/$username' : '';
+  //   final prefs = await SharedPreferences.getInstance();
+  //   final String? getToken = prefs.getString('Token');
+  //   final url = Uri.parse('${Const.BASE_URl}/rutin/uploded_rutins' + prams);
+  //   final headers = {'Authorization': 'Bearer $getToken'};
 
-    //.. Request send
+  //   //.. Request send
 
-    try {
-      final response = await http.post(url, headers: headers);
+  //   try {
+  //     final response = await http.post(url, headers: headers);
 
-      if (response.statusCode == 200) {
-        var res = json.decode(response.body);
-        print(res);
+  //     if (response.statusCode == 200) {
+  //       var res = json.decode(response.body);
+  //       print(res);
 
-        return ListOfUploadedRutins.fromJson(res);
-      } else {
-        throw Exception("Failed to load saved routines");
-      }
-    } catch (error) {
-      throw Future.error(error);
-    }
-  }
+  //       return ListOfUploadedRutins.fromJson(res);
+  //     } else {
+  //       throw Exception("Failed to load saved routines");
+  //     }
+  //   } catch (error) {
+  //     throw Future.error(error);
+  //   }
+  // }
 
   //********    homeRutines      *************/
 
-  Future<HomeRoutines> homeRutines({pages}) async {
+  Future<HomeRoutines> homeRutines({pages, String? userID}) async {
     String queryPage = "?page=$pages}";
-    String? username = "";
+    final searchByUserID = userID == null ? '' : '/$userID';
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
-    final url = Uri.parse('${Const.BASE_URl}/rutin/home/' + queryPage);
+
+    // TODO : focus ton /home/' + queryPage
+    final url =
+        Uri.parse('${Const.BASE_URl}/rutin/home' + searchByUserID + queryPage);
     final headers = {'Authorization': 'Bearer $getToken'};
     final bool isOnline = await Utils.isOnlineMethode();
-    var isHaveCash = await APICacheManager().isAPICacheKeyExist("homeRutines");
+    final String key = "homeRutines$url";
+    var isHaveCash = await APICacheManager().isAPICacheKeyExist(key);
     try {
       // if offline and have cash
       if (isOnline == false && isHaveCash) {
-        var getdata = await APICacheManager().getCacheData("homeRutines");
+        var getdata = await APICacheManager().getCacheData(key);
         print('Foem cash $getdata');
         return HomeRoutines.fromJson(jsonDecode(getdata.syncData));
       }
@@ -106,13 +109,13 @@ class HomeReq {
       if (response.statusCode == 200) {
         // save to csh
         APICacheDBModel cacheDBModel =
-            APICacheDBModel(key: "homeRutines", syncData: response.body);
+            APICacheDBModel(key: key, syncData: response.body);
 
         await APICacheManager().addCacheData(cacheDBModel);
 
         return homeRutines;
       } else {
-        throw Future.error("eror");
+        throw Future.error("error");
       }
     } catch (e) {
       print(e);

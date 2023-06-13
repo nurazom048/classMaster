@@ -4,20 +4,23 @@ import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
 
 import '../models/home_rutines_model.dart';
 
-final homeRutinControllerProvider = StateNotifierProvider.autoDispose<
-    HomeRutinsController, AsyncValue<HomeRoutines>>((ref) {
-  return HomeRutinsController(ref.read(home_req_provider));
+final homeRutinControllerProvider = StateNotifierProvider.autoDispose
+    .family<HomeRutinsController, AsyncValue<HomeRoutines>, String?>(
+        (ref, userID) {
+  return HomeRutinsController(ref.read(home_req_provider), userID);
 });
 
 class HomeRutinsController extends StateNotifier<AsyncValue<HomeRoutines>> {
   HomeReq homeReq;
-  HomeRutinsController(this.homeReq) : super(const AsyncLoading()) {
+  final String? userID;
+  HomeRutinsController(this.homeReq, this.userID)
+      : super(const AsyncLoading()) {
     _init();
   }
 
   _init() async {
     try {
-      final res = await homeReq.homeRutines(pages: 1);
+      final res = await homeReq.homeRutines(pages: 1, userID: userID);
       state = AsyncData(res);
     } catch (error, stackTrace) {
       if (!mounted) return;

@@ -13,6 +13,7 @@ import '../../../../widgets/heder/heder_title.dart';
 import '../../Home/full_rutin/utils/rutin_dialog.dart';
 import '../../Home/full_rutin/widgets/rutin_box/rutin_box_by_id.dart';
 import '../../Home/full_rutin/widgets/sceltons/rutinebox_id_scelton.dart';
+import '../../Home/home_req/home_rutins_controller.dart';
 import '../../Home/home_req/rutin_req.dart';
 import '../../Home/notice_board/notice controller/virew_recent_notice_controller.dart';
 import '../../Home/widgets/recentnoticeslider_scalton.dart';
@@ -35,8 +36,7 @@ class ProfileSCreen extends StatelessWidget {
 
       final recentNoticeList = ref.watch(recentNoticeController(academyID));
       final accountData = ref.watch(accountDataProvider(username));
-      final allUploadesRutines =
-          ref.watch(uploadedRutinsControllerProvider(username));
+      final uplodedRoutines = ref.watch(homeRutinControllerProvider(academyID));
 
       //
 
@@ -117,23 +117,23 @@ class ProfileSCreen extends StatelessWidget {
               //********** Routines ***********************/
               Text("   Routines", style: TS.heading()),
               const SizedBox(height: 10),
-              allUploadesRutines.when(
+              uplodedRoutines.when(
                 data: (data) {
                   //
                   return ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     padding: const EdgeInsets.only(bottom: 100),
-                    itemCount: data.rutins.length,
+                    itemCount: data.homeRoutines.length,
                     itemBuilder: (context, index) {
                       return RutinBoxById(
-                        rutinId: data.rutins[index].id,
-                        rutinName: data.rutins[index].name,
+                        rutinId: data.homeRoutines[index].rutineID.id,
+                        rutinName: data.homeRoutines[index].rutineID.name,
                         onTapMore: () =>
                             RutinDialog.ChackStatusUser_BottomSheet(
                           context,
-                          data.rutins[index].id,
-                          data.rutins[index].name,
+                          data.homeRoutines[index].rutineID,
+                          data.homeRoutines[index].rutineID.name,
                         ),
                       );
                     },

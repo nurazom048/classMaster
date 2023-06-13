@@ -29,7 +29,7 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //! provider
-    final homeRutins = ref.watch(homeRutinControllerProvider);
+    final homeRutins = ref.watch(homeRutinControllerProvider(null));
     final recentNoticeList = ref.watch(recentNoticeController(null));
 
     //

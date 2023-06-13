@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:table/core/component/loaders.dart';
 import 'package:table/ui/bottom_items/Add/screens/add_class_screen.dart';
 
-import '../../../../../../constant/constant.dart';
 import '../../../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../../../models/class_details_model.dart';
 import '../../../../../../sevices/notification services/local_notifications.dart';
@@ -42,7 +41,7 @@ class ClassListPage extends StatelessWidget {
 
       // notifiers
       final chackStatus = ref.watch(chackStatusControllerProvider(rutinId));
-      String status = chackStatus.value?.activeStatus ?? '';
+      // String status = chackStatus.value?.activeStatus ?? '';
 
       bool notificationOff = chackStatus.value?.notificationOff ?? false;
 
