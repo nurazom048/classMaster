@@ -23,12 +23,13 @@ class SummaryHeader extends StatelessWidget {
     }
 
     return Container(
-      padding: const EdgeInsets.only(bottom: 15),
-      height: 170,
+      // padding: const EdgeInsets.only(bottom: 15),
+      height: 132,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          HeaderTitle("Routine", context),
+          HeaderTitle("Summary", context,
+              margin: const EdgeInsets.only(top: 20, left: 20, bottom: 8)),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 10),
             child: Row(

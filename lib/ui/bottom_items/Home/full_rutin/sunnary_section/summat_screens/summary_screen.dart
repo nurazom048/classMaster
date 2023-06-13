@@ -49,7 +49,6 @@ class SummaryScreen extends ConsumerWidget {
     return SafeArea(
       child: Scaffold(
           body: NestedScrollView(
-            floatHeaderSlivers: true,
             headerSliverBuilder: (context, innerBoxIsScrolled) => [
               SliverToBoxAdapter(
                   child: SummaryHeader(
@@ -64,44 +63,38 @@ class SummaryScreen extends ConsumerWidget {
                 if (status != 'joined') {
                   return ErrorScreen(error: Const.CANT_SEE_SUMMARYS);
                 }
-                return Column(
-                  children: [
-                    Expanded(
-                      flex: 10,
-                      child: allSummary.when(
-                        data: (data) {
-                          if (data.summaries.isEmpty) {
-                            return const ErrorScreen(
-                                error: "There is no Summarys");
-                          }
+                return Container(
+                  child: allSummary.when(
+                    data: (data) {
+                      if (data.summaries.isEmpty) {
+                        return const ErrorScreen(error: "There is no Summarys");
+                      }
 
-                          SchedulerBinding.instance.addPostFrameCallback((_) {
-                            scrollController.jumpTo(
-                                scrollController.position.maxScrollExtent);
-                          });
+                      SchedulerBinding.instance.addPostFrameCallback((_) {
+                        scrollController
+                            .jumpTo(scrollController.position.maxScrollExtent);
+                      });
 
-                          return ListView.builder(
-                            controller: scrollController,
-                            // reverse: true,
-                            itemCount: data.summaries.length,
-                            itemBuilder: (context, i) {
-                              int lenght = data.summaries.length;
-                              return Column(
-                                children: [
-                                  ChatsDribles(summary: data.summaries[i]),
-                                  if (lenght > 2 && i == lenght - 1)
-                                    const SizedBox(height: 100)
-                                ],
-                              );
-                            },
+                      return ListView.builder(
+                        controller: scrollController,
+                        // reverse: true,
+                        itemCount: data.summaries.length,
+                        itemBuilder: (context, i) {
+                          int lenght = data.summaries.length;
+                          return Column(
+                            children: [
+                              ChatsDribles(summary: data.summaries[i]),
+                              if (lenght > 2 && i == lenght - 1)
+                                const SizedBox(height: 100)
+                            ],
                           );
                         },
-                        error: (error, stackTrace) =>
-                            Alart.handleError(context, error),
-                        loading: () => Loaders.center(),
-                      ),
-                    ),
-                  ],
+                      );
+                    },
+                    error: (error, stackTrace) =>
+                        Alart.handleError(context, error),
+                    loading: () => Loaders.center(),
+                  ),
                 );
               }),
             ),
