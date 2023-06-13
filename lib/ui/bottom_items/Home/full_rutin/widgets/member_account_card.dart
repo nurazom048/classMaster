@@ -9,10 +9,12 @@ import 'custom_contaner_avater.dart';
 class MeberAccountCard extends StatelessWidget {
   final Member member;
   final dynamic onPressed;
+  final bool condition;
   const MeberAccountCard({
     super.key,
     required this.member,
     required this.onPressed,
+    required this.condition,
   });
 
   @override
@@ -69,13 +71,16 @@ class MeberAccountCard extends StatelessWidget {
               ),
               const Spacer(),
               //
-              IconButton(
-                onPressed: onPressed,
-                icon: const Icon(
-                  Icons.more_vert,
-                  color: CupertinoColors.black,
-                ),
-              ),
+              if (condition == true)
+                IconButton(
+                  onPressed: onPressed,
+                  icon: const Icon(
+                    Icons.more_vert,
+                    color: CupertinoColors.black,
+                  ),
+                )
+              else
+                const SizedBox.shrink(),
             ],
           ),
         ),

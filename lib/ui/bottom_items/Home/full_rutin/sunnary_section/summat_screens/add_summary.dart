@@ -1,17 +1,21 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table/core/component/loaders.dart';
+import 'package:table/core/dialogs/alart_dialogs.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/sunnary_section/sunnary%20Controller/summary_controller.dart';
 import 'package:table/widgets/heder/heder_title.dart';
-import 'package:flutter/material.dart' as ma;
 import 'package:badges/badges.dart' as badges;
+import '../../../../../../constant/app_color.dart';
 import '../../../../../../helper/helper_fun.dart';
 import '../../../../../../widgets/appWidget/app_text.dart';
+import '../../../../../../widgets/appWidget/buttons/cupertino_butttons.dart';
+
+final loderProvider = StateProvider<bool>((ref) => false);
 
 class AddSummaryScreen extends ConsumerStatefulWidget {
-  const AddSummaryScreen({super.key, required this.classId});
+  const AddSummaryScreen({Key? key, required this.classId}) : super(key: key);
 
   final String classId;
 
@@ -20,11 +24,11 @@ class AddSummaryScreen extends ConsumerStatefulWidget {
       _AddSummaryScreenState();
 }
 
-//
 final _summaryController = TextEditingController();
+final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
 Map<String, dynamic>? newMessage;
 
-//
 List<String> imageLinks = [];
 
 class _AddSummaryScreenState extends ConsumerState<AddSummaryScreen> {
@@ -36,44 +40,50 @@ class _AddSummaryScreenState extends ConsumerState<AddSummaryScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              HeaderTitle("", context),
+              HeaderTitle("Back", context),
               const SizedBox(height: 30),
-              const AppText('  Write Summary').title(),
+              Text('  Write Summary', style: TS.heading(fontSize: 36)),
               const SizedBox(height: 30),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 22),
                 child: Consumer(builder: (context, ref, _) {
-                  //! provider
                   final addSummary = ref
                       .read(sunnaryControllerProvider(widget.classId).notifier);
+                  final isLoding = ref.watch(loderProvider);
 
-                  return Column(
-                    children: [
-                      TextFormField(
-                        controller: _summaryController,
-                        maxLines: 5,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Write Summary',
-                          hintStyle: TextStyle(
-                            fontFamily: 'Open Sans',
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w300,
-                            fontSize: 20,
-                            height: 1.27,
-                            color: Color(0xFF333333),
+                  return Form(
+                    key: formKey,
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          controller: _summaryController,
+                          maxLines: 5,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Write Summary',
+                            hintStyle: TextStyle(
+                              fontFamily: 'Open Sans',
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w300,
+                              fontSize: 20,
+                              height: 1.27,
+                              color: Color(0xFF333333),
+                            ),
                           ),
+                          validator: (value) {
+                            if (value?.isEmpty ?? true) {
+                              return 'Please enter the summary';
+                            }
+                            return null;
+                          },
                         ),
-                      ),
-                      Container(
-                        // color: Colors.blueAccent,
-                        constraints:
-                            const BoxConstraints(minHeight: 0, maxHeight: 100),
-
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: imageLinks.length,
-                          itemBuilder: (context, index) => Container(
+                        Container(
+                          constraints: const BoxConstraints(
+                              minHeight: 0, maxHeight: 100),
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: imageLinks.length,
+                            itemBuilder: (context, index) => Container(
                               alignment: Alignment.centerLeft,
                               width: 130,
                               height: 130,
@@ -90,43 +100,55 @@ class _AddSummaryScreenState extends ConsumerState<AddSummaryScreen> {
                                 },
                                 badgeContent: const Icon(Icons.close),
                                 child: Image(
-                                    fit: BoxFit.cover,
-                                    image: FileImage(File(imageLinks[index]))),
-                              )),
+                                  fit: BoxFit.cover,
+                                  image: FileImage(File(imageLinks[index])),
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-
-                      // pick image
-                      IconButton(
+                        IconButton(
                           onPressed: () async {
-                            String? imagelink =
-                                await HelperMethods.pickAndCompressImage();
+                            List<String>? imagelink = await HelperMethods
+                                .pickAndCompressMultipleImages();
 
-                            setState(() {
-                              imageLinks.add(imagelink!);
-                            });
+                            if (imagelink != null) {
+                              setState(() {
+                                imageLinks.addAll(imagelink);
+                              });
+                            }
                           },
-                          icon: const Icon(Icons.add)),
-                      const SizedBox(height: 20),
+                          icon: const Icon(Icons.add),
+                        ),
+                        // Spacer(),
+                        if (isLoding == true)
+                          Loaders.center(height: 50)
+                        else
+                          CupertinoButtonCustom(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            color: AppColor.nokiaBlue,
+                            textt: "Add Summary Now",
+                            onPressed: () async {
+                              if (formKey.currentState?.validate() ?? false) {
+                                newMessage = {
+                                  'name': 'John Doe new',
+                                  'message': _summaryController.text,
+                                  'imageLinks': imageLinks,
+                                };
 
-                      // create button
-                      CupertinoButton(
-                          color: Colors.blue,
-                          child: const ma.Text('Create'),
-                          onPressed: () async {
-                            newMessage = {
-                              'name': 'John Doe new',
-                              'messaage': _summaryController.text,
-                              'imageLinks': imageLinks
-                            };
-
-                            // add summary
-                            addSummary.addSummarys(ref, context,
-                                _summaryController.text, imageLinks);
-
-                            // print(newMessage.toString());
-                          }),
-                    ],
+                                addSummary.addSummarys(
+                                  ref,
+                                  context,
+                                  _summaryController.text,
+                                  imageLinks,
+                                );
+                              } else {
+                                Alart.showSnackBar(context, 'Enter the form');
+                              }
+                            },
+                          ),
+                      ],
+                    ),
                   );
                 }),
               ),

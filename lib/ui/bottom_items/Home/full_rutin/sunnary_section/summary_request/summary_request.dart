@@ -4,7 +4,9 @@ import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/message_model.dart';
+import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 import '../../../../../../constant/constant.dart';
+import '../../../../../../models/chack_status_model.dart';
 import '../models/all_summary_models.dart';
 import 'package:http/http.dart' as http;
 
@@ -60,8 +62,10 @@ class SummayReuest {
   /// get summary........///
 
   Future<AllSummaryModel> getSummaryList(classId) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
+    print("call get summary ");
+
+    final String? getToken = await AuthController.getToken();
+
     var url = Uri.parse('${Const.BASE_URl}/summary/$classId');
 
     //... send request....//
@@ -69,6 +73,7 @@ class SummayReuest {
       final response =
           await http.get(url, headers: {'Authorization': 'Bearer $getToken'});
       var res = json.decode(response.body);
+      print(res);
 
       if (response.statusCode == 200) {
         var listOsSummary = AllSummaryModel.fromJson(res);
@@ -78,6 +83,107 @@ class SummayReuest {
       }
     } catch (e) {
       return Future.error(e);
+    }
+  }
+
+  /// get summary........///
+
+  static Future<Either<Message, Message>> deleteSummay(String summaryID) async {
+    final String? getToken = await AuthController.getToken();
+    var url = Uri.parse('${Const.BASE_URl}/summary/$summaryID');
+
+    //... send request....//
+    try {
+      final response = await http
+          .delete(url, headers: {'Authorization': 'Bearer $getToken'});
+      var res = json.decode(response.body);
+      var message = Message.fromJson(res);
+      print(res);
+
+      if (response.statusCode == 200) {
+        return right(message);
+      } else {
+        return left(message);
+      }
+    } catch (e) {
+      return left(Message(message: e.toString()));
+    }
+  }
+
+  //**************** SUMMARY STATUS**************** */
+  //....ChackStatusModel....//
+  Future<CheckStatusModel> chackStatus(summaryID) async {
+    final String? getToken = await AuthController.getToken();
+    final Uri url = Uri.parse('${Const.BASE_URl}/summary/status/$summaryID');
+    final Map<String, String> headers = {'Authorization': 'Bearer $getToken'};
+    // final bool isOnline = await Utils.isOnlineMethode();
+    // var isHaveCash =
+    // await APICacheManager().isAPICacheKeyExist("chackStatus$summaryID");
+
+    try {
+      // if offline and have cash
+      // if (isOnline == false && isHaveCash) {
+      //   var getdata =
+      //       await APICacheManager().getCacheData("chackStatus$rutin_id");
+      //   print('Foem cash $getdata');
+      //   return CheckStatusModel.fromJson(jsonDecode(getdata.syncData));
+      // }
+
+      final response = await http.post(
+        url,
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+//svae cshe
+        // // save to csh
+        // APICacheDBModel cacheDBModel = APICacheDBModel(
+        //     key: "chackStatus$rutin_id", syncData: response.body);
+
+        // await APICacheManager().addCacheData(cacheDBModel);
+
+        //
+        CheckStatusModel res =
+            CheckStatusModel.fromJson(jsonDecode(response.body));
+        print("res  ${jsonDecode(response.body)}");
+        return res;
+      } else {
+        throw Exception("Response body is null");
+      }
+    } catch (e) {
+      print(e);
+      return Future.error(e);
+    }
+  }
+
+  //******* Save unsave summary ********* */
+
+  Future<Either<Message, Message>> saveSummary(
+      String summaryId, bool save) async {
+    final token = await AuthController.getToken();
+
+    final url = Uri.parse('${Const.BASE_URl}/summary/save');
+    final headers = {'Authorization': 'Bearer $token'};
+
+    try {
+      final response = await http.post(
+        url,
+        headers: headers,
+        body: {"summaryId": summaryId, "save": save.toString()},
+      );
+      var res = json.decode(response.body);
+      print(res);
+
+      Message message = Message.fromJson(res);
+
+      if (response.statusCode == 200) {
+        return right(message);
+      } else {
+        throw Exception(message.message);
+      }
+    } catch (error) {
+      print(error);
+      return left(Message(message: error.toString()));
     }
   }
 }

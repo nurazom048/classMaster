@@ -44,23 +44,25 @@ class RutineCardInfoRow extends StatelessWidget {
                 //
                 const SizedBox(width: 15),
 
-                TitleAndSubtile(
+                TitleAndSubtitle(
                   title: day?.classId.instuctorName ?? " instuctorName ",
                   subtitle: day?.classId.subjectcode ?? "instuctorName",
                 ),
 
                 const Spacer(),
-                if (taill != null)
-                  const VerticalDivider(thickness: 4, color: Colors.red),
+                if (taill != null) SizedBox.shrink(),
+                // const VerticalDivider(thickness: 4, color: Colors.red),
 
                 //
                 taill ??
                     InkWell(
-                        onTap: onTap ?? () {},
-                        child: Container(
-                            padding: const EdgeInsets.only(right: 2),
-                            alignment: AlignmentDirectional.center,
-                            child: const Icon(Icons.arrow_forward_ios)))
+                      onTap: onTap ?? () {},
+                      child: Container(
+                        padding: const EdgeInsets.only(right: 2),
+                        alignment: AlignmentDirectional.center,
+                        child: const Icon(Icons.arrow_forward_ios),
+                      ),
+                    )
               ],
             ),
           ),
@@ -71,8 +73,8 @@ class RutineCardInfoRow extends StatelessWidget {
   }
 }
 
-class TitleAndSubtile extends StatelessWidget {
-  const TitleAndSubtile({
+class TitleAndSubtitle extends StatelessWidget {
+  const TitleAndSubtitle({
     super.key,
     required this.title,
     required this.subtitle,
@@ -103,7 +105,6 @@ class TitleAndSubtile extends StatelessWidget {
             color: Color(0xFF4F4F4F),
           ),
         ),
-
         //
         Text(
           textScaleFactor == null ? '\n- $subtitle' : subtitle,

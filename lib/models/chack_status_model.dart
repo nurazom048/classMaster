@@ -7,6 +7,8 @@ class CheckStatusModel {
   final int sentRequestCount;
   final bool notificationOff;
   final bool notificationOn;
+  final bool? summaryOwner;
+  final bool? isSummarySaved;
 
   CheckStatusModel({
     required this.isOwner,
@@ -17,6 +19,8 @@ class CheckStatusModel {
     required this.sentRequestCount,
     required this.notificationOff,
     required this.notificationOn,
+    this.summaryOwner,
+    this.isSummarySaved,
   });
 
   factory CheckStatusModel.fromJson(Map<String, dynamic> json) {
@@ -29,6 +33,8 @@ class CheckStatusModel {
       sentRequestCount: json['sentRequestCount'] ?? 0,
       notificationOff: json['notificationOff'] ?? false,
       notificationOn: json['notificationOn'] ?? false,
+      summaryOwner: json['summaryOwner'] ?? false,
+      isSummarySaved: json['isSummarySaved'] ?? false,
     );
   }
 
@@ -41,6 +47,8 @@ class CheckStatusModel {
     int? sentRequestCount,
     bool? notificationOff,
     bool? notificationOn,
+    bool? summaryOwner,
+    bool? isSummarySaved,
   }) {
     return CheckStatusModel(
       isOwner: isOwner ?? this.isOwner,
@@ -51,6 +59,8 @@ class CheckStatusModel {
       sentRequestCount: sentRequestCount ?? this.sentRequestCount,
       notificationOff: notificationOff ?? this.notificationOff,
       notificationOn: notificationOn ?? this.notificationOn,
+      summaryOwner: summaryOwner ?? this.summaryOwner,
+      isSummarySaved: isSummarySaved ?? this.isSummarySaved,
     );
   }
 }

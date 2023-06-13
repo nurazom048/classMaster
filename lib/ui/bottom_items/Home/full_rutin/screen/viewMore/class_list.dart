@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:table/core/component/loaders.dart';
 import 'package:table/ui/bottom_items/Add/screens/add_class_screen.dart';
 
+import '../../../../../../constant/constant.dart';
 import '../../../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../../../models/class_details_model.dart';
 import '../../../../../../sevices/notification services/local_notifications.dart';
@@ -41,6 +42,8 @@ class ClassListPage extends StatelessWidget {
 
       // notifiers
       final chackStatus = ref.watch(chackStatusControllerProvider(rutinId));
+      String status = chackStatus.value?.activeStatus ?? '';
+
       bool notificationOff = chackStatus.value?.notificationOff ?? false;
 
       final totalPriodeNotifier = ref.watch(totalPriodeCountProvider.notifier);
@@ -54,7 +57,7 @@ class ClassListPage extends StatelessWidget {
 
             HeddingRow(
               hedding: "Priode List",
-              secondHeading: "$totalPriode  priodes",
+              secondHeading: "$totalPriode priode${totalPriode > 1 ? "s" : ''}",
               margin: EdgeInsets.zero,
               buttonText: "Add Priode",
               onTap: () => Get.to(
@@ -105,7 +108,7 @@ class ClassListPage extends StatelessWidget {
             //-----------------------   "Class List" -------------------------//
             HeddingRow(
               hedding: "Class List",
-              secondHeading: "$totalClass  classes",
+              secondHeading: "$totalClass classe${totalClass > 1 ? "s" : ''}",
               margin: EdgeInsets.zero,
               buttonText: "Add Class",
               onTap: () => Get.to(
@@ -149,8 +152,12 @@ class ClassListPage extends StatelessWidget {
                               rutinId: rutinId,
                             );
                           },
-                          ontap: () => Get.to(() =>
-                              SummaryScreen(classId: day.classId.id, day: day)),
+                          ontap: () => Get.to(
+                            () => SummaryScreen(
+                              classId: day.classId,
+                              day: day,
+                            ),
+                          ),
                         );
                       },
                     );

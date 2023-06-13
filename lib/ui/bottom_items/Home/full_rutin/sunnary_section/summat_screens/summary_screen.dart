@@ -2,11 +2,15 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table/constant/constant.dart';
 import 'package:table/core/component/loaders.dart';
 import 'package:table/core/dialogs/alart_dialogs.dart';
 import 'package:table/models/class_details_model.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/sunnary_section/summat_screens/add_summary.dart';
+import 'package:table/widgets/error/error.widget.dart';
+import '../../controller/chack_status_controller.dart';
 import '../sunnary Controller/summary_controller.dart';
 import '../widgets/add_summary_button.dart';
 import '../widgets/chats.dribles .dart';
@@ -16,90 +20,111 @@ import '../widgets/summary_header.dart';
 const String DEMO_PROFILE_IMAGE =
     "https://icon-library.com/images/person-icon-png/person-icon-png-1.jpg";
 
-class SummaryScreen extends StatefulWidget {
-  final String classId;
+class SummaryScreen extends ConsumerWidget {
+  final ClassId classId;
   final Day? day;
 
-  const SummaryScreen({
+  SummaryScreen({
     super.key,
     required this.classId,
     this.day,
   });
 
-  @override
-  State<SummaryScreen> createState() => _SummaryScreenState();
-}
-
-class _SummaryScreenState extends State<SummaryScreen> {
   final scrollController = ScrollController();
 
+  // @override
   @override
-  Widget build(BuildContext context) {
-    print("ClassId : ${widget.classId}");
+  Widget build(BuildContext context, WidgetRef ref) {
+    print("ClassId : $classId");
+
+    //! provider
+    final allSummary = ref.watch(sunnaryControllerProvider(classId.id));
+    final chackStatus =
+        ref.watch(chackStatusControllerProvider(classId.rutinId));
+
+    String status = chackStatus.value?.activeStatus ?? '';
+    final bool isCaptain = chackStatus.value?.isCaptain ?? false;
+    final bool isOwner = chackStatus.value?.isOwner ?? false;
 
     return SafeArea(
       child: Scaffold(
-        body: NestedScrollView(
-          floatHeaderSlivers: true,
-          headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            const SliverToBoxAdapter(child: SummaryHeader()),
-          ],
-          body: Container(
-            color: Colors.black12,
-            height: MediaQuery.of(context).size.height,
-            child: Consumer(builder: (context, ref, _) {
-              //! provider
-              final allSummary =
-                  ref.watch(sunnaryControllerProvider(widget.classId));
-              return Column(
-                children: [
-                  Expanded(
-                    flex: 10,
-                    child: allSummary.when(
-                      data: (data) {
-                        if (data.summaries.isEmpty) {
-                          return const Center(
-                              child: Text("There is no Summarys"));
-                        }
-                        return ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          // reverse: true,
-                          itemCount: data.summaries.length,
-                          itemBuilder: (context, i) {
-                            return ChatsDribles(
-                              summary: data.summaries[i],
-                            );
-                          },
-                        );
-                      },
-                      error: (error, stackTrace) =>
-                          Alart.handleError(context, error),
-                      loading: () => Loaders.center(),
+          body: NestedScrollView(
+            floatHeaderSlivers: true,
+            headerSliverBuilder: (context, innerBoxIsScrolled) => [
+              SliverToBoxAdapter(
+                  child: SummaryHeader(
+                classId: classId,
+                day: day!,
+              )),
+            ],
+            body: Container(
+              color: Colors.black12,
+              height: MediaQuery.of(context).size.height,
+              child: Builder(builder: (context) {
+                if (status != 'joined') {
+                  return ErrorScreen(error: Const.CANT_SEE_SUMMARYS);
+                }
+                return Column(
+                  children: [
+                    Expanded(
+                      flex: 10,
+                      child: allSummary.when(
+                        data: (data) {
+                          if (data.summaries.isEmpty) {
+                            return const ErrorScreen(
+                                error: "There is no Summarys");
+                          }
+
+                          SchedulerBinding.instance.addPostFrameCallback((_) {
+                            scrollController.jumpTo(
+                                scrollController.position.maxScrollExtent);
+                          });
+
+                          return ListView.builder(
+                            controller: scrollController,
+                            // reverse: true,
+                            itemCount: data.summaries.length,
+                            itemBuilder: (context, i) {
+                              int lenght = data.summaries.length;
+                              return Column(
+                                children: [
+                                  ChatsDribles(summary: data.summaries[i]),
+                                  if (lenght > 2 && i == lenght - 1)
+                                    const SizedBox(height: 100)
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        error: (error, stackTrace) =>
+                            Alart.handleError(context, error),
+                        loading: () => Loaders.center(),
+                      ),
                     ),
-                  ),
-                ],
-              );
-            }),
+                  ],
+                );
+              }),
+            ),
+
+            ///
           ),
 
-          ///
-        ),
+          //... Add summary icon.....//
+          floatingActionButton: isCaptain == true || isOwner
+              ? AddSummaryButton(
+                  onTap: () {
+                    print("onTAp");
 
-        //... Add summary icon.....//
-        floatingActionButton: AddSummaryButton(
-          onTap: () {
-            print("onTAp");
-
-            return Navigator.push(
-              context,
-              CupertinoPageRoute(
-                  fullscreenDialog: true,
-                  builder: (context) =>
-                      AddSummaryScreen(classId: widget.classId)),
-            );
-          },
-        ),
-      ),
+                    return Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                          fullscreenDialog: true,
+                          builder: (context) =>
+                              AddSummaryScreen(classId: classId.id)),
+                    );
+                  },
+                )
+              : const SizedBox()),
     );
   }
 }

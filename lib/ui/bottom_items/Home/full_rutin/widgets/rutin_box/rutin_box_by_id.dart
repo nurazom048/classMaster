@@ -1,8 +1,8 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/rutin_box/rutin_card_row.dart';
 import 'package:table/widgets/appWidget/dottted_divider.dart';
@@ -170,8 +170,8 @@ class _RutinBoxByIdState extends State<RutinBoxById> {
                               return RutineCardInfoRow(
                                 isFrist: index == 0,
                                 day: widget.listOfDayState[index],
-                                onTap: () => onTap(
-                                    widget.listOfDayState[index], context),
+                                onTap: () => onTap(widget.listOfDayState[index],
+                                    status, context),
                               );
                             } else {
                               return const Text("No Class");
@@ -278,19 +278,11 @@ class _RutinBoxByIdState extends State<RutinBoxById> {
 }
 
 // Navigate to the SummaryScreen when a day is tapped
-void onTap(Day? day, context) {
-  Navigator.push(
-    context,
-    CupertinoPageRoute(
-      builder: (context) => SummaryScreen(
-        classId: day?.classId.id ?? "",
-        day: day,
-      ),
+void onTap(Day? day, String status, context) {
+  Get.to(
+    () => SummaryScreen(
+      classId: day!.classId,
+      day: day,
     ),
   );
 }
-
-
-
-
-///////

@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 
+import '../../widgets/appWidget/app_text.dart';
+
 abstract class Alart {
 //... Error Alart Dilog...//
 
-  static errorAlartDilog(context, dynamic mesage) {
+  static errorAlartDilog(context, dynamic mesage, {String? title}) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Error'),
-          content: Text(mesage.toString()),
+          title: Text(
+            title ?? 'Error',
+          ),
+          content: Text(mesage.toString(), style: TS.heading(fontSize: 18)),
           actions: <Widget>[
             ElevatedButton(
               onPressed: () {

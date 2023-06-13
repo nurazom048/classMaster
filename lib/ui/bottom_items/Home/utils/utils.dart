@@ -56,43 +56,43 @@ class Utils {
   // isOnlineMethode
 
   static Future<bool> isOnlineMethode() async {
-    final connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult != ConnectivityResult.none) {
-      print("from methode ${connectivityResult}");
-      Connectivity()
-          .onConnectivityChanged
-          .listen((ConnectivityResult connectivityResult) {})
-          .cancel();
+    // final connectivityResult = await (Connectivity().checkConnectivity());
+    print("from methode");
 
-      return true;
-    } else {
-      Connectivity()
-          .onConnectivityChanged
-          .listen((ConnectivityResult connectivityResult) {})
-          .cancel();
-
-      return false;
+    bool set = false;
+    if (set == false) {
+      Connectivity().checkConnectivity().then((connectivityResult) {
+        if (connectivityResult != ConnectivityResult.none) {
+          set = true;
+        } else {
+          set = false;
+        }
+      });
     }
-//*************************************************** */
-    //   ConnectivityResult _connectionStatus = ConnectivityResult.none;
 
-    //   final Connectivity _connectivity = Connectivity();
-    //   late StreamSubscription<ConnectivityResult> _connectivitySubscription;
+    //
 
-    //   //
-    //   Future<void> initConnectivity() async {
-    //     late ConnectivityResult result;
-    //     // Platform messages may fail, so we use a try/catch PlatformException.
-    //     try {
-    //       result = await _connectivity.checkConnectivity();
-    //       _connectionStatus = result;
-    //     } catch (e) {
-    //       print('Couldn\'t check connectivity status $e');
-    //       return;
-    //     }
-    //   }
-
-    //   //
-    // }
+    return set;
   }
+//*************************************************** */
+  //   ConnectivityResult _connectionStatus = ConnectivityResult.none;
+
+  //   final Connectivity _connectivity = Connectivity();
+  //   late StreamSubscription<ConnectivityResult> _connectivitySubscription;
+
+  //   //
+  //   Future<void> initConnectivity() async {
+  //     late ConnectivityResult result;
+  //     // Platform messages may fail, so we use a try/catch PlatformException.
+  //     try {
+  //       result = await _connectivity.checkConnectivity();
+  //       _connectionStatus = result;
+  //     } catch (e) {
+  //       print('Couldn\'t check connectivity status $e');
+  //       return;
+  //     }
+  //   }
+
+  //   //
+  // }
 }

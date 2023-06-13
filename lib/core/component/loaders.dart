@@ -3,11 +3,19 @@ import 'package:flutter/material.dart';
 
 class Loaders {
   //center
-  static Widget center() => const Center(
-        child: SizedBox(
-          height: 40,
-          width: 40,
-          child: CircularProgressIndicator(),
+  static Widget center({
+    final double? height,
+    final double? width,
+  }) =>
+      SizedBox(
+        height: height,
+        width: width,
+        child: const Center(
+          child: SizedBox(
+            height: 40,
+            width: 40,
+            child: CircularProgressIndicator(),
+          ),
         ),
       );
 

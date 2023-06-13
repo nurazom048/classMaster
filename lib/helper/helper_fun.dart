@@ -57,6 +57,70 @@ class HelperMethods {
     return await compressAndReturnImagePath();
   }
 
+//? Pick multile image
+  static Future<List<String>?> pickAndCompressMultipleImages() async {
+    // Define a method that compresses the images and returns a list of compressed image paths
+    Future<List<String>?> compressAndReturnImagePaths(
+        List<XFile> pickedFiles) async {
+      List<String> compressedImagePaths = [];
+
+      for (int i = 0; i < pickedFiles.length; i++) {
+        // Read the image bytes and get the original size
+        final imageBytes = await pickedFiles[i].readAsBytes();
+        final originalSize = imageBytes.length;
+
+        // Compress the image with the specified dimensions and quality
+        final compressedBytes = await FlutterImageCompress.compressWithList(
+          imageBytes,
+          minHeight: 800,
+          minWidth: 800,
+          quality: 70,
+        );
+
+        // If compression failed, skip this image
+        if (compressedBytes == null) {
+          continue;
+        }
+
+        // Save the compressed image to temporary directory
+        final directory = await getTemporaryDirectory();
+        final path =
+            '${directory.path}/${DateTime.now().millisecondsSinceEpoch}_$i.jpg';
+        final compressedImageFile = File(path);
+        await compressedImageFile.writeAsBytes(compressedBytes);
+
+        // Get the compressed size and print the original and compressed sizes and the compressed image path
+        final compressedSize = compressedImageFile.lengthSync();
+        print('Original size: ${originalSize ~/ 1024} KB');
+        print('Compressed size: ${compressedSize ~/ 1024} KB');
+        print('Compressed image path: $path');
+
+        // Add the compressed image path to the list
+        compressedImagePaths.add(compressedImageFile.path);
+      }
+
+      if (compressedImagePaths.isNotEmpty) {
+        // Return the list of compressed image paths
+        return compressedImagePaths;
+      } else {
+        // Return null if no images were successfully compressed
+        return null;
+      }
+    }
+
+    // Pick multiple images from the gallery
+    final picker = ImagePicker();
+    final pickedFiles = await picker.pickMultiImage();
+
+    // If no images were picked, return null
+    if (pickedFiles == null || pickedFiles.isEmpty) {
+      return null;
+    }
+
+    // Compress the images and return the list of compressed image paths
+    return await compressAndReturnImagePaths(pickedFiles);
+  }
+
   //!.. Simple image pick ...
 
   // Future<void> _pickImage(ImageSource source) async {
