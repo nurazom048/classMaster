@@ -6,7 +6,6 @@ import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:table/models/message_model.dart';
 import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
-import 'package:table/ui/bottom_items/Account/models/account_models.dart';
 
 import '../../../constant/constant.dart';
 

@@ -10,7 +10,7 @@ import '../../constant/app_color.dart';
 import '../../core/component/responsive.dart';
 import '../auth_Section/auth_controller/auth_controller.dart';
 import 'Account/accounu_ui/account_screen.dart';
-import 'Home/home_screen/home_screen.dart';
+import 'Home/home_screen/home.screen.dart';
 import 'Home/widgets/bottombaritem_custom.dart';
 
 final bottomNavBarIndexProvider = rp.StateProvider<int>((ref) => 0);
@@ -152,3 +152,31 @@ _showBottomSheet(BuildContext context) {
     },
   );
 }
+
+// // // }
+// class OfflineScreen extends StatelessWidget {
+//   final Widget online;
+//   final Widget? offline;
+
+//   const OfflineScreen({
+//     Key? key,
+//     required this.online,
+//     this.offline,
+//   }) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     print("object");
+//     // return StreamBuilder<ConnectivityResult>(
+//     //   stream: Connectivity().onConnectivityChanged,
+//     //   builder: (context, snapshot) {
+//     //     print(snapshot);
+
+//     if (ConnectivityResult.values == ConnectivityResult.none) {
+//       return offline ??
+//           const Text('Offline', style: TextStyle(color: Colors.red));
+//     } else {
+//       return online;
+//     }
+//   }
+// }

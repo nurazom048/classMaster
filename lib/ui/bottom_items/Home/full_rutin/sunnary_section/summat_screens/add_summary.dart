@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/sunnary_section/sunnary%20Controller/summary_controller.dart';
 import 'package:table/widgets/heder/heder_title.dart';
 import 'package:flutter/material.dart' as ma;
-
+import 'package:badges/badges.dart' as badges;
 import '../../../../../../helper/helper_fun.dart';
 import '../../../../../../widgets/appWidget/app_text.dart';
 
@@ -75,16 +75,24 @@ class _AddSummaryScreenState extends ConsumerState<AddSummaryScreen> {
                           itemCount: imageLinks.length,
                           itemBuilder: (context, index) => Container(
                               alignment: Alignment.centerLeft,
-                              width: 100,
-                              height: 100,
+                              width: 130,
+                              height: 130,
                               margin:
                                   const EdgeInsets.symmetric(horizontal: 10),
                               decoration: const BoxDecoration(
-                                color: Colors.black12,
                                 shape: BoxShape.rectangle,
                               ),
-                              child: Image(
-                                  image: FileImage(File(imageLinks[index])))),
+                              child: badges.Badge(
+                                onTap: () {
+                                  setState(() {
+                                    imageLinks.removeAt(index);
+                                  });
+                                },
+                                badgeContent: const Icon(Icons.close),
+                                child: Image(
+                                    fit: BoxFit.cover,
+                                    image: FileImage(File(imageLinks[index]))),
+                              )),
                         ),
                       ),
 

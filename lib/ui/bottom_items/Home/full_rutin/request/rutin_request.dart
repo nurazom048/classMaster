@@ -1,11 +1,14 @@
 // ignore_for_file: non_constant_identifier_names, unnecessary_null_comparison, avoid_print
 
 import 'dart:convert';
+import 'package:api_cache_manager/api_cache_manager.dart';
+import 'package:api_cache_manager/models/cache_db_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/chack_status_model.dart';
+import 'package:table/ui/bottom_items/Home/utils/utils.dart';
 import '../../../../../constant/constant.dart';
 import '../../../../../models/message_model.dart';
 
@@ -18,14 +21,33 @@ class FullRutinrequest {
   Future<CheckStatusModel> chackStatus(rutin_id) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
+    final bool isOnline = await Utils.isOnlineMethode();
+    var isHaveCash =
+        await APICacheManager().isAPICacheKeyExist("chackStatus$rutin_id");
 
     try {
+      // if offline and have cash
+      if (isOnline == false && isHaveCash) {
+        var getdata =
+            await APICacheManager().getCacheData("chackStatus$rutin_id");
+        print('Foem cash $getdata');
+        return CheckStatusModel.fromJson(jsonDecode(getdata.syncData));
+      }
+
       final response = await http.post(
         Uri.parse('${Const.BASE_URl}/rutin/status/$rutin_id'),
         headers: {'Authorization': 'Bearer $getToken'},
       );
 
       if (response.statusCode == 200) {
+//svae cshe
+        // save to csh
+        APICacheDBModel cacheDBModel = APICacheDBModel(
+            key: "chackStatus$rutin_id", syncData: response.body);
+
+        await APICacheManager().addCacheData(cacheDBModel);
+
+        //
         CheckStatusModel res =
             CheckStatusModel.fromJson(jsonDecode(response.body));
         print("res  ${jsonDecode(response.body)}");
@@ -35,7 +57,7 @@ class FullRutinrequest {
       }
     } catch (e) {
       print(e);
-      throw Exception(e);
+      return Future.error(e);
     }
   }
 

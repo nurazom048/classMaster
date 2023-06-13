@@ -109,7 +109,7 @@ class AddNoticeScreen extends ConsumerWidget {
                 ).multiline(),
                 const SizedBox(height: 60),
                 UploadPDFBButton(onSelected: (thepath) {}),
-                Container(height: 200, width: 400, child: DragtoSelectFile()),
+                SizedBox(height: 200, width: 400, child: DragtoSelectFile()),
 
                 const SizedBox(height: 60),
                 Container(
@@ -125,7 +125,7 @@ class AddNoticeScreen extends ConsumerWidget {
                       if (_formKey.currentState!.validate()) {
                         print("validate $pdfpath");
                         String res = await NoticeRequest().addNotice(
-                          content_name: noticeTitleController.text,
+                          contentName: noticeTitleController.text,
                           description: descriptionController.text,
                           pdf_file: pdfpath,
                         );
@@ -171,9 +171,10 @@ class DragtoSelectFile extends ConsumerWidget {
         child: Center(
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 height: 100,
                 child: DropzoneView(
+                  // ignore: unnecessary_this
                   onCreated: (controller) => this.controller1 = controller,
                   onDrop: (value) => acceptfile(value, ref),
                 ),

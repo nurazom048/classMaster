@@ -1,5 +1,7 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../Account/accounu_ui/Account_screen.dart';
 
@@ -30,5 +32,67 @@ class Utils {
       print(message);
     }
     return true;
+  }
+
+  //
+  static String formatDate(DateTime flutteDate) {
+    var now = DateTime.now();
+    var formatter = DateFormat('MMM');
+    var month = formatter.format(flutteDate);
+    String displayDate;
+
+    if (flutteDate.day == now.day && flutteDate.month == now.month) {
+      displayDate = "Today";
+    } else if (flutteDate.day == now.subtract(const Duration(days: 1)).day &&
+        flutteDate.month == now.subtract(const Duration(days: 1)).month) {
+      displayDate = "Yesterday";
+    } else {
+      displayDate = "${flutteDate.day} $month";
+    }
+
+    return displayDate;
+  }
+
+  // isOnlineMethode
+
+  static Future<bool> isOnlineMethode() async {
+    final connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult != ConnectivityResult.none) {
+      print("from methode ${connectivityResult}");
+      Connectivity()
+          .onConnectivityChanged
+          .listen((ConnectivityResult connectivityResult) {})
+          .cancel();
+
+      return true;
+    } else {
+      Connectivity()
+          .onConnectivityChanged
+          .listen((ConnectivityResult connectivityResult) {})
+          .cancel();
+
+      return false;
+    }
+//*************************************************** */
+    //   ConnectivityResult _connectionStatus = ConnectivityResult.none;
+
+    //   final Connectivity _connectivity = Connectivity();
+    //   late StreamSubscription<ConnectivityResult> _connectivitySubscription;
+
+    //   //
+    //   Future<void> initConnectivity() async {
+    //     late ConnectivityResult result;
+    //     // Platform messages may fail, so we use a try/catch PlatformException.
+    //     try {
+    //       result = await _connectivity.checkConnectivity();
+    //       _connectionStatus = result;
+    //     } catch (e) {
+    //       print('Couldn\'t check connectivity status $e');
+    //       return;
+    //     }
+    //   }
+
+    //   //
+    // }
   }
 }

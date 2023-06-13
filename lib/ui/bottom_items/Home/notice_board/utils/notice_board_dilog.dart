@@ -37,7 +37,6 @@ class NoticeboardDilog {
               //     ref.watch(finalMemberConollerList(noticeBoardId).notifier);
 
               //
-              String status = chackStatus.value?.activeStatus ?? '';
 
               bool notificationOff =
                   chackStatus.value?.notificationOff ?? false;

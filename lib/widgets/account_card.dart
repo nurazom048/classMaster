@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../ui/bottom_items/Home/utils/utils.dart';
+
 class AccountCard extends StatelessWidget {
   final dynamic onTap;
-  final String name, username, profilepicture;
+  final String name, username;
+  final String? profilepicture;
   const AccountCard({
     super.key,
     required this.name,
@@ -21,10 +24,25 @@ class AccountCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Spacer(flex: 4),
-            CircleAvatar(
-              radius: 35,
-              backgroundColor: Colors.red,
-              backgroundImage: NetworkImage(profilepicture),
+            FutureBuilder(
+              future: Utils.isOnlineMethode(),
+              builder: (context, snapshot) {
+                bool isOnline = snapshot.data ?? false;
+
+                if (isOnline == true && profilepicture != null) {
+                  return CircleAvatar(
+                    radius: 35,
+                    backgroundColor: Colors.red,
+                    backgroundImage: NetworkImage(profilepicture!),
+                  );
+                }
+                {
+                  return const CircleAvatar(
+                    radius: 35,
+                    backgroundColor: Colors.red,
+                  );
+                }
+              },
             ),
             const Spacer(flex: 1),
             Padding(

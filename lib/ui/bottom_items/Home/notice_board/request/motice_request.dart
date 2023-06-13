@@ -1,10 +1,15 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
+import 'package:api_cache_manager/models/cache_db_model.dart';
+import 'package:api_cache_manager/utils/cache_manager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/message_model.dart';
 
 import '../../../../../constant/constant.dart';
+import '../../utils/utils.dart';
 import '../models/recent_notice_model.dart';
 
 // final viewNoticeByUsernameProvider =
@@ -25,21 +30,37 @@ class NoticeRequest {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
     final String morepage = page == null ? '' : "?page=$page";
-
+    // Url
     final Uri recentNoticeUri =
         Uri.parse('${Const.BASE_URl}/notice/recent$morepage');
     final Uri viewNoticeByAcademyIDUri =
         Uri.parse('${Const.BASE_URl}/notice/recent/$academyID$morepage');
-
     final Uri requestUri =
         academyID == null ? recentNoticeUri : viewNoticeByAcademyIDUri;
+    final key = requestUri.toString();
 
-    final response = await http
-        .post(requestUri, headers: {'Authorization': 'Bearer $getToken'});
-    final res = json.decode(response.body);
-
+    final bool isOnline = await Utils.isOnlineMethode();
+    var isHaveCash = await APICacheManager().isAPICacheKeyExist(key);
     try {
+      // if offline and have cash
+
+      if (isOnline == false && isHaveCash) {
+        var getdata = await APICacheManager().getCacheData(key);
+        print('Foem cash $getdata');
+        return RecentNotice.fromJson(jsonDecode(getdata.syncData));
+      }
+
+      final response = await http
+          .post(requestUri, headers: {'Authorization': 'Bearer $getToken'});
+      final res = json.decode(response.body);
+
       if (response.statusCode == 200) {
+        // save to csh
+        APICacheDBModel cacheDBModel =
+            APICacheDBModel(key: key, syncData: response.body);
+
+        await APICacheManager().addCacheData(cacheDBModel);
+
         return RecentNotice.fromJson(res);
       } else {
         final message = Message.fromJson(json.decode(response.body));
@@ -52,7 +73,7 @@ class NoticeRequest {
 
   //******    add notice     ********* */
   Future<String> addNotice({
-    String? content_name,
+    String? contentName,
     String? description,
     String? pdf_file,
   }) async {
@@ -67,7 +88,7 @@ class NoticeRequest {
       "Access-Control-Allow-Origin": "*",
     });
 
-    request.fields['content_name'] = content_name ?? '';
+    request.fields['content_name'] = contentName ?? '';
     request.fields['description'] = description ?? '';
     if (pdf_file != null) {
       try {

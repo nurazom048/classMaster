@@ -1,6 +1,8 @@
 // ignore_for_file: file_names, non_constant_identifier_names, prefer_interpolation_to_compose_strings, unused_local_variable, avoid_print
 
 import 'dart:convert';
+import 'package:api_cache_manager/api_cache_manager.dart';
+import 'package:api_cache_manager/models/cache_db_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -8,6 +10,7 @@ import 'package:table/models/rutins/list_of_save_rutin.dart';
 import '../../../../constant/constant.dart';
 import '../../../../models/rutins/saveRutine.dart';
 import '../models/home_rutines_model.dart';
+import '../utils/utils.dart';
 
 //!.. Provider ...!//
 
@@ -81,8 +84,16 @@ class HomeReq {
     final String? getToken = prefs.getString('Token');
     final url = Uri.parse('${Const.BASE_URl}/rutin/home/' + queryPage);
     final headers = {'Authorization': 'Bearer $getToken'};
-
+    final bool isOnline = await Utils.isOnlineMethode();
+    var isHaveCash = await APICacheManager().isAPICacheKeyExist("homeRutines");
     try {
+      // if offline and have cash
+      if (isOnline == false && isHaveCash) {
+        var getdata = await APICacheManager().getCacheData("homeRutines");
+        print('Foem cash $getdata');
+        return HomeRoutines.fromJson(jsonDecode(getdata.syncData));
+      }
+
       //
       final response = await http.post(url, headers: headers);
 
@@ -92,8 +103,13 @@ class HomeReq {
 
       HomeRoutines homeRutines = HomeRoutines.fromJson(res);
 
-      //
       if (response.statusCode == 200) {
+        // save to csh
+        APICacheDBModel cacheDBModel =
+            APICacheDBModel(key: "homeRutines", syncData: response.body);
+
+        await APICacheManager().addCacheData(cacheDBModel);
+
         return homeRutines;
       } else {
         throw Future.error("eror");
@@ -101,7 +117,7 @@ class HomeReq {
     } catch (e) {
       print(e);
 
-      return Future.error(e);
+      return Future.error("$e  $isOnline");
     }
   }
 }

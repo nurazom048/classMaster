@@ -1,3 +1,5 @@
+import 'package:table/ui/bottom_items/Account/models/account_models.dart';
+
 class AllSummaryModel {
   String message;
   List<Summary> summaries;
@@ -15,31 +17,36 @@ class AllSummaryModel {
 
 class Summary {
   String id;
-  Owner owner;
-  String text;
+  AccountModels? owner; // Make owner field nullable
+  String? text; // Make text field nullable
   List<String> imageLinks;
   String routineId;
   String classId;
   List<String> imageUrls;
+  DateTime createdAt;
 
   Summary({
     required this.id,
-    required this.owner,
-    required this.text,
+    this.owner, // Update owner field to be nullable
+    this.text, // Update text field to be nullable
     required this.imageLinks,
     required this.routineId,
     required this.classId,
     required this.imageUrls,
+    required this.createdAt,
   });
 
   factory Summary.fromJson(Map<String, dynamic> json) => Summary(
         id: json['_id'],
-        owner: Owner.fromJson(json['ownerId']),
+        owner: json['ownerId'] != null
+            ? AccountModels.fromJson(json['ownerId'])
+            : null,
         text: json['text'],
         imageLinks: List<String>.from(json['imageLinks']),
         routineId: json['routineId'],
         classId: json['classId'],
         imageUrls: List<String>.from(json['imageUrls']),
+        createdAt: DateTime.parse(json['createdAt']),
       );
 
   Map<String, dynamic> toJson() => {
@@ -47,28 +54,6 @@ class Summary {
         'imageLinks': imageLinks,
         'classId': classId,
         'imageUrls': imageUrls,
+        'createdAt': createdAt.toIso8601String(),
       };
-}
-
-class Owner {
-  String id;
-  String username;
-  String name;
-  String image;
-
-  Owner({
-    required this.id,
-    required this.username,
-    required this.name,
-    required this.image,
-  });
-
-  factory Owner.fromJson(Map<String, dynamic> json) {
-    return Owner(
-      id: json['_id'],
-      username: json['username'],
-      name: json['name'],
-      image: json['image'],
-    );
-  }
 }

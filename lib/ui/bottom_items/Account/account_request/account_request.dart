@@ -1,12 +1,15 @@
 // ignore_for_file: non_constant_identifier_names, avoid_print
 
 import 'dart:convert';
+import 'package:api_cache_manager/api_cache_manager.dart';
+import 'package:api_cache_manager/models/cache_db_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 
 import '../../../../constant/constant.dart';
+import '../../Home/utils/utils.dart';
 import '../models/account_models.dart';
 
 final AccountReqProvider = Provider<AccountReq>((ref) {
@@ -22,24 +25,44 @@ final accountDataProvider =
 class AccountReq {
 //... Account data...//
   Future<AccountModels> getAccountData({String? username}) async {
+    final String? token = await AuthController.getToken();
+    final url = username != null
+        ? Uri.parse('${Const.BASE_URl}/account/$username')
+        : Uri.parse('${Const.BASE_URl}/account/');
+    final headers = {'Authorization': 'Bearer $token'};
+    final bool isOnline = await Utils.isOnlineMethode();
+    var isHaveCash = await APICacheManager().isAPICacheKeyExist(url.toString());
     try {
-      final String? token = await AuthController.getToken();
-      final url = username != null
-          ? Uri.parse('${Const.BASE_URl}/account/$username')
-          : Uri.parse('${Const.BASE_URl}/account/');
-      final headers = {'Authorization': 'Bearer $token'};
+//
+      // if offline and have cash
+      if (isOnline == false && isHaveCash) {
+        //
+        var getdata = await APICacheManager().getCacheData(url.toString());
+        print('Foem cash $getdata');
+        return AccountModels.fromJson(jsonDecode(getdata.syncData));
+      }
+
 // Request
       final response = await http.post(url, headers: headers);
       print(response.body);
 
       if (response.statusCode == 200) {
+        //
+
+        // save to csh
+        APICacheDBModel cacheDBModel =
+            APICacheDBModel(key: url.toString(), syncData: response.body);
+        await APICacheManager().addCacheData(cacheDBModel);
+
+        // send responce
+
         return AccountModels.fromJson(json.decode(response.body));
       } else {
         throw 'Error retrieving account data';
       }
     } catch (e) {
       print(e);
-      rethrow;
+      return Future.error(e);
     }
   }
 

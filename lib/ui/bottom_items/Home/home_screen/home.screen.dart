@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/utils/rutin_dialog.dart';
 import 'package:table/ui/bottom_items/Home/models/home_rutines_model.dart';
 import 'package:table/ui/bottom_items/Home/notice_board/models/recent_notice_model.dart';
@@ -74,100 +73,93 @@ class HomeScreen extends ConsumerWidget {
 /////////////
   homeMobileView(WidgetRef ref, AsyncValue<RecentNotice> recentNoticeList,
       BuildContext context, AsyncValue<HomeRoutines> homeRutins) {
-    return NotificationListener<ScrollNotification>(
-      // hide bottom nev bar on scroll
-      onNotification: (scrollNotification) =>
-          hideNevBarOnScroll(scrollNotification, ref),
-      //
-      child: ListView(
-        physics: const NeverScrollableScrollPhysics(),
-        padding: const EdgeInsets.only(bottom: 100),
-        controller: scrollController,
-        children: [
-          if (Responsive.isMobile(context)) const ChustomTitleBar("title"),
-          //_______________________ recent notices _________________//
-          RecentNoticeTitle(
-            onTap: () => Get.to(() => ViewAllRecentNotice(),
-                transition: Transition.rightToLeftWithFade),
-          ),
+    return ListView(
+      padding: const EdgeInsets.only(bottom: 100),
+      controller: scrollController,
+      children: [
+        if (Responsive.isMobile(context)) const ChustomTitleBar("title"),
+        //_______________________ recent notices _________________//
+        RecentNoticeTitle(
+          onTap: () => Get.to(() => ViewAllRecentNotice(),
+              transition: Transition.rightToLeftWithFade),
+        ),
 
-          SizedBox(
-            height: 181,
-            child: recentNoticeList.when(
-              data: (data) {
-                int length = data.notices.length;
-                return RecentNoticeSlider(
-                  list: <Widget>[
-                    RecentNoticeSliderItem(
-                      notice: data.notices,
-                      index: 0,
-                      conditon: length >= 2,
-                    ),
-
-                    //
-                    RecentNoticeSliderItem(
-                      notice: data.notices,
-                      index: 2,
-                      conditon: length >= 4,
-                    ), //
-                    RecentNoticeSliderItem(
-                      notice: data.notices,
-                      index: 3,
-                      conditon: length >= 6,
-                    ),
-
-                    RecentNoticeSliderItem(
-                      notice: data.notices,
-                      index: 4,
-                      conditon: length >= 8,
-                    ),
-                  ],
-                );
-              },
-              error: (error, stackTrace) => Alart.handleError(context, error),
-              loading: () => const RecentNoticeSliderScealton(),
-            ),
-          ),
-
-          // uploaded rutines
-
-          homeRutins.when(
+        SizedBox(
+          height: 181,
+          child: recentNoticeList.when(
             data: (data) {
-              void scrollListener() {
-                if (scrollController.position.pixels ==
-                    scrollController.position.maxScrollExtent) {
-                  // ref
-                  //     .watch(uploadedRutinsControllerProvider.notifier)
-                  //     .loadMore(data.currentPage);
-                }
-              }
+              int length = data.notices.length;
+              return RecentNoticeSlider(
+                list: <Widget>[
+                  RecentNoticeSliderItem(
+                    notice: data.notices,
+                    index: 0,
+                    conditon: length >= 2,
+                  ),
 
-              scrollController.addListener(scrollListener);
+                  //
+                  RecentNoticeSliderItem(
+                    notice: data.notices,
+                    index: 2,
+                    conditon: length >= 4,
+                  ), //
+                  RecentNoticeSliderItem(
+                    notice: data.notices,
+                    index: 3,
+                    conditon: length >= 6,
+                  ),
 
-              //
-              return ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                padding: const EdgeInsets.only(bottom: 100),
-                itemCount: data.homeRoutines.length,
-                itemBuilder: (context, index) {
-                  return RutinBoxById(
-                    rutinId: data.homeRoutines[index].rutineID.id,
-                    rutinName: data.homeRoutines[index].rutineID.name,
-                    onTapMore: () => RutinDialog.ChackStatusUser_BottomSheet(
-                      context,
-                      data.homeRoutines[index].rutineID.id,
-                      data.homeRoutines[index].rutineID.name,
-                    ),
-                  );
-                },
+                  RecentNoticeSliderItem(
+                    notice: data.notices,
+                    index: 4,
+                    conditon: length >= 8,
+                  ),
+                ],
               );
             },
-            loading: () => RUTINE_BOX_SKELTON,
             error: (error, stackTrace) => Alart.handleError(context, error),
+            loading: () => const RecentNoticeSliderScealton(),
           ),
-        ],
-      ),
+        ),
+
+        // uploaded rutines
+
+        homeRutins.when(
+          data: (data) {
+            void scrollListener() {
+              if (scrollController.position.pixels ==
+                  scrollController.position.maxScrollExtent) {
+                // ref
+                //     .watch(uploadedRutinsControllerProvider.notifier)
+                //     .loadMore(data.currentPage);
+              }
+            }
+
+            scrollController.addListener(scrollListener);
+
+            //
+            return ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: const EdgeInsets.only(bottom: 100),
+              itemCount: data.homeRoutines.length,
+              itemBuilder: (context, index) {
+                return RutinBoxById(
+                  rutinId: data.homeRoutines[index].rutineID.id,
+                  rutinName: data.homeRoutines[index].rutineID.name,
+                  onTapMore: () => RutinDialog.ChackStatusUser_BottomSheet(
+                    context,
+                    data.homeRoutines[index].rutineID.id,
+                    data.homeRoutines[index].rutineID.name,
+                  ),
+                );
+              },
+            );
+          },
+          loading: () => RUTINE_BOX_SKELTON,
+          error: (error, stackTrace) => Alart.handleError(context, error),
+        ),
+      ],
     );
   }
 

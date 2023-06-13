@@ -57,7 +57,7 @@ class AccountScreen extends StatelessWidget {
                           return const Text("null");
                         } else {
                           return AccountCard(
-                            profilepicture: data.image ?? '',
+                            profilepicture: data.image,
                             name: data.name ?? '',
                             username: data.username ?? '',
                             onTap: () => Get.to(ProfileSCreen(academyID: null)),

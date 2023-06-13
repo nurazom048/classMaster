@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:table/ui/bottom_items/Home/home_screen/home_screen.dart';
+import 'package:table/ui/bottom_items/Home/home_screen/home.screen.dart';
 import 'package:table/ui/bottom_items/Home/widgets/drawer_item.dart';
 
 import '../../bottom_nev_bar.dart';

@@ -66,12 +66,18 @@ dependencies:
   smooth_page_indicator: ^1.1.0
   flutter_document_picker: ^5.2.3
   flutter_dropzone: ^3.0.5
+  badges: ^3.1.1
+  connectivity_plus: ^4.0.1
+  api_cache_manager: ^1.0.2
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
 
+
+  
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
