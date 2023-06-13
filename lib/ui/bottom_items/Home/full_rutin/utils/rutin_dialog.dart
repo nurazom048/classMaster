@@ -1,13 +1,11 @@
 // ignore_for_file: camel_case_types, non_constant_identifier_names, unused_local_variable, avoid_print
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/chack_status_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/members_controllers.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/Rutin_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/chekbox_selector_button.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/widgets/select_account.dart';
 import 'package:table/widgets/appWidget/dottted_divider.dart';
 import '../../../../../core/component/Loaders.dart';
 import '../../../../../core/dialogs/alart_dialogs.dart';
@@ -22,7 +20,8 @@ class RutinDialog {
         builder: (BuildContext context) {
           // bottom sheet layout
           return Container(
-            padding: const EdgeInsets.symmetric(vertical: 50),
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
@@ -49,9 +48,10 @@ class RutinDialog {
                       data: (data) {
                         String status = chackStatus.value?.activeStatus ?? '';
 
-                        return Wrap(
-                          runSpacing: 20,
-                          alignment: WrapAlignment.center,
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          // runSpacing: 20,
+                          // alignment: WrapAlignment.center,
                           children: [
                             if (status == "joined")
                               SqureButton(
@@ -95,52 +95,6 @@ class RutinDialog {
                                 );
                               },
                             ),
-                            if (data.isCaptain || data.isOwner) ...[
-                              SqureButton(
-                                icon: Icons.person_add_alt_1,
-                                text: "Add captens",
-                                ontap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => SeelectAccount(
-                                        addCapten: true,
-                                        buttotext: "Add captens",
-                                        onUsername:
-                                            (seleted_username, setPosition) {
-                                          members.AddCapten(
-                                            rutinId,
-                                            seleted_username,
-                                            context,
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
-                            if (data.isCaptain || data.isOwner) ...[
-                              SqureButton(
-                                icon: Icons.person_add_alt_1,
-                                text: "Add members",
-                                ontap: () {
-                                  return Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                      fullscreenDialog: true,
-                                      builder: (context) => SeelectAccount(
-                                        buttotext: "Add member",
-                                        onUsername: (seleted_username, _) {
-                                          members.addMember(
-                                              seleted_username, context);
-                                        },
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
                             if (data.isCaptain || data.isOwner) ...[
                               if (data.isOwner == true) ...[
                                 SqureButton(

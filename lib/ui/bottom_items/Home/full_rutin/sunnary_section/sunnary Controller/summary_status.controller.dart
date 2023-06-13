@@ -72,18 +72,26 @@ class SummaryChackStatusController
   }
 
   // Unsave the summary
-  Future<void> unsaveSummary(BuildContext context, String summaryID) async {
+  Future<void> unsaveSummary(
+    BuildContext context, {
+    required String summaryID,
+    required bool condition,
+  }) async {
     try {
       Either<Message, Message> res =
-          await SummayReuest().saveSummary(summaryID, false);
+          await SummayReuest().saveSummary(summaryID, condition);
 
       res.fold(
         (error) {
           print(error);
+          Navigator.pop(context);
           return Alart.errorAlartDilog(context, error.message);
         },
         (r) {
+          print('*************************************');
+          print(r.save);
           state = AsyncData(state.value!.copyWith(isSave: r.save));
+          Navigator.pop(context);
           return Alart.showSnackBar(context, r.message);
         },
       );
