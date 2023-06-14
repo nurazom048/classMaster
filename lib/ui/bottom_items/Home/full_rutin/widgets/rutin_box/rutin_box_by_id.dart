@@ -30,6 +30,7 @@ class RutinBoxById extends StatefulWidget {
   final String rutinName;
   final String rutinId;
   final dynamic onTapMore;
+  final EdgeInsetsGeometry? margin;
   List<Day?> listOfDayState = [];
   List<Day?> allDays = [];
 
@@ -40,6 +41,7 @@ class RutinBoxById extends StatefulWidget {
     required this.rutinName,
     required this.onTapMore,
     required this.rutinId,
+    this.margin,
   }) : super(key: key);
 
   @override
@@ -68,7 +70,8 @@ class _RutinBoxByIdState extends State<RutinBoxById> {
 
       return Container(
         height: 455,
-        margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
+        margin: widget.margin ??
+            const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
         padding: const EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
           color: Colors.white,

@@ -5,14 +5,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/search/search_screen/account_search_screen.dart';
 import 'package:table/ui/bottom_items/search/search_screen/search_rutine_screen.dart';
 import 'package:table/ui/bottom_items/search/widgets/search_bar_custom.dart';
-import 'package:flutter/material.dart' as ma;
 
 import '../../../../core/component/responsive.dart';
+import '../../../../widgets/custom_tab_bar.widget.dart';
 import '../../Home/widgets/custom_title_bar.dart';
 import '../../Home/widgets/mydrawer.dart';
 
+//!pages
+final List<Widget> pages = [
+  const SearchRutineScreen(),
+  const AccountSearchScreen(),
+];
+
 //! search String provider
-final Serarch_String_Provider = StateProvider<String>((ref) => "x");
+final Serarch_String_Provider = StateProvider<String>((ref) => "");
+final searchPageIndexProvider = StateProvider<int>((ref) => 0);
 
 class SearchPAge extends StatefulWidget {
   const SearchPAge({super.key});
@@ -33,6 +40,12 @@ class _SearchPAgeState extends State<SearchPAge> with TickerProviderStateMixin {
       length: 2,
       vsync: this,
     );
+  }
+
+  @override
+  void dispose() {
+    tabController.dispose(); // Cancel the tab controller
+    super.dispose();
   }
 
   final _appBar = const ChustomTitleBar("title");
@@ -71,51 +84,48 @@ class _SearchPAgeState extends State<SearchPAge> with TickerProviderStateMixin {
   SingleChildScrollView _mobile() {
     return SingleChildScrollView(
       child: Consumer(builder: (context, ref, _) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            //.. search bar
-            Container(
-              height: 70,
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: SearchBarCustom(onChanged: (valu) {
-                  ref.read(Serarch_String_Provider.notifier).state = valu;
-                }),
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              //.. search bar
+              Container(
+                height: 70,
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: SearchBarCustom(onChanged: (valu) {
+                    print(valu);
+                    if (mounted && valu != '') {
+                      ref.read(Serarch_String_Provider.notifier).state = valu;
+                    }
+                  }),
+                ),
               ),
-            ),
 
-            Container(
-              width: MediaQuery.of(context).size.width,
-              child: TabBar(
-                controller: tabController,
-                tabs: const [
-                  Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: ma.Text("Rutins ",
-                          style: TextStyle(color: Colors.black))),
-                  Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: ma.Text("Account ",
-                          style: TextStyle(color: Colors.black))),
-                ],
+              Container(
+                width: MediaQuery.of(context).size.width,
+                margin: const EdgeInsets.only(top: 10),
+                child: CustomTabBar(
+                  margin: const EdgeInsets.only(bottom: 20),
+                  tabItems: const ['Account', 'Rutins'],
+                  selectedIndex: ref.watch(searchPageIndexProvider),
+                  onTabSelected: (index) {
+                    ref
+                        .watch(searchPageIndexProvider.notifier)
+                        .update((state) => index);
+                  },
+                ),
               ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 5),
-              padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 10),
-              //color: Colors.black12,
-              height: MediaQuery.of(context).size.height - 20,
-              width: MediaQuery.of(context).size.width,
-              child: TabBarView(controller: tabController, children: const [
-                SearchRutineScreen(),
-                AccountSearchScreen(),
-              ]),
-            ),
-          ],
+
+              Container(
+                  height: MediaQuery.of(context).size.height - 20,
+                  width: MediaQuery.of(context).size.width,
+                  child: pages[ref.watch(searchPageIndexProvider)]),
+            ],
+          ),
         );
       }),
     );
   }
 }
-//

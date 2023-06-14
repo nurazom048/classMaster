@@ -26,6 +26,8 @@ class SearchAccountController
       if (!mounted) return;
       state = AsyncValue.data(data);
     } catch (err, stack) {
+      if (!mounted) return;
+
       state = AsyncValue.error(err, stack);
     }
   }

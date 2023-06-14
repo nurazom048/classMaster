@@ -21,6 +21,7 @@ class AccountCardRow extends ConsumerWidget {
     this.color,
     this.addCaptem = false,
     this.onUsername = _defaultOnUsername,
+    this.padding,
   });
 
   String? n;
@@ -32,6 +33,7 @@ class AccountCardRow extends ConsumerWidget {
   final Color? color;
   final bool? addCaptem;
   final Function(String?, String?) onUsername;
+  final EdgeInsetsGeometry? padding;
 
   final Widget? suffix;
   dynamic removeCapten;
@@ -50,7 +52,8 @@ class AccountCardRow extends ConsumerWidget {
               )
           : () {},
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        padding:
+            padding ?? const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(8)),
         height: 70,

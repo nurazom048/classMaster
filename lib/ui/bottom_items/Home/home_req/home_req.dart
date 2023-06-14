@@ -82,7 +82,6 @@ class HomeReq {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 
-    // TODO : focus ton /home/' + queryPage
     final url =
         Uri.parse('${Const.BASE_URl}/rutin/home' + searchByUserID + queryPage);
     final headers = {'Authorization': 'Bearer $getToken'};
@@ -108,14 +107,17 @@ class HomeReq {
 
       if (response.statusCode == 200) {
         // save to csh
-        APICacheDBModel cacheDBModel =
-            APICacheDBModel(key: key, syncData: response.body);
-
-        await APICacheManager().addCacheData(cacheDBModel);
+        if (userID == null) {
+          APICacheDBModel cacheDBModel =
+              APICacheDBModel(key: key, syncData: response.body);
+          await APICacheManager().addCacheData(cacheDBModel);
+        }
 
         return homeRutines;
+      } else if (isOnline == false) {
+        throw Future.error("No Internet Connection");
       } else {
-        throw Future.error("error");
+        throw Future.error("Interaal Sarver Error");
       }
     } catch (e) {
       print(e);

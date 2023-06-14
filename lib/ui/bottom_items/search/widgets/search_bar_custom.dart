@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SearchBarCustom extends StatelessWidget {
-  final dynamic onChanged;
+  final Function(String)? onChanged;
   const SearchBarCustom({super.key, required this.onChanged});
 
   @override
@@ -10,6 +10,7 @@ class SearchBarCustom extends StatelessWidget {
     return CupertinoNavigationBar(
       middle: CupertinoTextField(
         onChanged: onChanged,
+        // onSubmitted: (valu) => onChanged,
         // controller: _searchController,
         placeholder: 'Search',
         clearButtonMode: OverlayVisibilityMode.editing,

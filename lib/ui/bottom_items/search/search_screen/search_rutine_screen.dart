@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/search/search_screen/search_page.dart';
+import 'package:table/widgets/error/error.widget.dart';
 
 import '../../../../core/component/Loaders.dart';
 import '../../../../core/dialogs/alart_dialogs.dart';
@@ -26,13 +27,17 @@ class SearchRutineScreen extends ConsumerWidget {
               itemCount: data.routine.length,
               itemBuilder: (context, index) {
                 return RutinBoxById(
+                    margin: EdgeInsets.zero,
                     rutinName: data.routine[index].name,
                     onTapMore: () {},
                     rutinId: data.routine[index].id);
               },
             );
           },
-          error: (error, stackTrace) => Alart.handleError(context, error),
+          error: (error, stackTrace) {
+            Alart.handleError(context, error);
+            return ErrorScreen(error: error.toString());
+          },
           loading: () => Loaders.center(),
         ));
   }

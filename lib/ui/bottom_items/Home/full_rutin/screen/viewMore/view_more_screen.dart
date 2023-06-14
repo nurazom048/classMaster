@@ -1,11 +1,16 @@
 // ignore_for_file: curly_braces_in_flow_control_structures, unnecessary_null_comparison, avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/viewMore/member_list.dart';
 import '../../../../../../constant/app_color.dart';
 import '../../../../../../widgets/appWidget/app_text.dart';
+import '../../../../../../widgets/custom_tab_bar.widget.dart';
 import '../../../../../../widgets/heder/heder_title.dart';
+import '../../../../search/search_screen/search_page.dart';
 import 'class_list.dart';
+
+final viewMoreIndexProvider = StateProvider<int>((ref) => 0);
 
 class ViewMore extends StatefulWidget {
   final String rutinId;
@@ -40,44 +45,49 @@ class _ViewMoreState extends State<ViewMore> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          SliverToBoxAdapter(
-            child: SizedBox(
-              height: 270,
-              width: 300,
-              child: Column(
-                children: [
-                  HeaderTitle("Rutine", context),
-                  const SizedBox(height: 40),
-                  AppText(widget.rutineName.toUpperCase()).title(),
-                  AppText(widget.owenerName ?? "khulna polytechnic institute")
-                      .heding(),
-                  const SizedBox(height: 30),
-                  SizedBox(
-                    height: 40,
-                    child: TabBar(
-                        controller: controller,
-                        labelColor: AppColor.nokiaBlue,
-                        unselectedLabelColor: Colors.black,
-                        tabs: const [
-                          Tab(child: Text("Class List")),
-                          Tab(child: Text("Members")),
-                        ]),
-                  ),
-                ],
+    return Consumer(builder: (context, ref, _) {
+      final List<Widget> pages = [
+        ClassListPage(rutinId: widget.rutinId, rutinName: widget.rutinId),
+        MemberList(rutinId: widget.rutinId),
+      ];
+      return Scaffold(
+        body: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height: 284,
+                width: 300,
+                child: Column(
+                  children: [
+                    HeaderTitle("Rutine", context),
+                    const SizedBox(height: 40),
+                    AppText(widget.rutineName.toUpperCase()).title(),
+                    AppText(widget.owenerName ?? "khulna polytechnic institute")
+                        .heding(),
+                    const SizedBox(height: 30),
+                    CustomTabBar(
+                      margin: const EdgeInsets.symmetric(horizontal: 24)
+                          .copyWith(top: 2, bottom: 10),
+                      tabItems: const ['Class List', 'Members'],
+                      selectedIndex: ref.watch(viewMoreIndexProvider),
+                      onTabSelected: (index) {
+                        ref
+                            .watch(viewMoreIndexProvider.notifier)
+                            .update((state) => index);
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-          )
-        ],
-        body: TabBarView(controller: controller, children: [
-          ClassListPage(rutinId: widget.rutinId, rutinName: widget.rutinId),
-          MemberList(rutinId: widget.rutinId),
-        ]),
-      ),
+            )
+          ],
+          body: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              child: pages[ref.watch(viewMoreIndexProvider)]),
+        ),
 
-      //
-    );
+        //
+      );
+    });
   }
 }
