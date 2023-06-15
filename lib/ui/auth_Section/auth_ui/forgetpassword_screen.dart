@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:table/core/component/loaders.dart';
 import 'package:table/core/dialogs/alart_dialogs.dart';
-import 'package:table/ui/auth_Section/auth_ui/LogIn_Screen.dart';
+import 'package:table/ui/auth_Section/auth_ui/logIn_screen.dart';
 
 import '../../../constant/app_color.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';

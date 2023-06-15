@@ -91,7 +91,6 @@ class _MyVerifyState extends State<OtpScreen> {
                     submittedPinTheme: submittedPinTheme,
                     showCursor: true,
                     onCompleted: (pin) {
-                      print(pin);
                       setState(() {
                         smsCode = pin;
                       });

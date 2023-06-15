@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/component/loaders.dart';
 
 import '../../../../../../core/dialogs/alart_dialogs.dart';
-import '../../../../../../widgets/appWidget/app_text.dart';
 import '../../../../../../widgets/error/error.widget.dart';
 import '../../../../../../widgets/hedding_row.dart';
 import '../../controller/chack_status_controller.dart';
@@ -134,6 +133,7 @@ class JoinRequestPart extends ConsumerWidget {
         HeddingRow(
           hedding: "Join Requests",
           secondHeading: "$requestCount",
+          margin: EdgeInsets.zero,
           buttonText: "Accept All",
           onTap: () {},
         ),

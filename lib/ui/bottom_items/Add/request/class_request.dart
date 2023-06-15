@@ -19,7 +19,7 @@ class ClassRequest {
     try {
       final prefs = await SharedPreferences.getInstance();
       final String? getToken = prefs.getString('Token');
-      var url = Uri.parse('${Const.BASE_URl}/class/$rutinId/addclass/');
+      var url = Uri.parse('${Const.BASE_URl}/class/$rutinId/addclass');
 
       final response = await http.post(url, body: {
         "name": classModel.className.toString(),
@@ -41,12 +41,13 @@ class ClassRequest {
 
       if (response.statusCode == 200) {
         final res = json.decode(response.body);
-        Navigator.pop(context);
+        // Navigator.pop(context);
         // ignore: unused_result
         ref.refresh(rutins_detalis_provider(rutinId));
         //print response
-        print("rutin created successfully");
+        print("Routine created successfully");
         print(res);
+        Alart.showSnackBar(context, 'Routine created successfully');
       } else {
         Alart.errorAlartDilog(context, message);
       }

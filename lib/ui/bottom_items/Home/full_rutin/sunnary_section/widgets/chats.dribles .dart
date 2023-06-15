@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:table/core/component/loaders.dart';
 import 'package:table/core/dialogs/alart_dialogs.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 
 import '../../../../../../widgets/appWidget/dottted_divider.dart';
-import '../../../../../../widgets/text and buttons/square_button.dart';
 import '../../../utils/utils.dart';
 import '../models/all_summary_models.dart';
 import '../summat_screens/summary_screen.dart';

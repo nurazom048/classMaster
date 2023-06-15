@@ -9,7 +9,7 @@ import 'package:table/models/message_model.dart';
 import 'package:table/ui/auth_Section/auth_req/auth_req.dart';
 import 'package:table/ui/bottom_items/bottom_nev_bar.dart';
 import '../../../core/dialogs/alart_dialogs.dart';
-import '../auth_ui/LogIn_Screen.dart';
+import '../auth_ui/logIn_screen.dart';
 
 final authController_provider = StateNotifierProvider.autoDispose(
     (ref) => AuthController(ref.watch(authReqProvider)));
@@ -51,7 +51,7 @@ class AuthController extends StateNotifier<bool> {
   }
 
 //******** siginIn      ************ */
-  void siginIn(username, password, context) async {
+  siginIn(username, password, context) async {
     state = true;
     final res = await authReqq.login(username: username, password: password);
 

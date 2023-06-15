@@ -29,7 +29,8 @@ class AddClassScreen extends StatefulWidget {
   final String? classId;
   final bool? isEdit;
 
-  const AddClassScreen({super.key, 
+  const AddClassScreen({
+    super.key,
     required this.routineId,
     this.classId,
     this.isEdit = false,
@@ -128,53 +129,65 @@ class _AddClassScreenState extends State<AddClassScreen> {
                       ),
                       const SizedBox(height: 20),
 
-                      //! weekday list when eddit
+                      // //! weekday list when eddit
                       if (widget.isEdit == true && widget.classId != null)
                         ShowWeekdayWidgets(classId: widget.classId!)
                       else
-                        Column(
-                          children: [
-                            DayDropdown(
-                              labelText: "Tap Here",
-                              onPressed: () {},
-                              onChanged: (selectedDay) {
-                                _selectedDay = selectedDay;
-                              },
-                            ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 16),
+                          height: 440,
+                          width: MediaQuery.of(context).size.width,
+                          child: Column(
+                            children: [
+                              DayDropdown(
+                                labelText: "Tap Here",
+                                onPressed: () {},
+                                onChanged: (selectedDay) {
+                                  _selectedDay = selectedDay;
+                                },
+                              ),
 
-                            ///.... room number
-                            const SizedBox(height: 30),
+                              //
 
-                            PeriodNumberSelector(
-                              hint: " Select Start Period",
-                              subhit: " Select End Period",
-                              lenghht: ref.read(totalPriodeCountProvider),
-                              onStartSelacted: (number) {
-                                startPeriod = number;
-                              },
-                              onEndSelacted: (number) {
-                                endPeriod = number;
-                              },
-                              ontapToadd: () {
-                                Get.to(
-                                    AppPriodePage(
-                                        rutinId: widget.routineId,
-                                        totalPriode:
-                                            ref.read(totalPriodeCountProvider)),
-                                    transition: Transition.rightToLeft);
-                              },
-                            ),
+                              ...List.generate(
+                                1,
+                                (index) => PeriodNumberSelector(
+                                  hint: " Select Start Period",
+                                  subHint: " Select End Period",
+                                  length: ref.read(totalPriodeCountProvider),
+                                  onStartSelected: (number) {
+                                    startPeriod = number;
+                                  },
+                                  onEndSelected: (number) {
+                                    endPeriod = number;
+                                  },
+                                  onTapToAdd: () {
+                                    Get.to(
+                                        AppPriodePage(
+                                          rutinId: widget.routineId,
+                                          totalPriode: ref.read(
+                                            totalPriodeCountProvider,
+                                          ),
+                                        ),
+                                        transition: Transition.rightToLeft);
+                                  },
+                                ),
+                              ),
 
-                            //
-                            AppTextFromField(
-                              controller: _roomController,
-                              hint: "Classroom Number",
-                              labelText: "EnterClassroom Number in this day",
-                              validator: (value) =>
-                                  AddClassValidator.roomNumber(value),
-                            ),
-                          ],
+                              //
+                              AppTextFromField(
+                                controller: _roomController,
+                                hint: "Classroom Number",
+                                labelText: "EnterClassroom Number in this day",
+                                validator: (value) =>
+                                    AddClassValidator.roomNumber(value),
+                              ),
+
+                              //
+                            ],
+                          ),
                         ),
+
                       const SizedBox(height: 30),
                       CupertinoButtonCustom(
                         padding: const EdgeInsets.symmetric(horizontal: 25),

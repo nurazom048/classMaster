@@ -5,8 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:fpdart/fpdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/message_model.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
 import '../../../../constant/constant.dart';
 // import '../../../../models/rutins/list_of_save_rutin.dart';
 

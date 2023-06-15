@@ -3,11 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/viewMore/member_list.dart';
-import '../../../../../../constant/app_color.dart';
 import '../../../../../../widgets/appWidget/app_text.dart';
 import '../../../../../../widgets/custom_tab_bar.widget.dart';
 import '../../../../../../widgets/heder/heder_title.dart';
-import '../../../../search/search_screen/search_page.dart';
 import 'class_list.dart';
 
 final viewMoreIndexProvider = StateProvider<int>((ref) => 0);
@@ -59,7 +57,7 @@ class _ViewMoreState extends State<ViewMore> with TickerProviderStateMixin {
                 width: 300,
                 child: Column(
                   children: [
-                    HeaderTitle("Rutine", context),
+                    HeaderTitle("Routine", context),
                     const SizedBox(height: 40),
                     AppText(widget.rutineName.toUpperCase()).title(),
                     AppText(widget.owenerName ?? "khulna polytechnic institute")

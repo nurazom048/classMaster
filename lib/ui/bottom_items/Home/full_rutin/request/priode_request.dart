@@ -1,6 +1,8 @@
 // ignore_for_file: avoid_print
 
 import 'dart:convert';
+import 'package:api_cache_manager/models/cache_db_model.dart';
+import 'package:api_cache_manager/utils/cache_manager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,14 +11,15 @@ import 'package:http/http.dart' as http;
 import 'package:table/models/priode/all_priode_models.dart';
 
 import '../../../../../constant/constant.dart';
+import '../../utils/utils.dart';
 
 //... provider...//
 final priodeRequestProvider = Provider<PriodeRequest>((ref) => PriodeRequest());
 
 //
 final allPriodeProvider = FutureProvider.autoDispose
-    .family<Either<Message, AllPriodeList>, String>((ref, rutinId) async {
-  return ref.read(priodeRequestProvider).allPriode(rutinId);
+    .family<Either<Message, AllPriodeList>, String>((ref, routineID) async {
+  return ref.read(priodeRequestProvider).allPriode(routineID);
 });
 
 class PriodeRequest {
@@ -51,11 +54,11 @@ class PriodeRequest {
   //
   //... add priode....//
   Future<Either<String, Message>> addPriode(
-      String rutinId, DateTime StartTime, DateTime EndTime) async {
+      String routineID, DateTime StartTime, DateTime EndTime) async {
     // Obtain shared preferences.
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
-    var url = Uri.parse('${Const.BASE_URl}/rutin/priode/add/$rutinId');
+    var url = Uri.parse('${Const.BASE_URl}/rutin/priode/add/$routineID');
 
     try {
       final response = await http.post(
@@ -84,26 +87,41 @@ class PriodeRequest {
 
   ///
   ///
-  ///
-  Future<Either<Message, AllPriodeList>> allPriode(String rutinId) async {
-    var url = Uri.parse('${Const.BASE_URl}/rutin/all_priode/$rutinId');
+  /// GET : All Priode In Routine
+  Future<Either<Message, AllPriodeList>> allPriode(String routineID) async {
+    final url = Uri.parse('${Const.BASE_URl}/rutin/all_priode/$routineID');
+
+    final bool isOnline = await Utils.isOnlineMethode();
+    final String key = "Priodes-$url";
+    final isHaveCache = await APICacheManager().isAPICacheKeyExist(key);
 
     try {
+      // If user is offline, load data from cache
+      if (!isOnline && isHaveCache) {
+        final getdata = await APICacheManager().getCacheData(key);
+        print('From cache: $getdata');
+        return Right(AllPriodeList.fromJson(jsonDecode(getdata.syncData)));
+      }
+      //
       final response = await http.get(url);
-
-      var res = json.decode(response.body);
+      final res = json.decode(response.body);
       print(res);
-      Message message = Message.fromJson(res);
-      AllPriodeList allPriode = AllPriodeList.fromJson(res);
+      final message = Message.fromJson(res);
+      final allPriode = AllPriodeList.fromJson(res);
 
       if (response.statusCode == 200) {
-        return right(allPriode);
+        // When success, save data into cache
+        final cacheDBModel = APICacheDBModel(key: key, syncData: response.body);
+        await APICacheManager().addCacheData(cacheDBModel);
+
+        // Return the response
+        return Right(allPriode);
       } else {
-        return left(message);
+        return Left(message);
       }
     } catch (e) {
-      print("s $e");
-      return left(Message(message: e.toString()));
+      print("Error: $e");
+      return Left(Message(message: e.toString()));
     }
   }
 

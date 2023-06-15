@@ -21,42 +21,39 @@ final rutins_detalis_provider = FutureProvider.autoDispose
 class Rutin_Req {
   //
 
-  ///.......... For all Class and priodes........///
   Future<NewClassDetailsModel?> rutins_class_and_priode(String rutinId) async {
+    print('*****************************************');
+
     print(rutinId);
 
     final String path = "${Const.BASE_URl}/class/$rutinId/all/class";
-    var url = Uri.parse(path);
+    final url = Uri.parse(path);
+    print(path);
 
-    //
     final bool isOnline = await Utils.isOnlineMethode();
-    var isHaveCash = await APICacheManager().isAPICacheKeyExist(path);
-    try {
-      // if offline and have cash
-      if (isOnline == false && isHaveCash) {
-        var getdata = await APICacheManager().getCacheData(path);
-        print('Foem cash $getdata');
-        return NewClassDetailsModel.fromJson(jsonDecode(getdata.syncData));
+    final String key = "Class-$path";
+    final isHaveCache = await APICacheManager().isAPICacheKeyExist(key);
 
-        // if onle fatch new data
+    try {
+      // If offline and have cache
+      if (!isOnline && isHaveCache) {
+        final getdata = await APICacheManager().getCacheData(key);
+        print('From cache: $getdata');
+        return NewClassDetailsModel.fromJson(jsonDecode(getdata.syncData));
       } else {
         final response = await http.get(url);
-        var res = json.decode(response.body);
-        //  print(res);
+        final res = json.decode(response.body);
+        print(res);
         if (response.statusCode == 200) {
-          // save to csshe manager
-          APICacheDBModel cacheDBModel =
-              APICacheDBModel(key: path, syncData: response.body);
-
+          // Save to cache manager
+          final cacheDBModel =
+              APICacheDBModel(key: key, syncData: response.body);
           await APICacheManager().addCacheData(cacheDBModel);
 
-          //
-
-          var classDetalis = NewClassDetailsModel.fromJson(res);
-
-          return classDetalis;
+          final classDetails = NewClassDetailsModel.fromJson(res);
+          return classDetails;
         } else {
-          throw "eror $path";
+          throw "error $path";
         }
       }
     } catch (error, stackTrace) {

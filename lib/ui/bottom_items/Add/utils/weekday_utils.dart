@@ -40,12 +40,12 @@ class WeekdayUtils {
                     const SizedBox(height: 5),
                     PeriodNumberSelector(
                       hint: " Select Start Period",
-                      subhit: " Select End Period",
-                      lenghht: 3,
-                      onStartSelacted: (number) {
+                      subHint: " Select End Period",
+                      length: 3,
+                      onEndSelected: (number) {
                         _start = number;
                       },
-                      onEndSelacted: (number) {
+                      onStartSelected: (number) {
                         _end = number;
                       },
                     ),

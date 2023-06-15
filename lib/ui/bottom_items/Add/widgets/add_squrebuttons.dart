@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:table/widgets/appWidget/app_text.dart';
 
 class AddSquareButton extends StatelessWidget {
   final dynamic onTap;
@@ -10,33 +11,21 @@ class AddSquareButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Visibility(
-      visible: isVisible,
-      child: Positioned(
-        left: 18,
-        top: 7,
-        child: InkWell(
-          onTap: onTap,
-          child: Container(
-            width: 50,
-            height: 46,
-            margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 5),
-            decoration: BoxDecoration(
-              border: Border.all(color: const Color(0xFF0168FF), width: 1),
-              borderRadius: BorderRadius.circular(4),
-              color: const Color(0xFFEEF4FC),
-            ),
-            child: const Center(
-              child: Text(
-                '+',
-                style: TextStyle(
-                  color: Color(0xFF0168FF),
-                  fontWeight: FontWeight.w600,
-                  fontSize: 24,
-                  fontFamily: 'Open Sans',
-                ),
-              ),
-            ),
+    return InkWell(
+      onTap: onTap,
+      child: Visibility(
+        visible: isVisible,
+        child: Container(
+          width: 50,
+          height: 46,
+          margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 5),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.5),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(width: 1, color: const Color(0xFF0168FF)),
+          ),
+          child: Center(
+            child: Text('+', style: TS.opensensBlue(fontSize: 25)),
           ),
         ),
       ),

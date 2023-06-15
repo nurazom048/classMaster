@@ -27,95 +27,98 @@ class PriodeWidget extends StatelessWidget {
     print("is running ${running(startTime, endTime)}");
     Color scaffoldBackgroundColor = Theme.of(context).scaffoldBackgroundColor;
 
-    return Container(
-      margin: const EdgeInsets.only(right: 10),
-      height: 110,
-      width: 130,
-      child: Stack(
-        children: [
-          Positioned(
-            top: 40,
-            child: InkWell(
-              onLongPress: onLongpress,
-              child: Container(
-                  height: 92,
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  width: 130,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.black54)),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      const SizedBox(height: 10),
-                      AppText(formatTime(startTime)).heding(),
-                      AppText(formatTime(endTime)).heding(),
-                    ],
-                  )),
+    return InkWell(
+      onLongPress: onLongpress,
+      child: Container(
+        margin: const EdgeInsets.only(right: 10),
+        height: 110,
+        width: 130,
+        child: Stack(
+          children: [
+            Positioned(
+              top: 40,
+              child: InkWell(
+                child: Container(
+                    height: 92,
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    width: 130,
+                    decoration: BoxDecoration(
+                        color: scaffoldBackgroundColor,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.black54)),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        const SizedBox(height: 10),
+                        AppText(formatTime(startTime)).heding(),
+                        AppText(formatTime(endTime)).heding(),
+                      ],
+                    )),
+              ),
             ),
-          ),
 
-          //
-          Positioned(
-            top: 4,
-            right: 38,
-            child: Container(
-              width: 57,
-              height: 57,
-              color: scaffoldBackgroundColor,
+            //
+            Positioned(
+              top: 4,
+              right: 38,
               child: Container(
-                width: 55,
-                height: 55,
-                //  margin: EdgeInsets.only(top: 324, left: 55),
-                decoration: running(startTime, endTime) == true
-                    ? BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Colors.white,
-                          width: 1,
+                width: 57,
+                height: 57,
+                color: scaffoldBackgroundColor,
+                child: Container(
+                  width: 55,
+                  height: 55,
+                  //  margin: EdgeInsets.only(top: 324, left: 55),
+                  decoration: running(startTime, endTime) == true
+                      ? BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.white,
+                            width: 1,
+                          ),
+                          gradient: const LinearGradient(
+                            colors: [
+                              Color(0xFF0168FF),
+                              Colors.white,
+                              Colors.white,
+                            ],
+                            stops: [0, 1, 1],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                        )
+                      : BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.black,
+                            width: 1,
+                          )),
+                  child: Center(
+                    child: CircleAvatar(
+                      radius: 26,
+                      backgroundColor: scaffoldBackgroundColor,
+                      child: Wrap(direction: Axis.horizontal, children: [
+                        Text(
+                          "$priodeNumber",
+                          style: TS.opensensBlue(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
-                        gradient: const LinearGradient(
-                          colors: [
-                            Color(0xFF0168FF),
-                            Colors.white,
-                            Colors.white,
-                          ],
-                          stops: [0, 1, 1],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
+                        Text(
+                          getSuffix(priodeNumber.toInt()),
+                          style: const TextStyle(
+                              fontFeatures: [FontFeature.superscripts()]),
                         ),
-                      )
-                    : BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Colors.black,
-                          width: 1,
-                        )),
-                child: Center(
-                  child: CircleAvatar(
-                    radius: 26,
-                    backgroundColor: scaffoldBackgroundColor,
-                    child: Wrap(direction: Axis.horizontal, children: [
-                      Text(
-                        "$priodeNumber",
-                        style: TS.opensensBlue(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      Text(
-                        getSuffix(priodeNumber.toInt()),
-                        style: const TextStyle(
-                            fontFeatures: [FontFeature.superscripts()]),
-                      ),
-                    ]),
+                      ]),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

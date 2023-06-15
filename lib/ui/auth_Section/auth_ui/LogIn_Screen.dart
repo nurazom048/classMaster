@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -41,6 +39,7 @@ class _LogingScreenState extends State<LogingScreen> {
 
     print("Token: $token");
     if (token != null) {
+      // ignore: use_build_context_synchronously
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => BottomNavBar()));
     }
@@ -141,7 +140,7 @@ class _LogingScreenState extends State<LogingScreen> {
                                 _passwordController.text, context);
                           } else {
                             authLogin.siginIn(
-                                "nurazom049", "@Nurazam123", context);
+                                "firebase1", "@Nurazom123", context);
                           }
                         },
                       ),

@@ -77,7 +77,7 @@ class HomeReq {
   //********    homeRutines      *************/
 
   Future<HomeRoutines> homeRutines({pages, String? userID}) async {
-    String queryPage = "?page=$pages}";
+    String queryPage = "?page=$pages";
     final searchByUserID = userID == null ? '' : '/$userID';
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
@@ -88,6 +88,7 @@ class HomeReq {
     final bool isOnline = await Utils.isOnlineMethode();
     final String key = "homeRutines$url";
     var isHaveCash = await APICacheManager().isAPICacheKeyExist(key);
+    print(url);
     try {
       // if offline and have cash
       if (isOnline == false && isHaveCash) {

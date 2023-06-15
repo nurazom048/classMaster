@@ -41,7 +41,7 @@ class SqureButton extends StatelessWidget {
                         fontWeight: FontWeight.bold),
                   ),
                 )
-              : const SizedBox.shrink(),
+              : const Positioned(top: 3, right: 8, child: SizedBox.shrink()),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 6),
             padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),

@@ -20,7 +20,6 @@ class ClassRow extends StatelessWidget {
       onLongPress: onLongPress ?? () {},
       child: Container(
         height: 50,
-        margin: const EdgeInsets.symmetric(vertical: 5),
         width: MediaQuery.of(context).size.width - 10,
         padding: const EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(

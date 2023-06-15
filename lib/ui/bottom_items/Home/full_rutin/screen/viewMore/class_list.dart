@@ -105,39 +105,51 @@ class ClassListPage extends StatelessWidget {
             ),
 
             //-----------------------   "Class List" -------------------------//
+
             HeddingRow(
               hedding: "Class List",
               secondHeading: "$totalClass classe${totalClass > 1 ? "s" : ''}",
-              margin: EdgeInsets.zero,
+              margin: const EdgeInsets.only(top: 10),
               buttonText: "Add Class",
-              onTap: () => Get.to(
-                  () => AddClassScreen(routineId: rutinId, isEdit: false)),
+              onTap: () {
+                Get.to(() => AddClassScreen(routineId: rutinId, isEdit: false));
+              },
             ),
-            SizedBox(
-                height: 300,
+
+            Container(
+                height: totalClass == 0 ? 100 : totalClass * 100,
+                alignment: Alignment.topCenter,
                 child: rutinDetals.when(
                   data: (data) {
                     if (data == null) {
-                      return const Text("Null");
+                      return Text("Null $data");
                     }
                     // notification
                     if (notificationOff == false) {
-                      print("CAll sudule notification");
+                      print(
+                          "CAll sudule notification ${data.classes.allClass.length}");
 
                       LocalNotification.scheduleNotifications(
                           data.classes.allClass);
                     }
 
-                    return ListView.builder(
+                    return ListView.separated(
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: data.classes.allClass.length,
                       itemBuilder: (context, index) {
+                        //
                         Day day = data.classes.allClass[index];
                         int length = data.classes.allClass.length;
-
                         WidgetsBinding.instance.addPostFrameCallback((_) {
                           // Add Your Code here.
                           totalClassNotifier.update((state) => length);
                         });
+                        print("data");
+
+                        print(data);
+                        if (length == 0) {
+                          ErrorWidget('No Class Created');
+                        }
 
                         return ClassRow(
                           id: day.id,
@@ -158,6 +170,9 @@ class ClassListPage extends StatelessWidget {
                             ),
                           ),
                         );
+                      },
+                      separatorBuilder: (context, index) {
+                        return const SizedBox(height: 10);
                       },
                     );
                   },

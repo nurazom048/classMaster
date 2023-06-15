@@ -14,7 +14,6 @@ import '../../Home/full_rutin/utils/rutin_dialog.dart';
 import '../../Home/full_rutin/widgets/rutin_box/rutin_box_by_id.dart';
 import '../../Home/full_rutin/widgets/sceltons/rutinebox_id_scelton.dart';
 import '../../Home/home_req/home_rutins_controller.dart';
-import '../../Home/home_req/rutin_req.dart';
 import '../../Home/notice_board/notice controller/virew_recent_notice_controller.dart';
 import '../../Home/widgets/recentnoticeslider_scalton.dart';
 import '../../Home/widgets/slider/recentniticeslider_item.dart';

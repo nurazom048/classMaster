@@ -213,8 +213,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
           email: emailController.text,
           password: "@Nurazom123",
         );
-
-        // GO TO EMAIL VARIFI SCREEN
+        // await FirebaseAuth.instance.signInWithEmailAndPassword(
+        //   email: emailController.text,
+        //   password: "@Nurazom123",
+        // );
+        // // GO TO EMAIL VARIFI SCREEN
         Get.to(
           () => EmailVerificationScreen(email: emailController.text),
         );

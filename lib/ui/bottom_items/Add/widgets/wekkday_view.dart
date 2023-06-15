@@ -46,12 +46,12 @@ class WeekdayView extends StatelessWidget {
           const SizedBox(height: 20),
           PeriodNumberSelector(
             hint: "Select Start Period",
-            subhit: "Select End Period",
-            lenghht: 3,
-            onStartSelacted: (number) {
+            subHint: "Select End Period",
+            length: 3,
+            onStartSelected: (number) {
               print(number);
             },
-            onEndSelacted: (number) {
+            onEndSelected: (number) {
               print(number);
             },
           ),
