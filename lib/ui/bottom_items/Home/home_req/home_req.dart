@@ -90,10 +90,10 @@ class HomeReq {
     var isHaveCash = await APICacheManager().isAPICacheKeyExist(key);
     print(url);
     try {
-      // if offline and have cash
-      if (isOnline == false && isHaveCash) {
+      // // if offline and have cash
+      if (isOnline && isHaveCash) {
         var getdata = await APICacheManager().getCacheData(key);
-        print('Foem cash $getdata');
+        print('Foem cash $url');
         return HomeRoutines.fromJson(jsonDecode(getdata.syncData));
       }
 
@@ -102,7 +102,11 @@ class HomeReq {
 
       //
       final res = json.decode(response.body);
+      print(' Home *******************');
+
       print(res);
+      print(response.statusCode);
+      print('$isOnline 5 $isHaveCash');
 
       HomeRoutines homeRutines = HomeRoutines.fromJson(res);
 
@@ -113,6 +117,7 @@ class HomeReq {
               APICacheDBModel(key: key, syncData: response.body);
           await APICacheManager().addCacheData(cacheDBModel);
         }
+        print('&&&&&&&&&&&    Indise 200');
 
         return homeRutines;
       } else if (isOnline == false) {

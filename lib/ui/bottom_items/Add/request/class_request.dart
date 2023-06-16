@@ -47,7 +47,7 @@ class ClassRequest {
         //print response
         print("Routine created successfully");
         print(res);
-        Alart.showSnackBar(context, 'Routine created successfully');
+        Alart.showSnackBar(context, 'class add successfully');
       } else {
         Alart.errorAlartDilog(context, message);
       }
@@ -64,7 +64,7 @@ class ClassRequest {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 
-    print("from eddit");
+    print("******************from eddit");
 
     try {
       final response = await http.post(
@@ -115,8 +115,9 @@ class ClassRequest {
       );
 
       final res = json.decode(response.body);
-      Message message = json.decode(response.body)["message"];
       print(res);
+
+      Message message = json.decode(response.body);
 
       if (response.statusCode == 200) {
         print("rutin created successfully");

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:table/core/component/loaders.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/utils/rutin_dialog.dart';
 import 'package:table/ui/bottom_items/Home/models/home_rutines_model.dart';
 import 'package:table/ui/bottom_items/Home/notice_board/models/recent_notice_model.dart';
@@ -124,41 +125,46 @@ class HomeScreen extends ConsumerWidget {
 
         // uploaded rutines
 
-        homeRutins.when(
-          data: (data) {
-            void scrollListener() {
-              if (scrollController.position.pixels ==
-                  scrollController.position.maxScrollExtent) {
-                // ref
-                //     .watch(uploadedRutinsControllerProvider.notifier)
-                //     .loadMore(data.currentPage);
+        if (homeRutins.hasError)
+          ErrorWidget(homeRutins.error.toString())
+        else if (homeRutins.isLoading)
+          Loaders.center(height: 500)
+        else
+          homeRutins.when(
+            data: (data) {
+              void scrollListener() {
+                if (scrollController.position.pixels ==
+                    scrollController.position.maxScrollExtent) {
+                  // ref
+                  //     .watch(uploadedRutinsControllerProvider.notifier)
+                  //     .loadMore(data.currentPage);
+                }
               }
-            }
 
-            scrollController.addListener(scrollListener);
+              scrollController.addListener(scrollListener);
 
-            //
-            return ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.only(bottom: 100),
-              itemCount: data.homeRoutines.length,
-              itemBuilder: (context, index) {
-                return RutinBoxById(
-                  rutinId: data.homeRoutines[index].rutineID.id,
-                  rutinName: data.homeRoutines[index].rutineID.name,
-                  onTapMore: () => RutinDialog.ChackStatusUser_BottomSheet(
-                    context,
-                    data.homeRoutines[index].rutineID.id,
-                    data.homeRoutines[index].rutineID.name,
-                  ),
-                );
-              },
-            );
-          },
-          loading: () => RUTINE_BOX_SKELTON,
-          error: (error, stackTrace) => Alart.handleError(context, error),
-        ),
+              //
+              return ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                padding: const EdgeInsets.only(bottom: 100),
+                itemCount: data.homeRoutines.length,
+                itemBuilder: (context, index) {
+                  return RutinBoxById(
+                    rutinId: data.homeRoutines[index].rutineID.id,
+                    rutinName: data.homeRoutines[index].rutineID.name,
+                    onTapMore: () => RutinDialog.ChackStatusUser_BottomSheet(
+                      context,
+                      data.homeRoutines[index].rutineID.id,
+                      data.homeRoutines[index].rutineID.name,
+                    ),
+                  );
+                },
+              );
+            },
+            loading: () => RUTINE_BOX_SKELTON,
+            error: (error, stackTrace) => Alart.handleError(context, error),
+          ),
       ],
     );
   }

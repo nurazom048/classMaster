@@ -36,7 +36,14 @@ class RutinReqest {
       if (response.statusCode == 200) {
         // ignore: avoid_print
         print(res);
-        return right(message);
+        return right(
+          Message(
+            message: message.message,
+            routineID: res['routine']['_id'],
+            routineName: res['routine']['name'],
+            owenerName: res['user']['name'],
+          ),
+        );
       } else {
         return left(message);
       }

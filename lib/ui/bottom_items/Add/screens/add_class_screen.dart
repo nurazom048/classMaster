@@ -215,7 +215,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
   }
 
   void _onTapToButton(WidgetRef ref) {
-    print("ontap");
+    print("ontap ${widget.isEdit}");
     widget.isEdit == true
         ? ClassRequest().editClass(
             context,

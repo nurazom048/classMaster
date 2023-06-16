@@ -6,6 +6,7 @@ import 'package:table/core/dialogs/alart_dialogs.dart';
 import 'package:table/constant/app_color.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/priodeController.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/priode_request.dart';
+import 'package:table/widgets/appWidget/app_text.dart';
 import 'package:table/widgets/heder/heder_title.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/select_time.dart';
 import 'package:table/widgets/appWidget/buttons/cupertino_butttons.dart';
@@ -49,30 +50,26 @@ class _AppPriodePageState extends State<AppPriodePage> {
 
     return SafeArea(
       child: Scaffold(
-        body: Column(
-          children: [
-            // Header
-            HeaderTitle(widget.priodeId ?? '', context),
-            Consumer(builder: (context, ref, _) {
-              return SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20)
+              .copyWith(bottom: 0),
+          child: Column(
+            children: [
+              // Header
+              HeaderTitle('', context, margin: EdgeInsets.zero),
+              Consumer(builder: (context, ref, _) {
+                final h = MediaQuery.of(context).size.height;
+                return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 20),
-                    const Text(
-                      'Add A New Priode Here',
-                      style: TextStyle(
-                        fontFamily: 'Open Sans',
-                        fontWeight: FontWeight.w300,
-                        fontSize: 36,
-                        height: 49 / 36,
-                        color: Colors.black,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    ma.Text(
+                    SizedBox(height: h * 0.03),
+                    Text(
+                        widget.isEdit == true
+                            ? "Eddit Priode"
+                            : 'Add A New Priode Here',
+                        style: TS.heading(fontSize: 39)),
+                    SizedBox(height: h * 0.05),
+                    Text(
                       'Priode Number $periodNumber',
                       textScaleFactor: 1.5,
                     ),
@@ -96,10 +93,9 @@ class _AppPriodePageState extends State<AppPriodePage> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 100),
+                    SizedBox(height: h * 0.5),
                     if (widget.isEdit == false)
                       CupertinoButtonCustom(
-                          padding: const EdgeInsets.symmetric(horizontal: 30),
                           color: AppColor.nokiaBlue,
                           textt: "Add Priode",
                           onPressed: () async {
@@ -121,18 +117,18 @@ class _AppPriodePageState extends State<AppPriodePage> {
                     else
                       CupertinoButtonCustom(
                           textt: "Eddit priode",
-                          padding: const EdgeInsets.symmetric(horizontal: 30),
                           color: AppColor.nokiaBlue,
                           onPressed: () async {
                             print("Ontap to eddir");
 
                             // setState(() {});
-                            if (st != null && et != null) {
+                            if (widget.priodeId != null) {
+                              print('inside eddit');
                               ref.watch(priodeController.notifier).edditPriode(
                                     ref,
                                     context,
                                     widget.rutinId,
-                                    widget.priodeId ?? '',
+                                    widget.priodeId!,
                                     startTime,
                                     endTime,
                                   );
@@ -140,10 +136,10 @@ class _AppPriodePageState extends State<AppPriodePage> {
                             //
                           }),
                   ],
-                ),
-              );
-            }),
-          ],
+                );
+              }),
+            ],
+          ),
         ),
       ),
     );
@@ -154,7 +150,9 @@ class _AppPriodePageState extends State<AppPriodePage> {
   void _selectStartTime() {
     showTimePicker(
       context: context,
-      initialTime: TimeOfDay.now(),
+      initialTime: widget.isEdit == true
+          ? TimeOfDay(hour: startTime.hour, minute: startTime.minute)
+          : TimeOfDay.now(),
     ).then((value) {
       if (value != null) {
         String hour = "${value.hour < 10 ? '0' : ''}${value.hour}";
@@ -175,10 +173,11 @@ class _AppPriodePageState extends State<AppPriodePage> {
   //--- end time
   void _selectEndTime() {
     showTimePicker(
-            context: context,
-            initialTime:
-                TimeOfDay(hour: startTime.hour, minute: startTime.minute))
-        .then((value) {
+      context: context,
+      initialTime: widget.isEdit == true
+          ? TimeOfDay(hour: endTime.hour, minute: endTime.minute)
+          : TimeOfDay(hour: startTime.hour, minute: startTime.minute),
+    ).then((value) {
       if (value != null) {
         String hour = "${value.hour < 10 ? '0' : ''}${value.hour}";
         String minute = "${value.minute < 10 ? '0' : ''}${value.minute}";

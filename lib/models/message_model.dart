@@ -6,6 +6,9 @@ class Message {
   String? activeStatus;
   bool? notificationOff;
   bool? notificationOn;
+  String? routineID;
+  String? routineName;
+  String? owenerName;
 
   Message({
     required this.message,
@@ -13,6 +16,9 @@ class Message {
     this.activeStatus,
     this.notificationOff,
     this.notificationOn,
+    this.routineID,
+    this.routineName,
+    this.owenerName,
   });
 
   factory Message.fromJson(Map<String, dynamic> json) {
@@ -23,6 +29,7 @@ class Message {
           json['activeStatus'] != null ? json['activeStatus'].toString() : null,
       notificationOff: json['notification_Off'] ?? false,
       notificationOn: json['notificationOn'] ?? false,
+      routineID: json['notificationOn'] ?? '',
     );
   }
 

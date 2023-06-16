@@ -144,41 +144,42 @@ class JoinRequestPart extends ConsumerWidget {
               SizedBox(
                   height: 200,
                   child: allRequest.when(
-                      data: (data) {
-                        if (data == null) {
-                          return const ErrorScreen(error: "data null");
-                        }
-                        if (data.listAccounts.isEmpty) {
-                          return const ErrorScreen(error: "No new request ");
-                        }
+                    data: (data) {
+                      if (data == null) {
+                        return const ErrorScreen(error: "data null");
+                      }
+                      if (data.listAccounts.isEmpty) {
+                        return const ErrorScreen(error: "No new request ");
+                      }
 
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          requestCountNotifier.update((state) => 4);
-                        });
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        requestCountNotifier.update((state) => 4);
+                      });
 
-                        return ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: data.listAccounts.length,
-                          itemBuilder: (context, index) {
-                            return AccountCard(
-                              accountData: data.listAccounts[index],
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: data.listAccounts.length,
+                        itemBuilder: (context, index) {
+                          return AccountCard(
+                            accountData: data.listAccounts[index],
 
-                              // acsept or reject members
-                              acceptUsername: () {
-                                seeAllJonReq.acceptMember(ref,
-                                    data.listAccounts[index].username, context);
-                              },
-                              onRejectUsername: () {
-                                seeAllJonReq.rejectMembers(ref,
-                                    data.listAccounts[index].username, context);
-                              },
-                            );
-                          },
-                        );
-                      },
-                      error: (error, stackTrace) =>
-                          Alart.handleError(context, error),
-                      loading: () => Loaders.center())),
+                            // acsept or reject members
+                            acceptUsername: () {
+                              seeAllJonReq.acceptMember(ref,
+                                  data.listAccounts[index].username, context);
+                            },
+                            onRejectUsername: () {
+                              seeAllJonReq.rejectMembers(ref,
+                                  data.listAccounts[index].username, context);
+                            },
+                          );
+                        },
+                      );
+                    },
+                    error: (error, stackTrace) =>
+                        Alart.handleError(context, error),
+                    loading: () => Loaders.center(),
+                  )),
             ],
           ),
         ),

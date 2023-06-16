@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:table/core/component/loaders.dart';
 import 'package:table/ui/bottom_items/Add/screens/add_class_screen.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/screen/viewMore/view_more_screen.dart';
 
 import '../../../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../../../models/class_details_model.dart';
@@ -131,14 +132,20 @@ class ClassListPage extends StatelessWidget {
                       LocalNotification.scheduleNotifications(
                           data.classes.allClass);
                     }
+                    int length = data.uniqClass.length;
+
                     return Column(
-                      children: List.generate(3, (index) {
+                      children: List.generate(length, (index) {
                         //
-                        Day day = data.classes.allClass[index];
-                        int length = data.classes.allClass.length;
+                        UniqClass uniqClass = data.uniqClass[index];
+
                         WidgetsBinding.instance.addPostFrameCallback((_) {
                           // Add Your Code here.
                           totalClassNotifier.update((state) => length);
+
+                          ref
+                              .watch(routineOwenerNameProvider.notifier)
+                              .update((state) => data.owner.name);
                         });
                         print("data");
 
@@ -147,8 +154,8 @@ class ClassListPage extends StatelessWidget {
                           ErrorWidget('No Class Created');
                         }
                         return ClassRow(
-                          id: day.id,
-                          className: day.classId.name,
+                          id: uniqClass.id,
+                          className: uniqClass.name,
 
                           //
                           onLongPress: () {
@@ -160,8 +167,11 @@ class ClassListPage extends StatelessWidget {
                           },
                           ontap: () => Get.to(
                             () => SummaryScreen(
-                              classId: day.classId,
-                              day: day,
+                              classId: uniqClass.id,
+                              routineID: uniqClass.rutinId,
+                              className: uniqClass.name,
+                              instructorName: uniqClass.instuctorName,
+                              subjectCode: uniqClass.subjectcode,
                             ),
                           ),
                         );

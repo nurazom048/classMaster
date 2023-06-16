@@ -13,6 +13,7 @@ class NewClassDetailsModel {
   String id;
   String rutinName;
   List<Priode> priodes;
+  List<UniqClass> uniqClass;
   Classes classes;
   AccountModels owner;
 
@@ -22,6 +23,7 @@ class NewClassDetailsModel {
     required this.priodes,
     required this.classes,
     required this.owner,
+    required this.uniqClass,
   });
 
   factory NewClassDetailsModel.fromJson(Map<String, dynamic> json) =>
@@ -32,6 +34,8 @@ class NewClassDetailsModel {
             List<Priode>.from(json["priodes"].map((x) => Priode.fromJson(x))),
         classes: Classes.fromJson(json["Classes"] ?? {}),
         owner: AccountModels.fromJson(json["owner"]),
+        uniqClass: List<UniqClass>.from(
+            json["uniqClass"].map((x) => UniqClass.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -197,4 +201,53 @@ class Priode {
         "end_time": endTime.toIso8601String(),
         "rutin_id": rutinId,
       };
+}
+
+class UniqClass {
+  String id;
+  String name;
+  String instuctorName;
+  String subjectcode;
+  List<String> weekday;
+  String rutinId;
+  int v;
+
+  UniqClass({
+    required this.id,
+    required this.name,
+    required this.instuctorName,
+    required this.subjectcode,
+    required this.weekday,
+    required this.rutinId,
+    required this.v,
+  });
+
+  UniqClass copyWith({
+    String? id,
+    String? name,
+    String? instuctorName,
+    String? subjectcode,
+    List<String>? weekday,
+    String? rutinId,
+    int? v,
+  }) =>
+      UniqClass(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        instuctorName: instuctorName ?? this.instuctorName,
+        subjectcode: subjectcode ?? this.subjectcode,
+        weekday: weekday ?? this.weekday,
+        rutinId: rutinId ?? this.rutinId,
+        v: v ?? this.v,
+      );
+
+  factory UniqClass.fromJson(Map<String, dynamic> json) => UniqClass(
+        id: json["_id"],
+        name: json["name"],
+        instuctorName: json["instuctor_name"],
+        subjectcode: json["subjectcode"],
+        weekday: List<String>.from(json["weekday"].map((x) => x)),
+        rutinId: json["rutin_id"],
+        v: json["__v"],
+      );
 }

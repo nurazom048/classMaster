@@ -62,8 +62,10 @@ class HomeRoutines {
   factory HomeRoutines.fromJson(Map<String, dynamic> json) {
     return HomeRoutines(
       message: json['message'],
-      homeRoutines: List<RoutineHome>.from(
-          json['homeRutines'].map((x) => RoutineHome.fromJson(x))),
+      homeRoutines: (json['homeRoutines'] as List<dynamic>?)
+              ?.map((x) => RoutineHome.fromJson(x))
+              .toList() ??
+          [],
       currentPage: json['currentPage'],
       totalPages: json['totalPages'],
       totalItems: json['totalItems'],

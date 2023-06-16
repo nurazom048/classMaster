@@ -7,7 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/constant/constant.dart';
 import 'package:table/core/component/loaders.dart';
 import 'package:table/core/dialogs/alart_dialogs.dart';
-import 'package:table/models/class_details_model.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/sunnary_section/summat_screens/add_summary.dart';
 import 'package:table/widgets/error/error.widget.dart';
 import '../../controller/chack_status_controller.dart';
@@ -21,13 +20,20 @@ const String DEMO_PROFILE_IMAGE =
     "https://icon-library.com/images/person-icon-png/person-icon-png-1.jpg";
 
 class SummaryScreen extends ConsumerWidget {
-  final ClassId classId;
-  final Day? day;
+  final String classId;
+  final String routineID;
+  //Header
+  final String? className;
+  final String? subjectCode;
+  final String? instructorName;
 
   SummaryScreen({
     super.key,
     required this.classId,
-    this.day,
+    required this.routineID,
+    required this.className,
+    required this.instructorName,
+    required this.subjectCode,
   });
 
   final scrollController = ScrollController();
@@ -38,9 +44,8 @@ class SummaryScreen extends ConsumerWidget {
     print("ClassId : $classId");
 
     //! provider
-    final allSummary = ref.watch(sunnaryControllerProvider(classId.id));
-    final chackStatus =
-        ref.watch(chackStatusControllerProvider(classId.rutinId));
+    final allSummary = ref.watch(sunnaryControllerProvider(classId));
+    final chackStatus = ref.watch(chackStatusControllerProvider(routineID));
 
     String status = chackStatus.value?.activeStatus ?? '';
     final bool isCaptain = chackStatus.value?.isCaptain ?? false;
@@ -51,10 +56,10 @@ class SummaryScreen extends ConsumerWidget {
           body: NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) => [
               SliverToBoxAdapter(
-                  child: SummaryHeader(
-                classId: classId,
-                day: day!,
-              )),
+                child: SummaryHeader(
+                  classId: classId,
+                ),
+              ),
             ],
             body: Container(
               color: Colors.black12,
@@ -113,7 +118,7 @@ class SummaryScreen extends ConsumerWidget {
                       CupertinoPageRoute(
                           fullscreenDialog: true,
                           builder: (context) =>
-                              AddSummaryScreen(classId: classId.id)),
+                              AddSummaryScreen(classId: classId)),
                     );
                   },
                 )

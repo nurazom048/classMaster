@@ -284,8 +284,11 @@ class _RutinBoxByIdState extends State<RutinBoxById> {
 void onTap(Day? day, String status, context) {
   Get.to(
     () => SummaryScreen(
-      classId: day!.classId,
-      day: day,
+      classId: day!.classId.id,
+      className: day.classId.name,
+      instructorName: day.classId.instuctorName,
+      routineID: day.routineId,
+      subjectCode: day.classId.subjectcode,
     ),
   );
 }

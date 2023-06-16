@@ -7,13 +7,17 @@ import '../../../../../../widgets/heder/heder_title.dart';
 import '../../widgets/rutin_box/rutin_card_row.dart';
 
 class SummaryHeader extends StatelessWidget {
-  final ClassId classId;
-  final Day? day;
+  final String classId;
+  final String? className;
+  final String? subjectCode;
+  final String? instructorName;
 
   const SummaryHeader({
     Key? key,
     required this.classId,
-    this.day,
+    this.className,
+    this.subjectCode,
+    this.instructorName,
   }) : super(key: key);
 
   @override
@@ -36,28 +40,28 @@ class SummaryHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(width: 20),
-                Text(
-                  '${formatTime(day?.startTime)}\n-\n${formatTime(day?.endTime)}',
-                  textScaleFactor: 1.2,
-                  style: const TextStyle(
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12,
-                    height: 1.1,
-                    color: Color(0xFF4F4F4F),
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(width: 15),
+                // Text(
+                //   '${formatTime(day?.startTime)}\n-\n${formatTime(day?.endTime)}',
+                //   textScaleFactor: 1.2,
+                //   style: const TextStyle(
+                //     fontFamily: 'Inter',
+                //     fontWeight: FontWeight.w500,
+                //     fontSize: 12,
+                //     height: 1.1,
+                //     color: Color(0xFF4F4F4F),
+                //   ),
+                //   textAlign: TextAlign.center,
+                // ),
+                // const SizedBox(width: 15),
                 TitleAndSubtitle(
-                  title: day?.classId.name ?? "Subject Name",
-                  subtitle: day?.classId.subjectcode ?? "Room",
+                  title: className ?? "Subject Name",
+                  subtitle: subjectCode ?? "subjectname",
                 ),
                 const Spacer(),
                 TitleAndSubtitle(
                   crossAxisAlignment: CrossAxisAlignment.end,
-                  title: day?.classId.instuctorName ?? "Instructor Name",
-                  subtitle: '${day?.start}/${day?.end}',
+                  title: "Instructor Name",
+                  subtitle: instructorName ?? '',
                 ),
                 const SizedBox(width: 10),
               ],

@@ -57,7 +57,6 @@ class Utils {
 
   static Future<bool> isOnlineMethode() async {
     // final connectivityResult = await (Connectivity().checkConnectivity());
-    print("from methode");
 
     bool set = false;
     if (set == false) {
@@ -71,6 +70,7 @@ class Utils {
     }
 
     //
+    print("from methode $set");
 
     return set;
   }

@@ -9,6 +9,7 @@ import '../../../../../../widgets/heder/heder_title.dart';
 import 'class_list.dart';
 
 final viewMoreIndexProvider = StateProvider<int>((ref) => 0);
+final routineOwenerNameProvider = StateProvider<String?>((ref) => null);
 
 class ViewMore extends StatefulWidget {
   final String rutinId;
@@ -44,6 +45,9 @@ class _ViewMoreState extends State<ViewMore> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, _) {
+      final owenerName = ref.watch(routineOwenerNameProvider);
+
+      //
       final List<Widget> pages = [
         ClassListPage(rutinId: widget.rutinId, rutinName: widget.rutinId),
         MemberList(rutinId: widget.rutinId),
@@ -60,7 +64,7 @@ class _ViewMoreState extends State<ViewMore> with TickerProviderStateMixin {
                     HeaderTitle("Routine", context),
                     const SizedBox(height: 40),
                     AppText(widget.rutineName.toUpperCase()).title(),
-                    AppText(widget.owenerName ?? "khulna polytechnic institute")
+                    AppText(owenerName ?? "khulna polytechnic institute")
                         .heding(),
                     const SizedBox(height: 30),
                     CustomTabBar(
