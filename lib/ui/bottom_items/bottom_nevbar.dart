@@ -7,6 +7,8 @@ import 'package:table/ui/bottom_items/Add/screens/create_new_rutine.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/dash_border_button.dart';
 
 import '../../constant/app_color.dart';
+import '../../widgets/bottom_sheet_shape.dart';
+
 import '../../core/component/responsive.dart';
 import '../auth_Section/auth_controller/auth_controller.dart';
 import 'Account/accounu_ui/account_screen.dart';
@@ -98,85 +100,80 @@ class BottomNavBar extends StatelessWidget {
 
 _showBottomSheet(BuildContext context) {
   showModalBottomSheet(
+    barrierColor: Colors.black26,
     elevation: 0,
-    barrierColor: Colors.black.withAlpha(1),
+    isScrollControlled: true,
+    // barrierColor: Colors.black.withAlpha(1),
     backgroundColor: Colors.transparent,
     context: context,
+
     builder: (BuildContext context) {
-      return SizedBox(
-          height: 200,
-          width: 500,
-          child: Card(
-            color: Colors.white,
-            margin: const EdgeInsets.all(18.0)
-                .copyWith(left: 30, right: 30, bottom: 100),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    DashBorderButtonMoni(
-                      text: "Notice",
-                      icon: const Icon(Icons.abc),
-                      onTap: () async {
-                        final String? type =
-                            await AuthController.getAccountType();
-                        if (type != null && type == 'academy') {
-                          return Get.to(() => AddNoticeScreen());
-                        } else {
-                          // ignore: use_build_context_synchronously
-                          return Alart.upcoming(context);
-                        }
-                      },
-                    ),
-                    DashBorderButtonMoni(
-                      text: "Rutine",
-                      icon: const Icon(Icons.abc),
-                      onTap: () => Get.to(() => CreaeNewRutine()),
-                    ),
-                  ],
-                ),
-                // SizedBox(height: 20),
-                // Container(
-                //   color: Colors.red,
-                //   height: 100,
-                //   width: 100,
-                //   transform: Matrix4.rotationZ(0.8),
-                // ),
-              ],
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          BottomSheetShape(
+            size: 500,
+            // height: 200,
+            // width: 500,
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  DashBorderButtonMoni(
+                    text: "Notices ",
+                    icon: const Icon(Icons.abc),
+                    onTap: () async {
+                      final String? type =
+                          await AuthController.getAccountType();
+                      if (type != null && type == 'academy') {
+                        return Get.to(() => AddNoticeScreen());
+                      } else {
+                        // ignore: use_build_context_synchronously
+                        return Alart.upcoming(context);
+                      }
+                    },
+                  ),
+                  Row(
+                    children: [
+                      DashBorderButtonMoni(
+                        text: "Rutine",
+                        icon: const Icon(Icons.abc),
+                        onTap: () => Get.to(() => CreaeNewRutine()),
+                      ),
+                      const SizedBox(width: 6)
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ));
+          ),
+          //
+          InkWell(
+            onTap: () => Navigator.pop(context),
+            child: Container(height: 90),
+          )
+        ],
+      );
     },
   );
 }
 
-// // // }
-// class OfflineScreen extends StatelessWidget {
-//   final Widget online;
-//   final Widget? offline;
 
-//   const OfflineScreen({
-//     Key? key,
-//     required this.online,
-//     this.offline,
-//   }) : super(key: key);
 
-//   @override
-//   Widget build(BuildContext context) {
-//     print("object");
-//     // return StreamBuilder<ConnectivityResult>(
-//     //   stream: Connectivity().onConnectivityChanged,
-//     //   builder: (context, snapshot) {
-//     //     print(snapshot);
 
-//     if (ConnectivityResult.values == ConnectivityResult.none) {
-//       return offline ??
-//           const Text('Offline', style: TextStyle(color: Colors.red));
-//     } else {
-//       return online;
-//     }
-//   }
-// }
+
+              // child: Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //   children: [
+              //     DashBorderButtonMoni(
+              //       text: "Notice",
+              //       icon: const Icon(Icons.abc),
+                 
+              //     ),
+              //     DashBorderButtonMoni(
+              //       text: "Rutine",
+              //       icon: const Icon(Icons.abc),
+              //       onTap: () => Get.to(() => CreaeNewRutine()),
+              //     ),
+              //   ],
+              // )),

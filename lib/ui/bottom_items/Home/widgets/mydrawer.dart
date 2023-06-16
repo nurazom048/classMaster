@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:table/ui/bottom_items/Home/home_screen/home.screen.dart';
 import 'package:table/ui/bottom_items/Home/widgets/drawer_item.dart';
 
-import '../../bottom_nev_bar.dart';
+import '../../bottom_nevbar.dart';
 import '../../search/search_screen/search_page.dart';
 
 class MyDawer extends StatelessWidget {

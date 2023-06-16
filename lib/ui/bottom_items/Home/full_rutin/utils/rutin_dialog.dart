@@ -134,7 +134,7 @@ class RutinDialog {
   static rutineNotficationSeleect(BuildContext context, String rutineId) {
     showModalBottomSheet(
       elevation: 0,
-      barrierColor: Colors.black.withAlpha(1),
+      barrierColor: Colors.black26,
       backgroundColor: Colors.transparent,
       context: context,
       builder: (BuildContext context) {

@@ -4,8 +4,8 @@ import 'dart:convert';
 import 'package:api_cache_manager/api_cache_manager.dart';
 import 'package:api_cache_manager/models/cache_db_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:table/models/message_model.dart';
 import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 
 import '../../../../constant/constant.dart';
@@ -92,12 +92,17 @@ class AccountReq {
   // }
 
 //********************* update Account     ********************************//
-  static Future<void> updateAccount(context, name, username, about,
-      {String? imagePath}) async {
+  static Future<Message> updateAccount(
+    context,
+    name,
+    username,
+    about, {
+    String? imagePath,
+  }) async {
+    print('form eddit account ************* $imagePath');
     try {
       // Get token from shared preferences
-      final prefs = await SharedPreferences.getInstance();
-      final String? getToken = prefs.getString('Token');
+      final String? getToken = await AuthController.getToken();
 
       // Create URL
       final url = Uri.parse('${Const.BASE_URl}/account/eddit');
@@ -122,20 +127,25 @@ class AccountReq {
       // Send request and get response
       var streamedResponse = await request.send();
       var response = await http.Response.fromStream(streamedResponse);
+      print("response $response");
 
       // Parse response body
-      // ignore: unused_local_variable
       final result = jsonDecode(response.body) as Map<String, dynamic>;
+      print("result $result");
 
       // Check status code
       if (streamedResponse.statusCode == 200) {
         print('Account updated successfully');
+        return Message(message: 'Account updated successfully');
       } else {
         print('Failed to update account: ${streamedResponse.statusCode}');
+        throw Exception(
+            'Failed to update account: ${streamedResponse.statusCode}');
       }
     } catch (e) {
       // Handle errors
       print('Error updating account: $e');
+      return Message(message: 'Failed to update account: $e');
     }
   }
 }

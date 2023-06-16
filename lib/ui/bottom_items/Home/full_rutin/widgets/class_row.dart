@@ -19,6 +19,7 @@ class ClassRow extends StatelessWidget {
     return InkWell(
       onLongPress: onLongPress ?? () {},
       child: Container(
+        margin: const EdgeInsets.only(bottom: 10),
         height: 50,
         width: MediaQuery.of(context).size.width - 10,
         padding: const EdgeInsets.symmetric(horizontal: 10),

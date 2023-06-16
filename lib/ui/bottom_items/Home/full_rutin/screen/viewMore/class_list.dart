@@ -116,9 +116,8 @@ class ClassListPage extends StatelessWidget {
               },
             ),
 
-            Container(
-                height: totalClass == 0 ? 100 : totalClass * 100,
-                alignment: Alignment.topCenter,
+            SizedBox(
+                height: totalClass == 0 ? 50 : totalClass * 60,
                 child: rutinDetals.when(
                   data: (data) {
                     if (data == null) {
@@ -132,11 +131,8 @@ class ClassListPage extends StatelessWidget {
                       LocalNotification.scheduleNotifications(
                           data.classes.allClass);
                     }
-
-                    return ListView.separated(
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: data.classes.allClass.length,
-                      itemBuilder: (context, index) {
+                    return Column(
+                      children: List.generate(3, (index) {
                         //
                         Day day = data.classes.allClass[index];
                         int length = data.classes.allClass.length;
@@ -150,7 +146,6 @@ class ClassListPage extends StatelessWidget {
                         if (length == 0) {
                           ErrorWidget('No Class Created');
                         }
-
                         return ClassRow(
                           id: day.id,
                           className: day.classId.name,
@@ -170,10 +165,7 @@ class ClassListPage extends StatelessWidget {
                             ),
                           ),
                         );
-                      },
-                      separatorBuilder: (context, index) {
-                        return const SizedBox(height: 10);
-                      },
+                      }),
                     );
                   },
                   error: (error, stackTrace) =>

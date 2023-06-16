@@ -13,7 +13,7 @@ import '../../../core/dialogs/alart_dialogs.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/appWidget/buttons/cupertino_butttons.dart';
 import '../../../widgets/heder/heder_title.dart';
-import '../../bottom_items/bottom_nev_bar.dart';
+import '../../bottom_items/bottom_nevbar.dart';
 import '../auth_controller/auth_controller.dart';
 import '../auth_controller/google_auth_controller.dart';
 import '../widgets/or.dart';
@@ -108,7 +108,7 @@ class _LogingScreenState extends State<LogingScreen> {
                           await FirebaseAuth.instance.signOut();
                           await FirebaseAuth.instance
                               .signInWithEmailAndPassword(
-                            email: "nurazom049@gmail.com",
+                            email: _emailController.text,
                             password: "@Nurazom123",
                           );
                           return Get.to(() => EmailVerificationScreen(

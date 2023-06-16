@@ -7,7 +7,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/message_model.dart';
 import 'package:table/ui/auth_Section/auth_req/auth_req.dart';
-import 'package:table/ui/bottom_items/bottom_nev_bar.dart';
+import 'package:table/ui/bottom_items/bottom_nevbar.dart';
 import '../../../core/dialogs/alart_dialogs.dart';
 import '../auth_ui/logIn_screen.dart';
 

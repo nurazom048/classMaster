@@ -1,6 +1,7 @@
 // ignore_for_file: unused_local_variable, avoid_print
 
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
@@ -30,6 +31,11 @@ class AuthReq {
         await AuthController.saveToken(accountData["token"]);
         await AuthController.saveAccountType(
             accountData["account"]["account_type"]);
+
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: accountData["account"]["email"],
+          password: password,
+        );
 
         return right(message);
       } else {
