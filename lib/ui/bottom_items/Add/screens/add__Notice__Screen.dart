@@ -131,7 +131,7 @@ class AddNoticeScreen extends ConsumerWidget {
                     String res = await NoticeRequest().addNotice(
                       contentName: noticeTitleController.text,
                       description: descriptionController.text,
-                      pdf_file: pdfpath,
+                      pdfFile: pdfpath,
                     );
 
                     Alart.showSnackBar(context, res);

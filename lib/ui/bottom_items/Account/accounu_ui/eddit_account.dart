@@ -93,7 +93,7 @@ class _EdditAccountState extends State<EdditAccount> {
                 labelText: "Write About Text",
                 validator: EdditAccountValidation.validateAbout,
               ).multiline(),
-              SizedBox(height: 60),
+              const SizedBox(height: 60),
               // Existing code...
 
               if (loading != null && loading == true)

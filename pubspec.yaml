@@ -69,6 +69,7 @@ dependencies:
   badges: ^3.1.1
   connectivity_plus: ^4.0.1
   api_cache_manager: ^1.0.2
+  cached_network_image: ^3.2.3
 
 
 dev_dependencies:

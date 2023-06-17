@@ -10,7 +10,7 @@ import 'package:table/models/priode/all_priode_models.dart';
 import '../../../Add/request/class_request.dart';
 import '../../../Add/screens/add_class_screen.dart';
 import '../../../Add/screens/add_priode.dart';
-import '../controller/priodeController.dart';
+import '../controller/priode_controller.dart';
 
 class PriodeAlart {
 //

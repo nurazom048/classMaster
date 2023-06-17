@@ -30,7 +30,7 @@ class CreaeNewRutine extends StatelessWidget {
               .copyWith(bottom: 20),
           child: Form(
             key: _formKey,
-            child: Container(
+            child: SizedBox(
               height: h, // Set the height explicitly
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

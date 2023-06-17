@@ -117,6 +117,7 @@ class _MyVerifyState extends State<OtpScreen> {
                           // Sign the user in (or link) with the credential
                           await auth.signInWithCredential(credential);
                           //
+                          // ignore: use_build_context_synchronously
                           Alart.showSnackBar(context, "Verifi sucsess");
                           Get.to(() => SignUpScreen(
                               phoneNumberString: widget.phoneNumber));

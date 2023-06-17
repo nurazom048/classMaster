@@ -27,9 +27,9 @@ class AccountCard extends StatelessWidget {
             FutureBuilder(
               future: Utils.isOnlineMethode(),
               builder: (context, snapshot) {
-                bool isOnline = snapshot.data ?? false;
+                bool isOffline = snapshot.data ?? false;
 
-                if (isOnline == true && profilepicture != null) {
+                if (isOffline == false && profilepicture != null) {
                   return CircleAvatar(
                     radius: 35,
                     backgroundColor: Colors.red,

@@ -75,7 +75,7 @@ class NoticeRequest {
   Future<String> addNotice({
     String? contentName,
     String? description,
-    String? pdf_file,
+    String? pdfFile,
   }) async {
     // Obtain shared preferences.
     final prefs = await SharedPreferences.getInstance();
@@ -90,10 +90,10 @@ class NoticeRequest {
 
     request.fields['content_name'] = contentName ?? '';
     request.fields['description'] = description ?? '';
-    if (pdf_file != null) {
+    if (pdfFile != null) {
       try {
-        final pdfPath = await http.MultipartFile.fromPath('pdf_file', pdf_file);
-        print("pdf path: $pdf_file");
+        final pdfPath = await http.MultipartFile.fromPath('pdf_file', pdfFile);
+        print("pdf path: $pdfFile");
         request.files.add(pdfPath);
       } catch (e) {
         print("Eror***** : $e");

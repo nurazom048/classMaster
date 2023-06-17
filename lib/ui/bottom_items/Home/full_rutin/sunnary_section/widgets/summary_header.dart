@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:table/models/class_details_model.dart';
 
 import '../../../../../../widgets/appWidget/dottted_divider.dart';
 import '../../../../../../widgets/heder/heder_title.dart';
@@ -36,7 +35,7 @@ class SummaryHeader extends StatelessWidget {
       return DateFormat.jm().format(time ?? DateTime.now());
     }
 
-    return Container(
+    return SizedBox(
       // padding: const EdgeInsets.only(bottom: 15),
       height: 132,
       child: Column(

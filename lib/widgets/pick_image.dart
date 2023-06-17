@@ -1,6 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:table/helper/helper_fun.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/sunnary_section/summat_screens/summary_screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:table/ui/bottom_items/Home/utils/utils.dart';
+
+import '../core/component/Loaders.dart';
 
 // ignore: must_be_immutable
 class PickImage extends StatefulWidget {
@@ -31,8 +38,10 @@ class _PickImageState extends State<PickImage> {
         aspectRatio: 1.0, // Set the desired aspect ratio here
         child: Stack(
           children: [
-            SizedBox(height: 200),
-            if (_image == null)
+            const SizedBox(height: 200),
+            // image,
+
+            if (_image == null && widget.netWorkIamge == null)
               const CircleAvatar(
                 radius: 80,
                 child: Icon(Icons.person_2_rounded),
@@ -45,18 +54,39 @@ class _PickImageState extends State<PickImage> {
               )
 
             // show user network image
-            else if (widget.netWorkIamge != null)
-              CircleAvatar(
-                radius: 80,
-                child: ClipOval(
-                  child: Image.network(
-                    widget.netWorkIamge!,
-                    errorBuilder: (context, error, stackTrace) {
-                      return const Icon(Icons.image);
-                    },
-                  ),
-                ),
+            else if (widget.netWorkIamge != null && _image == null)
+              FutureBuilder(
+                future: Utils.isOnlineMethode(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Loaders.center();
+                  } else if (snapshot.hasData && snapshot.data == true) {
+                    return CircleAvatar(
+                      radius: 80,
+                      child: ClipOval(
+                        child: Image.network(widget.netWorkIamge!),
+                      ),
+                    );
+                  } else if (snapshot.data == true) {
+                    return CircleAvatar(
+                      radius: 80,
+                      child: Center(
+                        child: Text(
+                          'Something went wrong: ${snapshot.error.toString()}',
+                        ),
+                      ),
+                    );
+                  } else {
+                    return const CircleAvatar(
+                      radius: 80,
+                      child: ClipOval(
+                        child: Icon(Icons.error),
+                      ),
+                    );
+                  }
+                },
               ),
+
             Positioned(
               bottom: 17,
               right: -1,

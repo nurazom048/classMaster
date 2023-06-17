@@ -54,7 +54,7 @@ class PriodeRequest {
   //
   //... add priode....//
   Future<Either<String, Message>> addPriode(
-      String routineID, DateTime StartTime, DateTime EndTime) async {
+      String routineID, DateTime startTime, DateTime endTime) async {
     // Obtain shared preferences.
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
@@ -65,8 +65,8 @@ class PriodeRequest {
         url,
         headers: {'Authorization': 'Bearer $getToken'},
         body: {
-          "start_time": "${StartTime.toIso8601String()}Z",
-          "end_time": "${EndTime.toIso8601String()}Z",
+          "start_time": "${startTime.toIso8601String()}Z",
+          "end_time": "${endTime.toIso8601String()}Z",
         },
       );
 
@@ -99,7 +99,7 @@ class PriodeRequest {
       print('******************');
       print('$isOnline $isHaveCache');
       // If user is offline, load data from cache
-      if (isOnline && isHaveCache != null) {
+      if (isOnline && isHaveCache) {
         final getdata = await APICacheManager().getCacheData(key);
         print('From cache: $getdata');
         return Right(AllPriodeList.fromJson(jsonDecode(getdata.syncData)));
