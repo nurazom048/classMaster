@@ -120,14 +120,14 @@ class HomeReq {
         print('&&&&&&&&&&&    Indise 200');
 
         return homeRutines;
-      } else if (isOnline == true) {
-        throw Exception(Future.error("No Internet Connection"));
+      } else if (isOnline) {
+        throw "No Internet Connection";
       } else {
-        throw Exception(Future.error("$res"));
+        throw "${res["message"]}";
       }
     } catch (e) {
       print(e);
-      throw Exception(Future.error("$e  $isOnline"));
+      throw "$e";
     }
   }
 }

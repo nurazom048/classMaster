@@ -11,6 +11,7 @@ import 'package:table/ui/bottom_items/Home/widgets/mydrawer.dart';
 import 'package:table/ui/bottom_items/Home/widgets/recent_notice_title.dart';
 import 'package:table/ui/bottom_items/Home/widgets/recentnoticeslider_scalton.dart';
 import 'package:table/ui/bottom_items/Home/widgets/slider/recentniticeslider_item.dart';
+import 'package:table/widgets/error/error.widget.dart';
 import '../../../../core/component/responsive.dart';
 import '../../../../core/dialogs/alart_dialogs.dart';
 import '../../Account/accounu_ui/Account_screen.dart';
@@ -32,6 +33,9 @@ class HomeScreen extends ConsumerWidget {
     //! provider
     final homeRutins = ref.watch(homeRutinControllerProvider(null));
     final recentNoticeList = ref.watch(recentNoticeController(null));
+
+//notifier
+    final homeRutinsNotifier = ref.watch(recentNoticeController(null).notifier);
 
     //
     final _mobileView =
@@ -118,53 +122,57 @@ class HomeScreen extends ConsumerWidget {
                 ],
               );
             },
-            error: (error, stackTrace) => Alart.handleError(context, error),
+            error: (error, stackTrace) {
+              // print('error happend');
+              // print(error);
+              Alart.handleError(context, error);
+
+              return ErrorScreen(error: error.toString());
+            },
             loading: () => const RecentNoticeSliderScealton(),
           ),
         ),
 
         // uploaded rutines
 
-        if (homeRutins.hasError)
-          ErrorWidget(homeRutins.error.toString())
-        else if (homeRutins.isLoading)
-          Loaders.center(height: 500)
-        else
-          homeRutins.when(
-            data: (data) {
-              void scrollListener() {
-                if (scrollController.position.pixels ==
-                    scrollController.position.maxScrollExtent) {
-                  // ref
-                  //     .watch(uploadedRutinsControllerProvider.notifier)
-                  //     .loadMore(data.currentPage);
-                }
+        homeRutins.when(
+          data: (data) {
+            void scrollListener() {
+              if (scrollController.position.pixels ==
+                  scrollController.position.maxScrollExtent) {
+                ref
+                    .watch(recentNoticeController(null).notifier)
+                    .loadMore(data.currentPage, context);
               }
+            }
 
-              scrollController.addListener(scrollListener);
+            scrollController.addListener(scrollListener);
 
-              //
-              return ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                padding: const EdgeInsets.only(bottom: 100),
-                itemCount: data.homeRoutines.length,
-                itemBuilder: (context, index) {
-                  return RutinBoxById(
-                    rutinId: data.homeRoutines[index].rutineId.id,
-                    rutinName: data.homeRoutines[index].rutineId.name,
-                    onTapMore: () => RutinDialog.ChackStatusUser_BottomSheet(
-                      context,
-                      data.homeRoutines[index].rutineId.id,
-                      data.homeRoutines[index].rutineId.name,
-                    ),
-                  );
-                },
-              );
-            },
-            loading: () => RUTINE_BOX_SKELTON,
-            error: (error, stackTrace) => Alart.handleError(context, error),
-          ),
+            //
+            return ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: const EdgeInsets.only(bottom: 100),
+              itemCount: data.homeRoutines.length,
+              itemBuilder: (context, index) {
+                return RutinBoxById(
+                  rutinId: data.homeRoutines[index].rutineId.id,
+                  rutinName: data.homeRoutines[index].rutineId.name,
+                  onTapMore: () => RutinDialog.ChackStatusUser_BottomSheet(
+                    context,
+                    data.homeRoutines[index].rutineId.id,
+                    data.homeRoutines[index].rutineId.name,
+                  ),
+                );
+              },
+            );
+          },
+          loading: () => RUTINE_BOX_SKELTON,
+          error: (error, stackTrace) {
+            Alart.handleError(context, error);
+            return ErrorScreen(error: error.toString());
+          },
+        ),
       ],
     );
   }

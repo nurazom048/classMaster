@@ -20,8 +20,8 @@ import '../../utils/logng_press.dart';
 import '../../widgets/class_row.dart';
 import '../../widgets/priode_widget.dart';
 
-final totalPriodeCountProvider = StateProvider<int>((ref) => 0);
-final totalClassCountProvider = StateProvider<int>((ref) => 0);
+final totalPriodeCountProvider = StateProvider.autoDispose<int>((ref) => 0);
+final totalClassCountProvider = StateProvider.autoDispose<int>((ref) => 0);
 
 class ClassListPage extends StatelessWidget {
   final String rutinId;

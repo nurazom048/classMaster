@@ -39,12 +39,12 @@ class NoticeRequest {
         academyID == null ? recentNoticeUri : viewNoticeByAcademyIDUri;
     final key = requestUri.toString();
 
-    final bool isOnline = await Utils.isOnlineMethode();
+    final bool isOffline = await Utils.isOnlineMethode();
     var isHaveCash = await APICacheManager().isAPICacheKeyExist(key);
     try {
       // if offline and have cash
 
-      if (isOnline == false && isHaveCash) {
+      if (isOffline && isHaveCash) {
         var getdata = await APICacheManager().getCacheData(key);
         print('Foem cash $getdata');
         return RecentNotice.fromJson(jsonDecode(getdata.syncData));
@@ -64,10 +64,10 @@ class NoticeRequest {
         return RecentNotice.fromJson(res);
       } else {
         final message = Message.fromJson(json.decode(response.body));
-        throw Future.error(message.message);
+        throw message.message;
       }
     } catch (e) {
-      throw Future.error(e);
+      throw Exception(e);
     }
   }
 

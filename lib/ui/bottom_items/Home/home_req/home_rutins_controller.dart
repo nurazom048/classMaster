@@ -32,7 +32,7 @@ class HomeRutinsController extends StateNotifier<AsyncValue<RoutineHome>> {
 // loade pore data
   // void loadMore(page) async {
   //   try {
-  //     final newData = await homeReq.uplodedRutins(pages: page + 1);
+  //     final newData = await homeReq.homeRutines(pages: page + 1);
 
   //     // ignore: avoid_print
   //     print(
@@ -52,4 +52,25 @@ class HomeRutinsController extends StateNotifier<AsyncValue<RoutineHome>> {
   //     state = throw Exception(e);
   //   }
   // }
+
+  void loadMore(page) async {
+    try {
+      final newData = await homeReq.homeRutines(pages: page + 1);
+
+      // Check if the new data's page number is greater than the current page number
+      if (newData.currentPage > state.value!.currentPage) {
+        int? totalPages = newData.totalPages;
+        if (newData.currentPage <= totalPages) {
+          // Add new routines to the existing list and update the page number
+          List<HomeRoutine> homeRoutines = state.value!.homeRoutines
+            ..addAll(newData.homeRoutines);
+          state = AsyncData(state.value!.copyWith(
+              homeRoutines: homeRoutines, currentPage: newData.currentPage));
+        }
+      }
+    } catch (e) {
+      print(e.toString());
+      state = throw Exception(e);
+    }
+  }
 }

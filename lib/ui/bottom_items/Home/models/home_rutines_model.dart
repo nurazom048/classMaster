@@ -26,6 +26,22 @@ class RoutineHome {
     );
   }
 
+  RoutineHome copyWith({
+    String? message,
+    List<HomeRoutine>? homeRoutines,
+    int? currentPage,
+    int? totalPages,
+    int? totalItems,
+  }) {
+    return RoutineHome(
+      message: message ?? this.message,
+      homeRoutines: homeRoutines ?? this.homeRoutines,
+      currentPage: currentPage ?? this.currentPage,
+      totalPages: totalPages ?? this.totalPages,
+      totalItems: totalItems ?? this.totalItems,
+    );
+  }
+
   Map<String, dynamic> toJson() => {
         "message": message,
         "homeRoutines": homeRoutines.map((x) => x.toJson()).toList(),
@@ -63,6 +79,24 @@ class HomeRoutine {
     );
   }
 
+  HomeRoutine copyWith({
+    String? memberId,
+    RutineId? rutineId,
+    bool? notificationOn,
+    bool? captain,
+    bool? owner,
+    bool? blocklist,
+  }) {
+    return HomeRoutine(
+      memberId: memberId ?? this.memberId,
+      rutineId: rutineId ?? this.rutineId,
+      notificationOn: notificationOn ?? this.notificationOn,
+      captain: captain ?? this.captain,
+      owner: owner ?? this.owner,
+      blocklist: blocklist ?? this.blocklist,
+    );
+  }
+
   Map<String, dynamic> toJson() => {
         "memberID": memberId,
         "RutineID": rutineId.toJson(),
@@ -86,6 +120,16 @@ class RutineId {
     return RutineId(
       id: json["_id"],
       name: json["name"],
+    );
+  }
+
+  RutineId copyWith({
+    String? id,
+    String? name,
+  }) {
+    return RutineId(
+      id: id ?? this.id,
+      name: name ?? this.name,
     );
   }
 

@@ -150,30 +150,13 @@ _showBottomSheet(BuildContext context) {
           //
           InkWell(
             onTap: () => Navigator.pop(context),
-            child: Container(height: 90),
+            child: Container(
+              height: 90,
+              color: Colors.transparent,
+            ),
           )
         ],
       );
     },
   );
 }
-
-
-
-
-
-              // child: Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //   children: [
-              //     DashBorderButtonMoni(
-              //       text: "Notice",
-              //       icon: const Icon(Icons.abc),
-                 
-              //     ),
-              //     DashBorderButtonMoni(
-              //       text: "Rutine",
-              //       icon: const Icon(Icons.abc),
-              //       onTap: () => Get.to(() => CreaeNewRutine()),
-              //     ),
-              //   ],
-              // )),

@@ -76,23 +76,16 @@ class _PeriodNumberSelectorState extends State<PeriodNumberSelector> {
               ...List.generate(
                 widget.length,
                 (index) {
-                  return Row(
-                    children: [
-                      PeriodNumberButton(
-                        periodNumber: index + 1,
-                        isSelected: initialSelectedNumber == index,
-                        onSelected: () => _handleNumberSelected(index),
-                      ),
-
-                      // Add Button
-                      if (widget.length > 0 && index == widget.length - 1)
-                        AddSquareButton(
-                          onTap: widget.onTapToAdd,
-                          isVisible: widget.onTapToAdd == null ? false : true,
-                        ),
-                    ],
+                  return PeriodNumberButton(
+                    periodNumber: index + 1,
+                    isSelected: initialSelectedNumber == index,
+                    onSelected: () => _handleNumberSelected(index),
                   );
                 },
+              ),
+              AddSquareButton(
+                onTap: widget.onTapToAdd,
+                isVisible: widget.onTapToAdd == null ? false : true,
               ),
             ],
           ),
@@ -115,23 +108,16 @@ class _PeriodNumberSelectorState extends State<PeriodNumberSelector> {
               ...List.generate(
                 widget.length,
                 (index) {
-                  return Row(
-                    children: [
-                      PeriodNumberButton(
-                        periodNumber: index + 1,
-                        isSelected: initialEnd == index,
-                        onSelected: () => _handleEnd(index),
-                      ),
-
-                      // Add Button
-                      if (widget.length > 0 && index == widget.length - 1)
-                        AddSquareButton(
-                          onTap: widget.onTapToAdd,
-                          isVisible: widget.onTapToAdd == null ? false : true,
-                        ),
-                    ],
+                  return PeriodNumberButton(
+                    periodNumber: index + 1,
+                    isSelected: initialEnd == index,
+                    onSelected: () => _handleEnd(index),
                   );
                 },
+              ),
+              AddSquareButton(
+                onTap: widget.onTapToAdd,
+                isVisible: widget.onTapToAdd == null ? false : true,
               ),
             ],
           ),
