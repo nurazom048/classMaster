@@ -73,7 +73,7 @@ class HomeScreen extends ConsumerWidget {
 
 /////////////
   homeMobileView(WidgetRef ref, AsyncValue<RecentNotice> recentNoticeList,
-      BuildContext context, AsyncValue<HomeRoutines> homeRutins) {
+      BuildContext context, AsyncValue<RoutineHome> homeRutins) {
     return ListView(
       padding: const EdgeInsets.only(bottom: 100),
       controller: scrollController,
@@ -151,12 +151,12 @@ class HomeScreen extends ConsumerWidget {
                 itemCount: data.homeRoutines.length,
                 itemBuilder: (context, index) {
                   return RutinBoxById(
-                    rutinId: data.homeRoutines[index].rutineID.id,
-                    rutinName: data.homeRoutines[index].rutineID.name,
+                    rutinId: data.homeRoutines[index].rutineId.id,
+                    rutinName: data.homeRoutines[index].rutineId.name,
                     onTapMore: () => RutinDialog.ChackStatusUser_BottomSheet(
                       context,
-                      data.homeRoutines[index].rutineID.id,
-                      data.homeRoutines[index].rutineID.name,
+                      data.homeRoutines[index].rutineId.id,
+                      data.homeRoutines[index].rutineId.name,
                     ),
                   );
                 },

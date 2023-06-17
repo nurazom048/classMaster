@@ -15,6 +15,7 @@ import '../../../../widgets/appWidget/TextFromFild.dart';
 final createRoutineLoaderProvider = StateProvider<bool>((ref) => false);
 
 class CreaeNewRutine extends StatelessWidget {
+  // ignore: use_key_in_widget_constructors
   CreaeNewRutine({Key? key});
   final _rutineNameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();

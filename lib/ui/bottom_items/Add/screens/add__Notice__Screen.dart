@@ -14,7 +14,6 @@ import '../../Home/widgets/custom_title_bar.dart';
 import '../../Home/widgets/mydrawer.dart';
 import '../widgets/uploaded_pdf_button.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
-import 'package:flutter/material.dart';
 
 class AddNoticeScreen extends ConsumerWidget {
   AddNoticeScreen({Key? key});

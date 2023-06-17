@@ -45,8 +45,8 @@ class RutineCardInfoRow extends StatelessWidget {
                 const SizedBox(width: 15),
 
                 TitleAndSubtitle(
-                  title: day?.classId.instuctorName ?? " instuctorName ",
-                  subtitle: day?.classId.subjectcode ?? "instuctorName",
+                  title: day?.classId.name ?? " Subject Name ",
+                  subtitle: day?.room ?? "room",
                 ),
 
                 const Spacer(),
@@ -94,7 +94,7 @@ class TitleAndSubtitle extends StatelessWidget {
       crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.start,
       children: [
         Text(
-          " $title",
+          title,
           maxLines: 1,
           textScaleFactor: 1.2,
           style: const TextStyle(
@@ -107,7 +107,7 @@ class TitleAndSubtitle extends StatelessWidget {
         ),
         //
         Text(
-          textScaleFactor == null ? '\n- $subtitle' : subtitle,
+          textScaleFactor == null ? '\n$subtitle' : subtitle,
           textScaleFactor: textScaleFactor ?? 1.2,
           maxLines: 2,
           style: TextStyle(

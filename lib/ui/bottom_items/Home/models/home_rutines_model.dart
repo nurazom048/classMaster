@@ -1,57 +1,11 @@
 class RoutineHome {
-  String memberID;
-  RutineID rutineID;
-  bool notificationOn;
-  bool captain;
-  bool owner;
-  bool blocklist;
-
-  RoutineHome({
-    required this.memberID,
-    required this.rutineID,
-    required this.notificationOn,
-    required this.captain,
-    required this.owner,
-    required this.blocklist,
-  });
-
-  factory RoutineHome.fromJson(Map<String, dynamic> json) {
-    return RoutineHome(
-      memberID: json['memberID'],
-      rutineID: RutineID.fromJson(json['RutineID']),
-      notificationOn: json['notificationOn'],
-      captain: json['captain'],
-      owner: json['owner'],
-      blocklist: json['blocklist'],
-    );
-  }
-}
-
-class RutineID {
-  String id;
-  String name;
-
-  RutineID({
-    required this.id,
-    required this.name,
-  });
-
-  factory RutineID.fromJson(Map<String, dynamic> json) {
-    return RutineID(
-      id: json['_id'],
-      name: json['name'],
-    );
-  }
-}
-
-class HomeRoutines {
   String message;
-  List<RoutineHome> homeRoutines;
+  List<HomeRoutine> homeRoutines;
   int currentPage;
   int totalPages;
   int totalItems;
 
-  HomeRoutines({
+  RoutineHome({
     required this.message,
     required this.homeRoutines,
     required this.currentPage,
@@ -59,16 +13,84 @@ class HomeRoutines {
     required this.totalItems,
   });
 
-  factory HomeRoutines.fromJson(Map<String, dynamic> json) {
-    return HomeRoutines(
-      message: json['message'],
-      homeRoutines: (json['homeRoutines'] as List<dynamic>?)
-              ?.map((x) => RoutineHome.fromJson(x))
+  factory RoutineHome.fromJson(Map<String, dynamic> json) {
+    return RoutineHome(
+      message: json["message"],
+      homeRoutines: (json["homeRoutines"] as List<dynamic>?)
+              ?.map((x) => HomeRoutine.fromJson(x))
               .toList() ??
           [],
-      currentPage: json['currentPage'],
-      totalPages: json['totalPages'],
-      totalItems: json['totalItems'],
+      currentPage: json["currentPage"] ?? 1,
+      totalPages: json["totalPages"] as int,
+      totalItems: json["totalItems"] as int,
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        "message": message,
+        "homeRoutines": homeRoutines.map((x) => x.toJson()).toList(),
+        "currentPage": currentPage,
+        "totalPages": totalPages,
+        "totalItems": totalItems,
+      };
+}
+
+class HomeRoutine {
+  String memberId;
+  RutineId rutineId;
+  bool notificationOn;
+  bool captain;
+  bool owner;
+  bool blocklist;
+
+  HomeRoutine({
+    required this.memberId,
+    required this.rutineId,
+    required this.notificationOn,
+    required this.captain,
+    required this.owner,
+    required this.blocklist,
+  });
+
+  factory HomeRoutine.fromJson(Map<String, dynamic> json) {
+    return HomeRoutine(
+      memberId: json["memberID"],
+      rutineId: RutineId.fromJson(json["RutineID"]),
+      notificationOn: json["notificationOn"],
+      captain: json["captain"],
+      owner: json["owner"],
+      blocklist: json["blocklist"],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        "memberID": memberId,
+        "RutineID": rutineId.toJson(),
+        "notificationOn": notificationOn,
+        "captain": captain,
+        "owner": owner,
+        "blocklist": blocklist,
+      };
+}
+
+class RutineId {
+  String id;
+  String name;
+
+  RutineId({
+    required this.id,
+    required this.name,
+  });
+
+  factory RutineId.fromJson(Map<String, dynamic> json) {
+    return RutineId(
+      id: json["_id"],
+      name: json["name"],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        "_id": id,
+        "name": name,
+      };
 }

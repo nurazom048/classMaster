@@ -5,12 +5,12 @@ import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
 import '../models/home_rutines_model.dart';
 
 final homeRutinControllerProvider = StateNotifierProvider.autoDispose
-    .family<HomeRutinsController, AsyncValue<HomeRoutines>, String?>(
+    .family<HomeRutinsController, AsyncValue<RoutineHome>, String?>(
         (ref, userID) {
   return HomeRutinsController(ref.read(home_req_provider), userID);
 });
 
-class HomeRutinsController extends StateNotifier<AsyncValue<HomeRoutines>> {
+class HomeRutinsController extends StateNotifier<AsyncValue<RoutineHome>> {
   HomeReq homeReq;
   final String? userID;
   HomeRutinsController(this.homeReq, this.userID)
@@ -19,12 +19,13 @@ class HomeRutinsController extends StateNotifier<AsyncValue<HomeRoutines>> {
   }
 
   _init() async {
+    if (!mounted) return;
     try {
       final res = await homeReq.homeRutines(pages: 1, userID: userID);
       state = AsyncData(res);
     } catch (error, stackTrace) {
       if (!mounted) return;
-      state = AsyncError(error, stackTrace);
+      state = AsyncValue.error(error, stackTrace);
     }
   }
 

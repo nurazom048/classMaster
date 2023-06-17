@@ -26,6 +26,12 @@ class SummaryScreen extends ConsumerWidget {
   final String? className;
   final String? subjectCode;
   final String? instructorName;
+  //
+  final DateTime? startTime;
+  final DateTime? endTime;
+  final int? start; //priode start
+  final int? end; //priode end
+  final String? room;
 
   SummaryScreen({
     super.key,
@@ -34,6 +40,11 @@ class SummaryScreen extends ConsumerWidget {
     required this.className,
     required this.instructorName,
     required this.subjectCode,
+    this.startTime,
+    this.endTime,
+    this.start,
+    this.end,
+    this.room,
   });
 
   final scrollController = ScrollController();
@@ -58,6 +69,15 @@ class SummaryScreen extends ConsumerWidget {
               SliverToBoxAdapter(
                 child: SummaryHeader(
                   classId: classId,
+                  className: className,
+                  instructorName: instructorName,
+
+                  //
+                  startTime: startTime,
+                  endTime: endTime,
+                  start: start,
+                  end: end,
+                  room: room,
                 ),
               ),
             ],

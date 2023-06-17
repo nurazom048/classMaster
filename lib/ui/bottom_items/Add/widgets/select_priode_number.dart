@@ -52,9 +52,9 @@ class _PeriodNumberSelectorState extends State<PeriodNumberSelector> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+      margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 0),
       width: MediaQuery.of(context).size.width,
-      height: 180,
+      height: 200,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

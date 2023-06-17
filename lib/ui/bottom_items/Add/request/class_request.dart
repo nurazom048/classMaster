@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:table/models/message_model.dart';
+import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 import 'package:table/ui/server/rutinReq.dart';
 import '../../../../constant/constant.dart';
 import '../../../../core/dialogs/alart_dialogs.dart';
@@ -105,23 +106,19 @@ class ClassRequest {
   static Future<void> deleteClass(
       context, WidgetRef ref, String classId, String rutinId) async {
     // Obtain shared preferences.
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
+    final String? getToken = await AuthController.getToken();
+    Uri uri = Uri.parse('${Const.BASE_URl}/class/delete/$classId');
+    Map<String, String>? headers = {'Authorization': 'Bearer $getToken'};
 
     try {
-      final response = await http.delete(
-        Uri.parse('${Const.BASE_URl}/class/delete/$classId'),
-        headers: {'Authorization': 'Bearer $getToken'},
-      );
+      final response = await http.delete(uri, headers: headers);
 
       final res = json.decode(response.body);
       print(res);
 
-      Message message = json.decode(response.body);
-
       if (response.statusCode == 200) {
-        print("rutin created successfully");
-        Alart.showSnackBar(context, message.message);
+        print("Class Deleted successfully $res ");
+        Alart.showSnackBar(context, 'Class Deleted successfully');
         // ignore: unused_result
         ref.refresh(rutins_detalis_provider(rutinId));
 

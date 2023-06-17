@@ -289,6 +289,12 @@ void onTap(Day? day, String status, context) {
       instructorName: day.classId.instuctorName,
       routineID: day.routineId,
       subjectCode: day.classId.subjectcode,
+      //
+      startTime: day.startTime,
+      endTime: day.endTime,
+      start: day.start,
+      end: day.end,
+      room: day.room,
     ),
   );
 }

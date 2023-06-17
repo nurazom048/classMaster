@@ -126,13 +126,13 @@ class ProfileSCreen extends StatelessWidget {
                     itemCount: data.homeRoutines.length,
                     itemBuilder: (context, index) {
                       return RutinBoxById(
-                        rutinId: data.homeRoutines[index].rutineID.id,
-                        rutinName: data.homeRoutines[index].rutineID.name,
+                        rutinId: data.homeRoutines[index].rutineId.id,
+                        rutinName: data.homeRoutines[index].rutineId.name,
                         onTapMore: () =>
                             RutinDialog.ChackStatusUser_BottomSheet(
                           context,
-                          data.homeRoutines[index].rutineID,
-                          data.homeRoutines[index].rutineID.name,
+                          data.homeRoutines[index].rutineId,
+                          data.homeRoutines[index].rutineId.name,
                         ),
                       );
                     },

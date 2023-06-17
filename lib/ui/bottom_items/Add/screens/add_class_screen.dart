@@ -123,6 +123,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                       // Subject code
                       AppTextFromField(
                         controller: _subCodeController,
+                        keyboardType: TextInputType.number,
                         hint: "Subject Code",
                         labelText: "Enter Subject Code",
                         validator: (value) => AddClassValidator.subCode(value),
@@ -135,7 +136,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                       else
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 16),
-                          height: 440,
+                          height: 480,
                           width: MediaQuery.of(context).size.width,
                           child: Column(
                             children: [
@@ -176,6 +177,9 @@ class _AddClassScreenState extends State<AddClassScreen> {
 
                               //
                               AppTextFromField(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 22)
+                                        .copyWith(top: 0),
                                 controller: _roomController,
                                 hint: "Classroom Number",
                                 labelText: "EnterClassroom Number in this day",

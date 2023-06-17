@@ -76,7 +76,7 @@ class HomeReq {
 
   //********    homeRutines      *************/
 
-  Future<HomeRoutines> homeRutines({pages, String? userID}) async {
+  Future<RoutineHome> homeRutines({pages, String? userID}) async {
     String queryPage = "?page=$pages";
     final searchByUserID = userID == null ? '' : '/$userID';
     final prefs = await SharedPreferences.getInstance();
@@ -94,7 +94,7 @@ class HomeReq {
       if (isOnline && isHaveCash) {
         var getdata = await APICacheManager().getCacheData(key);
         print('Foem cash $url');
-        return HomeRoutines.fromJson(jsonDecode(getdata.syncData));
+        return RoutineHome.fromJson(jsonDecode(getdata.syncData));
       }
 
       //
@@ -108,9 +108,9 @@ class HomeReq {
       print(response.statusCode);
       print('$isOnline 5 $isHaveCash');
 
-      HomeRoutines homeRutines = HomeRoutines.fromJson(res);
-
       if (response.statusCode == 200) {
+        RoutineHome homeRutines = RoutineHome.fromJson(res);
+
         // save to csh
         if (userID == null) {
           APICacheDBModel cacheDBModel =
@@ -120,15 +120,14 @@ class HomeReq {
         print('&&&&&&&&&&&    Indise 200');
 
         return homeRutines;
-      } else if (isOnline == false) {
-        throw Future.error("No Internet Connection");
+      } else if (isOnline == true) {
+        throw Exception(Future.error("No Internet Connection"));
       } else {
-        throw Future.error("Interaal Sarver Error");
+        throw Exception(Future.error("$res"));
       }
     } catch (e) {
       print(e);
-
-      return Future.error("$e  $isOnline");
+      throw Exception(Future.error("$e  $isOnline"));
     }
   }
 }

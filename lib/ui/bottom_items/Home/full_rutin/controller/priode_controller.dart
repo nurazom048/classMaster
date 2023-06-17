@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types, unused_result, avoid_print
+// ignore_for_file: unused_result
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,15 +6,16 @@ import '../../../../../core/dialogs/alart_dialogs.dart';
 import '../request/priode_request.dart';
 
 //.. prvider...//
-final priodeController = StateNotifierProvider.autoDispose(
-    (ref) => priodeClassController(ref.watch(priodeRequestProvider)));
+final priodeController = StateNotifierProvider.autoDispose((ref) {
+  return PriodeClassController(ref.watch(priodeRequestProvider));
+});
 
 //
 //...class....//
-class priodeClassController extends StateNotifier<bool> {
+class PriodeClassController extends StateNotifier<bool> {
   PriodeRequest priodereq;
 
-  priodeClassController(this.priodereq) : super(false);
+  PriodeClassController(this.priodereq) : super(false);
 
   //....deletePriode
   void deletePriode(WidgetRef ref, BuildContext context, String priodeId,
@@ -37,10 +38,9 @@ class priodeClassController extends StateNotifier<bool> {
 
   //
   //....addPriode...//
-  void addPriode(WidgetRef ref, context, String rutinId, DateTime StartTime,
-      DateTime EndTime) async {
-    var addRes = await PriodeRequest().addPriode(rutinId, StartTime, EndTime);
-    print("i am from cont");
+  void addPriode(WidgetRef ref, context, String rutinId, DateTime startTime,
+      DateTime endTime) async {
+    var addRes = await PriodeRequest().addPriode(rutinId, startTime, endTime);
 
     addRes.fold(
       (l) {
