@@ -54,6 +54,7 @@ class HomeRutinsController extends StateNotifier<AsyncValue<RoutineHome>> {
   // }
 
   void loadMore(page) async {
+    print('call fore loader more');
     try {
       final newData = await homeReq.homeRutines(pages: page + 1);
 
@@ -69,7 +70,6 @@ class HomeRutinsController extends StateNotifier<AsyncValue<RoutineHome>> {
         }
       }
     } catch (e) {
-      print(e.toString());
       state = throw Exception(e);
     }
   }

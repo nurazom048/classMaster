@@ -61,6 +61,8 @@ class NoticeRequest {
 
         await APICacheManager().addCacheData(cacheDBModel);
 
+        print(res);
+
         return RecentNotice.fromJson(res);
       } else {
         final message = Message.fromJson(json.decode(response.body));

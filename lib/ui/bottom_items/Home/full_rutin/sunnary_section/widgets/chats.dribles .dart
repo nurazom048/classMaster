@@ -59,7 +59,7 @@ class ChatsDribles extends StatelessWidget {
             radius: 23,
             backgroundColor: Colors.black,
             backgroundImage:
-                NetworkImage(summary.owner?.image ?? DEMO_PROFILE_IMAGE),
+                NetworkImage(summary.ownerId?.image ?? DEMO_PROFILE_IMAGE),
           ),
         ),
         const SizedBox(width: 10),
@@ -74,7 +74,7 @@ class ChatsDribles extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        summary.owner?.name ?? '',
+                        summary.ownerId?.name ?? '',
                         textScaleFactor: 1.4,
                         style: const TextStyle(
                           fontFamily: 'Inter',
@@ -146,7 +146,7 @@ class ChatsDribles extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemCount: summary.imageLinks.length,
             itemBuilder: (context, index) {
-              final imageUrl = summary.imageUrls[index];
+              final imageUrl = summary.imageLinks[index];
               return Container(
                 width: 100,
                 height: 100,

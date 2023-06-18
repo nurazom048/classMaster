@@ -140,9 +140,10 @@ class HomeScreen extends ConsumerWidget {
             void scrollListener() {
               if (scrollController.position.pixels ==
                   scrollController.position.maxScrollExtent) {
+                print('end.........................');
                 ref
-                    .watch(recentNoticeController(null).notifier)
-                    .loadMore(data.currentPage, context);
+                    .watch(homeRutinControllerProvider(null).notifier)
+                    .loadMore(data.currentPage);
               }
             }
 

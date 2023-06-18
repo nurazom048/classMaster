@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, prefer_interpolation_to_compose_strings
 
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -63,22 +63,25 @@ class SummayReuest {
 
   /// get summary........///
 
-  Future<AllSummaryModel> getSummaryList(classId) async {
+  Future<AllSummaryModel> getSummaryList(classId, {int? pages}) async {
     print("call get summary ");
+    String queryPage = pages != null ? "?page=$pages" : '';
 
     final String? getToken = await AuthController.getToken();
 
-    var url = Uri.parse('${Const.BASE_URl}/summary/$classId');
-
+    var url = Uri.parse('${Const.BASE_URl}/summary/$classId' + queryPage);
+    Map<String, String> headers = {'Authorization': 'Bearer $getToken'};
     //... send request....//
     try {
-      final response =
-          await http.get(url, headers: {'Authorization': 'Bearer $getToken'});
+      final response = await http.get(url, headers: headers);
       var res = json.decode(response.body);
+      print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+      print(url);
       print(res);
 
       if (response.statusCode == 200) {
         var listOsSummary = AllSummaryModel.fromJson(res);
+
         return listOsSummary;
       } else {
         return Future.error("faild to load data");

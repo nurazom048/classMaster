@@ -61,7 +61,9 @@ class SummaryScreen extends ConsumerWidget {
     String status = chackStatus.value?.activeStatus ?? '';
     final bool isCaptain = chackStatus.value?.isCaptain ?? false;
     final bool isOwner = chackStatus.value?.isOwner ?? false;
-
+    //
+    final summaryNotifier =
+        ref.watch(sunnaryControllerProvider(classId).notifier);
     return SafeArea(
       child: Scaffold(
           body: NestedScrollView(
@@ -97,11 +99,21 @@ class SummaryScreen extends ConsumerWidget {
 
                       SchedulerBinding.instance.addPostFrameCallback((_) {
                         scrollController
-                            .jumpTo(scrollController.position.maxScrollExtent);
+                            .jumpTo(scrollController.position.minScrollExtent);
                       });
+                      void scrollListener() {
+                        if (scrollController.position.pixels ==
+                            scrollController.position.maxScrollExtent) {
+                          print('?TOPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP');
+                          summaryNotifier.loadMore(
+                              data.currentPage, data.totalCount);
+                        }
+                      }
 
+                      scrollController.addListener(scrollListener);
                       return ListView.builder(
                         controller: scrollController,
+                        // addSemanticIndexes: false,
                         // reverse: true,
                         itemCount: data.summaries.length,
                         itemBuilder: (context, i) {
@@ -109,6 +121,8 @@ class SummaryScreen extends ConsumerWidget {
                           return Column(
                             children: [
                               ChatsDribles(summary: data.summaries[i]),
+                              if (data.currentPage == data.totalCount)
+                                Text("Reched to end"),
                               if (lenght > 2 && i == lenght - 1)
                                 const SizedBox(height: 100)
                             ],

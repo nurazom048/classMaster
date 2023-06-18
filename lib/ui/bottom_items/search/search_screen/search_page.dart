@@ -13,8 +13,9 @@ import '../../Home/widgets/mydrawer.dart';
 
 //!pages
 final List<Widget> pages = [
-  const SearchRutineScreen(),
   const AccountSearchScreen(),
+    const SearchRutineScreen(),
+
 ];
 
 //! search String provider

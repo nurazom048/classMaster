@@ -39,6 +39,37 @@ class SummaryController extends StateNotifier<AsyncValue<AllSummaryModel>> {
     }
   }
 
+//   // Load more summaries
+  bool isLoading = false; // Add this flag to track loading state
+
+// Load more summaries
+  Future<void> loadMore(int currentPage, int totalPages) async {
+    if (!isLoading && currentPage < totalPages) {
+      print("current: $currentPage total: $totalPages");
+      try {
+        isLoading = true; // Set loading state to true
+        AllSummaryModel newData =
+            await summaryReq.getSummaryList(classId, pages: currentPage + 1);
+        if (!mounted) return;
+        print(
+            "new current: ${newData.currentPage} total: ${newData.totalPages}");
+
+        if (newData.currentPage != newData.totalCount ||
+            newData.currentPage > newData.totalCount) {
+          state = AsyncValue.data(state.value!.copyWith(
+              summaries: [...state.value!.summaries, ...newData.summaries],
+              currentPage: newData.currentPage,
+              totalPages: newData.totalPages));
+        }
+      } catch (e, stackTrace) {
+        print(e.toString());
+        state = AsyncValue.error(e, stackTrace);
+      } finally {
+        isLoading = false; // Set loading state to false
+      }
+    }
+  }
+
   //.. add summary..
   void addSummarys(WidgetRef ref, context, text, imageLinks) async {
     ref.watch(loderProvider.notifier).update((state) => true);
