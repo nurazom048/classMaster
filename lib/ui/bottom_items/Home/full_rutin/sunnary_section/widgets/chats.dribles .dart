@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import 'package:table/core/component/loaders.dart';
 import 'package:table/core/dialogs/alart_dialogs.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/sunnary_section/widgets/view_images.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 
 import '../../../../../../widgets/appWidget/dottted_divider.dart';
@@ -53,13 +55,18 @@ class ChatsDribles extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 9),
-          child: CircleAvatar(
-            radius: 23,
-            backgroundColor: Colors.black,
-            backgroundImage:
-                NetworkImage(summary.ownerId?.image ?? DEMO_PROFILE_IMAGE),
+        InkWell(
+          onTap: () => Get.to(() => ViewImagesFullScreen(
+                images: [summary.ownerId.image],
+              )),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 9),
+            child: CircleAvatar(
+              radius: 23,
+              backgroundColor: Colors.black,
+              backgroundImage:
+                  NetworkImage(summary.ownerId.image ?? DEMO_PROFILE_IMAGE),
+            ),
           ),
         ),
         const SizedBox(width: 10),
@@ -74,7 +81,7 @@ class ChatsDribles extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        summary.ownerId?.name ?? '',
+                        summary.ownerId.name ?? '',
                         textScaleFactor: 1.4,
                         style: const TextStyle(
                           fontFamily: 'Inter',
@@ -114,7 +121,7 @@ class ChatsDribles extends StatelessWidget {
               //
               const SizedBox(height: 4),
               Text(
-                summary.text ?? '',
+                summary.text,
                 textScaleFactor: 1.3,
                 style: const TextStyle(
                   fontFamily: 'Inter',
@@ -147,15 +154,19 @@ class ChatsDribles extends StatelessWidget {
             itemCount: summary.imageLinks.length,
             itemBuilder: (context, index) {
               final imageUrl = summary.imageLinks[index];
-              return Container(
-                width: 100,
-                height: 100,
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  color: Colors.black12,
-                  borderRadius: BorderRadius.circular(8),
+              return InkWell(
+                onTap: () => Get.to(
+                    () => ViewImagesFullScreen(images: summary.imageLinks)),
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.black12,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Image.network(imageUrl),
                 ),
-                child: Image.network(imageUrl),
               );
             },
           ),

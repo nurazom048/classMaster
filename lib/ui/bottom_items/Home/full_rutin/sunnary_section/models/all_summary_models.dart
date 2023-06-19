@@ -65,7 +65,7 @@ class Summary {
       id: json['_id'],
       ownerId: OwnerId.fromJson(json['ownerId']),
       text: json['text'],
-      imageLinks: List<String>.from(json['imageLinks']),
+      imageLinks: List<String>.from(json['imageUrls']),
       routineId: json['routineId'],
       classId: json['classId'],
       createdAt: DateTime.parse(json['createdAt']),
