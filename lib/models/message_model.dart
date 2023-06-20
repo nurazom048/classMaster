@@ -9,6 +9,7 @@ class Message {
   String? routineID;
   String? routineName;
   String? owenerName;
+  String? email;
 
   Message({
     required this.message,
@@ -19,6 +20,7 @@ class Message {
     this.routineID,
     this.routineName,
     this.owenerName,
+    this.email,
   });
 
   factory Message.fromJson(Map<String, dynamic> json) {

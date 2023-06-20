@@ -193,37 +193,51 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
 //
   void siginUp(WidgetRef ref) async {
-    // If Email varified
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user?.emailVerified == true) {
-      ref.read(authController_provider.notifier).createAccount(
-            context: context,
-            name: nameController.text,
-            email: emailController.text,
-            username: usernameController.text,
-            password: passwordController.text,
-          );
-
-      await FirebaseAuth.instance.signOut();
-      Navigator.pop(context);
-    } else {
-      // CREATE FIREBASE INSTANCE
-      try {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    //
+    ref.read(authController_provider.notifier).createAccount(
+          context: context,
           email: emailController.text,
-          password: "@Nurazom123",
+          name: nameController.text,
+          username: usernameController.text,
+          password: passwordController.text,
         );
-        // await FirebaseAuth.instance.signInWithEmailAndPassword(
-        //   email: emailController.text,
-        //   password: "@Nurazom123",
-        // );
-        // // GO TO EMAIL VARIFI SCREEN
-        Get.to(
-          () => EmailVerificationScreen(email: emailController.text),
-        );
-      } catch (e) {
-        Alart.showSnackBar(context, e);
-      }
-    }
+
+    // User? user = FirebaseAuth.instance.currentUser;
+    // if (user?.emailVerified == true) {
+    //   // ref.read(authController_provider.notifier).createAccount(
+    //   //       context: context,
+    //   // name: nameController.text,
+    //   // email: emailController.text,
+    //   // username: usernameController.text,
+    //   // password: passwordController.text,
+    //   //     );
+
+    //   //   await FirebaseAuth.instance.signOut();
+    //   Alart.showSnackBar(context, 'Allrady have a acoount');
+    //   // Navigator.pop(context);
+    // } else {
+    //   // CREATE FIREBASE INSTANCE
+    //   try {
+    //     await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    //       email: emailController.text,
+    //       password: passwordController.text,
+    //     );
+    //     // await FirebaseAuth.instance.signInWithEmailAndPassword(
+    //     //   email: emailController.text,
+    //     //   password: "@Nurazom123",
+    //     // );
+    //     // // GO TO EMAIL VARIFI SCREEN
+    //     Get.to(
+    //       () => EmailVerificationScreen(
+    // email: emailController.text,
+    // name: nameController.text,
+    // username: usernameController.text,
+    // password: passwordController.text,
+    //       ),
+    //     );
+    //   } catch (e) {
+    //     Alart.showSnackBar(context, e);
+    //   }
+    // }
   }
 }

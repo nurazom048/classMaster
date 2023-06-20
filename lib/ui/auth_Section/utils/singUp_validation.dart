@@ -15,9 +15,11 @@ class SignUpValidation {
     if (!EmailValidator.validate(value)) {
       return "Please enter a valid email address";
     }
-    if (!value.endsWith("@gmail.com") && !value.endsWith("@outlook.com")) {
-      return "Only @gmail.com and @outlook.com  are accepted";
-    }
+
+    // TODO:
+    // if (!value.endsWith("@gmail.com") && !value.endsWith("@outlook.com")) {
+    //   return "Only @gmail.com and @outlook.com  are accepted";
+    // }
     return null;
   }
 

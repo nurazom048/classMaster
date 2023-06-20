@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
+import 'package:table/core/dialogs/alart_dialogs.dart';
 import 'package:table/models/message_model.dart';
 import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 
@@ -12,7 +13,7 @@ import '../../../constant/constant.dart';
 
 class AuthReq {
   //........ Login .........//
-  Future<Either<String, String>> login({username, password}) async {
+  Future<Either<Message, String>> login({username, password}) async {
     var loginUrl = Uri.parse('${Const.BASE_URl}/auth/login');
     try {
       final response = await http
@@ -23,9 +24,9 @@ class AuthReq {
       if (response.statusCode == 200) {
         final accountData = json.decode(response.body);
 
-        print(accountData);
+        // print(accountData);
         print('*********************');
-        // print(accountModerl);
+        print(accountData);
 
         //... save token
         await AuthController.saveToken(accountData["token"]);
@@ -38,12 +39,22 @@ class AuthReq {
         );
 
         return right(message);
+      } else if (response.statusCode == 401) {
+        final accountData = json.decode(response.body);
+        return left(Message(
+          message: message,
+          email: accountData["account"]["email"],
+        ));
       } else {
-        return left(message.toString());
+        return left(Message(
+          message: message,
+        ));
       }
     } catch (e) {
       print(e);
-      return left(e.toString());
+      return left(Message(
+        message: e.toString(),
+      ));
     }
   }
 

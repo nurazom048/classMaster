@@ -1,42 +1,65 @@
-// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/dialogs/alart_dialogs.dart';
+import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 import 'package:table/ui/auth_Section/auth_ui/forgetpassword_screen.dart';
 
-class EmailVerificationScreen extends StatefulWidget {
+class EmailVerificationScreen extends ConsumerStatefulWidget {
   final String email;
   final bool? forgotPasswordState;
+  //
+  final String? name;
+  final String? username;
+  final String? password;
 
   const EmailVerificationScreen({
     super.key,
     required this.email,
     this.forgotPasswordState = false,
+    //
+    this.name,
+    this.password,
+    this.username,
   });
 
+  //
   @override
-  _EmailVerificationScreenState createState() =>
+  ConsumerState<ConsumerStatefulWidget> createState() =>
       _EmailVerificationScreenState();
 }
 
-class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
+class _EmailVerificationScreenState
+    extends ConsumerState<EmailVerificationScreen> {
+  //
   final FirebaseAuth _auth = FirebaseAuth.instance;
   User? _user;
   Timer? timer;
+  bool showResendButton = false;
 
   @override
   void initState() {
     super.initState();
     _user = _auth.currentUser;
-    // step:1 send Varification mail
-    sendVerificationEmail(widget.email);
+    // Step 1: Send Verification Email
+    sendVerificationEmail();
 
-    // step:2 Check is varified or not
-    timer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      checkVerification();
+    // Step 2: Check if verified or not
+    startTimer();
+  }
+
+  void startTimer() {
+    timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
+      print(
+          '&&&${widget.email} ${widget.password} &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
+      await checkVerification();
+    });
+    Timer(const Duration(seconds: 20), () {
+      setState(() {
+        showResendButton = true;
+      });
     });
   }
 
@@ -44,22 +67,25 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   void dispose() async {
     timer?.cancel();
     super.dispose();
-// Last step: make sure is anythik gos to worng then dont save the user ro firebase
+    // Last step: Make sure if anything goes wrong, the user is not saved to Firebase
     try {
-      // on dispose time i user is not varified then remove the user from firebse
+      // On dispose time, if the user is not verified, remove the user from Firebase
       User? user = FirebaseAuth.instance.currentUser;
 
       if (user?.emailVerified == false) {
-        await FirebaseAuth.instance.currentUser!.delete();
+        await FirebaseAuth.instance.signOut();
+        //await FirebaseAuth.instance.currentUser!.delete();
+      } else {
+        await FirebaseAuth.instance.signOut();
       }
     } catch (e) {
-      Alart.showSnackBar(context, "Error Delete user $e");
+      Alart.showSnackBar(context, "Error deleting user: $e");
     }
   }
 
-// send emaile varification
-  Future<void> sendVerificationEmail(String email) async {
-    print("inside sendVerificationEmail ");
+  // Send email verification
+  Future<void> sendVerificationEmail() async {
+    print("Inside sendVerificationEmail");
     try {
       await _user!.sendEmailVerification();
     } catch (e) {
@@ -69,16 +95,33 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
       });
     }
   }
-  //checkVerification
 
+  // Check verification
   Future<void> checkVerification() async {
-    print("Tomer start");
+    print("******************* Timer start");
     User? user = FirebaseAuth.instance.currentUser;
 
     await user?.reload();
-    timer?.cancel();
     if (user?.emailVerified == true) {
-      // If for forgrt go to forget passsword screen else to to login screen
+      timer?.cancel();
+      Alart.errorAlartDilog(context, 'Emaile varified susr=esfull');
+
+      // await FirebaseAuth.instance.signOut();
+      // await FirebaseAuth.instance
+      //     .signInWithEmailAndPassword(
+      //         email: widget.email, password: widget.password!)
+      //     .then((value) {
+      //   Alart.showSnackBar(context, 'Verified not creating account');
+
+      //   // If for forget, go to the forget password screen; else, go to the login screen
+      //   ref.read(authController_provider.notifier).createAccount(
+      //         context: context,
+      //         name: widget.name!,
+      //         email: widget.email,
+      //         username: widget.username!,
+      //         password: widget.password!,
+      //       );
+      // });
 
       if (widget.forgotPasswordState == true) {
         Navigator.push(
@@ -88,8 +131,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
           ),
         );
       } else {
-        Alart.showSnackBar(context, "EmaiVarified Sucsesfull");
-        Navigator.pop(context);
+        Alart.showSnackBar(context, "Email Verified Successfully");
       }
     }
   }
@@ -121,6 +163,11 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
               onPressed: () async => checkVerification(),
               child: const Text('Check Verification'),
             ),
+            if (showResendButton) // Display the "Resend" button if showResendButton is true
+              ElevatedButton(
+                onPressed: () async => sendVerificationEmail(),
+                child: const Text('Resend'),
+              ),
           ],
         ),
       ),

@@ -4,11 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/message_model.dart';
 import 'package:table/ui/auth_Section/auth_req/auth_req.dart';
 import 'package:table/ui/bottom_items/bottom_nevbar.dart';
 import '../../../core/dialogs/alart_dialogs.dart';
+import '../auth_ui/email_varification.screen.dart';
 import '../auth_ui/logIn_screen.dart';
 
 final authController_provider = StateNotifierProvider.autoDispose(
@@ -56,9 +58,24 @@ class AuthController extends StateNotifier<bool> {
     final res = await authReqq.login(username: username, password: password);
 
     res.fold(
-      (l) {
+      (l) async {
         state = false;
-        return Alart.errorAlartDilog(context, l);
+        print('***********************************${l.message} ${password}**');
+        if (l.message.toString() == 'Email is not verified' &&
+            l.email != null) {
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: l.email!,
+            password: password,
+          );
+          Get.to(() => EmailVerificationScreen(
+                email: l.email!,
+                password: password,
+              ));
+          Alart.showSnackBar(context, 'Email is not varified');
+        } else {
+          print(l);
+          return Alart.errorAlartDilog(context, l.message);
+        }
       },
       (r) {
         state = false;
@@ -75,12 +92,20 @@ class AuthController extends StateNotifier<bool> {
     final res = await authReqq.changePassword(oldPassword, newPassword);
 
     res.fold(
-      (l) {
+      (l) async {
         state = false;
+        await FirebaseAuth.instance.currentUser!.delete();
         return Alart.errorAlartDilog(context, l);
       },
       (r) {
         state = false;
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const LogingScreen(),
+          ),
+        );
 
         Alart.showSnackBar(context, r.message);
       },
