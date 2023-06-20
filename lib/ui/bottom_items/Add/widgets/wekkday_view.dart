@@ -1,20 +1,24 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/models/rutins/class/find_class_model.dart';
 import 'package:table/ui/bottom_items/Add/widgets/select_priode_number.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 import '../../../../constant/app_color.dart';
 import '../../../../widgets/appWidget/dottted_divider.dart';
+import '../../Home/full_rutin/screen/viewMore/class_list.dart';
 
-class WeekdayView extends StatelessWidget {
+class WeekdayView extends ConsumerWidget {
   final Weekday weekday;
   final dynamic onTap;
+  final dynamic showDeleteButton;
 
   WeekdayView({
     Key? key,
     required this.weekday,
     required this.onTap,
+    required this.showDeleteButton,
   }) : super(key: key);
 
   final List<String> sevendays = [
@@ -28,7 +32,9 @@ class WeekdayView extends StatelessWidget {
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    //total propde
+    final totalPriode = ref.watch(totalPriodeCountProvider);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
@@ -38,16 +44,20 @@ class WeekdayView extends StatelessWidget {
       child: ExpansionTile(
         title: Text(sevendays[weekday.num],
             style: TextStyle(fontSize: 18, color: AppColor.nokiaBlue)),
-        trailing: InkWell(
-            onTap: onTap, child: const Icon(Icons.delete, color: Colors.red)),
+        trailing: showDeleteButton == true
+            ? InkWell(
+                onTap: onTap,
+                child: const Icon(Icons.delete, color: Colors.red))
+            : const SizedBox(),
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const DotedDivider(),
           const SizedBox(height: 20),
           PeriodNumberSelector(
+            viewOnly: true,
             hint: "Select Start Period",
             subHint: "Select End Period",
-            length: 3,
+            length: totalPriode,
             onStartSelected: (number) {
               print(number);
             },
@@ -71,7 +81,8 @@ class WeekdayView extends StatelessWidget {
                       height: 1.3,
                       color: AppColor.nokiaBlue),
                 ),
-                AppText(weekday.room).title(),
+                const SizedBox(height: 4),
+                Text(weekday.room, style: TS.heading()),
                 const SizedBox(height: 20),
               ],
             ),

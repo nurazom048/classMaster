@@ -11,53 +11,89 @@ import 'package:table/widgets/appWidget/buttons/cupertino_butttons.dart';
 import '../../../../widgets/appWidget/TextFromFild.dart';
 import '../../../../widgets/day_select_dropdowen.dart';
 import '../../Home/full_rutin/controller/weekday_controller.dart';
+import '../../Home/full_rutin/screen/viewMore/class_list.dart';
 
 class WeekdayUtils {
-  //! add weekday
-  static void addWeekday(BuildContext context, classId) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          int _start = 1;
-          int _end = 1;
-          int? _number;
-          final _roomCon = TextEditingController();
-          final _weekdayFromKey = GlobalKey<FormState>();
+  // ...
 
-          return AlertDialog(
-            content: SingleChildScrollView(
-              child: Form(
-                key: _weekdayFromKey,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    DayDropdown(
+  static void addWeekday(BuildContext context, classId) {
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      barrierColor: Colors.black26,
+      elevation: 0,
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext context) {
+        int _start = 1;
+        int _end = 1;
+        int? _number;
+
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(7),
+            color: Theme.of(context).scaffoldBackgroundColor,
+          ),
+          margin:
+              const EdgeInsets.symmetric(vertical: 20).copyWith(bottom: 200),
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width - 20,
+          // color: Colors.black,
+          child: Consumer(builder: (context, ref, _) {
+            //total propde
+            final totalPriode = ref.watch(totalPriodeCountProvider);
+            final TextEditingController _roomCon = TextEditingController();
+            final _weekdayFromKey = GlobalKey<FormState>();
+
+            return GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {},
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _weekdayFromKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(top: 9),
+                        height: 40,
+                        // color: Colors.red,
+                        child: Row(
+                          children: [
+                            IconButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              icon: Icon(Icons.cancel),
+                            ),
+                          ],
+                        ),
+                      ),
+                      DayDropdown(
                         labelText: "select day",
                         onPressed: () {},
                         onChanged: (selectedDay) {
                           _number = selectedDay;
-                        }),
-                    const SizedBox(height: 5),
-                    PeriodNumberSelector(
-                      hint: " Select Start Period",
-                      subHint: " Select End Period",
-                      length: 3,
-                      onEndSelected: (number) {
-                        _start = number;
-                      },
-                      onStartSelected: (number) {
-                        _end = number;
-                      },
-                    ),
-                    AppTextFromField(
-                      controller: _roomCon,
-                      hint: "Classroom Number",
-                      labelText: "EnterClassroom Number in this day",
-                      validator: (value) => AddClassValidator.roomNumber(value),
-                    ),
-                    const SizedBox(height: 30),
-                    Consumer(builder: (context, ref, _) {
-                      return CupertinoButtonCustom(
+                        },
+                      ),
+                      const SizedBox(height: 5),
+                      PeriodNumberSelector(
+                        hint: " Select Start Period",
+                        subHint: " Select End Period",
+                        length: totalPriode,
+                        onEndSelected: (number) {
+                          _start = number;
+                        },
+                        onStartSelected: (number) {
+                          _end = number;
+                        },
+                      ),
+                      AppTextFromField(
+                        controller: _roomCon,
+                        hint: "Classroom Number",
+                        labelText: "Enter Classroom Number in this day",
+                        validator: (value) =>
+                            AddClassValidator.roomNumber(value),
+                      ),
+                      const SizedBox(height: 30),
+                      CupertinoButtonCustom(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         textt: "Add Weekday",
                         widget: const ma.Text(
@@ -76,22 +112,25 @@ class WeekdayUtils {
                                 .watch(weekayControllerStateProvider(classId)
                                     .notifier)
                                 .addWeekday(
-                                    context,
-                                    ref,
-                                    _number.toString(),
-                                    _roomCon.text,
-                                    _start.toString(),
-                                    _end.toString());
+                                  context,
+                                  ref,
+                                  _number.toString(),
+                                  _roomCon.text,
+                                  _start.toString(),
+                                  _end.toString(),
+                                );
                           }
                         },
-                      );
-                    }),
-                    const SizedBox(height: 30),
-                  ],
+                      ),
+                      const SizedBox(height: 10),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        });
+            );
+          }),
+        );
+      },
+    );
   }
 }

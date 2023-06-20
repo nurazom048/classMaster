@@ -1,6 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:table/core/dialogs/alart_dialogs.dart';
 import 'package:table/ui/bottom_items/Add/widgets/add_squrebuttons.dart';
 import 'package:table/ui/bottom_items/Add/widgets/priode_select_buttons.dart';
 
@@ -14,6 +15,7 @@ class PeriodNumberSelector extends StatefulWidget {
   final String subHint;
   final int length;
   final dynamic onTapToAdd;
+  final bool? viewOnly;
 
   const PeriodNumberSelector({
     Key? key,
@@ -22,6 +24,7 @@ class PeriodNumberSelector extends StatefulWidget {
     required this.hint,
     required this.subHint,
     required this.length,
+    this.viewOnly,
     this.onTapToAdd,
   }) : super(key: key);
 
@@ -34,7 +37,9 @@ class _PeriodNumberSelectorState extends State<PeriodNumberSelector> {
   int initialEnd = 0;
 
   void _handleNumberSelected(int number) {
-    if (number != initialSelectedNumber) {
+    if (widget.viewOnly == true) {
+      Alart.showSnackBar(context, "You Can't Change here");
+    } else if (number != initialSelectedNumber) {
       setState(() {
         initialSelectedNumber = number;
       });
@@ -43,7 +48,9 @@ class _PeriodNumberSelectorState extends State<PeriodNumberSelector> {
   }
 
   void _handleEnd(int number) {
-    if (number != initialEnd) {
+    if (widget.viewOnly == true) {
+      Alart.showSnackBar(context, "You Can't Change here");
+    } else if (number != initialEnd) {
       setState(() {
         initialEnd = number;
       });

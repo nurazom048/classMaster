@@ -60,6 +60,7 @@ class NoticeRequest {
             APICacheDBModel(key: key, syncData: response.body);
 
         await APICacheManager().addCacheData(cacheDBModel);
+        print('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
 
         print(res);
 

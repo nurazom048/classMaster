@@ -6,7 +6,7 @@ import 'package:table/core/component/loaders.dart';
 import 'package:table/core/dialogs/alart_dialogs.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/sunnary_section/widgets/view_images.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
-
+import 'package:expandable_text/expandable_text.dart';
 import '../../../../../../widgets/appWidget/dottted_divider.dart';
 import '../../../utils/utils.dart';
 import '../models/all_summary_models.dart';
@@ -57,7 +57,9 @@ class ChatsDribles extends StatelessWidget {
       children: [
         InkWell(
           onTap: () => Get.to(() => ViewImagesFullScreen(
-                images: [summary.ownerId.image],
+                images: summary.ownerId.image != null
+                    ? [summary.ownerId.image!]
+                    : [],
               )),
           child: Padding(
             padding: const EdgeInsets.only(top: 9),
@@ -120,18 +122,19 @@ class ChatsDribles extends StatelessWidget {
 
               //
               const SizedBox(height: 4),
-              Text(
+              expendedText(
+                context,
                 summary.text,
-                textScaleFactor: 1.3,
-                style: const TextStyle(
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                  height: 1.43,
-                  color: Colors.black,
-                ),
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
+                // textScaleFactor: 1.3,
+                // style: const TextStyle(
+                //   fontFamily: 'Inter',
+                //   fontWeight: FontWeight.w400,
+                //   fontSize: 14,
+                //   height: 1.43,
+                //   color: Colors.black,
+                //   ),
+                // maxLines: 3,
+                // overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
@@ -330,4 +333,21 @@ class ChatsDribles extends StatelessWidget {
   //       );
   //     }),
   //   );
+}
+
+Widget expendedText(BuildContext context, String longText) {
+  return ExpandableText(
+    longText,
+    expandText: 'show more',
+    collapseText: 'show less',
+    maxLines: 3,
+    linkColor: Colors.blue,
+    style: const TextStyle(
+      fontFamily: 'Inter',
+      fontWeight: FontWeight.w400,
+      fontSize: 16,
+      height: 1.43,
+      color: Colors.black,
+    ),
+  );
 }

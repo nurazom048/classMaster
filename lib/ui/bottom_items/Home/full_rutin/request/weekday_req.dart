@@ -61,22 +61,25 @@ class WeekdaRequest {
 
 // delete weekday
 
-  static Future<Either<Message, WeekdayList>> deletWeekday(String id) async {
+  static Future<Either<Message, WeekdayList>> deletWeekday(
+      String id, String classID) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 
     try {
       final response = await http.delete(
-        Uri.parse('${Const.BASE_URl}/class/weakday/delete/$id'),
+        Uri.parse('${Const.BASE_URl}/class/weakday/delete/$id/$classID'),
         headers: {'Authorization': 'Bearer $getToken'},
       );
-      Message error = Message.fromJson(jsonDecode(response.body));
-      WeekdayList wekkdaylist = WeekdayList.fromJson(jsonDecode(response.body));
+      print(jsonDecode(response.body));
 
       if (response.statusCode == 200) {
+        WeekdayList wekkdaylist =
+            WeekdayList.fromJson(jsonDecode(response.body));
+
         return right(wekkdaylist);
       } else {
-        return left(error);
+        return left(Message.fromJson(jsonDecode(response.body)));
       }
     } catch (e) {
       print(e);

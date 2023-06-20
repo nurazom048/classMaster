@@ -29,12 +29,13 @@ class ShowWeekdayWidgets extends ConsumerWidget {
                 (index) => Container(
                   margin: const EdgeInsets.symmetric(vertical: 5),
                   child: WeekdayView(
+                    showDeleteButton: data.weekdays.length != 1,
                     weekday: data.weekdays[index],
 
                     // delete weekday
                     onTap: () {
                       String id = data.weekdays[index].id;
-                      weekdayController.deleteWeekday(context, id);
+                      weekdayController.deleteWeekday(context, id, classId);
                     },
                   ),
                 ),

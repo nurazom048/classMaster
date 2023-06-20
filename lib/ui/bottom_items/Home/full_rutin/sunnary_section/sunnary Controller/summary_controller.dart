@@ -83,7 +83,7 @@ class SummaryController extends StateNotifier<AsyncValue<AllSummaryModel>> {
       return Alart.errorAlartDilog(context, error.message);
     }, (r) {
       ref.refresh(sunnaryControllerProvider(classId));
-
+      Navigator.of(context).pop();
       return Alart.showSnackBar(context, r.message);
     });
   }

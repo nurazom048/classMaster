@@ -33,7 +33,8 @@ class AppPriodePage extends StatefulWidget {
 class _AppPriodePageState extends State<AppPriodePage> {
   DateTime startTime = DateTime.now();
   DateTime endTime = DateTime.now();
-  bool show = false;
+  bool showStartTime = false;
+  bool showEndTime = false;
   DateTime? st;
   DateTime? et;
 
@@ -80,14 +81,14 @@ class _AppPriodePageState extends State<AppPriodePage> {
                           width: 170,
                           timeText: 'Start Time',
                           time: startTime,
-                          show: show,
+                          show: showStartTime,
                           onTap: _selectStartTime,
                         ),
                         SelectTime(
                           width: 170,
                           timeText: 'End Time',
                           time: endTime,
-                          show: show,
+                          show: showEndTime,
                           onTap: _selectEndTime,
                         ),
                       ],
@@ -159,7 +160,7 @@ class _AppPriodePageState extends State<AppPriodePage> {
         DateTime selecteTime = DateTime.parse("2021-12-23 $hour:$minute:00");
 
         setState(() {
-          show = true;
+          showStartTime = true;
           st = selecteTime;
           startTime = selecteTime;
           // startTimeDemo = selecteTime;
@@ -183,7 +184,7 @@ class _AppPriodePageState extends State<AppPriodePage> {
         DateTime selecteEndTime = DateTime.parse("2021-12-23 $hour:$minute:00");
         //
         setState(() {
-          show = true;
+          showEndTime = true;
 
           et = selecteEndTime;
           endTime = selecteEndTime;
@@ -221,7 +222,8 @@ class _AppPriodePageState extends State<AppPriodePage> {
         (r) {
           startTime = r.startTime;
           endTime = r.endTime;
-          show = true;
+          showEndTime = true;
+          showStartTime = true;
         },
       );
 

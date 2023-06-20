@@ -70,6 +70,7 @@ dependencies:
   connectivity_plus: ^4.0.1
   api_cache_manager: ^1.0.2
   cached_network_image: ^3.2.3
+  expandable_text: ^2.3.0
 
 
 dev_dependencies:

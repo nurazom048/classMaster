@@ -77,7 +77,7 @@ class OwnerId {
   String id;
   String username;
   String name;
-  String image;
+  String? image;
 
   OwnerId({
     required this.id,

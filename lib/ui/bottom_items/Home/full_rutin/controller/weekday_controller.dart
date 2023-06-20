@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:table/core/dialogs/alart_dialogs.dart';
+import 'package:table/models/class_details_model.dart';
 import 'package:table/models/rutins/weekday/weekday_list.dart';
 import '../../../../../models/message_model.dart';
 import '../request/weekday_req.dart';
@@ -53,8 +54,9 @@ class WeeekDayControllerClass extends StateNotifier<AsyncValue<WeekdayList>> {
   }
 
   //
-  deleteWeekday(context, String id) async {
-    Either<Message, WeekdayList> res = await WeekdaRequest.deletWeekday(id);
+  deleteWeekday(context, String id, String classId) async {
+    Either<Message, WeekdayList> res =
+        await WeekdaRequest.deletWeekday(id, classId);
 
     res.fold((error) {
       Alart.showSnackBar(context, error.message.toString());
