@@ -63,13 +63,14 @@ class SummayReuest {
 
   /// get summary........///
 
-  Future<AllSummaryModel> getSummaryList(classId, {int? pages}) async {
+  Future<AllSummaryModel> getSummaryList(String? classId, {int? pages}) async {
     print("call get summary ");
     String queryPage = pages != null ? "?page=$pages" : '';
+    String findclassId = classId ?? '';
 
     final String? getToken = await AuthController.getToken();
 
-    var url = Uri.parse('${Const.BASE_URl}/summary/$classId' + queryPage);
+    var url = Uri.parse('${Const.BASE_URl}/summary/$findclassId' + queryPage);
     Map<String, String> headers = {'Authorization': 'Bearer $getToken'};
     //... send request....//
     try {
@@ -96,6 +97,8 @@ class SummayReuest {
   static Future<Either<Message, Message>> deleteSummay(String summaryID) async {
     final String? getToken = await AuthController.getToken();
     var url = Uri.parse('${Const.BASE_URl}/summary/$summaryID');
+
+    print(url);
 
     //... send request....//
     try {

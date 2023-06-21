@@ -32,7 +32,7 @@ class ChatsDribles extends StatelessWidget {
       ),
       child: Container(
         width: 310,
-        margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 30),
+        margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: const Color(0xFFE4F0FF),
@@ -239,6 +239,7 @@ class ChatsDribles extends StatelessWidget {
                           Alart.errorAlertDialogCallBack(context,
                               "Are you sure You want to Delete This Summay",
                               onConfirm: () {
+                            print('LLLLLLLLLLLLLLLLLL');
                             summaryNotifier.deleteSummarys(
                                 parentContext, summaryID);
                           });

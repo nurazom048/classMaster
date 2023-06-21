@@ -38,12 +38,14 @@ class PriodeRequest {
       final res = json.decode(response.body);
       print(res);
 
-      Message messsaeg = Message.fromJson(res);
-
       if (response.statusCode == 200) {
+        Message messsaeg = Message.fromJson(res);
+
         return right(messsaeg);
       } else {
-        throw Exception(res);
+        Message messsaeg = Message.fromJson(res);
+
+        return left(messsaeg.message);
       }
     } catch (e) {
       print(e);

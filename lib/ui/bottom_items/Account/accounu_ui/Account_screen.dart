@@ -4,7 +4,8 @@ import 'package:get/get.dart';
 import 'package:table/core/component/loaders.dart';
 import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 import 'package:table/ui/bottom_items/Account/account_request/account_request.dart';
-import 'package:table/ui/bottom_items/Account/accounu_ui/save_screen.dart';
+import 'package:table/ui/bottom_items/Account/accounu_ui/save_rutins_screen.dart';
+import 'package:table/ui/bottom_items/Account/accounu_ui/save_summarysscreen.dart';
 import 'package:table/ui/bottom_items/Account/profile/profile_screen.dart';
 import 'package:table/ui/bottom_items/Account/widgets/my_container_button.dart';
 import 'package:table/ui/bottom_items/Account/widgets/my_divider.dart';
@@ -109,7 +110,13 @@ class AccountScreen extends StatelessWidget {
                         Tilesbutton(
                           "Saved",
                           const FaIcon(FontAwesomeIcons.bookmark),
-                          onTap: () => Get.to(const SaveScreen()),
+                          onTap: () => Get.to(const SaveRoutinesScreen()),
+                        ),
+                        //
+                        Tilesbutton(
+                          "Save Summarys",
+                          const FaIcon(FontAwesomeIcons.bookmark),
+                          onTap: () => Get.to(SaveSummarysScreen()),
                         ),
 
                         //

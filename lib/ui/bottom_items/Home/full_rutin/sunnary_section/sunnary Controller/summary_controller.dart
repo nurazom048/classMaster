@@ -11,7 +11,7 @@ import '../../../../../../core/dialogs/alart_dialogs.dart';
 
 // providers
 final sunnaryControllerProvider = StateNotifierProvider.autoDispose
-    .family<SummaryController, AsyncValue<AllSummaryModel>, String>(
+    .family<SummaryController, AsyncValue<AllSummaryModel>, String?>(
         (ref, classId) {
   return SummaryController(ref, classId, ref.watch(summaryReqProvider));
 });
@@ -19,7 +19,7 @@ final sunnaryControllerProvider = StateNotifierProvider.autoDispose
 class SummaryController extends StateNotifier<AsyncValue<AllSummaryModel>> {
   SummayReuest summaryReq;
   Ref ref;
-  String classId;
+  String? classId;
   SummaryController(this.ref, this.classId, this.summaryReq)
       : super(const AsyncLoading()) {
     getlist();
@@ -39,15 +39,13 @@ class SummaryController extends StateNotifier<AsyncValue<AllSummaryModel>> {
     }
   }
 
-//   // Load more summaries
-  bool isLoading = false; // Add this flag to track loading state
-
 // Load more summaries
   Future<void> loadMore(int currentPage, int totalPages) async {
-    if (!isLoading && currentPage < totalPages) {
+    if (currentPage == totalPages) {
+      print('r kisu nai vai');
+    } else if (currentPage < totalPages) {
       print("current: $currentPage total: $totalPages");
       try {
-        isLoading = true; // Set loading state to true
         AllSummaryModel newData =
             await summaryReq.getSummaryList(classId, pages: currentPage + 1);
         if (!mounted) return;
@@ -57,15 +55,26 @@ class SummaryController extends StateNotifier<AsyncValue<AllSummaryModel>> {
         if (newData.currentPage != newData.totalCount ||
             newData.currentPage > newData.totalCount) {
           state = AsyncValue.data(state.value!.copyWith(
-              summaries: [...state.value!.summaries, ...newData.summaries],
-              currentPage: newData.currentPage,
-              totalPages: newData.totalPages));
+            summaries: [
+              ...state.value!.summaries,
+              ...newData.summaries.where((newSummary) {
+                // Filter out any summaries with duplicate IDs
+                return !state.value!.summaries.any(
+                  (existingSummary) => existingSummary.id == newSummary.id,
+                );
+              }).toList(),
+            ],
+            currentPage: newData.currentPage,
+            totalPages: newData.totalPages,
+          ));
+          // state = AsyncValue.data(state.value!.copyWith(
+          //     summaries: [...state.value!.summaries, ...newData.summaries],
+          //     currentPage: newData.currentPage,
+          //     totalPages: newData.totalPages));
         }
       } catch (e, stackTrace) {
         print(e.toString());
         state = AsyncValue.error(e, stackTrace);
-      } finally {
-        isLoading = false; // Set loading state to false
       }
     }
   }
@@ -75,7 +84,7 @@ class SummaryController extends StateNotifier<AsyncValue<AllSummaryModel>> {
     ref.watch(loderProvider.notifier).update((state) => true);
     //
     Either<Message, Message> res =
-        await SummayReuest.addSummaryRequest(classId, text, imageLinks);
+        await SummayReuest.addSummaryRequest(classId!, text, imageLinks);
     ref.watch(loderProvider.notifier).update((state) => false);
 
     //
@@ -90,6 +99,7 @@ class SummaryController extends StateNotifier<AsyncValue<AllSummaryModel>> {
 
   // DELETE summary
   void deleteSummarys(context, summaryID) async {
+    print('fromController');
     //
     Either<Message, Message> res = await SummayReuest.deleteSummay(summaryID);
 
@@ -100,6 +110,7 @@ class SummaryController extends StateNotifier<AsyncValue<AllSummaryModel>> {
       print(error);
       return Alart.errorAlartDilog(context, error.message);
     }, (r) {
+      ref.refresh(sunnaryControllerProvider(classId));
       Navigator.pop(context);
       return Alart.showSnackBar(context, r.message);
     });

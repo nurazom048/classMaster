@@ -33,17 +33,13 @@ abstract class Alart {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Alart',
+          title: const Text('Alert',
               style: TextStyle(fontWeight: FontWeight.bold)),
           content:
               Text(message.toString(), style: const TextStyle(fontSize: 16)),
           actions: <Widget>[
             ElevatedButton(
-              onPressed: () {
-                if (onConfirm != null) {
-                  onConfirm(true);
-                }
-              },
+              onPressed: () => onConfirm!(), // Invoke the onConfirm callback
               child: const Text('Yes',
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ),
