@@ -19,6 +19,7 @@ class ShowWeekdayWidgets extends ConsumerWidget {
         ref.watch(weekayControllerStateProvider(classId));
     final weekdayController =
         ref.read(weekayControllerStateProvider(classId).notifier);
+
     return Column(
       children: [
         weekdayListProvider.when(
@@ -45,9 +46,29 @@ class ShowWeekdayWidgets extends ConsumerWidget {
           error: (error, stackTrace) => Alart.handleError(context, error),
           loading: () => Loaders.center(),
         ),
-        AddWeekdayButton(onPressed: () {
-          WeekdayUtils.addWeekday(context, classId);
-        }),
+        AddWeekdayButton(
+            icon: Icons.add,
+            text: 'Add Weekday',
+            onPressed: () {
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  fullscreenDialog: true,
+                  opaque: false,
+                  pageBuilder: (BuildContext context, animation, __) {
+                    return SlideTransition(
+                      position: Tween<Offset>(
+                        begin: const Offset(0, 1),
+                        end: Offset.zero,
+                      ).animate(CurvedAnimation(
+                        parent: animation,
+                        curve: Curves.easeOut,
+                      )),
+                      child: AddWeekdayExpantion(classId: classId),
+                    );
+                  },
+                ),
+              );
+            }),
       ],
     );
   }

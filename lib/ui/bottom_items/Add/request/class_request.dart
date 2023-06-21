@@ -14,7 +14,7 @@ import '../../../../core/dialogs/alart_dialogs.dart';
 import 'package:table/models/class_model.dart';
 
 class ClassRequest {
-  static Future<void> addClass(
+  static Future<String?> addClass(
       WidgetRef ref, String rutinId, context, ClassModel classModel) async {
     print("from add");
     try {
@@ -37,19 +37,21 @@ class ClassRequest {
       print("  RES ..${json.decode(response.body)}");
 
       //
-      var message = json.decode(response.body)["message"];
-      print(message);
 
       if (response.statusCode == 200) {
         final res = json.decode(response.body);
+        print(res);
         // Navigator.pop(context);
         // ignore: unused_result
         ref.refresh(rutins_detalis_provider(rutinId));
         //print response
-        print("Routine created successfully");
+        print("class created successfully");
         print(res);
         Alart.showSnackBar(context, 'class add successfully');
+        return res['_id'];
       } else {
+        var message = json.decode(response.body)["message"];
+
         Alart.errorAlartDilog(context, message);
       }
     } catch (e) {

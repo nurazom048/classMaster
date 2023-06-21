@@ -39,17 +39,17 @@ class WeeekDayControllerClass extends StateNotifier<AsyncValue<WeekdayList>> {
 
   // add weekday
 
-  addWeekday(context, WidgetRef ref, num, String room, start, end) async {
+  addWeekday(
+      context, WidgetRef ref, String num, String room, start, end) async {
     Either<Message, Message> res =
         await WeekdaRequest.addWeekday(classId, room, num, start, end);
 
     res.fold((error) {
-      Alart.showSnackBar(context, error.toString());
+      return Alart.errorAlartDilog(context, error.message);
     }, (data) {
-      Navigator.of(context).pop();
-
       ref.refresh(weekayControllerStateProvider(classId));
-      Alart.showSnackBar(context, data.message.toString());
+      Alart.showSnackBar(context, data.message);
+      Navigator.of(context).pop();
     });
   }
 

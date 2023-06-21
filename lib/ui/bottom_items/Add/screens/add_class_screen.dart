@@ -28,12 +28,14 @@ class AddClassScreen extends StatefulWidget {
   final String? routineName;
   final String? classId;
   final bool? isEdit;
+  final bool? isUpdate;
 
   const AddClassScreen({
     super.key,
     required this.routineId,
     this.classId,
     this.isEdit = false,
+    this.isUpdate = false,
     this.routineName,
   });
 
@@ -73,7 +75,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
   @override
   void initState() {
     super.initState();
-    if (widget.isEdit == true) {
+    if (widget.isEdit == true || widget.isUpdate == true) {
       findClass();
     }
   }
@@ -97,9 +99,14 @@ class _AddClassScreenState extends State<AddClassScreen> {
                       HeaderTitle(widget.routineName ?? '', context),
                       const SizedBox(height: 40),
 
-                      widget.isEdit == true
-                          ? const AppText("Edit Class").title()
-                          : const AppText("Add Class").title(),
+                      if (widget.isEdit == true)
+                        const AppText("Edit Class").title()
+                      else if (widget.isUpdate == true)
+                        const AppText("Update Class").title()
+                      else
+                        const AppText("Add Class").title(),
+
+                      //
                       const SizedBox(height: 20),
 
                       // Class name
@@ -131,7 +138,10 @@ class _AddClassScreenState extends State<AddClassScreen> {
                       const SizedBox(height: 20),
 
                       // //! weekday list when eddit
-                      if (widget.isEdit == true && widget.classId != null)
+
+                      if (widget.isUpdate == true && widget.classId != null)
+                        ShowWeekdayWidgets(classId: widget.classId!)
+                      else if (widget.isEdit == true && widget.classId != null)
                         ShowWeekdayWidgets(classId: widget.classId!)
                       else
                         Container(
@@ -195,9 +205,11 @@ class _AddClassScreenState extends State<AddClassScreen> {
                       const SizedBox(height: 30),
                       CupertinoButtonCustom(
                         padding: const EdgeInsets.symmetric(horizontal: 25),
-                        textt: widget.isEdit == true
-                            ? "Eddit Class"
-                            : "Create Class",
+                        textt: widget.isUpdate == true
+                            ? 'Update Class'
+                            : widget.isEdit == true
+                                ? "Eddit Class"
+                                : "Create Class",
                         color: AppColor.nokiaBlue,
                         onPressed: () async {
                           print("object");
@@ -218,40 +230,70 @@ class _AddClassScreenState extends State<AddClassScreen> {
     });
   }
 
-  void _onTapToButton(WidgetRef ref) {
+  void _onTapToButton(WidgetRef ref) async {
     print("ontap ${widget.isEdit}");
-    widget.isEdit == true
-        ? ClassRequest().editClass(
-            context,
-            ref,
-            widget.classId ?? "",
-            widget.routineId,
-            ClassModel(
-              className: _classNameController.text,
-              instructorName: _instructorController.text,
-              roomNumber: _roomController.text,
-              subjectCode: _subCodeController.text,
-              startingPeriod: startPeriod,
-              endingPeriod: endPeriod,
-              weekday: _selectedDay,
-              startTime: startTime,
-              endTime: startTime,
-            ))
-        : ClassRequest.addClass(
-            ref,
-            widget.routineId,
-            context,
-            ClassModel(
-              className: _classNameController.text,
-              instructorName: _instructorController.text,
-              roomNumber: _roomController.text,
-              subjectCode: _subCodeController.text,
-              startingPeriod: startPeriod,
-              endingPeriod: endPeriod,
-              weekday: _selectedDay,
-              startTime: startTime,
-              endTime: startTime,
-            ));
+
+    if (widget.isEdit == true || widget.isUpdate == true) {
+      ClassRequest().editClass(
+          context,
+          ref,
+          widget.classId ?? "",
+          widget.routineId,
+          ClassModel(
+            className: _classNameController.text,
+            instructorName: _instructorController.text,
+            roomNumber: _roomController.text,
+            subjectCode: _subCodeController.text,
+            startingPeriod: startPeriod,
+            endingPeriod: endPeriod,
+            weekday: _selectedDay,
+            startTime: startTime,
+            endTime: startTime,
+          ));
+    } else {
+      String? newclassID = await ClassRequest.addClass(
+          ref,
+          widget.routineId,
+          context,
+          ClassModel(
+            className: _classNameController.text,
+            instructorName: _instructorController.text,
+            roomNumber: _roomController.text,
+            subjectCode: _subCodeController.text,
+            startingPeriod: startPeriod,
+            endingPeriod: endPeriod,
+            weekday: _selectedDay,
+            startTime: startTime,
+            endTime: startTime,
+          ));
+
+      //
+      if (newclassID == null) {
+        Alart.showSnackBar(context, 'somthing went worng');
+      }
+      Navigator.push(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (BuildContext context, Animation<double> animation,
+              Animation<double> secondaryAnimation) {
+            return SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(1, 0),
+                end: Offset.zero,
+              ).animate(CurvedAnimation(
+                parent: animation,
+                curve: Curves.easeOut,
+              )),
+              child: AddClassScreen(
+                routineId: widget.routineId,
+                classId: newclassID,
+                isUpdate: true,
+              ),
+            );
+          },
+        ),
+      );
+    }
   }
 
   //

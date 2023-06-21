@@ -99,7 +99,7 @@ class CreaeNewRutine extends StatelessWidget {
       },
       (data) async {
         if (data.routineID != null) {
-          await Future.delayed(const Duration(seconds: 5));
+          await Future.delayed(const Duration(seconds: 2));
           createRoutineLoderNotifier.update((state) => false);
           // Wait for 5 seconds
           Navigator.pushReplacement(
