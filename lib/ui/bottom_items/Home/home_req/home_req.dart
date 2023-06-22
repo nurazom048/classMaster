@@ -4,9 +4,11 @@ import 'dart:convert';
 import 'package:api_cache_manager/api_cache_manager.dart';
 import 'package:api_cache_manager/models/cache_db_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../../../../constant/constant.dart';
+import '../../../../models/message_model.dart';
 import '../../../../models/rutins/saveRutine.dart';
 import '../models/home_rutines_model.dart';
 import '../utils/utils.dart';
@@ -128,6 +130,37 @@ class HomeReq {
     } catch (e) {
       print(e);
       throw "$e";
+    }
+  }
+
+  // DELETE EOUTINE
+
+  //...... Delete Rutin.....//
+
+  Future<Either<Message, Message>> deleteRutin(rutin_id) async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? getToken = prefs.getString('Token');
+
+    var url = Uri.parse("${Const.BASE_URl}/rutin/$rutin_id");
+
+    try {
+      final response = await http
+          .delete(url, headers: {'Authorization': 'Bearer $getToken'});
+
+      if (response.statusCode == 200) {
+        var res = Message.fromJson(jsonDecode(response.body));
+        print("req from delete req ${res.message}");
+
+        return right(Message(
+          message: res.message,
+          routineID: rutin_id,
+        ));
+      } else {
+        var res = Message.fromJson(jsonDecode(response.body));
+        return left(res);
+      }
+    } catch (e) {
+      return left(Message(message: e.toString()));
     }
   }
 }

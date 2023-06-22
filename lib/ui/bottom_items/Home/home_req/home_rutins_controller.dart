@@ -1,7 +1,13 @@
 //_________________________
+// ignore_for_file: unused_result
+
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
 
+import '../../../../core/dialogs/alart_dialogs.dart';
+import '../../../../models/message_model.dart';
 import '../models/home_rutines_model.dart';
 
 final homeRutinControllerProvider = StateNotifierProvider.autoDispose
@@ -29,30 +35,7 @@ class HomeRutinsController extends StateNotifier<AsyncValue<RoutineHome>> {
     }
   }
 
-// loade pore data
-  // void loadMore(page) async {
-  //   try {
-  //     final newData = await homeReq.homeRutines(pages: page + 1);
-
-  //     // ignore: avoid_print
-  //     print(
-  //         "total ${newData.totalPages} : giver page $page newcp ${newData.currentPage}   ");
-  //     // Check if the new data's page number is greater than the current page number
-  //     if (newData.currentPage! > state.value!.currentPage!) {
-  //       int? totalPages = newData.totalPages ?? 1;
-  //       if (newData.currentPage! <= totalPages) {
-  //         // add new rutins to list and change the page number
-  //         List<Routine> rutins = state.value!.rutins..addAll(newData.rutins);
-  //         state = AsyncData(state.value!
-  //             .copyWith(rutins: rutins, currentPage: newData.currentPage));
-  //       }
-  //     }
-  //   } catch (e) {
-  //     print(e.toString());
-  //     state = throw Exception(e);
-  //   }
-  // }
-
+// Loader More
   void loadMore(page) async {
     print('call fore loader more');
     try {
@@ -71,6 +54,35 @@ class HomeRutinsController extends StateNotifier<AsyncValue<RoutineHome>> {
       }
     } catch (e) {
       state = throw Exception(e);
+    }
+  }
+
+  // DELTETE routine
+  //... Delete Rutin...//
+
+  void deleteRutin(String routineID, context) async {
+    try {
+      Either<Message, Message> res = await homeReq.deleteRutin(routineID);
+
+      res.fold((error) {
+        return Alart.showSnackBar(context, error.message);
+      }, (data) {
+        String? deletedRoutineID = data.routineID;
+
+        //
+        if (deletedRoutineID != null) {
+          List<HomeRoutine> homeRoutines = state.value!.homeRoutines;
+          homeRoutines.removeWhere(
+              (routine) => routine.rutineId.id == deletedRoutineID);
+          if (!mounted) return;
+          state = AsyncData(state.value!.copyWith(homeRoutines: homeRoutines));
+          return Alart.showSnackBar(context, data.message);
+        }
+      });
+    } catch (e) {
+      if (!mounted) return;
+
+      Alart.handleError(context, e);
     }
   }
 }

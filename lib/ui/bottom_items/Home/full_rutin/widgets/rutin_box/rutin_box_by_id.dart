@@ -114,6 +114,8 @@ class _RutinBoxByIdState extends State<RutinBoxById> {
                               chackStatusNotifier.sendReqController(context);
                             },
                             showPanel: () {
+                              if (!mounted) return;
+
                               RutinDialog.rutineNotficationSeleect(
                                 context,
                                 widget.rutinId,
@@ -137,6 +139,8 @@ class _RutinBoxByIdState extends State<RutinBoxById> {
 
                 // Select day row
                 SelectDayRow(selectedDay: (selectedDay) {
+                  if (!mounted) return;
+
                   setState(() {
                     if (widget.gSelectedDay != selectedDay) {
                       widget.gSelectedDay = selectedDay;
@@ -173,8 +177,12 @@ class _RutinBoxByIdState extends State<RutinBoxById> {
                               return RutineCardInfoRow(
                                 isFrist: index == 0,
                                 day: widget.listOfDayState[index],
-                                onTap: () => onTap(widget.listOfDayState[index],
-                                    status, context),
+                                onTap: () {
+                                  if (!mounted) return;
+
+                                  onTap(widget.listOfDayState[index], status,
+                                      context);
+                                },
                               );
                             } else {
                               return const Text("No Class");
@@ -232,50 +240,42 @@ class _RutinBoxByIdState extends State<RutinBoxById> {
     List<Day?> fri,
     List<Day?> sat,
   ) {
-    return WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       List<Day?> newListOfDays;
 
       switch (widget.gSelectedDay) {
         case 0:
           newListOfDays = sun;
           break;
-
         case 1:
           newListOfDays = mon;
           break;
-
         case 2:
           newListOfDays = tue;
           break;
-
         case 3:
           newListOfDays = wed;
           break;
-
         case 4:
           newListOfDays = thu;
           break;
-
         case 5:
           newListOfDays = fri;
           break;
-
         case 6:
           newListOfDays = sat;
           break;
-
         default:
           // If the selected day is not valid, use an empty list
           newListOfDays = [];
           break;
       }
 
-      // Only update the state if the component is still mounted
-      setState(
-        () {
+      if (mounted) {
+        setState(() {
           widget.listOfDayState = newListOfDays;
-        },
-      );
+        });
+      }
     });
   }
 }

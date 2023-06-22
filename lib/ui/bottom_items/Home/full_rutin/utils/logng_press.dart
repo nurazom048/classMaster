@@ -7,6 +7,7 @@ import 'package:table/constant/app_color.dart';
 import 'package:flutter/material.dart' as ma;
 
 import 'package:table/models/priode/all_priode_models.dart';
+import '../../../Account/utils/confrom_alart_dilog.dart';
 import '../../../Add/request/class_request.dart';
 import '../../../Add/screens/add_class_screen.dart';
 import '../../../Add/screens/add_priode.dart';
@@ -24,7 +25,7 @@ class PriodeAlart {
       context: context,
       builder: (context) => Consumer(builder: (context, ref, _) {
         return CupertinoActionSheet(
-          title: const ma.Text(" Do you want to.. ",
+          title: const Text(" Do you want to.. ?",
               style: TextStyle(fontSize: 22, color: Colors.black87)),
           actions: [
 // Eddit
@@ -51,12 +52,28 @@ class PriodeAlart {
               child: const ma.Text("Remove class",
                   style: TextStyle(color: Colors.red)),
               onPressed: () {
-                ClassRequest.deleteClass(context, ref, classId, rutinId);
+                // Navigator.of(context).pop();
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => ConfromAlartDilog(
+                    title: 'Alert',
+                    message:
+                        'Do you want to delete this Class? You can\'t undo this action.',
+                    onConfirm: (bool isConfirmed) {
+                      if (isConfirmed) {
+                        ClassRequest.deleteClass(
+                            context, ref, classId, rutinId);
+                      }
+                    },
+                  ),
+                );
+
+                //
               },
             ),
           ],
           cancelButton: CupertinoActionSheetAction(
-            child: const ma.Text("cancel"),
+            child: const Text("cancel"),
             onPressed: () => Navigator.pop(context),
           ),
         );

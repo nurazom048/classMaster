@@ -2,7 +2,9 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:table/core/dialogs/alart_dialogs.dart';
+import 'package:table/models/message_model.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/request/rutin_request.dart';
 import '../../../../../models/chack_status_model.dart';
 
@@ -22,17 +24,6 @@ class RutinController extends StateNotifier<bool?> {
   FullRutinrequest FullRutinreques;
 
   RutinController(this.FullRutinreques) : super(null);
-
-  //... Delete Rutin...//
-
-  void deleteRutin(String rutin_id, context) async {
-    try {
-      var res = await FullRutinreques.deleteRutin(rutin_id);
-      Alart.showSnackBar(context, res.message);
-    } catch (e) {
-      Alart.handleError(context, e);
-    }
-  }
 
   //......Delete Class....//
 

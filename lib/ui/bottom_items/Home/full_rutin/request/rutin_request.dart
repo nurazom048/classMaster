@@ -84,31 +84,6 @@ class FullRutinrequest {
     }
   }
 
-  //...... Delete Rutin.....//
-
-  Future<Message> deleteRutin(rutin_id) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
-
-    var url = Uri.parse("${Const.BASE_URl}/rutin/$rutin_id");
-
-    try {
-      final response = await http
-          .delete(url, headers: {'Authorization': 'Bearer $getToken'});
-
-      var res = Message.fromJson(jsonDecode(response.body));
-      print("req from delete req ${res.message}");
-
-      if (response.statusCode == 200) {
-        return res;
-      } else {
-        throw Exception(res.message);
-      }
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
-
 //... Save unsve rutin.....///
 
   Future<Either<String, Message>> saveUnsaveRutinReq(rutinId, condition) async {

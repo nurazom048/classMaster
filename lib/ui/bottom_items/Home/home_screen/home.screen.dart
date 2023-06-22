@@ -32,14 +32,16 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     //! provider
     final homeRutins = ref.watch(homeRutinControllerProvider(null));
+
     final recentNoticeList = ref.watch(recentNoticeController(null));
 
 //notifier
-    final homeRutinsNotifier = ref.watch(recentNoticeController(null).notifier);
-
+    final homeRutinsNotifier =
+        ref.watch(homeRutinControllerProvider(null).notifier);
     //
-    final _mobileView =
-        homeMobileView(ref, recentNoticeList, context, homeRutins);
+    final _mobileView = homeMobileView(
+        ref, recentNoticeList, context, homeRutins,
+        homeRoutineNotifier: homeRutinsNotifier);
 
     const _appBar = ChustomTitleBar("title");
     return Responsive(
@@ -47,7 +49,8 @@ class HomeScreen extends ConsumerWidget {
       mobile: SafeArea(
         child: Scaffold(
           backgroundColor: const Color(0xFFF2F2F2),
-          body: homeMobileView(ref, recentNoticeList, context, homeRutins),
+          body: homeMobileView(ref, recentNoticeList, context, homeRutins,
+              homeRoutineNotifier: homeRutinsNotifier),
         ),
       ),
 
@@ -77,7 +80,8 @@ class HomeScreen extends ConsumerWidget {
 
 /////////////
   homeMobileView(WidgetRef ref, AsyncValue<RecentNotice> recentNoticeList,
-      BuildContext context, AsyncValue<RoutineHome> homeRutins) {
+      BuildContext context, AsyncValue<RoutineHome> homeRutins,
+      {required homeRoutineNotifier}) {
     return ListView(
       padding: const EdgeInsets.only(bottom: 100),
       controller: scrollController,
@@ -161,8 +165,9 @@ class HomeScreen extends ConsumerWidget {
                   rutinName: data.homeRoutines[index].rutineId.name,
                   onTapMore: () => RutinDialog.ChackStatusUser_BottomSheet(
                     context,
-                    data.homeRoutines[index].rutineId.id,
-                    data.homeRoutines[index].rutineId.name,
+                    routineID: data.homeRoutines[index].rutineId.id,
+                    routineName: data.homeRoutines[index].rutineId.name,
+                    rutinsController: homeRoutineNotifier,
                   ),
                 );
               },

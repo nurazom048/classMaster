@@ -34,8 +34,12 @@ class ProfileSCreen extends StatelessWidget {
       //!provider
 
       final recentNoticeList = ref.watch(recentNoticeController(academyID));
+
       final accountData = ref.watch(accountDataProvider(username));
       final uplodedRoutines = ref.watch(homeRutinControllerProvider(academyID));
+      final uplodedRoutinesNotfier =
+          ref.watch(homeRutinControllerProvider(academyID).notifier);
+      ;
 
       //
 
@@ -131,8 +135,9 @@ class ProfileSCreen extends StatelessWidget {
                         onTapMore: () =>
                             RutinDialog.ChackStatusUser_BottomSheet(
                           context,
-                          data.homeRoutines[index].rutineId,
-                          data.homeRoutines[index].rutineId.name,
+                          routineID: data.homeRoutines[index].rutineId.id,
+                          routineName: data.homeRoutines[index].rutineId.name,
+                          rutinsController: uplodedRoutinesNotfier,
                         ),
                       );
                     },

@@ -5,15 +5,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/chack_status_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/controller/members_controllers.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/chekbox_selector_button.dart';
+import 'package:table/ui/bottom_items/Home/home_req/home_rutins_controller.dart';
 import 'package:table/widgets/appWidget/dottted_divider.dart';
 import '../../../../../core/component/Loaders.dart';
 import '../../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../../widgets/text and buttons/square_button.dart';
-import '../controller/routine_controller.dart';
+import '../../../Account/utils/confrom_alart_dilog.dart';
 
 class RutinDialog {
   //**********     ChackStatusUser_BottomSheet       **********/
-  static ChackStatusUser_BottomSheet(BuildContext context, rutinId, rutinName) {
+  static ChackStatusUser_BottomSheet(
+    BuildContext context, {
+    required String routineID,
+    required String routineName,
+    required HomeRutinsController rutinsController,
+  }) {
     // show bottom sheet modal to check user status
     showModalBottomSheet(
         context: context,
@@ -29,16 +35,16 @@ class RutinDialog {
                 topRight: Radius.circular(15.0),
               ),
             ),
-            child: Consumer(builder: (context, ref, _) {
+            child: Consumer(builder: (ctx, ref, _) {
               // state providers
               final chackStatus =
-                  ref.watch(chackStatusControllerProvider(rutinId));
+                  ref.watch(chackStatusControllerProvider(routineID));
 
               // state providers with notifier
               final chackStatusNotifier =
-                  ref.watch(chackStatusControllerProvider(rutinId).notifier);
+                  ref.watch(chackStatusControllerProvider(routineID).notifier);
               final members =
-                  ref.read(memberControllerProvider(rutinId).notifier);
+                  ref.read(memberControllerProvider(routineID).notifier);
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -64,7 +70,8 @@ class RutinDialog {
                                     context,
                                     "are you sure you want to leave",
                                     onConfirm: (bool isYes) {
-                                      chackStatusNotifier.leaveMember(context);
+                                      chackStatusNotifier.leaveMember(
+                                          ctx); // Pass the context here
                                     },
                                   );
                                 },
@@ -78,8 +85,7 @@ class RutinDialog {
                                     status == "request_pending" ? true : false,
                                 text: status,
                                 ontap: () {
-                                  chackStatusNotifier
-                                      .sendReqController(context);
+                                  chackStatusNotifier.sendReqController(ctx);
                                 },
                               ),
                             SqureButton(
@@ -90,7 +96,7 @@ class RutinDialog {
                               status: chackStatus.value?.isSave,
                               ontap: () {
                                 chackStatusNotifier.saveUnsave(
-                                  context,
+                                  ctx,
                                   !(chackStatus.value?.isSave ?? false),
                                 );
                               },
@@ -101,19 +107,24 @@ class RutinDialog {
                                   icon: Icons.delete,
                                   text: "Delete",
                                   color: Colors.red,
-                                  ontap: () => Alart.errorAlertDialogCallBack(
-                                    context,
-                                    "Are you sure to delete",
-                                    onConfirm: (isyes) {
-                                      ref
-                                          .watch(
-                                              RutinControllerProvider.notifier)
-                                          .deleteRutin(
-                                            rutinId,
-                                            context,
-                                          );
-                                    },
-                                  ),
+                                  ontap: () {
+                                    Navigator.of(context).pop();
+                                    return showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          ConfromAlartDilog(
+                                        title: 'Alert',
+                                        message:
+                                            'Do you want to delete this routine? You can\'t undo this action.',
+                                        onConfirm: (bool isConfirmed) {
+                                          if (isConfirmed) {
+                                            rutinsController.deleteRutin(
+                                                routineID, context);
+                                          }
+                                        },
+                                      ),
+                                    );
+                                  },
                                 )
                               ]
                             ],
