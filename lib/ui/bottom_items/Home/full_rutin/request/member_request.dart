@@ -168,7 +168,7 @@ class memberRequest {
     }
   }
 
-  Future<Message> leaveRequest(rutin_id) async {
+  Future<Either<Message, Message>> leaveRequest(rutin_id) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 
@@ -178,16 +178,19 @@ class memberRequest {
       final response =
           await http.post(url, headers: {'Authorization': 'Bearer $getToken'});
 
-      var res = Message.fromJson(jsonDecode(response.body));
-      print("req from  leave member ${res.message}");
+      print("req from  leave member ${jsonDecode(response.body)}");
 
       if (response.statusCode == 200) {
-        return res;
+        var res = Message.fromJson(jsonDecode(response.body));
+
+        return right(res);
       } else {
-        throw Exception(res.message);
+        var res = Message.fromJson(jsonDecode(response.body));
+
+        return left(res);
       }
     } catch (e) {
-      throw Exception(e);
+      return left(Message(message: e.toString()));
     }
   }
 
@@ -270,7 +273,7 @@ class memberRequest {
   }
 
   //...acceptRequest.....//
-  Future<Message> acceptRequest(rutinId, username) async {
+  Future<Message> acceptRequest(rutinId, username, {bool? acceptAll}) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
     print("$username");
@@ -278,20 +281,25 @@ class memberRequest {
     try {
       final response = await http.post(
           Uri.parse('${Const.BASE_URl}/rutin/member/acsept_request/$rutinId'),
-          headers: {'Authorization': 'Bearer $getToken'},
-          body: {"username": username});
-
-      var res = Message.fromJson(jsonDecode(response.body));
+          headers: {
+            'Authorization': 'Bearer $getToken'
+          },
+          body: {
+            "username": username,
+            'acceptAll': acceptAll == null ? 'false' : acceptAll.toString(),
+          });
 
       if (response.statusCode == 200) {
+        var res = Message.fromJson(jsonDecode(response.body));
         print(res);
         return res;
       } else {
-        throw Exception("Response body is null");
+        var res = Message.fromJson(jsonDecode(response.body));
+        return res;
       }
     } catch (e) {
       print(e);
-      throw Exception(e);
+      return Message(message: e.toString());
     }
   }
 

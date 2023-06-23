@@ -125,7 +125,7 @@ _showBottomSheet(BuildContext context) {
                     onTap: () async {
                       final String? type =
                           await AuthController.getAccountType();
-                      if (type != null && type == 'academy') {
+                      if (type != null && type != 'academy') {
                         return Get.to(() => AddNoticeScreen());
                       } else {
                         // ignore: use_build_context_synchronously

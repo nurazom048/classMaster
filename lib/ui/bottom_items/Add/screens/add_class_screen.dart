@@ -21,6 +21,7 @@ import '../../../../models/rutins/class/find_class_model.dart';
 import '../../../../widgets/appWidget/TextFromFild.dart';
 import '../../../../widgets/appWidget/buttons/cupertino_butttons.dart';
 import '../../Home/full_rutin/screen/viewMore/class_list.dart';
+import '../../Home/full_rutin/screen/viewMore/view_more_screen.dart';
 import '../widgets/show_wekday_widgets.dart';
 
 class AddClassScreen extends StatefulWidget {
@@ -250,6 +251,17 @@ class _AddClassScreenState extends State<AddClassScreen> {
             startTime: startTime,
             endTime: startTime,
           ));
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ViewMore(
+            rutinId: widget.routineId,
+            rutineName: widget.routineName ?? 'Routine Name',
+            owenerName: '',
+          ),
+        ),
+      );
     } else {
       String? newclassID = await ClassRequest.addClass(
           ref,
@@ -270,29 +282,30 @@ class _AddClassScreenState extends State<AddClassScreen> {
       //
       if (newclassID == null) {
         Alart.showSnackBar(context, 'somthing went worng');
+      } else {
+        Navigator.pushReplacement(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (BuildContext context, Animation<double> animation,
+                Animation<double> secondaryAnimation) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(1, 0),
+                  end: Offset.zero,
+                ).animate(CurvedAnimation(
+                  parent: animation,
+                  curve: Curves.easeOut,
+                )),
+                child: AddClassScreen(
+                  routineId: widget.routineId,
+                  classId: newclassID,
+                  isUpdate: true,
+                ),
+              );
+            },
+          ),
+        );
       }
-      Navigator.push(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (BuildContext context, Animation<double> animation,
-              Animation<double> secondaryAnimation) {
-            return SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(1, 0),
-                end: Offset.zero,
-              ).animate(CurvedAnimation(
-                parent: animation,
-                curve: Curves.easeOut,
-              )),
-              child: AddClassScreen(
-                routineId: widget.routineId,
-                classId: newclassID,
-                isUpdate: true,
-              ),
-            );
-          },
-        ),
-      );
     }
   }
 

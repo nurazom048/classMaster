@@ -157,14 +157,13 @@ class AuthController extends StateNotifier<bool> {
     Alart.errorAlertDialogCallBack(
       context,
       "Are You Sure To logout ?",
-      onConfirm: (bool confirmed) async {
-        if (confirmed) {
-          // Remove token and navigate to the login screen
-          final prefs = await SharedPreferences.getInstance();
-          prefs.remove('Token');
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const LogingScreen()));
-        }
+      onConfirm: () async {
+        await FirebaseAuth.instance.signOut();
+        // Remove token and navigate to the login screen
+        final prefs = await SharedPreferences.getInstance();
+        prefs.remove('Token');
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const LogingScreen()));
       },
     );
   }

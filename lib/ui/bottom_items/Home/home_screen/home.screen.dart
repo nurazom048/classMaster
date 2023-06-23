@@ -104,6 +104,7 @@ class HomeScreen extends ConsumerWidget {
                     notice: data.notices,
                     index: 0,
                     conditon: length >= 2,
+                    singleCondition: length == 1,
                   ),
 
                   //
@@ -111,17 +112,20 @@ class HomeScreen extends ConsumerWidget {
                     notice: data.notices,
                     index: 2,
                     conditon: length >= 4,
+                    singleCondition: length == 3,
                   ), //
                   RecentNoticeSliderItem(
                     notice: data.notices,
                     index: 3,
                     conditon: length >= 6,
+                    singleCondition: length == 5,
                   ),
 
                   RecentNoticeSliderItem(
                     notice: data.notices,
                     index: 4,
                     conditon: length >= 8,
+                    singleCondition: length == 7,
                   ),
                 ],
               );

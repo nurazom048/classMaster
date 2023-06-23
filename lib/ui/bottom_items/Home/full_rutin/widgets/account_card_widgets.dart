@@ -36,7 +36,9 @@ class AccountCard extends StatelessWidget {
           CircleAvatar(
             radius: 24,
             backgroundColor: Colors.red,
-            backgroundImage: NetworkImage(accountData.image ?? ''),
+            child: accountData.image == null
+                ? null
+                : Image.network(accountData.image!),
           ),
           const Spacer(flex: 1),
           AppText(accountData.name ?? '').heding(),

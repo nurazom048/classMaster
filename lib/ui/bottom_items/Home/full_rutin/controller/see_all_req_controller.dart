@@ -43,8 +43,9 @@ class SeeAllRequestControllerClass
   }
 //... Accept request.....//
 
-  void acceptMember(WidgetRef ref, username, context) async {
-    final res = memberRequests.acceptRequest(rutinId, username);
+  void acceptMember(WidgetRef ref, username, context, {bool? acceptAll}) async {
+    final res =
+        memberRequests.acceptRequest(rutinId, username, acceptAll: acceptAll);
 
     res.catchError((error) => Alart.handleError(context, error));
     res.then((value) {

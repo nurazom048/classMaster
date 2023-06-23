@@ -10,10 +10,12 @@ class RecentNoticeSliderItem extends StatelessWidget {
     required this.notice,
     required this.conditon,
     required this.index,
+    required this.singleCondition,
   });
   final notice;
   final int index;
   final bool conditon;
+  final bool singleCondition;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,13 @@ class RecentNoticeSliderItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (conditon == true) ...[
+            if (singleCondition == true)
+              NoticeRow(
+                notice: notice[index],
+                date: notice[index].time.toString(),
+                title: notice[index].contentName,
+              )
+            else if (conditon == true) ...[
               NoticeRow(
                 notice: notice[index],
                 date: notice[index].time.toString(),

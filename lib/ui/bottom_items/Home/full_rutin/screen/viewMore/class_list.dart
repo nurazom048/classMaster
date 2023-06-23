@@ -139,16 +139,6 @@ class ClassListPage extends StatelessWidget {
                         //
                         UniqClass uniqClass = data.uniqClass[index];
 
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          // Add Your Code here.
-                          totalClassNotifier.update((state) => length);
-
-                          ref
-                              .watch(routineOwenerNameProvider.notifier)
-                              .update((state) => data.owner.name);
-                        });
-                        print("data");
-
                         print(data);
                         if (length == 0) {
                           ErrorWidget('No Class Created');

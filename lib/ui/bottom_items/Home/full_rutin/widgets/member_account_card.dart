@@ -33,17 +33,17 @@ class MeberAccountCard extends StatelessWidget {
               Stack(
                 children: [
                   CustomContainerAvater(image: member.image),
-                  if (member.captain == true)
+                  if (member.captain == true || member.owner == true)
                     Positioned(
                       bottom: 0,
                       right: 0,
                       child: CircleAvatar(
                         radius: 10,
                         backgroundColor: AppColor.nokiaBlue,
-                        child: const Center(
+                        child: Center(
                           child: Text(
-                            "C",
-                            style: TextStyle(
+                            member.captain == true ? "C" : 'O',
+                            style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 11,
                                 fontWeight: FontWeight.w400),

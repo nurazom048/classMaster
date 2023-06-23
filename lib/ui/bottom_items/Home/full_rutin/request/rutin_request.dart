@@ -21,13 +21,13 @@ class FullRutinrequest {
   Future<CheckStatusModel> chackStatus(rutin_id) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
-    final bool isOnline = await Utils.isOnlineMethode();
+    final bool isOffile = await Utils.isOnlineMethode();
     var isHaveCash =
         await APICacheManager().isAPICacheKeyExist("chackStatus$rutin_id");
 
     try {
       // if offline and have cash
-      if (isOnline == false && isHaveCash) {
+      if (isOffile && isHaveCash) {
         var getdata =
             await APICacheManager().getCacheData("chackStatus$rutin_id");
         print('Foem cash $getdata');

@@ -25,6 +25,7 @@ import '../send_request_button.dart';
 // });
 
 // final listOfDayStateProvider = StateProvider<List<Day?>>((ref) => []);
+final owenerNameProvider = StateProvider.autoDispose<String?>((ref) => null);
 
 class RutinBoxById extends StatefulWidget {
   final String rutinName;
@@ -96,6 +97,7 @@ class _RutinBoxByIdState extends State<RutinBoxById> {
                             builder: (context) => ViewMore(
                               rutinId: widget.rutinId,
                               rutineName: widget.rutinName,
+                              owenerName: ref.watch(owenerNameProvider),
                             ),
                           ),
                         ),
@@ -213,6 +215,14 @@ class _RutinBoxByIdState extends State<RutinBoxById> {
                 rutinDetails.when(
                   data: (data) {
                     if (data == null) {}
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      if (mounted) {
+                        String? owenerName = data?.owner.name;
+                        ref
+                            .watch(owenerNameProvider.notifier)
+                            .update((state) => owenerName);
+                      }
+                    });
 
                     return MiniAccountInfo(
                       accountData: data?.owner,

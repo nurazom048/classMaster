@@ -213,7 +213,7 @@ class RutinDialog {
                           Alart.errorAlertDialogCallBack(
                             context,
                             "Are you sure you want to leave?",
-                            onConfirm: (bool isYes) {
+                            onConfirm: () {
                               WidgetsBinding.instance.addPostFrameCallback((_) {
                                 ref
                                     .read(

@@ -28,7 +28,7 @@ abstract class Alart {
   }
 
   static errorAlertDialogCallBack(BuildContext context, dynamic message,
-      {Function? onConfirm}) {
+      {required dynamic onConfirm}) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -39,7 +39,7 @@ abstract class Alart {
               Text(message.toString(), style: const TextStyle(fontSize: 16)),
           actions: <Widget>[
             ElevatedButton(
-              onPressed: () => onConfirm!(), // Invoke the onConfirm callback
+              onPressed: onConfirm, // Invoke the onConfirm callback
               child: const Text('Yes',
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ),

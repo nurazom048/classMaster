@@ -114,7 +114,7 @@ class AddNoticeScreen extends ConsumerWidget {
             ).multiline(),
             const SizedBox(height: 60),
             UploadPDFBButton(onSelected: (thepath) {}),
-            SizedBox(height: 200, width: 400, child: DragtoSelectFile()),
+            // SizedBox(height: 200, width: 400, child: DragtoSelectFile()),
             const SizedBox(height: 60),
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 10),

@@ -17,8 +17,8 @@ final AccountReqProvider = Provider<AccountReq>((ref) {
 });
 //
 
-final accountDataProvider =
-    FutureProvider.family<AccountModels?, String?>((ref, username) async {
+final accountDataProvider = FutureProvider.autoDispose
+    .family<AccountModels?, String?>((ref, username) async {
   return ref.watch(AccountReqProvider).getAccountData(username: username);
 });
 
@@ -35,7 +35,7 @@ class AccountReq {
     try {
 //
       // if offline and have cash
-      if (isOnline == false && isHaveCash) {
+      if (isOnline && isHaveCash) {
         //
         var getdata = await APICacheManager().getCacheData(url.toString());
         print('Foem cash $getdata');

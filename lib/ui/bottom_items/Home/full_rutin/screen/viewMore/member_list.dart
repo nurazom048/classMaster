@@ -15,7 +15,7 @@ import '../../utils/popup.dart';
 import '../../widgets/account_card_widgets.dart';
 import '../../widgets/member_account_card.dart';
 
-final membersCountProvider = StateProvider<int>((ref) => 0);
+final membersCountProvider = StateProvider.autoDispose<int>((ref) => 0);
 
 class MemberList extends StatelessWidget {
   final String rutinId;
@@ -44,7 +44,7 @@ class MemberList extends StatelessWidget {
 
       return ListView(
         physics: const NeverScrollableScrollPhysics(),
-        padding: const EdgeInsets.symmetric(horizontal: 26),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         children: [
           //____________________________________Invite___________________________________//
 
@@ -60,7 +60,7 @@ class MemberList extends StatelessWidget {
           // const SizedBox(height: 30),
 
           //____________________________________Requests___________________________________//
-          if (isCaptain == true || isOwner) ...[
+          if (isCaptain == true || isOwner == true) ...[
             JoinRequestPart(routineID: rutinId),
           ],
 
@@ -69,6 +69,7 @@ class MemberList extends StatelessWidget {
           ///
 
           HeddingRow(
+            margin: EdgeInsets.zero,
             hedding: "All Members",
             secondHeading: "$memberCount member${memberCount > 1 ? "s" : ''}",
           ),
@@ -88,7 +89,7 @@ class MemberList extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: data.members.length,
                   itemBuilder: (context, i) => MeberAccountCard(
-                    condition: isCaptain == true || isOwner,
+                    condition: isCaptain == true || isOwner == true,
                     member: data.members[i],
                     onPressed: () {
                       accountActions(
@@ -96,7 +97,9 @@ class MemberList extends StatelessWidget {
                         ref,
                         rutinId: rutinId,
                         username: data.members[i].username,
-                        memberid: data.members[i].id,
+                        memberId: data.members[i].id,
+                        isTheMemberIsCaptain: data.members[i].captain,
+                        isTheMemberIsOwner: data.members[i].owner,
                       );
                     },
                   ),
@@ -135,7 +138,9 @@ class JoinRequestPart extends ConsumerWidget {
           secondHeading: "$requestCount",
           margin: EdgeInsets.zero,
           buttonText: "Accept All",
-          onTap: () {},
+          onTap: () {
+            seeAllJonReq.acceptMember(ref, '', context, acceptAll: true);
+          },
         ),
         SizedBox(
           height: 200,

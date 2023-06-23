@@ -13,10 +13,9 @@ import '../../../../../models/message_model.dart';
 import '../request/rutine_notification.dart';
 
 //! providers
-final chackStatusControllerProvider = StateNotifierProvider.family<
-    ChackStatusController,
-    AsyncValue<CheckStatusModel>,
-    String>((ref, rutinId) {
+final chackStatusControllerProvider = StateNotifierProvider.autoDispose
+    .family<ChackStatusController, AsyncValue<CheckStatusModel>, String>(
+        (ref, rutinId) {
   return ChackStatusController(
     ref,
     rutinId,
@@ -130,9 +129,14 @@ class ChackStatusController
   leaveMember(context) async {
     try {
       final res = await memberRequests.leaveRequest(rutinId);
-      state = AsyncData(state.value!.copyWith(activeStatus: "not_joined"));
 
-      Alart.showSnackBar(context, res.message);
+      res.fold((error) {
+        return Alart.errorAlartDilog(context, error.message);
+      }, (data) {
+        state = AsyncData(state.value!.copyWith(activeStatus: "not_joined"));
+
+        return Alart.showSnackBar(context, data.message);
+      });
     } catch (e) {
       Alart.handleError(context, e);
     }

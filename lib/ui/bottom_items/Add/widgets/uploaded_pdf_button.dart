@@ -50,7 +50,7 @@ class UploadPDFBButton extends StatelessWidget {
                 ),
               ),
               // ),
-              const SizedBox(width: 20),
+              const SizedBox(width: 1),
               Icon(Icons.file_upload_outlined, color: AppColor.nokiaBlue)
             ],
           ),

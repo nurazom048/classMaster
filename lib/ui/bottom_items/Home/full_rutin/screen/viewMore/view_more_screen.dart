@@ -3,13 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/screen/viewMore/member_list.dart';
+import 'package:table/ui/bottom_items/Home/full_rutin/widgets/rutin_box/rutin_box_by_id.dart';
 import '../../../../../../widgets/appWidget/app_text.dart';
 import '../../../../../../widgets/custom_tab_bar.widget.dart';
 import '../../../../../../widgets/heder/heder_title.dart';
 import 'class_list.dart';
 
 final viewMoreIndexProvider = StateProvider<int>((ref) => 0);
-final routineOwenerNameProvider = StateProvider<String?>((ref) => null);
 
 class ViewMore extends StatefulWidget {
   final String rutinId;
@@ -45,7 +45,7 @@ class _ViewMoreState extends State<ViewMore> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, _) {
-      final owenerName = ref.watch(routineOwenerNameProvider);
+      final owenerName = ref.watch(owenerNameProvider);
 
       //
       final List<Widget> pages = [
