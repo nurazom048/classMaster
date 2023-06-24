@@ -15,6 +15,9 @@ import '../../../../core/component/heder component/appbaar_custom.dart';
 import '../../../../core/dialogs/alart_dialogs.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../../../sevices/notification services/awn_package.dart';
+import '../../../../sevices/notification services/local_notifications.dart';
+import '../../../../sevices/notification services/notification.dart';
 import '../../Home/notice_board/screens/view_all_recent_notice.dart';
 import '../Settings/setting_screen.dart';
 import 'eddit_account.dart';
@@ -32,8 +35,11 @@ class AccountScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AwsomNotificationSetup.takePermiton(context);
     return SafeArea(
       child: Consumer(builder: (context, ref, _) {
+        //
+        final classNotification = ref.watch(classNotificationProvider);
         return Scaffold(
           body: NotificationListener<ScrollNotification>(
             // hide bottom nev bar on scroll
@@ -74,6 +80,52 @@ class AccountScreen extends StatelessWidget {
 
                     const SizedBox(height: 10),
 
+                    // FutureBuilder(
+                    //     future: NotificationClass().routineNotification(),
+                    //     builder: (ctx, snapshot) {
+                    //       // Checking if future is resolved
+                    //       if (snapshot.connectionState ==
+                    //           ConnectionState.done) {
+                    //         // If we got an error
+                    //         if (snapshot.hasError) {
+                    //           return Center(
+                    //             child: Text(
+                    //               '${snapshot.error} occurred',
+                    //               style: const TextStyle(fontSize: 18),
+                    //             ),
+                    //           );
+
+                    //           // if we got our data
+                    //         } else if (snapshot.hasData) {
+                    //           // Extracting data from snapshot object
+                    //           final data = snapshot.data;
+                    //           LocalNotification.scheduleNotifications(data!);
+                    //           return Center(
+                    //             child: Text(
+                    //               '$data',
+                    //               style: TextStyle(fontSize: 18),
+                    //             ),
+                    //           );
+                    //         } else {
+                    //           return Text('hisu pai ni');
+                    //         }
+                    //       } else {
+                    //         return Text('hisu pai ni');
+                    //       }
+                    //     }),
+                    classNotification.when(
+                        data: (data) {
+                          if (data == null) {}
+                          LocalNotification.scheduleNotifications(data!);
+                          return const SizedBox();
+                        },
+                        error: (error, stackTrace) {
+                          Alart.handleError(context, error);
+                          return const SizedBox();
+                        },
+                        loading: () => const SizedBox()),
+
+                    //
                     MyContainerButton(
                       const FaIcon(FontAwesomeIcons.pen),
                       "Eddit Profile",

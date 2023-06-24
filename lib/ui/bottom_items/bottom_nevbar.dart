@@ -121,7 +121,7 @@ _showBottomSheet(BuildContext context) {
                 children: [
                   DashBorderButtonMoni(
                     text: "Notices ",
-                    icon: const Icon(Icons.abc),
+                    icon: Icons.calendar_view_day,
                     onTap: () async {
                       final String? type =
                           await AuthController.getAccountType();
@@ -137,7 +137,7 @@ _showBottomSheet(BuildContext context) {
                     children: [
                       DashBorderButtonMoni(
                         text: "Rutine",
-                        icon: const Icon(Icons.abc),
+                        icon: Icons.blender_outlined,
                         onTap: () => Get.to(() => CreaeNewRutine()),
                       ),
                       const SizedBox(width: 6)

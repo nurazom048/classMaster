@@ -85,10 +85,12 @@ class ClassRequest {
       );
 
       final res = json.decode(response.body);
-      Message message = Message(message: json.decode(response.body)["message"]);
       print(res);
 
       if (response.statusCode == 200) {
+        Message message =
+            Message(message: json.decode(response.body)["message"]);
+
         print("rutin created successfully");
         Alart.showSnackBar(context, message.message);
         Navigator.pop(context);
@@ -96,7 +98,9 @@ class ClassRequest {
         ref.refresh(rutins_detalis_provider(rutinId));
         print(res);
       } else {
-        throw Exception('Failed to load data');
+        Message message =
+            Message(message: json.decode(response.body)["message"]);
+        Alart.showSnackBar(context, message.message);
       }
     } catch (e) {
       Alart.handleError(context, e.toString());

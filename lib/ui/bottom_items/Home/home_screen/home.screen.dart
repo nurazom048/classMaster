@@ -32,7 +32,6 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     //! provider
     final homeRutins = ref.watch(homeRutinControllerProvider(null));
-
     final recentNoticeList = ref.watch(recentNoticeController(null));
 
 //notifier
@@ -183,6 +182,8 @@ class HomeScreen extends ConsumerWidget {
             return ErrorScreen(error: error.toString());
           },
         ),
+
+        //
       ],
     );
   }

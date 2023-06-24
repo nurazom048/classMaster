@@ -46,7 +46,7 @@ class DashBorderButton extends StatelessWidget {
 
 class DashBorderButtonMoni extends StatelessWidget {
   final String text;
-  final Widget icon;
+  final IconData icon;
   final dynamic onTap;
 
   const DashBorderButtonMoni(
@@ -85,7 +85,7 @@ class DashBorderButtonMoni extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  Icon(Icons.send, color: AppColor.nokiaBlue, size: 20),
+                  Icon(icon, color: AppColor.nokiaBlue, size: 20),
                 ],
               ),
             ),

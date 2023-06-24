@@ -124,14 +124,7 @@ class ClassListPage extends StatelessWidget {
                     if (data == null) {
                       return Text("Null $data");
                     }
-                    // notification
-                    if (notificationOff == false) {
-                      print(
-                          "CAll sudule notification ${data.classes.allClass.length}");
 
-                      LocalNotification.scheduleNotifications(
-                          data.classes.allClass);
-                    }
                     int length = data.uniqClass.length;
 
                     return Column(

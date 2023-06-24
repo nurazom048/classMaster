@@ -1,4 +1,5 @@
 //import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,18 +10,18 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //notification
-  // AwesomeNotifications().initialize(
-  //   null,
-  //   [
-  //     NotificationChannel(
-  //       channelKey: 'basic_channel',
-  //       channelName: 'Basic Channel',
-  //       channelDescription: 'Basic channel for notifications',
-  //       defaultColor: Colors.blue,
-  //       ledColor: Colors.blue,
-  //     ),
-  //   ],
-  // );
+  AwesomeNotifications().initialize(
+    null,
+    [
+      NotificationChannel(
+        channelKey: 'basic_channel',
+        channelName: 'Basic Channel',
+        channelDescription: 'Basic channel for notifications',
+        defaultColor: Colors.blue,
+        ledColor: Colors.blue,
+      ),
+    ],
+  );
 
   //firebase
 
