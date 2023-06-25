@@ -34,7 +34,8 @@ class MyContainerButton extends StatelessWidget {
             margin: const EdgeInsets.only(bottom: 5, top: 5),
             width: size.width / 1.8,
             decoration: BoxDecoration(
-                color: Colors.black12, borderRadius: BorderRadius.circular(10)),
+                color: Color.fromRGBO(1, 104, 255, 0.10),
+                borderRadius: BorderRadius.circular(10)),
             child: Text(
               text,
               textScaleFactor: 1.1,

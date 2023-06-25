@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:table/widgets/appWidget/app_text.dart';
 
 import '../ui/bottom_items/Home/utils/utils.dart';
 
@@ -18,12 +19,12 @@ class AccountCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 26),
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 42).copyWith(top: 30),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Spacer(flex: 4),
             FutureBuilder(
               future: Utils.isOnlineMethode(),
               builder: (context, snapshot) {
@@ -44,29 +45,22 @@ class AccountCard extends StatelessWidget {
                 }
               },
             ),
-            const Spacer(flex: 1),
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: RichText(
-                text: TextSpan(
-                  style: DefaultTextStyle.of(context).style,
-                  children: [
-                    TextSpan(
+            const SizedBox(width: 17),
+            RichText(
+              text: TextSpan(
+                style: DefaultTextStyle.of(context).style,
+                children: [
+                  TextSpan(
                       text: name,
-                      style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
-                    ),
-                    TextSpan(
-                      text: '\n$username',
-                      style: const TextStyle(fontSize: 15, color: Colors.black),
-                    ),
-                  ],
-                ),
+                      style:
+                          TS.opensensBlue(fontSize: 24, color: Colors.black)),
+                  TextSpan(
+                    text: '\n$username',
+                    style: const TextStyle(fontSize: 15, color: Colors.black),
+                  ),
+                ],
               ),
             ),
-            const Spacer(flex: 10),
           ],
         ),
       ),
