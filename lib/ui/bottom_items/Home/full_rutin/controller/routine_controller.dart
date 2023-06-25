@@ -9,10 +9,10 @@ import 'package:table/ui/bottom_items/Home/full_rutin/request/rutin_request.dart
 import '../../../../../models/chack_status_model.dart';
 
 //.... Controller...//
-final chackStatusUser_provider = FutureProvider.family
-    .autoDispose<CheckStatusModel, String>((ref, rutin_id) {
-  return ref.read(FullRutinProvider).chackStatus(rutin_id);
-});
+// final chackStatusUser_provider = FutureProvider.family
+//     .autoDispose<CheckStatusModel, String>((ref, rutin_id) {
+//   return ref.read(FullRutinProvider).chackStatus(rutin_id);
+// });
 
 ///
 ///

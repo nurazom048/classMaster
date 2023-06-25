@@ -64,7 +64,7 @@ class _RutinBoxByIdState extends State<RutinBoxById> {
           ref.watch(chackStatusControllerProvider(widget.rutinId));
       final rutinDetails = ref.watch(rutins_detalis_provider(widget.rutinId));
       String status = chackStatus.value?.activeStatus ?? '';
-      bool notificationOff = chackStatus.value?.notificationOff ?? false;
+      bool notificationOn = chackStatus.value?.notificationOn ?? false;
       // Get notifier
       final chackStatusNotifier =
           ref.watch(chackStatusControllerProvider(widget.rutinId).notifier);
@@ -111,7 +111,7 @@ class _RutinBoxByIdState extends State<RutinBoxById> {
                             isNotSendRequest: status == "not_joined",
                             isPending: status == "request_pending",
                             isMember: true,
-                            notificationOff: notificationOff,
+                            notificationOn: notificationOn,
                             sendRequest: () {
                               chackStatusNotifier.sendReqController(context);
                             },

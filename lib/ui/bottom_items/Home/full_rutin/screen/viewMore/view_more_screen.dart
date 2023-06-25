@@ -64,7 +64,9 @@ class _ViewMoreState extends State<ViewMore> with TickerProviderStateMixin {
                     HeaderTitle("Routine", context),
                     const SizedBox(height: 40),
                     AppText(widget.rutineName.toUpperCase()).title(),
-                    AppText(owenerName ?? "khulna polytechnic institute")
+                    AppText(widget.owenerName ??
+                            owenerName ??
+                            "khulna polytechnic institute")
                         .heding(),
                     const SizedBox(height: 30),
                     CustomTabBar(

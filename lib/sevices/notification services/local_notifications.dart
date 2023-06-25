@@ -12,7 +12,7 @@ class LocalNotification {
       if (days[i].num != null && days[i].startTime != null) {
         int weekday = days[i].num;
         print(
-            "create $i h:${makeTime24h(days[i].startTime)} M:${days[i].startTime.minute} $weekday ${days[i].num} ${days[i].startTime}");
+            "create $i sH${days[i].startTime.hour} ${days[i].startTime}    h:${makeTime24h(days[i].startTime)} M:${days[i].startTime.minute} $weekday ${days[i].num} ${days[i].startTime}");
 
         // Schedule notification 5 minutes before the start time
         Duration duration = const Duration(minutes: 5);
@@ -31,7 +31,7 @@ class LocalNotification {
           ),
           schedule: NotificationCalendar(
             //  weekday: weekday,
-            hour: makeTime24h(newStartTime),
+            hour: newStartTime.hour,
             minute: newStartTime.minute.toInt(),
             allowWhileIdle: true,
           ),

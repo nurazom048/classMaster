@@ -30,10 +30,10 @@ final chackStatusControllerProvider = StateNotifierProvider.autoDispose
 class ChackStatusController
     extends StateNotifier<AsyncValue<CheckStatusModel>> {
   var ref;
-  String rutinId;
-  FullRutinrequest fullRutinReq;
-  memberRequest memberRequests;
-  RutineNotification rutineNotification;
+  final String rutinId;
+  final FullRutinrequest fullRutinReq;
+  final memberRequest memberRequests;
+  final RutineNotification rutineNotification;
   ChackStatusController(this.ref, this.rutinId, this.fullRutinReq,
       this.memberRequests, this.rutineNotification)
       : super(AsyncLoading()) {
@@ -42,21 +42,29 @@ class ChackStatusController
 
   getStatus() async {
     try {
-      AsyncValue<CheckStatusModel> res =
-          await ref.watch(chackStatusUser_provider(rutinId));
+      // AsyncValue<CheckStatusModel> res =
+      //     await ref.watch(chackStatusUser_provider(rutinId));
 
-      res.when(
-          data: (data) {
-            state = AsyncData(data);
-          },
-          error: (error, stackTrace) {
-            print(error.toString());
-            state = AsyncError(error, stackTrace);
-          },
-          loading: () {});
-    } catch (e) {
-      print(e.toString());
-      state = throw Exception(e);
+      final CheckStatusModel res = await fullRutinReq.chackStatus(rutinId);
+
+      if (!mounted) return;
+      state = AsyncData(res);
+
+      // res.when(
+      //     data: (data) {
+      //       state = AsyncData(data);
+      //     },
+      //     error: (error, stackTrace) {
+      //       print(error.toString());
+      //       state = AsyncError(error, stackTrace);
+      //     },
+      //     loading: () {});
+    } catch (error, stackTrace) {
+      if (!mounted) return;
+
+      print(error.toString());
+      // state = throw Exception(error);
+      state = AsyncValue.error(error, stackTrace);
     }
   }
 
@@ -102,7 +110,7 @@ class ChackStatusController
       (errorMessage) => Alart.errorAlartDilog(context, errorMessage),
       (response) {
         state = AsyncData(
-            state.value!.copyWith(notificationOff: response.notificationOff));
+            state.value!.copyWith(notificationOn: response.notificationOn));
 
         Alart.showSnackBar(context, response.message);
       },
@@ -117,7 +125,7 @@ class ChackStatusController
       (errorMessage) => Alart.errorAlartDilog(context, errorMessage),
       (response) {
         state = AsyncData(
-            state.value!.copyWith(notificationOff: response.notificationOff));
+            state.value!.copyWith(notificationOn: response.notificationOn));
 
         Alart.showSnackBar(context, response.message);
       },
@@ -126,7 +134,7 @@ class ChackStatusController
 
 //
 //***********  leaveMember *********** */
-  leaveMember(context) async {
+  leaveMember(context, WidgetRef ref) async {
     try {
       final res = await memberRequests.leaveRequest(rutinId);
 

@@ -38,8 +38,7 @@ class NoticeboardDilog {
 
               //
 
-              bool notificationOff =
-                  chackStatus.value?.notificationOff ?? false;
+              bool notificationOff = chackStatus.value?.notificationOn ?? false;
               return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [

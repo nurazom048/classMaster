@@ -72,7 +72,7 @@ class ViewAllRecentNotice extends ConsumerWidget {
                     ontap: () {
                       Navigator.push(
                         context,
-                        CupertinoPageRoute(
+                        MaterialPageRoute(
                           builder: (context) => NoticeViewScreen(
                             notice: notice,
                           ),
@@ -81,9 +81,11 @@ class ViewAllRecentNotice extends ConsumerWidget {
                     },
                   );
                 } else if (data.currentPage < data.totalPages) {
-                  return const Padding(
-                    padding: EdgeInsets.all(16),
-                    child: CircularProgressIndicator(),
+                  return Column(
+                    children: [
+                      const SizedBox(height: 20),
+                      Loaders.center(),
+                    ],
                   );
                 } else {
                   return Container();

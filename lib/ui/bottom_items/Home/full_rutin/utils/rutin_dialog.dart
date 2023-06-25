@@ -69,9 +69,9 @@ class RutinDialog {
                                   return Alart.errorAlertDialogCallBack(
                                     context,
                                     "are you sure you want to leave",
-                                    onConfirm: (bool isYes) {
+                                    onConfirm: () {
                                       chackStatusNotifier.leaveMember(
-                                          ctx); // Pass the context here
+                                          ctx, ref); // Pass the context here
                                     },
                                   );
                                 },
@@ -151,26 +151,25 @@ class RutinDialog {
       builder: (BuildContext context) {
         return Consumer(
           builder: (context, ref, _) {
-            bool notificationOff = false;
-            String status = '';
+            late bool notificationOn;
+            late String status;
 
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              final chackStatus =
-                  ref.read(chackStatusControllerProvider(rutineId));
-              final members =
-                  ref.read(memberControllerProvider(rutineId).notifier);
+            // WidgetsBinding.instance.addPostFrameCallback((_) {
+            final chackStatus =
+                ref.watch(chackStatusControllerProvider(rutineId));
+            final members =
+                ref.read(memberControllerProvider(rutineId).notifier);
 
-              status = chackStatus.value?.activeStatus ?? '';
-              notificationOff = chackStatus.value?.notificationOff ?? false;
-            });
+            status = chackStatus.value?.activeStatus ?? '';
+            notificationOn = chackStatus.value?.notificationOn ?? false;
+            //  });
 
             return SizedBox(
               height: 250,
-              width: 350,
+              width: MediaQuery.of(context).size.width - 10,
               child: Card(
                 color: Colors.white,
-                margin: const EdgeInsets.all(18.0)
-                    .copyWith(left: 30, right: 30, bottom: 30),
+                margin: const EdgeInsets.all(18.0).copyWith(bottom: 50),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15)),
                 child: Consumer(builder: (context, ref, _) {
@@ -178,27 +177,27 @@ class RutinDialog {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       ChackBoxSelector(
-                        isChacked: !notificationOff,
+                        isChacked: notificationOn,
                         icon: Icons.notifications_active,
                         text: "notifications_active",
                         onTap: () {
                           WidgetsBinding.instance.addPostFrameCallback((_) {
                             ref
-                                .read(chackStatusControllerProvider(rutineId)
+                                .watch(chackStatusControllerProvider(rutineId)
                                     .notifier)
                                 .notificationOn(context);
                           });
                         },
                       ),
                       ChackBoxSelector(
-                        isChacked: notificationOff,
+                        isChacked: !notificationOn,
                         icon: Icons.notifications_off,
                         text: "Notification Off",
                         color: Colors.red,
                         onTap: () {
                           WidgetsBinding.instance.addPostFrameCallback((_) {
                             ref
-                                .read(chackStatusControllerProvider(rutineId)
+                                .watch(chackStatusControllerProvider(rutineId)
                                     .notifier)
                                 .notificationOff(context);
                           });
@@ -216,10 +215,10 @@ class RutinDialog {
                             onConfirm: () {
                               WidgetsBinding.instance.addPostFrameCallback((_) {
                                 ref
-                                    .read(
+                                    .watch(
                                         chackStatusControllerProvider(rutineId)
                                             .notifier)
-                                    .leaveMember(context);
+                                    .leaveMember(context, ref);
                               });
                             },
                           );

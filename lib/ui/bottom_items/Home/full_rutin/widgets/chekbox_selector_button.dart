@@ -22,17 +22,24 @@ class ChackBoxSelector extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 11, vertical: 5),
         height: 40,
-        child: Row(
-          children: [
-            if (isChacked != null)
-              Icon(isChacked == true
-                  ? Icons.check
-                  : Icons.check_box_outline_blank_rounded),
-            const SizedBox(width: 10),
-            Icon(icon),
-            const SizedBox(width: 10),
-            Text(text, style: TextStyle(color: color ?? Colors.black)),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Icon(icon),
+                  const SizedBox(width: 15),
+                  Text(text, style: TextStyle(color: color ?? Colors.black)),
+                ],
+              ),
+              if (isChacked != null)
+                Icon(isChacked == true
+                    ? Icons.check
+                    : Icons.check_box_outline_blank_rounded),
+            ],
+          ),
         ),
       ),
     );

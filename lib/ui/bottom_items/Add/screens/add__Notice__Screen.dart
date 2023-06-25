@@ -1,7 +1,9 @@
-// ignore_for_file: avoid_print, use_build_context_synchronously, must_be_immutable, camel_case_types, library_private_types_in_public_api
+// ignore_for_file: avoid_print, use_build_context_synchronously, must_be_immutable, camel_case_types, library_private_types_in_public_api, unused_result
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
+import 'package:table/core/component/loaders.dart';
 import 'package:table/core/component/responsive.dart';
 import 'package:table/core/dialogs/alart_dialogs.dart';
 import 'package:table/ui/bottom_items/Home/notice_board/request/motice_request.dart';
@@ -10,10 +12,14 @@ import 'package:table/widgets/heder/heder_title.dart';
 
 import '../../../../constant/app_color.dart';
 import '../../../../widgets/appWidget/buttons/cupertino_butttons.dart';
+import '../../Home/home_req/home_rutins_controller.dart';
+import '../../Home/notice_board/notice controller/virew_recent_notice_controller.dart';
 import '../../Home/widgets/custom_title_bar.dart';
 import '../../Home/widgets/mydrawer.dart';
 import '../widgets/uploaded_pdf_button.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
+
+final addNoticeLoaderProvider = StateProvider<bool>((ref) => false);
 
 class AddNoticeScreen extends ConsumerWidget {
   AddNoticeScreen({Key? key});
@@ -28,18 +34,19 @@ class AddNoticeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     //!provider
     final pdfpath = ref.watch(selectedPdfPathProvider);
+
     return SafeArea(
       child: Responsive(
         // Mobile
         mobile: Scaffold(
-          body: _mobile(context, pdfpath),
+          body: _mobile(context, ref, pdfpath),
         ),
 
         // Desktop
         desktop: Scaffold(
           body: Row(
             children: [
-              Expanded(
+              const Expanded(
                 flex: 1,
                 child: MyDawer(),
               ),
@@ -51,7 +58,7 @@ class AddNoticeScreen extends ConsumerWidget {
                     Expanded(
                       child: Container(
                         color: Colors.yellow,
-                        child: _mobile(context, pdfpath),
+                        child: _mobile(context, ref, pdfpath),
                       ),
                     ),
                   ],
@@ -64,7 +71,11 @@ class AddNoticeScreen extends ConsumerWidget {
     );
   }
 
-  Widget _mobile(BuildContext context, String? pdfpath) {
+  Widget _mobile(BuildContext context, WidgetRef ref, String? pdfpath) {
+    //
+    final isLoading = ref.watch(addNoticeLoaderProvider);
+    final isLoadingNotifier = ref.watch(addNoticeLoaderProvider.notifier);
+
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.only(bottom: 400),
@@ -118,31 +129,50 @@ class AddNoticeScreen extends ConsumerWidget {
             const SizedBox(height: 60),
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 10),
-              child: CupertinoButtonCustom(
-                color: AppColor.nokiaBlue,
-                textt: "Add Notice",
-                onPressed: () async {
-                  print("pdf path : $pdfpath");
-                  if (pdfpath == null) {
-                    Alart.errorAlartDilog(context, "select pdf");
-                  }
-                  if (_formKey.currentState!.validate()) {
-                    print("validate $pdfpath");
-                    String res = await NoticeRequest().addNotice(
-                      contentName: noticeTitleController.text,
-                      description: descriptionController.text,
-                      pdfFile: pdfpath,
-                    );
-
-                    Alart.showSnackBar(context, res);
-                  }
-                },
-              ),
+              child: isLoading == true
+                  ? Loaders.button()
+                  : CupertinoButtonCustom(
+                      color: AppColor.nokiaBlue,
+                      textt: "Add Notice",
+                      onPressed: () async {
+                        isLoadingNotifier.update((state) => true);
+                        print("pdf path : $pdfpath");
+                        if (pdfpath == null) {
+                          Alart.errorAlartDilog(context, "select pdf");
+                        }
+                        if (_formKey.currentState!.validate()) {
+                          addNotice(context, pdfpath!, ref, isLoadingNotifier);
+                        }
+                      },
+                    ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  void addNotice(
+      context, String pdfpath, WidgetRef ref, isLoadingNotifier) async {
+    print("validate $pdfpath");
+    Either<String, String> res = await NoticeRequest().addNotice(
+      contentName: noticeTitleController.text,
+      description: descriptionController.text,
+      pdfFile: pdfpath,
+      ref: ref,
+    );
+    res.fold((l) {
+      isLoadingNotifier.update((state) => false);
+
+      return Alart.errorAlartDilog(context, l);
+    }, (r) {
+      ref.refresh(recentNoticeController(null));
+
+      Navigator.pop(context);
+      isLoadingNotifier.update((state) => false);
+
+      return Alart.showSnackBar(context, r);
+    });
   }
 }
 

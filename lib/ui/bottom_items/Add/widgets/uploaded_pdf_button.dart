@@ -6,7 +6,8 @@ import 'package:table/helper/picker.dart';
 import '../../../../constant/app_color.dart';
 import '../../../../widgets/appWidget/app_text.dart';
 
-final selectedPdfPathProvider = StateProvider<String?>((ref) => null);
+final selectedPdfPathProvider =
+    StateProvider.autoDispose<String?>((ref) => null);
 // final newfilebytes = StateProvider<List<int>?>((ref) => null);
 
 class UploadPDFBButton extends StatelessWidget {

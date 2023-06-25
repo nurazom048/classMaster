@@ -158,7 +158,8 @@ class JoinRequestPart extends ConsumerWidget {
                       }
 
                       WidgetsBinding.instance.addPostFrameCallback((_) {
-                        requestCountNotifier.update((state) => 4);
+                        requestCountNotifier
+                            .update((state) => data.listAccounts.length);
                       });
 
                       return ListView.builder(

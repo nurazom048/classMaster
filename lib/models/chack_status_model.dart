@@ -5,7 +5,6 @@ class CheckStatusModel {
   final bool isSave;
   final int memberCount;
   final int sentRequestCount;
-  final bool notificationOff;
   final bool notificationOn;
   final bool? summaryOwner;
   final bool? isSummarySaved;
@@ -17,7 +16,6 @@ class CheckStatusModel {
     required this.isSave,
     required this.memberCount,
     required this.sentRequestCount,
-    required this.notificationOff,
     required this.notificationOn,
     this.summaryOwner,
     this.isSummarySaved,
@@ -31,7 +29,6 @@ class CheckStatusModel {
       isSave: json['isSave'] ?? false,
       memberCount: json['memberCount'] ?? 0,
       sentRequestCount: json['sentRequestCount'] ?? 0,
-      notificationOff: json['notificationOff'] ?? false,
       notificationOn: json['notificationOn'] ?? false,
       summaryOwner: json['summaryOwner'] ?? false,
       isSummarySaved: json['isSummarySaved'] ?? false,
@@ -57,7 +54,6 @@ class CheckStatusModel {
       isSave: isSave ?? this.isSave,
       memberCount: memberCount ?? this.memberCount,
       sentRequestCount: sentRequestCount ?? this.sentRequestCount,
-      notificationOff: notificationOff ?? this.notificationOff,
       notificationOn: notificationOn ?? this.notificationOn,
       summaryOwner: summaryOwner ?? this.summaryOwner,
       isSummarySaved: isSummarySaved ?? this.isSummarySaved,

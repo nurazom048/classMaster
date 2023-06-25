@@ -1,12 +1,14 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, unused_result
 
 import 'dart:convert';
 import 'package:api_cache_manager/models/cache_db_model.dart';
 import 'package:api_cache_manager/utils/cache_manager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/message_model.dart';
+import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 
 import '../../../../../constant/constant.dart';
 import '../../utils/utils.dart';
@@ -75,14 +77,15 @@ class NoticeRequest {
   }
 
   //******    add notice     ********* */
-  Future<String> addNotice({
+  Future<Either<String, String>> addNotice({
     String? contentName,
     String? description,
     String? pdfFile,
+    required WidgetRef ref,
   }) async {
     // Obtain shared preferences.
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
+
+    final String? getToken = await AuthController.getToken();
     var url = Uri.parse('${Const.BASE_URl}/notice/add/');
 
     final request = http.MultipartRequest('POST', url);
@@ -104,19 +107,23 @@ class NoticeRequest {
     }
 
     final response = await request.send();
-    print(await response.stream.bytesToString());
+    final responced = await http.Response.fromStream(response);
+    final resData = json.decode(responced.body);
+    //print(responseBytes);
     print(response.statusCode);
 
     try {
       if (response.statusCode == 200) {
-        final responseBody = await response.stream.bytesToString();
-        return responseBody;
+        // final responseBytes = await response.stream.bytesToString();
+        print('response');
+        print(resData);
+        return right('Notice uploade sucsessfull');
       } else {
-        throw "Server error";
+        return left("Server error");
       }
     } catch (e) {
       print(e.toString());
-      return e.toString();
+      return left("$e");
     }
   }
 }

@@ -5,11 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:table/core/component/loaders.dart';
 import 'package:table/ui/bottom_items/Add/screens/add_class_screen.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/screen/viewMore/view_more_screen.dart';
 
 import '../../../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../../../models/class_details_model.dart';
-import '../../../../../../sevices/notification services/local_notifications.dart';
 import '../../../../../../widgets/hedding_row.dart';
 import '../../../../../server/rutinReq.dart';
 import '../../../../Add/screens/add_priode.dart';
@@ -43,9 +41,6 @@ class ClassListPage extends StatelessWidget {
       // notifiers
       final chackStatus = ref.watch(chackStatusControllerProvider(rutinId));
       // String status = chackStatus.value?.activeStatus ?? '';
-
-      bool notificationOff = chackStatus.value?.notificationOff ?? false;
-
       final totalPriodeNotifier = ref.watch(totalPriodeCountProvider.notifier);
       final totalClassNotifier = ref.watch(totalClassCountProvider.notifier);
 
@@ -136,6 +131,10 @@ class ClassListPage extends StatelessWidget {
                         if (length == 0) {
                           ErrorWidget('No Class Created');
                         }
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          totalClassNotifier.update((state) => length);
+                        });
+
                         return ClassRow(
                           id: uniqClass.id,
                           className: uniqClass.name,

@@ -34,13 +34,12 @@ class StatusRow extends ConsumerWidget {
               text: status,
               ontap: () {
                 return Alart.errorAlertDialogCallBack(
-                    context, "are you sure you want to leave",
-                    onConfirm: (bool isYes) {
+                    context, "are you sure you want to leave", onConfirm: () {
                   //  Navigator.pop(context);
 
                   ref
                       .read(chackStatusControllerProvider(rutinId).notifier)
-                      .leaveMember(context);
+                      .leaveMember(context, ref);
                 });
               },
             )

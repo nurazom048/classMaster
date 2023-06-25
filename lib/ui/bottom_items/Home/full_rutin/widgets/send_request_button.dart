@@ -7,7 +7,7 @@ class SendReqButton extends StatelessWidget {
   final bool isNotSendRequest;
   final bool isPending;
   final bool isMember;
-  final bool notificationOff;
+  final bool notificationOn;
   final VoidCallback sendRequest;
   final VoidCallback showPanel;
   final Color? color;
@@ -20,7 +20,7 @@ class SendReqButton extends StatelessWidget {
     required this.isNotSendRequest,
     required this.isPending,
     required this.isMember,
-    required this.notificationOff,
+    required this.notificationOn,
     required this.sendRequest,
     required this.showPanel,
     this.color,
@@ -31,8 +31,9 @@ class SendReqButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    IconData nIcon =
-        notificationOff ? Icons.notifications_off : Icons.notifications_active;
+    IconData nIcon = notificationOn == false
+        ? Icons.notifications_off
+        : Icons.notifications_active;
     String text = isNotSendRequest
         ? "Send Request"
         : isPending
