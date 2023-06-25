@@ -18,27 +18,27 @@ class SearchRutineScreen extends ConsumerWidget {
     final searchRoutine = ref.watch(searchRutineController(searchText));
 
     //
-    return SizedBox(
-        height: 500,
-        width: MediaQuery.of(context).size.width,
-        child: searchRoutine.when(
-          data: (data) {
-            return ListView.builder(
-              itemCount: data.routine.length,
-              itemBuilder: (context, index) {
-                return RutinBoxById(
-                    margin: EdgeInsets.zero,
-                    rutinName: data.routine[index].name,
-                    onTapMore: () {},
-                    rutinId: data.routine[index].id);
-              },
-            );
+    return searchRoutine.when(
+      data: (data) {
+        return ListView.separated(
+          //physics: const NeverScrollableScrollPhysics(),
+          padding: const EdgeInsets.only(bottom: 100),
+          itemCount: data.routine.length,
+          itemBuilder: (context, index) {
+            return RutinBoxById(
+                margin: EdgeInsets.zero,
+                rutinName: data.routine[index].name,
+                onTapMore: () {},
+                rutinId: data.routine[index].id);
           },
-          error: (error, stackTrace) {
-            Alart.handleError(context, error);
-            return ErrorScreen(error: error.toString());
-          },
-          loading: () => Loaders.center(),
-        ));
+          separatorBuilder: (context, index) => const SizedBox(height: 10),
+        );
+      },
+      error: (error, stackTrace) {
+        Alart.handleError(context, error);
+        return ErrorScreen(error: error.toString());
+      },
+      loading: () => Loaders.center(),
+    );
   }
 }
