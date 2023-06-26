@@ -1,6 +1,6 @@
-// ignore_for_file: prefer_collection_literals
+// igimport 'package:table/ui/bottom_items/Account/models/account_models.dart';
 
-import 'package:table/ui/bottom_items/Account/models/account_models.dart';
+import '../ui/bottom_items/Account/models/account_models.dart';
 
 class AccountsResponse {
   List<AccountModels>? accounts;
@@ -36,5 +36,19 @@ class AccountsResponse {
     data['totalPages'] = totalPages;
     data['totalCount'] = totalCount;
     return data;
+  }
+
+  AccountsResponse copyWith({
+    List<AccountModels>? accounts,
+    int? currentPage,
+    int? totalPages,
+    int? totalCount,
+  }) {
+    return AccountsResponse(
+      accounts: accounts ?? this.accounts,
+      currentPage: currentPage ?? this.currentPage,
+      totalPages: totalPages ?? this.totalPages,
+      totalCount: totalCount ?? this.totalCount,
+    );
   }
 }

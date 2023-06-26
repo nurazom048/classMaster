@@ -9,7 +9,8 @@ import '../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../widgets/accound_card_row.dart';
 
 class AccountSearchScreen extends ConsumerWidget {
-  const AccountSearchScreen({Key? key}) : super(key: key);
+  AccountSearchScreen({Key? key}) : super(key: key);
+  final scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -17,28 +18,44 @@ class AccountSearchScreen extends ConsumerWidget {
     final searchText = ref.watch(Serarch_String_Provider);
     final searchAccounts = ref.watch(searchAccountController(searchText));
 
-    return searchAccounts.when(
-      data: (data) {
-        return ListView.separated(
-          // physics: const NeverScrollableScrollPhysics(),
-          padding: const EdgeInsets.only(bottom: 100),
-          itemCount: data.accounts?.length ?? 0,
-          itemBuilder: (context, index) {
-            if (data.accounts!.isNotEmpty) {
-              return AccountCardRow(accountData: data.accounts![index]);
-            } else {
-              return const ErrorScreen(error: 'No Account found');
+    return Scaffold(
+      body: searchAccounts.when(
+        data: (data) {
+          void scrollListener(double pixels) {
+            if (pixels == scrollController.position.maxScrollExtent) {
+              print('End of scroll');
+              ref
+                  .watch(searchAccountController(searchText).notifier)
+                  .loadMore(data.currentPage ?? 1);
             }
-          },
-          separatorBuilder: (BuildContext context, int index) =>
-              const SizedBox(height: 10),
-        );
-      },
-      error: (error, stackTrace) {
-        Alart.handleError(context, error);
-        return ErrorScreen(error: error.toString());
-      },
-      loading: () => Loaders.center(),
+          }
+
+          scrollController.addListener(() {
+            scrollListener(scrollController.position.pixels);
+          });
+
+          return ListView.separated(
+            physics: const NeverScrollableScrollPhysics(),
+            controller: scrollController,
+            padding: const EdgeInsets.only(bottom: 100),
+            itemCount: data.accounts?.length ?? 0,
+            itemBuilder: (context, index) {
+              if (data.accounts!.isNotEmpty) {
+                return AccountCardRow(accountData: data.accounts![index]);
+              } else {
+                return const ErrorScreen(error: 'No Account found');
+              }
+            },
+            separatorBuilder: (BuildContext context, int index) =>
+                const SizedBox(height: 10),
+          );
+        },
+        error: (error, stackTrace) {
+          Alart.handleError(context, error);
+          return ErrorScreen(error: error.toString());
+        },
+        loading: () => Loaders.center(),
+      ),
     );
   }
 }

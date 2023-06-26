@@ -3,10 +3,11 @@ class RutinQuarry {
   int currentPage;
   int totalPages;
 
-  RutinQuarry(
-      {required this.routine,
-      required this.currentPage,
-      required this.totalPages});
+  RutinQuarry({
+    required this.routine,
+    required this.currentPage,
+    required this.totalPages,
+  });
 
   factory RutinQuarry.fromJson(Map<String, dynamic> json) {
     var list = json['routine'] as List;
@@ -15,6 +16,18 @@ class RutinQuarry {
       routine: routines,
       currentPage: json['currentPage'],
       totalPages: json['totalPages'],
+    );
+  }
+
+  RutinQuarry copyWith({
+    List<Routine>? routine,
+    int? currentPage,
+    int? totalPages,
+  }) {
+    return RutinQuarry(
+      routine: routine ?? this.routine,
+      currentPage: currentPage ?? this.currentPage,
+      totalPages: totalPages ?? this.totalPages,
     );
   }
 }

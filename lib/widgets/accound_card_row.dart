@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:table/constant/app_color.dart';
 import 'package:table/ui/bottom_items/Account/models/account_models.dart';
+import 'package:table/ui/bottom_items/Home/utils/utils.dart';
 
 import '../ui/bottom_items/Account/profile/profile_screen.dart';
 
@@ -63,12 +64,29 @@ class AccountCardRow extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             // ignore: prefer_const_literals_to_create_immutables
             children: [
-              const CircleAvatar(
-                radius: 23,
-                backgroundColor: Colors.amber,
-                backgroundImage: NetworkImage(
-                    "https://th.bing.com/th/id/OIP.iSu2RcCcdm78xbxNDJMJSgHaEo?pid=ImgDet&rs=1"),
+              // TODO
+
+              FutureBuilder(
+                future: Utils.isOnlineMethode(),
+                builder: (context, snapshot) {
+                  bool isOffline = snapshot.data ?? false;
+
+                  if (isOffline == false && accountData.image != null) {
+                    return CircleAvatar(
+                      radius: 23,
+                      backgroundColor: Colors.white54,
+                      backgroundImage: NetworkImage(accountData.image!),
+                    );
+                  }
+                  {
+                    return const CircleAvatar(
+                      radius: 23,
+                      backgroundColor: Colors.black12,
+                    );
+                  }
+                },
               ),
+
               //
               const Spacer(flex: 3),
               Row(
@@ -83,7 +101,7 @@ class AccountCardRow extends ConsumerWidget {
                             color: Colors.black),
                         children: [
                           TextSpan(
-                              text: '\n${accountData.username}',
+                              text: '\n@${accountData.username}',
                               style: const TextStyle(
                                 fontWeight: FontWeight.w500,
                                 color: Colors.black,

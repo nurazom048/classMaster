@@ -61,7 +61,7 @@ class _SearchPAgeState extends State<SearchPAge> {
       //
       final PageController pageController = PageController(initialPage: 0);
       return NestedScrollView(
-        physics: const BouncingScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           SliverToBoxAdapter(
             child: Column(
@@ -110,7 +110,7 @@ class _SearchPAgeState extends State<SearchPAge> {
                   .watch(searchPageIndexProvider.notifier)
                   .update((state) => index);
             },
-            children: const [
+            children: [
               AccountSearchScreen(),
               SearchRutineScreen(),
             ],

@@ -127,7 +127,7 @@ class _RutinBoxByIdState extends State<RutinBoxById> {
                         },
                         error: (error, stackTrace) =>
                             Alart.handleError(context, error),
-                        loading: () => const Text("data"),
+                        loading: () => const Text("...."),
                       ),
                     ],
                   ),

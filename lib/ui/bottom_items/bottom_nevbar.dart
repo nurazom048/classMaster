@@ -7,6 +7,7 @@ import 'package:table/ui/bottom_items/Add/screens/create_new_rutine.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/widgets/dash_border_button.dart';
 
 import '../../constant/app_color.dart';
+import '../../core/app_icons_icons.dart';
 import '../../widgets/bottom_sheet_shape.dart';
 
 import '../../core/component/responsive.dart';

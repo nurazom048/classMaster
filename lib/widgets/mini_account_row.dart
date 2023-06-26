@@ -25,11 +25,11 @@ class MiniAccountInfo extends StatelessWidget {
             builder: (context, snapshot) {
               bool isOnline = snapshot.data ?? false;
 
-              if (isOnline == true) {
+              if (!isOnline && accountData?.image != null) {
                 return CircleAvatar(
                   radius: 24,
                   backgroundColor: Colors.red,
-                  backgroundImage: NetworkImage(accountData?.image ?? ""),
+                  child: Image.network(accountData!.image!),
                 );
               }
               {
@@ -41,14 +41,22 @@ class MiniAccountInfo extends StatelessWidget {
             },
           ),
           const SizedBox(width: 10),
-          Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // name ad user name
-                AppText(accountData?.name ?? "", fontSize: 17).heding(),
-                AppText(accountData?.username ?? "", fontSize: 16).heding()
-              ]),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  // name ad user name
+                  Text(
+                    "${accountData?.name}",
+                    style: TS.opensensBlue(
+                      color: Colors.black,
+                    ),
+                  ),
+                  AppText("@${accountData?.username}", fontSize: 16).heding()
+                ]),
+          ),
           const Spacer(),
           IconButton(
               onPressed: onTapMore ?? () {}, icon: const Icon(Icons.more_vert))
