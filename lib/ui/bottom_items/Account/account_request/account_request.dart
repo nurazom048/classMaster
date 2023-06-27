@@ -92,14 +92,14 @@ class AccountReq {
   // }
 
 //********************* update Account     ********************************//
-  static Future<Message> updateAccount(
-    context,
-    name,
-    username,
-    about, {
-    String? imagePath,
+  static Future<Message> updateAccount({
+    required String name,
+    required String username,
+    required String about,
+    String? profileImage,
+    String? coverImage,
   }) async {
-    print('form eddit account ************* $imagePath');
+    print('form eddit account ************* $profileImage');
     try {
       // Get token from shared preferences
       final String? getToken = await AuthController.getToken();
@@ -119,9 +119,13 @@ class AccountReq {
       request.fields['about'] = about;
 
       // Add image to request if imagePath is provided
-      if (imagePath != null) {
-        final image = await http.MultipartFile.fromPath('image', imagePath);
+      if (profileImage != null) {
+        final image = await http.MultipartFile.fromPath('image', profileImage);
         request.files.add(image);
+      }
+      if (coverImage != null) {
+        final cover = await http.MultipartFile.fromPath('cover', coverImage);
+        request.files.add(cover);
       }
 
       // Send request and get response

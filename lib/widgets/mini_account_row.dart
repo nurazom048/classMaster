@@ -29,7 +29,7 @@ class MiniAccountInfo extends StatelessWidget {
                 return CircleAvatar(
                   radius: 24,
                   backgroundColor: Colors.red,
-                  child: Image.network(accountData!.image!),
+                  backgroundImage: NetworkImage(accountData!.image!),
                 );
               }
               {

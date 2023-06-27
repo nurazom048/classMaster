@@ -1,6 +1,8 @@
 // ignore_for_file: use_build_context_synchronously, unnecessary_null_comparison
 
 import 'package:flutter/material.dart';
+import 'package:table/core/dialogs/alart_dialogs.dart';
+import 'package:table/models/message_model.dart';
 import 'package:table/ui/bottom_items/Account/account_request/account_request.dart';
 import 'package:table/ui/bottom_items/Account/models/account_models.dart';
 import 'package:table/ui/bottom_items/Account/utils/eddit_account.validation.dart';
@@ -34,9 +36,13 @@ class _EdditAccountState extends State<EdditAccount> {
   final passwordFocusNode = FocusNode();
   final confirmPasswordFocusNode = FocusNode();
 
-  String? imagePath;
-  String? netWorkImage;
   bool loading = false;
+  String? netprofileImage;
+  String? netCoverImage;
+
+  //
+  String? profileImagePath;
+  String? coverImagePath;
 
   @override
   void initState() {
@@ -56,17 +62,19 @@ class _EdditAccountState extends State<EdditAccount> {
           child: Column(
             children: [
               HeaderTitle("Eddit Account", context),
-              const SizedBox(height: 50),
+              const SizedBox(height: 10),
 
               PickImage(
-                netWorkIamge: netWorkImage,
-                onImagePathSelected: (inagePath) async {
-                  imagePath = inagePath;
-
-                  // ignore: avoid_print
-                  print("path paici vai $imagePath");
-                  // ignore: avoid_print
-                  print("path paici vai $netWorkImage");
+                netWorkIamge: netprofileImage,
+                netWorkCoverImage: netCoverImage,
+                isEddit: true,
+                onCoverImagePath: (coverPath) async {
+                  coverImagePath = coverPath;
+                  print('CoverImage path $coverPath');
+                },
+                onImagePathSelected: (profileImagePAth) async {
+                  profileImagePath = profileImagePAth;
+                  print("path paici vai $profileImagePAth");
                 },
               ),
 
@@ -77,16 +85,6 @@ class _EdditAccountState extends State<EdditAccount> {
                 focusNode: nameFocusNode,
                 onFieldSubmitted: (_) => emailFocusNode.requestFocus(),
               ),
-
-              // AppTextFromField(
-              //   controller: usernameController,
-              //   hint: "Username",
-              //   labelText: "Choose a username for your account",
-              //   validator: EdditAccountValidation.validateUsername,
-              //   focusNode: usernameFocusNode,
-              //   onFieldSubmitted: (_) => passwordFocusNode.requestFocus(),
-              // ),
-
               AppTextFromField(
                 controller: aboutController,
                 hint: "About",
@@ -104,17 +102,19 @@ class _EdditAccountState extends State<EdditAccount> {
                   color: AppColor.nokiaBlue,
                   textt: "Eddit",
                   onPressed: () async {
-                    //  setState(() => loading = true);
+                    setState(() => loading = true);
                     if (formKey.currentState?.validate() ?? false) {
-                      await AccountReq.updateAccount(
-                        context,
-                        nameController.text,
-                        usernameController.text,
-                        aboutController.text,
-                        imagePath: imagePath,
-                      ).then((value) {
-                        //  setState(() => loading = false);
-                      });
+                      final Message message = await AccountReq.updateAccount(
+                        name: nameController.text,
+                        username: usernameController.text,
+                        about: aboutController.text,
+                        profileImage: profileImagePath,
+                        coverImage: coverImagePath,
+                      );
+                      Alart.showSnackBar(context, message.message);
+                      setState(() => loading = true);
+
+                      Navigator.pop(context);
                     }
                   },
                 ),
@@ -135,11 +135,10 @@ class _EdditAccountState extends State<EdditAccount> {
       usernameController.text = accountData.username ?? '';
       passwordController.text = accountData.password ?? '';
       confirmPasswordController.text = accountData.password ?? '';
-      netWorkImage = accountData.image;
-      aboutController.text = accountData.about ?? '';
 
-      // ignore: avoid_print
-      print(accountData.image);
+      aboutController.text = accountData.about ?? '';
+      netprofileImage = accountData.image;
+      netCoverImage = accountData.coverImage;
       if (!mounted) {}
       setState(() {});
     }

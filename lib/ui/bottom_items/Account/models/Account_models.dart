@@ -7,6 +7,7 @@ class AccountModels {
   String? position;
   String? about;
   String? accountType;
+  String? coverImage;
 
   AccountModels({
     this.sId,
@@ -28,6 +29,7 @@ class AccountModels {
     position = json['position'];
     about = json['about'];
     accountType = json['account_type'];
+    coverImage = json['coverImage'];
   }
 
   Map<String, dynamic> toJson() {

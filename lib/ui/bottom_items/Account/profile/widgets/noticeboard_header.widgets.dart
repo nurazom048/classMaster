@@ -80,7 +80,7 @@ class NoticeBoardHeader extends ConsumerWidget {
 
             return SizedBox(
               height: 250,
-              width: 350,
+              width: MediaQuery.of(context).size.width - 10,
               child: Card(
                 color: Colors.white,
                 margin: const EdgeInsets.all(18.0)
