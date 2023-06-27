@@ -5,9 +5,10 @@ import '../models/recent_notice_model.dart';
 import '../request/motice_request.dart';
 
 //! Provider
-final recentNoticeController = StateNotifierProvider.autoDispose
-    .family<UploadedRutinsController, AsyncValue<RecentNotice>, String?>(
-        (ref, academyID) {
+final recentNoticeController = StateNotifierProvider.family<
+    UploadedRutinsController,
+    AsyncValue<RecentNotice>,
+    String?>((ref, academyID) {
   return UploadedRutinsController(ref.read(noticeReqProvider), academyID);
 });
 

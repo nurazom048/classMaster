@@ -101,7 +101,7 @@ class _PickImageState extends State<PickImage> {
           ),
           Positioned(
             bottom: 0,
-            left: MediaQuery.of(context).size.width / 2.7,
+            left: MediaQuery.of(context).size.width / 2.9,
             child: badges.Badge(
               showBadge: widget.isEddit,
               position: BadgePosition.bottomEnd(),

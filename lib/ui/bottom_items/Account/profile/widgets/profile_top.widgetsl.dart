@@ -21,7 +21,7 @@ class ProfileTop extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          height: 240,
+          height: 230,
           child: Stack(
             children: [
               PickImage(
@@ -33,6 +33,28 @@ class ProfileTop extends StatelessWidget {
             ],
           ),
         ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Column(
+              children: [
+                Text(
+                  accountData!.name ?? '',
+                  style: const TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                Text(
+                  '@${accountData!.username}',
+                  style: TS.opensensBlue(color: Colors.black),
+                ),
+              ],
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           child: Column(

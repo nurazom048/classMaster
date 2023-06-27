@@ -51,7 +51,7 @@ class ProfileSCreen extends StatelessWidget {
                 "Profile",
                 context,
                 margin:
-                    const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+                    const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
               ),
 
               //! Profile Top

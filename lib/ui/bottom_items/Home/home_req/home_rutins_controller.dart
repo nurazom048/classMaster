@@ -9,9 +9,8 @@ import '../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../models/message_model.dart';
 import '../models/home_rutines_model.dart';
 
-final homeRutinControllerProvider = StateNotifierProvider.autoDispose
-    .family<HomeRutinsController, AsyncValue<RoutineHome>, String?>(
-        (ref, userID) {
+final homeRutinControllerProvider = StateNotifierProvider.family<
+    HomeRutinsController, AsyncValue<RoutineHome>, String?>((ref, userID) {
   return HomeRutinsController(ref.read(home_req_provider), userID);
 });
 
