@@ -36,7 +36,7 @@ class Rutin_Req {
 
     try {
       // If offline and have cache
-      if (isOnline && isHaveCache) {
+      if (!isOnline && isHaveCache) {
         final getdata = await APICacheManager().getCacheData(key);
         print('From cache: $getdata');
         return NewClassDetailsModel.fromJson(jsonDecode(getdata.syncData));

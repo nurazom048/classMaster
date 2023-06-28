@@ -84,8 +84,8 @@ class HomeScreen extends ConsumerWidget {
       {required homeRoutineNotifier}) {
     return RefreshIndicator(
       onRefresh: () async {
-        final bool isOfline = await Utils.isOnlineMethode();
-        if (isOfline) {
+        final bool isOnline = await Utils.isOnlineMethode();
+        if (!isOnline) {
           Alart.showSnackBar(context, 'You are in offline mood');
         } else {
           //! provider
@@ -99,9 +99,6 @@ class HomeScreen extends ConsumerWidget {
         children: [
           if (Responsive.isMobile(context)) const ChustomTitleBar("title"),
 
-          IconButton(
-              onPressed: () => throw Exception('test exception'),
-              icon: const Icon(Icons.abc)),
           //_______________________ recent notices _________________//
           RecentNoticeTitle(
             onTap: () => Get.to(() => ViewAllRecentNotice(),

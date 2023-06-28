@@ -61,7 +61,12 @@ class _EdditAccountState extends State<EdditAccount> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              HeaderTitle("Eddit Account", context),
+              HeaderTitle(
+                "Eddit Account",
+                context,
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 25)
+                    .copyWith(bottom: 10),
+              ),
               const SizedBox(height: 10),
 
               PickImage(

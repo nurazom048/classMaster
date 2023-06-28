@@ -35,7 +35,7 @@ class AccountReq {
     try {
 //
       // if offline and have cash
-      if (isOnline && isHaveCash) {
+      if (!isOnline && isHaveCash) {
         //
         var getdata = await APICacheManager().getCacheData(url.toString());
         print('Foem cash $getdata');

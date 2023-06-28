@@ -32,7 +32,7 @@ class NotificationClass {
     print(url);
     try {
       // Check if offline and have cache
-      if (isOnline && isHaveCash) {
+      if (!isOnline && isHaveCash) {
         var cacheData = await APICacheManager().getCacheData(key);
         return ClassNotificationList.fromJson(json.decode(cacheData.syncData));
       }

@@ -101,7 +101,7 @@ class PriodeRequest {
       print('******************');
       print('$isOnline $isHaveCache');
       // If user is offline, load data from cache
-      if (isOnline && isHaveCache) {
+      if (!isOnline && isHaveCache) {
         final getdata = await APICacheManager().getCacheData(key);
         print('From cache: $getdata');
         return Right(AllPriodeList.fromJson(jsonDecode(getdata.syncData)));

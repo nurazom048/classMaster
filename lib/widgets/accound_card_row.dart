@@ -71,7 +71,7 @@ class AccountCardRow extends ConsumerWidget {
                 builder: (context, snapshot) {
                   bool isOffline = snapshot.data ?? false;
 
-                  if (isOffline == false && accountData.image != null) {
+                  if (isOffline && accountData.image != null) {
                     return CircleAvatar(
                       radius: 23,
                       backgroundColor: Colors.white54,

@@ -46,7 +46,7 @@ class NoticeRequest {
     try {
       // if offline and have cash
 
-      if (isOffline && isHaveCash) {
+      if (!isOffline && isHaveCash) {
         var getdata = await APICacheManager().getCacheData(key);
         print('Foem cash $getdata');
         return RecentNotice.fromJson(jsonDecode(getdata.syncData));

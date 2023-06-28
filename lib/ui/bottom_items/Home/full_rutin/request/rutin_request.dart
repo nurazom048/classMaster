@@ -27,7 +27,7 @@ class FullRutinrequest {
 
     try {
       // if offline and have cash
-      if (isOffile && isHaveCash) {
+      if (!isOffile && isHaveCash) {
         var getdata =
             await APICacheManager().getCacheData("chackStatus$rutin_id");
         print('Foem cash $getdata');
