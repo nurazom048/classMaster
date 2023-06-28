@@ -134,7 +134,7 @@ class _PickImageState extends State<PickImage> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Loaders.center();
-          } else if (snapshot.hasData && snapshot.data == false) {
+          } else if (snapshot.hasData && snapshot.data == true) {
             return ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.network(
@@ -167,7 +167,7 @@ class _PickImageState extends State<PickImage> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Loaders.center();
-          } else if (snapshot.hasData && snapshot.data == false) {
+          } else if (snapshot.hasData && snapshot.data == true) {
             return ClipOval(
                 child: Image.network(
               widget.netWorkIamge!,

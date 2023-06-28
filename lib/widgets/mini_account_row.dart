@@ -25,7 +25,7 @@ class MiniAccountInfo extends StatelessWidget {
             builder: (context, snapshot) {
               bool isOnline = snapshot.data ?? false;
 
-              if (!isOnline && accountData?.image != null) {
+              if (isOnline && accountData?.image != null) {
                 return CircleAvatar(
                   radius: 24,
                   backgroundColor: Colors.red,

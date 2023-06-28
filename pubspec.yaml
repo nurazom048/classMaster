@@ -72,6 +72,7 @@ dependencies:
   cached_network_image: ^3.2.3
   expandable_text: ^2.3.0
   flutter_cached_pdfview: ^0.4.1
+  firebase_crashlytics: ^3.3.3
 
 
 dev_dependencies:

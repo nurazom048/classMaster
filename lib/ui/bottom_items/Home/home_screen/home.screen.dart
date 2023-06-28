@@ -98,6 +98,10 @@ class HomeScreen extends ConsumerWidget {
         controller: scrollController,
         children: [
           if (Responsive.isMobile(context)) const ChustomTitleBar("title"),
+
+          IconButton(
+              onPressed: () => throw Exception('test exception'),
+              icon: const Icon(Icons.abc)),
           //_______________________ recent notices _________________//
           RecentNoticeTitle(
             onTap: () => Get.to(() => ViewAllRecentNotice(),
