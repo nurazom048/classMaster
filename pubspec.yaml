@@ -71,6 +71,7 @@ dependencies:
   api_cache_manager: ^1.0.2
   cached_network_image: ^3.2.3
   expandable_text: ^2.3.0
+  flutter_cached_pdfview: ^0.4.1
 
 
 dev_dependencies:

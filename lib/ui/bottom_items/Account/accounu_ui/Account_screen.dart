@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
@@ -123,7 +124,9 @@ class AccountScreen extends ConsumerWidget {
                 classNotification.when(
                     data: (data) {
                       if (data == null) {}
-                      LocalNotification.scheduleNotifications(data!);
+                      if (!kIsWeb) {
+                        LocalNotification.scheduleNotifications(data!);
+                      }
                       return const SizedBox();
                     },
                     error: (error, stackTrace) {

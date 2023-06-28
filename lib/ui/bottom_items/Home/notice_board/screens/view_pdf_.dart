@@ -1,11 +1,12 @@
-// ignore_for_file: library_private_types_in_public_api
+import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:table/core/component/loaders.dart';
-
+import 'package:table/widgets/error/error.widget.dart';
 import '../../../../../widgets/heder/heder_title.dart';
+import '../../utils/utils.dart';
 
 class ViewPDf extends StatefulWidget {
   final String pdfLink;
@@ -18,17 +19,36 @@ class ViewPDf extends StatefulWidget {
 
 class _ViewPDfState extends State<ViewPDf> {
   final PdfViewerController _pdfViewerController = PdfViewerController();
+  final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
+  File? _tempFile;
+  bool? isOnline;
 
-  Future<String?> urlChecker(String url) async {
-    try {
-      final response = await http.get(Uri.parse(url));
-      if (response.statusCode == 200) {
-        return null;
-      } else {
-        throw Exception("Failed to load PDF");
-      }
-    } catch (e) {
-      return e.toString();
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      initializeFile();
+    });
+  }
+
+  @override
+  void dispose() {
+    _pdfViewerController.dispose();
+    super.dispose();
+  }
+
+  Future<void> initializeFile() async {
+    final Directory tempPath = await getApplicationDocumentsDirectory();
+    final String fileName =
+        widget.pdfLink.substring(widget.pdfLink.lastIndexOf('/') + 1);
+    final File tempFile = File('${tempPath.path}/$fileName');
+    final bool checkFileExist = await tempFile.exists();
+    isOnline = await Utils.isOnlineMethode();
+    if (checkFileExist) {
+      setState(() {
+        _tempFile = tempFile;
+      });
     }
   }
 
@@ -41,23 +61,34 @@ class _ViewPDfState extends State<ViewPDf> {
             appBar(context),
             SizedBox(
               height: MediaQuery.of(context).size.height - 100,
-              child: FutureBuilder<String?>(
-                future: urlChecker(widget.pdfLink),
+              child: FutureBuilder<bool>(
+                future: Utils.isOnlineMethode(),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Loaders.center();
-                  } else if (snapshot.hasData) {
-                    return Center(
-                      child: Text(
-                        'Something went wrong: ${snapshot.data.toString()}',
-                      ),
-                    );
-                  } else {
-                    return SfPdfViewer.network(
-                      widget.pdfLink,
-                      key: UniqueKey(),
-                      controller: _pdfViewerController,
-                    );
+                  print(snapshot.data);
+                  try {
+                    if (snapshot.hasError) {
+                      return ErrorScreen(error: snapshot.error.toString());
+                    }
+                    if (isOnline == null ||
+                        isOnline == false && _tempFile == null) {
+                      return const ErrorScreen(
+                          error: 'You  are in offline mood');
+                    } else if (_tempFile != null) {
+                      return SfPdfViewer.file(
+                        controller: _pdfViewerController,
+                        _tempFile!,
+                        key: _pdfViewerKey,
+                        onDocumentLoadFailed: (details) {
+                          ErrorScreen(error: details.toString());
+                        },
+                      );
+                    } else if (snapshot.data != null && _tempFile == null) {
+                      return getBody();
+                    } else {
+                      return Loaders.center();
+                    }
+                  } catch (e) {
+                    return ErrorScreen(error: '$e');
                   }
                 },
               ),
@@ -70,14 +101,14 @@ class _ViewPDfState extends State<ViewPDf> {
 
   Widget appBar(BuildContext context) {
     return HeaderTitle(
-      "View PDF",
+      "View PDF $isOnline",
       context,
       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       widget: Row(
         children: [
           IconButton(
             onPressed: () {
-              if (_pdfViewerController.pageNumber > 1) {
+              if (_pdfViewerController.pageNumber != 1) {
                 _pdfViewerController.previousPage();
               }
             },
@@ -95,5 +126,29 @@ class _ViewPDfState extends State<ViewPDf> {
         ],
       ),
     );
+  }
+
+  Widget getBody() {
+    try {
+      return SfPdfViewer.network(
+        widget.pdfLink,
+        key: _pdfViewerKey,
+        enableDoubleTapZooming: true,
+        enableTextSelection: true,
+        controller: _pdfViewerController,
+        onDocumentLoadFailed: (details) {
+          ErrorScreen(error: details.toString());
+        },
+        onDocumentLoaded: (PdfDocumentLoadedDetails details) async {
+          final Directory tempPath = await getApplicationDocumentsDirectory();
+          final String fileName =
+              widget.pdfLink.substring(widget.pdfLink.lastIndexOf('/') + 1);
+          _tempFile = await File('${tempPath.path}/$fileName')
+              .writeAsBytes(List.from(await details.document.save()));
+        },
+      );
+    } catch (e) {
+      return ErrorScreen(error: e.toString());
+    }
   }
 }

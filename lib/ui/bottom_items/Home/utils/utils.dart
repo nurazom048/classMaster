@@ -56,23 +56,34 @@ class Utils {
   // isOnlineMethode
 
   static Future<bool> isOnlineMethode() async {
-    // final connectivityResult = await (Connectivity().checkConnectivity());
+    final connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult != ConnectivityResult.none) {
+      print('trure = $connectivityResult');
+      return true;
+    } else {
+      print('false = $connectivityResult');
 
-    bool set = false;
-    if (set == false) {
-      Connectivity().checkConnectivity().then((connectivityResult) {
-        if (connectivityResult != ConnectivityResult.none) {
-          set = true;
-        } else {
-          set = false;
-        }
-      });
+      return false;
     }
 
-    //
-    print("from methode $set");
+    // bool set = false;
+    // Connectivity().checkConnectivity().then((connectivityResult) {
+    //   print(connectivityResult);
+    // if (connectivityResult != ConnectivityResult.none) {
+    //   set = true;
 
-    return set;
+    //   print('trure = $connectivityResult');
+    //   return true;
+    // } else {
+    //   set = false;
+    //   return false;
+    // }
+    // });
+
+    // //
+    // print("from methode $set");
+
+    // return set;
   }
 //*************************************************** */
   //   ConnectivityResult _connectionStatus = ConnectivityResult.none;
