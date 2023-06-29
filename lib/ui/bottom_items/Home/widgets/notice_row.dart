@@ -1,23 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:table/ui/bottom_items/Account/models/account_models.dart';
 import 'package:table/ui/bottom_items/Home/notice_board/models/recent_notice_model.dart';
 import 'package:table/ui/bottom_items/Home/notice_board/screens/view_notice_screen.dart';
 import 'package:table/widgets/appWidget/dottted_divider.dart';
 
 class NoticeRow extends StatelessWidget {
-  const NoticeRow(
-      {super.key,
-      required this.date,
-      required this.title,
-      required this.notice});
-  final String title;
-  final String date;
+  const NoticeRow({
+    super.key,
+    required this.notice,
+    required this.accountModels,
+  });
+
   final Notice notice;
+  final AccountModels accountModels;
 
   @override
   Widget build(BuildContext context) {
-    DateTime dt = DateTime.parse(date);
+    DateTime dt = notice.time;
     return SizedBox(
       height: 60,
       child: Column(
@@ -37,7 +38,7 @@ class NoticeRow extends StatelessWidget {
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  title,
+                  notice.contentName,
                   style: const TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 20,
@@ -53,6 +54,7 @@ class NoticeRow extends StatelessWidget {
                       CupertinoPageRoute(
                         builder: (context) => NoticeViewScreen(
                           notice: notice,
+                          accountModel: accountModels,
                         ),
                       ),
                     );

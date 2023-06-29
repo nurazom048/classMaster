@@ -17,56 +17,60 @@ class ProfileTop extends StatelessWidget {
       return const Text("Data Null");
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          height: 230,
-          child: Stack(
-            children: [
-              PickImage(
-                onImagePathSelected: (onImagePathSelected) {},
-                onCoverImagePath: (onCoverImagePath) {},
-                netWorkIamge: accountData!.image,
-                netWorkCoverImage: accountData!.coverImage,
-              ),
-            ],
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Column(
+    return Container(
+      constraints: BoxConstraints(minHeight: 350),
+      // color: Colors.black12,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: 230,
+            child: Stack(
               children: [
-                Text(
-                  accountData!.name ?? '',
-                  style: const TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                Text(
-                  '@${accountData!.username}',
-                  style: TS.opensensBlue(color: Colors.black),
+                PickImage(
+                  onImagePathSelected: (onImagePathSelected) {},
+                  onCoverImagePath: (onCoverImagePath) {},
+                  netWorkIamge: accountData!.image,
+                  netWorkCoverImage: accountData!.coverImage,
                 ),
               ],
             ),
-          ],
-        ),
-        const SizedBox(height: 16),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("About", style: TS.heading()),
-              const SizedBox(height: 10),
-              Text("${accountData!.about}"),
+              Column(
+                children: [
+                  Text(
+                    accountData!.name ?? '',
+                    style: const TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Text(
+                    '@${accountData!.username}',
+                    style: TS.opensensBlue(color: Colors.black),
+                  ),
+                ],
+              ),
             ],
           ),
-        ),
-      ],
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("About", style: TS.heading()),
+                const SizedBox(height: 10),
+                Text("${accountData!.about}"),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

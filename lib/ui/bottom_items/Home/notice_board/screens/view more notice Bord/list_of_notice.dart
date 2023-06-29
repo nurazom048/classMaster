@@ -53,19 +53,17 @@ class ListOfNoticeScreen extends ConsumerWidget {
                         ontap: () => Get.to(
                           transition: Transition.rightToLeft,
                           NoticeViewScreen(
-                              notice: Notice(
-                            id: data.notices[index].id,
-                            contentName: data.notices[index].contentName,
-                            pdf: data.notices[index].pdf,
-                            academyId: AcademyId(
-                              id: "id",
-                              username: "username",
-                              name: "name",
+                            notice: Notice(
+                              id: data.notices[index].id,
+                              contentName: data.notices[index].contentName,
+                              pdf: data.notices[index].pdf,
+                              academyId: data.notices[index].academyId,
+                              // description: data.notices[index].description,
+                              // noticeBoard: data.notices[index].noticeBoard,
+                              time: data.notices[index].time,
                             ),
-                            // description: data.notices[index].description,
-                            // noticeBoard: data.notices[index].noticeBoard,
-                            time: data.notices[index].time,
-                          )),
+                            accountModel: data.notices[index].academyId,
+                          ),
                         ),
                         onLongPress: () {},
                         dateTime: data.notices[index].time,

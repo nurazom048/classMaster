@@ -81,6 +81,7 @@ class ProfileSCreen extends StatelessWidget {
                                     index: 0,
                                     conditon: length >= 2,
                                     singleCondition: length == 1,
+                                    recentNotice: data,
                                   ),
 
                                   //
@@ -89,12 +90,14 @@ class ProfileSCreen extends StatelessWidget {
                                     index: 2,
                                     conditon: length >= 4,
                                     singleCondition: length == 3,
+                                    recentNotice: data,
                                   ), //
                                   RecentNoticeSliderItem(
                                     notice: data.notices,
                                     index: 3,
                                     conditon: length >= 6,
                                     singleCondition: length == 5,
+                                    recentNotice: data,
                                   ),
 
                                   RecentNoticeSliderItem(
@@ -102,6 +105,7 @@ class ProfileSCreen extends StatelessWidget {
                                     index: 4,
                                     conditon: length >= 8,
                                     singleCondition: length == 7,
+                                    recentNotice: data,
                                   ),
                                 ],
                               );
@@ -116,7 +120,7 @@ class ProfileSCreen extends StatelessWidget {
                   );
                 },
                 error: (error, stackTrace) => Alart.handleError(context, error),
-                loading: () => Loaders.center(),
+                loading: () => Loaders.center(height: 400),
               ),
 
               //

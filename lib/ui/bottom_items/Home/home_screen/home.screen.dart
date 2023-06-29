@@ -1,9 +1,11 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, unused_result, use_build_context_synchronously
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:table/core/component/loaders.dart';
+import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/utils/rutin_dialog.dart';
 import 'package:table/ui/bottom_items/Home/models/home_rutines_model.dart';
 import 'package:table/ui/bottom_items/Home/notice_board/models/recent_notice_model.dart';
@@ -21,6 +23,7 @@ import '../full_rutin/widgets/sceltons/rutinebox_id_scelton.dart';
 import '../home_req/home_rutins_controller.dart';
 import '../notice_board/notice controller/virew_recent_notice_controller.dart';
 import '../notice_board/screens/view_all_recent_notice.dart';
+import '../notification/screen/notification.screen.dart';
 import '../widgets/custom_title_bar.dart';
 import '../widgets/slider/recentnoticeslider.dart';
 
@@ -28,12 +31,16 @@ class HomeScreen extends ConsumerWidget {
   HomeScreen({super.key});
 
   final scrollController = ScrollController();
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //! provider
+
     final homeRutins = ref.watch(homeRutinControllerProvider(null));
     final recentNoticeList = ref.watch(recentNoticeController(null));
+
+    logthis();
 
 //notifier
     final homeRutinsNotifier =
@@ -97,7 +104,10 @@ class HomeScreen extends ConsumerWidget {
         padding: const EdgeInsets.only(bottom: 100),
         controller: scrollController,
         children: [
-          if (Responsive.isMobile(context)) const ChustomTitleBar("title"),
+          if (Responsive.isMobile(context))
+            ChustomTitleBar("title", ontap: () {
+              Get.to(() => const NotificatioScreen());
+            }),
 
           //_______________________ recent notices _________________//
           RecentNoticeTitle(
@@ -117,6 +127,7 @@ class HomeScreen extends ConsumerWidget {
                       index: 0,
                       conditon: length >= 2,
                       singleCondition: length == 1,
+                      recentNotice: data,
                     ),
 
                     //
@@ -125,12 +136,14 @@ class HomeScreen extends ConsumerWidget {
                       index: 2,
                       conditon: length >= 4,
                       singleCondition: length == 3,
+                      recentNotice: data,
                     ), //
                     RecentNoticeSliderItem(
                       notice: data.notices,
                       index: 3,
                       conditon: length >= 6,
                       singleCondition: length == 5,
+                      recentNotice: data,
                     ),
 
                     RecentNoticeSliderItem(
@@ -138,6 +151,7 @@ class HomeScreen extends ConsumerWidget {
                       index: 4,
                       conditon: length >= 8,
                       singleCondition: length == 7,
+                      recentNotice: data,
                     ),
                   ],
                 );
@@ -199,6 +213,16 @@ class HomeScreen extends ConsumerWidget {
           //
         ],
       ),
+    );
+  }
+
+  void logthis() async {
+    print('ebentTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT');
+    String? username = await AuthController.getUsername();
+
+    await FirebaseAnalytics.instance.logEvent(
+      name: 'Home Screen',
+      parameters: {'username': '$username'},
     );
   }
 

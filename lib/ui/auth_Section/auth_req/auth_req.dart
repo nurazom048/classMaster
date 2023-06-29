@@ -31,6 +31,7 @@ class AuthReq {
         await AuthController.saveToken(accountData["token"]);
         await AuthController.saveAccountType(
             accountData["account"]["account_type"]);
+        await AuthController.saveUsername(accountData["account"]["username"]);
 
         await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: accountData["account"]["email"],

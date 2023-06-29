@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -40,6 +41,7 @@ class AccountScreen extends ConsumerWidget {
     final classNotification = ref.watch(classNotificationProvider);
     final accountData = ref.watch(accountDataProvider(accountUsername));
     AwsomNotificationSetup.takePermiton(context);
+    FirebaseAnalytics analytics = FirebaseAnalytics.instance;
     return SafeArea(
       child: Scaffold(
         body: NotificationListener<ScrollNotification>(
@@ -55,13 +57,36 @@ class AccountScreen extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //... AppBar.....//
-                HeaderTitle(
-                  'Collections',
-                  context,
-                  onTap: () {},
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20)
-                          .copyWith(top: 34),
+                InkWell(
+                  onTap: () async {
+                    await FirebaseAnalytics.instance.logBeginCheckout(
+                        value: 10.0,
+                        currency: 'usd',
+                        items: [
+                          AnalyticsEventItem(
+                            itemName: 'Socks',
+                            itemId: 'xjw73ndnw',
+                          ),
+                        ],
+                        coupon: '10PERCENTOFF');
+                    print('7777777777777777777777777777777');
+
+                    await FirebaseAnalytics.instance.logEvent(
+                      name: "collectionsceen",
+                      parameters: {
+                        "content_type": "ontap",
+                      },
+                    );
+                    print('object');
+                  },
+                  child: HeaderTitle(
+                    'Collections',
+                    context,
+                    onTap: () {},
+                    margin:
+                        const EdgeInsets.symmetric(vertical: 10, horizontal: 20)
+                            .copyWith(top: 34),
+                  ),
                 ),
                 SizedBox(
                   height: 129,

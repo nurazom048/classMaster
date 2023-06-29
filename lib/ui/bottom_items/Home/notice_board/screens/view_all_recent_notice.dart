@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/component/Loaders.dart';
@@ -62,6 +61,7 @@ class ViewAllRecentNotice extends ConsumerWidget {
               itemBuilder: (context, index) {
                 if (index < data.notices.length) {
                   final notice = data.notices[index];
+                  final accountModel = data.notices[index].academyId;
                   return SimpleNoticeCard(
                     id: notice.id,
                     dateTime: data.notices[index == 0 ? 0 : index - 1].time,
@@ -75,6 +75,7 @@ class ViewAllRecentNotice extends ConsumerWidget {
                         MaterialPageRoute(
                           builder: (context) => NoticeViewScreen(
                             notice: notice,
+                            accountModel: accountModel,
                           ),
                         ),
                       );

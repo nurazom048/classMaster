@@ -63,10 +63,6 @@ class AuthController extends StateNotifier<bool> {
         print('***********************************${l.message} ${password}**');
         if (l.message.toString() == 'Email is not verified' &&
             l.email != null) {
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
-            email: l.email!,
-            password: password,
-          );
           Get.to(() => EmailVerificationScreen(
                 email: l.email!,
                 password: password,
@@ -179,5 +175,17 @@ class AuthController extends StateNotifier<bool> {
   static Future<void> saveAccountType(String token) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('AccountType', token);
+  }
+
+  static Future<String?> getUsername() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? type = prefs.getString('username');
+    return type;
+  }
+// save account Type
+
+  static Future<void> saveUsername(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('username', token);
   }
 }

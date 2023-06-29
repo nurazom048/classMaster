@@ -31,7 +31,7 @@ class PriodeAlart {
 // Eddit
 
             CupertinoActionSheetAction(
-              child: ma.Text("Eddit Class ",
+              child: Text("Eddit Class ",
                   style: TextStyle(color: AppColor.nokiaBlue)),
               onPressed: () {
                 Navigator.push(

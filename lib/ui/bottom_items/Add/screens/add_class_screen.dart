@@ -232,9 +232,13 @@ class _AddClassScreenState extends State<AddClassScreen> {
   }
 
   void _onTapToButton(WidgetRef ref) async {
+    if (!mounted) return;
+
     print("ontap ${widget.isEdit}");
 
     if (widget.isEdit == true || widget.isUpdate == true) {
+      if (!mounted) return;
+
       ClassRequest().editClass(
           context,
           ref,
@@ -251,7 +255,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
             startTime: startTime,
             endTime: startTime,
           ));
-
+      if (!mounted) return;
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -263,6 +267,8 @@ class _AddClassScreenState extends State<AddClassScreen> {
         ),
       );
     } else {
+      if (!mounted) return;
+
       String? newclassID = await ClassRequest.addClass(
           ref,
           widget.routineId,
@@ -283,6 +289,8 @@ class _AddClassScreenState extends State<AddClassScreen> {
       if (newclassID == null) {
         Alart.showSnackBar(context, 'somthing went worng');
       } else {
+        if (!mounted) return;
+
         Navigator.pushReplacement(
           context,
           PageRouteBuilder(

@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 
+import '../../../Account/models/account_models.dart';
+import '../../notice_board/models/recent_notice_model.dart';
 import '../notice_row.dart';
 
 class RecentNoticeSliderItem extends StatelessWidget {
@@ -11,11 +13,13 @@ class RecentNoticeSliderItem extends StatelessWidget {
     required this.conditon,
     required this.index,
     required this.singleCondition,
+    required this.recentNotice,
   });
-  final notice;
+  final List<Notice> notice;
   final int index;
   final bool conditon;
   final bool singleCondition;
+  final RecentNotice recentNotice;
 
   @override
   Widget build(BuildContext context) {
@@ -23,31 +27,29 @@ class RecentNoticeSliderItem extends StatelessWidget {
       height: 120,
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             if (singleCondition == true)
               NoticeRow(
                 notice: notice[index],
-                date: notice[index].time.toString(),
-                title: notice[index].contentName,
+                accountModels: recentNotice.notices[index].academyId,
               )
             else if (conditon == true) ...[
               NoticeRow(
                 notice: notice[index],
-                date: notice[index].time.toString(),
-                title: notice[index].contentName,
+                accountModels: recentNotice.notices[index].academyId,
               ),
               NoticeRow(
                 notice: notice[index + 1],
-                date: notice[index + 1].time.toString(),
-                title: notice[index + 1].contentName,
+                accountModels: recentNotice.notices[index + 1].academyId,
               ),
-            ],
-            if (conditon == false) ...[
-              const Center(
-                child: Text("Join NoticeBoard to see Recent Notices"),
+            ] else
+              const SizedBox(
+                height: 120,
+                child: Center(
+                  child: Text("Join NoticeBoard to see Recent Notices"),
+                ),
               )
-            ]
           ]),
     );
   }

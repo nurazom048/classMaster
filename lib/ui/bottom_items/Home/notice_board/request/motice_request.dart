@@ -62,13 +62,13 @@ class NoticeRequest {
             APICacheDBModel(key: key, syncData: response.body);
 
         await APICacheManager().addCacheData(cacheDBModel);
-        print('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
 
         print(res);
 
         return RecentNotice.fromJson(res);
       } else {
         final message = Message.fromJson(json.decode(response.body));
+
         throw message.message;
       }
     } catch (e) {

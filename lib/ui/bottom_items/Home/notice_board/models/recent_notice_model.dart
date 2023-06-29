@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import '../../../Account/models/account_models.dart';
+
 RecentNotice recentNoticeFromJson(String str) =>
     RecentNotice.fromJson(json.decode(str));
 
@@ -48,7 +50,7 @@ class Notice {
   String contentName;
   String pdf;
   String? description;
-  AcademyId academyId;
+  AccountModels academyId;
   DateTime time;
 
   Notice({
@@ -65,7 +67,7 @@ class Notice {
     String? contentName,
     String? pdf,
     String? description,
-    AcademyId? academyId,
+    AccountModels? academyId,
     DateTime? time,
   }) =>
       Notice(
@@ -82,42 +84,42 @@ class Notice {
         contentName: json["content_name"],
         pdf: json["pdf"] == "" ? null : json["pdf"],
         description: json["description"],
-        academyId: AcademyId.fromJson(json["academyID"]),
+        academyId: AccountModels.fromJson(json["academyID"]),
         time: DateTime.parse(json["time"]),
       );
 }
 
-class AcademyId {
-  String id;
-  String username;
-  String name;
+// class AcademyId {
+//   String id;
+//   String username;
+//   String name;
 
-  AcademyId({
-    required this.id,
-    required this.username,
-    required this.name,
-  });
+//   AcademyId({
+//     required this.id,
+//     required this.username,
+//     required this.name,
+//   });
 
-  AcademyId copyWith({
-    String? id,
-    String? username,
-    String? name,
-  }) =>
-      AcademyId(
-        id: id ?? this.id,
-        username: username ?? this.username,
-        name: name ?? this.name,
-      );
+//   AcademyId copyWith({
+//     String? id,
+//     String? username,
+//     String? name,
+//   }) =>
+//       AcademyId(
+//         id: id ?? this.id,
+//         username: username ?? this.username,
+//         name: name ?? this.name,
+//       );
 
-  factory AcademyId.fromJson(Map<String, dynamic> json) => AcademyId(
-        id: json["_id"],
-        username: json["username"],
-        name: json["name"],
-      );
+//   factory AcademyId.fromJson(Map<String, dynamic> json) => AcademyId(
+//         id: json["_id"],
+//         username: json["username"],
+//         name: json["name"],
+//       );
 
-  Map<String, dynamic> toJson() => {
-        "_id": id,
-        "username": username,
-        "name": name,
-      };
-}
+//   Map<String, dynamic> toJson() => {
+//         "_id": id,
+//         "username": username,
+//         "name": name,
+//       };
+// }
