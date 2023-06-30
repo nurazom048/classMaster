@@ -9,8 +9,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/message_model.dart';
 import 'package:table/ui/auth_Section/auth_req/auth_req.dart';
 import 'package:table/ui/bottom_items/bottom_nevbar.dart';
+import '../../../constant/constant.dart';
 import '../../../core/dialogs/alart_dialogs.dart';
 import '../auth_ui/email_varification.screen.dart';
+import '../auth_ui/forgetpassword_screen.dart';
 import '../auth_ui/logIn_screen.dart';
 
 final authController_provider = StateNotifierProvider.autoDispose(
@@ -86,16 +88,19 @@ class AuthController extends StateNotifier<bool> {
   void changepassword(oldPassword, newPassword, context) async {
     state = true;
     final res = await authReqq.changePassword(oldPassword, newPassword);
-
     res.fold(
       (l) async {
         state = false;
-        await FirebaseAuth.instance.currentUser!.delete();
         return Alart.errorAlartDilog(context, l);
       },
-      (r) {
+      (r) async {
         state = false;
-
+        await FirebaseAuth.instance.signOut();
+        // Remove token and navigate to the login screen
+        final prefs = await SharedPreferences.getInstance();
+        prefs.remove('Token');
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const LogingScreen()));
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -110,19 +115,30 @@ class AuthController extends StateNotifier<bool> {
 
 //******** forotpasswprd  ************ */
 
-  void forgotPassword(newPassword, context,
-      {String? email, String? phone}) async {
+  void forgotPassword(context,
+      {String? email, String? username, String? phone}) async {
     state = true;
-    final res =
-        await authReqq.forgrtPassword(newPassword, email: email, phone: phone);
+    final res = await authReqq.forgrtPassword(email: email, phone: phone);
 
     res.fold(
       (l) {
         state = false;
         return Alart.errorAlartDilog(context, l);
       },
-      (r) {
-        state = false;
+      (r) async {
+        try {
+          //  await FirebaseAuth.instance.confirmPasswordReset(code: code, newPassword: newPassword)
+          await FirebaseAuth.instance.sendPasswordResetEmail(email: r.email!);
+          state = false;
+
+          return Alart.upcoming(
+            context,
+            header: 'Success',
+            message: FORGOT_MAIL_SEND_MESSAGE,
+          );
+        } on FirebaseAuthException catch (e) {
+          Alart.handleError(context, e);
+        }
 
         Alart.showSnackBar(context, r.message);
       },

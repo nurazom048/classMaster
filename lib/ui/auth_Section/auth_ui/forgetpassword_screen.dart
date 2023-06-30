@@ -1,35 +1,41 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart';
-import 'package:table/core/component/loaders.dart';
-import 'package:table/core/dialogs/alart_dialogs.dart';
-import 'package:table/ui/auth_Section/auth_ui/logIn_screen.dart';
-
+import 'package:table/widgets/appWidget/app_text.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 import '../../../constant/app_color.dart';
+import '../../../constant/constant.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/appWidget/buttons/cupertino_butttons.dart';
 import '../../../widgets/heder/heder_title.dart';
 import '../auth_controller/auth_controller.dart';
-import '../utils/change_pw_validator.dart';
-
-///
-///
+import '../utils/forget_validation.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
-  final String email;
-  const ForgetPasswordScreen({super.key, required this.email});
+  final String? email;
+
+  const ForgetPasswordScreen({Key? key, required this.email}) : super(key: key);
 
   @override
   State<ForgetPasswordScreen> createState() => _ForgetPasswordScreenState();
 }
 
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
-  final TextEditingController newPasswordController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> usernameKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.email != null) {
+      emailController.text = widget.email!;
+    }
+  }
 
   @override
   void dispose() async {
@@ -37,65 +43,89 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     await FirebaseAuth.instance.signOut();
   }
 
+  int currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Consumer(builder: (context, ref, _) {
-        //!provider
-
-        final loding = ref.watch(authController_provider);
+        final loading = ref.watch(authController_provider);
         final authController = ref.watch(authController_provider.notifier);
-        return Form(
-          key: formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              HeaderTitle("Forget Password", context),
-              const SizedBox(height: 16),
-              AppTextFromField(
-                controller: newPasswordController,
-                obscureText: true,
-                hint: 'New Password',
-                validator: (valu) =>
-                    ChangePwValidator.validateNewPassword(valu),
-              ),
-              const SizedBox(height: 16),
-              AppTextFromField(
-                controller: confirmPasswordController,
-                obscureText: true,
-                hint: 'Confirm New Password',
-                validator: (valu) => ChangePwValidator.validateConfirmPassword(
-                    valu, newPasswordController.text),
-              ),
-              const SizedBox(height: 100),
-              if (loding != null && loding == true)
-                Loaders.button()
-              else
-                CupertinoButtonCustom(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  color: AppColor.nokiaBlue,
-                  textt: "Forget Password",
-                  onPressed: () async {
-                    if (formKey.currentState?.validate() ?? false) {
-                      // If Email varified
-                      User? user = FirebaseAuth.instance.currentUser;
-                      if (user?.emailVerified == true) {
-                        //
-                        authController.forgotPassword(
-                          confirmPasswordController.text,
-                          context,
-                          email: widget.email,
-                        );
-                        await FirebaseAuth.instance.signOut();
-                        Get.offAll(() => const LogingScreen());
-                      } else {
-                        Alart.errorAlartDilog(context, "You are not Varified");
-                      }
-                    }
-                  },
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            HeaderTitle("Forget or Reset Password", context),
+            const SizedBox(height: 40),
+            ToggleSwitch(
+              minWidth: 130.0,
+              cornerRadius: 20.0,
+              activeBgColors: [
+                [AppColor.nokiaBlue],
+                [AppColor.nokiaBlue]
+              ],
+              activeFgColor: Colors.white,
+              inactiveBgColor: Theme.of(context).scaffoldBackgroundColor,
+              inactiveFgColor: Colors.black26,
+              initialLabelIndex: currentIndex,
+              totalSwitches: 2,
+              labels: const ['By Email', 'By Username'],
+              radiusStyle: true,
+              onToggle: (index) {
+                setState(() => currentIndex = index!);
+              },
+            ),
+            const SizedBox(height: 16),
+            if (currentIndex == 0)
+              Form(
+                key: formKey,
+                child: AppTextFromField(
+                  controller: emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  hint: 'Email address',
+                  validator: (value) => ForgetValidation.validateEmail(value),
                 ),
-            ],
-          ),
+              )
+            else
+              Form(
+                key: usernameKey,
+                child: AppTextFromField(
+                  controller: usernameController,
+                  keyboardType: TextInputType.text,
+                  hint: 'Username',
+                  validator: (value) =>
+                      ForgetValidation.validateUsername(value),
+                ),
+              ),
+            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                FORGOT_MAIL_SEND_MESSAGE_WILL_SEND,
+                style: TS.opensensBlue(color: Colors.black),
+              ),
+            ),
+            const SizedBox(height: 100),
+            CupertinoButtonCustom(
+              isLoding: loading != null && loading == true,
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              color: AppColor.nokiaBlue,
+              textt: "Send Reset Password Email",
+              icon: Icons.email,
+              onPressed: () async {
+                if (currentIndex == 0
+                    ? formKey.currentState?.validate() ?? false
+                    : usernameKey.currentState?.validate() ?? false) {
+                  authController.forgotPassword(
+                    context,
+                    email: emailController.text.trim(),
+                    username: usernameController.text.trim(),
+                  );
+                  // Get.offAll(() => const LoginScreen());
+                }
+              },
+            ),
+          ],
         );
       }),
     );

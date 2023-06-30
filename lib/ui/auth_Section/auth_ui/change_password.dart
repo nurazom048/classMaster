@@ -29,24 +29,25 @@ class ChangePasswordPage extends ConsumerWidget {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        bottom: PreferredSize(
-          preferredSize: MediaQuery.of(context).size / 40,
-          child: HeaderTitle("Change Password", context),
-        ),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      //   bottom: PreferredSize(
+      //     preferredSize: MediaQuery.of(context).size / 40,
+      //     child: HeaderTitle("Change Password", context),
+      //   ),
+      // ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 50),
         child: Form(
           key: formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              HeaderTitle('Change Password', context),
+              const SizedBox(height: 200),
               AppTextFromField(
                 controller: currentPasswordController,
-                obscureText: true,
+                // obscureText: true,
                 hint: 'Current Password',
                 validator: (value) =>
                     ChangePwValidator.validateCurrentPassword(value),

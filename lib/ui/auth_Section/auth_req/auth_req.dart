@@ -116,8 +116,8 @@ class AuthReq {
 
   //
 
-  Future<Either<String, Message>> forgrtPassword(String newPassword,
-      {String? email, String? phone}) async {
+  Future<Either<String, Message>> forgrtPassword(
+      {String? email, String? username, String? phone}) async {
     final String? getToken = await AuthController.getToken();
 
     var url = Uri.parse('${Const.BASE_URl}/account/eddit/forgotPassword');
@@ -128,8 +128,8 @@ class AuthReq {
         headers: {'Authorization': 'Bearer $getToken'},
         body: {
           "email": email.toString(),
+          "username": username.toString(),
           "phone": phone.toString(),
-          "newPassword": newPassword
         },
       );
 
@@ -140,7 +140,11 @@ class AuthReq {
 
       print(json.decode(response.body));
       if (response.statusCode == 200) {
-        return right(message);
+        return right(
+          Message(
+              message: message.message,
+              email: json.decode(response.body)['email']),
+        );
       } else {
         return left(message.message);
       }

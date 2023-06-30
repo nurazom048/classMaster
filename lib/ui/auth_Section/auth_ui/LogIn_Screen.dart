@@ -19,6 +19,7 @@ import '../auth_controller/google_auth_controller.dart';
 import '../widgets/or.dart';
 import '../widgets/siginup_page_switch.dart';
 import 'email_varification.screen.dart';
+import 'forgetpassword_screen.dart';
 
 class LogingScreen extends StatefulWidget {
   const LogingScreen({super.key});
@@ -103,27 +104,25 @@ class _LogingScreenState extends State<LogingScreen> {
 
                     SiginUpSuicherButton("", "Forgot your Password?",
                         onTap: () async {
-                      if (emailkey.currentState?.validate() ?? false) {
-                        try {
-                          await FirebaseAuth.instance.signOut();
-                          await FirebaseAuth.instance
-                              .signInWithEmailAndPassword(
+                      // if (emailkey.currentState?.validate() ?? false) {
+                      // try {
+                      await FirebaseAuth.instance.signOut();
+                      return Get.to(() => ForgetPasswordScreen(
                             email: _emailController.text,
-                            password: "@Nurazom123",
-                          );
-                          return Get.to(() => EmailVerificationScreen(
-                                email: _emailController.text,
-                                forgotPasswordState: true,
-                              ));
-                          // Get.to(() => ForgetPasswordScreen(
-                          //       email: _emailController.text,
-                          //     ));
-                        } on FirebaseAuthMultiFactorException catch (e) {
-                          Alart.showSnackBar(context, e);
-                        }
+                          ));
 
-                        // //
-                      }
+                      // return Get.to(() => EmailVerificationScreen(
+                      //       email: _emailController.text,
+                      //       forgotPasswordState: true,
+                      // ));
+                      // Get.to(() => ForgetPasswordScreen(
+                      //       email: _emailController.text,
+                      //     ));
+                      // } on FirebaseAuthMultiFactorException catch (e) {
+                      //   Alart.showSnackBar(context, e);
+                      // }
+
+                      // //
                     }),
                     const SizedBox(height: 30),
 
@@ -140,7 +139,7 @@ class _LogingScreenState extends State<LogingScreen> {
                                 _passwordController.text, context);
                           } else {
                             authLogin.siginIn(
-                                "roma123", "@Nurazom123", context);
+                                "roma123", "@Rahala+Nur123", context);
                           }
                         },
                       ),
