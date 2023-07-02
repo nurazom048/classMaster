@@ -63,23 +63,10 @@ class _EmailVerificationScreenState
   }
 
   @override
-  void dispose() async {
+  void dispose() {
     timer?.cancel();
     super.dispose();
-    // Last step: Make sure if anything goes wrong, the user is not saved to Firebase
-    try {
-      // On dispose time, if the user is not verified, remove the user from Firebase
-      User? user = FirebaseAuth.instance.currentUser;
-
-      if (user?.emailVerified == false) {
-        await FirebaseAuth.instance.signOut();
-        //await FirebaseAuth.instance.currentUser!.delete();
-      } else {
-        await FirebaseAuth.instance.signOut();
-      }
-    } catch (e) {
-      Alart.showSnackBar(context, "Error deleting user: $e");
-    }
+    onDisposeTine();
   }
 
   // Send email verification
@@ -123,6 +110,7 @@ class _EmailVerificationScreenState
       // });
 
       if (widget.forgotPasswordState == true) {
+        // ignore: use_build_context_synchronously
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -130,6 +118,7 @@ class _EmailVerificationScreenState
           ),
         );
       } else {
+        // ignore: use_build_context_synchronously
         Alart.showSnackBar(context, "Email Verified Successfully");
       }
     }
@@ -140,36 +129,61 @@ class _EmailVerificationScreenState
     return Scaffold(
       appBar: AppBar(title: const Text('Email Verification')),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'An email has been sent to:',
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 10),
-            Text(
-              widget.email,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Please check your email and click on the verification link to proceed.',
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async => checkVerification(),
-              child: const Text('Check Verification'),
-            ),
-            if (showResendButton) // Display the "Resend" button if showResendButton is true
-              ElevatedButton(
-                onPressed: () async => sendVerificationEmail(),
-                child: const Text('Resend'),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Your email is not verified',
+                textAlign: TextAlign.center,
               ),
-          ],
+              const Text(
+                'A verification link has been sent to your email. Please check your inbox. If you can\'t find the email, please check your spam folder.',
+                textAlign: TextAlign.justify,
+              ),
+              const SizedBox(height: 10),
+              Text(
+                widget.email,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'Please check your email and click on the verification link to proceed.',
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () async => checkVerification(),
+                child: const Text('Check Verification'),
+              ),
+              if (showResendButton) // Display the "Resend" button if showResendButton is true
+                ElevatedButton(
+                  onPressed: () async => sendVerificationEmail(),
+                  child: const Text('Resend'),
+                ),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  void onDisposeTine() async {
+    // Last step: Make sure if anything goes wrong, the user is not saved to Firebase
+    try {
+      // On dispose time, if the user is not verified, remove the user from Firebase
+      User? user = FirebaseAuth.instance.currentUser;
+      await FirebaseAuth.instance.signOut();
+
+      // if (user?.emailVerified == false) {
+      //   await FirebaseAuth.instance.signOut();
+      //   //await FirebaseAuth.instance.currentUser!.delete();
+      // } else {
+      //   await FirebaseAuth.instance.signOut();
+      // }
+    } catch (e) {
+      Alart.showSnackBar(context, "Error deleting user: $e");
+    }
   }
 }

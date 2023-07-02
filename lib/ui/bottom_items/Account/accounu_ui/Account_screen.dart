@@ -196,7 +196,7 @@ class AccountScreen extends ConsumerWidget {
                     const FaIcon(FontAwesomeIcons.bookmark),
                     svgpath: 'assets/svg/undraw_personal_file_re_5joy.svg',
                     imageMargine: const EdgeInsets.only(left: 10),
-                    onTap: () => Get.to(const SaveRoutinesScreen()),
+                    onTap: () => Get.to(SaveRoutinesScreen()),
                   ),
 
                   const SizedBox(width: 20),

@@ -11,6 +11,7 @@ import '../../../../../core/component/Loaders.dart';
 import '../../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../../widgets/text and buttons/square_button.dart';
 import '../../../Account/utils/confrom_alart_dilog.dart';
+import '../../home_req/home_req.dart';
 
 class RutinDialog {
   //**********     ChackStatusUser_BottomSheet       **********/
@@ -99,6 +100,11 @@ class RutinDialog {
                                   ctx,
                                   !(chackStatus.value?.isSave ?? false),
                                 );
+
+                                // if (chackStatus.value?.isSave ??
+                                //     false == false) {
+                                //   ref.refresh(save_rutins_provider(1));
+                                // }
                               },
                             ),
                             if (data.isCaptain || data.isOwner) ...[

@@ -10,15 +10,20 @@ import 'package:table/core/dialogs/alart_dialogs.dart';
 import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 import 'package:table/ui/auth_Section/auth_ui/email_varification.screen.dart';
 import 'package:table/ui/auth_Section/utils/singUp_validation.dart';
+import 'package:table/widgets/appWidget/app_text.dart';
 import 'package:table/widgets/appWidget/buttons/cupertino_butttons.dart';
+import 'package:table/widgets/appWidget/dottted_divider.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/heder/heder_title.dart';
 
 import '../widgets/siginup_page_switch.dart';
 import '../widgets/who_are_you_button.dart';
 
+final selectAccoyTypeProvider = StateProvider<String>((ref) => 'Student');
+
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key, this.emaileadress, this.phoneNumberString});
+  const SignUpScreen({Key? key, this.emaileadress, this.phoneNumberString})
+      : super(key: key);
   final String? emaileadress;
   final String? phoneNumberString;
 
@@ -27,19 +32,20 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  //
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final phoneNumberController = TextEditingController();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  final eiinController = TextEditingController();
+  final contractInfoController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
-  //
   final nameFocusNode = FocusNode();
   final emailFocusNode = FocusNode();
   final usernameFocusNode = FocusNode();
+  final eiinFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
   final confirmPasswordFocusNode = FocusNode();
 
@@ -56,16 +62,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
-  bool? isAcademy;
-  String? selectedAccountType;
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: Consumer(builder: (context, ref, _) {
-          //! PROVIDER
-          final loding = ref.watch(authController_provider);
+          final loading = ref.watch(authController_provider);
+
+          final String selectedAccountType = ref.watch(selectAccoyTypeProvider);
+          bool? isAcademy = selectedAccountType == 'Academy';
 
           return SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
@@ -74,7 +79,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
               children: [
                 HeaderTitle("Sign Up", context),
                 const SizedBox(height: 10),
-
                 Form(
                   key: formKey,
                   child: Column(
@@ -87,7 +91,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         focusNode: nameFocusNode,
                         onFieldSubmitted: (_) => emailFocusNode.requestFocus(),
                       ),
-                      // Email and phone number
                       AppTextFromField(
                         showOfftext: widget.phoneNumberString,
                         controller: emailController,
@@ -95,8 +98,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ? "PhoneNumber"
                             : "Email",
                         labelText: "Enter email address",
-                        validator: (value) =>
-                            SignUpValidation.validateEmail(value),
+                        validator: (value) {
+                          if (selectedAccountType == 'Academy') {
+                            return SignUpValidation.validateAcademyEmail(value);
+                          } else {
+                            return SignUpValidation.validateEmail(value);
+                          }
+                        },
                         focusNode: emailFocusNode,
                         onFieldSubmitted: (_) =>
                             usernameFocusNode.requestFocus(),
@@ -108,8 +116,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         validator: (value) =>
                             SignUpValidation.validateUsername(value),
                         focusNode: usernameFocusNode,
-                        onFieldSubmitted: (_) =>
-                            passwordFocusNode.requestFocus(),
+                        onFieldSubmitted: (_) {
+                          if (selectedAccountType == 'Academy') {
+                            return eiinFocusNode.requestFocus();
+                          } else {
+                            return passwordFocusNode.requestFocus();
+                          }
+                        },
                       ),
                       AppTextFromField(
                         controller: passwordController,
@@ -132,57 +145,108 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         onFieldSubmitted: (_) =>
                             formKey.currentState?.validate(),
                       ),
-
                       WhoAreYouButton(
                         onAccountType: (accountType) {
-                          setState(() {
-                            selectedAccountType = accountType;
-                          });
+                          // setState(() {});
+                          // ref
+                          //     .watch(selectAccoyTypeProvider.notifier)
+                          //     .update((state) => accountType);
+
                           print(accountType);
                         },
                       ),
-
-                      const SizedBox(height: 27)
-
-                      ///
+                      const SizedBox(height: 27),
+                      if (selectedAccountType == 'Academy')
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 26),
+                          child: Column(
+                            children: [
+                              Text(
+                                  'To create an Academy account, it may take time to physically verify your academy.',
+                                  style: TS.opensensBlue(color: Colors.black)),
+                              const SizedBox(height: 10),
+                              Text(
+                                'To create an Academy account, please fill out the form and send a request to our team. We will review your request and accept it as soon as possible.',
+                                style: TS.opensensBlue(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              AppTextFromField(
+                                margin: EdgeInsets.zero,
+                                focusNode: eiinFocusNode,
+                                controller: eiinController,
+                                hint: "EIIN Number",
+                                validator: (value) =>
+                                    SignUpValidation.validateEinNumber(value),
+                                onFieldSubmitted: (_) {
+                                  return passwordFocusNode.requestFocus();
+                                },
+                              ),
+                              const SizedBox(height: 30),
+                              const DotedDivider(),
+                              const SizedBox(height: 1),
+                              const DotedDivider(),
+                              const SizedBox(height: 1),
+                              const DotedDivider(),
+                              const SizedBox(height: 30),
+                              Text(
+                                'Please provide contact information for verifying your Academy.',
+                                style: TS.opensensBlue(color: Colors.black),
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                'This information will allow our team to visit your academy physically for verification.',
+                                style: TS.opensensBlue(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              AppTextFromField(
+                                maxline: 15,
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 15),
+                                controller: contractInfoController,
+                                hint: "Contact info",
+                                labelText:
+                                    "Please provide the contract information for your Academy, including the current location and phone number...",
+                                validator: (value) =>
+                                    SignUpValidation.validateContactInfo(value),
+                                focusNode: confirmPasswordFocusNode,
+                                onFieldSubmitted: (_) =>
+                                    formKey.currentState?.validate(),
+                              ).multiline(),
+                              Text(
+                                'Don\'t worry, this contact information will not be visible to the public',
+                                style: TS.opensensBlue(color: Colors.red),
+                              ),
+                            ],
+                          ),
+                        ),
                     ],
                   ),
                 ),
-//_______________ Crete Buttons__________//
+                const SizedBox(height: 20),
+                CupertinoButtonCustom(
+                  icon: isAcademy ? Icons.send : Icons.check,
+                  isLoding: loading,
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  color: AppColor.nokiaBlue,
+                  textt: isAcademy ? 'Send Create Request' : "Sign up",
+                  onPressed: () async {
+                    if (formKey.currentState?.validate() ?? false) {
+                      signUp(ref);
+                    }
+                  },
+                ),
                 const SizedBox(height: 30),
-
-                if (loding != null && loding == true)
-                  Loaders.button()
-                else
-                  CupertinoButtonCustom(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    color: AppColor.nokiaBlue,
-                    textt: "Sign up",
-                    onPressed: () async {
-                      //
-                      if (formKey.currentState?.validate() ?? false) {
-                        siginUp(ref);
-                      }
-                    },
-                  ),
-
-                const SizedBox(height: 30),
-
                 SiginUpSuicherButton(
                   "Already have an account?",
                   "Log in",
                   onTap: () => Get.to(() => const SignUpScreen()),
                 ),
-
                 const SizedBox(height: 30),
-                // continue with phone
-
-                // SocialLoginButton(
-                //   isphone: true,
-                //   onTap: () async {
-                //     Get.to(() => const PhoneNumberScreen());
-                //   },
-                // ),
               ],
             ),
           );
@@ -192,7 +256,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
 //
-  void siginUp(WidgetRef ref) async {
+  void signUp(WidgetRef ref) async {
     //
     ref.read(authController_provider.notifier).createAccount(
           context: context,
@@ -200,6 +264,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
           name: nameController.text,
           username: usernameController.text,
           password: passwordController.text,
+          accountType: ref.watch(selectAccoyTypeProvider),
+          eiinNumber: eiinController.text,
+          contractInfo: contractInfoController.text,
         );
 
     // User? user = FirebaseAuth.instance.currentUser;

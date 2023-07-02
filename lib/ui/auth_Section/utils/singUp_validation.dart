@@ -5,6 +5,9 @@ class SignUpValidation {
     if (value == null || value.isEmpty) {
       return "Please enter your name";
     }
+    if (value.length < 2) {
+      return "Name must be at least 2 characters long";
+    }
     return null;
   }
 
@@ -15,11 +18,21 @@ class SignUpValidation {
     if (!EmailValidator.validate(value)) {
       return "Please enter a valid email address";
     }
+    if (!value.endsWith("@gmail.com") &&
+        !value.endsWith("@outlook.com") &&
+        !value.endsWith("@yahoo.com")) {
+      return "Only @gmail.com, @outlook.com, and @yahoo.com email addresses are allowed";
+    }
+    return null;
+  }
 
-    // TODO:
-    // if (!value.endsWith("@gmail.com") && !value.endsWith("@outlook.com")) {
-    //   return "Only @gmail.com and @outlook.com  are accepted";
-    // }
+  static String? validateAcademyEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Please enter your email address";
+    }
+    if (!EmailValidator.validate(value)) {
+      return "Please enter a valid email address";
+    }
     return null;
   }
 
@@ -37,13 +50,13 @@ class SignUpValidation {
     if (value == null || value.isEmpty) {
       return "Please enter a password";
     }
-    if (value.length < 6) {
-      return "Password must be at least 8 characters long";
-    }
     // if (!RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$')
     //     .hasMatch(value)) {
     //   return "Password must contain at least one uppercase letter, one lowercase letter, and one number";
     // }
+    if (value.length < 6) {
+      return "Password must be at least 8 characters long";
+    }
     return null;
   }
 
@@ -53,6 +66,27 @@ class SignUpValidation {
     }
     if (value != password) {
       return "Passwords do not match";
+    }
+    return null;
+  }
+
+  static String? validateEinNumber(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Please enter the EIN number";
+    }
+    if (value.length < 4) {
+      return "EIN number must be at least 4 digits long";
+    }
+    return null;
+  }
+
+  static String? validateContactInfo(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Please enter the contact information";
+    }
+
+    if (value.length < 20) {
+      return "Its too short...";
     }
     return null;
   }

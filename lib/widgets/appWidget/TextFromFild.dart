@@ -20,6 +20,7 @@ class AppTextFromField extends StatefulWidget {
     this.margin,
     this.obscureText,
     this.showOfftext,
+    this.maxline = 5,
   });
 
   //
@@ -31,7 +32,9 @@ class AppTextFromField extends StatefulWidget {
   final FocusNode? focusNode;
   final EdgeInsetsGeometry? margin;
   final String? showOfftext;
+  final int? maxline;
   bool? obscureText;
+
   // Multiline
   multiline() {
     return Container(
@@ -51,11 +54,16 @@ class AppTextFromField extends StatefulWidget {
             dashPattern: const [6, 6], // set the dash pattern
             strokeWidth: 1,
             child: TextFormField(
+              validator: validator,
               controller: controller,
-              maxLines: 5,
+              maxLines: maxline,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: labelText ?? "Enter your $hint ",
+                errorStyle: const TextStyle(
+                    fontSize: 17,
+                    letterSpacing: 1,
+                    decorationStyle: TextDecorationStyle.solid),
                 hintStyle: const TextStyle(
                   fontFamily: 'Open Sans',
                   fontStyle: FontStyle.normal,
