@@ -14,6 +14,7 @@ import '../../../core/dialogs/alart_dialogs.dart';
 import '../auth_ui/email_varification.screen.dart';
 import '../auth_ui/forgetpassword_screen.dart';
 import '../auth_ui/logIn_screen.dart';
+import '../auth_ui/pending_account.dart';
 
 final authController_provider = StateNotifierProvider.autoDispose(
     (ref) => AuthController(ref.watch(authReqProvider)));
@@ -27,12 +28,15 @@ class AuthController extends StateNotifier<bool> {
   //
 
 //******** createAccount      ************ */
-  void createAccount({
+  createAccount({
     required BuildContext context,
     required String name,
     required String username,
     required String password,
     required String email,
+    required String accountType,
+    String? eiinNumber,
+    String? contractInfo,
   }) async {
     state = true;
     // responce
@@ -42,11 +46,13 @@ class AuthController extends StateNotifier<bool> {
       username: username,
       password: password,
       email: email,
+      accountType: accountType,
+      eiinNumber: eiinNumber,
+      contractInfo: contractInfo,
     );
 
     res.fold((l) async {
       state = false;
-      await FirebaseAuth.instance.currentUser!.delete();
       return Alart.showSnackBar(context, l.message);
     }, (r) {
       state = false;
@@ -63,8 +69,15 @@ class AuthController extends StateNotifier<bool> {
       (l) async {
         state = false;
         print('***********************************${l.message} ${password}**');
-        if (l.message.toString() == 'Email is not verified' &&
-            l.email != null) {
+
+        if (l.message == 'Academy request is pending') {
+          Get.to(() => PendingScreen());
+        }
+        if (l.message == 'Email is not verified') {
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: l.email!,
+            password: password,
+          );
           Get.to(() => EmailVerificationScreen(
                 email: l.email!,
                 password: password,

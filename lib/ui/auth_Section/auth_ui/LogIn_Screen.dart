@@ -31,6 +31,7 @@ class LogingScreen extends StatefulWidget {
 class _LogingScreenState extends State<LogingScreen> {
   //
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> emailkey = GlobalKey<FormState>();
@@ -53,6 +54,7 @@ class _LogingScreenState extends State<LogingScreen> {
     AwsomNotificationSetup.takePermiton(context);
   }
 
+  bool byUsername = true;
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, _) {
@@ -79,18 +81,42 @@ class _LogingScreenState extends State<LogingScreen> {
 
                     ///
 
-                    Form(
-                      key: emailkey,
-                      child: AppTextFromField(
-                        controller: _emailController,
-                        hint: "Email",
-                        labelText: "Enter email address",
-                        validator: (value) =>
-                            LoginValidation.validateEmail(value),
+                    AppTextFromField(
+                      controller:
+                          byUsername ? usernameController : _emailController,
+                      hint: byUsername ? 'Username' : "Email",
+                      labelText: byUsername
+                          ? "Enter Username "
+                          : "Enter email address",
+                      validator: (value) {
+                        if (byUsername) {
+                          return LoginValidation.validUsername(value);
+                        } else {
+                          return LoginValidation.validateEmail(value);
+                        }
+                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              setState(() => byUsername = !byUsername);
+                            },
+                            child: Text(
+                              byUsername ? 'With Email?' : 'With Username?',
+                            ),
+                          ),
+                        ],
                       ),
                     ),
 
                     AppTextFromField(
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 25),
                       controller: _passwordController,
                       obscureText: true,
                       hint: "password",
@@ -126,23 +152,21 @@ class _LogingScreenState extends State<LogingScreen> {
                     }),
                     const SizedBox(height: 30),
 
-                    if (loding != null && loding == true)
-                      Loaders.button()
-                    else
-                      CupertinoButtonCustom(
-                        padding: const EdgeInsets.symmetric(horizontal: 40),
-                        color: AppColor.nokiaBlue,
-                        textt: "Log In",
-                        onPressed: () async {
-                          if (formKey.currentState?.validate() ?? false) {
-                            authLogin.siginIn(_emailController.text,
-                                _passwordController.text, context);
-                          } else {
-                            authLogin.siginIn(
-                                "roma123", "@Rahala+Nur123", context);
-                          }
-                        },
-                      ),
+                    CupertinoButtonCustom(
+                      isLoding: loding,
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      color: AppColor.nokiaBlue,
+                      textt: "Log In",
+                      onPressed: () async {
+                        if (formKey.currentState?.validate() ?? false) {
+                          authLogin.siginIn(_emailController.text,
+                              _passwordController.text, context);
+                        } else {
+                          authLogin.siginIn(
+                              "roma123", "@Rahala+Nur123", context);
+                        }
+                      },
+                    ),
 
                     //
 

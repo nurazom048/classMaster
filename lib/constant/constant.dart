@@ -21,7 +21,7 @@ Future<String> BASE_URL() async {
 }
 
 const String FORGOT_MAIL_SEND_MESSAGE =
-    'Reset email has been sent. Please check your email and set a new password. If you don\'t find this email in your inbox, please check your spam box.';
+    'Reset email has been sent. Please check your Inbox and set a new password. If you don\'t find this email in your inbox, please check your spam folder.';
 
 const String FORGOT_MAIL_SEND_MESSAGE_WILL_SEND =
-    'After sending the password reset email, please check your email and set a new password. If you don\'t find this email in your inbox, please check your spam box.';
+    'After sending the password reset email, please check your Inbox and set a new password.\n\nIf you don\'t find this email in your inbox, please check your spam folder.';

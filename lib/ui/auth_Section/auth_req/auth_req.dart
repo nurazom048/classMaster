@@ -20,12 +20,13 @@ class AuthReq {
 
       var message = json.decode(response.body)["message"];
       print(json.decode(response.body));
-      if (response.statusCode == 200) {
-        final accountData = json.decode(response.body);
+      final accountData = json.decode(response.body);
+      print('*********************');
+      print(accountData);
 
+      //
+      if (response.statusCode == 200) {
         // print(accountData);
-        print('*********************');
-        print(accountData);
 
         //... save token
         await AuthController.saveToken(accountData["token"]);
@@ -43,12 +44,13 @@ class AuthReq {
         final accountData = json.decode(response.body);
         return left(Message(
           message: message,
-          email: accountData["account"]["email"],
+          email: accountData["account"]["email"] ?? accountData['email'],
         ));
+      } else if (response.statusCode == 402) {
+        final pendingAccount = json.decode(response.body);
+        return left(Message.fromJson(pendingAccount));
       } else {
-        return left(Message(
-          message: message,
-        ));
+        return left(Message(message: message));
       }
     } catch (e) {
       print(e);
@@ -59,19 +61,27 @@ class AuthReq {
   }
 
   //  create a new account
-  static Future<Either<Message, Message>> createAccount(context,
-      {required name,
-      required username,
-      required password,
-      required email}) async {
+  static Future<Either<Message, Message>> createAccount(
+    context, {
+    required name,
+    required username,
+    required password,
+    required email,
+    required String accountType,
+    String? eiinNumber,
+    String? contractInfo,
+  }) async {
     try {
       //... send request
-      final response = await http
-          .post(Uri.parse('${Const.BASE_URl}/auth/create'), body: {
+      final response =
+          await http.post(Uri.parse('${Const.BASE_URl}/auth/create'), body: {
         "name": name,
         "username": username,
         "password": password,
-        "email": email
+        "email": email,
+        "account_type": accountType.toLowerCase(),
+        "EIIN": eiinNumber ?? '',
+        "contractInfo": contractInfo ?? '',
       });
 
       var res = json.decode(response.body);

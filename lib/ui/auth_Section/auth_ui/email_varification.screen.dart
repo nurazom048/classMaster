@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table/constant/app_color.dart';
 import 'package:table/core/dialogs/alart_dialogs.dart';
 import 'package:table/ui/auth_Section/auth_ui/forgetpassword_screen.dart';
+import 'package:table/widgets/appWidget/app_text.dart';
 
 class EmailVerificationScreen extends ConsumerStatefulWidget {
   final String email;
@@ -127,43 +129,42 @@ class _EmailVerificationScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Email Verification')),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                'Your email is not verified',
-                textAlign: TextAlign.center,
-              ),
-              const Text(
-                'A verification link has been sent to your email. Please check your inbox. If you can\'t find the email, please check your spam folder.',
-                textAlign: TextAlign.justify,
-              ),
-              const SizedBox(height: 10),
-              Text(
-                widget.email,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                'Please check your email and click on the verification link to proceed.',
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 20),
+      appBar: AppBar(
+        title: const Text('Email Verification'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              widget.email,
+              style: TS.heading(color: Colors.blue),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'Your email is not verified!',
+              style: TS.heading(),
+            ),
+            const SizedBox(height: 15),
+            Text(
+              'A verification link has been sent to your email. Please check your inbox. If you can\'t find the email, please check your spam folder.',
+              textAlign: TextAlign.justify,
+              style: TS.opensensBlue(color: Colors.black),
+            ),
+            const SizedBox(height: 20),
+            if (showResendButton)
               ElevatedButton(
                 onPressed: () async => checkVerification(),
                 child: const Text('Check Verification'),
               ),
-              if (showResendButton) // Display the "Resend" button if showResendButton is true
-                ElevatedButton(
-                  onPressed: () async => sendVerificationEmail(),
-                  child: const Text('Resend'),
-                ),
-            ],
-          ),
+            if (showResendButton) // Display the "Resend" button if showResendButton is true
+              ElevatedButton(
+                style: ButtonStyle(),
+                onPressed: () async => sendVerificationEmail(),
+                child: const Text('Resend'),
+              ),
+          ],
         ),
       ),
     );

@@ -23,8 +23,15 @@ class SaveRutineResponse {
     );
   }
 
-  Map<String, dynamic> toJson() => {
-        'currentPage': currentPage,
-        'totalPages': totalPages,
-      };
+  SaveRutineResponse copyWith({
+    List<Routine>? savedRoutines,
+    int? currentPage,
+    int? totalPages,
+  }) {
+    return SaveRutineResponse(
+      savedRoutines: savedRoutines ?? this.savedRoutines,
+      currentPage: currentPage ?? this.currentPage,
+      totalPages: totalPages ?? this.totalPages,
+    );
+  }
 }

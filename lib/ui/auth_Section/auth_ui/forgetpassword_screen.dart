@@ -52,80 +52,82 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
         final loading = ref.watch(authController_provider);
         final authController = ref.watch(authController_provider.notifier);
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            HeaderTitle("Forget or Reset Password", context),
-            const SizedBox(height: 40),
-            ToggleSwitch(
-              minWidth: 130.0,
-              cornerRadius: 20.0,
-              activeBgColors: [
-                [AppColor.nokiaBlue],
-                [AppColor.nokiaBlue]
-              ],
-              activeFgColor: Colors.white,
-              inactiveBgColor: Theme.of(context).scaffoldBackgroundColor,
-              inactiveFgColor: Colors.black26,
-              initialLabelIndex: currentIndex,
-              totalSwitches: 2,
-              labels: const ['By Email', 'By Username'],
-              radiusStyle: true,
-              onToggle: (index) {
-                setState(() => currentIndex = index!);
-              },
-            ),
-            const SizedBox(height: 16),
-            if (currentIndex == 0)
-              Form(
-                key: formKey,
-                child: AppTextFromField(
-                  controller: emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  hint: 'Email address',
-                  validator: (value) => ForgetValidation.validateEmail(value),
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              HeaderTitle("Forget or Reset Password", context),
+              const SizedBox(height: 40),
+              ToggleSwitch(
+                minWidth: 130.0,
+                cornerRadius: 20.0,
+                activeBgColors: [
+                  [AppColor.nokiaBlue],
+                  [AppColor.nokiaBlue]
+                ],
+                activeFgColor: Colors.white,
+                inactiveBgColor: Colors.white,
+                inactiveFgColor: Colors.black,
+                initialLabelIndex: currentIndex,
+                totalSwitches: 2,
+                labels: const ['By Email', 'By Username'],
+                radiusStyle: true,
+                onToggle: (index) {
+                  setState(() => currentIndex = index!);
+                },
+              ),
+              const SizedBox(height: 16),
+              if (currentIndex == 0)
+                Form(
+                  key: formKey,
+                  child: AppTextFromField(
+                    controller: emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    hint: 'Email address',
+                    validator: (value) => ForgetValidation.validateEmail(value),
+                  ),
+                )
+              else
+                Form(
+                  key: usernameKey,
+                  child: AppTextFromField(
+                    controller: usernameController,
+                    keyboardType: TextInputType.text,
+                    hint: 'Username',
+                    validator: (value) =>
+                        ForgetValidation.validateUsername(value),
+                  ),
                 ),
-              )
-            else
-              Form(
-                key: usernameKey,
-                child: AppTextFromField(
-                  controller: usernameController,
-                  keyboardType: TextInputType.text,
-                  hint: 'Username',
-                  validator: (value) =>
-                      ForgetValidation.validateUsername(value),
+              const SizedBox(height: 16),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  FORGOT_MAIL_SEND_MESSAGE_WILL_SEND,
+                  style: TS.opensensBlue(color: Colors.black),
                 ),
               ),
-            const SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                FORGOT_MAIL_SEND_MESSAGE_WILL_SEND,
-                style: TS.opensensBlue(color: Colors.black),
+              const SizedBox(height: 100),
+              CupertinoButtonCustom(
+                isLoding: loading != null && loading == true,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                color: AppColor.nokiaBlue,
+                textt: "Send Reset Password Email",
+                icon: Icons.email,
+                onPressed: () async {
+                  if (currentIndex == 0
+                      ? formKey.currentState?.validate() ?? false
+                      : usernameKey.currentState?.validate() ?? false) {
+                    authController.forgotPassword(
+                      context,
+                      email: emailController.text.trim(),
+                      username: usernameController.text.trim(),
+                    );
+                    // Get.offAll(() => const LoginScreen());
+                  }
+                },
               ),
-            ),
-            const SizedBox(height: 100),
-            CupertinoButtonCustom(
-              isLoding: loading != null && loading == true,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              color: AppColor.nokiaBlue,
-              textt: "Send Reset Password Email",
-              icon: Icons.email,
-              onPressed: () async {
-                if (currentIndex == 0
-                    ? formKey.currentState?.validate() ?? false
-                    : usernameKey.currentState?.validate() ?? false) {
-                  authController.forgotPassword(
-                    context,
-                    email: emailController.text.trim(),
-                    username: usernameController.text.trim(),
-                  );
-                  // Get.offAll(() => const LoginScreen());
-                }
-              },
-            ),
-          ],
+            ],
+          ),
         );
       }),
     );
