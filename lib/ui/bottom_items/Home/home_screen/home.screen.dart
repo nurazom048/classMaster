@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:table/services/one%20signal/onesignla.services.dart';
-import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 import 'package:table/ui/bottom_items/Home/Full_routine/utils/routine_dialog.dart';
 import 'package:table/ui/bottom_items/Home/models/home_routines_model.dart';
 import 'package:table/ui/bottom_items/Home/notice_board/models/recent_notice_model.dart';
@@ -17,6 +16,7 @@ import 'package:table/ui/bottom_items/Home/widgets/slider/recentniticeslider_ite
 import 'package:table/widgets/error/error.widget.dart';
 import '../../../../core/component/responsive.dart';
 import '../../../../core/dialogs/alert_dialogs.dart';
+import '../../../../services/firebase/firebase_analytics.service.dart';
 import '../../../../services/notification services/awn_package.dart';
 import '../../Collection Fetures/Ui/collections.screen.dart';
 import '../Full_routine/widgets/routine_box/rutin_box_by_id.dart';
@@ -24,7 +24,6 @@ import '../Full_routine/widgets/sceltons/rutinebox_id_scelton.dart';
 import '../home_req/home_routines_controller.dart';
 import '../notice_board/notice controller/virew_recent_notice_controller.dart';
 import '../notice_board/screens/view_all_recent_notice.dart';
-import '../notification/screen/notification.screen.dart';
 import '../widgets/custom_title_bar.dart';
 import '../widgets/slider/recentnoticeslider.dart';
 
@@ -43,6 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
+    //firebase
+    FirebaseAnalyticsServices.logHome();
     // AwesomeNotificationSetup
     AwesomeNotificationSetup.initialize();
     AwesomeNotificationSetup.takePermiton(context);
@@ -59,8 +60,6 @@ class _HomeScreenState extends State<HomeScreen> {
       final homeRoutines = ref.watch(homeRoutineControllerProvider(null));
       final recentNoticeList = ref.watch(recentNoticeController(null));
 
-      logthis();
-
 //notifier
       final homeRoutinesNotifier =
           ref.watch(homeRoutineControllerProvider(null).notifier);
@@ -69,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ref, recentNoticeList, context, homeRoutines,
           homeRoutineNotifier: homeRoutinesNotifier);
 
-      const _appBar = CustomTitleBar("title");
+      Widget _appBar = const CustomTitleBar("title");
       return Responsive(
         // Mobile view
         mobile: SafeArea(
@@ -125,10 +124,7 @@ homeMobileView(WidgetRef ref, AsyncValue<RecentNotice> recentNoticeList,
       padding: const EdgeInsets.only(bottom: 100),
       controller: scrollController,
       children: [
-        if (Responsive.isMobile(context))
-          CustomTitleBar("title", ontap: () {
-            Get.to(() => const NotificationScreen());
-          }),
+        if (Responsive.isMobile(context)) const CustomTitleBar("title"),
 
         //_______________________ recent notices _________________//
         RecentNoticeTitle(
@@ -232,16 +228,6 @@ homeMobileView(WidgetRef ref, AsyncValue<RecentNotice> recentNoticeList,
         //
       ],
     ),
-  );
-}
-
-void logthis() async {
-  print('ebentTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT');
-  String? username = await AuthController.getUsername();
-
-  await FirebaseAnalytics.instance.logEvent(
-    name: 'Home Screen',
-    parameters: {'username': '$username'},
   );
 }
 

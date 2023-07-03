@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:table/ui/bottom_items/search/search_screen/search_page.dart';
 
 import '../../../../constant/app_color.dart';
+import '../notification/screen/notification.screen.dart';
 
 class CustomTitleBar extends StatelessWidget {
   final String title;
   final IconData? icon;
   final double elevation;
   final Widget? acction;
-  final dynamic ontap;
 
   const CustomTitleBar(
     this.title, {
-    this.ontap,
     this.icon,
     this.elevation = 5.0,
     this.acction,
@@ -63,14 +63,15 @@ class CustomTitleBar extends StatelessWidget {
                 ),
                 const Spacer(flex: 18),
                 InkWell(
-                  onTap: ontap ??
-                      () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SearchPAge()),
-                        );
-                      },
+                  onTap: () {
+                    Get.to(() => const SearchPAge(),
+                        transition: Transition.rightToLeft);
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) => const SearchPAge()),
+                    // );
+                  },
                   child: Icon(
                     icon ?? Icons.search,
                     size: 22,
@@ -79,7 +80,10 @@ class CustomTitleBar extends StatelessWidget {
                 ),
                 const SizedBox(width: 5),
                 InkWell(
-                  onTap: ontap ?? () {},
+                  onTap: () {
+                    Get.to(() => const NotificationScreen(),
+                        transition: Transition.rightToLeft);
+                  },
                   child: Icon(
                     icon ?? Icons.notifications_outlined,
                     size: 22,

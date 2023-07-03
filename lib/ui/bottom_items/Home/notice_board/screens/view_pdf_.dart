@@ -14,6 +14,7 @@ class ViewPDf extends StatefulWidget {
   const ViewPDf({Key? key, required this.pdfLink}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _ViewPDfState createState() => _ViewPDfState();
 }
 
@@ -64,7 +65,6 @@ class _ViewPDfState extends State<ViewPDf> {
               child: FutureBuilder<bool>(
                 future: Utils.isOnlineMethod(),
                 builder: (context, snapshot) {
-                  print(snapshot.data);
                   try {
                     if (snapshot.hasError) {
                       return ErrorScreen(error: snapshot.error.toString());

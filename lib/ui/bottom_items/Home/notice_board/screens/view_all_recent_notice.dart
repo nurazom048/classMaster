@@ -47,6 +47,7 @@ class ViewAllRecentNotice extends ConsumerWidget {
             void scrollListener() {
               if (scrollController.position.pixels ==
                   scrollController.position.maxScrollExtent) {
+                // ignore: avoid_print
                 print("reached the end");
                 ref
                     .watch(recentNoticeController(null).notifier)

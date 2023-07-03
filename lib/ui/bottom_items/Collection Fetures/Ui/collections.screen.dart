@@ -107,7 +107,7 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
 
                 ///
 
-                const SizedBox(height: 10),
+                const SizedBox(height: 5),
 
                 classNotification.when(
                     data: (data) {

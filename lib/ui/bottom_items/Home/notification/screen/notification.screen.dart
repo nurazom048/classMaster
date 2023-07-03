@@ -1,9 +1,9 @@
 import 'package:expandable_text/expandable_text.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/component/loaders.dart';
 import 'package:table/core/dialogs/alert_dialogs.dart';
+import 'package:table/services/firebase/firebase_analytics.service.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 import 'package:table/widgets/error/error.widget.dart';
 import 'package:table/widgets/heder/heder_title.dart';
@@ -23,7 +23,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   void initState() {
     super.initState();
-    event();
+
+    FirebaseAnalyticsServices.logEvent(
+      name: "notificationscreen",
+      parameters: {
+        "content_type": "ontap",
+      },
+    );
   }
 
   @override
@@ -66,16 +72,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
         ),
       );
     });
-  }
-
-  void event() async {
-    await FirebaseAnalytics.instance.logEvent(
-      name: "notificationscreen",
-      parameters: {
-        "content_type": "ontap",
-      },
-    );
-    print('notification screen event');
   }
 }
 

@@ -56,7 +56,11 @@ class NotificationClass {
         return null;
       }
     } catch (e) {
-      Get.showSnackbar(const GetSnackBar(message: 'Error'));
+      if (isHaveCash) {
+        var cacheData = await APICacheManager().getCacheData(key);
+        return ClassNotificationList.fromJson(json.decode(cacheData.syncData));
+      }
+      Get.showSnackbar(GetSnackBar(message: 'Error $e'));
     }
 
     return null;
