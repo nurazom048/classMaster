@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/search/search_screen/account_search_screen.dart';
-import 'package:table/ui/bottom_items/search/search_screen/search_rutine_screen.dart';
+import 'package:table/ui/bottom_items/search/search_screen/search_routine_screen.dart';
 import 'package:table/ui/bottom_items/search/widgets/search_bar_custom.dart';
 
 import '../../../../core/component/responsive.dart';
@@ -12,7 +12,7 @@ import '../../Home/widgets/custom_title_bar.dart';
 import '../../Home/widgets/mydrawer.dart';
 
 //! search String provider
-final Serarch_String_Provider = StateProvider<String>((ref) => "");
+final searchStringProvider = StateProvider<String>((ref) => "");
 final searchPageIndexProvider = StateProvider<int>((ref) => 0);
 
 class SearchPAge extends StatefulWidget {
@@ -70,10 +70,10 @@ class _SearchPAgeState extends State<SearchPAge> {
                   height: 50,
                   child: Align(
                     alignment: Alignment.bottomCenter,
-                    child: SearchBarCustom(onChanged: (valu) {
-                      print(valu);
-                      if (mounted && valu != '') {
-                        ref.read(Serarch_String_Provider.notifier).state = valu;
+                    child: SearchBarCustom(onChanged: (value) {
+                      print(value);
+                      if (mounted && value != '') {
+                        ref.read(searchStringProvider.notifier).state = value;
                       }
                     }),
                   ),

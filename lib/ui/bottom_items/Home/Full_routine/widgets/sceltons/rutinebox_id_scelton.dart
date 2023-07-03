@@ -49,7 +49,7 @@ class RutinBoxByIdSkelton extends StatelessWidget {
                     borderRadius: BorderRadius.circular(6),
                   ),
                 ),
-                JoineScelton(width: width),
+                JoinSkelton(width: width),
               ],
             ),
           ),
@@ -116,15 +116,15 @@ class RutinBoxByIdSkelton extends StatelessWidget {
             ),
           ),
           // const SizedBox(height: 16),
-          const AccounScelton(),
+          const AccountScelton(),
         ]),
       ),
     );
   }
 }
 
-class JoineScelton extends StatelessWidget {
-  const JoineScelton({
+class JoinSkelton extends StatelessWidget {
+  const JoinSkelton({
     super.key,
     required this.width,
   });
@@ -144,8 +144,8 @@ class JoineScelton extends StatelessWidget {
   }
 }
 
-class AccounScelton extends StatelessWidget {
-  const AccounScelton({
+class AccountScelton extends StatelessWidget {
+  const AccountScelton({
     super.key,
   });
 

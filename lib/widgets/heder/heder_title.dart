@@ -37,7 +37,7 @@ class HeaderTitle extends StatelessWidget {
                       size: 20,
                       color: Colors.black,
                     )),
-              AppText(title).heding(),
+              AppText(title).heeding(),
             ],
           ),
           //

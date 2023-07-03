@@ -18,21 +18,21 @@ import '../../widgets/member_account_card.dart';
 final membersCountProvider = StateProvider.autoDispose<int>((ref) => 0);
 
 class MemberList extends StatelessWidget {
-  final String rutinId;
-  const MemberList({super.key, required this.rutinId});
+  final String routineId;
+  const MemberList({super.key, required this.routineId});
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, _) {
       //! provider
-      final allMembers = ref.watch(all_members_provider(rutinId));
+      final allMembers = ref.watch(all_members_provider(routineId));
 
       // notifiers
-      final chackStatus = ref.watch(chackStatusControllerProvider(rutinId));
-      final String status = chackStatus.value?.activeStatus ?? '';
-      final bool isCaptain = chackStatus.value?.isCaptain ?? false;
-      final bool isOwner = chackStatus.value?.isOwner ?? false;
+      final checkStatus = ref.watch(checkStatusControllerProvider(routineId));
+      final String status = checkStatus.value?.activeStatus ?? '';
+      final bool isCaptain = checkStatus.value?.isCaptain ?? false;
+      final bool isOwner = checkStatus.value?.isOwner ?? false;
 
-      // bool notificationOff = chackStatus.value?.notificationOff ?? false;
+      // bool notificationOff = checkStatus.value?.notificationOff ?? false;
       final memberCount = ref.watch(membersCountProvider);
       final memberCountNotifier = ref.watch(membersCountProvider.notifier);
 
@@ -61,7 +61,7 @@ class MemberList extends StatelessWidget {
 
           //____________________________________Requests___________________________________//
           if (isCaptain == true || isOwner == true) ...[
-            JoinRequestPart(routineID: rutinId),
+            JoinRequestPart(routineID: routineId),
           ],
 
           ///
@@ -88,14 +88,14 @@ class MemberList extends StatelessWidget {
                 child: ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: data.members.length,
-                  itemBuilder: (context, i) => MeberAccountCard(
+                  itemBuilder: (context, i) => MemberAccountCard(
                     condition: isCaptain == true || isOwner == true,
                     member: data.members[i],
                     onPressed: () {
                       accountActions(
                         context,
                         ref,
-                        rutinId: rutinId,
+                        rutinId: routineId,
                         username: data.members[i].username,
                         memberId: data.members[i].id,
                         isTheMemberIsCaptain: data.members[i].captain,

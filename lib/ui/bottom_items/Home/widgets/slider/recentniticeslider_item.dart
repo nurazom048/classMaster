@@ -9,14 +9,14 @@ class RecentNoticeSliderItem extends StatelessWidget {
   const RecentNoticeSliderItem({
     super.key,
     required this.notice,
-    required this.conditon,
+    required this.condition,
     required this.index,
     required this.singleCondition,
     required this.recentNotice,
   });
   final List<Notice> notice;
   final int index;
-  final bool conditon;
+  final bool condition;
   final bool singleCondition;
   final RecentNotice recentNotice;
 
@@ -33,7 +33,7 @@ class RecentNoticeSliderItem extends StatelessWidget {
                 notice: notice[index],
                 accountModels: recentNotice.notices[index].academyId,
               )
-            else if (conditon == true) ...[
+            else if (condition == true) ...[
               NoticeRow(
                 notice: notice[index],
                 accountModels: recentNotice.notices[index].academyId,

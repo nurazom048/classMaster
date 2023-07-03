@@ -15,11 +15,11 @@ class StatusRow extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // providers
-    final chackStatus = ref.watch(chackStatusControllerProvider(rutinId));
-    // with notofier
-    final chackStatusNotifier =
-        ref.watch(chackStatusControllerProvider(rutinId).notifier);
-    String status = chackStatus.value?.activeStatus ?? '';
+    final checkStatus = ref.watch(checkStatusControllerProvider(rutinId));
+    // with notifier
+    final checkStatusNotifier =
+        ref.watch(checkStatusControllerProvider(rutinId).notifier);
+    String status = checkStatus.value?.activeStatus ?? '';
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 16),
       child: Row(
@@ -27,7 +27,7 @@ class StatusRow extends ConsumerWidget {
         children: [
           const Spacer(),
           if (status == "joined")
-            SqureButton(
+            SquaresButton(
               icon: Icons.logout,
               inActiveText: "leave",
               color: Colors.redAccent,
@@ -38,32 +38,32 @@ class StatusRow extends ConsumerWidget {
                   //  Navigator.pop(context);
 
                   ref
-                      .read(chackStatusControllerProvider(rutinId).notifier)
+                      .read(checkStatusControllerProvider(rutinId).notifier)
                       .leaveMember(context, ref);
                 });
               },
             )
           else
-            SqureButton(
+            SquaresButton(
                 icon: Icons.people_rounded,
                 inActiveIcon: Icons.telegram,
                 inActiveText: status,
                 status: status == "request_pending" ? true : false,
                 text: status,
                 ontap: () {
-                  chackStatusNotifier.sendReqController(context);
+                  checkStatusNotifier.sendReqController(context);
                 }),
-          SqureButton(
+          SquaresButton(
               inActiveIcon: Icons.bookmark_added,
               icon: Icons.bookmark_add_sharp,
               text: 'Save',
               inActiveText: "add to save",
-              status: chackStatus.value?.isSave,
+              status: checkStatus.value?.isSave,
               ontap: () {
-                chackStatusNotifier.saveUnsave(
-                    context, !(chackStatus.value?.isSave ?? false));
+                checkStatusNotifier.saveUnsaved(
+                    context, !(checkStatus.value?.isSave ?? false));
               }),
-          SqureButton(
+          SquaresButton(
             icon: Icons.u_turn_right,
             text: 'Back to rutin',
             ontap: () => Navigator.pop(context),

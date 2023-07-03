@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../models/rutins/saveRutine.dart';
+import '../../../../../models/Routine/saveRutine.dart';
 import '../../home_req/home_req.dart';
-import 'package:table/models/rutins/search_rutin.dart';
+import 'package:table/models/Routine/search_rutin.dart';
 
 final saveRoutineProvider = StateNotifierProvider<SaveRoutineController,
     AsyncValue<SaveRutileResponse>>((ref) {

@@ -47,7 +47,7 @@ class PriodeAlert {
                 );
               },
             ),
-// ddelete
+// delete
             CupertinoActionSheetAction(
               child: const ma.Text("Remove class",
                   style: TextStyle(color: Colors.red)),
@@ -104,13 +104,13 @@ class PriodeAlert {
                         fullscreenDialog: true,
                         builder: (context) => AppPriodePage(
                               totalPriode: 1,
-                              rutinId: rutinId,
+                              routineId: rutinId,
                               priodeId: Priode.id,
                               isEdit: true,
                             )));
               },
             ),
-// ddelete
+// delete
             CupertinoActionSheetAction(
               child:
                   const ma.Text("Remove", style: TextStyle(color: Colors.red)),

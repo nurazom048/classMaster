@@ -26,7 +26,7 @@ class AddWeekdayExpantion extends ConsumerWidget {
   int? _number;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    //total propde
+    //total
     final totalPriode = ref.watch(totalPriodeCountProvider);
 
     return Scaffold(
@@ -106,8 +106,8 @@ class AddWeekdayExpantion extends ConsumerWidget {
                       if (_weekdayFromKey.currentState!.validate() &&
                           _number != null) {
                         ref
-                            .watch(
-                                weekayControllerStateProvider(classId).notifier)
+                            .watch(weekdayControllerStateProvider(classId)
+                                .notifier)
                             .addWeekday(
                               context,
                               ref,

@@ -24,7 +24,7 @@ class RoutineNotification {
           await http.post(url, headers: {'Authorization': 'Bearer $getToken'});
       Message message = Message.fromJson(jsonDecode(response.body));
 
-      /// responce
+      /// response
       if (response.statusCode == 200) {
         return right(message);
       } else {
@@ -46,7 +46,7 @@ class RoutineNotification {
           await http.post(url, headers: {'Authorization': 'Bearer $getToken'});
       Message message = Message.fromJson(jsonDecode(response.body));
 
-      /// responce
+      /// response
       if (response.statusCode == 200) {
         return right(message);
       } else {

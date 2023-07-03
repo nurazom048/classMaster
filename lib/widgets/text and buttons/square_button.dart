@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-class SqureButton extends StatelessWidget {
+class SquaresButton extends StatelessWidget {
   final IconData icon;
   final IconData? inActiveIcon;
   final String text;
@@ -11,7 +11,7 @@ class SqureButton extends StatelessWidget {
   int? count;
   final Color? color;
   final dynamic ontap;
-  SqureButton({
+  SquaresButton({
     required this.icon,
     this.inActiveIcon,
     required this.text,

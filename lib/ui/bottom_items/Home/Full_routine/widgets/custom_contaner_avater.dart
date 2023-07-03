@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../../../../constant/constant.dart';
 
-class CustomContainerAvater extends StatelessWidget {
+class CustomContainerAvatar extends StatelessWidget {
   final String? image;
-  const CustomContainerAvater({super.key, required this.image});
+  const CustomContainerAvatar({super.key, required this.image});
 
   @override
   Widget build(BuildContext context) {

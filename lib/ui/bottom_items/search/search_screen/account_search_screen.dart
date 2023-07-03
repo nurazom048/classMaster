@@ -15,7 +15,7 @@ class AccountSearchScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //! Provider
-    final searchText = ref.watch(Serarch_String_Provider);
+    final searchText = ref.watch(searchStringProvider);
     final searchAccounts = ref.watch(searchAccountController(searchText));
 
     return Scaffold(
@@ -23,6 +23,7 @@ class AccountSearchScreen extends ConsumerWidget {
         data: (data) {
           void scrollListener(double pixels) {
             if (pixels == scrollController.position.maxScrollExtent) {
+              // ignore: avoid_print
               print('End of scroll');
               ref
                   .watch(searchAccountController(searchText).notifier)

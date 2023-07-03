@@ -5,8 +5,8 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../../constant/app_color.dart';
 
-class RecentNoticeSliderScealton extends StatelessWidget {
-  const RecentNoticeSliderScealton({Key? key}) : super(key: key);
+class RecentNoticeSliderSkelton extends StatelessWidget {
+  const RecentNoticeSliderSkelton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

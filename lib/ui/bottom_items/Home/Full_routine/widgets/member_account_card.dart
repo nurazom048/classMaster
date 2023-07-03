@@ -6,11 +6,11 @@ import '../../../../../widgets/appWidget/app_text.dart';
 import '../models/members_models.dart';
 import 'custom_contaner_avater.dart';
 
-class MeberAccountCard extends StatelessWidget {
+class MemberAccountCard extends StatelessWidget {
   final Member member;
   final dynamic onPressed;
   final bool condition;
-  const MeberAccountCard({
+  const MemberAccountCard({
     super.key,
     required this.member,
     required this.onPressed,
@@ -32,7 +32,7 @@ class MeberAccountCard extends StatelessWidget {
             children: [
               Stack(
                 children: [
-                  CustomContainerAvater(image: member.image),
+                  CustomContainerAvatar(image: member.image),
                   if (member.captain == true || member.owner == true)
                     Positioned(
                       bottom: 0,

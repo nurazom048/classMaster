@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 
 import '../../../../../constant/constant.dart';
 import '../../../../../models/message_model.dart';
-import '../../../../../models/rutins/weekday/weekday_list.dart';
+import '../../../../../models/Routine/weekday/weekday_list.dart';
 
 final weekdayReqProvider = Provider<WeekdayRequest>((ref) => WeekdayRequest());
 
@@ -61,7 +61,7 @@ class WeekdayRequest {
 
 // delete weekday
 
-  static Future<Either<Message, WeekdayList>> deletWeekday(
+  static Future<Either<Message, WeekdayList>> deleteWeekday(
       String id, String classID) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');

@@ -10,19 +10,20 @@ import '../../../../../core/dialogs/alert_dialogs.dart';
 
 import '../../../Collection Fetures/models/account_models.dart';
 
-final serachStringProvidder = StateProvider((ref) => "");
+final searchStringProvider = StateProvider((ref) => "");
 
 class seeAllMembers extends ConsumerWidget {
-  const seeAllMembers(
-      {super.key,
-      required this.onUsername,
-      required this.rutinId,
-      this.buttotext});
+  const seeAllMembers({
+    super.key,
+    required this.onUsername,
+    required this.rutinId,
+    this.buttonText,
+  });
 
   //
   final String rutinId;
 
-  final String? buttotext;
+  final String? buttonText;
   final Function(String?, String?) onUsername;
 
   @override
@@ -35,7 +36,7 @@ class seeAllMembers extends ConsumerWidget {
           Expanded(
             flex: 2,
             child: SearchBarCustom(onChanged: (v) {
-              ref.read(serachStringProvidder.notifier).update((state) => v);
+              ref.read(searchStringProvider.notifier).update((state) => v);
             }),
           ),
           Expanded(
@@ -56,7 +57,7 @@ class seeAllMembers extends ConsumerWidget {
                         ),
                         onUsername: (username, position) =>
                             onUsername(username, position),
-                        buttotext: buttotext,
+                        buttotext: buttonText,
                         color: Colors.red,
                       );
                     } else {

@@ -44,12 +44,12 @@ class DashBorderButton extends StatelessWidget {
   }
 }
 
-class DashBorderButtonMoni extends StatelessWidget {
+class DashBorderButtonMini extends StatelessWidget {
   final String text;
   final IconData icon;
   final dynamic onTap;
 
-  const DashBorderButtonMoni(
+  const DashBorderButtonMini(
       {super.key, required this.text, required this.icon, required this.onTap});
 
   @override

@@ -39,13 +39,13 @@ class PriodeRequest {
       print(res);
 
       if (response.statusCode == 200) {
-        Message messsaeg = Message.fromJson(res);
+        Message message = Message.fromJson(res);
 
-        return right(messsaeg);
+        return right(message);
       } else {
-        Message messsaeg = Message.fromJson(res);
+        Message message = Message.fromJson(res);
 
-        return left(messsaeg.message);
+        return left(message.message);
       }
     } catch (e) {
       print(e);
@@ -129,7 +129,7 @@ class PriodeRequest {
     }
   }
 
-  Future<Either<Message, AllPriode>> findPriodebYid(String priodeId) async {
+  Future<Either<Message, AllPriode>> findPriodesYid(String priodeId) async {
     var url = Uri.parse('${Const.BASE_URl}/rutin/priode/find/$priodeId');
 
     try {

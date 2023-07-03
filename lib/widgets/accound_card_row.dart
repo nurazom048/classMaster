@@ -17,10 +17,10 @@ class AccountCardRow extends ConsumerWidget {
     super.key,
     required this.accountData,
     this.suffix,
-    this.removeCapten,
+    this.removeCaptans,
     this.buttotext,
     this.color,
-    this.addCaptem = false,
+    this.addCapotes = false,
     this.onUsername = _defaultOnUsername,
     this.padding,
   });
@@ -32,17 +32,16 @@ class AccountCardRow extends ConsumerWidget {
 
   final String? buttotext;
   final Color? color;
-  final bool? addCaptem;
+  final bool? addCapotes;
   final Function(String?, String?) onUsername;
   final EdgeInsetsGeometry? padding;
 
   final Widget? suffix;
-  dynamic removeCapten;
+  dynamic removeCaptans;
   TextEditingController position = TextEditingController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final bool isEdditingMood = ref.watch(isEditingModd);
     return InkWell(
       onTap: accountData.sId != null
           ? () => Get.to(
@@ -125,21 +124,20 @@ class AccountCardRow extends ConsumerWidget {
               ),
 
               const Spacer(flex: 24),
-              // if (removeCapten != null && isEdditingMood == true)
 
               suffix ?? const SizedBox.shrink(),
 
-              if (removeCapten != null)
+              if (removeCaptans != null)
                 IconButton(
-                  onPressed: removeCapten,
+                  onPressed: removeCaptans,
                   icon: const Icon(Icons.delete_rounded,
                       color: CupertinoColors.systemRed),
                 ),
 
               if (buttotext != null && suffix == null)
                 TextButton(
-                    onPressed: addCaptem == true
-                        ? () => addCaptenAlart(context)
+                    onPressed: addCapotes == true
+                        ? () => addCaptansAlart(context)
                         : () => onUsername(accountData.username, ""),
                     child: ma.Text(buttotext ?? "",
                         style: TextStyle(color: color ?? Colors.blue))),
@@ -151,9 +149,9 @@ class AccountCardRow extends ConsumerWidget {
     );
   }
 
-//... add captem with position .../
+//... add capotes with position .../
 
-  addCaptenAlart(context) {
+  addCaptansAlart(context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -172,7 +170,7 @@ class AccountCardRow extends ConsumerWidget {
                 child: CupertinoButton(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   color: Colors.blue,
-                  child: const ma.Text("add as acpten"),
+                  child: const ma.Text("add as accept"),
                   onPressed: () {
                     onUsername(accountData.username, position.text);
                   },

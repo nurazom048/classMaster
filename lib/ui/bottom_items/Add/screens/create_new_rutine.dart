@@ -5,7 +5,7 @@ import 'package:table/core/component/loaders.dart';
 import 'package:table/core/dialogs/alert_dialogs.dart';
 import 'package:table/models/message_model.dart';
 import 'package:table/ui/bottom_items/Home/Full_routine/screen/viewMore/view_more_screen.dart';
-import 'package:table/ui/bottom_items/Home/home_req/rutin_req.dart';
+import 'package:table/ui/bottom_items/Home/home_req/routine_api.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 import 'package:table/widgets/appWidget/buttons/cupertino_buttons.dart';
 import 'package:table/widgets/heder/heder_title.dart';
@@ -14,10 +14,10 @@ import '../../../../widgets/appWidget/TextFromFild.dart';
 
 final createRoutineLoaderProvider = StateProvider<bool>((ref) => false);
 
-class CreaeNewRutine extends StatelessWidget {
+class CreateNewRoutine extends StatelessWidget {
   // ignore: use_key_in_widget_constructors
-  CreaeNewRutine({Key? key});
-  final _rutineNameController = TextEditingController();
+  CreateNewRoutine({Key? key});
+  final _routineNameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -43,10 +43,10 @@ class CreaeNewRutine extends StatelessWidget {
                   //----------------------------------------------------------------//
                   AppTextFromField(
                     margin: EdgeInsets.zero,
-                    controller: _rutineNameController,
+                    controller: _routineNameController,
                     hint: "Routine name",
                     labelText: "Enter class name",
-                    validator: (value) => rutinNameValidator(value),
+                    validator: (value) => routineNameValidator(value),
                   ),
 
                   //----------------------------------------------------------------//
@@ -80,35 +80,35 @@ class CreaeNewRutine extends StatelessWidget {
   }
 
   void _onTapToButton(context, WidgetRef ref) async {
-    Either<Message, Message> res = await RutinReqest.creatRutin(
-      rutinName: _rutineNameController.text,
+    Either<Message, Message> res = await RoutineAPI.createNewRoutine(
+      routineName: _routineNameController.text,
     );
 
-    final createRoutineLoderNotifier =
+    final createRoutineLoaderNotifier =
         ref.watch(createRoutineLoaderProvider.notifier);
 
     //
-    createRoutineLoderNotifier.update((state) => true);
+    createRoutineLoaderNotifier.update((state) => true);
 
     //
     res.fold(
       (error) {
-        createRoutineLoderNotifier.update((state) => false);
+        createRoutineLoaderNotifier.update((state) => false);
 
         return Alert.errorAlertDialog(context, error.message);
       },
       (data) async {
         if (data.routineID != null) {
           await Future.delayed(const Duration(seconds: 2));
-          createRoutineLoderNotifier.update((state) => false);
+          createRoutineLoaderNotifier.update((state) => false);
           // Wait for 5 seconds
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => ViewMore(
-                rutinId: data.routineID!,
-                rutineName: data.routineName ?? 'Routine Name',
-                owenerName: data.owenerName ?? 'Owner Name',
+                routineId: data.routineID!,
+                routineName: data.routineName ?? 'Routine Name',
+                ownerName: data.ownerName ?? 'Owner Name',
               ),
             ),
           );
@@ -118,7 +118,7 @@ class CreaeNewRutine extends StatelessWidget {
     );
   }
 
-  static String? rutinNameValidator(String? value) {
+  static String? routineNameValidator(String? value) {
     if (value == null || value.isEmpty) {
       return 'Routine name is required';
     }

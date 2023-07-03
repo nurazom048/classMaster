@@ -46,7 +46,7 @@ class ListOfNoticeScreen extends ConsumerWidget {
                     itemCount: data.notices.length,
                     itemBuilder: (context, index) {
                       return SimpleNoticeCard(
-                        previusDAtetime:
+                        previousDateTime:
                             data.notices[index == 0 ? 0 : index - 1].time,
                         id: data.notices[index].id,
                         noticeName: data.notices[index].contentName,

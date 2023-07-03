@@ -8,11 +8,11 @@ class Tilesbutton extends StatelessWidget {
   final String text;
   final Widget icon;
   final dynamic onTap;
-  final String svgpath;
-  final EdgeInsetsGeometry? imageMargine;
+  final String saxpath;
+  final EdgeInsetsGeometry? imageMargin;
 
   const Tilesbutton(this.text, this.icon,
-      {Key? key, this.onTap, required this.svgpath, this.imageMargine})
+      {Key? key, this.onTap, required this.saxpath, this.imageMargin})
       : super(key: key);
 
   @override
@@ -35,11 +35,11 @@ class Tilesbutton extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
-                      margin: imageMargine,
+                      margin: imageMargin,
                       height: 92,
                       child: Center(
                           child: SvgPicture.asset(
-                        svgpath,
+                        saxpath,
                         height: 92,
                         fit: BoxFit.cover,
                       ))),

@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../constant/constant.dart';
-import '../../../../models/rutins/search_rutin.dart';
+import '../../../../models/Routine/search_rutin.dart';
 import '../../../../models/search_account.dart';
 import 'package:http/http.dart' as http;
 

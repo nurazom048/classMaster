@@ -63,7 +63,7 @@ class MiniAccountInfo extends StatelessWidget {
                         color: Colors.black,
                       ),
                     ),
-                    AppText("@${accountData?.username}", fontSize: 16).heding()
+                    AppText("@${accountData?.username}", fontSize: 16).heeding()
                   ]),
             ),
             const Spacer(),

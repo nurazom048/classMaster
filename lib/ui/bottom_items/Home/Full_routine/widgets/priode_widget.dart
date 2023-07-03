@@ -50,8 +50,8 @@ class PriodeWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         const SizedBox(height: 10),
-                        AppText(formatTime(startTime)).heding(),
-                        AppText(formatTime(endTime)).heding(),
+                        AppText(formatTime(startTime)).heeding(),
+                        AppText(formatTime(endTime)).heeding(),
                       ],
                     )),
               ),
@@ -123,18 +123,18 @@ class PriodeWidget extends StatelessWidget {
     );
   }
 
-// date time formet by this
+// date time formed by this
   DateTime getNewDateTime(DateTime givenTime) {
     DateTime now = DateTime.now();
     String month = "${now.month < 10 ? '0' : ''}${now.month}";
-    String nowdays = "${now.day < 10 ? '0' : ''}${now.day}";
+    String nowadays = "${now.day < 10 ? '0' : ''}${now.day}";
 
     String giventimeHour = "${givenTime.hour < 10 ? '0' : ''}${givenTime.hour}";
     String giventimeMinute =
         "${givenTime.minute < 10 ? '0' : ''}${givenTime.minute}";
 
     DateTime newDateTime = DateTime.parse(
-        "${now.year}-$month-$nowdays $giventimeHour:$giventimeMinute:00");
+        "${now.year}-$month-$nowadays $giventimeHour:$giventimeMinute:00");
     return newDateTime;
   }
 

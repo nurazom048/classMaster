@@ -13,7 +13,7 @@ import '../../request/routine_api.dart';
 import '../../../../Add/screens/add_priode.dart';
 import '../../controller/chack_status_controller.dart';
 import '../../request/priode_request.dart';
-import '../../sunnary_section/summat_screens/summary_screen.dart';
+import '../../Summary/summat_screens/summary_screen.dart';
 import '../../utils/logng_press.dart';
 import '../../widgets/class_row.dart';
 import '../../widgets/priode_widget.dart';
@@ -22,25 +22,28 @@ final totalPriodeCountProvider = StateProvider.autoDispose<int>((ref) => 0);
 final totalClassCountProvider = StateProvider.autoDispose<int>((ref) => 0);
 
 class ClassListPage extends StatelessWidget {
-  final String rutinId;
-  final String rutinName;
-  const ClassListPage(
-      {super.key, required this.rutinId, required this.rutinName});
+  final String routineId;
+  final String routineName;
+  const ClassListPage({
+    super.key,
+    required this.routineId,
+    required this.routineName,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, _) {
-      print(rutinId);
+      print(routineId);
 
       //! provider
-      final rutinDetails = ref.watch(routine_details_provider(rutinId));
-      final allPriode = ref.watch(allPriodeProvider(rutinId));
+      final routineDetails = ref.watch(routine_details_provider(routineId));
+      final allPriode = ref.watch(allPriodeProvider(routineId));
       final totalPriode = ref.watch(totalPriodeCountProvider);
       final totalClass = ref.watch(totalClassCountProvider);
 
       // notifiers
       // ignore: unused_local_variable
-      final checkStatus = ref.watch(chackStatusControllerProvider(rutinId));
+      final checkStatus = ref.watch(checkStatusControllerProvider(routineId));
       // String status = checkStatus.value?.activeStatus ?? '';
       final totalPriodeNotifier = ref.watch(totalPriodeCountProvider.notifier);
       final totalClassNotifier = ref.watch(totalClassCountProvider.notifier);
@@ -58,8 +61,8 @@ class ClassListPage extends StatelessWidget {
               buttonText: "Add Priode",
               onTap: () => Get.to(
                 () => AppPriodePage(
-                  rutinId: rutinId,
-                  rutinName: rutinName,
+                  routineId: routineId,
+                  routineName: routineName,
                   isEdit: false,
                   totalPriode: totalPriode,
                 ),
@@ -89,7 +92,7 @@ class ClassListPage extends StatelessWidget {
                           //
                           onLongpress: () {
                             PriodeAlert.logPressOnPriode(context, priodeId,
-                                rutinId, data.priodes[index]);
+                                routineId, data.priodes[index]);
                           },
                         );
                       },
@@ -109,13 +112,14 @@ class ClassListPage extends StatelessWidget {
               margin: const EdgeInsets.only(top: 10),
               buttonText: "Add Class",
               onTap: () {
-                Get.to(() => AddClassScreen(routineId: rutinId, isEdit: false));
+                Get.to(
+                    () => AddClassScreen(routineId: routineId, isEdit: false));
               },
             ),
 
             SizedBox(
                 height: totalClass == 0 ? 50 : totalClass * 60,
-                child: rutinDetails.when(
+                child: routineDetails.when(
                   data: (data) {
                     if (data == null) {
                       return Text("Null $data");
@@ -145,7 +149,7 @@ class ClassListPage extends StatelessWidget {
                             PriodeAlert.logPressClass(
                               context,
                               classId: data.classes.allClass[index].classId.id,
-                              rutinId: rutinId,
+                              rutinId: routineId,
                             );
                           },
                           ontap: () => Get.to(

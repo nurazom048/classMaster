@@ -42,11 +42,11 @@ class BottomNavBar extends StatelessWidget {
     return Consumer(builder: (context, ref, _) {
       final index = ref.watch(bottomNavBarIndexProvider);
 
-      final hideNavBar = ref.watch(hideNevBarOnScrooingProvider) ||
+      final hideNavBar = ref.watch(hideNevBarOnScorningProvider) ||
           !Responsive.isMobile(context);
-      final showplus = ref.watch(showPlusProvider);
+      final showPlus = ref.watch(showPlusProvider);
       return Scaffold(
-        backgroundColor: showplus ? AppColor.background2 : null,
+        backgroundColor: showPlus ? AppColor.background2 : null,
         body: pages[index],
         bottomNavigationBar: AnimatedOpacity(
           duration: const Duration(milliseconds: 300),
@@ -70,7 +70,7 @@ class BottomNavBar extends StatelessWidget {
                       BottomBarItemCustom(
                         label: "Home",
                         icon: Icons.home_filled,
-                        isSelected: index == 0 && showplus == false,
+                        isSelected: index == 0 && showPlus == false,
                         onTap: () {
                           ref
                               .watch(bottomNavBarIndexProvider.notifier)
@@ -80,10 +80,10 @@ class BottomNavBar extends StatelessWidget {
                       InkWell(
                         onTap: () {
                           ref.watch(showPlusProvider.notifier).update(
-                              (state) => showplus == false ? true : false);
+                              (state) => showPlus == false ? true : false);
                           plusBottomSheet(context);
                         },
-                        child: showplus == false
+                        child: showPlus == false
                             ? CircleAvatar(
                                 radius: 22,
                                 backgroundColor: AppColor.nokiaBlue,
@@ -104,7 +104,7 @@ class BottomNavBar extends StatelessWidget {
                       BottomBarItemCustom(
                         label: "Collections",
                         icon: Icons.person_outline_outlined,
-                        isSelected: index == 2 && showplus == false,
+                        isSelected: index == 2 && showPlus == false,
                         onTap: () {
                           ref
                               .watch(bottomNavBarIndexProvider.notifier)
@@ -165,7 +165,7 @@ plusBottomSheet(BuildContext context) {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                DashBorderButtonMoni(
+                                DashBorderButtonMini(
                                   text: "Notices ",
                                   icon: Icons.calendar_view_day,
                                   onTap: () async {
@@ -181,11 +181,11 @@ plusBottomSheet(BuildContext context) {
                                 ),
                                 Row(
                                   children: [
-                                    DashBorderButtonMoni(
-                                      text: "Rutine",
+                                    DashBorderButtonMini(
+                                      text: "Routine",
                                       icon: Icons.blender_outlined,
                                       onTap: () =>
-                                          Get.to(() => CreaeNewRutine()),
+                                          Get.to(() => CreateNewRoutine()),
                                     ),
                                     const SizedBox(width: 6)
                                   ],

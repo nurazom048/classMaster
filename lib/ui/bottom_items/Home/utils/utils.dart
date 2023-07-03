@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,12 +13,11 @@ class Utils {
       ScrollNotification? scrollNotification, WidgetRef ref) {
     // Logic of scrollNotification
     if (scrollNotification is ScrollStartNotification) {
-      // ignore: avoid_print
       print("Scroll Started");
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ref
-            .watch(hideNevBarOnScrooingProvider.notifier)
+            .watch(hideNevBarOnScorningProvider.notifier)
             .update((state) => true);
       });
     } else if (scrollNotification is ScrollUpdateNotification) {
@@ -24,7 +25,7 @@ class Utils {
     } else if (scrollNotification is ScrollEndNotification) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ref
-            .watch(hideNevBarOnScrooingProvider.notifier)
+            .watch(hideNevBarOnScorningProvider.notifier)
             .update((state) => false);
       });
 
@@ -58,7 +59,7 @@ class Utils {
   static Future<bool> isOnlineMethod() async {
     final connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult != ConnectivityResult.none) {
-      print('trure = $connectivityResult');
+      print('true = $connectivityResult');
       return true;
     } else {
       print('false = $connectivityResult');
@@ -72,7 +73,7 @@ class Utils {
     // if (connectivityResult != ConnectivityResult.none) {
     //   set = true;
 
-    //   print('trure = $connectivityResult');
+    //   print('true = $connectivityResult');
     //   return true;
     // } else {
     //   set = false;
@@ -81,7 +82,7 @@ class Utils {
     // });
 
     // //
-    // print("from methode $set");
+    // print("from methods $set");
 
     // return set;
   }

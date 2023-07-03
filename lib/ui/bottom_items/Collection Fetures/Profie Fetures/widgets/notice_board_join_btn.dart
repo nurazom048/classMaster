@@ -4,22 +4,22 @@ import 'package:flutter/material.dart';
 import '../../../../../constant/app_color.dart';
 import '../../../Home/Full_routine/widgets/notification_buton.dart';
 
-class NoticeBoardJoineButton extends StatelessWidget {
-  final bool isJoine;
+class NoticeBoardJoinButton extends StatelessWidget {
+  final bool isJoin;
   final bool notificationOn;
   final VoidCallback showPanel;
-  final VoidCallback onTapForJoine;
+  final VoidCallback onTapForJoin;
   final Color? color;
   final Color? colorBG;
   final IconData? icon;
   final EdgeInsetsGeometry? padding;
 
-  const NoticeBoardJoineButton({
+  const NoticeBoardJoinButton({
     Key? key,
-    required this.isJoine,
+    required this.isJoin,
     required this.notificationOn,
     required this.showPanel,
-    required this.onTapForJoine,
+    required this.onTapForJoin,
     this.color,
     this.icon,
     this.colorBG,
@@ -31,13 +31,13 @@ class NoticeBoardJoineButton extends StatelessWidget {
     IconData nIcon = notificationOn == true
         ? Icons.notifications_active
         : Icons.notifications_off;
-    String text = isJoine == false ? "Join" : "Joined";
+    String text = isJoin == false ? "Join" : "Joined";
 
     return Column(
       children: [
-        if (isJoine == false)
+        if (isJoin == false)
           CupertinoButton(
-            onPressed: onTapForJoine,
+            onPressed: onTapForJoin,
             color: colorBG ?? const Color(0xFFE4F0FF),
             borderRadius: BorderRadius.circular(19),
             padding: padding ?? const EdgeInsets.all(8),

@@ -5,7 +5,7 @@ import 'package:table/ui/bottom_items/Collection%20Fetures/Profie%20Fetures/widg
 
 import '../../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../../widgets/appWidget/app_text.dart';
-import '../../../../../widgets/appWidget/dottted_divider.dart';
+import '../../../../../widgets/appWidget/dotted_divider.dart';
 import '../../../Home/Full_routine/widgets/chekbox_selector_button.dart';
 import '../../../Home/Full_routine/widgets/sceltons/rutinebox_id_scelton.dart';
 import '../../../Home/notice_board/notice controller/noticeboard_satus_controller.dart';
@@ -43,15 +43,15 @@ class NoticeBoardHeader extends ConsumerWidget {
               child: Text("NoticeBoard", style: TS.heading())),
           noticeBoardStatus.when(
             data: (data) {
-              return NoticeBoardJoineButton(
-                isJoine: data.activeStatus == "joined" ? true : false,
+              return NoticeBoardJoinButton(
+                isJoin: data.activeStatus == "joined" ? true : false,
                 notificationOn: data.notificationOn,
                 showPanel: () => noticeBoardSheet(context, academyID),
-                onTapForJoine: () => statusNotifier.join(context),
+                onTapForJoin: () => statusNotifier.join(context),
               );
             },
             error: (error, stackTrace) => Alert.handleError(context, error),
-            loading: () => const JoineScelton(width: 10),
+            loading: () => const JoinSkelton(width: 10),
           ),
         ],
       ),
@@ -89,7 +89,7 @@ class NoticeBoardHeader extends ConsumerWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    ChackBoxSelector(
+                    CheckBoxSelector(
                       isChacked: notificationOn,
                       icon: Icons.notifications_active,
                       text: "notifications_active",
@@ -99,7 +99,7 @@ class NoticeBoardHeader extends ConsumerWidget {
                         });
                       },
                     ),
-                    ChackBoxSelector(
+                    CheckBoxSelector(
                       isChacked: notificationOn == false ? true : false,
                       icon: Icons.notifications_off,
                       text: "Notification Off",
@@ -111,7 +111,7 @@ class NoticeBoardHeader extends ConsumerWidget {
                       },
                     ),
                     const MyDivider(),
-                    ChackBoxSelector(
+                    CheckBoxSelector(
                       icon: Icons.logout_sharp,
                       text: "Leave",
                       color: Colors.red,

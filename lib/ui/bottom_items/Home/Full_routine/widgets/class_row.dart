@@ -29,7 +29,7 @@ class ClassRow extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              AppText(className, color: Colors.black).heding(),
+              AppText(className, color: Colors.black).heeding(),
               const Icon(Icons.arrow_forward)
             ],
           ),

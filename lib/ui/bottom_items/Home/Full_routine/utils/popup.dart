@@ -16,7 +16,7 @@ void accountActions(
   required bool isTheMemberIsCaptain,
   required bool isTheMemberIsOwner,
 }) async {
-  final chackStatus = ref.watch(chackStatusControllerProvider(rutinId));
+  final chackStatus = ref.watch(checkStatusControllerProvider(rutinId));
   final bool isOwner = chackStatus.value?.isOwner ?? false;
   final bool isCaptain = chackStatus.value?.isCaptain ?? false;
   final membersCon = ref.watch(memberControllerProvider(rutinId).notifier);

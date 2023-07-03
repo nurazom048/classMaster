@@ -35,7 +35,7 @@ class ViewMoreNoticeBord extends StatelessWidget {
                   HeaderTitle("NoticeBoard", context),
                   const SizedBox(height: 40),
                   AppText(noticeBoardName.toUpperCase()).title(),
-                  AppText(about ?? "khulna polytechnic institute").heding(),
+                  AppText(about ?? "khulna polytechnic institute").heeding(),
                   // const SizedBox(height: 30),
                   // SizedBox(
                   //   height: 40,

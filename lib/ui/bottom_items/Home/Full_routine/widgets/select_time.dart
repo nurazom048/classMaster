@@ -23,7 +23,7 @@ class SelectTime extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AppText(timeText).heding(),
+        AppText(timeText).heeding(),
         const SizedBox(height: 10),
         Container(
           height: 50,

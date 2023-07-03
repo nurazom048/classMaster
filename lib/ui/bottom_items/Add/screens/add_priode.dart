@@ -13,15 +13,15 @@ import 'package:table/widgets/appWidget/buttons/cupertino_buttons.dart';
 class AppPriodePage extends StatefulWidget {
   const AppPriodePage({
     Key? key,
-    required this.rutinId,
-    this.rutinName,
+    required this.routineId,
+    this.routineName,
     required this.totalPriode,
     this.isEdit = false,
     this.priodeId,
   }) : super(key: key);
 
-  final String rutinId;
-  final String? rutinName;
+  final String routineId;
+  final String? routineName;
   final int totalPriode;
   final bool isEdit;
   final String? priodeId;
@@ -41,7 +41,7 @@ class _AppPriodePageState extends State<AppPriodePage> {
   @override
   void initState() {
     super.initState();
-    insartEditedValue();
+    insertEditedValue();
   }
 
   @override
@@ -107,7 +107,7 @@ class _AppPriodePageState extends State<AppPriodePage> {
                               ref.watch(priodeController.notifier).addPriode(
                                   ref,
                                   context,
-                                  widget.rutinId,
+                                  widget.routineId,
                                   startTime,
                                   endTime);
                             }
@@ -119,7 +119,7 @@ class _AppPriodePageState extends State<AppPriodePage> {
                           text: "Eddit priode",
                           color: AppColor.nokiaBlue,
                           onPressed: () async {
-                            print("Ontap to eddir");
+                            print("Ontap to eddit");
 
                             // setState(() {});
                             if (widget.priodeId != null) {
@@ -127,7 +127,7 @@ class _AppPriodePageState extends State<AppPriodePage> {
                               ref.watch(priodeController.notifier).edditPriode(
                                     ref,
                                     context,
-                                    widget.rutinId,
+                                    widget.routineId,
                                     widget.priodeId!,
                                     startTime,
                                     endTime,
@@ -157,13 +157,13 @@ class _AppPriodePageState extends State<AppPriodePage> {
       if (value != null) {
         String hour = "${value.hour < 10 ? '0' : ''}${value.hour}";
         String minute = "${value.minute < 10 ? '0' : ''}${value.minute}";
-        DateTime selecteTime = DateTime.parse("2021-12-23 $hour:$minute:00");
+        DateTime selectedTime = DateTime.parse("2021-12-23 $hour:$minute:00");
 
         setState(() {
           showStartTime = true;
-          st = selecteTime;
-          startTime = selecteTime;
-          // startTimeDemo = selecteTime;
+          st = selectedTime;
+          startTime = selectedTime;
+          // startTimeDemo = selectedTime;
           print(startTime.toIso8601String());
         });
       }
@@ -181,14 +181,15 @@ class _AppPriodePageState extends State<AppPriodePage> {
       if (value != null) {
         String hour = "${value.hour < 10 ? '0' : ''}${value.hour}";
         String minute = "${value.minute < 10 ? '0' : ''}${value.minute}";
-        DateTime selecteEndTime = DateTime.parse("2021-12-23 $hour:$minute:00");
+        DateTime selectedEndTime =
+            DateTime.parse("2021-12-23 $hour:$minute:00");
         //
         setState(() {
           showEndTime = true;
 
-          et = selecteEndTime;
-          endTime = selecteEndTime;
-          //endTimDemo = selecteEndTime;
+          et = selectedEndTime;
+          endTime = selectedEndTime;
+          //endTimDemo = selectedEndTime;
           print(endTime.toIso8601String());
         });
       }
@@ -210,9 +211,9 @@ class _AppPriodePageState extends State<AppPriodePage> {
     }
   }
 
-  void insartEditedValue() async {
+  void insertEditedValue() async {
     if (widget.isEdit == true) {
-      var addRes = await PriodeRequest().findPriodebYid(widget.priodeId ?? '');
+      var addRes = await PriodeRequest().findPriodesYid(widget.priodeId ?? '');
       print("i am from cont");
 
       addRes.fold(

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:table/core/dialogs/alert_dialogs.dart';
-import 'package:table/models/rutins/weekday/weekday_list.dart';
+import 'package:table/models/Routine/weekday/weekday_list.dart';
 import '../../../../../models/message_model.dart';
 import '../request/weekday_req.dart';
 
@@ -19,8 +19,8 @@ final weekdayControllerStateProvider = StateNotifierProvider.autoDispose
 class WeekDayControllerClass extends StateNotifier<AsyncValue<WeekdayList>> {
   String classId;
 
-  WeekdayRequest WeekdayRequest;
-  WeekDayControllerClass(this.classId, this.WeekdayRequest)
+  WeekdayRequest weekdayRequest;
+  WeekDayControllerClass(this.classId, this.weekdayRequest)
       : super(const AsyncLoading()) {
     getStatus();
   }
@@ -55,7 +55,7 @@ class WeekDayControllerClass extends StateNotifier<AsyncValue<WeekdayList>> {
   //
   deleteWeekday(context, String id, String classId) async {
     Either<Message, WeekdayList> res =
-        await WeekdayRequest.deletWeekday(id, classId);
+        await WeekdayRequest.deleteWeekday(id, classId);
 
     res.fold((error) {
       Alert.showSnackBar(context, error.message.toString());

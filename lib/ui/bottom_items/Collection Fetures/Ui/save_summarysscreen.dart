@@ -6,18 +6,18 @@ import '../../../../core/component/Loaders.dart';
 import '../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../widgets/error/error.widget.dart';
 import '../../../../widgets/heder/heder_title.dart';
-import '../../Home/Full_routine/sunnary_section/sunnary Controller/summary_controller.dart';
-import '../../Home/Full_routine/sunnary_section/widgets/chats.dribles .dart';
+import '../../Home/Full_routine/Summary/Summary Controller/summary_controller.dart';
+import '../../Home/Full_routine/Summary/widgets/chats.dribles .dart';
 
-class SaveSummarysScreen extends ConsumerWidget {
-  SaveSummarysScreen({super.key});
+class SaveSummeryScreen extends ConsumerWidget {
+  SaveSummeryScreen({super.key});
   final scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //! provider
-    final allSummary = ref.watch(sunnaryControllerProvider(null));
-    final summaryNotifier = ref.watch(sunnaryControllerProvider(null).notifier);
+    final allSummary = ref.watch(summaryControllerProvider(null));
+    final summaryNotifier = ref.watch(summaryControllerProvider(null).notifier);
 
     return SafeArea(
       child: Scaffold(
@@ -65,7 +65,8 @@ class SaveSummarysScreen extends ConsumerWidget {
                                   return const ErrorScreen(
                                       error: "There is no Summarys");
                                 }
-                                return ChatsDribles(summary: data.summaries[i]);
+                                return ChatsDribbles(
+                                    summary: data.summaries[i]);
                               },
                             ),
                           );

@@ -12,14 +12,14 @@ import '../../notice_board/widgets/simple_notice_card.dart';
 import '../api/notification.api.dart';
 import '../model/notification.model.dart';
 
-class NotificatioScreen extends StatefulWidget {
-  const NotificatioScreen({super.key});
+class NotificationScreen extends StatefulWidget {
+  const NotificationScreen({super.key});
 
   @override
-  State<NotificatioScreen> createState() => _NotificatioScreenState();
+  State<NotificationScreen> createState() => _NotificationScreenState();
 }
 
-class _NotificatioScreenState extends State<NotificatioScreen> {
+class _NotificationScreenState extends State<NotificationScreen> {
   @override
   void initState() {
     super.initState();
@@ -44,13 +44,13 @@ class _NotificatioScreenState extends State<NotificatioScreen> {
                   data: (data) {
                     return data.fold(
                       (error) => ErrorScreen(error: error.message),
-                      (valu) => Column(
+                      (value) => Column(
                         children: List.generate(
-                          valu.notifications.length,
+                          value.notifications.length,
                           (i) => NotificationCard(
-                            notification: valu.notifications[i],
-                            previousDateTime: valu.notifications[i].createdAt,
-                            isFrist: i == 0,
+                            notification: value.notifications[i],
+                            previousDateTime: value.notifications[i].createdAt,
+                            isFirst: i == 0,
                           ),
                         ),
                       ),
@@ -75,20 +75,20 @@ class _NotificatioScreenState extends State<NotificatioScreen> {
         "content_type": "ontap",
       },
     );
-    print('notificationscreen event');
+    print('notification screen event');
   }
 }
 
 class NotificationCard extends StatelessWidget {
   final AppNotification notification;
-  final bool isFrist;
+  final bool isFirst;
   final DateTime previousDateTime;
 
   const NotificationCard({
     Key? key,
     required this.notification,
     required this.previousDateTime,
-    this.isFrist = false,
+    this.isFirst = false,
   }) : super(key: key);
 
   @override
@@ -96,7 +96,7 @@ class NotificationCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (notification.createdAt != previousDateTime || isFrist)
+        if (notification.createdAt != previousDateTime || isFirst)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16),
             child: Text(getTimeDuration(notification.createdAt),

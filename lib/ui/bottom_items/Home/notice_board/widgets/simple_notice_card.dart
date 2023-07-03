@@ -25,16 +25,16 @@ class SimpleNoticeCard extends StatelessWidget {
     required this.ontap,
     required this.onLongPress,
     required this.dateTime,
-    required this.previusDAtetime,
-    this.isfrist,
+    required this.previousDateTime,
+    this.isFirst,
   });
 
   final DateTime dateTime;
-  final DateTime previusDAtetime;
+  final DateTime previousDateTime;
   final String noticeName;
   final String id;
   final dynamic ontap, onLongPress;
-  final bool? isfrist;
+  final bool? isFirst;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class SimpleNoticeCard extends StatelessWidget {
           children: [
             //
 
-            if (dateTime.day != previusDAtetime.day || isfrist == true)
+            if (dateTime.day != previousDateTime.day || isFirst == true)
               Text(getTimeDuration(dateTime)),
 
             //
@@ -75,7 +75,7 @@ class SimpleNoticeCard extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 5),
-                        AppText(noticeName, color: Colors.black).heding(),
+                        AppText(noticeName, color: Colors.black).heeding(),
                       ],
                     ),
                     const Icon(Icons.arrow_forward)

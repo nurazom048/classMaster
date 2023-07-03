@@ -52,8 +52,6 @@ class _EmailVerificationScreenState
 
   void startTimer() {
     timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
-      print(
-          '&&&${widget.email} ${widget.password} &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
       await checkVerification();
     });
     Timer(const Duration(seconds: 20), () {
@@ -76,7 +74,6 @@ class _EmailVerificationScreenState
     try {
       await _user!.sendEmailVerification();
     } catch (e) {
-      print(e);
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Alert.errorAlertDialog(context, '$e');
       });

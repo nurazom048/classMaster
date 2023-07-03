@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 
-import '../../../../widgets/appWidget/buttons/Expende_button.dart';
+import '../../../../widgets/appWidget/buttons/expended_button.dart';
 
 class RecentNoticeTitle extends StatelessWidget {
   final dynamic onTap;
@@ -21,7 +21,7 @@ class RecentNoticeTitle extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const AppText("Recent Notices", fontSize: 24)
-                    .heding(fontWeight: FontWeight.normal),
+                    .heeding(fontWeight: FontWeight.normal),
                 ExpendedButton(
                   text: "View More ",
                   icon: Icons.arrow_forward_ios,

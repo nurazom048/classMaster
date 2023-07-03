@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../widgets/appWidget/dottted_divider.dart';
+import '../../../widgets/appWidget/dotted_divider.dart';
 
 class OR extends StatelessWidget {
   const OR({

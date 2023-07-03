@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:table/core/dialogs/alert_dialogs.dart';
-import 'package:table/models/chack_status_model.dart';
+import 'package:table/models/check_status_model.dart';
 import 'package:table/ui/bottom_items/Home/Full_routine/request/member_request.dart';
 import 'package:table/ui/bottom_items/Home/Full_routine/request/routine_request.dart';
 
@@ -92,7 +92,7 @@ class CheckStatusController
 //***********  notificationOff  *********** */
   void notificationOff(context) async {
     final Either<String, Message> result =
-        await rutineNotification.notificationOff(routineId);
+        await routineNotification.notificationOff(routineId);
 
     result.fold(
       (errorMessage) => Alert.errorAlertDialog(context, errorMessage),
@@ -107,7 +107,7 @@ class CheckStatusController
 
 //***********  notificationOn  *********** */
   void notificationOn(context) async {
-    final result = await rutineNotification.notificationOn(routineId);
+    final result = await routineNotification.notificationOn(routineId);
 
     result.fold(
       (errorMessage) => Alert.errorAlertDialog(context, errorMessage),

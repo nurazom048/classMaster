@@ -33,13 +33,13 @@ class NoticeViewScreen extends StatelessWidget {
               const SizedBox(height: 20),
               const AppText("View Notice").title(),
               const SizedBox(height: 20),
-              AppText("Title", color: AppColor.nokiaBlue).heding(),
-              AppText(notice.contentName).heding(),
+              AppText("Title", color: AppColor.nokiaBlue).heeding(),
+              AppText(notice.contentName).heeding(),
               const SizedBox(height: 20),
-              AppText("Description", color: AppColor.nokiaBlue).heding(),
-              AppText(notice.description ?? '').heding(),
+              AppText("Description", color: AppColor.nokiaBlue).heeding(),
+              AppText(notice.description ?? '').heeding(),
               const SizedBox(height: 20),
-              AppText("pdf", color: AppColor.nokiaBlue).heding(),
+              AppText("pdf", color: AppColor.nokiaBlue).heeding(),
               const SizedBox(height: 10),
               ViewPdfButton(
                 onTap: () => Get.to(

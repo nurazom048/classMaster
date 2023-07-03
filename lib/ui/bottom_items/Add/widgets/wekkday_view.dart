@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/models/rutins/class/find_class_model.dart';
+import 'package:table/models/Routine/class/find_class_model.dart';
 import 'package:table/ui/bottom_items/Add/widgets/select_priode_number.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 import '../../../../constant/app_color.dart';
-import '../../../../widgets/appWidget/dottted_divider.dart';
+import '../../../../widgets/appWidget/dotted_divider.dart';
 import '../../Home/Full_routine/screen/viewMore/class_list.dart';
 
 class WeekdayView extends ConsumerWidget {

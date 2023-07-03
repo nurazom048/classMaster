@@ -67,8 +67,8 @@ class ViewAllRecentNotice extends ConsumerWidget {
                     id: notice.id,
                     dateTime: data.notices[index == 0 ? 0 : index - 1].time,
                     noticeName: notice.contentName,
-                    previusDAtetime: notice.time,
-                    isfrist: index == 0,
+                    previousDateTime: notice.time,
+                    isFirst: index == 0,
                     onLongPress: () {
                       return NoticeboardDilog.logPressNotice(
                         context,

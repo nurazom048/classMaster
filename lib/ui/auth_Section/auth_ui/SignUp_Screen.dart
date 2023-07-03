@@ -7,7 +7,7 @@ import 'package:table/constant/app_color.dart';
 import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 import 'package:table/ui/auth_Section/utils/singUp_validation.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
-import 'package:table/widgets/appWidget/dottted_divider.dart';
+import 'package:table/widgets/appWidget/dotted_divider.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/appWidget/buttons/cupertino_buttons.dart';
 import '../../../widgets/heder/heder_title.dart';

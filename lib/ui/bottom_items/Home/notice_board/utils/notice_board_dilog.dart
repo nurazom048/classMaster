@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../core/dialogs/alert_dialogs.dart';
-import '../../../../../widgets/appWidget/dottted_divider.dart';
+import '../../../../../widgets/appWidget/dotted_divider.dart';
 import '../../../Collection Fetures/utils/confrom_alart_dilog.dart';
 import '../../Full_routine/widgets/chekbox_selector_button.dart';
 import '../notice controller/noticeboard_satus_controller.dart';
@@ -45,7 +45,7 @@ class NoticeboardDilog {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  ChackBoxSelector(
+                  CheckBoxSelector(
                     isChacked: !notificationOff,
                     icon: Icons.notifications_active,
                     text: "notifications_active",
@@ -54,7 +54,7 @@ class NoticeboardDilog {
                       Navigator.pop(context);
                     },
                   ),
-                  ChackBoxSelector(
+                  CheckBoxSelector(
                     isChacked: notificationOff,
                     icon: Icons.notifications_off,
                     text: "Notification Off",
@@ -65,7 +65,7 @@ class NoticeboardDilog {
                     },
                   ),
                   const MyDivider(),
-                  ChackBoxSelector(
+                  CheckBoxSelector(
                     icon: Icons.logout_sharp,
                     text: "Leave",
                     color: Colors.red,

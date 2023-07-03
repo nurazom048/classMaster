@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class ChackBoxSelector extends StatelessWidget {
+class CheckBoxSelector extends StatelessWidget {
   final IconData icon;
   final Color? color;
   final String text;
   final bool? isChacked;
   final VoidCallback onTap;
-  const ChackBoxSelector({
+  const CheckBoxSelector({
     super.key,
     required this.icon,
     required this.text,

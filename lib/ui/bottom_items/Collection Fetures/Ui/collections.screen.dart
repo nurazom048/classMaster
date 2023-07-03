@@ -11,10 +11,10 @@ import 'package:table/widgets/account_card.dart';
 import '../../../../core/dialogs/alert_dialogs.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../../../sevices/firebase/firebase_analytics.service.dart';
-import '../../../../sevices/notification services/awn_package.dart';
-import '../../../../sevices/notification services/local_notifications.dart';
-import '../../../../sevices/notification services/notification.dart';
+import '../../../../services/firebase/firebase_analytics.service.dart';
+import '../../../../services/notification services/awn_package.dart';
+import '../../../../services/notification services/local_notifications.dart';
+import '../../../../services/notification services/notification.dart';
 import '../../../../widgets/heder/heder_title.dart';
 import '../../Home/notice_board/screens/view_all_recent_notice.dart';
 import '../Api/account_request.dart';
@@ -25,8 +25,8 @@ import '../widgets/my_divider.dart';
 import '../widgets/tiled_boutton.dart';
 import 'eddit_account.dart';
 
-//! hiddeBottom nev on scroll
-final hideNevBarOnScrooingProvider =
+//! hidden Bottom nev on scroll
+final hideNevBarOnScorningProvider =
     StateProvider.autoDispose<bool>((ref) => false);
 
 //
@@ -44,7 +44,7 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
   @override
   void initState() {
     super.initState();
-    AwsomNotificationSetup.takePermiton(context);
+    AwesomeNotificationSetup.takePermiton(context);
 
     FirebaseAnalyticsServices.logEvent(
       name: 'collectionsceen',
@@ -157,8 +157,8 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                   Tilesbutton(
                     "Saved\nRoutines",
                     const FaIcon(FontAwesomeIcons.bookmark),
-                    svgpath: 'assets/svg/undraw_personal_file_re_5joy.svg',
-                    imageMargine: const EdgeInsets.only(left: 10),
+                    saxpath: 'assets/svg/undraw_personal_file_re_5joy.svg',
+                    imageMargin: const EdgeInsets.only(left: 10),
                     onTap: () => Get.to(SaveRoutinesScreen()),
                   ),
 
@@ -167,19 +167,19 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                   Tilesbutton(
                     "Saved Summaries",
                     const FaIcon(FontAwesomeIcons.bookmark),
-                    svgpath: 'assets/svg/undraw_my_documents_re_13dc.svg',
-                    onTap: () => Get.to(SaveSummarysScreen()),
+                    saxpath: 'assets/svg/undraw_my_documents_re_13dc.svg',
+                    onTap: () => Get.to(SaveSummeryScreen()),
                   ),
 
                   //
                 ]),
                 const MyDividerr(thickness: 1.0, height: 1.0),
 
-                /// ********Sattings ******//
+                /// ********Settings ******//
 
                 MyContainerButton(
                   const Icon(Icons.settings_outlined),
-                  "Sattings",
+                  "Settings",
                   onTap: () => Get.to(SettingsPage()),
                 ),
                 MyContainerButton(
@@ -213,17 +213,16 @@ bool hideNevBarOnScroll(ScrollNotification? scrollNotification, WidgetRef ref) {
     print("Scroll Started");
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.watch(hideNevBarOnScrooingProvider.notifier).update((state) => true);
+      ref.watch(hideNevBarOnScorningProvider.notifier).update((state) => true);
     });
   } else if (scrollNotification is ScrollUpdateNotification) {
     // print(message);
   } else if (scrollNotification is ScrollEndNotification) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.watch(hideNevBarOnScrooingProvider.notifier).update((state) => false);
+      ref.watch(hideNevBarOnScorningProvider.notifier).update((state) => false);
     });
 
-    String message = 'Scroll Ended';
-    print(message);
+    // String message = 'Scroll Ended';
   }
   return true;
 }

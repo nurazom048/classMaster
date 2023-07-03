@@ -41,7 +41,7 @@ class AccountCard extends StatelessWidget {
                 : Image.network(accountData.image!),
           ),
           const Spacer(flex: 1),
-          AppText(accountData.name ?? '').heding(),
+          AppText(accountData.name ?? '').heeding(),
           Text(accountData.username ?? ''),
           const Spacer(flex: 5),
           Padding(

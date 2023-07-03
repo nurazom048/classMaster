@@ -17,12 +17,12 @@ import 'package:table/widgets/day_select_dropdowen.dart';
 import 'package:table/widgets/heder/heder_title.dart';
 import '../../../../constant/app_color.dart';
 import '../../../../constant/constant.dart';
-import '../../../../models/rutins/class/find_class_model.dart';
+import '../../../../models/Routine/class/find_class_model.dart';
 import '../../../../widgets/appWidget/TextFromFild.dart';
 import '../../../../widgets/appWidget/buttons/cupertino_buttons.dart';
 import '../../Home/Full_routine/screen/viewMore/class_list.dart';
 import '../../Home/Full_routine/screen/viewMore/view_more_screen.dart';
-import '../widgets/show_wekday_widgets.dart';
+import '../widgets/show_weekday_widgets.dart';
 
 class AddClassScreen extends StatefulWidget {
   final String routineId;
@@ -176,7 +176,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                                   onTapToAdd: () {
                                     Get.to(
                                         AppPriodePage(
-                                          rutinId: widget.routineId,
+                                          routineId: widget.routineId,
                                           totalPriode: ref.read(
                                             totalPriodeCountProvider,
                                           ),
@@ -234,7 +234,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
   void _onTapToButton(WidgetRef ref) async {
     if (!mounted) return;
 
-    print("ontap ${widget.isEdit}");
+    print("onTap ${widget.isEdit}");
 
     if (widget.isEdit == true || widget.isUpdate == true) {
       if (!mounted) return;
@@ -260,9 +260,9 @@ class _AddClassScreenState extends State<AddClassScreen> {
         context,
         MaterialPageRoute(
           builder: (context) => ViewMore(
-            rutinId: widget.routineId,
-            rutineName: widget.routineName ?? 'Routine Name',
-            owenerName: '',
+            routineId: widget.routineId,
+            routineName: widget.routineName ?? 'Routine Name',
+            ownerName: '',
           ),
         ),
       );
@@ -287,7 +287,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
 
       //
       if (newclassID == null) {
-        Alert.showSnackBar(context, 'somthing went worng');
+        Alert.showSnackBar(context, 'something went wrong');
       } else {
         if (!mounted) return;
 
@@ -325,16 +325,16 @@ class _AddClassScreenState extends State<AddClassScreen> {
     try {
       final response = await http.get(uri);
 
-      //.. responce
+      //.. response
       if (response.statusCode == 200) {
         print(response.body);
         FindClass foundClass = FindClass.fromJson(json.decode(response.body));
 
         //
         setState(() {
-          _classNameController.text = foundClass.classs.name;
-          _instructorController.text = foundClass.classs.instuctorName;
-          _subCodeController.text = foundClass.classs.subjectcode;
+          _classNameController.text = foundClass.classes.name;
+          _instructorController.text = foundClass.classes.instuctorName;
+          _subCodeController.text = foundClass.classes.subjectcode;
         });
       } else {
         throw Exception('Failed to load data');

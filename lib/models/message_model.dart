@@ -8,7 +8,7 @@ class Message {
   bool? notificationOn;
   String? routineID;
   String? routineName;
-  String? owenerName;
+  String? ownerName;
   String? email;
   PendingAccount? pendigAccount;
 
@@ -20,7 +20,7 @@ class Message {
     this.notificationOn,
     this.routineID,
     this.routineName,
-    this.owenerName,
+    this.ownerName,
     this.email,
     this.pendigAccount,
   });

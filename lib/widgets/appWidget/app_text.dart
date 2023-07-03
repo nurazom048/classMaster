@@ -18,7 +18,7 @@ class AppText {
   ///
   ///
   ///
-  heding({FontWeight? fontWeight}) {
+  heeding({FontWeight? fontWeight}) {
     return Text(
       data,
       style: TextStyle(
@@ -49,7 +49,7 @@ class AppText {
 
 //______________TS_____________________//
 class TS {
-  // Headiding
+  // Heading
 
   static TextStyle heading(
       {Color? color, double? fontSize, FontWeight? fontWeight}) {
