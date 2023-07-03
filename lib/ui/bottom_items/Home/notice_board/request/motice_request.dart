@@ -126,4 +126,31 @@ class NoticeRequest {
       return left("$e");
     }
   }
+
+  //******    DELETE Notice     ********* */
+  Future<Either<Message, Message>> deleteNotice({
+    required String noticeId,
+  }) async {
+    final String? getToken = await AuthController.getToken();
+    var url = Uri.parse('${Const.BASE_URl}/notice/$noticeId');
+
+    try {
+      final response = await http
+          .delete(url, headers: {'Authorization': 'Bearer $getToken'});
+      final res = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        Message message = Message.fromJson(res);
+        print(res);
+
+        return right(message);
+      } else {
+        Message message = Message.fromJson(res);
+
+        return left(message);
+      }
+    } catch (e) {
+      return left(Message(message: e.toString()));
+    }
+  }
 }

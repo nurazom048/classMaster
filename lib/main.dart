@@ -32,16 +32,9 @@ void main() async {
   });
   final status = await OneSignal.shared.getDeviceState();
   final String? osUserID = status?.userId;
-  // var status = await OneSignal.shared.getDeviceState();
   print(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
-  //String? tokenId = status?.pushToken;
   print("osUserID : $osUserID");
-  // 050aceb6-003c-454e-8872-a119402ec324
-  // OneSignal.shared.getDeviceState().then((deviceState) {
-  //   final String? pushToken = deviceState?.pushToken;
-  //   print(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
-  //   print(pushToken);
-  // });
+
   //notification
 
   if (!kIsWeb) {

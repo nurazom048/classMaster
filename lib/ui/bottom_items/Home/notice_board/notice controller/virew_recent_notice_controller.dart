@@ -55,4 +55,17 @@ class UploadedRutinsController extends StateNotifier<AsyncValue<RecentNotice>> {
       Alart.handleError(context, error);
     }
   }
+
+  // Delete Notice
+  void deleteNotice(context, WidgetRef ref, {required String noticeId}) async {
+    final responce = await noticeRequest.deleteNotice(noticeId: noticeId);
+
+    responce.fold((error) {
+      return Alart.errorAlartDilog(context, error.message);
+    }, (data) {
+      ref.refresh(recentNoticeController(academyID));
+
+      return Alart.showSnackBar(context, data.message);
+    });
+  }
 }

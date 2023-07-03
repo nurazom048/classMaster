@@ -8,6 +8,7 @@ import 'package:table/widgets/appWidget/app_text.dart';
 import '../../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../../widgets/heder/heder_title.dart';
 import '../notice controller/virew_recent_notice_controller.dart';
+import '../utils/notice_board_dilog.dart';
 import '../widgets/simple_notice_card.dart';
 
 class ViewAllRecentNotice extends ConsumerWidget {
@@ -68,7 +69,14 @@ class ViewAllRecentNotice extends ConsumerWidget {
                     noticeName: notice.contentName,
                     previusDAtetime: notice.time,
                     isfrist: index == 0,
-                    onLongPress: () {},
+                    onLongPress: () {
+                      return NoticeboardDilog.logPressNotice(
+                        context,
+                        noticeBoardId: accountModel.sId!,
+                        academyID: academyID,
+                        noticeId: notice.id,
+                      );
+                    },
                     ontap: () {
                       Navigator.push(
                         context,

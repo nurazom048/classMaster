@@ -1,10 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table/ui/bottom_items/Home/notice_board/request/motice_request.dart';
 
 import '../../../../../core/dialogs/alart_dialogs.dart';
 import '../../../../../widgets/appWidget/dottted_divider.dart';
+import '../../../Account/utils/confrom_alart_dilog.dart';
+import '../../../Add/request/class_request.dart';
 import '../../full_rutin/widgets/chekbox_selector_button.dart';
 import '../notice controller/noticeboard_satus_controller.dart';
+import '../notice controller/virew_recent_notice_controller.dart';
 
 class NoticeboardDilog {
   //   notficationSeleect
@@ -82,6 +87,68 @@ class NoticeboardDilog {
           ),
         );
       },
+    );
+  }
+
+  // logng press delete notice
+  static Future<dynamic> logPressNotice(
+    BuildContext context, {
+    required String noticeBoardId,
+    required String? academyID,
+    required String noticeId,
+  }) {
+    return showCupertinoModalPopup(
+      context: context,
+      builder: (context) => Consumer(builder: (context, ref, _) {
+        //!provider
+        // state providers
+        final chackStatus = ref.watch(noticeBoardStatusProvider(noticeBoardId));
+        final recentNoticeNotifer =
+            ref.watch(recentNoticeController(academyID).notifier);
+        bool isOwner = chackStatus.value?.isOwner ?? false;
+        return CupertinoActionSheet(
+          title: const Text(" Do you want to.. ?",
+              style: TextStyle(fontSize: 22, color: Colors.black87)),
+          actions: [
+            // ddelete
+
+            if (isOwner)
+              CupertinoActionSheetAction(
+                child: const Text("Remove Notice",
+                    style: TextStyle(color: Colors.red)),
+                onPressed: () {
+                  // Navigator.of(context).pop();
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) => ConfromAlartDilog(
+                      title: 'Alert',
+                      message:
+                          'Do you want to delete this Class? You can\'t undo this action.',
+                      onConfirm: (bool isConfirmed) {
+                        if (isConfirmed) {
+                          recentNoticeNotifer.deleteNotice(
+                            context,
+                            ref,
+                            noticeId: noticeId,
+                          );
+                        }
+                      },
+                    ),
+                  );
+
+                  //
+                },
+              )
+            else
+              CupertinoActionSheetAction(
+                  onPressed: () {}, child: const Text('Sorry No Action Here'))
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            child: const Text("cancel"),
+            onPressed: () => Navigator.pop(context),
+          ),
+        );
+      }),
     );
   }
 }
