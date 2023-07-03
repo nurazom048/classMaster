@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/constant/app_color.dart';
 import 'package:table/core/dialogs/alart_dialogs.dart';
 import 'package:table/ui/auth_Section/auth_ui/forgetpassword_screen.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
@@ -160,7 +159,7 @@ class _EmailVerificationScreenState
               ),
             if (showResendButton) // Display the "Resend" button if showResendButton is true
               ElevatedButton(
-                style: ButtonStyle(),
+                style: const ButtonStyle(),
                 onPressed: () async => sendVerificationEmail(),
                 child: const Text('Resend'),
               ),

@@ -51,7 +51,6 @@ class _LogingScreenState extends State<LogingScreen> {
   void initState() {
     super.initState();
     goToHome();
-    AwsomNotificationSetup.takePermiton(context);
   }
 
   bool byUsername = true;

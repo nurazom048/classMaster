@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table/constant/constant.dart';
 
 import '../../../../core/component/Loaders.dart';
 import '../../../../core/dialogs/alart_dialogs.dart';
@@ -18,55 +19,64 @@ class SaveSummarysScreen extends ConsumerWidget {
     final allSummary = ref.watch(sunnaryControllerProvider(null));
     final summaryNotifier = ref.watch(sunnaryControllerProvider(null).notifier);
 
-    return Scaffold(
-      body: Center(
-        child: ListView(
-          controller: scrollController,
-          children: [
-            HeaderTitle("Save Summarys", context),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 8).copyWith(top: 20),
-              child: allSummary.when(
-                data: (data) {
-                  int lenght = data.summaries.length;
-
-                  return data.summaries.isEmpty
-                      ? const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 400),
-                          child: Center(
-                              child: ErrorScreen(error: 'No Svaed summary')),
-                        )
-                      : Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: List.generate(
-                            lenght,
-                            (i) {
-                              void scrollListener() {
-                                if (scrollController.position.pixels ==
-                                    scrollController.position.maxScrollExtent) {
-                                  print(
-                                      '?TOPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP');
-                                  summaryNotifier.loadMore(
-                                      data.currentPage, data.totalCount);
-                                }
-                              }
-
-                              scrollController.addListener(scrollListener);
-                              if (data.summaries.isEmpty) {
-                                return const ErrorScreen(
-                                    error: "There is no Summarys");
-                              }
-                              return ChatsDribles(summary: data.summaries[i]);
-                            },
-                          ),
-                        );
-                },
-                error: (error, stackTrace) => Alart.handleError(context, error),
-                loading: () => Loaders.center(),
+    return SafeArea(
+      child: Scaffold(
+        body: Center(
+          child: ListView(
+            controller: scrollController,
+            children: [
+              HeaderTitle(
+                "Save Summarys",
+                context,
+                margin: EdgeInsets.symmetric(horizontal: 25)
+                    .copyWith(top: KTopPadding + 20),
               ),
-            ),
-          ],
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8).copyWith(top: 20),
+                child: allSummary.when(
+                  data: (data) {
+                    int lenght = data.summaries.length;
+
+                    return data.summaries.isEmpty
+                        ? const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 400),
+                            child: Center(
+                                child: ErrorScreen(error: 'No Svaed summary')),
+                          )
+                        : Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: List.generate(
+                              lenght,
+                              (i) {
+                                void scrollListener() {
+                                  if (scrollController.position.pixels ==
+                                      scrollController
+                                          .position.maxScrollExtent) {
+                                    print(
+                                        '?TOPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP');
+                                    summaryNotifier.loadMore(
+                                        data.currentPage, data.totalCount);
+                                  }
+                                }
+
+                                scrollController.addListener(scrollListener);
+                                if (data.summaries.isEmpty) {
+                                  return const ErrorScreen(
+                                      error: "There is no Summarys");
+                                }
+                                return ChatsDribles(summary: data.summaries[i]);
+                              },
+                            ),
+                          );
+                  },
+                  error: (error, stackTrace) =>
+                      Alart.handleError(context, error),
+                  loading: () => Loaders.center(),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

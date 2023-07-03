@@ -13,8 +13,11 @@ abstract class Const {
 
   static String CANT_SEE_SUMMARYS =
       'You are not a member of this routine.\nTo view the summary,\nyou need to become a member first.';
+
+//
 }
 
+double KTopPadding = 20;
 Future<String> BASE_URL() async {
   await Future.delayed(Duration(seconds: 1));
   return 'http://192.168.31.229:3000';

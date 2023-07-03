@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names, use_build_context_synchronously
 
+import 'package:api_cache_manager/utils/cache_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -187,6 +188,7 @@ class AuthController extends StateNotifier<bool> {
         // Remove token and navigate to the login screen
         final prefs = await SharedPreferences.getInstance();
         prefs.remove('Token');
+        await APICacheManager().emptyCache();
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const LogingScreen()));
       },

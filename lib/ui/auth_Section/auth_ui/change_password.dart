@@ -40,11 +40,11 @@ class ChangePasswordPage extends ConsumerWidget {
         child: Form(
           key: formKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               HeaderTitle('Change Password', context),
-              const SizedBox(height: 200),
+              const SizedBox(height: 20),
               AppTextFromField(
                 controller: currentPasswordController,
                 // obscureText: true,

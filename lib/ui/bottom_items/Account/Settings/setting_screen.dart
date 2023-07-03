@@ -1,11 +1,14 @@
 // ignore_for_file: must_be_immutable// ignore_for_file: must_be_immutable, use_key_in_widget_constructors, camel_case_types, must_be_immutable
 
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:table/core/dialogs/alart_dialogs.dart';
 import 'package:table/ui/bottom_items/Account/widgets/setting_options.dart';
 import 'package:table/widgets/heder/heder_title.dart';
 
 import '../../../auth_Section/auth_ui/change_password.dart';
+import '../accounu_ui/eddit_account.dart';
 import '../utils/settings_utils.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -37,7 +40,7 @@ class SettingsPage extends StatelessWidget {
                 SeetingOption(
                   title: 'Edit profile',
                   icon: Icons.person,
-                  onTap: () {},
+                  onTap: () => Get.to(const EdditAccount()),
                 ),
 
                 SeetingOption(
@@ -49,11 +52,13 @@ class SettingsPage extends StatelessWidget {
                   ),
                 ),
                 SeetingOption(
-                    title: 'Theem',
-                    subtitle: "theme",
-                    icon: Icons.nightlight_sharp,
-                    onTap: () => SettingsUtils.showThemeSelectionSheet(
-                        context, "themechanger")),
+                  title: 'Theem',
+                  subtitle: "theme",
+                  icon: Icons.nightlight_sharp,
+                  // onTap: () => SettingsUtils.showThemeSelectionSheet(
+                  //     context, "themechanger")
+                  onTap: () => Alart.upcoming(context),
+                ),
 
                 //......... Notifications........
                 Container(
@@ -67,10 +72,10 @@ class SettingsPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SeetingOption(
+                SeetingOption(
                   title: 'Notification settings',
                   icon: Icons.notifications,
-                  onTap: null,
+                  onTap: () => AppSettings.openNotificationSettings(),
                 ),
               ],
             ),

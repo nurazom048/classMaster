@@ -28,7 +28,7 @@ class RutineNotification {
       if (response.statusCode == 200) {
         return right(message);
       } else {
-        return right(message);
+        return left(message.message);
       }
     } catch (e) {
       return left(e.toString());
@@ -50,7 +50,7 @@ class RutineNotification {
       if (response.statusCode == 200) {
         return right(message);
       } else {
-        return right(message);
+        return left(message.message);
       }
     } catch (e) {
       return left(e.toString());

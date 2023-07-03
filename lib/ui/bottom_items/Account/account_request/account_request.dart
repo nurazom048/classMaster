@@ -17,8 +17,8 @@ final AccountReqProvider = Provider<AccountReq>((ref) {
 });
 //
 
-final accountDataProvider = FutureProvider.autoDispose
-    .family<AccountModels?, String?>((ref, username) async {
+final accountDataProvider =
+    FutureProvider.family<AccountModels?, String?>((ref, username) async {
   return ref.watch(AccountReqProvider).getAccountData(username: username);
 });
 

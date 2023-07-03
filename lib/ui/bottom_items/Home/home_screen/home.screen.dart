@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:table/core/component/loaders.dart';
+import 'package:table/sevices/one%20signal/onesignla.services.dart';
 import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 import 'package:table/ui/bottom_items/Home/full_rutin/utils/rutin_dialog.dart';
 import 'package:table/ui/bottom_items/Home/models/home_rutines_model.dart';
@@ -17,6 +18,7 @@ import 'package:table/ui/bottom_items/Home/widgets/slider/recentniticeslider_ite
 import 'package:table/widgets/error/error.widget.dart';
 import '../../../../core/component/responsive.dart';
 import '../../../../core/dialogs/alart_dialogs.dart';
+import '../../../../sevices/notification services/awn_package.dart';
 import '../../Account/accounu_ui/Account_screen.dart';
 import '../full_rutin/widgets/rutin_box/rutin_box_by_id.dart';
 import '../full_rutin/widgets/sceltons/rutinebox_id_scelton.dart';
@@ -27,207 +29,226 @@ import '../notification/screen/notification.screen.dart';
 import '../widgets/custom_title_bar.dart';
 import '../widgets/slider/recentnoticeslider.dart';
 
-class HomeScreen extends ConsumerWidget {
-  HomeScreen({super.key});
-
-  final scrollController = ScrollController();
-  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    //! provider
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
-    final homeRutins = ref.watch(homeRutinControllerProvider(null));
-    final recentNoticeList = ref.watch(recentNoticeController(null));
+final scrollController = ScrollController();
+FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
-    logthis();
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    // AwsomNotificationSetup
+    AwsomNotificationSetup.initialize();
+    AwsomNotificationSetup.takePermiton(context);
+    // One signal
+    OneSignalServices.initialize();
+    OneSignalServices.oneSignalPermition();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer(builder: (context, ref, _) {
+      //! provider
+
+      final homeRutins = ref.watch(homeRutinControllerProvider(null));
+      final recentNoticeList = ref.watch(recentNoticeController(null));
+
+      logthis();
 
 //notifier
-    final homeRutinsNotifier =
-        ref.watch(homeRutinControllerProvider(null).notifier);
-    //
-    final _mobileView = homeMobileView(
-        ref, recentNoticeList, context, homeRutins,
-        homeRoutineNotifier: homeRutinsNotifier);
+      final homeRutinsNotifier =
+          ref.watch(homeRutinControllerProvider(null).notifier);
+      //
+      final _mobileView = homeMobileView(
+          ref, recentNoticeList, context, homeRutins,
+          homeRoutineNotifier: homeRutinsNotifier);
 
-    const _appBar = ChustomTitleBar("title");
-    return Responsive(
-      // Mobile view
-      mobile: SafeArea(
-        child: Scaffold(
-          backgroundColor: const Color(0xFFF2F2F2),
-          body: homeMobileView(ref, recentNoticeList, context, homeRutins,
-              homeRoutineNotifier: homeRutinsNotifier),
-        ),
-      ),
-
-      // Desktop view
-      desktop: Scaffold(
-          body: Column(
-        children: [
-          _appBar,
-          Expanded(
-            child: Row(
-              children: [
-                // Drawer
-                const Expanded(flex: 1, child: MyDawer()),
-                // mobile
-                Expanded(
-                  flex: 3,
-                  child: Container(child: _mobileView, color: Colors.yellow),
-                ),
-                Expanded(flex: 1, child: Container(color: Colors.black)),
-              ],
-            ),
+      const _appBar = ChustomTitleBar("title");
+      return Responsive(
+        // Mobile view
+        mobile: SafeArea(
+          child: Scaffold(
+            backgroundColor: const Color(0xFFF2F2F2),
+            body: homeMobileView(ref, recentNoticeList, context, homeRutins,
+                homeRoutineNotifier: homeRutinsNotifier),
           ),
-        ],
-      )),
-    );
+        ),
+
+        // Desktop view
+        desktop: Scaffold(
+            body: Column(
+          children: [
+            _appBar,
+            Expanded(
+              child: Row(
+                children: [
+                  // Drawer
+                  const Expanded(flex: 1, child: MyDawer()),
+                  // mobile
+                  Expanded(
+                    flex: 3,
+                    child: Container(child: _mobileView, color: Colors.yellow),
+                  ),
+                  Expanded(flex: 1, child: Container(color: Colors.black)),
+                ],
+              ),
+            ),
+          ],
+        )),
+      );
+    });
   }
+}
 
 /////////////
-  homeMobileView(WidgetRef ref, AsyncValue<RecentNotice> recentNoticeList,
-      BuildContext context, AsyncValue<RoutineHome> homeRutins,
-      {required homeRoutineNotifier}) {
-    return RefreshIndicator(
-      onRefresh: () async {
-        final bool isOnline = await Utils.isOnlineMethode();
-        if (!isOnline) {
-          Alart.showSnackBar(context, 'You are in offline mood');
-        } else {
-          //! provider
-          ref.refresh(homeRutinControllerProvider(null));
-          ref.refresh(recentNoticeController(null));
-        }
-      },
-      child: ListView(
-        padding: const EdgeInsets.only(bottom: 100),
-        controller: scrollController,
-        children: [
-          if (Responsive.isMobile(context))
-            ChustomTitleBar("title", ontap: () {
-              Get.to(() => const NotificatioScreen());
-            }),
+homeMobileView(WidgetRef ref, AsyncValue<RecentNotice> recentNoticeList,
+    BuildContext context, AsyncValue<RoutineHome> homeRutins,
+    {required homeRoutineNotifier}) {
+  return RefreshIndicator(
+    onRefresh: () async {
+      final bool isOnline = await Utils.isOnlineMethode();
+      if (!isOnline) {
+        Alart.showSnackBar(context, 'You are in offline mood');
+      } else {
+        //! provider
+        ref.refresh(homeRutinControllerProvider(null));
+        ref.refresh(recentNoticeController(null));
+      }
+    },
+    child: ListView(
+      padding: const EdgeInsets.only(bottom: 100),
+      controller: scrollController,
+      children: [
+        if (Responsive.isMobile(context))
+          ChustomTitleBar("title", ontap: () {
+            Get.to(() => const NotificatioScreen());
+          }),
 
-          //_______________________ recent notices _________________//
-          RecentNoticeTitle(
-            onTap: () => Get.to(() => ViewAllRecentNotice(),
-                transition: Transition.rightToLeftWithFade),
-          ),
+        //_______________________ recent notices _________________//
+        RecentNoticeTitle(
+          onTap: () => Get.to(() => ViewAllRecentNotice(),
+              transition: Transition.rightToLeftWithFade),
+        ),
 
-          SizedBox(
-            height: 181,
-            child: recentNoticeList.when(
-              data: (data) {
-                int length = data.notices.length;
-                return RecentNoticeSlider(
-                  list: <Widget>[
-                    RecentNoticeSliderItem(
-                      notice: data.notices,
-                      index: 0,
-                      conditon: length >= 2,
-                      singleCondition: length == 1,
-                      recentNotice: data,
-                    ),
-
-                    //
-                    RecentNoticeSliderItem(
-                      notice: data.notices,
-                      index: 2,
-                      conditon: length >= 4,
-                      singleCondition: length == 3,
-                      recentNotice: data,
-                    ), //
-                    RecentNoticeSliderItem(
-                      notice: data.notices,
-                      index: 3,
-                      conditon: length >= 6,
-                      singleCondition: length == 5,
-                      recentNotice: data,
-                    ),
-
-                    RecentNoticeSliderItem(
-                      notice: data.notices,
-                      index: 4,
-                      conditon: length >= 8,
-                      singleCondition: length == 7,
-                      recentNotice: data,
-                    ),
-                  ],
-                );
-              },
-              error: (error, stackTrace) {
-                // print('error happend');
-                // print(error);
-                Alart.handleError(context, error);
-
-                return ErrorScreen(error: error.toString());
-              },
-              loading: () => const RecentNoticeSliderScealton(),
-            ),
-          ),
-
-          // uploaded rutines
-
-          homeRutins.when(
+        SizedBox(
+          height: 181,
+          child: recentNoticeList.when(
             data: (data) {
-              void scrollListener() {
-                if (scrollController.position.pixels ==
-                    scrollController.position.maxScrollExtent) {
-                  print('end.........................');
-                  ref
-                      .watch(homeRutinControllerProvider(null).notifier)
-                      .loadMore(data.currentPage);
-                }
-              }
+              int length = data.notices.length;
+              return RecentNoticeSlider(
+                list: <Widget>[
+                  RecentNoticeSliderItem(
+                    notice: data.notices,
+                    index: 0,
+                    conditon: length >= 2,
+                    singleCondition: length == 1,
+                    recentNotice: data,
+                  ),
 
-              scrollController.addListener(scrollListener);
+                  //
+                  RecentNoticeSliderItem(
+                    notice: data.notices,
+                    index: 2,
+                    conditon: length >= 4,
+                    singleCondition: length == 3,
+                    recentNotice: data,
+                  ), //
+                  RecentNoticeSliderItem(
+                    notice: data.notices,
+                    index: 3,
+                    conditon: length >= 6,
+                    singleCondition: length == 5,
+                    recentNotice: data,
+                  ),
 
-              //
-              return ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                padding: const EdgeInsets.only(bottom: 100),
-                itemCount: data.homeRoutines.length,
-                itemBuilder: (context, index) {
-                  return RutinBoxById(
-                    rutinId: data.homeRoutines[index].rutineId.id,
-                    rutinName: data.homeRoutines[index].rutineId.name,
-                    onTapMore: () => RutinDialog.ChackStatusUser_BottomSheet(
-                      context,
-                      routineID: data.homeRoutines[index].rutineId.id,
-                      routineName: data.homeRoutines[index].rutineId.name,
-                      rutinsController: homeRoutineNotifier,
-                    ),
-                  );
-                },
+                  RecentNoticeSliderItem(
+                    notice: data.notices,
+                    index: 4,
+                    conditon: length >= 8,
+                    singleCondition: length == 7,
+                    recentNotice: data,
+                  ),
+                ],
               );
             },
-            loading: () => RUTINE_BOX_SKELTON,
             error: (error, stackTrace) {
+              // print('error happend');
+              // print(error);
               Alart.handleError(context, error);
+
               return ErrorScreen(error: error.toString());
             },
+            loading: () => const RecentNoticeSliderScealton(),
           ),
+        ),
 
-          //
-        ],
-      ),
-    );
-  }
+        // uploaded rutines
 
-  void logthis() async {
-    print('ebentTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT');
-    String? username = await AuthController.getUsername();
+        homeRutins.when(
+          data: (data) {
+            void scrollListener() {
+              if (scrollController.position.pixels ==
+                  scrollController.position.maxScrollExtent) {
+                print('end.........................');
+                ref
+                    .watch(homeRutinControllerProvider(null).notifier)
+                    .loadMore(data.currentPage);
+              }
+            }
 
-    await FirebaseAnalytics.instance.logEvent(
-      name: 'Home Screen',
-      parameters: {'username': '$username'},
-    );
-  }
+            scrollController.addListener(scrollListener);
 
-  //
+            //
+            return ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: const EdgeInsets.only(bottom: 100),
+              itemCount: data.homeRoutines.length,
+              itemBuilder: (context, index) {
+                return RutinBoxById(
+                  rutinId: data.homeRoutines[index].rutineId.id,
+                  rutinName: data.homeRoutines[index].rutineId.name,
+                  onTapMore: () => RutinDialog.ChackStatusUser_BottomSheet(
+                    context,
+                    routineID: data.homeRoutines[index].rutineId.id,
+                    routineName: data.homeRoutines[index].rutineId.name,
+                    rutinsController: homeRoutineNotifier,
+                  ),
+                );
+              },
+            );
+          },
+          loading: () => RUTINE_BOX_SKELTON,
+          error: (error, stackTrace) {
+            Alart.handleError(context, error);
+            return ErrorScreen(error: error.toString());
+          },
+        ),
+
+        //
+      ],
+    ),
+  );
 }
+
+void logthis() async {
+  print('ebentTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT');
+  String? username = await AuthController.getUsername();
+
+  await FirebaseAnalytics.instance.logEvent(
+    name: 'Home Screen',
+    parameters: {'username': '$username'},
+  );
+}
+
+//
 
 bool hideNevBarOnScroll(ScrollNotification? scrollNotification, WidgetRef ref) {
   // Logic of scrollNotification

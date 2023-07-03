@@ -55,77 +55,79 @@ class _EdditAccountState extends State<EdditAccount> {
   //
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Form(
-        key: formKey,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              HeaderTitle(
-                "Eddit Account",
-                context,
-                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 25)
-                    .copyWith(bottom: 10),
-              ),
-              const SizedBox(height: 10),
+    return SafeArea(
+      child: Scaffold(
+        body: Form(
+          key: formKey,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                HeaderTitle(
+                  "Eddit Account",
+                  context,
+                  margin: EdgeInsets.symmetric(horizontal: 20, vertical: 25)
+                      .copyWith(bottom: 10),
+                ),
+                const SizedBox(height: 10),
 
-              PickImage(
-                netWorkIamge: netprofileImage,
-                netWorkCoverImage: netCoverImage,
-                isEddit: true,
-                onCoverImagePath: (coverPath) async {
-                  coverImagePath = coverPath;
-                  print('CoverImage path $coverPath');
-                },
-                onImagePathSelected: (profileImagePAth) async {
-                  profileImagePath = profileImagePAth;
-                  print("path paici vai $profileImagePAth");
-                },
-              ),
-
-              AppTextFromField(
-                controller: nameController,
-                hint: "Name",
-                validator: EdditAccountValidation.validateName,
-                focusNode: nameFocusNode,
-                onFieldSubmitted: (_) => emailFocusNode.requestFocus(),
-              ),
-              AppTextFromField(
-                controller: aboutController,
-                hint: "About",
-                labelText: "Write About Text",
-                validator: EdditAccountValidation.validateAbout,
-              ).multiline(),
-              const SizedBox(height: 60),
-              // Existing code...
-
-              if (loading != null && loading == true)
-                Loaders.button()
-              else
-                CupertinoButtonCustom(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
-                  color: AppColor.nokiaBlue,
-                  textt: "Eddit",
-                  onPressed: () async {
-                    setState(() => loading = true);
-                    if (formKey.currentState?.validate() ?? false) {
-                      final Message message = await AccountReq.updateAccount(
-                        name: nameController.text,
-                        username: usernameController.text,
-                        about: aboutController.text,
-                        profileImage: profileImagePath,
-                        coverImage: coverImagePath,
-                      );
-                      Alart.showSnackBar(context, message.message);
-                      setState(() => loading = true);
-
-                      Navigator.pop(context);
-                    }
+                PickImage(
+                  netWorkIamge: netprofileImage,
+                  netWorkCoverImage: netCoverImage,
+                  isEddit: true,
+                  onCoverImagePath: (coverPath) async {
+                    coverImagePath = coverPath;
+                    print('CoverImage path $coverPath');
+                  },
+                  onImagePathSelected: (profileImagePAth) async {
+                    profileImagePath = profileImagePAth;
+                    print("path paici vai $profileImagePAth");
                   },
                 ),
 
-              const SizedBox(height: 70),
-            ],
+                AppTextFromField(
+                  controller: nameController,
+                  hint: "Name",
+                  validator: EdditAccountValidation.validateName,
+                  focusNode: nameFocusNode,
+                  onFieldSubmitted: (_) => emailFocusNode.requestFocus(),
+                ),
+                AppTextFromField(
+                  controller: aboutController,
+                  hint: "About",
+                  labelText: "Write About Text",
+                  validator: EdditAccountValidation.validateAbout,
+                ).multiline(),
+                const SizedBox(height: 60),
+                // Existing code...
+
+                if (loading != null && loading == true)
+                  Loaders.button()
+                else
+                  CupertinoButtonCustom(
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    color: AppColor.nokiaBlue,
+                    textt: "Eddit",
+                    onPressed: () async {
+                      setState(() => loading = true);
+                      if (formKey.currentState?.validate() ?? false) {
+                        final Message message = await AccountReq.updateAccount(
+                          name: nameController.text,
+                          username: usernameController.text,
+                          about: aboutController.text,
+                          profileImage: profileImagePath,
+                          coverImage: coverImagePath,
+                        );
+                        Alart.showSnackBar(context, message.message);
+                        setState(() => loading = true);
+
+                        Navigator.pop(context);
+                      }
+                    },
+                  ),
+
+                const SizedBox(height: 70),
+              ],
+            ),
           ),
         ),
       ),
