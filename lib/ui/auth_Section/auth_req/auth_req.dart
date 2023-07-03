@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:table/models/message_model.dart';
 import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 
@@ -14,9 +15,18 @@ class AuthReq {
   //........ Login .........//
   Future<Either<Message, String>> login({username, password}) async {
     var loginUrl = Uri.parse('${Const.BASE_URl}/auth/login');
+
     try {
-      final response = await http
-          .post(loginUrl, body: {"username": username, "password": password});
+      final status = await OneSignal.shared.getDeviceState();
+      final String? osUserID = status?.userId;
+      print(
+          ';;;;;;;;;;;;;;;;;;;;;;  one signa token;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
+      print("osUserID : $osUserID");
+      final response = await http.post(loginUrl, body: {
+        "username": username,
+        "password": password,
+        "osUserID": osUserID ?? ''
+      });
 
       var message = json.decode(response.body)["message"];
       print(json.decode(response.body));

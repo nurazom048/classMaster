@@ -289,6 +289,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.9.3"
+  firebase_analytics:
+    dependency: "direct main"
+    description:
+      name: firebase_analytics
+      sha256: b4f0da1ba0ed06a738d2f729a94dae2518c3738167a13e7f2347303e7a5ab0d9
+      url: "https://pub.dev"
+    source: hosted
+    version: "10.4.3"
+  firebase_analytics_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_analytics_platform_interface
+      sha256: "25ff27c6dfc875ec299af1c714cbc9f4d44bd47a1163a0ba008a1e5d88a6a786"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.6.3"
+  firebase_analytics_web:
+    dependency: transitive
+    description:
+      name: firebase_analytics_web
+      sha256: "9b80a8444a94ace32f56e43e7e946613b02bc7daa9fd4ae7857f4a2394b134f9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.4+3"
   firebase_auth:
     dependency: "direct main"
     description:
@@ -353,6 +377,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.6.3"
+  firebase_messaging:
+    dependency: "direct main"
+    description:
+      name: firebase_messaging
+      sha256: "7a09d8c21147f009882a27c96de1918ea283f974d73cb6fae1d234bb9ec18d8b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "14.6.4"
+  firebase_messaging_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_messaging_platform_interface
+      sha256: e9e9dc48a3d8ffa67aaba3d6b1ebf74bc7d7d8c83d10b1458ff97878b9d8a2b0
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.5.3"
+  firebase_messaging_web:
+    dependency: transitive
+    description:
+      name: firebase_messaging_web
+      sha256: "381f217e41e0e407baf8df21787b97e46fabfacefd6a953425be3a6cdf2269f4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.5.3"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -704,6 +752,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
+  onesignal_flutter:
+    dependency: "direct main"
+    description:
+      name: onesignal_flutter
+      sha256: f4e54ad09bbfc2401b5d3e9cda6b31577facf0dd119d282d008df5710f5665d0
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.5.1"
   path:
     dependency: transitive
     description:
@@ -1069,6 +1125,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.5.1"
+  toggle_switch:
+    dependency: "direct main"
+    description:
+      name: toggle_switch
+      sha256: "9e6af1f0c5a97d9de41109dc7b9e1b3bbe73417f89b10e0e44dc834fb493d4cb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
   typed_data:
     dependency: transitive
     description:

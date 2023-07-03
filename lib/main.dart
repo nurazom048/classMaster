@@ -8,9 +8,40 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:table/ui/auth_Section/auth_ui/logIn_screen.dart';
 import 'firebase_options.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+Future<void> handerBgMessge(RemoteMessage message) async {
+  await AwesomeNotifications().createNotification(
+      content: NotificationContent(
+    id: 3999,
+    channelKey: 'basic_channel',
+    body: message.notification?.body ?? 'body',
+    title: message.notification?.title ?? 'tittle',
+  ));
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  //one signal
+  OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+  OneSignal.shared.setAppId('db13122e-448d-4418-9df0-b83989eef9ab');
+  OneSignal.shared.promptUserForPushNotificationPermission().then((value) {
+    print('acseptpermition $value');
+  });
+  final status = await OneSignal.shared.getDeviceState();
+  final String? osUserID = status?.userId;
+  // var status = await OneSignal.shared.getDeviceState();
+  print(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
+  //String? tokenId = status?.pushToken;
+  print("osUserID : $osUserID");
+  // 050aceb6-003c-454e-8872-a119402ec324
+  // OneSignal.shared.getDeviceState().then((deviceState) {
+  //   final String? pushToken = deviceState?.pushToken;
+  //   print(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
+  //   print(pushToken);
+  // });
   //notification
 
   if (!kIsWeb) {
@@ -32,6 +63,15 @@ void main() async {
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
+  //firebase messagein
+  final messageIns = FirebaseMessaging.instance;
+
+  await messageIns.requestPermission(
+      alert: true, announcement: true, badge: true, sound: true);
+  final fcmToken = await messageIns.getToken();
+  FirebaseMessaging.onBackgroundMessage(handerBgMessge);
+  print('fcmToken  $fcmToken');
+
   // creash latics
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
@@ -39,12 +79,20 @@ void main() async {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
   };
+// Firebase anlytices
+  FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true);
 
   runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+
+//
+  // static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  // static FirebaseAnalyticsObserver observer =
+  //     FirebaseAnalyticsObserver(analytics: analytics);
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(

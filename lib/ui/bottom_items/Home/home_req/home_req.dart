@@ -5,6 +5,7 @@ import 'package:api_cache_manager/api_cache_manager.dart';
 import 'package:api_cache_manager/models/cache_db_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../../../../constant/constant.dart';
@@ -16,11 +17,6 @@ import '../utils/utils.dart';
 //!.. Provider ...!//
 
 final home_req_provider = Provider<HomeReq>((ref) => HomeReq());
-
-final save_rutins_provider =
-    FutureProvider.family<SaveRutineResponse, int>((ref, page) {
-  return ref.read(home_req_provider).savedRutins(pages: page);
-});
 
 class HomeReq {
 //********    savedRutins      *************/
@@ -83,6 +79,12 @@ class HomeReq {
     final searchByUserID = userID == null ? '' : '/$userID';
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
+    final status = await OneSignal.shared.getDeviceState();
+    final String? osUserID = status?.userId;
+    // var status = await OneSignal.shared.getDeviceState();
+    print(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
+    //String? tokenId = status?.pushToken;
+    print("osUserID : $osUserID");
 
     final url =
         Uri.parse('${Const.BASE_URl}/rutin/home' + searchByUserID + queryPage);
@@ -100,7 +102,8 @@ class HomeReq {
       }
 
       //
-      final response = await http.post(url, headers: headers);
+      final response = await http
+          .post(url, headers: headers, body: {"osUserID": osUserID ?? ''});
 
       //
       final res = json.decode(response.body);

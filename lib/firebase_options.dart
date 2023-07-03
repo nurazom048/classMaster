@@ -67,6 +67,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '837394216188',
     projectId: 'rutinapp-cadc1',
     storageBucket: 'rutinapp-cadc1.appspot.com',
+    androidClientId: '837394216188-k8lues9qbcl0m2qom9t0a5gs9fmvaivo.apps.googleusercontent.com',
     iosClientId: '837394216188-8j4gh2cn1b5recm3vjfpe0b1vbge7bkp.apps.googleusercontent.com',
     iosBundleId: 'com.example.table',
   );
@@ -77,6 +78,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '837394216188',
     projectId: 'rutinapp-cadc1',
     storageBucket: 'rutinapp-cadc1.appspot.com',
+    androidClientId: '837394216188-k8lues9qbcl0m2qom9t0a5gs9fmvaivo.apps.googleusercontent.com',
     iosClientId: '837394216188-8j4gh2cn1b5recm3vjfpe0b1vbge7bkp.apps.googleusercontent.com',
     iosBundleId: 'com.example.table',
   );

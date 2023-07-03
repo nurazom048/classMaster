@@ -1,4 +1,5 @@
 import 'package:expandable_text/expandable_text.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/component/loaders.dart';
@@ -11,45 +12,70 @@ import '../../notice_board/widgets/simple_notice_card.dart';
 import '../api/notification.api.dart';
 import '../model/notification.model.dart';
 
-class NotificatioScreen extends ConsumerWidget {
+class NotificatioScreen extends StatefulWidget {
   const NotificatioScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // provider
-    final notifications = ref.watch(notificationsProvider);
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            HeaderTitle('Notifications', context),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 26)
-                  .copyWith(top: 0),
-              child: notifications.when(
-                data: (data) {
-                  return data.fold(
-                    (error) => ErrorScreen(error: error.message),
-                    (valu) => Column(
-                      children: List.generate(
-                        valu.notifications.length,
-                        (i) => NotificationCard(
-                          notification: valu.notifications[i],
-                          previousDateTime: valu.notifications[i].createdAt,
-                          isFrist: i == 0,
+  State<NotificatioScreen> createState() => _NotificatioScreenState();
+}
+
+class _NotificatioScreenState extends State<NotificatioScreen> {
+  @override
+  void initState() {
+    super.initState();
+    event();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer(builder: (context, ref, _) {
+      // provider
+      final notifications = ref.watch(notificationsProvider);
+      return Scaffold(
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              HeaderTitle('Notifications', context),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 26)
+                        .copyWith(top: 0),
+                child: notifications.when(
+                  data: (data) {
+                    return data.fold(
+                      (error) => ErrorScreen(error: error.message),
+                      (valu) => Column(
+                        children: List.generate(
+                          valu.notifications.length,
+                          (i) => NotificationCard(
+                            notification: valu.notifications[i],
+                            previousDateTime: valu.notifications[i].createdAt,
+                            isFrist: i == 0,
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
-                error: (error, stackTrace) => Alart.handleError(context, error),
-                loading: () => Loaders.center(),
-              ),
-            )
-          ],
+                    );
+                  },
+                  error: (error, stackTrace) =>
+                      Alart.handleError(context, error),
+                  loading: () => Loaders.center(),
+                ),
+              )
+            ],
+          ),
         ),
-      ),
+      );
+    });
+  }
+
+  void event() async {
+    await FirebaseAnalytics.instance.logEvent(
+      name: "notificationscreen",
+      parameters: {
+        "content_type": "ontap",
+      },
     );
+    print('notificationscreen event');
   }
 }
 
