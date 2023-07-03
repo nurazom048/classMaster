@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/core/dialogs/alart_dialogs.dart';
+import 'package:table/core/dialogs/alert_dialogs.dart';
 
 import '../models/recent_notice_model.dart';
 import '../request/motice_request.dart';
@@ -52,7 +52,7 @@ class UploadedRutinsController extends StateNotifier<AsyncValue<RecentNotice>> {
             .copyWith(notices: notices, currentPage: newData.currentPage));
       }
     } catch (error) {
-      Alart.handleError(context, error);
+      Alert.handleError(context, error);
     }
   }
 
@@ -61,11 +61,12 @@ class UploadedRutinsController extends StateNotifier<AsyncValue<RecentNotice>> {
     final responce = await noticeRequest.deleteNotice(noticeId: noticeId);
 
     responce.fold((error) {
-      return Alart.errorAlartDilog(context, error.message);
+      return Alert.errorAlertDialog(context, error.message);
     }, (data) {
+      // ignore: unused_result
       ref.refresh(recentNoticeController(academyID));
 
-      return Alart.showSnackBar(context, data.message);
+      return Alert.showSnackBar(context, data.message);
     });
   }
 }

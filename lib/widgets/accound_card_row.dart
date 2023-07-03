@@ -7,10 +7,10 @@ import 'package:flutter/material.dart' as ma;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:table/constant/app_color.dart';
-import 'package:table/ui/bottom_items/Account/models/account_models.dart';
 import 'package:table/ui/bottom_items/Home/utils/utils.dart';
 
-import '../ui/bottom_items/Account/profile/profile_screen.dart';
+import '../ui/bottom_items/Collection Fetures/Profie Fetures/profile_screen.dart';
+import '../ui/bottom_items/Collection Fetures/models/account_models.dart';
 
 class AccountCardRow extends ConsumerWidget {
   AccountCardRow({
@@ -67,7 +67,7 @@ class AccountCardRow extends ConsumerWidget {
               // TODO
 
               FutureBuilder(
-                future: Utils.isOnlineMethode(),
+                future: Utils.isOnlineMethod(),
                 builder: (context, snapshot) {
                   bool isOffline = snapshot.data ?? false;
 

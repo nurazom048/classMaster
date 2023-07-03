@@ -2,43 +2,40 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import 'package:table/core/component/loaders.dart';
-import 'package:table/sevices/notification%20services/awn_package.dart';
-import 'package:table/ui/auth_Section/auth_ui/SiginUp_Screen.dart';
+import 'package:table/ui/auth_Section/auth_ui/SignUp_Screen.dart';
 import 'package:table/ui/auth_Section/utils/login_validation.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 
 import '../../../constant/app_color.dart';
-import '../../../core/dialogs/alart_dialogs.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
-import '../../../widgets/appWidget/buttons/cupertino_butttons.dart';
+import '../../../widgets/appWidget/buttons/cupertino_buttons.dart';
 import '../../../widgets/heder/heder_title.dart';
 import '../../bottom_items/bottom_nevbar.dart';
 import '../auth_controller/auth_controller.dart';
 import '../auth_controller/google_auth_controller.dart';
 import '../widgets/or.dart';
 import '../widgets/siginup_page_switch.dart';
-import 'email_varification.screen.dart';
 import 'forgetpassword_screen.dart';
 
-class LogingScreen extends StatefulWidget {
-  const LogingScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<LogingScreen> createState() => _LogingScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LogingScreenState extends State<LogingScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   //
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final GlobalKey<FormState> emailkey = GlobalKey<FormState>();
+  final GlobalKey<FormState> emailKey = GlobalKey<FormState>();
 
   Future<void> goToHome() async {
     final String? token = await AuthController.getToken();
 
+    // ignore: avoid_print
     print("Token: $token");
     if (token != null) {
       // ignore: use_build_context_synchronously
@@ -127,7 +124,7 @@ class _LogingScreenState extends State<LogingScreen> {
                     //
                     const SizedBox(height: 30),
 
-                    SiginUpSuicherButton("", "Forgot your Password?",
+                    SignUpSuicherButton("", "Forgot your Password?",
                         onTap: () async {
                       // if (emailkey.currentState?.validate() ?? false) {
                       // try {
@@ -144,7 +141,7 @@ class _LogingScreenState extends State<LogingScreen> {
                       //       email: _emailController.text,
                       //     ));
                       // } on FirebaseAuthMultiFactorException catch (e) {
-                      //   Alart.showSnackBar(context, e);
+                      //   Alert.showSnackBar(context, e);
                       // }
 
                       // //
@@ -152,16 +149,16 @@ class _LogingScreenState extends State<LogingScreen> {
                     const SizedBox(height: 30),
 
                     CupertinoButtonCustom(
-                      isLoding: loding,
+                      isLoading: loding,
                       padding: const EdgeInsets.symmetric(horizontal: 40),
                       color: AppColor.nokiaBlue,
-                      textt: "Log In",
+                      text: "Log In",
                       onPressed: () async {
                         if (formKey.currentState?.validate() ?? false) {
-                          authLogin.siginIn(_emailController.text,
+                          authLogin.signIn(_emailController.text,
                               _passwordController.text, context);
                         } else {
-                          authLogin.siginIn(
+                          authLogin.signIn(
                               "roma123", "@Rahala+Nur123", context);
                         }
                       },
@@ -171,7 +168,7 @@ class _LogingScreenState extends State<LogingScreen> {
 
                     const OR(),
 
-                    SiginUpSuicherButton(
+                    SignUpSuicherButton(
                       "Do not have an account?",
                       "Sign up",
                       onTap: () => Get.to(() => const SignUpScreen()),
@@ -198,7 +195,7 @@ class _LogingScreenState extends State<LogingScreen> {
                     // // continue with phone
 
                     // SocialLoginButton(
-                    //   isphone: true,
+                    //   iphone: true,
                     //   onTap: () async {
                     //     Get.to(() => const PhoneNumberScreen());
                     //   },
@@ -214,13 +211,13 @@ class _LogingScreenState extends State<LogingScreen> {
   }
 }
 
-class CreadiantialScreen extends ConsumerWidget {
-  const CreadiantialScreen({super.key});
+class CredentialScreen extends ConsumerWidget {
+  const CredentialScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //! provider
-    final googleUser = ref.watch(gooleAuthControllerProvider).googleAccount;
+    final googleUser = ref.watch(googleAuthControllerProvider).googleAccount;
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),

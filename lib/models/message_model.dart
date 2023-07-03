@@ -49,6 +49,7 @@ class PendingAccount {
   String id;
   bool isAccept;
   String username;
+  // ignore: non_constant_identifier_names
   String EIIN;
   String name;
   String contractInfo;
@@ -62,6 +63,7 @@ class PendingAccount {
     required this.id,
     required this.isAccept,
     required this.username,
+    // ignore: non_constant_identifier_names
     required this.EIIN,
     required this.name,
     required this.contractInfo,

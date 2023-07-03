@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 
-import '../../../Account/models/account_models.dart';
 import '../../notice_board/models/recent_notice_model.dart';
 import '../notice_row.dart';
 

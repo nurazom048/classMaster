@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:table/core/dialogs/alart_dialogs.dart';
+import 'package:table/core/dialogs/alert_dialogs.dart';
 import 'package:table/models/class_model.dart';
 import 'package:table/ui/bottom_items/Add/request/class_request.dart';
 import 'package:table/ui/bottom_items/Add/screens/add_priode.dart';
@@ -19,9 +19,9 @@ import '../../../../constant/app_color.dart';
 import '../../../../constant/constant.dart';
 import '../../../../models/rutins/class/find_class_model.dart';
 import '../../../../widgets/appWidget/TextFromFild.dart';
-import '../../../../widgets/appWidget/buttons/cupertino_butttons.dart';
-import '../../Home/full_rutin/screen/viewMore/class_list.dart';
-import '../../Home/full_rutin/screen/viewMore/view_more_screen.dart';
+import '../../../../widgets/appWidget/buttons/cupertino_buttons.dart';
+import '../../Home/Full_routine/screen/viewMore/class_list.dart';
+import '../../Home/Full_routine/screen/viewMore/view_more_screen.dart';
 import '../widgets/show_wekday_widgets.dart';
 
 class AddClassScreen extends StatefulWidget {
@@ -206,7 +206,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                       const SizedBox(height: 30),
                       CupertinoButtonCustom(
                         padding: const EdgeInsets.symmetric(horizontal: 25),
-                        textt: widget.isUpdate == true
+                        text: widget.isUpdate == true
                             ? 'Update Class'
                             : widget.isEdit == true
                                 ? "Eddit Class"
@@ -287,7 +287,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
 
       //
       if (newclassID == null) {
-        Alart.showSnackBar(context, 'somthing went worng');
+        Alert.showSnackBar(context, 'somthing went worng');
       } else {
         if (!mounted) return;
 
@@ -340,7 +340,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
         throw Exception('Failed to load data');
       }
     } catch (e) {
-      Alart.handleError(context, e.toString());
+      Alert.handleError(context, e.toString());
     }
     return null;
   }

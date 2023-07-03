@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:table/ui/auth_Section/auth_ui/siginup_screen.dart';
+import 'package:table/ui/auth_Section/auth_ui/SignUp_Screen.dart';
 
 class CreateAccountPopUpButton extends StatelessWidget {
   const CreateAccountPopUpButton({
@@ -33,12 +33,12 @@ class CreateAccountPopUpButton extends StatelessWidget {
 
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SignUpScreen()),
+                MaterialPageRoute(builder: (context) => const SignUpScreen()),
               );
             } else if (value == 2) {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SignUpScreen()),
+                MaterialPageRoute(builder: (context) => const SignUpScreen()),
               );
             }
           }

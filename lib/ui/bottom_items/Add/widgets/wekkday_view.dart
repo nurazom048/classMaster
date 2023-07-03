@@ -7,7 +7,7 @@ import 'package:table/ui/bottom_items/Add/widgets/select_priode_number.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 import '../../../../constant/app_color.dart';
 import '../../../../widgets/appWidget/dottted_divider.dart';
-import '../../Home/full_rutin/screen/viewMore/class_list.dart';
+import '../../Home/Full_routine/screen/viewMore/class_list.dart';
 
 class WeekdayView extends ConsumerWidget {
   final Weekday weekday;

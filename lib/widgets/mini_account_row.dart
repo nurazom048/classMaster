@@ -1,8 +1,8 @@
 //***********************   MiniAccountInfo*******************/
 import 'package:flutter/material.dart';
-import 'package:table/ui/bottom_items/Account/models/account_models.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 
+import '../ui/bottom_items/Collection Fetures/models/account_models.dart';
 import '../ui/bottom_items/Home/utils/utils.dart';
 
 class MiniAccountInfo extends StatelessWidget {
@@ -30,7 +30,7 @@ class MiniAccountInfo extends StatelessWidget {
         child: Row(
           children: [
             FutureBuilder(
-              future: Utils.isOnlineMethode(),
+              future: Utils.isOnlineMethod(),
               builder: (context, snapshot) {
                 bool isOnline = snapshot.data ?? false;
 

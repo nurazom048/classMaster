@@ -44,7 +44,7 @@ class _ViewPDfState extends State<ViewPDf> {
         widget.pdfLink.substring(widget.pdfLink.lastIndexOf('/') + 1);
     final File tempFile = File('${tempPath.path}/$fileName');
     final bool checkFileExist = await tempFile.exists();
-    isOnline = await Utils.isOnlineMethode();
+    isOnline = await Utils.isOnlineMethod();
     if (checkFileExist) {
       setState(() {
         _tempFile = tempFile;
@@ -62,7 +62,7 @@ class _ViewPDfState extends State<ViewPDf> {
             SizedBox(
               height: MediaQuery.of(context).size.height - 100,
               child: FutureBuilder<bool>(
-                future: Utils.isOnlineMethode(),
+                future: Utils.isOnlineMethod(),
                 builder: (context, snapshot) {
                   print(snapshot.data);
                   try {

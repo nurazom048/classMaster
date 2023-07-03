@@ -17,11 +17,11 @@ final searchControllersProvider =
 //
 class SearchRequests {
 //! Rutine Search
-//.... Rutin Search .....///
+//.... Routine Search .....///
   Future<RutinQuarry> searchRoutine(String? valu, {int? page}) async {
     final String pages = page == null ? '' : '&page=$page';
     var url = Uri.parse('${Const.BASE_URl}/rutin/search?src=$valu$pages');
-    final bool isOnline = await Utils.isOnlineMethode();
+    final bool isOnline = await Utils.isOnlineMethod();
 
     try {
       final response = await http.get(url);
@@ -47,7 +47,7 @@ class SearchRequests {
   Future<AccountsResponse> searchAccount(String valu, {int? page}) async {
     final String pages = page == null ? '' : '&page=$page';
     var url = Uri.parse('${Const.BASE_URl}/account/find?q=$valu$pages');
-    final bool isOnline = await Utils.isOnlineMethode();
+    final bool isOnline = await Utils.isOnlineMethod();
 
     try {
       final response = await http.get(url);

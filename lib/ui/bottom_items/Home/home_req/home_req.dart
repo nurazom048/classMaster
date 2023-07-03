@@ -89,7 +89,7 @@ class HomeReq {
     final url =
         Uri.parse('${Const.BASE_URl}/rutin/home' + searchByUserID + queryPage);
     final headers = {'Authorization': 'Bearer $getToken'};
-    final bool isOnline = await Utils.isOnlineMethode();
+    final bool isOnline = await Utils.isOnlineMethod();
     final String key = "homeRutines$url";
     var isHaveCash = await APICacheManager().isAPICacheKeyExist(key);
     print(url);

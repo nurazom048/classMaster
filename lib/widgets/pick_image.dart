@@ -130,7 +130,7 @@ class _PickImageState extends State<PickImage> {
       return Image.file(_imageCover!);
     } else if (widget.netWorkCoverImage != null) {
       return FutureBuilder(
-        future: Utils.isOnlineMethode(),
+        future: Utils.isOnlineMethod(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Loaders.center();
@@ -163,7 +163,7 @@ class _PickImageState extends State<PickImage> {
       return Image.file(_image!, fit: BoxFit.cover);
     } else if (widget.netWorkIamge != null) {
       return FutureBuilder(
-        future: Utils.isOnlineMethode(),
+        future: Utils.isOnlineMethod(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Loaders.center();
@@ -185,6 +185,6 @@ class _PickImageState extends State<PickImage> {
         },
       );
     }
-    return Icon(Icons.error);
+    return const Icon(Icons.error);
   }
 }

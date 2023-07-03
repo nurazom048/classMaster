@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import '../../../Account/models/account_models.dart';
+import '../../../Collection Fetures/models/account_models.dart';
 
 RecentNotice recentNoticeFromJson(String str) =>
     RecentNotice.fromJson(json.decode(str));

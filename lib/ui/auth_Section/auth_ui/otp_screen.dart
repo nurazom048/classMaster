@@ -2,12 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
-import 'package:table/core/dialogs/alart_dialogs.dart';
+import 'package:table/core/dialogs/alert_dialogs.dart';
 
 import '../../../constant/app_color.dart';
-import '../../../widgets/appWidget/buttons/cupertino_butttons.dart';
+import '../../../widgets/appWidget/buttons/cupertino_buttons.dart';
 import '../../../widgets/heder/heder_title.dart';
-import 'SiginUp_Screen.dart';
+import 'SignUp_Screen.dart';
 
 class OtpScreen extends StatefulWidget {
   final String verificationId;
@@ -101,7 +101,7 @@ class _MyVerifyState extends State<OtpScreen> {
                   CupertinoButtonCustom(
                     padding: const EdgeInsets.symmetric(horizontal: 4),
                     color: AppColor.nokiaBlue,
-                    textt: "Verify Phone Number",
+                    text: "Verify Phone Number",
                     onPressed: () async {
                       // Get.to(() => const OtpScreen());
                       if (smsCode != null) {
@@ -118,14 +118,14 @@ class _MyVerifyState extends State<OtpScreen> {
                           await auth.signInWithCredential(credential);
                           //
                           // ignore: use_build_context_synchronously
-                          Alart.showSnackBar(context, "Verifi sucsess");
+                          Alert.showSnackBar(context, "Verifi sucsess");
                           Get.to(() => SignUpScreen(
                               phoneNumberString: widget.phoneNumber));
                         } catch (e) {
-                          Alart.showSnackBar(context, e.toString());
+                          Alert.showSnackBar(context, e.toString());
                         }
                       } else {
-                        Alart.showSnackBar(context, "Please EnterPin");
+                        Alert.showSnackBar(context, "Please EnterPin");
                       }
                     },
                   ),

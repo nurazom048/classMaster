@@ -1,14 +1,14 @@
 // ignore_for_file: avoid_print
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/core/dialogs/alart_dialogs.dart';
+import 'package:table/core/dialogs/alert_dialogs.dart';
 import 'package:table/constant/app_color.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/controller/priode_controller.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/request/priode_request.dart';
+import 'package:table/ui/bottom_items/Home/Full_routine/controller/priode_controller.dart';
+import 'package:table/ui/bottom_items/Home/Full_routine/request/priode_request.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 import 'package:table/widgets/heder/heder_title.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/widgets/select_time.dart';
-import 'package:table/widgets/appWidget/buttons/cupertino_butttons.dart';
+import 'package:table/ui/bottom_items/Home/Full_routine/widgets/select_time.dart';
+import 'package:table/widgets/appWidget/buttons/cupertino_buttons.dart';
 
 class AppPriodePage extends StatefulWidget {
   const AppPriodePage({
@@ -51,7 +51,7 @@ class _AppPriodePageState extends State<AppPriodePage> {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20)
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20)
               .copyWith(bottom: 0),
           child: Column(
             children: [
@@ -97,7 +97,7 @@ class _AppPriodePageState extends State<AppPriodePage> {
                     if (widget.isEdit == false)
                       CupertinoButtonCustom(
                           color: AppColor.nokiaBlue,
-                          textt: "Add Priode",
+                          text: "Add Priode",
                           onPressed: () async {
                             setState(() {});
 
@@ -116,7 +116,7 @@ class _AppPriodePageState extends State<AppPriodePage> {
                           })
                     else
                       CupertinoButtonCustom(
-                          textt: "Eddit priode",
+                          text: "Eddit priode",
                           color: AppColor.nokiaBlue,
                           onPressed: () async {
                             print("Ontap to eddir");
@@ -217,7 +217,7 @@ class _AppPriodePageState extends State<AppPriodePage> {
 
       addRes.fold(
         (l) {
-          return Alart.errorAlartDilog(context, l);
+          return Alert.errorAlertDialog(context, l);
         },
         (r) {
           startTime = r.startTime;

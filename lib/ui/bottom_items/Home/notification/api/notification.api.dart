@@ -20,7 +20,7 @@ final notificationsProvider =
 
 class NotificationApi {
   Future<Either<Message, NotificationModel>> getNotification() async {
-    final bool isOnline = await Utils.isOnlineMethode();
+    final bool isOnline = await Utils.isOnlineMethod();
     String key = 'notification';
     bool isCached = await APICacheManager().isAPICacheKeyExist(key);
 

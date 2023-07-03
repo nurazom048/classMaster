@@ -10,7 +10,7 @@ class CustomTabBar extends StatelessWidget {
   final ValueChanged<int> onTabSelected;
   final EdgeInsetsGeometry? margin;
 
-  const CustomTabBar({
+  const CustomTabBar({super.key, 
     required this.tabItems,
     required this.selectedIndex,
     required this.onTabSelected,

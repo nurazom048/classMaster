@@ -1,7 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:table/core/dialogs/alart_dialogs.dart';
+import 'package:table/core/dialogs/alert_dialogs.dart';
 import 'package:table/ui/bottom_items/Add/widgets/add_squrebuttons.dart';
 import 'package:table/ui/bottom_items/Add/widgets/priode_select_buttons.dart';
 
@@ -38,7 +38,7 @@ class _PeriodNumberSelectorState extends State<PeriodNumberSelector> {
 
   void _handleNumberSelected(int number) {
     if (widget.viewOnly == true) {
-      Alart.showSnackBar(context, "You Can't Change here");
+      Alert.showSnackBar(context, "You Can't Change here");
     } else if (number != initialSelectedNumber) {
       setState(() {
         initialSelectedNumber = number;
@@ -49,7 +49,7 @@ class _PeriodNumberSelectorState extends State<PeriodNumberSelector> {
 
   void _handleEnd(int number) {
     if (widget.viewOnly == true) {
-      Alart.showSnackBar(context, "You Can't Change here");
+      Alert.showSnackBar(context, "You Can't Change here");
     } else if (number != initialEnd) {
       setState(() {
         initialEnd = number;

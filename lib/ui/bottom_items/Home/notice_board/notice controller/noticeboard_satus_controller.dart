@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/core/dialogs/alart_dialogs.dart';
+import 'package:table/core/dialogs/alert_dialogs.dart';
 import 'package:table/models/chack_status_model.dart';
 import '../request/noticeboard_request.dart';
 
@@ -52,13 +52,13 @@ class NoticeBoardStatusProvider
     final result = await noticeboardRequest.sendRequest(academyID);
 
     result.fold(
-      (errorMessage) => Alart.errorAlartDilog(context, errorMessage),
+      (errorMessage) => Alert.errorAlertDialog(context, errorMessage),
       (response) {
         state = AsyncData(
           state.value!.copyWith(activeStatus: "joined"),
         );
 
-        Alart.showSnackBar(context, response.message);
+        Alert.showSnackBar(context, response.message);
       },
     );
   }
@@ -68,13 +68,13 @@ class NoticeBoardStatusProvider
     final result = await noticeboardRequest.notificationOff(academyID);
 
     result.fold(
-      (errorMessage) => Alart.errorAlartDilog(context, errorMessage),
+      (errorMessage) => Alert.errorAlertDialog(context, errorMessage),
       (response) {
         state = AsyncData(
           state.value!.copyWith(notificationOn: false),
         );
 
-        Alart.showSnackBar(context, response.message);
+        Alert.showSnackBar(context, response.message);
       },
     );
   }
@@ -84,13 +84,13 @@ class NoticeBoardStatusProvider
     final result = await noticeboardRequest.notificationOn(academyID);
 
     result.fold(
-      (errorMessage) => Alart.errorAlartDilog(context, errorMessage),
+      (errorMessage) => Alert.errorAlertDialog(context, errorMessage),
       (response) {
         state = AsyncData(
           state.value!.copyWith(notificationOn: true),
         );
 
-        Alart.showSnackBar(context, response.message);
+        Alert.showSnackBar(context, response.message);
       },
     );
   }
@@ -100,13 +100,13 @@ class NoticeBoardStatusProvider
     final result = await noticeboardRequest.leaveMember(academyID);
 
     result.fold(
-      (error) => Alart.showSnackBar(context, error.message),
+      (error) => Alert.showSnackBar(context, error.message),
       (response) {
         state = AsyncData(
           state.value!.copyWith(activeStatus: "not_joined"),
         );
 
-        Alart.showSnackBar(context, response.message);
+        Alert.showSnackBar(context, response.message);
       },
     );
   }

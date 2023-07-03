@@ -6,8 +6,8 @@ import 'package:table/ui/bottom_items/Home/widgets/drawer_item.dart';
 import '../../bottom_nevbar.dart';
 import '../../search/search_screen/search_page.dart';
 
-class MyDawer extends StatelessWidget {
-  const MyDawer({super.key});
+class MyDrawer extends StatelessWidget {
+  const MyDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class MyDawer extends StatelessWidget {
           DrawerItems(
             icon: Icons.home,
             text: "Home",
-            onTap: () => Get.to(() => HomeScreen()),
+            onTap: () => Get.to(() => const HomeScreen()),
           ),
 
           DrawerItems(

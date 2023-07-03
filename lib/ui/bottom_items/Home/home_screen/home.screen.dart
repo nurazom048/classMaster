@@ -4,10 +4,9 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import 'package:table/core/component/loaders.dart';
 import 'package:table/sevices/one%20signal/onesignla.services.dart';
 import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/utils/rutin_dialog.dart';
+import 'package:table/ui/bottom_items/Home/Full_routine/utils/rutin_dialog.dart';
 import 'package:table/ui/bottom_items/Home/models/home_rutines_model.dart';
 import 'package:table/ui/bottom_items/Home/notice_board/models/recent_notice_model.dart';
 import 'package:table/ui/bottom_items/Home/utils/utils.dart';
@@ -17,11 +16,11 @@ import 'package:table/ui/bottom_items/Home/widgets/recentnoticeslider_scalton.da
 import 'package:table/ui/bottom_items/Home/widgets/slider/recentniticeslider_item.dart';
 import 'package:table/widgets/error/error.widget.dart';
 import '../../../../core/component/responsive.dart';
-import '../../../../core/dialogs/alart_dialogs.dart';
+import '../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../sevices/notification services/awn_package.dart';
-import '../../Account/accounu_ui/Account_screen.dart';
-import '../full_rutin/widgets/rutin_box/rutin_box_by_id.dart';
-import '../full_rutin/widgets/sceltons/rutinebox_id_scelton.dart';
+import '../../Collection Fetures/Ui/collections.screen.dart';
+import '../Full_routine/widgets/rutin_box/rutin_box_by_id.dart';
+import '../Full_routine/widgets/sceltons/rutinebox_id_scelton.dart';
 import '../home_req/home_rutins_controller.dart';
 import '../notice_board/notice controller/virew_recent_notice_controller.dart';
 import '../notice_board/screens/view_all_recent_notice.dart';
@@ -49,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
     AwsomNotificationSetup.takePermiton(context);
     // One signal
     OneSignalServices.initialize();
-    OneSignalServices.oneSignalPermition();
+    OneSignalServices.oneSignalPermission();
   }
 
   @override
@@ -70,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ref, recentNoticeList, context, homeRutins,
           homeRoutineNotifier: homeRutinsNotifier);
 
-      const _appBar = ChustomTitleBar("title");
+      const _appBar = CustomTitleBar("title");
       return Responsive(
         // Mobile view
         mobile: SafeArea(
@@ -90,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Row(
                 children: [
                   // Drawer
-                  const Expanded(flex: 1, child: MyDawer()),
+                  const Expanded(flex: 1, child: MyDrawer()),
                   // mobile
                   Expanded(
                     flex: 3,
@@ -113,9 +112,9 @@ homeMobileView(WidgetRef ref, AsyncValue<RecentNotice> recentNoticeList,
     {required homeRoutineNotifier}) {
   return RefreshIndicator(
     onRefresh: () async {
-      final bool isOnline = await Utils.isOnlineMethode();
+      final bool isOnline = await Utils.isOnlineMethod();
       if (!isOnline) {
-        Alart.showSnackBar(context, 'You are in offline mood');
+        Alert.showSnackBar(context, 'You are in offline mood');
       } else {
         //! provider
         ref.refresh(homeRutinControllerProvider(null));
@@ -127,7 +126,7 @@ homeMobileView(WidgetRef ref, AsyncValue<RecentNotice> recentNoticeList,
       controller: scrollController,
       children: [
         if (Responsive.isMobile(context))
-          ChustomTitleBar("title", ontap: () {
+          CustomTitleBar("title", ontap: () {
             Get.to(() => const NotificatioScreen());
           }),
 
@@ -181,7 +180,7 @@ homeMobileView(WidgetRef ref, AsyncValue<RecentNotice> recentNoticeList,
             error: (error, stackTrace) {
               // print('error happend');
               // print(error);
-              Alart.handleError(context, error);
+              Alert.handleError(context, error);
 
               return ErrorScreen(error: error.toString());
             },
@@ -227,7 +226,7 @@ homeMobileView(WidgetRef ref, AsyncValue<RecentNotice> recentNoticeList,
           },
           loading: () => RUTINE_BOX_SKELTON,
           error: (error, stackTrace) {
-            Alart.handleError(context, error);
+            Alert.handleError(context, error);
             return ErrorScreen(error: error.toString());
           },
         ),

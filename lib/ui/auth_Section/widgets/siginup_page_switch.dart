@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 
-class SiginUpSuicherButton extends StatelessWidget {
-  final String starttitle;
-  final String endtitle;
+class SignUpSuicherButton extends StatelessWidget {
+  final String startTitle;
+  final String endTitle;
   final dynamic onTap;
-  const SiginUpSuicherButton(
-    this.starttitle,
-    this.endtitle, {
+  const SignUpSuicherButton(
+    this.startTitle,
+    this.endTitle, {
     super.key,
     required this.onTap,
   });
@@ -18,7 +18,7 @@ class SiginUpSuicherButton extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          starttitle,
+          startTitle,
           style: const TextStyle(
             fontFamily: 'Open Sans',
             fontWeight: FontWeight.w400,
@@ -29,7 +29,7 @@ class SiginUpSuicherButton extends StatelessWidget {
         ),
         InkWell(
           onTap: onTap,
-          child: Text(' $endtitle', style: TS.opensensBlue()),
+          child: Text(' $endTitle', style: TS.opensensBlue()),
         )
       ],
     );

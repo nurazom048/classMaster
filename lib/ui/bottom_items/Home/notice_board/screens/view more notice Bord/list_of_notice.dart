@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import 'package:table/core/dialogs/alart_dialogs.dart';
+import 'package:table/core/dialogs/alert_dialogs.dart';
 import 'package:table/ui/bottom_items/Home/notice_board/screens/view_notice_screen.dart';
 
 import '../../models/recent_notice_model.dart';
@@ -71,7 +71,7 @@ class ListOfNoticeScreen extends ConsumerWidget {
                     },
                   );
                 },
-                error: (error, stackTrace) => Alart.handleError(context, error),
+                error: (error, stackTrace) => Alert.handleError(context, error),
                 loading: () {
                   return const Text("Loding");
                 },

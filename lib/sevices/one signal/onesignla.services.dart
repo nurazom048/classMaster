@@ -14,11 +14,11 @@ class OneSignalServices {
     print("osUserID : $osUserID");
   }
 
-// permition
-  static void oneSignalPermition() {
+// permission
+  static void oneSignalPermission() {
     OneSignal.shared.promptUserForPushNotificationPermission().then((value) {
       if (value == true) {
-        print('acseptpermition $value');
+        print('accept Permission $value');
       } else {
         AppSettings.openNotificationSettings();
       }

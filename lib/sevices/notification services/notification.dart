@@ -20,15 +20,17 @@ final classNotificationProvider =
 
 class NotificationClass {
   Future<ClassNotificationList?> routineNotification() async {
+    // ignore: avoid_print
     print('call fore notification');
 
     final String? getToken = await AuthController.getToken();
 
     final url = Uri.parse('${Const.BASE_URl}/class/notification');
     final headers = {'Authorization': 'Bearer $getToken'};
-    final bool isOnline = await Utils.isOnlineMethode();
+    final bool isOnline = await Utils.isOnlineMethod();
     final String key = "notification$url";
     var isHaveCash = await APICacheManager().isAPICacheKeyExist(key);
+    // ignore: avoid_print
     print(url);
     try {
       // Check if offline and have cache

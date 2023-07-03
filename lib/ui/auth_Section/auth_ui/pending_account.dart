@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 
-import '../../bottom_items/Account/accounu_ui/aboutus_screen.dart';
+import '../../bottom_items/Collection Fetures/Ui/aboutus_screen.dart';
 
 class PendingScreen extends StatelessWidget {
   const PendingScreen({super.key});
@@ -17,8 +17,8 @@ class PendingScreen extends StatelessWidget {
             style: TS.heading(),
           ),
           TextButton(
-            onPressed: () => Get.to(() => Aboutus_screen()),
-            child: Text('ContractUs'),
+            onPressed: () => Get.to(() => const AboutusScreen()),
+            child: const Text('ContractUs'),
           ),
         ],
       ),

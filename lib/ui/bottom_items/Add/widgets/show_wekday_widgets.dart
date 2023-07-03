@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Add/widgets/wekkday_view.dart';
 
 import '../../../../core/component/Loaders.dart';
-import '../../../../core/dialogs/alart_dialogs.dart';
-import '../../Home/full_rutin/controller/weekday_controller.dart';
+import '../../../../core/dialogs/alert_dialogs.dart';
+import '../../Home/Full_routine/controller/weekday_controller.dart';
 import '../utils/weekday_utils.dart';
 import 'add_weekday_button.dart';
 
@@ -43,7 +43,7 @@ class ShowWeekdayWidgets extends ConsumerWidget {
               ),
             );
           },
-          error: (error, stackTrace) => Alart.handleError(context, error),
+          error: (error, stackTrace) => Alert.handleError(context, error),
           loading: () => Loaders.center(),
         ),
         AddWeekdayButton(

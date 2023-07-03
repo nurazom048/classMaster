@@ -3,17 +3,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/constant/app_color.dart';
-import 'package:table/core/dialogs/alart_dialogs.dart';
+import 'package:table/core/dialogs/alert_dialogs.dart';
 import 'package:table/ui/bottom_items/Add/utils/add_class_validation.dart';
 import 'package:table/ui/bottom_items/Add/widgets/select_priode_number.dart';
 import 'package:flutter/material.dart' as ma;
-import 'package:table/widgets/appWidget/buttons/cupertino_butttons.dart';
+import 'package:table/widgets/appWidget/buttons/cupertino_buttons.dart';
 
 import '../../../../widgets/appWidget/TextFromFild.dart';
 import '../../../../widgets/day_select_dropdowen.dart';
-import '../../Home/full_rutin/controller/weekday_controller.dart';
-import '../../Home/full_rutin/screen/viewMore/class_list.dart';
+import '../../Home/Full_routine/controller/weekday_controller.dart';
+import '../../Home/Full_routine/screen/viewMore/class_list.dart';
 
+// ignore: must_be_immutable
 class AddWeekdayExpantion extends ConsumerWidget {
   final String classId;
   AddWeekdayExpantion({super.key, required this.classId});
@@ -47,14 +48,14 @@ class AddWeekdayExpantion extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: 9),
+                    margin: const EdgeInsets.only(top: 9),
                     height: 40,
                     // color: Colors.red,
                     child: Row(
                       children: [
                         IconButton(
                           onPressed: () => Navigator.of(context).pop(),
-                          icon: Icon(Icons.cancel),
+                          icon: const Icon(Icons.cancel),
                         ),
                       ],
                     ),
@@ -88,7 +89,7 @@ class AddWeekdayExpantion extends ConsumerWidget {
                   const SizedBox(height: 30),
                   CupertinoButtonCustom(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    textt: "Add Weekday",
+                    text: "Add Weekday",
                     widget: const ma.Text(
                       "Add Weekday",
                       style: TextStyle(
@@ -100,7 +101,7 @@ class AddWeekdayExpantion extends ConsumerWidget {
                     color: AppColor.nokiaBlue,
                     onPressed: () async {
                       if (_number == null) {
-                        Alart.errorAlartDilog(context, 'Select day');
+                        Alert.errorAlertDialog(context, 'Select day');
                       }
                       if (_weekdayFromKey.currentState!.validate() &&
                           _number != null) {

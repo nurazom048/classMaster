@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../constant/app_color.dart';
-import '../../../widgets/appWidget/buttons/cupertino_butttons.dart';
+import '../../../widgets/appWidget/buttons/cupertino_buttons.dart';
 import '../../../widgets/heder/heder_title.dart';
 import '../widgets/pnone_number_textfields.dart';
 import 'otp_screen.dart';
@@ -75,7 +75,7 @@ class _MyPhoneState extends State<PhoneNumberScreen> {
                       CupertinoButtonCustom(
                         padding: const EdgeInsets.symmetric(horizontal: 4),
                         color: AppColor.nokiaBlue,
-                        textt: "Send the code",
+                        text: "Send the code",
                         onPressed: () async {
                           String fullphoneNum = countryController.text +
                               phoneNumberController.text;

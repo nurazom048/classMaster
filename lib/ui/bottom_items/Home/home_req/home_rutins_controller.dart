@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
 
-import '../../../../core/dialogs/alart_dialogs.dart';
+import '../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../models/message_model.dart';
 import '../models/home_rutines_model.dart';
 
@@ -39,7 +39,7 @@ class HomeRutinsController extends StateNotifier<AsyncValue<RoutineHome>> {
     try {
       if (page == state.value!.totalPages) {
       } else {
-        print('call fore loader more ${page} ${state.value!.totalPages}');
+        print('call fore loader more $page ${state.value!.totalPages}');
 
         final newData = await homeReq.homeRutines(pages: page + 1);
 
@@ -68,7 +68,7 @@ class HomeRutinsController extends StateNotifier<AsyncValue<RoutineHome>> {
       Either<Message, Message> res = await homeReq.deleteRutin(routineID);
 
       res.fold((error) {
-        return Alart.showSnackBar(context, error.message);
+        return Alert.showSnackBar(context, error.message);
       }, (data) {
         String? deletedRoutineID = data.routineID;
 
@@ -79,13 +79,13 @@ class HomeRutinsController extends StateNotifier<AsyncValue<RoutineHome>> {
               (routine) => routine.rutineId.id == deletedRoutineID);
           if (!mounted) return;
           state = AsyncData(state.value!.copyWith(homeRoutines: homeRoutines));
-          return Alart.showSnackBar(context, data.message);
+          return Alert.showSnackBar(context, data.message);
         }
       });
     } catch (e) {
       if (!mounted) return;
 
-      Alart.handleError(context, e);
+      Alert.handleError(context, e);
     }
   }
 }

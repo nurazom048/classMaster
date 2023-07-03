@@ -2,7 +2,7 @@
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:table/core/component/loaders.dart';
 
-// import '../../../../core/dialogs/alart_dialogs.dart';
+// import '../../../../core/dialogs/alert_dialogs.dart';
 // import '../../../../widgets/appWidget/app_text.dart';
 // import '../../Home/notice_board/request/noticeboard_noticeRequest.dart';
 
@@ -87,7 +87,7 @@
 //               ),
 //             );
 //           },
-//           error: (error, stackTrace) => Alart.handleError(context, error),
+//           error: (error, stackTrace) => Alert.handleError(context, error),
 //           loading: () => Loaders.button(),
 //         ),
 //       );

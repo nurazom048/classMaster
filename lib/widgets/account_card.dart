@@ -20,13 +20,13 @@ class AccountCard extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 42).copyWith(top: 30),
+        margin: const EdgeInsets.symmetric(horizontal: 42).copyWith(top: 30),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             FutureBuilder(
-              future: Utils.isOnlineMethode(),
+              future: Utils.isOnlineMethod(),
               builder: (context, snapshot) {
                 bool isOnline = snapshot.data ?? false;
 

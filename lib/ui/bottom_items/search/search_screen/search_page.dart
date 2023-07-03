@@ -23,7 +23,7 @@ class SearchPAge extends StatefulWidget {
 }
 
 class _SearchPAgeState extends State<SearchPAge> {
-  final _appBar = const ChustomTitleBar("title");
+  final _appBar = const CustomTitleBar("title");
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class _SearchPAgeState extends State<SearchPAge> {
           Expanded(
             child: Row(
               children: [
-                const Expanded(flex: 1, child: MyDawer()),
+                const Expanded(flex: 1, child: MyDrawer()),
                 Expanded(
                   flex: 4,
                   child: Container(

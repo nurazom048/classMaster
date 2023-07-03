@@ -3,7 +3,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/component/loaders.dart';
-import 'package:table/core/dialogs/alart_dialogs.dart';
+import 'package:table/core/dialogs/alert_dialogs.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 import 'package:table/widgets/error/error.widget.dart';
 import 'package:table/widgets/heder/heder_title.dart';
@@ -57,7 +57,7 @@ class _NotificatioScreenState extends State<NotificatioScreen> {
                     );
                   },
                   error: (error, stackTrace) =>
-                      Alart.handleError(context, error),
+                      Alert.handleError(context, error),
                   loading: () => Loaders.center(),
                 ),
               )

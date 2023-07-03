@@ -4,14 +4,14 @@ import 'package:table/ui/bottom_items/search/search_screen/search_page.dart';
 
 import '../../../../constant/app_color.dart';
 
-class ChustomTitleBar extends StatelessWidget {
+class CustomTitleBar extends StatelessWidget {
   final String title;
   final IconData? icon;
   final double elevation;
   final Widget? acction;
   final dynamic ontap;
 
-  const ChustomTitleBar(
+  const CustomTitleBar(
     this.title, {
     this.ontap,
     this.icon,

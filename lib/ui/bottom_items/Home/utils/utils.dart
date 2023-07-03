@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import '../../Account/accounu_ui/Account_screen.dart';
+import '../../Collection Fetures/Ui/collections.screen.dart';
 
 class Utils {
   // hode Nevbar On scroll
@@ -53,9 +53,9 @@ class Utils {
     return displayDate;
   }
 
-  // isOnlineMethode
+  // isOnlineMethod
 
-  static Future<bool> isOnlineMethode() async {
+  static Future<bool> isOnlineMethod() async {
     final connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult != ConnectivityResult.none) {
       print('trure = $connectivityResult');

@@ -50,6 +50,7 @@ class picker extends HelperMethods {
 
       // Get the PDF file bytes
       final bytes = result.files.single.bytes;
+      // ignore: avoid_print
       print(bytes);
 
       final path = result.paths[0];
@@ -57,6 +58,7 @@ class picker extends HelperMethods {
       // Return the PDF file path (or any other necessary information)
       return path;
     } catch (e) {
+      // ignore: avoid_print
       print("pdf picker err: $e");
       return null;
     }

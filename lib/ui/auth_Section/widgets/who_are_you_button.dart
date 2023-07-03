@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:table/constant/app_color.dart';
 import '../../../widgets/appWidget/app_text.dart';
-import '../auth_ui/SiginUp_Screen.dart';
+import '../auth_ui/SignUp_Screen.dart';
 
 class WhoAreYouButton extends StatefulWidget {
   final void Function(String)? onAccountType;
@@ -61,7 +60,7 @@ class _WhoAreYouButtonState extends State<WhoAreYouButton> {
                         setState(() {
                           if (value != null) {
                             ref
-                                .watch(selectAccoyTypeProvider.notifier)
+                                .watch(selectAccountTypeProvider.notifier)
                                 .update((state) => value);
 
                             selectedRole = value;
@@ -104,7 +103,7 @@ class _WhoAreYouButtonState extends State<WhoAreYouButton> {
                         setState(() {
                           if (value != null) {
                             ref
-                                .watch(selectAccoyTypeProvider.notifier)
+                                .watch(selectAccountTypeProvider.notifier)
                                 .update((state) => value);
                             selectedRole = value;
                             widget.onAccountType!.call(selectedRole);

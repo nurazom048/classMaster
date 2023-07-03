@@ -5,7 +5,7 @@ import 'package:table/ui/bottom_items/search/search_screen/search_page.dart';
 import 'package:table/widgets/error/error.widget.dart';
 
 import '../../../../core/component/Loaders.dart';
-import '../../../../core/dialogs/alart_dialogs.dart';
+import '../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../widgets/accound_card_row.dart';
 
 class AccountSearchScreen extends ConsumerWidget {
@@ -51,7 +51,7 @@ class AccountSearchScreen extends ConsumerWidget {
           );
         },
         error: (error, stackTrace) {
-          Alart.handleError(context, error);
+          Alert.handleError(context, error);
           return ErrorScreen(error: error.toString());
         },
         loading: () => Loaders.center(),

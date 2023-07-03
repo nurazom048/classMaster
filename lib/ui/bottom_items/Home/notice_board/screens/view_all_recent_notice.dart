@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/component/Loaders.dart';
-import 'package:table/ui/bottom_items/Account/models/account_models.dart';
 import 'package:table/ui/bottom_items/Home/notice_board/screens/view_notice_screen.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 
-import '../../../../../core/dialogs/alart_dialogs.dart';
+import '../../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../../widgets/heder/heder_title.dart';
+import '../../../Collection Fetures/models/account_models.dart';
 import '../notice controller/virew_recent_notice_controller.dart';
 import '../utils/notice_board_dilog.dart';
 import '../widgets/simple_notice_card.dart';
@@ -102,7 +102,7 @@ class ViewAllRecentNotice extends ConsumerWidget {
               },
             );
           },
-          error: (error, stackTrace) => Alart.handleError(context, error),
+          error: (error, stackTrace) => Alert.handleError(context, error),
           loading: () => Loaders.center(),
         ),
       ),

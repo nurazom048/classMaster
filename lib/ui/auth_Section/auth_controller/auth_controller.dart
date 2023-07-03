@@ -11,9 +11,8 @@ import 'package:table/models/message_model.dart';
 import 'package:table/ui/auth_Section/auth_req/auth_req.dart';
 import 'package:table/ui/bottom_items/bottom_nevbar.dart';
 import '../../../constant/constant.dart';
-import '../../../core/dialogs/alart_dialogs.dart';
-import '../auth_ui/email_varification.screen.dart';
-import '../auth_ui/forgetpassword_screen.dart';
+import '../../../core/dialogs/alert_dialogs.dart';
+import '../auth_ui/email_verification.screen.dart';
 import '../auth_ui/logIn_screen.dart';
 import '../auth_ui/pending_account.dart';
 
@@ -23,8 +22,8 @@ final authController_provider = StateNotifierProvider.autoDispose(
 //
 
 class AuthController extends StateNotifier<bool> {
-  final AuthReq authReqq;
-  AuthController(this.authReqq) : super(false);
+  final AuthReq authReq;
+  AuthController(this.authReq) : super(false);
 
   //
 
@@ -40,7 +39,7 @@ class AuthController extends StateNotifier<bool> {
     String? contractInfo,
   }) async {
     state = true;
-    // responce
+    // response
     Either<Message, Message> res = await AuthReq.createAccount(
       context,
       name: name,
@@ -54,25 +53,24 @@ class AuthController extends StateNotifier<bool> {
 
     res.fold((l) async {
       state = false;
-      return Alart.showSnackBar(context, l.message);
+      return Alert.showSnackBar(context, l.message);
     }, (r) {
       state = false;
-      return Alart.showSnackBar(context, r.message);
+      return Alert.showSnackBar(context, r.message);
     });
   }
 
-//******** siginIn      ************ */
-  siginIn(username, password, context) async {
+//******** signIn      ************ */
+  signIn(username, password, context) async {
     state = true;
-    final res = await authReqq.login(username: username, password: password);
+    final res = await authReq.login(username: username, password: password);
 
     res.fold(
       (l) async {
         state = false;
-        print('***********************************${l.message} ${password}**');
 
         if (l.message == 'Academy request is pending') {
-          Get.to(() => PendingScreen());
+          Get.to(() => const PendingScreen());
         }
         if (l.message == 'Email is not verified') {
           await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -83,29 +81,28 @@ class AuthController extends StateNotifier<bool> {
                 email: l.email!,
                 password: password,
               ));
-          Alart.showSnackBar(context, 'Email is not varified');
+          Alert.showSnackBar(context, 'Email is not verified');
         } else {
-          print(l);
-          return Alart.errorAlartDilog(context, l.message);
+          return Alert.errorAlertDialog(context, l.message);
         }
       },
       (r) {
         state = false;
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => BottomNavBar()));
-        Alart.showSnackBar(context, r);
+        Alert.showSnackBar(context, r);
       },
     );
   }
 
-//******** changepassword  ************ */
+//******** change password  ************ */
   void changepassword(oldPassword, newPassword, context) async {
     state = true;
-    final res = await authReqq.changePassword(oldPassword, newPassword);
+    final res = await authReq.changePassword(oldPassword, newPassword);
     res.fold(
       (l) async {
         state = false;
-        return Alart.errorAlartDilog(context, l);
+        return Alert.errorAlertDialog(context, l);
       },
       (r) async {
         state = false;
@@ -114,15 +111,15 @@ class AuthController extends StateNotifier<bool> {
         final prefs = await SharedPreferences.getInstance();
         prefs.remove('Token');
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const LogingScreen()));
+            MaterialPageRoute(builder: (context) => const LoginScreen()));
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const LogingScreen(),
+            builder: (context) => const LoginScreen(),
           ),
         );
 
-        Alart.showSnackBar(context, r.message);
+        Alert.showSnackBar(context, r.message);
       },
     );
   }
@@ -132,12 +129,12 @@ class AuthController extends StateNotifier<bool> {
   void forgotPassword(context,
       {String? email, String? username, String? phone}) async {
     state = true;
-    final res = await authReqq.forgrtPassword(email: email, phone: phone);
+    final res = await authReq.forgrtPassword(email: email, phone: phone);
 
     res.fold(
       (l) {
         state = false;
-        return Alart.errorAlartDilog(context, l);
+        return Alert.errorAlertDialog(context, l);
       },
       (r) async {
         try {
@@ -145,16 +142,16 @@ class AuthController extends StateNotifier<bool> {
           await FirebaseAuth.instance.sendPasswordResetEmail(email: r.email!);
           state = false;
 
-          return Alart.upcoming(
+          return Alert.upcoming(
             context,
             header: 'Success',
             message: FORGOT_MAIL_SEND_MESSAGE,
           );
         } on FirebaseAuthException catch (e) {
-          Alart.handleError(context, e);
+          Alert.handleError(context, e);
         }
 
-        Alart.showSnackBar(context, r.message);
+        Alert.showSnackBar(context, r.message);
       },
     );
   }
@@ -180,7 +177,7 @@ class AuthController extends StateNotifier<bool> {
 
   // LogOut
   static Future<void> logOut(context) async {
-    Alart.errorAlertDialogCallBack(
+    Alert.errorAlertDialogCallBack(
       context,
       "Are You Sure To logout ?",
       onConfirm: () async {
@@ -190,7 +187,7 @@ class AuthController extends StateNotifier<bool> {
         prefs.remove('Token');
         await APICacheManager().emptyCache();
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const LogingScreen()));
+            MaterialPageRoute(builder: (context) => const LoginScreen()));
       },
     );
   }

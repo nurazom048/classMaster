@@ -41,7 +41,7 @@ class NoticeRequest {
         academyID == null ? recentNoticeUri : viewNoticeByAcademyIDUri;
     final key = requestUri.toString();
 
-    final bool isOffline = await Utils.isOnlineMethode();
+    final bool isOffline = await Utils.isOnlineMethod();
     var isHaveCash = await APICacheManager().isAPICacheKeyExist(key);
     try {
       // if offline and have cash

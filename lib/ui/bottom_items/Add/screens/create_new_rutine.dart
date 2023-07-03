@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:table/core/component/loaders.dart';
-import 'package:table/core/dialogs/alart_dialogs.dart';
+import 'package:table/core/dialogs/alert_dialogs.dart';
 import 'package:table/models/message_model.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/screen/viewMore/view_more_screen.dart';
+import 'package:table/ui/bottom_items/Home/Full_routine/screen/viewMore/view_more_screen.dart';
 import 'package:table/ui/bottom_items/Home/home_req/rutin_req.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
-import 'package:table/widgets/appWidget/buttons/cupertino_butttons.dart';
+import 'package:table/widgets/appWidget/buttons/cupertino_buttons.dart';
 import 'package:table/widgets/heder/heder_title.dart';
 import '../../../../constant/app_color.dart';
 import '../../../../widgets/appWidget/TextFromFild.dart';
@@ -60,7 +60,7 @@ class CreaeNewRutine extends StatelessWidget {
                     } else {
                       return CupertinoButtonCustom(
                         padding: EdgeInsets.zero,
-                        textt: "Create Routine",
+                        text: "Create Routine",
                         color: AppColor.nokiaBlue,
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
@@ -95,7 +95,7 @@ class CreaeNewRutine extends StatelessWidget {
       (error) {
         createRoutineLoderNotifier.update((state) => false);
 
-        return Alart.errorAlartDilog(context, error.message);
+        return Alert.errorAlertDialog(context, error.message);
       },
       (data) async {
         if (data.routineID != null) {
@@ -113,7 +113,7 @@ class CreaeNewRutine extends StatelessWidget {
             ),
           );
         }
-        return Alart.showSnackBar(context, data.message);
+        return Alert.showSnackBar(context, data.message);
       },
     );
   }

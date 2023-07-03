@@ -4,7 +4,7 @@ import 'package:table/core/component/loaders.dart';
 
 import '../../../constant/app_color.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
-import '../../../widgets/appWidget/buttons/cupertino_butttons.dart';
+import '../../../widgets/appWidget/buttons/cupertino_buttons.dart';
 import '../../../widgets/heder/heder_title.dart';
 import '../auth_controller/auth_controller.dart';
 import '../utils/change_pw_validator.dart';
@@ -77,7 +77,7 @@ class ChangePasswordPage extends ConsumerWidget {
                 CupertinoButtonCustom(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   color: AppColor.nokiaBlue,
-                  textt: "Change Password",
+                  text: "Change Password",
                   onPressed: () async {
                     if (formKey.currentState?.validate() ?? false) {
                       authController.changepassword(

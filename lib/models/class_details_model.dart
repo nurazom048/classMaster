@@ -1,7 +1,8 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:convert';
-import 'package:table/ui/bottom_items/Account/models/account_models.dart';
+
+import '../ui/bottom_items/Collection Fetures/models/account_models.dart';
 
 NewClassDetailsModel newClassDetailsModelFromJson(String str) =>
     NewClassDetailsModel.fromJson(json.decode(str));

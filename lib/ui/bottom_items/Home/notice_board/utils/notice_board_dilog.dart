@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/bottom_items/Home/notice_board/request/motice_request.dart';
 
-import '../../../../../core/dialogs/alart_dialogs.dart';
+import '../../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../../widgets/appWidget/dottted_divider.dart';
-import '../../../Account/utils/confrom_alart_dilog.dart';
-import '../../../Add/request/class_request.dart';
-import '../../full_rutin/widgets/chekbox_selector_button.dart';
+import '../../../Collection Fetures/utils/confrom_alart_dilog.dart';
+import '../../Full_routine/widgets/chekbox_selector_button.dart';
 import '../notice controller/noticeboard_satus_controller.dart';
 import '../notice controller/virew_recent_notice_controller.dart';
 
@@ -72,7 +70,7 @@ class NoticeboardDilog {
                     text: "Leave",
                     color: Colors.red,
                     onTap: () {
-                      Alart.errorAlertDialogCallBack(
+                      Alert.errorAlertDialogCallBack(
                         context,
                         "are you sure you want to leave",
                         onConfirm: (bool isYes) {

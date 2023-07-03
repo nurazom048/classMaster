@@ -20,7 +20,7 @@ class AppTextFromField extends StatefulWidget {
     this.margin,
     this.obscureText,
     this.showOfftext,
-    this.maxline = 5,
+    this.marlines = 5,
   });
 
   //
@@ -32,7 +32,7 @@ class AppTextFromField extends StatefulWidget {
   final FocusNode? focusNode;
   final EdgeInsetsGeometry? margin;
   final String? showOfftext;
-  final int? maxline;
+  final int? marlines;
   bool? obscureText;
 
   // Multiline
@@ -56,7 +56,7 @@ class AppTextFromField extends StatefulWidget {
             child: TextFormField(
               validator: validator,
               controller: controller,
-              maxLines: maxline,
+              maxLines: marlines,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: labelText ?? "Enter your $hint ",

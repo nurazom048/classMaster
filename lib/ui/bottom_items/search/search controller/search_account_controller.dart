@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 
 import '../../../../models/search_account.dart';
-import '../../Account/models/account_models.dart';
+import '../../Collection Fetures/models/account_models.dart';
 import '../search_request/search_requests.dart';
 
 final searchAccountController = StateNotifierProvider.family<

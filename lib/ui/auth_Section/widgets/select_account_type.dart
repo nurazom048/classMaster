@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:table/widgets/appWidget/buttons/cupertino_butttons.dart';
+import 'package:table/widgets/appWidget/buttons/cupertino_buttons.dart';
 import '../../../constant/app_color.dart';
 import '../../../widgets/heder/heder_title.dart';
 
@@ -143,13 +143,13 @@ class _SelectAccounTypeState extends State<SelectAccounType> {
                   ///
                   if (selectedRole == null)
                     CupertinoButtonCustom(
-                      textt: "Select Type",
+                      text: "Select Type",
                       onPressed: () {},
                     ),
 
                   if (selectedRole != null)
                     CupertinoButtonCustom(
-                      textt: "Let’s go",
+                      text: "Let’s go",
                       color: AppColor.nokiaBlue,
                       onPressed: () {
                         widget.onAccountType?.call(selectedRole);

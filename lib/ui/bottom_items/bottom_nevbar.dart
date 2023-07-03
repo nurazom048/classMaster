@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:table/core/dialogs/alart_dialogs.dart';
+import 'package:table/core/dialogs/alert_dialogs.dart';
 import 'package:table/ui/bottom_items/Add/screens/add__Notice__Screen.dart';
 import 'package:table/ui/bottom_items/Add/screens/create_new_rutine.dart';
-import 'package:table/ui/bottom_items/Home/full_rutin/widgets/dash_border_button.dart';
+import 'package:table/ui/bottom_items/Home/Full_routine/widgets/dash_border_button.dart';
 
 import '../../constant/app_color.dart';
 import '../../widgets/bottom_sheet_shape.dart';
 
 import '../../core/component/responsive.dart';
 import '../auth_Section/auth_controller/auth_controller.dart';
-import 'Account/accounu_ui/account_screen.dart';
+import 'Collection Fetures/Ui/collections.screen.dart';
 import 'Home/home_screen/home.screen.dart';
 import 'Home/widgets/bottombaritem_custom.dart';
 
@@ -23,9 +23,9 @@ class BottomNavBar extends StatelessWidget {
   BottomNavBar({super.key});
 
   final List<Widget> pages = [
-    HomeScreen(),
+    const HomeScreen(),
     const Text("Add Screen"),
-    const AccountScreen(),
+    const CollectionScreen(),
   ];
 // Add Button
   static Widget add = CircleAvatar(
@@ -175,7 +175,7 @@ plusBottomSheet(BuildContext context) {
                                       return Get.to(() => AddNoticeScreen());
                                     } else {
                                       // ignore: use_build_context_synchronously
-                                      return Alart.upcoming(context);
+                                      return Alert.upcoming(context);
                                     }
                                   },
                                 ),

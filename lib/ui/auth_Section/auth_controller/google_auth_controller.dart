@@ -5,7 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../auth_ui/logIn_screen.dart';
 
 //! provider
-final gooleAuthControllerProvider =
+final googleAuthControllerProvider =
     Provider<GooleAuthController>((ref) => GooleAuthController());
 
 // class
@@ -26,7 +26,7 @@ class GooleAuthController extends ChangeNotifier {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const CreadiantialScreen(),
+        builder: (context) => const CredentialScreen(),
       ),
     );
     // ignore: avoid_print

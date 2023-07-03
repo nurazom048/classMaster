@@ -6,7 +6,7 @@ import 'package:toggle_switch/toggle_switch.dart';
 import '../../../constant/app_color.dart';
 import '../../../constant/constant.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
-import '../../../widgets/appWidget/buttons/cupertino_butttons.dart';
+import '../../../widgets/appWidget/buttons/cupertino_buttons.dart';
 import '../../../widgets/heder/heder_title.dart';
 import '../auth_controller/auth_controller.dart';
 import '../utils/forget_validation.dart';
@@ -108,10 +108,10 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
               ),
               const SizedBox(height: 100),
               CupertinoButtonCustom(
-                isLoding: loading != null && loading == true,
+                isLoading: loading != null && loading == true,
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 color: AppColor.nokiaBlue,
-                textt: "Send Reset Password Email",
+                text: "Send Reset Password Email",
                 icon: Icons.email,
                 onPressed: () async {
                   if (currentIndex == 0

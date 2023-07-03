@@ -4,9 +4,9 @@ import 'package:table/ui/bottom_items/search/search_screen/search_page.dart';
 import 'package:table/widgets/error/error.widget.dart';
 
 import '../../../../core/component/Loaders.dart';
-import '../../../../core/dialogs/alart_dialogs.dart';
-import '../../Home/full_rutin/utils/rutin_dialog.dart';
-import '../../Home/full_rutin/widgets/rutin_box/rutin_box_by_id.dart';
+import '../../../../core/dialogs/alert_dialogs.dart';
+import '../../Home/Full_routine/utils/rutin_dialog.dart';
+import '../../Home/Full_routine/widgets/rutin_box/rutin_box_by_id.dart';
 import '../../Home/home_req/home_rutins_controller.dart';
 import '../search controller/search_rutine_controllers.dart';
 
@@ -61,7 +61,7 @@ class SearchRutineScreen extends ConsumerWidget {
           );
         },
         error: (error, stackTrace) {
-          Alart.handleError(context, error);
+          Alert.handleError(context, error);
           return ErrorScreen(error: error.toString());
         },
         loading: () => Loaders.center(),
