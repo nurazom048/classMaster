@@ -1,14 +1,17 @@
 {
     "fluttergpt.apiKey": "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",
     "cSpell.words": [
+        "addclass",
         "changepassword",
         "Cupertino",
         "dropzone",
+        "eddit",
         "eiin",
         "Fild",
         "forgetpassword",
         "forotpasswprd",
         "fpdart",
+        "instuctor",
         "Longpress",
         "Offtext",
         "onesignal",
@@ -16,6 +19,7 @@
         "PDFB",
         "prefs",
         "priode",
-        "riverpod"
+        "riverpod",
+        "subjectcode"
     ]
 }

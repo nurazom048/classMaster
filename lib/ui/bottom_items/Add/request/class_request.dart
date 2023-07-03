@@ -8,19 +8,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:table/models/message_model.dart';
 import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
-import 'package:table/ui/server/rutinReq.dart';
+import 'package:table/ui/bottom_items/Home/Full_routine/request/routine_api.dart';
 import '../../../../constant/constant.dart';
-import '../../../../core/dialogs/alart_dialogs.dart';
+import '../../../../core/dialogs/alert_dialogs.dart';
 import 'package:table/models/class_model.dart';
 
 class ClassRequest {
+  // ignore: body_might_complete_normally_nullable
   static Future<String?> addClass(
-      WidgetRef ref, String rutinId, context, ClassModel classModel) async {
+      WidgetRef ref, String routineId, context, ClassModel classModel) async {
     print("from add");
     try {
       final prefs = await SharedPreferences.getInstance();
       final String? getToken = prefs.getString('Token');
-      var url = Uri.parse('${Const.BASE_URl}/class/$rutinId/addclass');
+      var url = Uri.parse('${Const.BASE_URl}/class/$routineId/addclass');
 
       final response = await http.post(url, body: {
         "name": classModel.className.toString(),
@@ -43,31 +44,31 @@ class ClassRequest {
         print(res);
         // Navigator.pop(context);
         // ignore: unused_result
-        ref.refresh(rutins_detalis_provider(rutinId));
+        ref.refresh(routine_details_provider(routineId));
         //print response
         print("class created successfully");
         print(res);
-        Alart.showSnackBar(context, 'class add successfully');
+        Alert.showSnackBar(context, 'class add successfully');
         return res['_id'];
       } else {
         var message = json.decode(response.body)["message"];
 
-        Alart.errorAlartDilog(context, message);
+        Alert.errorAlertDialog(context, message);
       }
     } catch (e) {
       print("from server");
       print(e);
-      Alart.handleError(context, e);
+      Alert.handleError(context, e);
     }
   }
 
-  Future<void> editClass(context, WidgetRef ref, String classId, rutinId,
+  Future<void> editClass(context, WidgetRef ref, String classId, routineId,
       ClassModel classModel) async {
     // Obtain shared preferences.
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 
-    print("******************from eddit");
+    print("******************from edit");
 
     try {
       final response = await http.post(
@@ -91,26 +92,26 @@ class ClassRequest {
         Message message =
             Message(message: json.decode(response.body)["message"]);
 
-        print("rutin created successfully");
-        Alart.showSnackBar(context, message.message);
+        print("Routine created successfully");
+        Alert.showSnackBar(context, message.message);
         Navigator.pop(context);
         // ignore: unused_result
-        ref.refresh(rutins_detalis_provider(rutinId));
+        ref.refresh(routine_details_provider(routineId));
         print(res);
       } else {
         Message message =
             Message(message: json.decode(response.body)["message"]);
-        Alart.showSnackBar(context, message.message);
+        Alert.showSnackBar(context, message.message);
       }
     } catch (e) {
-      Alart.handleError(context, e.toString());
+      Alert.handleError(context, e.toString());
     }
   }
 
   // delete class
 
   static Future<void> deleteClass(
-      context, WidgetRef ref, String classId, String rutinId) async {
+      context, WidgetRef ref, String classId, String routineId) async {
     // Obtain shared preferences.
     final String? getToken = await AuthController.getToken();
     Uri uri = Uri.parse('${Const.BASE_URl}/class/delete/$classId');
@@ -124,9 +125,9 @@ class ClassRequest {
 
       if (response.statusCode == 200) {
         print("Class Deleted successfully $res ");
-        Alart.showSnackBar(context, 'Class Deleted successfully');
+        Alert.showSnackBar(context, 'Class Deleted successfully');
         // ignore: unused_result
-        ref.refresh(rutins_detalis_provider(rutinId));
+        ref.refresh(routine_details_provider(routineId));
 
         print(res);
       } else {
@@ -134,7 +135,7 @@ class ClassRequest {
       }
     } catch (e) {
       print(e);
-      Alart.handleError(context, e.toString());
+      Alert.handleError(context, e.toString());
     }
   }
 }
