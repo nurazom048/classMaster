@@ -1,13 +1,13 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers, unused_result, use_build_context_synchronously
+// ignore_for_file: no_leading_underscores_for_local_identifiers, unused_result, use_build_context_synchronously, avoid_print
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import 'package:table/sevices/one%20signal/onesignla.services.dart';
+import 'package:table/services/one%20signal/onesignla.services.dart';
 import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
-import 'package:table/ui/bottom_items/Home/Full_routine/utils/rutin_dialog.dart';
-import 'package:table/ui/bottom_items/Home/models/home_rutines_model.dart';
+import 'package:table/ui/bottom_items/Home/Full_routine/utils/routine_dialog.dart';
+import 'package:table/ui/bottom_items/Home/models/home_routines_model.dart';
 import 'package:table/ui/bottom_items/Home/notice_board/models/recent_notice_model.dart';
 import 'package:table/ui/bottom_items/Home/utils/utils.dart';
 import 'package:table/ui/bottom_items/Home/widgets/mydrawer.dart';
@@ -17,11 +17,11 @@ import 'package:table/ui/bottom_items/Home/widgets/slider/recentniticeslider_ite
 import 'package:table/widgets/error/error.widget.dart';
 import '../../../../core/component/responsive.dart';
 import '../../../../core/dialogs/alert_dialogs.dart';
-import '../../../../sevices/notification services/awn_package.dart';
+import '../../../../services/notification services/awn_package.dart';
 import '../../Collection Fetures/Ui/collections.screen.dart';
-import '../Full_routine/widgets/rutin_box/rutin_box_by_id.dart';
+import '../Full_routine/widgets/routine_box/rutin_box_by_id.dart';
 import '../Full_routine/widgets/sceltons/rutinebox_id_scelton.dart';
-import '../home_req/home_rutins_controller.dart';
+import '../home_req/home_routines_controller.dart';
 import '../notice_board/notice controller/virew_recent_notice_controller.dart';
 import '../notice_board/screens/view_all_recent_notice.dart';
 import '../notification/screen/notification.screen.dart';
@@ -43,9 +43,9 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    // AwsomNotificationSetup
-    AwsomNotificationSetup.initialize();
-    AwsomNotificationSetup.takePermiton(context);
+    // AwesomeNotificationSetup
+    AwesomeNotificationSetup.initialize();
+    AwesomeNotificationSetup.takePermiton(context);
     // One signal
     OneSignalServices.initialize();
     OneSignalServices.oneSignalPermission();
@@ -56,18 +56,18 @@ class _HomeScreenState extends State<HomeScreen> {
     return Consumer(builder: (context, ref, _) {
       //! provider
 
-      final homeRutins = ref.watch(homeRutinControllerProvider(null));
+      final homeRoutines = ref.watch(homeRoutineControllerProvider(null));
       final recentNoticeList = ref.watch(recentNoticeController(null));
 
       logthis();
 
 //notifier
-      final homeRutinsNotifier =
-          ref.watch(homeRutinControllerProvider(null).notifier);
+      final homeRoutinesNotifier =
+          ref.watch(homeRoutineControllerProvider(null).notifier);
       //
       final _mobileView = homeMobileView(
-          ref, recentNoticeList, context, homeRutins,
-          homeRoutineNotifier: homeRutinsNotifier);
+          ref, recentNoticeList, context, homeRoutines,
+          homeRoutineNotifier: homeRoutinesNotifier);
 
       const _appBar = CustomTitleBar("title");
       return Responsive(
@@ -75,8 +75,8 @@ class _HomeScreenState extends State<HomeScreen> {
         mobile: SafeArea(
           child: Scaffold(
             backgroundColor: const Color(0xFFF2F2F2),
-            body: homeMobileView(ref, recentNoticeList, context, homeRutins,
-                homeRoutineNotifier: homeRutinsNotifier),
+            body: homeMobileView(ref, recentNoticeList, context, homeRoutines,
+                homeRoutineNotifier: homeRoutinesNotifier),
           ),
         ),
 
@@ -108,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 /////////////
 homeMobileView(WidgetRef ref, AsyncValue<RecentNotice> recentNoticeList,
-    BuildContext context, AsyncValue<RoutineHome> homeRutins,
+    BuildContext context, AsyncValue<RoutineHome> homeRoutines,
     {required homeRoutineNotifier}) {
   return RefreshIndicator(
     onRefresh: () async {
@@ -117,7 +117,7 @@ homeMobileView(WidgetRef ref, AsyncValue<RecentNotice> recentNoticeList,
         Alert.showSnackBar(context, 'You are in offline mood');
       } else {
         //! provider
-        ref.refresh(homeRutinControllerProvider(null));
+        ref.refresh(homeRoutineControllerProvider(null));
         ref.refresh(recentNoticeController(null));
       }
     },
@@ -127,7 +127,7 @@ homeMobileView(WidgetRef ref, AsyncValue<RecentNotice> recentNoticeList,
       children: [
         if (Responsive.isMobile(context))
           CustomTitleBar("title", ontap: () {
-            Get.to(() => const NotificatioScreen());
+            Get.to(() => const NotificationScreen());
           }),
 
         //_______________________ recent notices _________________//
@@ -146,7 +146,7 @@ homeMobileView(WidgetRef ref, AsyncValue<RecentNotice> recentNoticeList,
                   RecentNoticeSliderItem(
                     notice: data.notices,
                     index: 0,
-                    conditon: length >= 2,
+                    condition: length >= 2,
                     singleCondition: length == 1,
                     recentNotice: data,
                   ),
@@ -155,14 +155,14 @@ homeMobileView(WidgetRef ref, AsyncValue<RecentNotice> recentNoticeList,
                   RecentNoticeSliderItem(
                     notice: data.notices,
                     index: 2,
-                    conditon: length >= 4,
+                    condition: length >= 4,
                     singleCondition: length == 3,
                     recentNotice: data,
                   ), //
                   RecentNoticeSliderItem(
                     notice: data.notices,
                     index: 3,
-                    conditon: length >= 6,
+                    condition: length >= 6,
                     singleCondition: length == 5,
                     recentNotice: data,
                   ),
@@ -170,7 +170,7 @@ homeMobileView(WidgetRef ref, AsyncValue<RecentNotice> recentNoticeList,
                   RecentNoticeSliderItem(
                     notice: data.notices,
                     index: 4,
-                    conditon: length >= 8,
+                    condition: length >= 8,
                     singleCondition: length == 7,
                     recentNotice: data,
                   ),
@@ -178,26 +178,24 @@ homeMobileView(WidgetRef ref, AsyncValue<RecentNotice> recentNoticeList,
               );
             },
             error: (error, stackTrace) {
-              // print('error happend');
-              // print(error);
               Alert.handleError(context, error);
 
               return ErrorScreen(error: error.toString());
             },
-            loading: () => const RecentNoticeSliderScealton(),
+            loading: () => const RecentNoticeSliderSkelton(),
           ),
         ),
 
-        // uploaded rutines
+        // uploaded Routine
 
-        homeRutins.when(
+        homeRoutines.when(
           data: (data) {
             void scrollListener() {
               if (scrollController.position.pixels ==
                   scrollController.position.maxScrollExtent) {
                 print('end.........................');
                 ref
-                    .watch(homeRutinControllerProvider(null).notifier)
+                    .watch(homeRoutineControllerProvider(null).notifier)
                     .loadMore(data.currentPage);
               }
             }
@@ -214,11 +212,11 @@ homeMobileView(WidgetRef ref, AsyncValue<RecentNotice> recentNoticeList,
                 return RutinBoxById(
                   rutinId: data.homeRoutines[index].rutineId.id,
                   rutinName: data.homeRoutines[index].rutineId.name,
-                  onTapMore: () => RutinDialog.ChackStatusUser_BottomSheet(
+                  onTapMore: () => RoutineDialog.CheckStatusUser_BottomSheet(
                     context,
                     routineID: data.homeRoutines[index].rutineId.id,
                     routineName: data.homeRoutines[index].rutineId.name,
-                    rutinsController: homeRoutineNotifier,
+                    routinesController: homeRoutineNotifier,
                   ),
                 );
               },
@@ -252,17 +250,16 @@ void logthis() async {
 bool hideNevBarOnScroll(ScrollNotification? scrollNotification, WidgetRef ref) {
   // Logic of scrollNotification
   if (scrollNotification is ScrollStartNotification) {
-    // ignore: avoid_print
     print("Scroll Started");
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.watch(hideNevBarOnScrooingProvider.notifier).update((state) => true);
+      ref.watch(hideNevBarOnScorningProvider.notifier).update((state) => true);
     });
   } else if (scrollNotification is ScrollUpdateNotification) {
     // print(message);
   } else if (scrollNotification is ScrollEndNotification) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.watch(hideNevBarOnScrooingProvider.notifier).update((state) => false);
+      ref.watch(hideNevBarOnScorningProvider.notifier).update((state) => false);
     });
 
     String message = 'Scroll Ended';

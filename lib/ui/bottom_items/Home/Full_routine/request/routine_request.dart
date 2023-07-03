@@ -7,35 +7,35 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:table/models/chack_status_model.dart';
+import 'package:table/models/check_status_model.dart';
 import 'package:table/ui/bottom_items/Home/utils/utils.dart';
 import '../../../../../constant/constant.dart';
 import '../../../../../models/message_model.dart';
 
 //*** Providers  ******   */
-final FullRutinProvider = Provider((ref) => FullRutinrequest());
+final fullRoutineProvider = Provider((ref) => FullRoutineRequest());
 
-class FullRutinrequest {
+class FullRoutineRequest {
   //
-  //....ChackStatusModel....//
-  Future<CheckStatusModel> chackStatus(rutin_id) async {
+  //....Check StatusModel....//
+  Future<CheckStatusModel> chalkStatus(routineId) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
     final bool isOffile = await Utils.isOnlineMethod();
     var isHaveCash =
-        await APICacheManager().isAPICacheKeyExist("chackStatus$rutin_id");
+        await APICacheManager().isAPICacheKeyExist("chalkStatus$routineId");
 
     try {
       // if offline and have cash
       if (!isOffile && isHaveCash) {
-        var getdata =
-            await APICacheManager().getCacheData("chackStatus$rutin_id");
-        print('Foem cash $getdata');
-        return CheckStatusModel.fromJson(jsonDecode(getdata.syncData));
+        var getData =
+            await APICacheManager().getCacheData("checkStatus$routineId");
+        print('from cash $getData');
+        return CheckStatusModel.fromJson(jsonDecode(getData.syncData));
       }
 
       final response = await http.post(
-        Uri.parse('${Const.BASE_URl}/rutin/status/$rutin_id'),
+        Uri.parse('${Const.BASE_URl}/rutin/status/$routineId'),
         headers: {'Authorization': 'Bearer $getToken'},
       );
 
@@ -43,7 +43,7 @@ class FullRutinrequest {
 //svae cshe
         // save to csh
         APICacheDBModel cacheDBModel = APICacheDBModel(
-            key: "chackStatus$rutin_id", syncData: response.body);
+            key: "chackStatus$routineId", syncData: response.body);
 
         await APICacheManager().addCacheData(cacheDBModel);
 
@@ -86,10 +86,11 @@ class FullRutinrequest {
 
 //... Save unsve rutin.....///
 
-  Future<Either<String, Message>> saveUnsaveRutinReq(rutinId, condition) async {
+  Future<Either<String, Message>> saveUnsavedRoutineReq(
+      routineId, condition) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
-    final url = Uri.parse('${Const.BASE_URl}/rutin/save_unsave/$rutinId');
+    final url = Uri.parse('${Const.BASE_URl}/rutin/save_unsave/$routineId');
     final headers = {'Authorization': 'Bearer $getToken'};
 
     try {
@@ -101,7 +102,7 @@ class FullRutinrequest {
 
       final res = json.decode(response.body);
       final message = Message.fromJson(res);
-      print('from unsave: $res');
+      print('from unsaved: $res');
 
       if (response.statusCode == 200) {
         return right(message);

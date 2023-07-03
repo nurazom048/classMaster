@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/dialogs/alert_dialogs.dart';
-import 'package:table/models/chack_status_model.dart';
+import 'package:table/models/check_status_model.dart';
 import '../request/noticeboard_request.dart';
 
 //! providers

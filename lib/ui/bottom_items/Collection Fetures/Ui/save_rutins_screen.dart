@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/Full_routine/controller/saveroutine.controller.dart';
-import 'package:table/ui/bottom_items/Home/Full_routine/widgets/rutin_box/rutin_box_by_id.dart';
+import 'package:table/ui/bottom_items/Home/Full_routine/widgets/routine_box/rutin_box_by_id.dart';
 
 import '../../../../core/component/Loaders.dart';
 import '../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../widgets/heder/heder_title.dart';
-import '../../Home/Full_routine/utils/rutin_dialog.dart';
-import '../../Home/home_req/home_rutins_controller.dart';
+import '../../Home/Full_routine/utils/routine_dialog.dart';
+import '../../Home/home_req/home_routines_controller.dart';
 
 class SaveRoutinesScreen extends ConsumerWidget {
   SaveRoutinesScreen({super.key});
-  final saveRoutinesScroller = ScrollController();
+  final saveRoutinesScrolled = ScrollController();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //! provider
-    final saveRoutines = ref.watch(saveroutineProvider);
+    final saveRoutines = ref.watch(saveRoutineProvider);
 //notifier
-    final homeRutinsNotifier =
-        ref.watch(homeRutinControllerProvider(null).notifier);
+    final homeRoutinesNotifier =
+        ref.watch(homeRoutineControllerProvider(null).notifier);
     return Scaffold(
       body: Column(
         children: [
@@ -29,30 +29,30 @@ class SaveRoutinesScreen extends ConsumerWidget {
               child: saveRoutines.when(
                 data: (data) {
                   void scrollListener() {
-                    if (saveRoutinesScroller.position.pixels ==
-                        saveRoutinesScroller.position.maxScrollExtent) {
+                    if (saveRoutinesScrolled.position.pixels ==
+                        saveRoutinesScrolled.position.maxScrollExtent) {
                       print('end.........................');
                       ref
-                          .watch(homeRutinControllerProvider(null).notifier)
+                          .watch(homeRoutineControllerProvider(null).notifier)
                           .loadMore(data.currentPage);
                     }
                   }
 
-                  saveRoutinesScroller.addListener(scrollListener);
+                  saveRoutinesScrolled.addListener(scrollListener);
                   return ListView.builder(
                     itemCount: data.savedRoutines.length,
-                    controller: saveRoutinesScroller,
+                    controller: saveRoutinesScrolled,
                     // physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
                       return RutinBoxById(
                         rutinId: data.savedRoutines[index].id,
                         rutinName: data.savedRoutines[index].name,
                         onTapMore: () =>
-                            RutinDialog.ChackStatusUser_BottomSheet(
+                            RoutineDialog.CheckStatusUser_BottomSheet(
                           context,
                           routineID: data.savedRoutines[index].id,
                           routineName: data.savedRoutines[index].name,
-                          rutinsController: homeRutinsNotifier,
+                          routinesController: homeRoutinesNotifier,
                         ),
                       );
                     },

@@ -72,11 +72,11 @@ void accountActions(
   if (result != null) {
     // Handle selected menu item
     if (result == 'kickout') {
-      membersCon.kickeOutMember(memberId, context);
+      membersCon.kickedOutMember(memberId, context);
     } else if (result == 'make_captains') {
-      membersCon.AddCapten(rutinId, username, context);
+      membersCon.AddCaptans(rutinId, username, context);
     } else if (result == 'remove_captains') {
-      membersCon.removeCapten(rutinId, username, context);
+      membersCon.removeCaptans(rutinId, username, context);
     }
   }
 }

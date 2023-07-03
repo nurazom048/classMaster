@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/message_model.dart';
 import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 import '../../../../../../constant/constant.dart';
-import '../../../../../../models/chack_status_model.dart';
+import '../../../../../../models/check_status_model.dart';
 import '../models/all_summary_models.dart';
 import 'package:http/http.dart' as http;
 

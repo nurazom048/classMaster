@@ -11,10 +11,10 @@ import '../../../../../constant/constant.dart';
 import '../../../../../models/message_model.dart';
 import '../../../../../models/rutins/weekday/weekday_list.dart';
 
-final weekdayReqProvider = Provider<WeekdaRequest>((ref) => WeekdaRequest());
+final weekdayReqProvider = Provider<WeekdayRequest>((ref) => WeekdayRequest());
 
 //
-class WeekdaRequest {
+class WeekdayRequest {
   static Future<WeekdayList> showWeekdayList(String classId) async {
     try {
       final response = await http.get(

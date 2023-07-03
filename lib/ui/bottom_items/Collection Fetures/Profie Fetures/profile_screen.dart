@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/component/loaders.dart';
 import 'package:table/ui/bottom_items/Collection%20Fetures/Profie%20Fetures/widgets/noticeboard_header.widgets.dart';
+import 'package:table/ui/bottom_items/Home/home_req/home_routines_controller.dart';
 
 import '../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../widgets/appWidget/app_text.dart';
 import '../../../../widgets/heder/heder_title.dart';
-import '../../Home/Full_routine/utils/rutin_dialog.dart';
-import '../../Home/Full_routine/widgets/rutin_box/rutin_box_by_id.dart';
+import '../../Home/Full_routine/utils/routine_dialog.dart';
+import '../../Home/Full_routine/widgets/routine_box/rutin_box_by_id.dart';
 import '../../Home/Full_routine/widgets/sceltons/rutinebox_id_scelton.dart';
-import '../../Home/home_req/home_rutins_controller.dart';
 import '../../Home/notice_board/notice controller/virew_recent_notice_controller.dart';
 import '../../Home/widgets/recentnoticeslider_scalton.dart';
 import '../../Home/widgets/slider/recentniticeslider_item.dart';
@@ -36,9 +36,10 @@ class ProfileSCreen extends StatelessWidget {
       final recentNoticeList = ref.watch(recentNoticeController(academyID));
 
       final accountData = ref.watch(accountDataProvider(username));
-      final uplodedRoutines = ref.watch(homeRutinControllerProvider(academyID));
-      final uplodedRoutinesNotfier =
-          ref.watch(homeRutinControllerProvider(academyID).notifier);
+      final uploadedRoutines =
+          ref.watch(homeRoutineControllerProvider(academyID));
+      final uploadedRoutinesNotifier =
+          ref.watch(homeRoutineControllerProvider(academyID).notifier);
 
       //
 
@@ -78,7 +79,7 @@ class ProfileSCreen extends StatelessWidget {
                                   RecentNoticeSliderItem(
                                     notice: data.notices,
                                     index: 0,
-                                    conditon: length >= 2,
+                                    condition: length >= 2,
                                     singleCondition: length == 1,
                                     recentNotice: data,
                                   ),
@@ -87,14 +88,14 @@ class ProfileSCreen extends StatelessWidget {
                                   RecentNoticeSliderItem(
                                     notice: data.notices,
                                     index: 2,
-                                    conditon: length >= 4,
+                                    condition: length >= 4,
                                     singleCondition: length == 3,
                                     recentNotice: data,
                                   ), //
                                   RecentNoticeSliderItem(
                                     notice: data.notices,
                                     index: 3,
-                                    conditon: length >= 6,
+                                    condition: length >= 6,
                                     singleCondition: length == 5,
                                     recentNotice: data,
                                   ),
@@ -102,7 +103,7 @@ class ProfileSCreen extends StatelessWidget {
                                   RecentNoticeSliderItem(
                                     notice: data.notices,
                                     index: 4,
-                                    conditon: length >= 8,
+                                    condition: length >= 8,
                                     singleCondition: length == 7,
                                     recentNotice: data,
                                   ),
@@ -111,7 +112,7 @@ class ProfileSCreen extends StatelessWidget {
                             },
                             error: (error, stackTrace) =>
                                 Alert.handleError(context, error),
-                            loading: () => const RecentNoticeSliderScealton(),
+                            loading: () => const RecentNoticeSliderSkelton(),
                           ),
                         ),
                       ]
@@ -127,7 +128,7 @@ class ProfileSCreen extends StatelessWidget {
               //********** Routines ***********************/
               Text("   Routines", style: TS.heading()),
               const SizedBox(height: 10),
-              uplodedRoutines.when(
+              uploadedRoutines.when(
                 data: (data) {
                   //
                   return ListView.builder(
@@ -140,11 +141,11 @@ class ProfileSCreen extends StatelessWidget {
                         rutinId: data.homeRoutines[index].rutineId.id,
                         rutinName: data.homeRoutines[index].rutineId.name,
                         onTapMore: () =>
-                            RutinDialog.ChackStatusUser_BottomSheet(
+                            RoutineDialog.CheckStatusUser_BottomSheet(
                           context,
                           routineID: data.homeRoutines[index].rutineId.id,
                           routineName: data.homeRoutines[index].rutineId.name,
-                          rutinsController: uplodedRoutinesNotfier,
+                          routinesController: uploadedRoutinesNotifier,
                         ),
                       );
                     },

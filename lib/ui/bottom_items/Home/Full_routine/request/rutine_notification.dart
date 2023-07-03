@@ -9,15 +9,15 @@ import '../../../../../constant/constant.dart';
 import '../../../../../models/message_model.dart';
 
 final notificationReqProvider =
-    Provider<RutineNotification>((ref) => RutineNotification());
+    Provider<RoutineNotification>((ref) => RoutineNotification());
 
-class RutineNotification {
+class RoutineNotification {
   //
-  //....RutineNotification....//
-  Future<Either<String, Message>> notificationOff(rutineId) async {
+  //....RoutineNotification....//
+  Future<Either<String, Message>> notificationOff(routineID) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
-    Uri url = Uri.parse('${Const.BASE_URl}/rutin/notification/off/$rutineId');
+    Uri url = Uri.parse('${Const.BASE_URl}/rutin/notification/off/$routineID');
 
     try {
       final response =
@@ -35,11 +35,11 @@ class RutineNotification {
     }
   }
 
-  //....RutineNotification....//
-  Future<Either<String, Message>> notificationOn(rutineId) async {
+  //....RoutineNotification....//
+  Future<Either<String, Message>> notificationOn(routineID) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
-    Uri url = Uri.parse('${Const.BASE_URl}/rutin/notification/on/$rutineId');
+    Uri url = Uri.parse('${Const.BASE_URl}/rutin/notification/on/$routineID');
 
     try {
       final response =

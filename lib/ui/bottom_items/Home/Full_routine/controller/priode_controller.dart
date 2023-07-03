@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../core/dialogs/alert_dialogs.dart';
 import '../request/priode_request.dart';
 
-//.. prvider...//
+//.. provider...//
 final priodeController = StateNotifierProvider.autoDispose((ref) {
   return PriodeClassController(ref.watch(priodeRequestProvider));
 });
@@ -13,13 +13,13 @@ final priodeController = StateNotifierProvider.autoDispose((ref) {
 //
 //...class....//
 class PriodeClassController extends StateNotifier<bool> {
-  PriodeRequest priodereq;
+  PriodeRequest priodeReq;
 
-  PriodeClassController(this.priodereq) : super(false);
+  PriodeClassController(this.priodeReq) : super(false);
 
   //....deletePriode
   void deletePriode(WidgetRef ref, BuildContext context, String priodeId,
-      String rutinId) async {
+      String routineId) async {
     var deleteRes = await PriodeRequest().deletePriode(priodeId);
 
     deleteRes.fold(
@@ -28,7 +28,7 @@ class PriodeClassController extends StateNotifier<bool> {
         return Alert.errorAlertDialog(context, l);
       },
       (r) {
-        ref.refresh(allPriodeProvider(rutinId));
+        ref.refresh(allPriodeProvider(routineId));
         state = false;
 
         Alert.showSnackBar(context, r.message);
@@ -38,9 +38,9 @@ class PriodeClassController extends StateNotifier<bool> {
 
   //
   //....addPriode...//
-  void addPriode(WidgetRef ref, context, String rutinId, DateTime startTime,
+  void addPriode(WidgetRef ref, context, String routineId, DateTime startTime,
       DateTime endTime) async {
-    var addRes = await PriodeRequest().addPriode(rutinId, startTime, endTime);
+    var addRes = await PriodeRequest().addPriode(routineId, startTime, endTime);
 
     addRes.fold(
       (l) {
@@ -49,7 +49,7 @@ class PriodeClassController extends StateNotifier<bool> {
       },
       (r) {
         //state = false;
-        ref.refresh(allPriodeProvider(rutinId));
+        ref.refresh(allPriodeProvider(routineId));
         Alert.showSnackBar(context, r.message);
         Navigator.pop(context);
       },
@@ -57,20 +57,19 @@ class PriodeClassController extends StateNotifier<bool> {
   }
 
   //....Eddit priode...//
-  void edditPriode(WidgetRef ref, context, String rutinId, String priodeId,
+  void edditPriode(WidgetRef ref, context, String routineId, String priodeId,
       DateTime startTime, DateTime endTime) async {
-    var eddidPriode =
+    var edditPriode =
         await PriodeRequest().edditPriode(priodeId, startTime, endTime);
-    print("i am from cont");
 
-    eddidPriode.fold(
+    edditPriode.fold(
       (l) {
         // state = false;
         return Alert.errorAlertDialog(context, l);
       },
       (r) {
         //state = false;
-        ref.refresh(allPriodeProvider(rutinId));
+        ref.refresh(allPriodeProvider(routineId));
         Alert.showSnackBar(context, r.message);
         Navigator.pop(context);
       },

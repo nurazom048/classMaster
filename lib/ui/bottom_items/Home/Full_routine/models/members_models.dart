@@ -1,23 +1,23 @@
 import 'dart:convert';
 
-class RutineMembersModel {
+class RoutineMembersModel {
   String message;
   int count;
   List<Member> members;
 
-  RutineMembersModel({
+  RoutineMembersModel({
     required this.message,
     required this.count,
     required this.members,
   });
 
-  factory RutineMembersModel.fromRawJson(String str) =>
-      RutineMembersModel.fromJson(json.decode(str));
+  factory RoutineMembersModel.fromRawJson(String str) =>
+      RoutineMembersModel.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory RutineMembersModel.fromJson(Map<String, dynamic> json) =>
-      RutineMembersModel(
+  factory RoutineMembersModel.fromJson(Map<String, dynamic> json) =>
+      RoutineMembersModel(
         message: json["message"],
         count: json["count"],
         members:

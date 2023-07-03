@@ -15,7 +15,7 @@ final memberRequestProvider = Provider((ref) => memberRequest());
 class memberRequest {
 //
 //**********************   rutin all _members    *********** */
-  Future<RutineMembersModel?> all_members(rutin_id) async {
+  Future<RoutineMembersModel?> all_members(rutin_id) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
 
@@ -28,7 +28,7 @@ class memberRequest {
 
       if (response.statusCode == 200) {
         print(res);
-        return RutineMembersModel.fromJson(res);
+        return RoutineMembersModel.fromJson(res);
       } else {
         throw Exception("faild to load all member list ");
       }
@@ -90,7 +90,7 @@ class memberRequest {
   }
 
   //.... add cap10s.../
-  Future<String?> addCaptensReq(rutinid, username) async {
+  Future<String?> addCaptressReq(rutinid, username) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
     print("hi i am calling req $rutinid  $username");
@@ -117,7 +117,7 @@ class memberRequest {
     }
   }
 
-  Future<String?> removeCaptensReq(rutinid, username) async {
+  Future<String?> removeCaptansReq(rutinid, username) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
     print("hi i am calling req $rutinid  $username");
@@ -221,12 +221,12 @@ class memberRequest {
   }
 
   //....see All members........//
-  Future<RutineMembersModel> seeAllMemberReq(String rutin_id) async {
+  Future<RoutineMembersModel> seeAllMemberReq(String rutin_id) async {
     var url = Uri.parse("${Const.BASE_URl}/rutin/member/$rutin_id");
 
     //
     final response = await http.post(url);
-    var res = RutineMembersModel.fromJson(jsonDecode(response.body));
+    var res = RoutineMembersModel.fromJson(jsonDecode(response.body));
     print(jsonDecode(response.body));
     try {
       if (response.statusCode == 200) {
@@ -331,6 +331,6 @@ class memberRequest {
 }
 
 final allMembersProvider =
-    FutureProvider.family<RutineMembersModel, String>((ref, rutin_id) async {
+    FutureProvider.family<RoutineMembersModel, String>((ref, rutin_id) async {
   return ref.watch(memberRequestProvider).seeAllMemberReq(rutin_id);
 });

@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 
 import '../../../../../constant/constant.dart';
-import '../../../../../models/chack_status_model.dart';
+import '../../../../../models/check_status_model.dart';
 import '../../../../../models/message_model.dart';
 
 final noticeboardRequestProvider =

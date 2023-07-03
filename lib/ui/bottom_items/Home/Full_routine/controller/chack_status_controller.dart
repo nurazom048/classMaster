@@ -6,19 +6,19 @@ import 'package:fpdart/fpdart.dart';
 import 'package:table/core/dialogs/alert_dialogs.dart';
 import 'package:table/models/chack_status_model.dart';
 import 'package:table/ui/bottom_items/Home/Full_routine/request/member_request.dart';
-import 'package:table/ui/bottom_items/Home/Full_routine/request/rutin_request.dart';
+import 'package:table/ui/bottom_items/Home/Full_routine/request/routine_request.dart';
 
 import '../../../../../models/message_model.dart';
 import '../request/rutine_notification.dart';
 
 //! providers
-final chackStatusControllerProvider = StateNotifierProvider.autoDispose
-    .family<ChackStatusController, AsyncValue<CheckStatusModel>, String>(
-        (ref, rutinId) {
-  return ChackStatusController(
+final checkStatusControllerProvider = StateNotifierProvider.autoDispose
+    .family<CheckStatusController, AsyncValue<CheckStatusModel>, String>(
+        (ref, routineId) {
+  return CheckStatusController(
     ref,
-    rutinId,
-    ref.read(FullRutinProvider),
+    routineId,
+    ref.read(fullRoutineProvider),
     ref.read(memberRequestProvider),
     ref.read(notificationReqProvider),
   );
@@ -26,38 +26,26 @@ final chackStatusControllerProvider = StateNotifierProvider.autoDispose
 
 //? Controllers
 
-class ChackStatusController
+class CheckStatusController
     extends StateNotifier<AsyncValue<CheckStatusModel>> {
   var ref;
-  final String rutinId;
-  final FullRutinrequest fullRutinReq;
+  final String routineId;
+  final FullRoutineRequest fullRoutineRequest;
   final memberRequest memberRequests;
-  final RutineNotification rutineNotification;
-  ChackStatusController(this.ref, this.rutinId, this.fullRutinReq,
-      this.memberRequests, this.rutineNotification)
+  final RoutineNotification routineNotification;
+  CheckStatusController(this.ref, this.routineId, this.fullRoutineRequest,
+      this.memberRequests, this.routineNotification)
       : super(AsyncLoading()) {
     getStatus();
   }
 
   getStatus() async {
     try {
-      // AsyncValue<CheckStatusModel> res =
-      //     await ref.watch(chackStatusUser_provider(rutinId));
-
-      final CheckStatusModel res = await fullRutinReq.chackStatus(rutinId);
+      final CheckStatusModel res =
+          await fullRoutineRequest.chalkStatus(routineId);
 
       if (!mounted) return;
       state = AsyncData(res);
-
-      // res.when(
-      //     data: (data) {
-      //       state = AsyncData(data);
-      //     },
-      //     error: (error, stackTrace) {
-      //       print(error.toString());
-      //       state = AsyncError(error, stackTrace);
-      //     },
-      //     loading: () {});
     } catch (error, stackTrace) {
       if (!mounted) return;
 
@@ -69,10 +57,11 @@ class ChackStatusController
 
   //
 
-  // Define a method for saving or unsaving a rutin
-  void saveUnsave(BuildContext context, condition) async {
-    final result = await fullRutinReq.saveUnsaveRutinReq(rutinId, condition);
-    print("c $rutinId $condition");
+  // Define a method for saveUnsaved
+  void saveUnsaved(BuildContext context, condition) async {
+    final result =
+        await fullRoutineRequest.saveUnsavedRoutineReq(routineId, condition);
+    print("c $routineId $condition");
 
     result.fold(
       (errorMessage) => Alert.errorAlertDialog(context, errorMessage),
@@ -86,7 +75,7 @@ class ChackStatusController
 
 //***********  send join  *********** */
   void sendReqController(context) async {
-    final result = await memberRequests.sendRequest(rutinId);
+    final result = await memberRequests.sendRequest(routineId);
 
     result.fold(
       (errorMessage) => Alert.errorAlertDialog(context, errorMessage),
@@ -103,7 +92,7 @@ class ChackStatusController
 //***********  notificationOff  *********** */
   void notificationOff(context) async {
     final Either<String, Message> result =
-        await rutineNotification.notificationOff(rutinId);
+        await rutineNotification.notificationOff(routineId);
 
     result.fold(
       (errorMessage) => Alert.errorAlertDialog(context, errorMessage),
@@ -118,7 +107,7 @@ class ChackStatusController
 
 //***********  notificationOn  *********** */
   void notificationOn(context) async {
-    final result = await rutineNotification.notificationOn(rutinId);
+    final result = await rutineNotification.notificationOn(routineId);
 
     result.fold(
       (errorMessage) => Alert.errorAlertDialog(context, errorMessage),
@@ -135,7 +124,7 @@ class ChackStatusController
 //***********  leaveMember *********** */
   leaveMember(context, WidgetRef ref) async {
     try {
-      final res = await memberRequests.leaveRequest(rutinId);
+      final res = await memberRequests.leaveRequest(routineId);
 
       res.fold((error) {
         return Alert.errorAlertDialog(context, error.message);

@@ -21,7 +21,7 @@ class SearchRutineScreen extends ConsumerWidget {
     final searchRoutine = ref.watch(searchRutineController(searchText));
     //notifier
     final homeRutinsNotifier =
-        ref.watch(homeRutinControllerProvider(null).notifier);
+        ref.watch(homeroutineControllerProvider(null).notifier);
 
     //
     return Scaffold(

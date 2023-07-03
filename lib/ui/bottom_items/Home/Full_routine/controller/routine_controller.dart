@@ -3,29 +3,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/dialogs/alert_dialogs.dart';
-import 'package:table/ui/bottom_items/Home/Full_routine/request/rutin_request.dart';
+import 'package:table/ui/bottom_items/Home/Full_routine/request/routine_request.dart';
 
 //.... Controller...//
-// final chackStatusUser_provider = FutureProvider.family
-//     .autoDispose<CheckStatusModel, String>((ref, rutin_id) {
-//   return ref.read(FullRutinProvider).chackStatus(rutin_id);
-// });
 
 ///
-///
-final RutinControllerProvider = StateNotifierProvider<RutinController, bool?>(
-    (ref) => RutinController(ref.watch(FullRutinProvider)));
+final routineControllerProvider =
+    StateNotifierProvider<RoutineController, bool?>(
+        (ref) => RoutineController(ref.watch(fullRoutineProvider)));
 
 ///
-class RutinController extends StateNotifier<bool?> {
-  FullRutinrequest FullRutinreques;
+class RoutineController extends StateNotifier<bool?> {
+  FullRoutineRequest fullRoutineRequest;
 
-  RutinController(this.FullRutinreques) : super(null);
+  RoutineController(this.fullRoutineRequest) : super(null);
 
   //......Delete Class....//
 
   void deleteClass(String classId, BuildContext context) {
-    FullRutinreques.deleteClass(context, classId)
+    fullRoutineRequest
+        .deleteClass(context, classId)
         .catchError((error) => Alert.handleError(context, error))
         .then((value) => Alert.showSnackBar(context, value.message));
   }

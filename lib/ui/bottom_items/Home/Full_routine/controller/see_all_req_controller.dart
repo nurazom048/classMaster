@@ -19,8 +19,8 @@ class SeeAllRequestControllerClass
   memberRequest memberRequests;
 
   var ref;
-  String rutinId;
-  SeeAllRequestControllerClass(this.ref, this.rutinId, this.memberRequests)
+  String routineId;
+  SeeAllRequestControllerClass(this.ref, this.routineId, this.memberRequests)
       : super(AsyncLoading()) {
     getAllRequestList();
   }
@@ -35,7 +35,7 @@ class SeeAllRequestControllerClass
     if (!mounted) return;
 
     try {
-      final res = await memberRequests.see_all_request(rutinId);
+      final res = await memberRequests.see_all_request(routineId);
       state = AsyncData(res);
     } catch (err, stack) {
       state = AsyncValue.error(err, stack);
@@ -45,22 +45,22 @@ class SeeAllRequestControllerClass
 
   void acceptMember(WidgetRef ref, username, context, {bool? acceptAll}) async {
     final res =
-        memberRequests.acceptRequest(rutinId, username, acceptAll: acceptAll);
+        memberRequests.acceptRequest(routineId, username, acceptAll: acceptAll);
 
     res.catchError((error) => Alert.handleError(context, error));
     res.then((value) {
-      ref.refresh(seeAllRequestControllerProvider(rutinId));
+      ref.refresh(seeAllRequestControllerProvider(routineId));
       return Alert.showSnackBar(context, value.message);
     });
   }
 
 //... rejectMembers request.....//
   void rejectMembers(WidgetRef ref, username, context) async {
-    final res = memberRequests.rejectRequest(rutinId, username);
+    final res = memberRequests.rejectRequest(routineId, username);
 
     res.catchError((error) => Alert.handleError(context, error));
     res.then((value) {
-      ref.refresh(seeAllRequestControllerProvider(rutinId));
+      ref.refresh(seeAllRequestControllerProvider(routineId));
       return Alert.showSnackBar(context, value.message);
     });
   }

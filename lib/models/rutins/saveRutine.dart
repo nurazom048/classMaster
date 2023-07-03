@@ -2,33 +2,33 @@
 
 import 'package:table/models/rutins/search_rutin.dart';
 
-class SaveRutineResponse {
+class SaveRutileResponse {
   List<Routine> savedRoutines;
   int currentPage;
   int totalPages;
 
-  SaveRutineResponse({
+  SaveRutileResponse({
     required this.savedRoutines,
     required this.currentPage,
     required this.totalPages,
   });
 
-  factory SaveRutineResponse.fromJson(Map<String, dynamic> json) {
+  factory SaveRutileResponse.fromJson(Map<String, dynamic> json) {
     var list = json['savedRoutines'] as List;
     List<Routine> routines = list.map((i) => Routine.fromJson(i)).toList();
-    return SaveRutineResponse(
+    return SaveRutileResponse(
       savedRoutines: routines,
       currentPage: json['currentPage'],
       totalPages: json['totalPages'],
     );
   }
 
-  SaveRutineResponse copyWith({
+  SaveRutileResponse copyWith({
     List<Routine>? savedRoutines,
     int? currentPage,
     int? totalPages,
   }) {
-    return SaveRutineResponse(
+    return SaveRutileResponse(
       savedRoutines: savedRoutines ?? this.savedRoutines,
       currentPage: currentPage ?? this.currentPage,
       totalPages: totalPages ?? this.totalPages,

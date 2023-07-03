@@ -9,7 +9,7 @@ import '../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../models/message_model.dart';
 import '../models/home_rutines_model.dart';
 
-final homeRutinControllerProvider = StateNotifierProvider.family<
+final homeroutineControllerProvider = StateNotifierProvider.family<
     HomeRutinsController, AsyncValue<RoutineHome>, String?>((ref, userID) {
   return HomeRutinsController(ref.read(home_req_provider), userID);
 });

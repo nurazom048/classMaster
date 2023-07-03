@@ -10,8 +10,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../../../../constant/constant.dart';
 import '../../../../models/message_model.dart';
-import '../../../../models/rutins/saveRutine.dart';
-import '../models/home_rutines_model.dart';
+import '../../../../models/Routine/saveRutine.dart';
+import '../models/home_routines_model.dart';
 import '../utils/utils.dart';
 
 //!.. Provider ...!//
@@ -19,8 +19,8 @@ import '../utils/utils.dart';
 final home_req_provider = Provider<HomeReq>((ref) => HomeReq());
 
 class HomeReq {
-//********    savedRutins      *************/
-  Future<SaveRutineResponse> savedRutins({pages}) async {
+//********    saveRoutines      *************/
+  Future<SaveRutileResponse> saveRoutines({pages}) async {
     String queryPage = "?page=$pages}";
     String? username = "";
     final prefs = await SharedPreferences.getInstance();
@@ -36,7 +36,7 @@ class HomeReq {
       if (response.statusCode == 200) {
         var res = json.decode(response.body);
 
-        return SaveRutineResponse.fromJson(res);
+        return SaveRutileResponse.fromJson(res);
       } else {
         throw Exception("Failed to load saved routines");
       }
@@ -46,12 +46,12 @@ class HomeReq {
   }
 
   //
-  // //********    ListOfUploedRutins      *************/
-  // Future<ListOfUploadedRutins> uplodedRutins({String? username}) async {
+  // //********    ListOfUploadRutins      *************/
+  // Future<ListOfUploadedRutins> uploadedRutins({String? username}) async {
   //   final prams = username != null ? '/$username' : '';
   //   final prefs = await SharedPreferences.getInstance();
   //   final String? getToken = prefs.getString('Token');
-  //   final url = Uri.parse('${Const.BASE_URl}/rutin/uploded_rutins' + prams);
+  //   final url = Uri.parse('${Const.BASE_URl}/rutin/uploaded_rutins' + prams);
   //   final headers = {'Authorization': 'Bearer $getToken'};
 
   //   //.. Request send
@@ -72,9 +72,9 @@ class HomeReq {
   //   }
   // }
 
-  //********    homeRutines      *************/
+  //********    home Routines      *************/
 
-  Future<RoutineHome> homeRutines({pages, String? userID}) async {
+  Future<RoutineHome> homeRoutines({pages, String? userID}) async {
     String queryPage = "?page=$pages";
     final searchByUserID = userID == null ? '' : '/$userID';
     final prefs = await SharedPreferences.getInstance();
@@ -114,7 +114,7 @@ class HomeReq {
       print('$isOnline 5 $isHaveCash');
 
       if (response.statusCode == 200) {
-        RoutineHome homeRutines = RoutineHome.fromJson(res);
+        RoutineHome homeRutine = RoutineHome.fromJson(res);
 
         // save to csh
         if (userID == null) {
@@ -124,7 +124,7 @@ class HomeReq {
         }
         print('&&&&&&&&&&&    Indise 200');
 
-        return homeRutines;
+        return homeRutine;
       } else if (isOnline) {
         throw "No Internet Connection";
       } else {
