@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    //firebase
+    // //firebase
     FirebaseAnalyticsServices.logHome();
     // AwesomeNotificationSetup
     AwesomeNotificationSetup.initialize();

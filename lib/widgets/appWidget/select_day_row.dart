@@ -1,5 +1,6 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
+import 'package:table/widgets/appWidget/app_text.dart';
 import '../../constant/app_color.dart';
 
 class SelectDayRow extends StatefulWidget {
@@ -33,21 +34,29 @@ class _SelectDayRowState extends State<SelectDayRow> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: List.generate(
-          7,
-          (index) => SelectDayChip(
-                isSelected: index == selectedDays,
-                text: dayNAme[index],
-                onTap: () {
-                  setState(() {
-                    selectedDays = index;
-                  });
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 12),
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: List.generate(
+              7,
+              (index) => SelectDayChip(
+                    index: index,
+                    isSelected: index == selectedDays,
+                    text: dayNAme[index],
+                    onTap: () {
+                      setState(() {
+                        selectedDays = index;
+                      });
 
-                  widget.selectedDay.call(index);
-                },
-              )),
+                      widget.selectedDay.call(index);
+                    },
+                  )),
+        ),
+      ),
     );
   }
 }
@@ -56,30 +65,68 @@ class SelectDayChip extends StatelessWidget {
   final String text;
   final bool isSelected;
   final dynamic onTap;
+  final int index;
   const SelectDayChip({
     super.key,
     required this.text,
     required this.isSelected,
     required this.onTap,
+    required this.index,
   });
   @override
   Widget build(BuildContext context) {
-    // '${DateTime.now().subtract(Duration(days: 6)).day}'),
+    int day = initialDateTimeMakerBaseOnSunday().add(Duration(days: index)).day;
     return InkWell(
         onTap: onTap,
-        child: isSelected == true
-            ? Container(
-                padding: const EdgeInsets.symmetric(vertical: 6),
-                child: Text(
-                  text,
-                  textScaleFactor: 1.6,
-                  style: TextStyle(color: AppColor.nokiaBlue),
-                ),
-              )
-            : Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2),
-                child: Text(text, textScaleFactor: 1.1),
-              ));
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Container(
+            //color: AppColor.background,
+            color: isSelected ? const Color(0xFFF2F2F2) : null,
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 13),
+            child: Column(
+              children: [
+                Text(text,
+                    textScaleFactor: 1.1,
+                    style: TS.opensensBlue(
+                      fontWeight: FontWeight.w400,
+                      color: isSelected ? AppColor.nokiaBlue : Colors.black,
+                    )),
+                const SizedBox(height: 2),
+                CircleAvatar(
+                  radius: 18,
+                  backgroundColor:
+                      isSelected ? AppColor.nokiaBlue : AppColor.background,
+                  child: Text(
+                    '${day < 10 ? '0' : ''}$day',
+                    style: TextStyle(
+                      color: isSelected ? Colors.white : Colors.black,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ));
+  }
+}
+
+//
+DateTime initialDateTimeMakerBaseOnSunday() {
+  DateTime now = DateTime.now();
+
+  // Subtract days based on weekday
+  if (now.weekday == DateTime.monday) {
+    return now.subtract(const Duration(days: 1));
+  } else if (now.weekday == DateTime.tuesday ||
+      now.weekday == DateTime.wednesday) {
+    return now.subtract(const Duration(days: 2));
+  } else if (now.weekday == DateTime.thursday ||
+      now.weekday == DateTime.friday) {
+    return now.subtract(const Duration(days: 1));
+  } else if (now.weekday == DateTime.saturday) {
+    return now.subtract(const Duration(days: 1));
+  } else {
+    return now;
   }
 }

@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_renaming_method_parameters
 
 import 'package:flutter/material.dart';
+import 'package:table/constant/constant.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 
 class HeaderTitle extends StatelessWidget {
@@ -22,7 +23,7 @@ class HeaderTitle extends StatelessWidget {
   @override
   Widget build(BuildContext contextt) {
     return Container(
-      margin: margin ?? const EdgeInsets.only(left: 25.5, top: 50),
+      margin: margin ?? EdgeInsets.only(left: 25.5, top: KTopPadding),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[

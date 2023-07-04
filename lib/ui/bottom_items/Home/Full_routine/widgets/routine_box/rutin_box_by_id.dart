@@ -135,8 +135,8 @@ class _RutinBoxByIdState extends State<RutinBoxById> {
 
                 // Divider
                 MyDivider(
-                  padding: const EdgeInsets.symmetric(vertical: 13)
-                      .copyWith(bottom: 3),
+                  padding: const EdgeInsets.symmetric(vertical: 10)
+                      .copyWith(bottom: 0),
                 ),
 
                 // Select day row
@@ -168,7 +168,7 @@ class _RutinBoxByIdState extends State<RutinBoxById> {
                     selectDays(sun, mon, tue, wed, thu, fri, sat);
 
                     return Container(
-                      margin: const EdgeInsets.only(top: 15),
+                      // margin: const EdgeInsets.only(top: 15),
                       constraints: const BoxConstraints(minHeight: 200),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -177,7 +177,7 @@ class _RutinBoxByIdState extends State<RutinBoxById> {
                           (index) {
                             if (widget.listOfDayState.isNotEmpty) {
                               return RutineCardInfoRow(
-                                isfrist: index == 0,
+                                isFirst: index == 0,
                                 day: widget.listOfDayState[index],
                                 onTap: () {
                                   if (!mounted) return;

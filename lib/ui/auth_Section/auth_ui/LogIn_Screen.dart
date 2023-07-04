@@ -10,7 +10,6 @@ import '../../../constant/app_color.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/appWidget/buttons/cupertino_buttons.dart';
 import '../../../widgets/heder/heder_title.dart';
-import '../../bottom_items/bottom_nevbar.dart';
 import '../auth_controller/auth_controller.dart';
 import '../auth_controller/google_auth_controller.dart';
 import '../widgets/or.dart';
@@ -32,22 +31,9 @@ class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> emailKey = GlobalKey<FormState>();
 
-  Future<void> goToHome() async {
-    final String? token = await AuthController.getToken();
-
-    // ignore: avoid_print
-    print("Token: $token");
-    if (token != null) {
-      // ignore: use_build_context_synchronously
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => BottomNavBar()));
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    goToHome();
   }
 
   bool byUsername = true;
@@ -59,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
       final loding = ref.watch(authController_provider);
 
       return WillPopScope(
-        onWillPop: () => Future.value(false),
+        onWillPop: () => Future.value(true),
         child: SafeArea(
           child: Scaffold(
             body: SingleChildScrollView(
@@ -70,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    HeaderTitle("Log In", context, onTap: () {}),
+                    HeaderTitle("Log In", context),
                     const SizedBox(height: 40),
                     const AppText("   Login To Continue").title(),
                     const SizedBox(height: 30),

@@ -1,0 +1,18 @@
+import 'package:get/get.dart';
+
+import '../ui/auth_Section/auth_controller/auth_controller.dart';
+import '../ui/bottom_items/bottom_nevbar.dart';
+
+Future<void> navigateBaseOnToken(context) async {
+  final String? token = await AuthController.getToken();
+
+  // ignore: avoid_print
+  print("Token: $token");
+  if (token != null) {
+    // ignore: use_build_context_synchronously
+
+    Get.to(() => BottomNavBar());
+    // Navigator.pushReplacement(
+    //     context, MaterialPageRoute(builder: (context) => BottomNavBar()));
+  }
+}

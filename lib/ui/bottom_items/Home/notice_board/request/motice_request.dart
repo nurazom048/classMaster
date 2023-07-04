@@ -67,6 +67,7 @@ class NoticeRequest {
 
         return RecentNotice.fromJson(res);
       } else {
+        print(json.decode(response.body));
         final message = Message.fromJson(json.decode(response.body));
 
         throw message.message;

@@ -4,9 +4,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:table/ui/auth_Section/auth_ui/logIn_screen.dart';
+import 'package:table/ui/auth_Section/auth_ui/wellcome_screen.dart';
 import 'firebase_options.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+
+import 'helper/helper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,14 +29,24 @@ void main() async {
 
   runApp(const ProviderScope(child: MyApp()));
 }
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+//
 
 //
-  // static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  // static FirebaseAnalyticsObserver observer =
-  //     FirebaseAnalyticsObserver(analytics: analytics);
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    navigateBaseOnToken(context);
+  }
+
+//
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -45,7 +57,8 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFFEFF6FF),
         primarySwatch: Colors.blue,
       ),
-      home: const LoginScreen(),
+      //  home: const LoginScreen(),
+      home: const WellComeScreen(),
     );
   }
 }

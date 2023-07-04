@@ -5,8 +5,12 @@ class SignUpValidation {
     if (value == null || value.isEmpty) {
       return "Please enter your name";
     }
+
     if (value.length < 2) {
       return "Name must be at least 2 characters long";
+    }
+    if (value.trim().length > 40) {
+      return 'Maximum 40 characters or spaces allowed';
     }
     return null;
   }
@@ -17,6 +21,9 @@ class SignUpValidation {
     }
     if (!EmailValidator.validate(value)) {
       return "Please enter a valid email address";
+    }
+    if (value.trim().length > 40) {
+      return 'Maximum 40 characters or spaces allowed';
     }
     if (!value.endsWith("@gmail.com") &&
         !value.endsWith("@outlook.com") &&
@@ -33,15 +40,27 @@ class SignUpValidation {
     if (!EmailValidator.validate(value)) {
       return "Please enter a valid email address";
     }
+    if (value.trim().length > 40) {
+      return 'Maximum 40 characters or spaces allowed';
+    }
     return null;
   }
 
   static String? validateUsername(String? value) {
     if (value == null || value.isEmpty) {
-      return "Please enter a username";
+      return 'Please enter a username';
+    }
+    if (value.contains(' ')) {
+      return 'Spaces are not allowed';
+    }
+    if (!RegExp(r'^[a-z]+$').hasMatch(value)) {
+      return 'special characters is not allow on Username';
     }
     if (value.length < 4) {
-      return "Username must be at least 4 characters long";
+      return 'Username must be at least 4 characters long';
+    }
+    if (value.length > 40) {
+      return 'Maximum 40 characters or spaces allowed';
     }
     return null;
   }
@@ -76,6 +95,9 @@ class SignUpValidation {
     }
     if (value.length < 4) {
       return "EIN number must be at least 4 digits long";
+    }
+    if (value.trim().length > 40) {
+      return 'Maximum 40 characters or spaces allowed';
     }
     return null;
   }

@@ -17,7 +17,7 @@ abstract class Const {
 //
 }
 
-double KTopPadding = 20;
+double KTopPadding = 25;
 
 const String FORGOT_MAIL_SEND_MESSAGE =
     'Reset email has been sent. Please check your Inbox and set a new password. If you don\'t find this email in your inbox, please check your spam folder.';

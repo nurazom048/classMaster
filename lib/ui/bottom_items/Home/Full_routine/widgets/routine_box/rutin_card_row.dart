@@ -5,30 +5,28 @@ import '../../../../../../models/class_details_model.dart';
 
 class RutineCardInfoRow extends StatelessWidget {
   final Day? day;
-  final bool? isfrist;
+  final bool? isFirst;
   final dynamic onTap;
-  final Widget? taill;
+  final Widget? tail;
   const RutineCardInfoRow(
-      {super.key, this.isfrist, this.onTap, this.day, this.taill});
+      {super.key, this.isFirst, this.onTap, this.day, this.tail});
   String formatTime(DateTime? time) {
     return DateFormat.jm().format(time ?? DateTime.now());
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Column(
         children: [
-          if (isfrist == true) const DotedDivider(),
+          if (isFirst == true) const DotedDivider(),
           Container(
-            margin: const EdgeInsets.symmetric(vertical: 10),
+            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
             child: Row(
               //  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // if (taill == null)
                 Text(
                   '${formatTime(day?.startTime)}\n-\n${formatTime(day?.endTime)}',
                   textScaleFactor: 1.2,
@@ -50,15 +48,14 @@ class RutineCardInfoRow extends StatelessWidget {
                 ),
 
                 const Spacer(),
-                if (taill != null) const SizedBox.shrink(),
+                if (tail != null) const SizedBox.shrink(),
                 // const VerticalDivider(thickness: 4, color: Colors.red),
 
                 //
-                taill ??
+                tail ??
                     InkWell(
                       onTap: onTap ?? () {},
                       child: Container(
-                        padding: const EdgeInsets.only(right: 2),
                         alignment: AlignmentDirectional.center,
                         child: const Icon(Icons.arrow_forward_ios),
                       ),
