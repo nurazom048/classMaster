@@ -9,18 +9,27 @@ class PendingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          Text(
-            'Your Academy request is stil pending ',
-            style: TS.heading(),
+    return SafeArea(
+      child: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+          child: Column(
+            children: [
+              Text(
+                'Your Academy request is still pending...',
+                style: TS.heading(),
+              ),
+              const SizedBox(height: 200),
+              TextButton(
+                onPressed: () => Get.to(() => const AboutScreen()),
+                child: Text(
+                  'ContractUs',
+                  style: TS.opensensBlue(fontSize: 25),
+                ),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () => Get.to(() => const AboutusScreen()),
-            child: const Text('ContractUs'),
-          ),
-        ],
+        ),
       ),
     );
   }

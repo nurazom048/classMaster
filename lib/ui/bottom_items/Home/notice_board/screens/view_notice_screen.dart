@@ -22,43 +22,45 @@ class NoticeViewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        HeaderTitle("Back to Home", context),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 20),
-              const AppText("View Notice").title(),
-              const SizedBox(height: 20),
-              AppText("Title", color: AppColor.nokiaBlue).heeding(),
-              AppText(notice.contentName).heeding(),
-              const SizedBox(height: 20),
-              AppText("Description", color: AppColor.nokiaBlue).heeding(),
-              AppText(notice.description ?? '').heeding(),
-              const SizedBox(height: 20),
-              AppText("pdf", color: AppColor.nokiaBlue).heeding(),
-              const SizedBox(height: 10),
-              ViewPdfButton(
-                onTap: () => Get.to(
-                    transition: Transition.rightToLeft,
-                    () => ViewPDf(pdfLink: notice.pdf)),
-              ),
-              const SizedBox(height: 80),
-              MiniAccountInfo(
-                accountData: notice.academyId,
-                hideNore: true,
-                onTap: () => Get.to(() => ProfileSCreen(
-                      academyID: notice.academyId.sId,
-                      username: notice.academyId.username,
-                    )),
-              )
-            ],
-          ),
-        )
-      ]),
+    return SafeArea(
+      child: Scaffold(
+        body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          HeaderTitle("Back to Home", context),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 20),
+                const AppText("View Notice").title(),
+                const SizedBox(height: 20),
+                AppText("Title", color: AppColor.nokiaBlue).heeding(),
+                AppText(notice.contentName).heeding(),
+                const SizedBox(height: 20),
+                AppText("Description", color: AppColor.nokiaBlue).heeding(),
+                AppText(notice.description ?? '').heeding(),
+                const SizedBox(height: 20),
+                AppText("pdf", color: AppColor.nokiaBlue).heeding(),
+                const SizedBox(height: 10),
+                ViewPdfButton(
+                  onTap: () => Get.to(
+                      transition: Transition.rightToLeft,
+                      () => ViewPDf(pdfLink: notice.pdf)),
+                ),
+                const SizedBox(height: 80),
+                MiniAccountInfo(
+                  accountData: notice.academyId,
+                  hideMore: true,
+                  onTap: () => Get.to(() => ProfileSCreen(
+                        academyID: notice.academyId.sId,
+                        username: notice.academyId.username,
+                      )),
+                )
+              ],
+            ),
+          )
+        ]),
+      ),
     );
   }
 }

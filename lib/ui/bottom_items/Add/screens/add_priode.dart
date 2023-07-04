@@ -93,7 +93,7 @@ class _AppPriodePageState extends State<AppPriodePage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: h * 0.5),
+                    SizedBox(height: h * 0.45),
                     if (widget.isEdit == false)
                       CupertinoButtonCustom(
                           color: AppColor.nokiaBlue,

@@ -96,6 +96,7 @@ class ClassRequest {
         Alert.showSnackBar(context, message.message);
         Navigator.pop(context);
         // ignore: unused_result
+
         ref.refresh(routine_details_provider(routineId));
         print(res);
       } else {

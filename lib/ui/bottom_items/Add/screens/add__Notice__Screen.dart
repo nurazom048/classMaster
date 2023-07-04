@@ -36,35 +36,37 @@ class AddNoticeScreen extends ConsumerWidget {
     final pdfPath = ref.watch(selectedPdfPathProvider);
 
     return SafeArea(
-      child: Responsive(
-        // Mobile
-        mobile: Scaffold(
-          body: _mobile(context, ref, pdfPath),
-        ),
+      child: Scaffold(
+        body: Responsive(
+          // Mobile
+          mobile: Scaffold(
+            body: _mobile(context, ref, pdfPath),
+          ),
 
-        // Desktop
-        desktop: Scaffold(
-          body: Row(
-            children: [
-              const Expanded(
-                flex: 1,
-                child: MyDrawer(),
-              ),
-              Expanded(
-                flex: 4,
-                child: Column(
-                  children: [
-                    _appBar,
-                    Expanded(
-                      child: Container(
-                        color: Colors.yellow,
-                        child: _mobile(context, ref, pdfPath),
-                      ),
-                    ),
-                  ],
+          // Desktop
+          desktop: Scaffold(
+            body: Row(
+              children: [
+                const Expanded(
+                  flex: 1,
+                  child: MyDrawer(),
                 ),
-              ),
-            ],
+                Expanded(
+                  flex: 4,
+                  child: Column(
+                    children: [
+                      _appBar,
+                      Expanded(
+                        child: Container(
+                          color: Colors.yellow,
+                          child: _mobile(context, ref, pdfPath),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

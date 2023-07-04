@@ -95,7 +95,7 @@ class HomeReq {
     print(url);
     try {
       // // if offline and have cash
-      if (isOnline && isHaveCash) {
+      if (!isOnline && isHaveCash) {
         var getdata = await APICacheManager().getCacheData(key);
         print('Foem cash $url');
         return RoutineHome.fromJson(jsonDecode(getdata.syncData));

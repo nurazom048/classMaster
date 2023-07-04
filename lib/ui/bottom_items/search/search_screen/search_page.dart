@@ -61,7 +61,7 @@ class _SearchPAgeState extends State<SearchPAge> {
       //
       final PageController pageController = PageController(initialPage: 0);
       return NestedScrollView(
-        physics: const NeverScrollableScrollPhysics(),
+        //   physics: const NeverScrollableScrollPhysics(),
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           SliverToBoxAdapter(
             child: Column(
@@ -101,7 +101,8 @@ class _SearchPAgeState extends State<SearchPAge> {
           )
         ],
         body: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 10),
+          margin:
+              const EdgeInsets.symmetric(horizontal: 10).copyWith(bottom: 0),
           width: MediaQuery.of(context).size.width,
           child: PageView(
             controller: pageController,

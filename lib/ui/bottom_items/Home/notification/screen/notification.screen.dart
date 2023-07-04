@@ -37,37 +37,40 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return Consumer(builder: (context, ref, _) {
       // provider
       final notifications = ref.watch(notificationsProvider);
-      return Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              HeaderTitle('Notifications', context),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 26)
-                        .copyWith(top: 0),
-                child: notifications.when(
-                  data: (data) {
-                    return data.fold(
-                      (error) => ErrorScreen(error: error.message),
-                      (value) => Column(
-                        children: List.generate(
-                          value.notifications.length,
-                          (i) => NotificationCard(
-                            notification: value.notifications[i],
-                            previousDateTime: value.notifications[i].createdAt,
-                            isFirst: i == 0,
+      return SafeArea(
+        child: Scaffold(
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                HeaderTitle('Notifications', context),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 26)
+                          .copyWith(top: 0),
+                  child: notifications.when(
+                    data: (data) {
+                      return data.fold(
+                        (error) => ErrorScreen(error: error.message),
+                        (value) => Column(
+                          children: List.generate(
+                            value.notifications.length,
+                            (i) => NotificationCard(
+                              notification: value.notifications[i],
+                              previousDateTime:
+                                  value.notifications[i].createdAt,
+                              isFirst: i == 0,
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  },
-                  error: (error, stackTrace) =>
-                      Alert.handleError(context, error),
-                  loading: () => Loaders.center(),
-                ),
-              )
-            ],
+                      );
+                    },
+                    error: (error, stackTrace) =>
+                        Alert.handleError(context, error),
+                    loading: () => Loaders.center(),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       );

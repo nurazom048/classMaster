@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_string_interpolations
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +27,7 @@ class MemberAccountCard extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 14),
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5)
             .copyWith(right: 0),
-        height: 65,
+        height: 70,
         color: Colors.white,
         child: Center(
           child: Row(
@@ -53,22 +55,31 @@ class MemberAccountCard extends StatelessWidget {
                     )
                 ],
               ),
-              const SizedBox(width: 15),
-              //
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    member.name,
-                    style: TS.opensensBlue(color: Colors.black),
-                  ),
-                  Text(
-                    '@${member.username}',
-                    style: TS.opensensBlue(color: Colors.black, fontSize: 11),
-                  ),
-                ],
+              const SizedBox(width: 10),
+
+              FittedBox(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.70,
+                  // color: Colors.red,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${member.name}',
+                          maxLines: 2,
+                          textScaleFactor: 1.3,
+                          overflow: TextOverflow.ellipsis,
+                          style: TS.opensensBlue(color: Colors.black),
+                        ),
+                        Text(
+                          "@${member.username}",
+                          style: const TextStyle(
+                              fontSize: 20, color: Colors.black),
+                        ),
+                      ]),
+                ),
               ),
+
               const Spacer(),
               //
               if (condition == true)

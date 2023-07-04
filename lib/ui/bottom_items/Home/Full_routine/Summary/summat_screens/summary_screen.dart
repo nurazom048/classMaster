@@ -82,6 +82,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
       //! provider
 
       print("ClassId : ${widget.classId}");
+      print("priode : ${widget.start}");
 
       //! provider
       final allSummary = ref.watch(summaryControllerProvider(widget.classId));

@@ -66,31 +66,6 @@ class AccountReq {
     }
   }
 
-  // Future<AccountModels> accountData({String? username}) async {
-  //   print("req usrname  : $username");
-
-  //   final String? getToken = await AuthController.getToken();
-
-  //   //... Url for my account and others account
-  //   var url = username != null
-  //       ? Uri.parse('${Const.BASE_URl}/account/$username')
-  //       : Uri.parse('${Const.BASE_URl}/account/');
-  //   Map<String, String>? headers = {'Authorization': 'Bearer $getToken'};
-  //   try {
-  //     final response = await http.post(url, headers: headers);
-  //     print(response.body);
-
-  //     if (response.statusCode == 200) {
-  //       return AccountModels.fromJson(json.decode(response.body));
-  //     } else {
-  //       throw "";
-  //     }
-  //   } catch (e) {
-  //     print(e);
-  //     return Future.error(e);
-  //   }
-  // }
-
 //********************* update Account     ********************************//
   static Future<Message> updateAccount({
     required String name,

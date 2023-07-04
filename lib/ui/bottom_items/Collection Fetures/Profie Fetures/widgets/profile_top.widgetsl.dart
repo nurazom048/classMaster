@@ -24,7 +24,7 @@ class ProfileTop extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            height: 230,
+            height: 225,
             child: Stack(
               children: [
                 PickImage(
@@ -36,26 +36,34 @@ class ProfileTop extends StatelessWidget {
               ],
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Column(
-                children: [
-                  Text(
+          Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+            // color: Colors.red,
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 60,
+                  child: Text(
                     accountData!.name ?? '',
+                    textScaleFactor: 1.3,
+                    maxLines: 2,
                     style: const TextStyle(
-                      fontSize: 25,
+                      // fontSize: 25,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
                   ),
-                  Text(
-                    '@${accountData!.username}',
-                    style: TS.opensensBlue(color: Colors.black),
-                  ),
-                ],
-              ),
-            ],
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  '@${accountData!.username}',
+                  style: TS.opensensBlue(color: Colors.black),
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 16),
           Padding(

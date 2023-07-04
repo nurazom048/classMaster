@@ -140,25 +140,29 @@ class ClassListPage extends StatelessWidget {
                           totalClassNotifier.update((state) => length);
                         });
 
-                        return ClassRow(
-                          id: uniqClass.id,
-                          className: uniqClass.name,
+                        return Container(
+                          margin: const EdgeInsets.only(bottom: 10),
+                          child: ClassRow(
+                            id: uniqClass.id,
+                            className: uniqClass.name,
 
-                          //
-                          onLongPress: () {
-                            PriodeAlert.logPressClass(
-                              context,
-                              classId: data.classes.allClass[index].classId.id,
-                              rutinId: routineId,
-                            );
-                          },
-                          ontap: () => Get.to(
-                            () => SummaryScreen(
-                              classId: uniqClass.id,
-                              routineID: uniqClass.rutinId,
-                              className: uniqClass.name,
-                              instructorName: uniqClass.instuctorName,
-                              subjectCode: uniqClass.subjectcode,
+                            //
+                            onLongPress: () {
+                              PriodeAlert.logPressClass(
+                                context,
+                                classId:
+                                    data.classes.allClass[index].classId.id,
+                                rutinId: routineId,
+                              );
+                            },
+                            ontap: () => Get.to(
+                              () => SummaryScreen(
+                                classId: uniqClass.id,
+                                routineID: uniqClass.rutinId,
+                                className: uniqClass.name,
+                                instructorName: uniqClass.instuctorName,
+                                subjectCode: uniqClass.subjectcode,
+                              ),
                             ),
                           ),
                         );

@@ -82,14 +82,20 @@ class ChatsDribbles extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        summary.ownerId.name,
-                        textScaleFactor: 1.4,
-                        style: const TextStyle(
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12,
-                          color: Colors.black,
+                      const SizedBox(width: 5),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.60,
+                        child: Text(
+                          summary.ownerId.name,
+                          textScaleFactor: 1.4,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                       Text(
@@ -103,13 +109,10 @@ class ChatsDribbles extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 10),
-                    child: IconButton(
-                      onPressed: () =>
-                          showActionSheet(context, summary.id, summary.classId),
-                      icon: const Icon(Icons.more_vert),
-                    ),
+                  IconButton(
+                    onPressed: () =>
+                        showActionSheet(context, summary.id, summary.classId),
+                    icon: const Icon(Icons.more_vert),
                   ),
                 ],
               ),

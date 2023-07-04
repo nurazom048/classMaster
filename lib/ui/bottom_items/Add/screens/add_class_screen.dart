@@ -266,6 +266,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
           ),
         ),
       );
+      if (!mounted) return;
     } else {
       if (!mounted) return;
 

@@ -9,69 +9,77 @@ class MiniAccountInfo extends StatelessWidget {
   final AccountModels? accountData;
   final dynamic onTapMore;
   final dynamic onTap;
-  final bool hideNore;
+  final bool hideMore;
 
   const MiniAccountInfo({
     Key? key,
     this.accountData,
     this.onTapMore,
     this.onTap,
-    this.hideNore = false,
+    this.hideMore = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      height: 60,
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+      height: 70,
       // color: Colors.black12,
       child: GestureDetector(
         onTap: onTap ?? () {},
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            FutureBuilder(
-              future: Utils.isOnlineMethod(),
-              builder: (context, snapshot) {
-                bool isOnline = snapshot.data ?? false;
+            Row(
+              children: [
+                FutureBuilder(
+                  future: Utils.isOnlineMethod(),
+                  builder: (context, snapshot) {
+                    bool isOnline = snapshot.data ?? false;
 
-                if (isOnline && accountData?.image != null) {
-                  return CircleAvatar(
-                    radius: 24,
-                    backgroundColor: Colors.red,
-                    backgroundImage: NetworkImage(accountData!.image!),
-                  );
-                }
-                {
-                  return const CircleAvatar(
-                    radius: 24,
-                    backgroundColor: Colors.red,
-                  );
-                }
-              },
+                    if (isOnline && accountData?.image != null) {
+                      return CircleAvatar(
+                        radius: 25,
+                        backgroundColor: Colors.red,
+                        backgroundImage: NetworkImage(accountData!.image!),
+                      );
+                    }
+                    {
+                      return const CircleAvatar(
+                        radius: 25,
+                        backgroundColor: Colors.red,
+                      );
+                    }
+                  },
+                ),
+                SizedBox(width: 10),
+                Container(
+                  constraints: const BoxConstraints(maxWidth: 235),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        // name ad user name
+                        Text(
+                          "${accountData?.name}",
+                          maxLines: 2,
+                          style: TS.opensensBlue(
+                            color: Colors.black,
+                          ),
+                        ),
+                        AppText("@${accountData?.username}", fontSize: 16)
+                            .heeding()
+                      ]),
+                ),
+              ],
             ),
-            const SizedBox(width: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    // name ad user name
-                    Text(
-                      "${accountData?.name}",
-                      style: TS.opensensBlue(
-                        color: Colors.black,
-                      ),
-                    ),
-                    AppText("@${accountData?.username}", fontSize: 16).heeding()
-                  ]),
-            ),
-            const Spacer(),
-            if (hideNore == false)
+            if (hideMore == false)
               IconButton(
                 onPressed: onTapMore ?? () {},
                 icon: const Icon(Icons.more_vert),
               )
+            else
+              const SizedBox()
           ],
         ),
       ),

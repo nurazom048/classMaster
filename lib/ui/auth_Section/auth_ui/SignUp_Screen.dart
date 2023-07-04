@@ -109,7 +109,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       AppTextFromField(
                         controller: usernameController,
                         hint: "username",
-                        labelText: "Couse a User for your Account",
+                        labelText: "Chose a User for your Account",
                         validator: (value) =>
                             SignUpValidation.validateUsername(value),
                         focusNode: usernameFocusNode,

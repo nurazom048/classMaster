@@ -169,7 +169,7 @@ class JoinRequestPart extends ConsumerWidget {
                           return AccountCard(
                             accountData: data.listAccounts[index],
 
-                            // acsept or reject members
+                            // accept or reject members
                             acceptUsername: () {
                               seeAllJonReq.acceptMember(ref,
                                   data.listAccounts[index].username, context);

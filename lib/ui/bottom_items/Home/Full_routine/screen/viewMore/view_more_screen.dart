@@ -53,45 +53,55 @@ class _ViewMoreState extends State<ViewMore> with TickerProviderStateMixin {
             routineId: widget.routineId, routineName: widget.routineId),
         MemberList(routineId: widget.routineId),
       ];
-      return Scaffold(
-        body: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: 284,
-                width: 300,
-                child: Column(
-                  children: [
-                    HeaderTitle("Routine", context),
-                    const SizedBox(height: 40),
-                    AppText(widget.routineName.toUpperCase()).title(),
-                    AppText(widget.ownerName ??
-                            ownerName ??
-                            "khulna polytechnic institute")
-                        .heeding(),
-                    const SizedBox(height: 30),
-                    CustomTabBar(
-                      margin: const EdgeInsets.symmetric(horizontal: 24)
-                          .copyWith(top: 2, bottom: 10),
-                      tabItems: const ['Class List', 'Members'],
-                      selectedIndex: ref.watch(viewMoreIndexProvider),
-                      onTabSelected: (index) {
-                        ref
-                            .watch(viewMoreIndexProvider.notifier)
-                            .update((state) => index);
-                      },
-                    ),
-                  ],
+      return SafeArea(
+        child: Scaffold(
+          body: NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) => [
+              SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 284,
+                  width: 300,
+                  child: Column(
+                    children: [
+                      HeaderTitle("Routine", context),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const SizedBox(height: 40),
+                            AppText(widget.routineName.toUpperCase()).title(),
+                            AppText(widget.ownerName ??
+                                    ownerName ??
+                                    "khulna polytechnic institute")
+                                .heeding(),
+                            const SizedBox(height: 30),
+                          ],
+                        ),
+                      ),
+                      CustomTabBar(
+                        margin: const EdgeInsets.symmetric(horizontal: 24)
+                            .copyWith(top: 2, bottom: 10),
+                        tabItems: const ['Class List', 'Members'],
+                        selectedIndex: ref.watch(viewMoreIndexProvider),
+                        onTabSelected: (index) {
+                          ref
+                              .watch(viewMoreIndexProvider.notifier)
+                              .update((state) => index);
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            )
-          ],
-          body: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              child: pages[ref.watch(viewMoreIndexProvider)]),
-        ),
+              )
+            ],
+            body: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                child: pages[ref.watch(viewMoreIndexProvider)]),
+          ),
 
-        //
+          //
+        ),
       );
     });
   }

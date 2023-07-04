@@ -3,12 +3,18 @@ class AddClassValidator {
     if (value == null || value.isEmpty) {
       return 'Class name is required';
     }
+    if (value.trim().length > 30) {
+      return 'Class name cannot exceed 30 words';
+    }
     return null;
   }
 
   static String? instructorName(String? value) {
     if (value == null || value.isEmpty) {
       return 'Instructor name is required';
+    }
+    if (value.trim().length > 20) {
+      return 'Instructor name cannot exceed 20 words';
     }
     return null;
   }
@@ -17,12 +23,18 @@ class AddClassValidator {
     if (value == null || value.isEmpty) {
       return 'Room number is required';
     }
+    if (value.trim().length > 10) {
+      return 'Room number cannot exceed 10 words';
+    }
     return null;
   }
 
   static String? subCode(String? value) {
     if (value == null || value.isEmpty) {
       return 'Subject code is required';
+    }
+    if (value.trim().length > 10) {
+      return 'Subject code cannot exceed 10 words';
     }
     return null;
   }

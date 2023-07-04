@@ -61,38 +61,47 @@ class AuthController extends StateNotifier<bool> {
   }
 
 //******** signIn      ************ */
-  signIn(username, password, context) async {
-    state = true;
-    final res = await authReq.login(username: username, password: password);
+  signIn(
+    context, {
+    String? username,
+    String? email,
+    required String password,
+  }) async {
+    if (username == null && email == null) {
+      Alert.conformAlert(context, "email or username is required");
+    } else {
+      state = true;
+      final res = await authReq.login(username: username, password: password);
 
-    res.fold(
-      (l) async {
-        state = false;
+      res.fold(
+        (l) async {
+          state = false;
 
-        if (l.message == 'Academy request is pending') {
-          Get.to(() => const PendingScreen());
-        }
-        if (l.message == 'Email is not verified') {
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
-            email: l.email!,
-            password: password,
-          );
-          Get.to(() => EmailVerificationScreen(
-                email: l.email!,
-                password: password,
-              ));
-          Alert.showSnackBar(context, 'Email is not verified');
-        } else {
-          return Alert.errorAlertDialog(context, l.message);
-        }
-      },
-      (r) {
-        state = false;
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => BottomNavBar()));
-        Alert.showSnackBar(context, r);
-      },
-    );
+          if (l.message == 'Academy request is pending') {
+            Get.to(() => const PendingScreen());
+          }
+          if (l.message == 'Email is not verified') {
+            await FirebaseAuth.instance.signInWithEmailAndPassword(
+              email: l.email!,
+              password: password,
+            );
+            Get.to(() => EmailVerificationScreen(
+                  email: l.email!,
+                  password: password,
+                ));
+            Alert.showSnackBar(context, 'Email is not verified');
+          } else {
+            return Alert.errorAlertDialog(context, l.message);
+          }
+        },
+        (r) {
+          state = false;
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => BottomNavBar()));
+          Alert.showSnackBar(context, r);
+        },
+      );
+    }
   }
 
 //******** change password  ************ */

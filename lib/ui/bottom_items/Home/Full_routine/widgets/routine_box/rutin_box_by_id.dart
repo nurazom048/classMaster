@@ -170,11 +170,12 @@ class _RutinBoxByIdState extends State<RutinBoxById> {
                     return Container(
                       // margin: const EdgeInsets.only(top: 15),
                       constraints: const BoxConstraints(minHeight: 200),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: List.generate(
-                          widget.listOfDayState.length,
-                          (index) {
+                      height: 200,
+                      child: Scrollbar(
+                        radius: const Radius.circular(8),
+                        child: ListView.builder(
+                          itemCount: widget.listOfDayState.length,
+                          itemBuilder: (context, index) {
                             if (widget.listOfDayState.isNotEmpty) {
                               return RutineCardInfoRow(
                                 isFirst: index == 0,
@@ -292,6 +293,8 @@ class _RutinBoxByIdState extends State<RutinBoxById> {
 
 // Navigate to the SummaryScreen when a day is tapped
 void onTap(Day? day, String status, context) {
+  print('object');
+  print('${day?.start}');
   Get.to(
     () => SummaryScreen(
       classId: day!.classId.id,

@@ -13,7 +13,11 @@ import '../../../constant/constant.dart';
 
 class AuthReq {
   //........ Login .........//
-  Future<Either<Message, String>> login({username, password}) async {
+  Future<Either<Message, String>> login({
+    String? username,
+    String? email,
+    required String password,
+  }) async {
     var loginUrl = Uri.parse('${Const.BASE_URl}/auth/login');
 
     try {
@@ -23,7 +27,8 @@ class AuthReq {
           ';;;;;;;;;;;;;;;;;;;;;;  one signa token;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
       print("osUserID : $osUserID");
       final response = await http.post(loginUrl, body: {
-        "username": username,
+        "username": username ?? '',
+        "email": email ?? '',
         "password": password,
         "osUserID": osUserID ?? ''
       });

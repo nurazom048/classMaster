@@ -26,7 +26,6 @@ void main() async {
 // Firebase analytics
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true);
-
   runApp(const ProviderScope(child: MyApp()));
 }
 //
@@ -42,8 +41,9 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
+    navigateBaseOnToken();
+
     super.initState();
-    navigateBaseOnToken(context);
   }
 
 //

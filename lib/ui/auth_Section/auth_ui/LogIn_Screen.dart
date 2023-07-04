@@ -25,7 +25,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   //
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -65,13 +65,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     AppTextFromField(
                       controller:
-                          byUsername ? usernameController : _emailController,
+                          byUsername ? usernameController : emailController,
                       hint: byUsername ? 'Username' : "Email",
                       labelText: byUsername
                           ? "Enter Username "
                           : "Enter email address",
                       validator: (value) {
-                        if (byUsername) {
+                        if (byUsername == true) {
                           return LoginValidation.validUsername(value);
                         } else {
                           return LoginValidation.validateEmail(value);
@@ -116,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       // try {
                       await FirebaseAuth.instance.signOut();
                       return Get.to(() => ForgetPasswordScreen(
-                            email: _emailController.text,
+                            email: emailController.text,
                           ));
 
                       // return Get.to(() => EmailVerificationScreen(
@@ -141,11 +141,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       text: "Log In",
                       onPressed: () async {
                         if (formKey.currentState?.validate() ?? false) {
-                          authLogin.signIn(_emailController.text,
-                              _passwordController.text, context);
-                        } else {
                           authLogin.signIn(
-                              "roma123", "@Rahala+Nur123", context);
+                            context,
+                            username: usernameController.text.trim(),
+                            email: emailController.text.trim(),
+                            password: _passwordController.text,
+                          );
+                        } else {
+                          // authLogin.signIn(
+                          //     "roma123", "@Rahala+Nur123", context);
                         }
                       },
                     ),
@@ -153,6 +157,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     //
 
                     const OR(),
+
+                    TextButton(
+                      onPressed: () {
+                        authLogin.signIn(
+                          context,
+                          username: "roma123",
+                          email: null,
+                          password: "@Rahala+Nur123",
+                        );
+                      },
+                      // ignore: prefer_const_constructors
+                      child: Text('skip'),
+                    ),
 
                     SignUpSuicherButton(
                       "Do not have an account?",

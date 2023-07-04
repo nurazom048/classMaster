@@ -19,51 +19,54 @@ class SaveRoutinesScreen extends ConsumerWidget {
 //notifier
     final homeRoutinesNotifier =
         ref.watch(homeRoutineControllerProvider(null).notifier);
-    return Scaffold(
-      body: Column(
-        children: [
-          HeaderTitle("All Save Routines", context),
-          const SizedBox(height: 25),
-          Expanded(
-            child: Container(
-              child: saveRoutines.when(
-                data: (data) {
-                  void scrollListener() {
-                    if (saveRoutinesScrolled.position.pixels ==
-                        saveRoutinesScrolled.position.maxScrollExtent) {
-                      print('end.........................');
-                      ref
-                          .watch(homeRoutineControllerProvider(null).notifier)
-                          .loadMore(data.currentPage);
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          children: [
+            HeaderTitle("All Save Routines", context),
+            const SizedBox(height: 25),
+            Expanded(
+              child: Container(
+                child: saveRoutines.when(
+                  data: (data) {
+                    void scrollListener() {
+                      if (saveRoutinesScrolled.position.pixels ==
+                          saveRoutinesScrolled.position.maxScrollExtent) {
+                        print('end.........................');
+                        ref
+                            .watch(homeRoutineControllerProvider(null).notifier)
+                            .loadMore(data.currentPage);
+                      }
                     }
-                  }
 
-                  saveRoutinesScrolled.addListener(scrollListener);
-                  return ListView.builder(
-                    itemCount: data.savedRoutines.length,
-                    controller: saveRoutinesScrolled,
-                    // physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return RutinBoxById(
-                        rutinId: data.savedRoutines[index].id,
-                        rutinName: data.savedRoutines[index].name,
-                        onTapMore: () =>
-                            RoutineDialog.CheckStatusUser_BottomSheet(
-                          context,
-                          routineID: data.savedRoutines[index].id,
-                          routineName: data.savedRoutines[index].name,
-                          routinesController: homeRoutinesNotifier,
-                        ),
-                      );
-                    },
-                  );
-                },
-                error: (error, stackTrace) => Alert.handleError(context, error),
-                loading: () => Loaders.center(),
+                    saveRoutinesScrolled.addListener(scrollListener);
+                    return ListView.builder(
+                      itemCount: data.savedRoutines.length,
+                      controller: saveRoutinesScrolled,
+                      // physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return RutinBoxById(
+                          rutinId: data.savedRoutines[index].id,
+                          rutinName: data.savedRoutines[index].name,
+                          onTapMore: () =>
+                              RoutineDialog.CheckStatusUser_BottomSheet(
+                            context,
+                            routineID: data.savedRoutines[index].id,
+                            routineName: data.savedRoutines[index].name,
+                            routinesController: homeRoutinesNotifier,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  error: (error, stackTrace) =>
+                      Alert.handleError(context, error),
+                  loading: () => Loaders.center(),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

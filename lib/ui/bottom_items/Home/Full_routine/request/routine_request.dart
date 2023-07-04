@@ -40,7 +40,6 @@ class FullRoutineRequest {
       );
 
       if (response.statusCode == 200) {
-//svae cshe
         // save to csh
         APICacheDBModel cacheDBModel = APICacheDBModel(
             key: "chackStatus$routineId", syncData: response.body);

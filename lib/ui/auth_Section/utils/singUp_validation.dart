@@ -9,8 +9,8 @@ class SignUpValidation {
     if (value.length < 2) {
       return "Name must be at least 2 characters long";
     }
-    if (value.trim().length > 40) {
-      return 'Maximum 40 characters or spaces allowed';
+    if (value.trim().length > 45) {
+      return 'Maximum 45 characters or spaces allowed';
     }
     return null;
   }

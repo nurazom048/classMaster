@@ -36,9 +36,9 @@ class AccountSearchScreen extends ConsumerWidget {
           });
 
           return ListView.separated(
-            physics: const NeverScrollableScrollPhysics(),
+            // physics: const NeverScrollableScrollPhysics(),
             controller: scrollController,
-            padding: const EdgeInsets.only(bottom: 100),
+            padding: const EdgeInsets.only(bottom: 200),
             itemCount: data.accounts?.length ?? 0,
             itemBuilder: (context, index) {
               if (data.accounts!.isNotEmpty) {

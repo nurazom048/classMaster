@@ -2,11 +2,9 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as ma;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import 'package:table/constant/app_color.dart';
 import 'package:table/ui/bottom_items/Home/utils/utils.dart';
 
 import '../ui/bottom_items/Collection Fetures/Profie Fetures/profile_screen.dart';
@@ -56,15 +54,12 @@ class AccountCardRow extends ConsumerWidget {
             padding ?? const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(8)),
-        height: 70,
+        height: 80,
         width: MediaQuery.of(context).size.width,
         child: Center(
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            // ignore: prefer_const_literals_to_create_immutables
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // TODO
-
               FutureBuilder(
                 future: Utils.isOnlineMethod(),
                 builder: (context, snapshot) {
@@ -72,14 +67,14 @@ class AccountCardRow extends ConsumerWidget {
 
                   if (isOffline && accountData.image != null) {
                     return CircleAvatar(
-                      radius: 23,
+                      radius: 25,
                       backgroundColor: Colors.white54,
                       backgroundImage: NetworkImage(accountData.image!),
                     );
                   }
                   {
                     return const CircleAvatar(
-                      radius: 23,
+                      radius: 25,
                       backgroundColor: Colors.black12,
                     );
                   }
@@ -87,43 +82,70 @@ class AccountCardRow extends ConsumerWidget {
               ),
 
               //
-              const Spacer(flex: 3),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ma.Text.rich(
-                    TextSpan(
-                        text: "${accountData.name}",
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                            color: Colors.black),
-                        children: [
-                          TextSpan(
-                              text: '\n@${accountData.username}',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                                fontSize: 15,
-                              )),
-                        ]),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 3.0, left: 10),
-                    child: ma.Text(
-                        accountData.position != null
-                            ? '${accountData.position}'
-                            : "",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: AppColor.nokiaBlue,
-                          fontSize: 14,
-                        )),
-                  ),
-                ],
+              SizedBox(width: MediaQuery.of(context).size.width * 0.020),
+              FittedBox(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.70,
+                  // color: Colors.red,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(accountData.name ?? '',
+                            maxLines: 2,
+                            textScaleFactor: 1.3,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontFamily: 'Open Sans',
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w600,
+                              height: 1.3,
+                              color: Colors.black,
+                            )),
+                        Text(
+                          "@${accountData.username}",
+                          style: const TextStyle(
+                              fontSize: 20, color: Colors.black),
+                        ),
+                      ]),
+                ),
               ),
+              // Row(
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   children: [
+              //     ma.Text.rich(
+              //       TextSpan(
+              //           text: "${accountData.name}",
+              //           style: const TextStyle(
+              //               fontWeight: FontWeight.bold,
+              //               fontSize: 18,
+              //               color: Colors.black),
+              //           children: [
+              //             TextSpan(
+              //                 text: '\n@${accountData.username}',
+              //                 style: const TextStyle(
+              //                   fontWeight: FontWeight.w500,
+              //                   color: Colors.black,
+              //                   fontSize: 15,
+              //                 )),
+              //           ]),
+              //     ),
+              //     Padding(
+              //       padding: const EdgeInsets.only(top: 3.0, left: 10),
+              //       child: ma.Text(
+              //           accountData.position != null
+              //               ? '${accountData.position}'
+              //               : "",
+              //           style: TextStyle(
+              //             fontWeight: FontWeight.w500,
+              //             color: AppColor.nokiaBlue,
+              //             fontSize: 14,
+              //           )),
+              //     ),
+              //   ],
+              // ),
 
-              const Spacer(flex: 24),
+              //const Spacer(flex: 18),
+              const Spacer(flex: 1),
 
               suffix ?? const SizedBox.shrink(),
 
@@ -139,7 +161,7 @@ class AccountCardRow extends ConsumerWidget {
                     onPressed: addCapotes == true
                         ? () => addCaptansAlart(context)
                         : () => onUsername(accountData.username, ""),
-                    child: ma.Text(buttotext ?? "",
+                    child: Text(buttotext ?? "",
                         style: TextStyle(color: color ?? Colors.blue))),
               const Spacer(flex: 2),
             ],
@@ -156,7 +178,7 @@ class AccountCardRow extends ConsumerWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const ma.Text("Set a position"),
+          title: const Text("Set a position"),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -170,7 +192,7 @@ class AccountCardRow extends ConsumerWidget {
                 child: CupertinoButton(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   color: Colors.blue,
-                  child: const ma.Text("add as accept"),
+                  child: const Text("add as accept"),
                   onPressed: () {
                     onUsername(accountData.username, position.text);
                   },

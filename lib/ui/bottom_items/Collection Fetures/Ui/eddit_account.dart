@@ -102,30 +102,29 @@ class _EdditAccountState extends State<EdditAccount> {
                 const SizedBox(height: 60),
                 // Existing code...
 
-                if (loading != null && loading == true)
-                  Loaders.button()
-                else
-                  CupertinoButtonCustom(
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
-                    color: AppColor.nokiaBlue,
-                    text: "Eddit",
-                    onPressed: () async {
+                CupertinoButtonCustom(
+                  isLoading: loading,
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  color: AppColor.nokiaBlue,
+                  text: "Eddit",
+                  onPressed: () async {
+                    if (formKey.currentState?.validate() ?? false) {
                       setState(() => loading = true);
-                      if (formKey.currentState?.validate() ?? false) {
-                        final Message message = await AccountReq.updateAccount(
-                          name: nameController.text,
-                          username: usernameController.text,
-                          about: aboutController.text,
-                          profileImage: profileImagePath,
-                          coverImage: coverImagePath,
-                        );
-                        Alert.showSnackBar(context, message.message);
-                        setState(() => loading = true);
 
-                        Navigator.pop(context);
-                      }
-                    },
-                  ),
+                      final Message message = await AccountReq.updateAccount(
+                        name: nameController.text,
+                        username: usernameController.text,
+                        about: aboutController.text,
+                        profileImage: profileImagePath,
+                        coverImage: coverImagePath,
+                      );
+                      Alert.showSnackBar(context, message.message);
+                      setState(() => loading = true);
+
+                      Navigator.pop(context);
+                    }
+                  },
+                ),
 
                 const SizedBox(height: 70),
               ],

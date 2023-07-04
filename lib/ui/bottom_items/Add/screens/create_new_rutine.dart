@@ -55,20 +55,17 @@ class CreateNewRoutine extends StatelessWidget {
                   Consumer(builder: (context, ref, _) {
                     final isLoading = ref.watch(createRoutineLoaderProvider);
 
-                    if (isLoading == true) {
-                      return Loaders.button();
-                    } else {
-                      return CupertinoButtonCustom(
-                        padding: EdgeInsets.zero,
-                        text: "Create Routine",
-                        color: AppColor.nokiaBlue,
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            _onTapToButton(context, ref);
-                          }
-                        },
-                      );
-                    }
+                    return CupertinoButtonCustom(
+                      isLoading: isLoading,
+                      padding: EdgeInsets.zero,
+                      text: "Create Routine",
+                      color: AppColor.nokiaBlue,
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          _onTapToButton(context, ref);
+                        }
+                      },
+                    );
                   }),
                 ],
               ),
@@ -121,6 +118,9 @@ class CreateNewRoutine extends StatelessWidget {
   static String? routineNameValidator(String? value) {
     if (value == null || value.isEmpty) {
       return 'Routine name is required';
+    }
+    if (value.trim().length > 10) {
+      return 'Routine name cannot exceed 10 words';
     }
     return null;
   }

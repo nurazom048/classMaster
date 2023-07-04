@@ -13,73 +13,75 @@ import '../widgets/setting_options.dart';
 class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(children: [
-          HeaderTitle("Settings", context),
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(children: [
+            HeaderTitle("Settings", context),
 
-          //......... Genarel........
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.topLeft,
-                  padding: const EdgeInsets.all(16),
-                  child: const Text(
-                    'Genarel',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+            //......... Genarel........
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+              child: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.topLeft,
+                    padding: const EdgeInsets.all(16),
+                    child: const Text(
+                      'Genarel',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
 
-                SeetingOption(
-                  title: 'Edit profile',
-                  icon: Icons.person,
-                  onTap: () => Get.to(const EdditAccount()),
-                ),
-
-                SeetingOption(
-                  title: 'Change password',
-                  icon: Icons.lock,
-                  onTap: () => Get.to(
-                    () => const ChangePasswordPage(),
-                    transition: Transition.rightToLeft,
+                  SeetingOption(
+                    title: 'Edit profile',
+                    icon: Icons.person,
+                    onTap: () => Get.to(const EdditAccount()),
                   ),
-                ),
-                SeetingOption(
-                  title: 'Theem',
-                  subtitle: "theme",
-                  icon: Icons.nightlight_sharp,
-                  // onTap: () => SettingsUtils.showThemeSelectionSheet(
-                  //     context, "themechanger")
-                  onTap: () => Alert.upcoming(context),
-                ),
 
-                //......... Notifications........
-                Container(
-                  alignment: Alignment.topLeft,
-                  padding: const EdgeInsets.all(16),
-                  child: const Text(
-                    'Notifications',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                  SeetingOption(
+                    title: 'Change password',
+                    icon: Icons.lock,
+                    onTap: () => Get.to(
+                      () => const ChangePasswordPage(),
+                      transition: Transition.rightToLeft,
                     ),
                   ),
-                ),
-                SeetingOption(
-                  title: 'Notification settings',
-                  icon: Icons.notifications,
-                  onTap: () => AppSettings.openNotificationSettings(),
-                ),
-              ],
+                  SeetingOption(
+                    title: 'Theem',
+                    subtitle: "theme",
+                    icon: Icons.nightlight_sharp,
+                    // onTap: () => SettingsUtils.showThemeSelectionSheet(
+                    //     context, "themechanger")
+                    onTap: () => Alert.upcoming(context),
+                  ),
+
+                  //......... Notifications........
+                  Container(
+                    alignment: Alignment.topLeft,
+                    padding: const EdgeInsets.all(16),
+                    child: const Text(
+                      'Notifications',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  SeetingOption(
+                    title: 'Notification settings',
+                    icon: Icons.notifications,
+                    onTap: () => AppSettings.openNotificationSettings(),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ]),
+          ]),
+        ),
       ),
     );
   }

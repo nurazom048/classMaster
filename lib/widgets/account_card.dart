@@ -20,7 +20,8 @@ class AccountCard extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 42).copyWith(top: 30),
+        margin: const EdgeInsets.symmetric(horizontal: 40)
+            .copyWith(top: 30, right: 0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,20 +46,31 @@ class AccountCard extends StatelessWidget {
                 }
               },
             ),
-            const SizedBox(width: 17),
-            RichText(
-              text: TextSpan(
-                style: DefaultTextStyle.of(context).style,
-                children: [
-                  TextSpan(
-                      text: name,
-                      style:
-                          TS.opensensBlue(fontSize: 24, color: Colors.black)),
-                  TextSpan(
-                    text: '\n$username',
-                    style: const TextStyle(fontSize: 15, color: Colors.black),
-                  ),
-                ],
+            const SizedBox(width: 10),
+            FittedBox(
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.55,
+                // color: Colors.red,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(name,
+                          maxLines: 2,
+                          textScaleFactor: 1.3,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontFamily: 'Open Sans',
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w600,
+                            height: 1.3,
+                            color: Colors.black,
+                          )),
+                      Text(
+                        username,
+                        style:
+                            const TextStyle(fontSize: 20, color: Colors.black),
+                      ),
+                    ]),
               ),
             ),
           ],

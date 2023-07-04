@@ -79,9 +79,6 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                   context,
                   onTap: () {},
                   hideArrow: true,
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 0, horizontal: 20)
-                          .copyWith(top: 34),
                 ),
                 SizedBox(
                   height: 129,

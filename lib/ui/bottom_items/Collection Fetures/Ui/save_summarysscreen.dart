@@ -25,12 +25,7 @@ class SaveSummeryScreen extends ConsumerWidget {
           child: ListView(
             controller: scrollController,
             children: [
-              HeaderTitle(
-                "Save Summarys",
-                context,
-                margin: const EdgeInsets.symmetric(horizontal: 25)
-                    .copyWith(top: KTopPadding + 20),
-              ),
+              HeaderTitle("Save Summary", context),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8).copyWith(top: 20),
