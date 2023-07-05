@@ -117,17 +117,21 @@ class AddNoticeScreen extends ConsumerWidget {
                 if (value == null || value.isEmpty) {
                   return 'Please enter notice title';
                 }
+                if (value.trim().length > 25) {
+                  return 'Notice title cannot exceed 25 words';
+                }
                 return null;
               },
             ),
+
             AppTextFromField(
               controller: descriptionController,
               hint: "Notice Description",
               labelText: "Describe what the notice is about.",
             ).multiline(),
             const SizedBox(height: 60),
-            UploadPDFBButton(onSelected: (thepath) {}),
-            // SizedBox(height: 200, width: 400, child: DragtoSelectFile()),
+            UploadPDFBButton(onSelected: (thePath) {}),
+            // SizedBox(height: 200, width: 400, child: drag'sSelectFile()),
             const SizedBox(height: 60),
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 10),

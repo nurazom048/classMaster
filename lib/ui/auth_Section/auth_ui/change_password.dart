@@ -28,53 +28,54 @@ class ChangePasswordPage extends ConsumerWidget {
     // Form key
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-    return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      //   bottom: PreferredSize(
-      //     preferredSize: MediaQuery.of(context).size / 40,
-      //     child: HeaderTitle("Change Password", context),
-      //   ),
-      // ),
-      body: SingleChildScrollView(
-        child: Form(
-          key: formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              HeaderTitle('Change Password', context),
-              const SizedBox(height: 20),
-              AppTextFromField(
-                controller: currentPasswordController,
-                // obscureText: true,
-                hint: 'Current Password',
-                validator: (value) =>
-                    ChangePwValidator.validateCurrentPassword(value),
-              ),
-              const SizedBox(height: 16),
-              AppTextFromField(
-                controller: newPasswordController,
-                obscureText: true,
-                hint: 'New Password',
-                validator: (value) =>
-                    ChangePwValidator.validateNewPassword(value),
-              ),
-              const SizedBox(height: 16),
-              AppTextFromField(
-                controller: confirmPasswordController,
-                obscureText: true,
-                hint: 'Confirm New Password',
-                validator: (value) => ChangePwValidator.validateConfirmPassword(
-                  value,
-                  newPasswordController.text,
+    return SafeArea(
+      child: Scaffold(
+        // appBar: AppBar(
+        //   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        //   bottom: PreferredSize(
+        //     preferredSize: MediaQuery.of(context).size / 40,
+        //     child: HeaderTitle("Change Password", context),
+        //   ),
+        // ),
+        body: SingleChildScrollView(
+          child: Form(
+            key: formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                HeaderTitle('Change Password', context),
+                const SizedBox(height: 20),
+                AppTextFromField(
+                  controller: currentPasswordController,
+                  // obscureText: true,
+                  hint: 'Current Password',
+                  validator: (value) =>
+                      ChangePwValidator.validateCurrentPassword(value),
                 ),
-              ),
-              const SizedBox(height: 100),
-              if (loading != null && loading == true)
-                Loaders.button()
-              else
+                const SizedBox(height: 16),
+                AppTextFromField(
+                  controller: newPasswordController,
+                  obscureText: true,
+                  hint: 'New Password',
+                  validator: (value) =>
+                      ChangePwValidator.validateNewPassword(value),
+                ),
+                const SizedBox(height: 16),
+                AppTextFromField(
+                  controller: confirmPasswordController,
+                  obscureText: true,
+                  hint: 'Confirm New Password',
+                  validator: (value) =>
+                      ChangePwValidator.validateConfirmPassword(
+                    value,
+                    newPasswordController.text,
+                  ),
+                ),
+                const SizedBox(height: 100),
                 CupertinoButtonCustom(
+                  icon: Icons.check,
+                  isLoading: loading,
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   color: AppColor.nokiaBlue,
                   text: "Change Password",
@@ -88,7 +89,8 @@ class ChangePasswordPage extends ConsumerWidget {
                     }
                   },
                 ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

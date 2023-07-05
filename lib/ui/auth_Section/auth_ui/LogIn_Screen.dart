@@ -162,6 +162,19 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: () {
                         authLogin.signIn(
                           context,
+                          username: "bteb",
+                          email: null,
+                          password: "@Rahala+Nur123",
+                        );
+                      },
+                      // ignore: prefer_const_constructors
+                      child: Text('BTEB'),
+                    ),
+
+                    TextButton(
+                      onPressed: () {
+                        authLogin.signIn(
+                          context,
                           username: "roma123",
                           email: null,
                           password: "@Rahala+Nur123",

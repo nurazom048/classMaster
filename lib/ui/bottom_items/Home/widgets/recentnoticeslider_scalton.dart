@@ -11,13 +11,12 @@ class RecentNoticeSliderSkelton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 181,
+      height: 165,
       child: Column(
         children: [
           Container(
-            height: 140,
-            margin: const EdgeInsets.symmetric(horizontal: 18),
-            padding: const EdgeInsets.all(10),
+            height: 123,
+            padding: const EdgeInsets.symmetric(horizontal: 14),
             width: double.infinity,
             decoration: BoxDecoration(
               //color: Colors.white,
@@ -46,7 +45,7 @@ class RecentNoticeSliderSkelton extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 13),
+          const SizedBox(height: 10),
           Shimmer.fromColors(
             baseColor: Colors.grey[300]!,
             highlightColor: Colors.grey[100]!,
@@ -61,7 +60,7 @@ class RecentNoticeSliderSkelton extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 10),
         ],
       ),
     );

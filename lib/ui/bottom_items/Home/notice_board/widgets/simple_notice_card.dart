@@ -1,3 +1,5 @@
+// ignore_for_file: sized_box_for_whitespace
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../../../widgets/appWidget/app_text.dart';
@@ -38,6 +40,7 @@ class SimpleNoticeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String time = DateFormat('dd/MMM/yy ').format(dateTime).toString();
     return InkWell(
       onLongPress: onLongPress ?? () {},
       child: Container(
@@ -57,7 +60,9 @@ class SimpleNoticeCard extends StatelessWidget {
               width: MediaQuery.of(context).size.width - 10,
               padding: const EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10), color: Colors.white),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
               child: InkWell(
                 onTap: ontap,
                 child: Row(
@@ -66,7 +71,7 @@ class SimpleNoticeCard extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          DateFormat('dd MMM yy').format(dateTime).toString(),
+                          time,
                           style: const TextStyle(
                             fontFamily: 'Inter',
                             fontSize: 18,
@@ -74,8 +79,20 @@ class SimpleNoticeCard extends StatelessWidget {
                             color: Color(0xFF333333),
                           ),
                         ),
-                        const SizedBox(width: 5),
-                        AppText(noticeName, color: Colors.black).heeding(),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          width: MediaQuery.of(context).size.width * 0.61,
+                          // color: Colors.red,
+                          child: Text(
+                            "Upcoming eid vacation",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TS.opensensBlue(
+                                fontSize: 20,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w300),
+                          ),
+                        ),
                       ],
                     ),
                     const Icon(Icons.arrow_forward)

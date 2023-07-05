@@ -5,6 +5,7 @@ import 'package:table/ui/bottom_items/Home/notice_board/models/recent_notice_mod
 import 'package:table/ui/bottom_items/Home/notice_board/screens/view_notice_screen.dart';
 import 'package:table/widgets/appWidget/dotted_divider.dart';
 
+import '../../../../widgets/appWidget/app_text.dart';
 import '../../Collection Fetures/models/account_models.dart';
 
 class NoticeRow extends StatelessWidget {
@@ -19,51 +20,64 @@ class NoticeRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DateTime dt = notice.time;
-    return SizedBox(
-      height: 60,
+    DateTime dateTime = notice.time;
+
+    return Container(
+      height: 50,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
       child: Column(
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                DateFormat('dd MMM yy').format(dt).toString(),
-                style: const TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 18,
-                  height: 1.86,
-                  color: Color(0xFF333333),
-                ),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  notice.contentName,
-                  style: const TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 20,
-                    height: 1.86,
-                    color: Color(0xFF333333),
-                  ),
-                ),
-              ),
-              IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (context) => NoticeViewScreen(
-                          notice: notice,
-                          accountModel: accountModels,
-                        ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      DateFormat('dd/MMM/yy ').format(dateTime).toString(),
+                      style: const TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 18,
+                        height: 1.86,
+                        color: Color(0xFF333333),
                       ),
-                    );
-                  },
-                  icon: const Icon(Icons.arrow_forward)),
-            ],
+                    ),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      width: MediaQuery.of(context).size.width * 0.54,
+                      // color: Colors.red,
+                      child: Text(
+                        notice.contentName,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: TS.opensensBlue(
+                            fontSize: 20,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w300),
+                      ),
+                    ),
+                  ],
+                ),
+                GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => NoticeViewScreen(
+                            notice: notice,
+                            accountModel: accountModels,
+                          ),
+                        ),
+                      );
+                    },
+                    child: const Icon(Icons.arrow_forward))
+              ],
+            ),
           ),
-          const SizedBox(height: 5),
           const DotedDivider(),
         ],
       ),

@@ -13,16 +13,18 @@ class RecentNoticeSliderItem extends StatelessWidget {
     required this.index,
     required this.singleCondition,
     required this.recentNotice,
+    this.emptyMessage,
   });
   final List<Notice> notice;
   final int index;
   final bool condition;
   final bool singleCondition;
   final RecentNotice recentNotice;
+  final String? emptyMessage;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       height: 120,
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -43,12 +45,11 @@ class RecentNoticeSliderItem extends StatelessWidget {
                 accountModels: recentNotice.notices[index + 1].academyId,
               ),
             ] else
-              const SizedBox(
-                height: 120,
-                child: Center(
-                  child: Text("Join NoticeBoard to see Recent Notices"),
-                ),
-              )
+              Expanded(
+                  child: Center(
+                child: Text(
+                    emptyMessage ?? "Join NoticeBoard to see Recent Notices"),
+              ))
           ]),
     );
   }

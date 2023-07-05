@@ -133,7 +133,8 @@ homeMobileView(WidgetRef ref, AsyncValue<RecentNotice> recentNoticeList,
         ),
 
         SizedBox(
-          height: 181,
+          height: 160,
+          // color: Colors.red,
           child: recentNoticeList.when(
             data: (data) {
               int length = data.notices.length;

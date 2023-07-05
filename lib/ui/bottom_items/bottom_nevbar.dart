@@ -48,22 +48,30 @@ class BottomNavBar extends StatelessWidget {
       return Scaffold(
         backgroundColor: showPlus ? AppColor.background2 : null,
         body: pages[index],
-        bottomNavigationBar: AnimatedOpacity(
-          duration: const Duration(milliseconds: 300),
-          opacity: hideNavBar ? 0.0 : 1.0,
-          child: Visibility(
-            visible: !hideNavBar,
-            child: Container(
-              padding: const EdgeInsets.only(top: 6),
-              margin: const EdgeInsets.symmetric(horizontal: 26, vertical: 0)
-                  .copyWith(bottom: 20),
-              //color: Colors.red,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(63),
+        floatingActionButton: AnimatedOpacity(
+            duration: const Duration(milliseconds: 300),
+            opacity: hideNavBar ? 0.0 : 1.0,
+            child: Visibility(
+              visible: !hideNavBar,
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
                 child: Container(
-                  width: 340,
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 0, horizontal: 30)
+                          .copyWith(right: 0),
+                  width: 270,
                   height: 64,
-                  color: Colors.white,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(63),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.35),
+                          blurRadius: 40,
+
+                          //         //  offset: const Offset(0, 0),
+                        ),
+                      ]),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -85,10 +93,10 @@ class BottomNavBar extends StatelessWidget {
                         },
                         child: showPlus == false
                             ? CircleAvatar(
-                                radius: 22,
+                                radius: 19,
                                 backgroundColor: AppColor.nokiaBlue,
                                 child: CircleAvatar(
-                                  radius: 20,
+                                  radius: 17.6,
                                   backgroundColor: Colors.white,
                                   child: FaIcon(FontAwesomeIcons.plus,
                                       color: AppColor.nokiaBlue),
@@ -115,9 +123,7 @@ class BottomNavBar extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
-          ),
-        ),
+            )),
       );
     });
   }

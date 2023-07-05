@@ -13,8 +13,8 @@ class RecentNoticeSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 181,
+    return Container(
+      height: 160,
       child: Consumer(builder: (context, ref, _) {
         //! provider
         final carouselIndex = ref.watch(carouselIndexProvider);
@@ -22,7 +22,7 @@ class RecentNoticeSlider extends StatelessWidget {
         return Column(
           children: [
             Container(
-              height: 140,
+              height: 125,
               margin: const EdgeInsets.symmetric(horizontal: 18),
               padding: const EdgeInsets.all(10),
               width: double.infinity,
@@ -49,7 +49,7 @@ class RecentNoticeSlider extends StatelessWidget {
                 activeDotColor: AppColor.nokiaBlue,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 10),
           ],
         );
       }),

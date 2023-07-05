@@ -77,6 +77,7 @@ class ProfileSCreen extends StatelessWidget {
                               return RecentNoticeSlider(
                                 list: <Widget>[
                                   RecentNoticeSliderItem(
+                                    emptyMessage: 'No Recent Notice here',
                                     notice: data.notices,
                                     index: 0,
                                     condition: length >= 2,
@@ -86,6 +87,7 @@ class ProfileSCreen extends StatelessWidget {
 
                                   //
                                   RecentNoticeSliderItem(
+                                    emptyMessage: 'No Recent Notice here',
                                     notice: data.notices,
                                     index: 2,
                                     condition: length >= 4,
@@ -93,6 +95,7 @@ class ProfileSCreen extends StatelessWidget {
                                     recentNotice: data,
                                   ), //
                                   RecentNoticeSliderItem(
+                                    emptyMessage: 'No Recent Notice here',
                                     notice: data.notices,
                                     index: 3,
                                     condition: length >= 6,
@@ -101,6 +104,7 @@ class ProfileSCreen extends StatelessWidget {
                                   ),
 
                                   RecentNoticeSliderItem(
+                                    emptyMessage: 'No Recent Notice here',
                                     notice: data.notices,
                                     index: 4,
                                     condition: length >= 8,
