@@ -42,7 +42,7 @@ class BottomSheetShape extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.width - 20;
+    final double width = MediaQuery.of(context).size.width - 5;
     return Container(
       alignment: Alignment.center,
       width: width,
@@ -52,7 +52,7 @@ class BottomSheetShape extends StatelessWidget {
         children: [
           Positioned(
             bottom: 0,
-            left: width * 0.36,
+            left: width * 0.37,
             child: ClipPath(
               clipper: MyBottomSheetClipper(),
               child: Container(

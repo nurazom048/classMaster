@@ -154,10 +154,11 @@ plusBottomSheet(BuildContext context) {
                 child: Container(
                   height: MediaQuery.of(context).size.height - 90,
                   width: MediaQuery.of(context).size.width,
-                  //  margin: EdgeInsets.only(bottom: size.height * 0.101),
-
                   child: Container(
                     //  margin: EdgeInsets.only(bottom: size.height * 0.101),
+
+                    //margin: EdgeInsets.symmetric(horizontal: 10),
+
                     decoration:
                         BoxDecoration(color: Colors.white60, boxShadow: [
                       BoxShadow(
@@ -202,7 +203,6 @@ plusBottomSheet(BuildContext context) {
                                       onTap: () =>
                                           Get.to(() => CreateNewRoutine()),
                                     ),
-                                    const SizedBox(width: 6)
                                   ],
                                 ),
                               ],
