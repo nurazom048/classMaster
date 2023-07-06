@@ -182,7 +182,7 @@ homeMobileView(WidgetRef ref, AsyncValue<RecentNotice> recentNoticeList,
             loading: () => const RecentNoticeSliderSkelton(),
           ),
         ),
-
+        const SizedBox(height: 10),
         // uploaded Routine
 
         homeRoutines.when(

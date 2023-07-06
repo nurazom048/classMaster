@@ -104,7 +104,7 @@ class AccountCardRow extends ConsumerWidget {
                         Text(
                           "@${accountData.username}",
                           style: const TextStyle(
-                              fontSize: 20, color: Colors.black),
+                              fontSize: 16, color: Colors.black),
                         ),
                       ]),
                 ),

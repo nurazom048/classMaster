@@ -25,7 +25,7 @@ class MemberAccountCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(8),
       child: Container(
         margin: const EdgeInsets.only(bottom: 14),
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5)
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5)
             .copyWith(right: 0),
         height: 70,
         color: Colors.white,
@@ -59,7 +59,7 @@ class MemberAccountCard extends StatelessWidget {
 
               FittedBox(
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.70,
+                  width: MediaQuery.of(context).size.width * 0.55,
                   // color: Colors.red,
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,14 +67,14 @@ class MemberAccountCard extends StatelessWidget {
                         Text(
                           '${member.name}',
                           maxLines: 2,
-                          textScaleFactor: 1.3,
+                          textScaleFactor: 1.1,
                           overflow: TextOverflow.ellipsis,
                           style: TS.opensensBlue(color: Colors.black),
                         ),
                         Text(
                           "@${member.username}",
                           style: const TextStyle(
-                              fontSize: 20, color: Colors.black),
+                              fontSize: 16, color: Colors.black),
                         ),
                       ]),
                 ),
