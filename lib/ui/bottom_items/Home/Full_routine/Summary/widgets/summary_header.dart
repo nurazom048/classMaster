@@ -38,7 +38,7 @@ class SummaryHeader extends StatelessWidget {
 
     return SizedBox(
       // padding: const EdgeInsets.only(bottom: 15),
-      height: 132,
+      height: 140,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
