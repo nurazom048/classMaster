@@ -5,7 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:table/core/component/loaders.dart';
 import 'package:table/widgets/error/error.widget.dart';
-import '../../../../../widgets/heder/heder_title.dart';
+import '../../../../../widgets/heder/appbar_custom.dart';
 import '../../utils/utils.dart';
 
 class ViewPDf extends StatefulWidget {
@@ -57,9 +57,30 @@ class _ViewPDfState extends State<ViewPDf> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBarCustom(
+          ' view pdf',
+          actions: [
+            IconButton(
+              onPressed: () {
+                if (_pdfViewerController.pageNumber != 1) {
+                  _pdfViewerController.previousPage();
+                }
+              },
+              icon: const Icon(Icons.arrow_back),
+            ),
+            IconButton(
+              onPressed: () {
+                if (_pdfViewerController.pageNumber <
+                    _pdfViewerController.pageCount) {
+                  _pdfViewerController.nextPage();
+                }
+              },
+              icon: const Icon(Icons.arrow_forward),
+            ),
+          ],
+        ),
         body: Column(
           children: [
-            appBar(context),
             SizedBox(
               height: MediaQuery.of(context).size.height - 100,
               child: FutureBuilder<bool>(
@@ -95,35 +116,6 @@ class _ViewPDfState extends State<ViewPDf> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget appBar(BuildContext context) {
-    return HeaderTitle(
-      "View PDF $isOnline",
-      context,
-      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      widget: Row(
-        children: [
-          IconButton(
-            onPressed: () {
-              if (_pdfViewerController.pageNumber != 1) {
-                _pdfViewerController.previousPage();
-              }
-            },
-            icon: const Icon(Icons.arrow_back),
-          ),
-          IconButton(
-            onPressed: () {
-              if (_pdfViewerController.pageNumber <
-                  _pdfViewerController.pageCount) {
-                _pdfViewerController.nextPage();
-              }
-            },
-            icon: const Icon(Icons.arrow_forward),
-          ),
-        ],
       ),
     );
   }

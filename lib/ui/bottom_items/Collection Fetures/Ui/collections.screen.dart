@@ -10,6 +10,7 @@ import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 import 'package:table/ui/bottom_items/Collection%20Fetures/Ui/save_rutins_screen.dart';
 import 'package:table/ui/bottom_items/Collection%20Fetures/Ui/save_summarysscreen.dart';
 import 'package:table/widgets/account_card.dart';
+import 'package:table/widgets/heder/appbar_custom.dart';
 import '../../../../core/dialogs/alert_dialogs.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -64,6 +65,8 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
     final accountData = ref.watch(accountDataProvider(widget.accountUsername));
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white10,
+        appBar: const AppBarCustom('Collection', leadingIcon: false),
         body: NotificationListener<ScrollNotification>(
           // hide bottom nev bar on scroll
           onNotification: (scrollNotification) =>
@@ -87,13 +90,6 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  //... AppBar.....//
-                  HeaderTitle(
-                    '   Collections',
-                    context,
-                    onTap: () {},
-                    hideArrow: true,
-                  ),
                   SizedBox(
                     height: 129,
                     child: accountData.when(

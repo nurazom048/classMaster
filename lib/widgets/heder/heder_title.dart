@@ -35,7 +35,7 @@ class HeaderTitle extends StatelessWidget {
                     onTap: () => onTap ?? Navigator.pop(context),
                     child: const Icon(
                       Icons.arrow_back_ios,
-                      size: 20,
+                      size: 25,
                       color: Colors.black,
                     )),
               SizedBox(

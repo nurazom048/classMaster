@@ -118,14 +118,21 @@ DateTime initialDateTimeMakerBaseOnSunday() {
   // Subtract days based on weekday
   if (now.weekday == DateTime.monday) {
     return now.subtract(const Duration(days: 1));
-  } else if (now.weekday == DateTime.tuesday ||
-      now.weekday == DateTime.wednesday) {
+  }
+  if (now.weekday == DateTime.tuesday) {
     return now.subtract(const Duration(days: 2));
-  } else if (now.weekday == DateTime.thursday ||
-      now.weekday == DateTime.friday) {
-    return now.subtract(const Duration(days: 1));
-  } else if (now.weekday == DateTime.saturday) {
-    return now.subtract(const Duration(days: 1));
+  }
+  if (now.weekday == DateTime.wednesday) {
+    now.subtract(const Duration(days: 3));
+  }
+  if (now.weekday == DateTime.thursday) {
+    return now.subtract(const Duration(days: 4));
+  }
+  if (now.weekday == DateTime.friday) {
+    return now.subtract(const Duration(days: 5));
+  }
+  if (now.weekday == DateTime.saturday) {
+    return now.subtract(const Duration(days: 6));
   } else {
     return now;
   }

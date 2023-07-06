@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/Full_routine/screen/viewMore/member_list.dart';
 import 'package:table/ui/bottom_items/Home/Full_routine/widgets/routine_box/routine_box_by_id.dart';
+import 'package:table/widgets/heder/appbar_custom.dart';
 import '../../../../../../widgets/appWidget/app_text.dart';
 import '../../../../../../widgets/custom_tab_bar.widget.dart';
 import '../../../../../../widgets/heder/heder_title.dart';
@@ -63,19 +64,19 @@ class _ViewMoreState extends State<ViewMore> with TickerProviderStateMixin {
                   width: 300,
                   child: Column(
                     children: [
-                      HeaderTitle("Routine", context),
+                      const AppBarCustom('Routine'),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            const SizedBox(height: 40),
+                            const SizedBox(height: 20),
                             AppText(widget.routineName.toUpperCase()).title(),
                             AppText(widget.ownerName ??
                                     ownerName ??
                                     "khulna polytechnic institute")
                                 .heeding(),
-                            const SizedBox(height: 30),
+                            const SizedBox(height: 25),
                           ],
                         ),
                       ),

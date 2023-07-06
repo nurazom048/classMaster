@@ -5,10 +5,10 @@ import 'package:table/core/dialogs/alert_dialogs.dart';
 import 'package:table/models/message_model.dart';
 
 import 'package:table/widgets/appWidget/TextFromFild.dart';
+import 'package:table/widgets/heder/appbar_custom.dart';
 import 'package:table/widgets/pick_image.dart';
 import '../../../../constant/app_color.dart';
 import '../../../../widgets/appWidget/buttons/cupertino_buttons.dart';
-import '../../../../widgets/heder/heder_title.dart';
 import '../Api/account_request.dart';
 import '../models/account_models.dart';
 import '../utils/eddit_account.validation.dart';
@@ -57,18 +57,13 @@ class _EdditAccountState extends State<EdditAccount> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: const AppBarCustom('Eddit Account'),
         body: Form(
           key: formKey,
           child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
-                HeaderTitle(
-                  "Eddit Account",
-                  context,
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 25)
-                          .copyWith(bottom: 10),
-                ),
                 const SizedBox(height: 10),
 
                 PickImage(
