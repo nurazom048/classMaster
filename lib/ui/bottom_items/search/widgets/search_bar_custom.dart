@@ -1,11 +1,12 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:table/models/message_model.dart';
 
 class SearchBarCustom extends StatefulWidget {
   final Function(String)? onChanged;
 
-  SearchBarCustom({Key? key, required this.onChanged}) : super(key: key);
+  const SearchBarCustom({Key? key, required this.onChanged}) : super(key: key);
 
   @override
   _SearchBarCustomState createState() => _SearchBarCustomState();

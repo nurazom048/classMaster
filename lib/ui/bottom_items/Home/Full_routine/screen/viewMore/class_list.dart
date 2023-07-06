@@ -11,7 +11,7 @@ import '../../../../../../models/class_details_model.dart';
 import '../../../../../../widgets/heading_row.dart';
 import '../../request/routine_api.dart';
 import '../../../../Add/screens/add_priode.dart';
-import '../../controller/chack_status_controller.dart';
+import '../../controller/check_status_controller.dart';
 import '../../request/priode_request.dart';
 import '../../Summary/summat_screens/summary_screen.dart';
 import '../../utils/logng_press.dart';

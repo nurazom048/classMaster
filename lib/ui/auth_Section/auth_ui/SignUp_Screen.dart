@@ -13,7 +13,7 @@ import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/appWidget/buttons/cupertino_buttons.dart';
 import '../../../widgets/heder/heder_title.dart';
 
-import '../widgets/siginup_page_switch.dart';
+import '../widgets/sign_up_page_switch.dart';
 import '../widgets/who_are_you_button.dart';
 
 final selectAccountTypeProvider = StateProvider<String>((ref) => 'Student');
@@ -241,7 +241,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   },
                 ),
                 const SizedBox(height: 30),
-                SignUpSuicherButton(
+                SignUpSwitcherButton(
                   "Already have an account?",
                   "Log in",
                   onTap: () => Get.to(() => const SignUpScreen()),
@@ -280,7 +280,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     //   //     );
 
     //   //   await FirebaseAuth.instance.signOut();
-    //   Alert.showSnackBar(context, 'Allrady have a acoount');
+    //   Alert.showSnackBar(context, 'Already have a account');
     //   // Navigator.pop(context);
     // } else {
     //   // CREATE FIREBASE INSTANCE
@@ -291,9 +291,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     //     );
     //     // await FirebaseAuth.instance.signInWithEmailAndPassword(
     //     //   email: emailController.text,
-    //     //   password: "@Nurazom123",
-    //     // );
-    //     // // GO TO EMAIL VARIFI SCREEN
+
     //     Get.to(
     //       () => EmailVerificationScreen(
     // email: emailController.text,

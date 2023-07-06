@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/core/component/loaders.dart';
 
 import '../../../constant/app_color.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';

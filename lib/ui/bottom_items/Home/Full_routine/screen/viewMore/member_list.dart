@@ -8,7 +8,7 @@ import 'package:table/core/component/loaders.dart';
 import '../../../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../../../widgets/error/error.widget.dart';
 import '../../../../../../widgets/heading_row.dart';
-import '../../controller/chack_status_controller.dart';
+import '../../controller/check_status_controller.dart';
 import '../../controller/members_controllers.dart';
 import '../../controller/see_all_req_controller.dart';
 import '../../utils/popup.dart';

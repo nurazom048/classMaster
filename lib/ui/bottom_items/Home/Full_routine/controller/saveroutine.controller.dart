@@ -33,8 +33,6 @@ class SaveRoutineController
     try {
       if (page == state.value!.totalPages) {
       } else {
-        print('call fore loader more $page ${state.value!.totalPages}');
-
         final SaveRutileResponse newData =
             await homeReq.saveRoutines(pages: page + 1);
 

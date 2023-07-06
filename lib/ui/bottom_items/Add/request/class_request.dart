@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, unused_result
 
 import 'dart:async';
 import 'dart:convert';
@@ -43,7 +43,6 @@ class ClassRequest {
         final res = json.decode(response.body);
         print(res);
         // Navigator.pop(context);
-        // ignore: unused_result
         ref.refresh(routine_details_provider(routineId));
         //print response
         print("class created successfully");
@@ -95,7 +94,6 @@ class ClassRequest {
         print("Routine created successfully");
         Alert.showSnackBar(context, message.message);
         Navigator.pop(context);
-        // ignore: unused_result
 
         ref.refresh(routine_details_provider(routineId));
         print(res);
@@ -127,7 +125,6 @@ class ClassRequest {
       if (response.statusCode == 200) {
         print("Class Deleted successfully $res ");
         Alert.showSnackBar(context, 'Class Deleted successfully');
-        // ignore: unused_result
         ref.refresh(routine_details_provider(routineId));
 
         print(res);

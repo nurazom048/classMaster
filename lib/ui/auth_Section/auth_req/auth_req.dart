@@ -24,7 +24,7 @@ class AuthReq {
       final status = await OneSignal.shared.getDeviceState();
       final String? osUserID = status?.userId;
       print(
-          ';;;;;;;;;;;;;;;;;;;;;;  one signa token;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
+          ';;;;;;;;;;;;;;;;;;;;;;  one signal token;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
       print("osUserID : $osUserID");
       final response = await http.post(loginUrl, body: {
         "username": username ?? '',
@@ -141,7 +141,7 @@ class AuthReq {
 
   //
 
-  Future<Either<String, Message>> forgrtPassword(
+  Future<Either<String, Message>> forgetPassword(
       {String? email, String? username, String? phone}) async {
     final String? getToken = await AuthController.getToken();
 

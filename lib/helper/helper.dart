@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 import '../ui/auth_Section/auth_controller/auth_controller.dart';
-import '../ui/bottom_items/bottom_nevbar.dart';
+import '../ui/bottom_items/bottom_navbar.dart';
 
 Future<void> navigateBaseOnToken() async {
   final String? token = await AuthController.getToken();

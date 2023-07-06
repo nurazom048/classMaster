@@ -10,8 +10,8 @@ import '../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../widgets/appWidget/app_text.dart';
 import '../../../../widgets/heder/heder_title.dart';
 import '../../Home/Full_routine/utils/routine_dialog.dart';
-import '../../Home/Full_routine/widgets/routine_box/rutin_box_by_id.dart';
-import '../../Home/Full_routine/widgets/sceltons/rutinebox_id_scelton.dart';
+import '../../Home/Full_routine/widgets/routine_box/routine_box_by_ID.dart';
+import '../../Home/Full_routine/widgets/skelton/routine_box_id_scelton.dart';
 import '../../Home/notice_board/notice controller/virew_recent_notice_controller.dart';
 import '../../Home/widgets/recentnoticeslider_scalton.dart';
 import '../../Home/widgets/slider/recentniticeslider_item.dart';
@@ -141,7 +141,7 @@ class ProfileSCreen extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: 100),
                     itemCount: data.homeRoutines.length,
                     itemBuilder: (context, index) {
-                      return RutinBoxById(
+                      return RoutineBoxById(
                         rutinId: data.homeRoutines[index].rutineId.id,
                         rutinName: data.homeRoutines[index].rutineId.name,
                         onTapMore: () =>

@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/Full_routine/screen/viewMore/member_list.dart';
-import 'package:table/ui/bottom_items/Home/Full_routine/widgets/routine_box/rutin_box_by_id.dart';
+import 'package:table/ui/bottom_items/Home/Full_routine/widgets/routine_box/routine_box_by_id.dart';
 import '../../../../../../widgets/appWidget/app_text.dart';
 import '../../../../../../widgets/custom_tab_bar.widget.dart';
 import '../../../../../../widgets/heder/heder_title.dart';

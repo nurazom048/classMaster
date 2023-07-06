@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/constant/constant.dart';
 
 import '../../../../core/component/Loaders.dart';
 import '../../../../core/dialogs/alert_dialogs.dart';
@@ -37,7 +36,7 @@ class SaveSummeryScreen extends ConsumerWidget {
                         ? const Padding(
                             padding: EdgeInsets.symmetric(vertical: 400),
                             child: Center(
-                                child: ErrorScreen(error: 'No Svaed summary')),
+                                child: ErrorScreen(error: 'No Saved summary')),
                           )
                         : Column(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -48,8 +47,6 @@ class SaveSummeryScreen extends ConsumerWidget {
                                   if (scrollController.position.pixels ==
                                       scrollController
                                           .position.maxScrollExtent) {
-                                    print(
-                                        '?TOPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP');
                                     summaryNotifier.loadMore(
                                         data.currentPage, data.totalCount);
                                   }
@@ -58,7 +55,7 @@ class SaveSummeryScreen extends ConsumerWidget {
                                 scrollController.addListener(scrollListener);
                                 if (data.summaries.isEmpty) {
                                   return const ErrorScreen(
-                                      error: "There is no Summarys");
+                                      error: "There is no Summary");
                                 }
                                 return ChatsDribbles(
                                     summary: data.summaries[i]);

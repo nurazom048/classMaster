@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:table/core/dialogs/alert_dialogs.dart';
 import 'package:table/ui/auth_Section/auth_ui/SignUp_Screen.dart';
 import 'package:table/ui/auth_Section/utils/login_validation.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
@@ -10,11 +11,10 @@ import '../../../constant/app_color.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/appWidget/buttons/cupertino_buttons.dart';
 import '../../../widgets/heder/heder_title.dart';
-import '../../bottom_items/Collection Fetures/Api/account_request.dart';
 import '../auth_controller/auth_controller.dart';
 import '../auth_controller/google_auth_controller.dart';
 import '../widgets/or.dart';
-import '../widgets/siginup_page_switch.dart';
+import '../widgets/sign_up_page_switch.dart';
 import 'forgetpassword_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -46,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
       final loading = ref.watch(authController_provider);
 
       return WillPopScope(
-        onWillPop: () => Future.value(true),
+        onWillPop: () => Future.value(false),
         child: SafeArea(
           child: Scaffold(
             body: SingleChildScrollView(
@@ -57,7 +57,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    HeaderTitle("Log In", context),
+                    HeaderTitle(
+                      "Log In",
+                      context,
+                      hideArrow: true,
+                      onTap: () {},
+                    ),
                     const SizedBox(height: 40),
                     const AppText("   Login To Continue").title(),
                     const SizedBox(height: 30),
@@ -111,27 +116,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     //
                     const SizedBox(height: 30),
 
-                    SignUpSuicherButton("", "Forgot your Password?",
+                    SignUpSwitcherButton("", "Forgot your Password?",
                         onTap: () async {
-                      // if (emailkey.currentState?.validate() ?? false) {
-                      // try {
                       await FirebaseAuth.instance.signOut();
                       return Get.to(() => ForgetPasswordScreen(
                             email: emailController.text,
                           ));
-
-                      // return Get.to(() => EmailVerificationScreen(
-                      //       email: _emailController.text,
-                      //       forgotPasswordState: true,
-                      // ));
-                      // Get.to(() => ForgetPasswordScreen(
-                      //       email: _emailController.text,
-                      //     ));
-                      // } on FirebaseAuthMultiFactorException catch (e) {
-                      //   Alert.showSnackBar(context, e);
-                      // }
-
-                      // //
                     }),
                     const SizedBox(height: 30),
 
@@ -149,8 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             password: _passwordController.text,
                           );
                         } else {
-                          // authLogin.signIn(
-                          //     "roma123", "@Rahala+Nur123", context);
+                          Alert.showSnackBar(context, 'Fill the form');
                         }
                       },
                     ),
@@ -185,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Text('skip'),
                     ),
 
-                    SignUpSuicherButton(
+                    SignUpSwitcherButton(
                       "Do not have an account?",
                       "Sign up",
                       onTap: () => Get.to(() => const SignUpScreen()),
@@ -193,17 +182,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     ///
                     ///
-                    // ref.watch(gooleAuthControllerProvider).lodging == true
+                    // ref.watch(googleAuthControllerProvider).lodging == true
                     //     ? const SizedBox(
                     //         height: 20, width: 20, child: Progressindicator())
                     //     : SocialLoginButton(
                     //         onTap: () async {
                     //           ref
-                    //               .read(gooleAuthControllerProvider)
-                    //               .signin(context);
+                    //               .read(googleAuthControllerProvider)
+                    //               .signing(context);
 
                     //           if (ref
-                    //                   .watch(gooleAuthControllerProvider)
+                    //                   .watch(googleAuthControllerProvider)
                     //                   .googleAccount !=
                     //               null) {}
                     //         },

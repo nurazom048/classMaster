@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/bottom_items/Home/Full_routine/controller/chack_status_controller.dart';
+import 'package:table/ui/bottom_items/Home/Full_routine/controller/check_status_controller.dart';
 import 'package:table/ui/bottom_items/Home/Full_routine/controller/members_controllers.dart';
 import 'package:table/ui/bottom_items/Home/Full_routine/widgets/chekbox_selector_button.dart';
 import 'package:table/ui/bottom_items/Home/home_req/home_routines_controller.dart';

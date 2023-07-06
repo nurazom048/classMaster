@@ -1,10 +1,11 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 import 'package:table/widgets/appWidget/buttons/capsule_button.dart';
 
 import '../../../../../constant/app_color.dart';
-import '../../../../../core/component/heder component/cross_bar.dart';
 import '../../../Collection Fetures/models/account_models.dart';
+import 'package:badges/badges.dart' as badges;
 
 class AccountCard extends StatelessWidget {
   const AccountCard({
@@ -26,35 +27,52 @@ class AccountCard extends StatelessWidget {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: Colors.black12)),
-      child: Column(
-        children: [
-          CrossBar(
-            context,
-            color: Colors.red,
-            ontap: onRejectUsername,
-          ),
-          CircleAvatar(
-            radius: 24,
-            backgroundColor: Colors.red,
-            child: accountData.image == null
-                ? null
-                : Image.network(accountData.image!),
-          ),
-          const Spacer(flex: 1),
-          AppText(accountData.name ?? '').heeding(),
-          Text(accountData.username ?? ''),
-          const Spacer(flex: 5),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: CapsuleButton(
-              "Accept",
-              colorBG: AppColor.nokiaBlue,
-              color: Colors.white,
-              onTap: acceptUsername,
+      child: badges.Badge(
+        onTap: onRejectUsername,
+        badgeStyle: const BadgeStyle(badgeColor: Colors.transparent),
+        badgeContent: const Icon(Icons.close, color: Colors.red),
+        position: BadgePosition.topStart(top: -1, start: -1),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(height: 10),
+            CircleAvatar(
+              radius: 24,
+              backgroundColor: Colors.red,
+              child: accountData.image == null
+                  ? null
+                  : Image.network(accountData.image!),
             ),
-          ),
-          const Spacer(flex: 20),
-        ],
+
+            FittedBox(
+              child: SizedBox(
+                  width: 120,
+                  child: Column(
+                    children: [
+                      Text(accountData.name ?? '',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TS.opensensBlue(
+                              fontSize: 18, color: Colors.black)),
+                      Text('@${accountData.username}'),
+                    ],
+                  )),
+            ),
+            // const Spacer(flex: 1),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: CapsuleButton(
+                "Accept",
+                colorBG: AppColor.nokiaBlue,
+                color: Colors.white,
+                onTap: acceptUsername,
+              ),
+            ),
+            const SizedBox(height: 15),
+          ],
+        ),
       ),
     );
   }

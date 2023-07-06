@@ -38,7 +38,15 @@ class HeaderTitle extends StatelessWidget {
                       size: 20,
                       color: Colors.black,
                     )),
-              AppText(title).heeding(),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.8,
+                child: Text(
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TS.heading(),
+                ),
+              ),
             ],
           ),
           //

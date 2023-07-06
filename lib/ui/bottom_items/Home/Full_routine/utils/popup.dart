@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 
-import '../controller/chack_status_controller.dart';
+import '../controller/check_status_controller.dart';
 import '../controller/members_controllers.dart';
 
 void accountActions(
@@ -16,9 +16,9 @@ void accountActions(
   required bool isTheMemberIsCaptain,
   required bool isTheMemberIsOwner,
 }) async {
-  final chackStatus = ref.watch(checkStatusControllerProvider(rutinId));
-  final bool isOwner = chackStatus.value?.isOwner ?? false;
-  final bool isCaptain = chackStatus.value?.isCaptain ?? false;
+  final checkStatus = ref.watch(checkStatusControllerProvider(rutinId));
+  final bool isOwner = checkStatus.value?.isOwner ?? false;
+  final bool isCaptain = checkStatus.value?.isCaptain ?? false;
   final membersCon = ref.watch(memberControllerProvider(rutinId).notifier);
 
   List<PopupMenuItem<String>> items = [];
@@ -26,8 +26,8 @@ void accountActions(
   if ((isCaptain || isOwner) && !isTheMemberIsOwner && !isTheMemberIsCaptain) {
     items.add(
       const PopupMenuItem<String>(
-        value: 'kickout',
-        child: Text('Kickout', style: TextStyle(color: Colors.red)),
+        value: 'kickOut',
+        child: Text('kickOut', style: TextStyle(color: Colors.red)),
       ),
     );
   }
@@ -56,7 +56,7 @@ void accountActions(
 
   if (items.isEmpty) {
     Get.snackbar('Sorry', 'No Action here',
-        snackPosition: SnackPosition.BOTTOM,
+        // snackPosition: SnackPosition.BOTTOM,
         margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 10));
     // Alert.showSnackBar(context, 'No Action here');
     return;
@@ -71,7 +71,7 @@ void accountActions(
 
   if (result != null) {
     // Handle selected menu item
-    if (result == 'kickout') {
+    if (result == 'kickOut') {
       membersCon.kickedOutMember(memberId, context);
     } else if (result == 'make_captains') {
       membersCon.AddCaptans(rutinId, username, context);

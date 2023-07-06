@@ -19,8 +19,8 @@ import '../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../services/firebase/firebase_analytics.service.dart';
 import '../../../../services/notification services/awn_package.dart';
 import '../../Collection Fetures/Ui/collections.screen.dart';
-import '../Full_routine/widgets/routine_box/rutin_box_by_id.dart';
-import '../Full_routine/widgets/sceltons/rutinebox_id_scelton.dart';
+import '../Full_routine/widgets/routine_box/routine_box_by_id.dart';
+import '../Full_routine/widgets/skelton/routine_box_id_scelton.dart';
 import '../home_req/home_routines_controller.dart';
 import '../notice_board/notice controller/virew_recent_notice_controller.dart';
 import '../notice_board/screens/view_all_recent_notice.dart';
@@ -206,7 +206,7 @@ homeMobileView(WidgetRef ref, AsyncValue<RecentNotice> recentNoticeList,
               padding: const EdgeInsets.only(bottom: 100),
               itemCount: data.homeRoutines.length,
               itemBuilder: (context, index) {
-                return RutinBoxById(
+                return RoutineBoxById(
                   rutinId: data.homeRoutines[index].rutineId.id,
                   rutinName: data.homeRoutines[index].rutineId.name,
                   onTapMore: () => RoutineDialog.CheckStatusUser_BottomSheet(

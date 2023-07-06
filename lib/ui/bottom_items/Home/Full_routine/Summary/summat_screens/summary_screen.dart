@@ -10,7 +10,7 @@ import 'package:table/core/component/loaders.dart';
 import 'package:table/core/dialogs/alert_dialogs.dart';
 import 'package:table/ui/bottom_items/Home/Full_routine/Summary/summat_screens/add_summary.dart';
 import 'package:table/widgets/error/error.widget.dart';
-import '../../controller/chack_status_controller.dart';
+import '../../controller/check_status_controller.dart';
 import '../Summary Controller/summary_controller.dart';
 import '../widgets/add_summary_button.dart';
 import '../widgets/chats.dribles .dart';

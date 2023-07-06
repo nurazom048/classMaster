@@ -10,7 +10,7 @@ import '../core/component/Loaders.dart';
 
 // ignore: must_be_immutable
 class PickImage extends StatefulWidget {
-  final String? netWorkIamge;
+  final String? netWorkImage;
   final String? netWorkCoverImage;
   final bool isEddit;
 
@@ -19,7 +19,7 @@ class PickImage extends StatefulWidget {
   const PickImage({
     required this.onImagePathSelected,
     required this.onCoverImagePath,
-    required this.netWorkIamge,
+    required this.netWorkImage,
     required this.netWorkCoverImage,
     this.isEddit = false,
     Key? key,
@@ -157,11 +157,11 @@ class _PickImageState extends State<PickImage> {
   }
 
   Widget profileImageShow() {
-    if (_image == null && widget.netWorkIamge == null) {
+    if (_image == null && widget.netWorkImage == null) {
       return const Icon(Icons.image);
     } else if (_image != null) {
       return Image.file(_image!, fit: BoxFit.cover);
-    } else if (widget.netWorkIamge != null) {
+    } else if (widget.netWorkImage != null) {
       return FutureBuilder(
         future: Utils.isOnlineMethod(),
         builder: (context, snapshot) {
@@ -170,7 +170,7 @@ class _PickImageState extends State<PickImage> {
           } else if (snapshot.hasData && snapshot.data == true) {
             return ClipOval(
                 child: Image.network(
-              widget.netWorkIamge!,
+              widget.netWorkImage!,
               fit: BoxFit.cover,
             ));
           } else if (snapshot.hasError) {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:table/widgets/appWidget/app_text.dart';
 
 import '../ui/bottom_items/Home/utils/utils.dart';
 
@@ -68,7 +67,7 @@ class AccountCard extends StatelessWidget {
                       Text(
                         username,
                         style:
-                            const TextStyle(fontSize: 20, color: Colors.black),
+                            const TextStyle(fontSize: 16, color: Colors.black),
                       ),
                     ]),
               ),

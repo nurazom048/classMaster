@@ -1,15 +1,18 @@
 // ignore_for_file: non_constant_identifier_names, use_build_context_synchronously
 
+import 'dart:io';
+
 import 'package:api_cache_manager/utils/cache_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/message_model.dart';
 import 'package:table/ui/auth_Section/auth_req/auth_req.dart';
-import 'package:table/ui/bottom_items/bottom_nevbar.dart';
+import 'package:table/ui/bottom_items/bottom_navbar.dart';
 import '../../../constant/constant.dart';
 import '../../../core/dialogs/alert_dialogs.dart';
 import '../../bottom_items/Collection Fetures/Api/account_request.dart';
@@ -139,7 +142,7 @@ class AuthController extends StateNotifier<bool> {
   void forgotPassword(context,
       {String? email, String? username, String? phone}) async {
     state = true;
-    final res = await authReq.forgrtPassword(email: email, phone: phone);
+    final res = await authReq.forgetPassword(email: email, phone: phone);
 
     res.fold(
       (l) {
@@ -197,6 +200,12 @@ class AuthController extends StateNotifier<bool> {
         final prefs = await SharedPreferences.getInstance();
         prefs.remove('Token');
         await APICacheManager().emptyCache();
+
+        // delete cash
+        var appDir = (await getTemporaryDirectory()).path;
+        Directory(appDir).delete();
+
+        //
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const LoginScreen()));
       },

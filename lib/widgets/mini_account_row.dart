@@ -52,7 +52,7 @@ class MiniAccountInfo extends StatelessWidget {
                     }
                   },
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Container(
                   constraints: const BoxConstraints(maxWidth: 235),
                   child: Column(

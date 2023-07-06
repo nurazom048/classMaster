@@ -151,7 +151,7 @@ plusBottomSheet(BuildContext context) {
                   ref.watch(showPlusProvider.notifier).update((state) => false);
                   Navigator.of(context).pop();
                 },
-                child: Container(
+                child: SizedBox(
                   height: MediaQuery.of(context).size.height - 90,
                   width: MediaQuery.of(context).size.width,
                   child: Container(

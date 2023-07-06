@@ -9,7 +9,7 @@ import 'package:table/widgets/error/error.widget.dart';
 import '../../../../core/component/Loaders.dart';
 import '../../../../core/dialogs/alert_dialogs.dart';
 import '../../Home/Full_routine/utils/routine_dialog.dart';
-import '../../Home/Full_routine/widgets/routine_box/rutin_box_by_id.dart';
+import '../../Home/Full_routine/widgets/routine_box/routine_box_by_ID.dart';
 import '../search controller/search_rutine_controllers.dart';
 
 class SearchRutineScreen extends ConsumerWidget {
@@ -48,7 +48,7 @@ class SearchRutineScreen extends ConsumerWidget {
             padding: const EdgeInsets.only(bottom: 100),
             itemCount: data.routine.length,
             itemBuilder: (context, index) {
-              return RutinBoxById(
+              return RoutineBoxById(
                   margin: EdgeInsets.zero,
                   rutinName: data.routine[index].name,
                   onTapMore: () => RoutineDialog.CheckStatusUser_BottomSheet(

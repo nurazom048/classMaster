@@ -7,7 +7,6 @@ import 'package:table/models/message_model.dart';
 import 'package:table/widgets/appWidget/TextFromFild.dart';
 import 'package:table/widgets/pick_image.dart';
 import '../../../../constant/app_color.dart';
-import '../../../../core/component/loaders.dart';
 import '../../../../widgets/appWidget/buttons/cupertino_buttons.dart';
 import '../../../../widgets/heder/heder_title.dart';
 import '../Api/account_request.dart';
@@ -38,7 +37,7 @@ class _EdditAccountState extends State<EdditAccount> {
   final confirmPasswordFocusNode = FocusNode();
 
   bool loading = false;
-  String? netprofileImage;
+  String? netProfileImage;
   String? netCoverImage;
 
   //
@@ -50,7 +49,7 @@ class _EdditAccountState extends State<EdditAccount> {
     super.initState();
     loading = false;
 
-    _lodedataBeforeBuild();
+    _lodeDataBeforeBuild();
   }
 
   //
@@ -73,16 +72,16 @@ class _EdditAccountState extends State<EdditAccount> {
                 const SizedBox(height: 10),
 
                 PickImage(
-                  netWorkIamge: netprofileImage,
+                  netWorkImage: netProfileImage,
                   netWorkCoverImage: netCoverImage,
                   isEddit: true,
                   onCoverImagePath: (coverPath) async {
                     coverImagePath = coverPath;
-                    print('CoverImage path $coverPath');
+                    // print('CoverImage path $coverPath');
                   },
                   onImagePathSelected: (profileImagePAth) async {
                     profileImagePath = profileImagePAth;
-                    print("path paici vai $profileImagePAth");
+                    // print("path panic vai $profileImagePAth");
                   },
                 ),
 
@@ -135,7 +134,7 @@ class _EdditAccountState extends State<EdditAccount> {
     );
   }
 
-  void _lodedataBeforeBuild() async {
+  void _lodeDataBeforeBuild() async {
     AccountModels? accountData = await AccountReq().getAccountData();
     if (accountData != null) {
       nameController.text = accountData.name ?? '';
@@ -145,7 +144,7 @@ class _EdditAccountState extends State<EdditAccount> {
       confirmPasswordController.text = accountData.password ?? '';
 
       aboutController.text = accountData.about ?? '';
-      netprofileImage = accountData.image;
+      netProfileImage = accountData.image;
       netCoverImage = accountData.coverImage;
       if (!mounted) {}
       setState(() {});

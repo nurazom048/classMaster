@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
@@ -7,7 +9,7 @@ import '../../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../../widgets/appWidget/app_text.dart';
 import '../../../../../widgets/appWidget/dotted_divider.dart';
 import '../../../Home/Full_routine/widgets/chekbox_selector_button.dart';
-import '../../../Home/Full_routine/widgets/sceltons/rutinebox_id_scelton.dart';
+import '../../../Home/Full_routine/widgets/skelton/routine_box_id_scelton.dart';
 import '../../../Home/notice_board/notice controller/noticeboard_satus_controller.dart';
 import '../../../Home/notice_board/screens/view_all_recent_notice.dart';
 import '../../models/account_models.dart';

@@ -22,7 +22,6 @@ class _MyPhoneState extends State<PhoneNumberScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     countryController.text = "+88";
     super.initState();
   }
@@ -30,87 +29,85 @@ class _MyPhoneState extends State<PhoneNumberScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              HeaderTitle("Log In", context),
-              Form(
-                key: formKey,
-                child: Container(
-                  margin: const EdgeInsets.only(left: 25, right: 25),
-                  alignment: Alignment.center,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      // Image.asset(
-                      //   'assets/img1.png',
-                      //   width: 150,
-                      //   height: 150,
-                      // ),
-                      const SizedBox(height: 126),
-                      const Text(
-                        "Phone Verification",
-                        style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.bold),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            HeaderTitle("Log In", context),
+            Form(
+              key: formKey,
+              child: Container(
+                margin: const EdgeInsets.only(left: 25, right: 25),
+                alignment: Alignment.center,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // Image.asset(
+                    //   'assets/img1.png',
+                    //   width: 150,
+                    //   height: 150,
+                    // ),
+                    const SizedBox(height: 126),
+                    const Text(
+                      "Phone Verification",
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 10),
+                    const Text(
+                      "We need to register your phone without getting started!",
+                      style: TextStyle(
+                        fontSize: 16,
                       ),
-                      const SizedBox(height: 10),
-                      const Text(
-                        "We need to register your phone without getting started!",
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 30),
-                      PhoneNumberTextField(
-                        countryController: countryController,
-                        phoneNumberController: phoneNumberController,
-                        validator: (value) => validatePhoneNumber(value),
-                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 30),
+                    PhoneNumberTextField(
+                      countryController: countryController,
+                      phoneNumberController: phoneNumberController,
+                      validator: (value) => validatePhoneNumber(value),
+                    ),
 
-                      const SizedBox(height: 60),
+                    const SizedBox(height: 60),
 
-                      CupertinoButtonCustom(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        color: AppColor.nokiaBlue,
-                        text: "Send the code",
-                        onPressed: () async {
-                          String fullphoneNum = countryController.text +
-                              phoneNumberController.text;
-                          if (formKey.currentState?.validate() ?? false) {
-                            // firebse send code to phone number
-                            await FirebaseAuth.instance.verifyPhoneNumber(
-                              //phone number
-                              phoneNumber: fullphoneNum,
-                              verificationCompleted:
-                                  (PhoneAuthCredential credential) {},
-                              verificationFailed: (FirebaseAuthException e) {},
-                              codeSent:
-                                  (String verificationId, int? resendToken) {
-                                // go to otp screen
-                                Get.to(
-                                  () => OtpScreen(
-                                    verificationId: verificationId,
-                                    phoneNumber: fullphoneNum,
-                                  ),
-                                );
-                              },
-                              codeAutoRetrievalTimeout:
-                                  (String verificationId) {},
-                            );
+                    CupertinoButtonCustom(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      color: AppColor.nokiaBlue,
+                      text: "Send the code",
+                      onPressed: () async {
+                        String fullphoneNum =
+                            countryController.text + phoneNumberController.text;
+                        if (formKey.currentState?.validate() ?? false) {
+                          // firebse send code to phone number
+                          await FirebaseAuth.instance.verifyPhoneNumber(
+                            //phone number
+                            phoneNumber: fullphoneNum,
+                            verificationCompleted:
+                                (PhoneAuthCredential credential) {},
+                            verificationFailed: (FirebaseAuthException e) {},
+                            codeSent:
+                                (String verificationId, int? resendToken) {
+                              // go to otp screen
+                              Get.to(
+                                () => OtpScreen(
+                                  verificationId: verificationId,
+                                  phoneNumber: fullphoneNum,
+                                ),
+                              );
+                            },
+                            codeAutoRetrievalTimeout:
+                                (String verificationId) {},
+                          );
 
-                            // create account
-                          }
-                        },
-                      ),
-                    ],
-                  ),
+                          // create account
+                        }
+                      },
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

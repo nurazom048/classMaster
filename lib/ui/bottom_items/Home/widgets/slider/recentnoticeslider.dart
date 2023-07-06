@@ -13,7 +13,7 @@ class RecentNoticeSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 160,
       child: Consumer(builder: (context, ref, _) {
         //! provider

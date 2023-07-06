@@ -76,7 +76,6 @@ class _EmailVerificationScreenState
 
   // Send email verification
   Future<void> sendVerificationEmail() async {
-    print("Inside sendVerificationEmail");
     try {
       await _user!.sendEmailVerification();
     } catch (e) {
@@ -88,13 +87,11 @@ class _EmailVerificationScreenState
 
   // Check verification
   Future<void> checkVerification() async {
-    print("******************* Timer start");
     User? user = FirebaseAuth.instance.currentUser;
 
     await user?.reload();
     if (user?.emailVerified == true) {
       timer?.cancel();
-      // ignore: use_build_context_synchronously
       Alert.errorAlertDialog(
         context,
         'Email verified successful',

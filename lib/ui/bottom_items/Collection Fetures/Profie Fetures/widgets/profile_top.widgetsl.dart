@@ -30,7 +30,7 @@ class ProfileTop extends StatelessWidget {
                 PickImage(
                   onImagePathSelected: (onImagePathSelected) {},
                   onCoverImagePath: (onCoverImagePath) {},
-                  netWorkIamge: accountData!.image,
+                  netWorkImage: accountData!.image,
                   netWorkCoverImage: accountData!.coverImage,
                 ),
               ],

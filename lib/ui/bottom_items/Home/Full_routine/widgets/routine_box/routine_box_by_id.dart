@@ -10,14 +10,14 @@ import 'package:table/widgets/mini_account_row.dart';
 
 import '../../../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../../../models/class_details_model.dart';
-import '../../controller/chack_status_controller.dart';
+import '../../controller/check_status_controller.dart';
 import '../../screen/viewMore/view_more_screen.dart';
 import '../../Summary/summat_screens/summary_screen.dart';
 import '../../request/routine_api.dart';
 import '../../../../../../widgets/appWidget/select_day_row.dart';
 import '../../utils/routine_dialog.dart';
-import '../sceltons/rutinebox_id_scelton.dart';
 import '../send_request_button.dart';
+import '../skelton/routine_box_id_scelton.dart';
 
 //! provider
 // final gSelectedDayProvider = StateProvider<int>((ref) {
@@ -27,7 +27,7 @@ import '../send_request_button.dart';
 // final listOfDayStateProvider = StateProvider<List<Day?>>((ref) => []);
 final ownerNameProvider = StateProvider.autoDispose<String?>((ref) => null);
 
-class RutinBoxById extends StatefulWidget {
+class RoutineBoxById extends StatefulWidget {
   final String rutinName;
   final String rutinId;
   final dynamic onTapMore;
@@ -37,7 +37,7 @@ class RutinBoxById extends StatefulWidget {
 
   int gSelectedDay = DateTime.now().weekday;
 
-  RutinBoxById({
+  RoutineBoxById({
     Key? key,
     required this.rutinName,
     required this.onTapMore,
@@ -46,10 +46,10 @@ class RutinBoxById extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<RutinBoxById> createState() => _RutinBoxByIdState();
+  State<RoutineBoxById> createState() => _RutinBoxByIdState();
 }
 
-class _RutinBoxByIdState extends State<RutinBoxById> {
+class _RutinBoxByIdState extends State<RoutineBoxById> {
   @override
   void initState() {
     super.initState();
@@ -293,8 +293,6 @@ class _RutinBoxByIdState extends State<RutinBoxById> {
 
 // Navigate to the SummaryScreen when a day is tapped
 void onTap(Day? day, String status, context) {
-  print('object');
-  print('${day?.start}');
   Get.to(
     () => SummaryScreen(
       classId: day!.classId.id,

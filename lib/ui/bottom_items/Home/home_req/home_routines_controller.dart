@@ -1,5 +1,5 @@
 //_________________________
-// ignore_for_file: unused_result
+// ignore_for_file: unused_result, avoid_print
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
