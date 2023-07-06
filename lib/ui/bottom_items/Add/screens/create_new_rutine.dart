@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:table/core/component/loaders.dart';
 import 'package:table/core/dialogs/alert_dialogs.dart';
 import 'package:table/models/message_model.dart';
 import 'package:table/ui/bottom_items/Home/Full_routine/screen/viewMore/view_more_screen.dart';

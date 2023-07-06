@@ -65,7 +65,7 @@ class Summary {
       id: json['_id'],
       ownerId: OwnerId.fromJson(json['ownerId']),
       text: json['text'],
-      imageLinks: List<String>.from(json['imageUrls']),
+      imageLinks: List<String>.from(json['imageLinks']),
       routineId: json['routineId'],
       classId: json['classId'],
       createdAt: DateTime.parse(json['createdAt']),
@@ -83,7 +83,7 @@ class OwnerId {
     required this.id,
     required this.username,
     required this.name,
-    required this.image,
+    this.image,
   });
 
   factory OwnerId.fromJson(Map<String, dynamic> json) {
