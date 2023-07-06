@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class MyBotomSheetCliper extends CustomClipper<Path> {
+class MyBottomSheetClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     Path path0 = Path();
@@ -52,9 +52,9 @@ class BottomSheetShape extends StatelessWidget {
         children: [
           Positioned(
             bottom: 0,
-            left: width * 0.39,
+            left: width * 0.36,
             child: ClipPath(
-              clipper: MyBotomSheetCliper(),
+              clipper: MyBottomSheetClipper(),
               child: Container(
                 width: 60,
                 height: 30,

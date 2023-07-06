@@ -10,6 +10,7 @@ import '../../../constant/app_color.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/appWidget/buttons/cupertino_buttons.dart';
 import '../../../widgets/heder/heder_title.dart';
+import '../../bottom_items/Collection Fetures/Api/account_request.dart';
 import '../auth_controller/auth_controller.dart';
 import '../auth_controller/google_auth_controller.dart';
 import '../widgets/or.dart';
@@ -42,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Consumer(builder: (context, ref, _) {
       //
       final authLogin = ref.watch(authController_provider.notifier);
-      final loding = ref.watch(authController_provider);
+      final loading = ref.watch(authController_provider);
 
       return WillPopScope(
         onWillPop: () => Future.value(true),
@@ -135,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 30),
 
                     CupertinoButtonCustom(
-                      isLoading: loding,
+                      isLoading: loading,
                       padding: const EdgeInsets.symmetric(horizontal: 40),
                       color: AppColor.nokiaBlue,
                       text: "Log In",

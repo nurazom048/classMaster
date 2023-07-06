@@ -82,8 +82,7 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
               }
             },
             child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(
-                  decelerationRate: ScrollDecelerationRate.fast),
+              physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.only(bottom: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -199,7 +198,7 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                     const Icon(Icons.logout_outlined),
                     "Sign out",
                     color: Colors.red,
-                    onTap: () => AuthController.logOut(context),
+                    onTap: () => AuthController.logOut(context, ref: ref),
                   ),
 
                   const MyDividerr(thickness: 1.0, height: 1.0),

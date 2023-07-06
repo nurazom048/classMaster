@@ -5,6 +5,7 @@ import 'package:api_cache_manager/api_cache_manager.dart';
 import 'package:api_cache_manager/models/cache_db_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/check_status_model.dart';
@@ -55,6 +56,8 @@ class FullRoutineRequest {
         throw Exception("Response body is null");
       }
     } catch (e) {
+      Get.snackbar('Error', e.toString());
+
       print(e);
       return Future.error(e);
     }

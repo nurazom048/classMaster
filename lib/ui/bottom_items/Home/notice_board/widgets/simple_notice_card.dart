@@ -84,7 +84,7 @@ class SimpleNoticeCard extends StatelessWidget {
                           width: MediaQuery.of(context).size.width * 0.61,
                           // color: Colors.red,
                           child: Text(
-                            "Upcoming eid vacation",
+                            noticeName,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                             style: TS.opensensBlue(

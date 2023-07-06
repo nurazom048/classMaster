@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:api_cache_manager/api_cache_manager.dart';
 import 'package:api_cache_manager/models/cache_db_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:table/models/message_model.dart';
 import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
@@ -38,7 +39,7 @@ class AccountReq {
       if (!isOnline && isHaveCash) {
         //
         var getdata = await APICacheManager().getCacheData(url.toString());
-        print('Foem cash $getdata');
+        print('From cash $getdata');
         return AccountModels.fromJson(jsonDecode(getdata.syncData));
       }
 
@@ -58,11 +59,13 @@ class AccountReq {
 
         return AccountModels.fromJson(json.decode(response.body));
       } else {
+        Get.snackbar('Error', json.decode(response.body)['message']);
+
         throw 'Error retrieving account data';
       }
     } catch (e) {
       print(e);
-      return Future.error(e);
+      throw e.toString();
     }
   }
 

@@ -12,6 +12,7 @@ import 'package:table/ui/auth_Section/auth_req/auth_req.dart';
 import 'package:table/ui/bottom_items/bottom_nevbar.dart';
 import '../../../constant/constant.dart';
 import '../../../core/dialogs/alert_dialogs.dart';
+import '../../bottom_items/Collection Fetures/Api/account_request.dart';
 import '../auth_ui/email_verification.screen.dart';
 import '../auth_ui/logIn_screen.dart';
 import '../auth_ui/pending_account.dart';
@@ -185,12 +186,13 @@ class AuthController extends StateNotifier<bool> {
   }
 
   // LogOut
-  static Future<void> logOut(context) async {
+  static Future<void> logOut(context, {required WidgetRef ref}) async {
     Alert.errorAlertDialogCallBack(
       context,
       "Are You Sure To logout ?",
       onConfirm: () async {
         await FirebaseAuth.instance.signOut();
+
         // Remove token and navigate to the login screen
         final prefs = await SharedPreferences.getInstance();
         prefs.remove('Token');

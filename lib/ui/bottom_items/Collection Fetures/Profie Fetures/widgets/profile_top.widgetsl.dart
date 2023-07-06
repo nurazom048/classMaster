@@ -44,7 +44,8 @@ class ProfileTop extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(
+                Container(
+                  alignment: Alignment.center,
                   width: MediaQuery.of(context).size.width * 60,
                   child: Text(
                     accountData!.name ?? '',

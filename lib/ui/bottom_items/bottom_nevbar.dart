@@ -46,7 +46,6 @@ class BottomNavBar extends StatelessWidget {
           !Responsive.isMobile(context);
       final showPlus = ref.watch(showPlusProvider);
       return Scaffold(
-        backgroundColor: showPlus ? AppColor.background2 : null,
         body: pages[index],
         floatingActionButton: AnimatedOpacity(
             duration: const Duration(milliseconds: 300),
@@ -156,9 +155,19 @@ plusBottomSheet(BuildContext context) {
                   height: MediaQuery.of(context).size.height - 90,
                   width: MediaQuery.of(context).size.width,
                   //  margin: EdgeInsets.only(bottom: size.height * 0.101),
-                  color: Colors.black54,
+
                   child: Container(
-                    color: Colors.white60,
+                    //  margin: EdgeInsets.only(bottom: size.height * 0.101),
+                    decoration:
+                        BoxDecoration(color: Colors.white60, boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.35),
+                        blurRadius: 40,
+
+                        //         //  offset: const Offset(0, 0),
+                      ),
+                    ]),
+
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       mainAxisSize: MainAxisSize.min,
@@ -213,7 +222,18 @@ plusBottomSheet(BuildContext context) {
                 },
                 child: Container(
                   height: 90,
-                  color: Colors.transparent,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.615),
+                    // boxShadow: [
+                    //   BoxShadow(
+                    //     color: Colors.black.withOpacity(0.35),
+                    //     blurRadius: 40,
+
+                    //     //         //  offset: const Offset(0, 0),
+                    //   ),
+                    // ]
+                  ),
+                  //color: Colors.transparent,
                   // child: BottomNavBar(),
                 ),
               )

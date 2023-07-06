@@ -5,6 +5,7 @@ import 'package:api_cache_manager/api_cache_manager.dart';
 import 'package:api_cache_manager/models/cache_db_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:get/get.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -126,11 +127,21 @@ class HomeReq {
 
         return homeRutine;
       } else if (isOnline) {
+        Get.snackbar('Connection failed', "No Internet Connection");
+
         throw "No Internet Connection";
       } else {
+        if (isHaveCash) {
+          var getdata = await APICacheManager().getCacheData(key);
+          print('From cash $url');
+          return RoutineHome.fromJson(jsonDecode(getdata.syncData));
+        }
+        Get.snackbar('Connection failed', "Failed to load new data ");
+
         throw "${res["message"]}";
       }
     } catch (e) {
+      Get.snackbar('Connection failed', '$e');
       print(e);
       throw "$e";
     }
