@@ -18,7 +18,6 @@ import '../../../../services/firebase/firebase_analytics.service.dart';
 import '../../../../services/notification services/awn_package.dart';
 import '../../../../services/notification services/local_notifications.dart';
 import '../../../../services/notification services/notification.dart';
-import '../../../../widgets/heder/heder_title.dart';
 import '../../Home/notice_board/screens/view_all_recent_notice.dart';
 import '../../Home/utils/utils.dart';
 import '../Api/account_request.dart';
@@ -70,7 +69,7 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
         body: NotificationListener<ScrollNotification>(
           // hide bottom nev bar on scroll
           onNotification: (scrollNotification) =>
-              hideNevBarOnScroll(scrollNotification, ref),
+              Utils.hideNevBarOnScroll(scrollNotification, ref),
 
           //
           child: RefreshIndicator(
@@ -213,25 +212,4 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
       ),
     );
   }
-}
-
-bool hideNevBarOnScroll(ScrollNotification? scrollNotification, WidgetRef ref) {
-  // Logic of scrollNotification
-  if (scrollNotification is ScrollStartNotification) {
-    // ignore: avoid_print
-    print("Scroll Started");
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.watch(hideNevBarOnScorningProvider.notifier).update((state) => true);
-    });
-  } else if (scrollNotification is ScrollUpdateNotification) {
-    // print(message);
-  } else if (scrollNotification is ScrollEndNotification) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.watch(hideNevBarOnScorningProvider.notifier).update((state) => false);
-    });
-
-    // String message = 'Scroll Ended';
-  }
-  return true;
 }

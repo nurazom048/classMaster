@@ -83,26 +83,24 @@ class MemberList extends StatelessWidget {
                 memberCountNotifier.update((state) => data.count);
               });
 
-              return SizedBox(
-                height: 200,
-                child: ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: data.members.length,
-                  itemBuilder: (context, i) => MemberAccountCard(
-                    condition: isCaptain == true || isOwner == true,
-                    member: data.members[i],
-                    onPressed: () {
-                      accountActions(
-                        context,
-                        ref,
-                        rutinId: routineId,
-                        username: data.members[i].username,
-                        memberId: data.members[i].id,
-                        isTheMemberIsCaptain: data.members[i].captain,
-                        isTheMemberIsOwner: data.members[i].owner,
-                      );
-                    },
-                  ),
+              return ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: data.members.length,
+                itemBuilder: (context, i) => MemberAccountCard(
+                  condition: isCaptain == true || isOwner == true,
+                  member: data.members[i],
+                  onPressed: () {
+                    accountActions(
+                      context,
+                      ref,
+                      rutinId: routineId,
+                      username: data.members[i].username,
+                      memberId: data.members[i].id,
+                      isTheMemberIsCaptain: data.members[i].captain,
+                      isTheMemberIsOwner: data.members[i].owner,
+                    );
+                  },
                 ),
               );
             },
@@ -163,6 +161,7 @@ class JoinRequestPart extends ConsumerWidget {
                       });
 
                       return ListView.builder(
+                        shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: data.listAccounts.length,
                         itemBuilder: (context, index) {

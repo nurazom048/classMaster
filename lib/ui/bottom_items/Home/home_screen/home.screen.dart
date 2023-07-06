@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:table/services/one%20signal/onesignla.services.dart';
 import 'package:table/ui/bottom_items/Home/Full_routine/utils/routine_dialog.dart';
 import 'package:table/ui/bottom_items/Home/models/home_routines_model.dart';
-import 'package:table/ui/bottom_items/Home/notice_board/models/recent_notice_model.dart';
 import 'package:table/ui/bottom_items/Home/utils/utils.dart';
 import 'package:table/ui/bottom_items/Home/widgets/mydrawer.dart';
 import 'package:table/ui/bottom_items/Home/widgets/recent_notice_title.dart';
@@ -18,7 +17,6 @@ import '../../../../core/component/responsive.dart';
 import '../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../services/firebase/firebase_analytics.service.dart';
 import '../../../../services/notification services/awn_package.dart';
-import '../../Collection Fetures/Ui/collections.screen.dart';
 import '../Full_routine/widgets/routine_box/routine_box_by_id.dart';
 import '../Full_routine/widgets/skelton/routine_box_id_scelton.dart';
 import '../home_req/home_routines_controller.dart';
@@ -35,14 +33,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 final scrollController = ScrollController();
-FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-
-    // //firebase
+    //firebase
     FirebaseAnalyticsServices.logHome();
     // AwesomeNotificationSetup
     AwesomeNotificationSetup.initialize();
@@ -58,15 +54,18 @@ class _HomeScreenState extends State<HomeScreen> {
       //! provider
 
       final homeRoutines = ref.watch(homeRoutineControllerProvider(null));
-      final recentNoticeList = ref.watch(recentNoticeController(null));
+      // final recentNoticeList = ref.watch(recentNoticeController(null));
 
-//notifier
+      //notifier
       final homeRoutinesNotifier =
           ref.watch(homeRoutineControllerProvider(null).notifier);
       //
       final _mobileView = homeMobileView(
-          ref, recentNoticeList, context, homeRoutines,
-          homeRoutineNotifier: homeRoutinesNotifier);
+        ref,
+        context,
+        homeRoutines,
+        homeRoutineNotifier: homeRoutinesNotifier,
+      );
 
       Widget _appBar = const CustomTitleBar("title");
       return Responsive(
@@ -74,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
         mobile: SafeArea(
           child: Scaffold(
             backgroundColor: const Color(0xFFF2F2F2),
-            body: homeMobileView(ref, recentNoticeList, context, homeRoutines,
+            body: homeMobileView(ref, context, homeRoutines,
                 homeRoutineNotifier: homeRoutinesNotifier),
           ),
         ),
@@ -92,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   // mobile
                   Expanded(
                     flex: 3,
-                    child: Container(child: _mobileView, color: Colors.yellow),
+                    child: Container(color: Colors.yellow, child: _mobileView),
                   ),
                   Expanded(flex: 1, child: Container(color: Colors.black)),
                 ],
@@ -106,9 +105,10 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 /////////////
-homeMobileView(WidgetRef ref, AsyncValue<RecentNotice> recentNoticeList,
-    BuildContext context, AsyncValue<RoutineHome> homeRoutines,
+Widget homeMobileView(
+    WidgetRef ref, BuildContext context, AsyncValue<RoutineHome> homeRoutines,
     {required homeRoutineNotifier}) {
+  //
   return RefreshIndicator(
     onRefresh: () async {
       final bool isOnline = await Utils.isOnlineMethod();
@@ -120,18 +120,82 @@ homeMobileView(WidgetRef ref, AsyncValue<RecentNotice> recentNoticeList,
         ref.refresh(recentNoticeController(null));
       }
     },
-    child: ListView(
-      padding: const EdgeInsets.only(bottom: 100),
-      controller: scrollController,
-      children: [
-        if (Responsive.isMobile(context)) const CustomTitleBar("title"),
+    child: NotificationListener<ScrollNotification>(
+      // hide bottom nev bar on scroll
+      onNotification: (scrollNotification) =>
+          Utils.hideNevBarOnScroll(scrollNotification, ref),
+      child: ListView(
+        padding: const EdgeInsets.only(bottom: 100),
+        controller: scrollController,
+        children: [
+          if (Responsive.isMobile(context)) const CustomTitleBar("title"),
 
-        //_______________________ recent notices _________________//
+          //_______________________ recent notices _________________//
+          const HomeRecentNoticeWidget(),
+          // uploaded Routine
+          homeRoutines.when(
+            data: (data) {
+              void scrollListener() {
+                if (scrollController.position.pixels ==
+                    scrollController.position.maxScrollExtent) {
+                  print('end.........................');
+                  ref
+                      .watch(homeRoutineControllerProvider(null).notifier)
+                      .loadMore(data.currentPage);
+                }
+              }
+
+              scrollController.addListener(scrollListener);
+
+              //
+              return ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                padding: const EdgeInsets.only(bottom: 100),
+                itemCount: data.homeRoutines.length,
+                itemBuilder: (context, index) {
+                  return RoutineBoxById(
+                    rutinId: data.homeRoutines[index].rutineId.id,
+                    rutinName: data.homeRoutines[index].rutineId.name,
+                    onTapMore: () => RoutineDialog.CheckStatusUser_BottomSheet(
+                      context,
+                      routineID: data.homeRoutines[index].rutineId.id,
+                      routineName: data.homeRoutines[index].rutineId.name,
+                      routinesController: homeRoutineNotifier,
+                    ),
+                  );
+                },
+              );
+            },
+            loading: () => RUTINE_BOX_SKELTON,
+            error: (error, stackTrace) {
+              Alert.handleError(context, error);
+              return ErrorScreen(error: error.toString());
+            },
+          ),
+
+          //
+        ],
+      ),
+    ),
+  );
+}
+
+class HomeRecentNoticeWidget extends ConsumerWidget {
+  const HomeRecentNoticeWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final recentNoticeList = ref.watch(recentNoticeController(null));
+
+    return Column(
+      children: [
         RecentNoticeTitle(
           onTap: () => Get.to(() => ViewAllRecentNotice(),
               transition: Transition.rightToLeftWithFade),
         ),
-
         SizedBox(
           height: 160,
           // color: Colors.red,
@@ -182,75 +246,10 @@ homeMobileView(WidgetRef ref, AsyncValue<RecentNotice> recentNoticeList,
             loading: () => const RecentNoticeSliderSkelton(),
           ),
         ),
-        const SizedBox(height: 10),
-        // uploaded Routine
-
-        homeRoutines.when(
-          data: (data) {
-            void scrollListener() {
-              if (scrollController.position.pixels ==
-                  scrollController.position.maxScrollExtent) {
-                print('end.........................');
-                ref
-                    .watch(homeRoutineControllerProvider(null).notifier)
-                    .loadMore(data.currentPage);
-              }
-            }
-
-            scrollController.addListener(scrollListener);
-
-            //
-            return ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.only(bottom: 100),
-              itemCount: data.homeRoutines.length,
-              itemBuilder: (context, index) {
-                return RoutineBoxById(
-                  rutinId: data.homeRoutines[index].rutineId.id,
-                  rutinName: data.homeRoutines[index].rutineId.name,
-                  onTapMore: () => RoutineDialog.CheckStatusUser_BottomSheet(
-                    context,
-                    routineID: data.homeRoutines[index].rutineId.id,
-                    routineName: data.homeRoutines[index].rutineId.name,
-                    routinesController: homeRoutineNotifier,
-                  ),
-                );
-              },
-            );
-          },
-          loading: () => RUTINE_BOX_SKELTON,
-          error: (error, stackTrace) {
-            Alert.handleError(context, error);
-            return ErrorScreen(error: error.toString());
-          },
-        ),
 
         //
+        const SizedBox(height: 10),
       ],
-    ),
-  );
-}
-
-//
-
-bool hideNevBarOnScroll(ScrollNotification? scrollNotification, WidgetRef ref) {
-  // Logic of scrollNotification
-  if (scrollNotification is ScrollStartNotification) {
-    print("Scroll Started");
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.watch(hideNevBarOnScorningProvider.notifier).update((state) => true);
-    });
-  } else if (scrollNotification is ScrollUpdateNotification) {
-    // print(message);
-  } else if (scrollNotification is ScrollEndNotification) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.watch(hideNevBarOnScorningProvider.notifier).update((state) => false);
-    });
-
-    String message = 'Scroll Ended';
-    print(message);
+    );
   }
-  return true;
 }

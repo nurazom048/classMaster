@@ -8,7 +8,8 @@ import 'package:intl/intl.dart';
 import '../../Collection Fetures/Ui/collections.screen.dart';
 
 class Utils {
-  // hode Nevbar On scroll
+  // hide Navbar On scroll
+
   static bool hideNevBarOnScroll(
       ScrollNotification? scrollNotification, WidgetRef ref) {
     // Logic of scrollNotification
@@ -29,8 +30,7 @@ class Utils {
             .update((state) => false);
       });
 
-      String message = 'Scroll Ended';
-      print(message);
+      // String message = 'Scroll Ended';
     }
     return true;
   }
