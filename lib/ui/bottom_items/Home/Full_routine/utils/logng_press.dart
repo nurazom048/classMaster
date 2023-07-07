@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/constant/app_color.dart';
 import 'package:flutter/material.dart' as ma;
+import 'package:table/core/dialogs/alert_dialogs.dart';
 
 import 'package:table/models/priode/all_priode_models.dart';
 import '../../../Add/request/class_request.dart';
 import '../../../Add/screens/add_class_screen.dart';
 import '../../../Add/screens/add_priode.dart';
-import '../../../Collection Fetures/utils/confrom_alart_dilog.dart';
 import '../controller/priode_controller.dart';
 
 class PriodeAlert {
@@ -49,26 +49,17 @@ class PriodeAlert {
             ),
 // delete
             CupertinoActionSheetAction(
-              child: const ma.Text("Remove class",
+              child: const Text("Remove class",
                   style: TextStyle(color: Colors.red)),
               onPressed: () {
                 // Navigator.of(context).pop();
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) => ConfromAlartDilog(
-                    title: 'Alert',
-                    message:
-                        'Do you want to delete this Class? You can\'t undo this action.',
-                    onConfirm: (bool isConfirmed) {
-                      if (isConfirmed) {
-                        ClassRequest.deleteClass(
-                            context, ref, classId, rutinId);
-                      }
-                    },
-                  ),
-                );
-
                 //
+                Alert.errorAlertDialogCallBack(context,
+                    'Do you want to delete this Class? You can\'t undo this action.',
+                    onConfirm: () {
+                  ClassRequest.deleteClass(context, ref, classId, rutinId);
+                  Navigator.of(context).pop();
+                });
               },
             ),
           ],

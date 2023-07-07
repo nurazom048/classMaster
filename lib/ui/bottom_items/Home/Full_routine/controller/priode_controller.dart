@@ -25,6 +25,8 @@ class PriodeClassController extends StateNotifier<bool> {
     deleteRes.fold(
       (l) {
         state = false;
+        Navigator.pop(context);
+
         return Alert.errorAlertDialog(context, l);
       },
       (r) {

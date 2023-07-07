@@ -128,7 +128,8 @@ class ClassRequest {
 
         print(res);
       } else {
-        throw Exception(json.decode(response.body));
+        Alert.handleError(context, json.decode(response.body));
+        // throw Exception(json.decode(response.body));
       }
     } catch (e) {
       print(e);
