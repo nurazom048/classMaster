@@ -1,6 +1,5 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, unused_result, use_build_context_synchronously, avoid_print
 
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
@@ -32,21 +31,33 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-final scrollController = ScrollController();
-
 class _HomeScreenState extends State<HomeScreen> {
+  late ScrollController mobileScrollController;
+  late ScrollController recentNoticeScrollController;
+
   @override
   void initState() {
     super.initState();
+    // Initialize the scrollController
+    mobileScrollController = ScrollController();
+    recentNoticeScrollController = ScrollController();
 
     // One signal
     OneSignalServices.initialize();
     // OneSignalServices.oneSignalPermission();
-    //firebase
+    // Firebase
     FirebaseAnalyticsServices.logHome();
     // AwesomeNotificationSetup
     AwesomeNotificationSetup.initialize();
     AwesomeNotificationSetup.takePermiton(context);
+  }
+
+  @override
+  void dispose() {
+    // Dispose of the scrollController
+    recentNoticeScrollController.dispose();
+    mobileScrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -62,63 +73,68 @@ class _HomeScreenState extends State<HomeScreen> {
           ref.watch(homeRoutineControllerProvider(null).notifier);
       //
       final _mobileView = homeMobileView(
-        ref,
         context,
-        homeRoutines,
+        ref: ref,
+        homeRoutines: homeRoutines,
+        scrollController: mobileScrollController,
         homeRoutineNotifier: homeRoutinesNotifier,
       );
 
-      Widget _appBar = const CustomTitleBar("title");
       return Responsive(
         // Mobile view
         mobile: SafeArea(
           child: Scaffold(
             backgroundColor: const Color(0xFFF2F2F2),
-            body: homeMobileView(ref, context, homeRoutines,
-                homeRoutineNotifier: homeRoutinesNotifier),
+            body: _mobileView,
           ),
         ),
 
         // Desktop view
         desktop: Scaffold(
-            body: Column(
-          children: [
-            _appBar,
-            Expanded(
-              child: Row(
-                children: [
-                  // Drawer
-                  const Expanded(flex: 1, child: MyDrawer()),
-                  // mobile
-                  Expanded(
-                    flex: 3,
-                    child: Container(color: Colors.yellow, child: _mobileView),
-                  ),
-                  Expanded(flex: 1, child: Container(color: Colors.black)),
-                ],
+          body: Column(
+            children: [
+              const CustomTitleBar("title"),
+              Expanded(
+                child: Row(
+                  children: [
+                    // Drawer
+                    const Expanded(flex: 1, child: MyDrawer()),
+                    // mobile
+                    Expanded(
+                      flex: 3,
+                      child:
+                          Container(color: Colors.yellow, child: _mobileView),
+                    ),
+                    Expanded(flex: 1, child: Container(color: Colors.black)),
+                  ],
+                ),
               ),
-            ),
-          ],
-        )),
+            ],
+          ),
+        ),
       );
     });
   }
 }
 
-/////////////
+//**************  homeMobileView **************************/
 Widget homeMobileView(
-    WidgetRef ref, BuildContext context, AsyncValue<RoutineHome> homeRoutines,
-    {required homeRoutineNotifier}) {
+  BuildContext context, {
+  required AsyncValue<RoutineHome> homeRoutines,
+  required WidgetRef ref,
+  required ScrollController scrollController,
+  required homeRoutineNotifier,
+}) {
   //
   return NotificationListener<ScrollNotification>(
-    // hide bottom nev bar on scroll
+    // hide bottom nav bar on scroll
     onNotification: (scrollNotification) =>
         Utils.hideNevBarOnScroll(scrollNotification, ref),
     child: RefreshIndicator(
       onRefresh: () async {
         final bool isOnline = await Utils.isOnlineMethod();
         if (!isOnline) {
-          Alert.showSnackBar(context, 'You are in offline mood');
+          Alert.showSnackBar(context, 'You are in offline mode');
         } else {
           //! provider
           ref.refresh(homeRoutineControllerProvider(null));
