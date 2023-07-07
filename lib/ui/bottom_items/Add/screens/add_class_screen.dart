@@ -50,6 +50,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
   final _instructorController = TextEditingController();
   final _roomController = TextEditingController();
   final _subCodeController = TextEditingController();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   // Form key for validation
   final _formKey = GlobalKey<FormState>();
@@ -63,7 +64,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
   late DateTime endTimeDemo = DateTime.now();
 
   // Selected day of the week
-  int _selectedDay = 1;
+  int? _selectedDay;
 
   // Start and end time variables
   DateTime? st;
@@ -86,6 +87,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
     print(widget.routineId);
     return Consumer(builder: (context, ref, _) {
       return Scaffold(
+        key: scaffoldKey,
         backgroundColor: const Color(0xFFEFF6FF),
         body: CustomScrollView(
           slivers: [
@@ -177,9 +179,8 @@ class _AddClassScreenState extends State<AddClassScreen> {
                                     Get.to(
                                         AppPriodePage(
                                           routineId: widget.routineId,
-                                          totalPriode: ref.read(
-                                            totalPriodeCountProvider,
-                                          ),
+                                          totalPriode: ref
+                                              .read(totalPriodeCountProvider),
                                         ),
                                         transition: Transition.rightToLeft);
                                   },
@@ -205,6 +206,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
 
                       const SizedBox(height: 30),
                       CupertinoButtonCustom(
+                        icon: widget.isUpdate == true ? Icons.check : null,
                         padding: const EdgeInsets.symmetric(horizontal: 25),
                         text: widget.isUpdate == true
                             ? 'Update Class'
@@ -213,9 +215,11 @@ class _AddClassScreenState extends State<AddClassScreen> {
                                 : "Create Class",
                         color: AppColor.nokiaBlue,
                         onPressed: () async {
-                          print("object");
+                          //   print("object");
                           if (_formKey.currentState!.validate()) {
                             _onTapToButton(ref);
+                          } else {
+                            Alert.showSnackBar(context, 'fill the from');
                           }
                         },
                       ),
@@ -251,70 +255,65 @@ class _AddClassScreenState extends State<AddClassScreen> {
             subjectCode: _subCodeController.text,
             startingPeriod: startPeriod,
             endingPeriod: endPeriod,
-            weekday: _selectedDay,
+            weekday: 1,
             startTime: startTime,
             endTime: startTime,
           ));
-      if (!mounted) return;
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ViewMore(
-            routineId: widget.routineId,
-            routineName: widget.routineName ?? 'Routine Name',
-            ownerName: '',
-          ),
-        ),
-      );
       if (!mounted) return;
     } else {
       if (!mounted) return;
 
-      String? newclassID = await ClassRequest.addClass(
-          ref,
-          widget.routineId,
-          context,
-          ClassModel(
-            className: _classNameController.text,
-            instructorName: _instructorController.text,
-            roomNumber: _roomController.text,
-            subjectCode: _subCodeController.text,
-            startingPeriod: startPeriod,
-            endingPeriod: endPeriod,
-            weekday: _selectedDay,
-            startTime: startTime,
-            endTime: startTime,
-          ));
+      if (_selectedDay == null) {
+        Alert.errorAlertDialog(context, 'Select day');
+      } else {
+        String? newclassID = await ClassRequest.addClass(
+            ref,
+            widget.routineId,
+            context,
+            ClassModel(
+              className: _classNameController.text,
+              instructorName: _instructorController.text,
+              roomNumber: _roomController.text,
+              subjectCode: _subCodeController.text,
+              startingPeriod: startPeriod,
+              endingPeriod: endPeriod,
+              weekday: _selectedDay!,
+              startTime: startTime,
+              endTime: startTime,
+            ));
+
+        //
+        if (newclassID == null) {
+          Alert.showSnackBar(context, 'something went wrong');
+        } else {
+          if (!mounted) return;
+
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (BuildContext context, Animation<double> animation,
+                  Animation<double> secondaryAnimation) {
+                return SlideTransition(
+                  position: Tween<Offset>(
+                    begin: const Offset(1, 0),
+                    end: Offset.zero,
+                  ).animate(CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.easeOut,
+                  )),
+                  child: AddClassScreen(
+                    routineId: widget.routineId,
+                    classId: newclassID,
+                    isUpdate: true,
+                  ),
+                );
+              },
+            ),
+          );
+        }
+      }
 
       //
-      if (newclassID == null) {
-        Alert.showSnackBar(context, 'something went wrong');
-      } else {
-        if (!mounted) return;
-
-        Navigator.pushReplacement(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (BuildContext context, Animation<double> animation,
-                Animation<double> secondaryAnimation) {
-              return SlideTransition(
-                position: Tween<Offset>(
-                  begin: const Offset(1, 0),
-                  end: Offset.zero,
-                ).animate(CurvedAnimation(
-                  parent: animation,
-                  curve: Curves.easeOut,
-                )),
-                child: AddClassScreen(
-                  routineId: widget.routineId,
-                  classId: newclassID,
-                  isUpdate: true,
-                ),
-              );
-            },
-          ),
-        );
-      }
     }
   }
 
@@ -330,6 +329,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
       if (response.statusCode == 200) {
         print(response.body);
         FindClass foundClass = FindClass.fromJson(json.decode(response.body));
+        if (!mounted) {}
 
         //
         setState(() {

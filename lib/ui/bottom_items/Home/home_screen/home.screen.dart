@@ -38,14 +38,15 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+
+    // One signal
+    OneSignalServices.initialize();
+    // OneSignalServices.oneSignalPermission();
     //firebase
     FirebaseAnalyticsServices.logHome();
     // AwesomeNotificationSetup
     AwesomeNotificationSetup.initialize();
     AwesomeNotificationSetup.takePermiton(context);
-    // One signal
-    OneSignalServices.initialize();
-    OneSignalServices.oneSignalPermission();
   }
 
   @override
@@ -109,22 +110,23 @@ Widget homeMobileView(
     WidgetRef ref, BuildContext context, AsyncValue<RoutineHome> homeRoutines,
     {required homeRoutineNotifier}) {
   //
-  return RefreshIndicator(
-    onRefresh: () async {
-      final bool isOnline = await Utils.isOnlineMethod();
-      if (!isOnline) {
-        Alert.showSnackBar(context, 'You are in offline mood');
-      } else {
-        //! provider
-        ref.refresh(homeRoutineControllerProvider(null));
-        ref.refresh(recentNoticeController(null));
-      }
-    },
-    child: NotificationListener<ScrollNotification>(
-      // hide bottom nev bar on scroll
-      onNotification: (scrollNotification) =>
-          Utils.hideNevBarOnScroll(scrollNotification, ref),
+  return NotificationListener<ScrollNotification>(
+    // hide bottom nev bar on scroll
+    onNotification: (scrollNotification) =>
+        Utils.hideNevBarOnScroll(scrollNotification, ref),
+    child: RefreshIndicator(
+      onRefresh: () async {
+        final bool isOnline = await Utils.isOnlineMethod();
+        if (!isOnline) {
+          Alert.showSnackBar(context, 'You are in offline mood');
+        } else {
+          //! provider
+          ref.refresh(homeRoutineControllerProvider(null));
+          ref.refresh(recentNoticeController(null));
+        }
+      },
       child: ListView(
+        shrinkWrap: true,
         padding: const EdgeInsets.only(bottom: 100),
         controller: scrollController,
         children: [

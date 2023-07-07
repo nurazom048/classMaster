@@ -42,7 +42,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     navigateBaseOnToken();
-
     super.initState();
   }
 

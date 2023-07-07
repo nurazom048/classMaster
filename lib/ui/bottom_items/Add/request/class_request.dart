@@ -78,7 +78,6 @@ class ClassRequest {
           "room": classModel.roomNumber.toString(),
           "subjectcode": classModel.subjectCode.toString(),
           "instuctor_name": classModel.instructorName.toString(),
-          "num": classModel.weekday.toString(),
           "start": classModel.startingPeriod.toString(),
           "end": classModel.endingPeriod.toString(),
         },
@@ -90,12 +89,12 @@ class ClassRequest {
       if (response.statusCode == 200) {
         Message message =
             Message(message: json.decode(response.body)["message"]);
+        ref.refresh(routine_details_provider(routineId));
 
         print("Routine created successfully");
         Alert.showSnackBar(context, message.message);
         Navigator.pop(context);
 
-        ref.refresh(routine_details_provider(routineId));
         print(res);
       } else {
         Message message =

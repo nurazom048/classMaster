@@ -34,29 +34,24 @@ class _SelectDayRowState extends State<SelectDayRow> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 12),
-      child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: List.generate(
-              7,
-              (index) => SelectDayChip(
-                    index: index,
-                    isSelected: index == selectedDays,
-                    text: dayNAme[index],
-                    onTap: () {
-                      setState(() {
-                        selectedDays = index;
-                      });
+    return SizedBox(
+      // color: Colors.amber,
+      height: 95,
+      child: ListView.builder(
+          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 3),
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          itemCount: 7,
+          itemBuilder: (context, index) => SelectDayChip(
+                index: index,
+                isSelected: index == selectedDays,
+                text: dayNAme[index],
+                onTap: () {
+                  setState(() => selectedDays = index);
 
-                      widget.selectedDay.call(index);
-                    },
-                  )),
-        ),
-      ),
+                  widget.selectedDay.call(index);
+                },
+              )),
     );
   }
 }
@@ -79,8 +74,11 @@ class SelectDayChip extends StatelessWidget {
     return InkWell(
         onTap: onTap,
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(10),
           child: Container(
+            height: 50,
+            width: 64,
+
             //color: AppColor.background,
             color: isSelected ? const Color(0xFFF2F2F2) : null,
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 13),

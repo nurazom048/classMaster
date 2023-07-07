@@ -174,6 +174,7 @@ class _RutinBoxByIdState extends State<RoutineBoxById> {
                       child: Scrollbar(
                         radius: const Radius.circular(8),
                         child: ListView.builder(
+                          // shrinkWrap: true,
                           itemCount: widget.listOfDayState.length,
                           itemBuilder: (context, index) {
                             if (widget.listOfDayState.isNotEmpty) {

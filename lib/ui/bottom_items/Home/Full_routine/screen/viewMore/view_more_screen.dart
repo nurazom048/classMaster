@@ -7,7 +7,6 @@ import 'package:table/ui/bottom_items/Home/Full_routine/widgets/routine_box/rout
 import 'package:table/widgets/heder/appbar_custom.dart';
 import '../../../../../../widgets/appWidget/app_text.dart';
 import '../../../../../../widgets/custom_tab_bar.widget.dart';
-import '../../../../../../widgets/heder/heder_title.dart';
 import 'class_list.dart';
 
 final viewMoreIndexProvider = StateProvider<int>((ref) => 0);

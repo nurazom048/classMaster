@@ -5,6 +5,8 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../one signal/onesignla.services.dart';
+
 class AwesomeNotificationSetup {
 // initialize
 
@@ -49,6 +51,9 @@ class AwesomeNotificationSetup {
                 ),
                 TextButton(
                   onPressed: () {
+                    //one signal permiton
+                    OneSignalServices.oneSignalPermission();
+                    //awesome notification permiton
                     AwesomeNotifications()
                         .requestPermissionToSendNotifications()
                         .then((_) => Navigator.pop(context));

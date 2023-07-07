@@ -1,16 +1,20 @@
 // ignore_for_file: avoid_print, unnecessary_null_comparison
 
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:get/get.dart';
 import 'package:table/services/notification%20services/models.dart';
 
 class LocalNotification {
   static void scheduleNotifications(ClassNotificationList classList) async {
     var days = classList.notificationOnClasses;
-    print(
-        "Ontap local ${days.length} on now weekday ${DateTime.now().weekday}");
+    print(" local ${days.length} on now weekday ${DateTime.now().weekday}");
     for (int i = 0; i < days.length; i++) {
       if (days[i].num != null && days[i].startTime != null) {
         int weekday = days[i].num;
+
+        // Get.showSnackbar(GetSnackBar(
+        //     message:
+        //         "create $i sH${days[i].startTime.hour} ${days[i].startTime} "));
         print(
             "create $i sH${days[i].startTime.hour} ${days[i].startTime}    h:${makeTime24h(days[i].startTime)} M:${days[i].startTime.minute} $weekday ${days[i].num} ${days[i].startTime}");
 
@@ -30,7 +34,7 @@ class LocalNotification {
             payload: {'data': 'notification_'},
           ),
           schedule: NotificationCalendar(
-            //  weekday: weekday,
+            weekday: weekday,
             hour: newStartTime.hour,
             minute: newStartTime.minute.toInt(),
             allowWhileIdle: true,

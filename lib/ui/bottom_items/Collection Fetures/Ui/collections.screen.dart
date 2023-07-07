@@ -118,9 +118,10 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                   classNotification.when(
                       data: (data) {
                         if (data == null) {}
-                        if (!kIsWeb) {
-                          LocalNotification.scheduleNotifications(data!);
-                        }
+                        // if (!kIsWeb) {
+                        print('Asom nortification created');
+                        LocalNotification.scheduleNotifications(data!);
+                        //   }
                         return const SizedBox();
                       },
                       error: (error, stackTrace) {
