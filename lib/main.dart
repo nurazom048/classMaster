@@ -24,8 +24,8 @@ void main() async {
     return true;
   };
 // Firebase analytics
-  // FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
-  // FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(!kDebugMode);
+  FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
+  FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(!kDebugMode);
   runApp(const ProviderScope(child: MyApp()));
 }
 //

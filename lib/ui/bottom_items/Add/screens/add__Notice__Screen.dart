@@ -88,70 +88,78 @@ class AddNoticeScreen extends ConsumerWidget {
           children: [
             if (Responsive.isMobile(context))
               HeaderTitle("Back to Home", context),
+            //
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0)
-                  .copyWith(top: 25),
-              child: const Text(
-                "Add A New \nNotice",
-                style: TextStyle(
-                  fontFamily: 'Open Sans',
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.w300,
-                  fontSize: 48.0,
-                  height: 65 / 48, // This sets the line height to 65px
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            // SelectNoticeBoardDropDowen(
-            //   onSelected: (iD) {
-            //     print(iD);
-            //     id = iD;
-            //   },
-            // ),
-            AppTextFromField(
-              controller: noticeTitleController,
-              hint: "Notice Title",
-              labelText: "Enter Your notice title",
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter notice title';
-                }
-                if (value.trim().length > 25) {
-                  return 'Notice title cannot exceed 25 words';
-                }
-                return null;
-              },
-            ),
-
-            AppTextFromField(
-              controller: descriptionController,
-              hint: "Notice Description",
-              labelText: "Describe what the notice is about.",
-            ).multiline(),
-            const SizedBox(height: 60),
-            UploadPDFBButton(onSelected: (thePath) {}),
-            // SizedBox(height: 200, width: 400, child: drag'sSelectFile()),
-            const SizedBox(height: 60),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 10),
-              child: isLoading == true
-                  ? Loaders.button()
-                  : CupertinoButtonCustom(
-                      color: AppColor.nokiaBlue,
-                      text: "Add Notice",
-                      onPressed: () async {
-                        isLoadingNotifier.update((state) => true);
-                        print("pdf path : $pdfPath");
-                        if (pdfPath == null) {
-                          Alert.errorAlertDialog(context, "select pdf");
-                        }
-                        if (_formKey.currentState!.validate()) {
-                          addNotice(context, pdfPath!, ref, isLoadingNotifier);
-                        }
-                      },
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 20),
+                  const Text(
+                    "Add A New \nNotice",
+                    style: TextStyle(
+                      fontFamily: 'Open Sans',
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.w300,
+                      fontSize: 48.0,
+                      height: 65 / 48, // This sets the line height to 65px
+                      color: Colors.black,
                     ),
-            ),
+                  ),
+                  // SelectNoticeBoardDropDowen(
+                  //   onSelected: (iD) {
+                  //     print(iD);
+                  //     id = iD;
+                  //   },
+                  // ),
+                  SizedBox(height: 20),
+
+                  AppTextFromField(
+                    margin: EdgeInsets.zero,
+                    controller: noticeTitleController,
+                    hint: "Notice Title",
+                    labelText: "Enter Your notice title",
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter notice title';
+                      }
+                      if (value.trim().length > 25) {
+                        return 'Notice title cannot exceed 25 words';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+
+                  AppTextFromField(
+                    margin: EdgeInsets.zero,
+                    controller: descriptionController,
+                    hint: "Notice Description",
+                    labelText: "Describe what the notice is about.",
+                  ).multiline(),
+                  const SizedBox(height: 60),
+                  UploadPDFBButton(onSelected: (thePath) {}),
+                  // SizedBox(height: 200, width: 400, child: drag'sSelectFile()),
+                  const SizedBox(height: 60),
+                  CupertinoButtonCustom(
+                    icon: Icons.check,
+                    isLoading: isLoading,
+                    color: AppColor.nokiaBlue,
+                    text: "Add Notice",
+                    onPressed: () async {
+                      isLoadingNotifier.update((state) => true);
+                      print("pdf path : $pdfPath");
+                      if (pdfPath == null) {
+                        Alert.errorAlertDialog(context, "select pdf");
+                      }
+                      if (_formKey.currentState!.validate()) {
+                        addNotice(context, pdfPath!, ref, isLoadingNotifier);
+                      }
+                    },
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),
