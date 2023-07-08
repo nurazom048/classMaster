@@ -31,7 +31,7 @@ class NoticeRow extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5),
+            padding: const EdgeInsets.symmetric(vertical: 4),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -48,7 +48,7 @@ class NoticeRow extends StatelessWidget {
                     ),
                     Container(
                       alignment: Alignment.centerLeft,
-                      width: MediaQuery.of(context).size.width * 0.54,
+                      width: MediaQuery.of(context).size.width * 0.50,
                       // color: Colors.red,
                       child: Text(
                         notice.contentName,

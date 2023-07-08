@@ -32,7 +32,7 @@ class WellComeScreen extends StatelessWidget {
                     height: 200,
                     child: SvgPicture.asset(ImageConst.wellcome),
                   ),
-                  const SizedBox(height: 100),
+                  const SizedBox(height: 50),
                   Container(
                     alignment: Alignment.center,
                     child: Text(
