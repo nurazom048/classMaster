@@ -15,7 +15,13 @@ abstract class Const {
   static String CANT_SEE_SUMMARYS =
       'You are not a member of this routine.\nTo view the summary,\nyou need to become a member first.';
 
-//
+// signUp info textList
+  static List<String> SignUpInfoText = [
+    "To create a academy account , it may take time to physically verify your academy",
+    'This information will allow our team to visit your academy physically for verification.',
+    'fill out the form and send a request to our team . We will review your request and accept it as soon as possible.',
+    'Don\'t worry, this contact information will not be visible to the public'
+  ];
 }
 
 double KTopPadding = 25;

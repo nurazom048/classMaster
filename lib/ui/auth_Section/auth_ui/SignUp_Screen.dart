@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:table/constant/app_color.dart';
+import 'package:table/constant/constant.dart';
 import 'package:table/core/dialogs/alert_dialogs.dart';
 import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
+import 'package:table/ui/auth_Section/auth_ui/LogIn_Screen.dart';
 import 'package:table/ui/auth_Section/utils/singUp_validation.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 import 'package:table/widgets/appWidget/dotted_divider.dart';
@@ -159,17 +161,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 26),
                           child: Column(
                             children: [
-                              Text(
-                                  'To create an Academy account, it may take time to physically verify your academy.',
-                                  style: TS.opensensBlue(color: Colors.black)),
-                              const SizedBox(height: 10),
-                              Text(
-                                'To create an Academy account, please fill out the form and send a request to our team. We will review your request and accept it as soon as possible.',
-                                style: TS.opensensBlue(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
+                              // Text(
+                              //     'To create an Academy account, it may take time to physically verify your academy.',
+                              //     style: TS.opensensBlue(color: Colors.black)),
+                              // const SizedBox(height: 10),
+                              // Text(
+                              //   'To create an Academy account, please fill out the form and send a request to our team. We will review your request and accept it as soon as possible.',
+                              //   style: TS.opensensBlue(
+                              //     color: Colors.black,
+                              //     fontWeight: FontWeight.w400,
+                              //   ),
+                              // ),
                               const SizedBox(height: 10),
                               AppTextFromField(
                                 margin: EdgeInsets.zero,
@@ -182,43 +184,38 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   return passwordFocusNode.requestFocus();
                                 },
                               ),
-                              const SizedBox(height: 30),
-                              const DotedDivider(),
-                              const SizedBox(height: 1),
-                              const DotedDivider(),
-                              const SizedBox(height: 1),
-                              const DotedDivider(),
-                              const SizedBox(height: 30),
-                              Text(
-                                'Please provide contact information for verifying your Academy.',
-                                style: TS.opensensBlue(color: Colors.black),
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                'This information will allow our team to visit your academy physically for verification.',
-                                style: TS.opensensBlue(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
+
                               AppTextFromField(
-                                marlines: 15,
+                                marlines: 10,
                                 margin:
                                     const EdgeInsets.symmetric(vertical: 15),
                                 controller: contractInfoController,
                                 hint: "Contact info",
                                 labelText:
-                                    "Please provide the contract information for your Academy, including the current location and phone number...",
+                                    "Please provide the contact information for your academy included the current location and phone number.",
                                 validator: (value) =>
                                     SignUpValidation.validateContactInfo(value),
                                 focusNode: confirmPasswordFocusNode,
                                 onFieldSubmitted: (_) =>
                                     formKey.currentState?.validate(),
                               ).multiline(),
-                              Text(
-                                'Don\'t worry, this contact information will not be visible to the public',
-                                style: TS.opensensBlue(color: Colors.red),
+                              const SizedBox(height: 16),
+
+                              ListView.separated(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: Const.SignUpInfoText.length,
+                                itemBuilder: (context, i) {
+                                  return BluetMarkInfoText(
+                                    text: Const.SignUpInfoText[i],
+                                  );
+                                },
+                                separatorBuilder: (context, index) {
+                                  return const SizedBox(height: 16);
+                                },
                               ),
+
+                              const SizedBox(height: 16),
                             ],
                           ),
                         ),
@@ -244,7 +241,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SignUpSwitcherButton(
                   "Already have an account?",
                   "Log in",
-                  onTap: () => Get.to(() => const SignUpScreen()),
+                  onTap: () => Get.to(() => const LoginScreen()),
                 ),
                 const SizedBox(height: 30),
               ],
@@ -304,5 +301,41 @@ class _SignUpScreenState extends State<SignUpScreen> {
     //     Alert.showSnackBar(context, e);
     //   }
     // }
+  }
+}
+
+class BluetMarkInfoText extends StatelessWidget {
+  final String text;
+  const BluetMarkInfoText({
+    super.key,
+    required this.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 1,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 6.0, top: 8),
+            child: CircleAvatar(
+              radius: 5,
+              backgroundColor: AppColor.nokiaBlue,
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 10,
+          child: Text(
+            text,
+            textAlign: TextAlign.justify,
+            style: TS.opensensBlue(
+                color: Colors.black, fontWeight: FontWeight.w400),
+          ),
+        ),
+      ],
+    );
   }
 }
