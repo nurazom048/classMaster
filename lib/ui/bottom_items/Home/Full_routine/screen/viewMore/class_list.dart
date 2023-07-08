@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, unused_local_variable
+// ignore_for_file: avoid_print, unused_local_variable, use_build_context_synchronously, unused_result
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,6 +10,8 @@ import '../../../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../../../models/class_details_model.dart';
 import '../../../../../../widgets/error/error.widget.dart';
 import '../../../../../../widgets/heading_row.dart';
+import '../../../utils/utils.dart';
+import '../../controller/priode_controller.dart';
 import '../../request/routine_api.dart';
 import '../../../../Add/screens/add_priode.dart';
 import '../../controller/check_status_controller.dart';
@@ -39,7 +41,7 @@ class ClassListPage extends StatelessWidget {
 
       // Provider
       final routineDetails = ref.watch(routine_details_provider(routineId));
-      final allPriode = ref.watch(allPriodeProvider(routineId));
+      final allPriode = ref.watch(priodeController(routineId));
       final totalPriode = ref.watch(totalPriodeCountProvider);
       final totalClass = ref.watch(totalClassCountProvider);
 
@@ -50,60 +52,136 @@ class ClassListPage extends StatelessWidget {
 
       return Scaffold(
         backgroundColor: Colors.white10,
-        body: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          children: [
-            //----------------------- "Priode Lists" -------------------------//
-            HeadingRow(
-              heading: "Priode List",
-              secondHeading: "$totalPriode priode${totalPriode > 1 ? "s" : ''}",
-              margin: EdgeInsets.zero,
-              buttonText: "Add Priode",
-              onTap: () => Get.to(
-                () => AppPriodePage(
-                  routineId: routineId,
-                  routineName: routineName,
-                  isEdit: false,
-                  totalPriode: totalPriode,
+        body: RefreshIndicator(
+          onRefresh: () async {
+            final bool isOnline = await Utils.isOnlineMethod();
+            if (!isOnline) {
+              Alert.showSnackBar(context, 'You are in offline mode');
+            } else {
+              //! provider
+
+              ref.refresh(routine_details_provider(routineId));
+              ref.refresh(priodeController(routineId));
+            }
+          },
+          child: ListView(
+            shrinkWrap: true,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            children: [
+              //----------------------- "Priode Lists" -------------------------//
+              HeadingRow(
+                heading: "Priode List",
+                secondHeading:
+                    "$totalPriode priode${totalPriode > 1 ? "s" : ''}",
+                margin: EdgeInsets.zero,
+                buttonText: "Add Priode",
+                onTap: () => Get.to(
+                  () => AppPriodePage(
+                    routineId: routineId,
+                    routineName: routineName,
+                    isEdit: false,
+                    totalPriode: totalPriode,
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 140,
-              child: allPriode.when(
+              SizedBox(
+                height: 140,
+                child: allPriode.when(
+                  data: (data) {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: data.priodes.length,
+                      itemBuilder: (context, index) {
+                        String priodeId = data.priodes[index].id;
+                        int length = data.priodes.length;
+
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          totalPriodeNotifier.update((state) => length);
+                        });
+
+                        return PriodeWidget(
+                          priodeNumber: data.priodes[index].priodeNumber,
+                          startTime: data.priodes[index].startTime,
+                          endTime: data.priodes[index].endTime,
+                          onLongpress: () {
+                            PriodeAlert.logPressOnPriode(
+                              context,
+                              priodeId,
+                              routineId,
+                              data.priodes[index],
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
+                  error: (error, stackTrace) {
+                    Alert.handleError(context, error);
+                    return ErrorScreen(error: error.toString());
+                  },
+                  loading: () => Loaders.center(height: 200, width: 100),
+                ),
+              ),
+
+              //----------------------- "Class List" -------------------------//
+              HeadingRow(
+                heading: "Class List",
+                secondHeading:
+                    "$totalClass classes${totalClass > 1 ? "s" : ''}",
+                margin: const EdgeInsets.only(top: 10),
+                buttonText: "Add Class",
+                onTap: () {
+                  Get.to(() =>
+                      AddClassScreen(routineId: routineId, isEdit: false));
+                },
+              ),
+
+              routineDetails.when(
                 data: (data) {
-                  return data.fold(
-                    (l) {
-                      Alert.handleError(context, l.message);
-                      return ErrorScreen(error: l.message);
-                    },
-                    (data) {
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: data.priodes.length,
-                        itemBuilder: (context, index) {
-                          String priodeId = data.priodes[index].id;
-                          int length = data.priodes.length;
+                  if (data == null) {
+                    return Text("Null $data");
+                  }
 
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            totalPriodeNotifier.update((state) => length);
-                          });
+                  int length = data.uniqClass.length;
 
-                          return PriodeWidget(
-                            priodeNumber: data.priodes[index].priodeNumber,
-                            startTime: data.priodes[index].startTime,
-                            endTime: data.priodes[index].endTime,
-                            onLongpress: () {
-                              PriodeAlert.logPressOnPriode(
-                                context,
-                                priodeId,
-                                routineId,
-                                data.priodes[index],
-                              );
-                            },
-                          );
-                        },
+                  return ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: length,
+                    itemBuilder: (context, index) {
+                      UniqClass uniqClass = data.uniqClass[index];
+
+                      print(data);
+                      if (length == 0) {
+                        return const ErrorScreen(error: 'No Class Created');
+                      }
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        totalClassNotifier.update((state) => length);
+                      });
+
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 10),
+                        child: ClassRow(
+                          id: uniqClass.id,
+                          className: uniqClass.name,
+                          onLongPress: () {
+                            PriodeAlert.logPressClass(
+                              context,
+                              classId: data.classes.allClass[index].classId.id,
+                              rutinId: routineId,
+                            );
+                          },
+                          ontap: () => Get.to(
+                            () => SummaryScreen(
+                              classId: uniqClass.id,
+                              routineID: uniqClass.rutinId,
+                              className: uniqClass.name,
+                              instructorName: uniqClass.instuctorName,
+                              subjectCode: uniqClass.subjectcode,
+                            ),
+                          ),
+                        ),
                       );
                     },
                   );
@@ -112,78 +190,10 @@ class ClassListPage extends StatelessWidget {
                   Alert.handleError(context, error);
                   return ErrorScreen(error: error.toString());
                 },
-                loading: () => Loaders.center(height: 200, width: 100),
+                loading: () => Loaders.center(),
               ),
-            ),
-
-            //----------------------- "Class List" -------------------------//
-            HeadingRow(
-              heading: "Class List",
-              secondHeading: "$totalClass classes${totalClass > 1 ? "s" : ''}",
-              margin: const EdgeInsets.only(top: 10),
-              buttonText: "Add Class",
-              onTap: () {
-                Get.to(
-                    () => AddClassScreen(routineId: routineId, isEdit: false));
-              },
-            ),
-
-            routineDetails.when(
-              data: (data) {
-                if (data == null) {
-                  return Text("Null $data");
-                }
-
-                int length = data.uniqClass.length;
-
-                return ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: length,
-                  itemBuilder: (context, index) {
-                    UniqClass uniqClass = data.uniqClass[index];
-
-                    print(data);
-                    if (length == 0) {
-                      return const ErrorScreen(error: 'No Class Created');
-                    }
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      totalClassNotifier.update((state) => length);
-                    });
-
-                    return Container(
-                      margin: const EdgeInsets.only(bottom: 10),
-                      child: ClassRow(
-                        id: uniqClass.id,
-                        className: uniqClass.name,
-                        onLongPress: () {
-                          PriodeAlert.logPressClass(
-                            context,
-                            classId: data.classes.allClass[index].classId.id,
-                            rutinId: routineId,
-                          );
-                        },
-                        ontap: () => Get.to(
-                          () => SummaryScreen(
-                            classId: uniqClass.id,
-                            routineID: uniqClass.rutinId,
-                            className: uniqClass.name,
-                            instructorName: uniqClass.instuctorName,
-                            subjectCode: uniqClass.subjectcode,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
-              error: (error, stackTrace) {
-                Alert.handleError(context, error);
-                return ErrorScreen(error: error.toString());
-              },
-              loading: () => Loaders.center(),
-            ),
-          ],
+            ],
+          ),
         ),
       );
     });

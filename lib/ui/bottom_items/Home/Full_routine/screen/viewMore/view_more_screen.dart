@@ -1,4 +1,4 @@
-// ignore_for_file: curly_braces_in_flow_control_structures, unnecessary_null_comparison, avoid_print
+// ignore_for_file: curly_braces_in_flow_control_structures, unnecessary_null_comparison, avoid_print, unused_local_variable, unused_result, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,11 +7,12 @@ import 'package:table/ui/bottom_items/Home/Full_routine/widgets/routine_box/rout
 import 'package:table/widgets/heder/appbar_custom.dart';
 import '../../../../../../widgets/appWidget/app_text.dart';
 import '../../../../../../widgets/custom_tab_bar.widget.dart';
+
 import 'class_list.dart';
 
 final viewMoreIndexProvider = StateProvider<int>((ref) => 0);
 
-class ViewMore extends StatefulWidget {
+class ViewMore extends StatelessWidget {
   final String routineId;
   final String routineName;
   final String? ownerName;
@@ -23,35 +24,14 @@ class ViewMore extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
-  _ViewMoreState createState() => _ViewMoreState();
-}
-
-class _ViewMoreState extends State<ViewMore> with TickerProviderStateMixin {
-  late TabController controller;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = TabController(length: 2, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, _) {
       final ownerName = ref.watch(ownerNameProvider);
 
       //
       final List<Widget> pages = [
-        ClassListPage(
-            routineId: widget.routineId, routineName: widget.routineId),
-        MemberList(routineId: widget.routineId),
+        ClassListPage(routineId: routineId, routineName: routineId),
+        MemberList(routineId: routineId),
       ];
       return SafeArea(
         child: Scaffold(
@@ -69,8 +49,8 @@ class _ViewMoreState extends State<ViewMore> with TickerProviderStateMixin {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             const SizedBox(height: 20),
-                            AppText(widget.routineName.toUpperCase()).title(),
-                            AppText(widget.ownerName ??
+                            AppText(routineName.toUpperCase()).title(),
+                            AppText(ownerName ??
                                     ownerName ??
                                     "khulna polytechnic institute")
                                 .heeding(),

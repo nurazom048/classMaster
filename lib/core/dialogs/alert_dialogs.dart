@@ -83,7 +83,7 @@ abstract class Alert {
   }
 
   //.... show snackbar ...//
-  static showSnackBar(BuildContext context, dynamic text) {
+  static void showSnackBar(BuildContext context, dynamic text) {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(

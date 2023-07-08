@@ -58,6 +58,10 @@ class _AppPriodePageState extends State<AppPriodePage> {
               // Header
               HeaderTitle('', context, margin: EdgeInsets.zero),
               Consumer(builder: (context, ref, _) {
+                //Provider
+                final periodNotifier =
+                    ref.watch(priodeController(widget.routineId).notifier);
+
                 final h = MediaQuery.of(context).size.height;
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,6 +100,7 @@ class _AppPriodePageState extends State<AppPriodePage> {
                     SizedBox(height: h * 0.45),
                     if (widget.isEdit == false)
                       CupertinoButtonCustom(
+                          icon: Icons.check,
                           color: AppColor.nokiaBlue,
                           text: "Add Priode",
                           onPressed: () async {
@@ -104,18 +109,19 @@ class _AppPriodePageState extends State<AppPriodePage> {
                             //
 
                             if (st != null && et != null) {
-                              ref.watch(priodeController.notifier).addPriode(
-                                  ref,
-                                  context,
-                                  widget.routineId,
-                                  startTime,
-                                  endTime);
+                              periodNotifier.addPriode(
+                                ref,
+                                context,
+                                startTime,
+                                endTime,
+                              );
                             }
 
                             //
                           })
                     else
                       CupertinoButtonCustom(
+                          icon: Icons.check,
                           text: "Eddit priode",
                           color: AppColor.nokiaBlue,
                           onPressed: () async {
@@ -124,14 +130,13 @@ class _AppPriodePageState extends State<AppPriodePage> {
                             // setState(() {});
                             if (widget.priodeId != null) {
                               print('inside eddit');
-                              ref.watch(priodeController.notifier).edditPriode(
-                                    ref,
-                                    context,
-                                    widget.routineId,
-                                    widget.priodeId!,
-                                    startTime,
-                                    endTime,
-                                  );
+                              periodNotifier.edditPriode(
+                                ref,
+                                context,
+                                widget.priodeId!,
+                                startTime,
+                                endTime,
+                              );
                             }
                             //
                           }),
@@ -213,11 +218,13 @@ class _AppPriodePageState extends State<AppPriodePage> {
 
   void insertEditedValue() async {
     if (widget.isEdit == true) {
-      var addRes = await PriodeRequest().findPriodesYid(widget.priodeId ?? '');
+      final addRes =
+          await PriodeRequest().findPriodesYid(widget.priodeId ?? '');
       print("i am from cont");
 
       addRes.fold(
         (l) {
+          print(l);
           return Alert.errorAlertDialog(context, l);
         },
         (r) {
@@ -230,5 +237,18 @@ class _AppPriodePageState extends State<AppPriodePage> {
 
       setState(() {});
     }
+  }
+}
+
+String endMaker(String test) {
+  List<String> words = test.split(' ');
+  String lastWord = words.last;
+
+  if (lastWord.endsWith('Z')) {
+    return test;
+  } else {
+    String modifiedLastWord = '${lastWord}Z';
+    words[words.length - 1] = modifiedLastWord;
+    return words.join(' ');
   }
 }

@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_null_comparison
+// ignore_for_file: unnecessary_null_comparison, use_build_context_synchronously, unused_result
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +8,7 @@ import 'package:table/core/component/loaders.dart';
 import '../../../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../../../widgets/error/error.widget.dart';
 import '../../../../../../widgets/heading_row.dart';
+import '../../../utils/utils.dart';
 import '../../controller/check_status_controller.dart';
 import '../../controller/members_controllers.dart';
 import '../../controller/see_all_req_controller.dart';
@@ -67,83 +68,96 @@ class _MemberListState extends State<MemberList> {
         );
       }
 
-      return ListView(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        children: [
-          //____________________________________Invite___________________________________//
+      return RefreshIndicator(
+        onRefresh: () async {
+          final bool isOnline = await Utils.isOnlineMethod();
+          if (!isOnline) {
+            Alert.showSnackBar(context, 'You are in offline mode');
+          } else {
+            //! provider
 
-          // AppTextFromField(
-          //   margin: EdgeInsets.zero,
-          //   controller: _emailController,
-          //   hint: "Invite Student",
-          //   labelText: "Enter email address",
-          //   validator: (value) => LoginValidation.validateEmail(value),
-          // ),
-          // const SizedBox(height: 20),
-          // const DashBorderButton(),
-          // const SizedBox(height: 30),
+            ref.refresh(memberControllerProvider(widget.routineId));
+            ref.refresh(checkStatusControllerProvider(widget.routineId));
+          }
+        },
+        child: ListView(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          children: [
+            //____________________________________Invite___________________________________//
 
-          //____________________________________Requests___________________________________//
-          if (isCaptain == true || isOwner == true) ...[
-            JoinRequestPart(routineID: widget.routineId),
-          ],
+            // AppTextFromField(
+            //   margin: EdgeInsets.zero,
+            //   controller: _emailController,
+            //   hint: "Invite Student",
+            //   labelText: "Enter email address",
+            //   validator: (value) => LoginValidation.validateEmail(value),
+            // ),
+            // const SizedBox(height: 20),
+            // const DashBorderButton(),
+            // const SizedBox(height: 30),
 
-          ///
-          //____________________________________Members___________________________________//
-          ///
-          ///
+            //____________________________________Requests___________________________________//
+            if (isCaptain == true || isOwner == true) ...[
+              JoinRequestPart(routineID: widget.routineId),
+            ],
 
-          HeadingRow(
-            margin: EdgeInsets.zero,
-            heading: "All Members",
-            secondHeading: "$memberCount member${memberCount > 1 ? "s" : ''}",
-          ),
+            ///
+            //____________________________________Members___________________________________//
+            ///
+            ///
 
-          allMembers.when(
-            data: (data) {
-              if (data == null) {
-                return const Text("null");
-              }
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                memberCountNotifier.update((state) => data.totalCount);
-              });
-              void scrollListener() {
-                if (memberScrollController.position.pixels ==
-                    memberScrollController.position.maxScrollExtent) {
-                  allMembersNotifier.loadMore(data.currentPage);
+            HeadingRow(
+              margin: EdgeInsets.zero,
+              heading: "All Members",
+              secondHeading: "$memberCount member${memberCount > 1 ? "s" : ''}",
+            ),
+
+            allMembers.when(
+              data: (data) {
+                if (data == null) {
+                  return const Text("null");
                 }
-              }
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  memberCountNotifier.update((state) => data.totalCount);
+                });
+                void scrollListener() {
+                  if (memberScrollController.position.pixels ==
+                      memberScrollController.position.maxScrollExtent) {
+                    allMembersNotifier.loadMore(data.currentPage);
+                  }
+                }
 
-              memberScrollController.addListener(scrollListener);
+                memberScrollController.addListener(scrollListener);
 
-              return ListView.builder(
-                controller: memberScrollController,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: data.members.length,
-                itemBuilder: (context, i) => MemberAccountCard(
-                  condition: isCaptain == true || isOwner == true,
-                  member: data.members[i],
-                  onPressed: () {
-                    accountActions(
-                      context,
-                      ref,
-                      rutinId: widget.routineId,
-                      username: data.members[i].username,
-                      memberId: data.members[i].id,
-                      isTheMemberIsCaptain: data.members[i].captain,
-                      isTheMemberIsOwner: data.members[i].owner,
-                    );
-                  },
-                ),
-              );
-            },
-            error: (error, stackTrace) => Alert.handleError(context, error),
-            loading: () => Loaders.center(),
-          ),
-        ],
+                return ListView.builder(
+                  controller: memberScrollController,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: data.members.length,
+                  itemBuilder: (context, i) => MemberAccountCard(
+                    condition: isCaptain == true || isOwner == true,
+                    member: data.members[i],
+                    onPressed: () {
+                      accountActions(
+                        context,
+                        ref,
+                        rutinId: widget.routineId,
+                        username: data.members[i].username,
+                        memberId: data.members[i].id,
+                        isTheMemberIsCaptain: data.members[i].captain,
+                        isTheMemberIsOwner: data.members[i].owner,
+                      );
+                    },
+                  ),
+                );
+              },
+              error: (error, stackTrace) => Alert.handleError(context, error),
+              loading: () => Loaders.center(),
+            ),
+          ],
+        ),
       );
     });
   }

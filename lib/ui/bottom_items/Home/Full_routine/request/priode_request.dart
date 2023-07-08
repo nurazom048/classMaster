@@ -11,16 +11,11 @@ import 'package:http/http.dart' as http;
 import 'package:table/models/priode/all_priode_models.dart';
 
 import '../../../../../constant/constant.dart';
+import '../../../Add/screens/add_priode.dart';
 import '../../utils/utils.dart';
 
 //... provider...//
 final priodeRequestProvider = Provider<PriodeRequest>((ref) => PriodeRequest());
-
-//
-final allPriodeProvider = FutureProvider.autoDispose
-    .family<Either<Message, AllPriodeList>, String>((ref, routineID) async {
-  return ref.read(priodeRequestProvider).allPriode(routineID);
-});
 
 class PriodeRequest {
 //... Delete  Priode request....//
@@ -162,8 +157,8 @@ class PriodeRequest {
         url,
         headers: {'Authorization': 'Bearer $getToken'},
         body: {
-          "start_time": "${startTime.toIso8601String()}Z",
-          "end_time": "${endTime.toIso8601String()}Z",
+          "start_time": endMaker(startTime.toIso8601String().toString()),
+          "end_time": endMaker(endTime.toIso8601String().toString()),
         },
       );
 
