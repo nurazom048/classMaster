@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../widgets/appWidget/app_text.dart';
 
@@ -92,11 +93,16 @@ abstract class Alert {
       );
   }
 
-  static Text handleError(BuildContext context, dynamic error) {
-    Future.delayed(Duration.zero, () {
-      showSnackBar(context, error.toString());
+  static Widget handleError(BuildContext context, dynamic error) {
+    Future.delayed(const Duration(seconds: 4), () {
+      // showSnackBar(context, error.toString());
+      Get.showSnackbar(GetSnackBar(message: '$error'));
     });
-    return Text(error.toString());
+    return Center(
+        child: Text(
+      error.toString(),
+      style: TS.heading(),
+    ));
   }
 
   //

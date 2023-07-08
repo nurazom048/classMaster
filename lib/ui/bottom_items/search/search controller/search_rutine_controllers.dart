@@ -48,7 +48,7 @@ class SearchRutineController extends StateNotifier<AsyncValue<RutinQuarry>> {
         final RutinQuarry newData =
             await search.searchRoutine(searchString, page: page + 1);
         print('newData');
-        print('newData length: ${newData.routine.length}');
+        print('newData length: ${newData.routines.length}');
 
         // Check if the new data's page number is greater than the current page number
         if (newData.currentPage > state.value!.currentPage) {
@@ -56,22 +56,20 @@ class SearchRutineController extends StateNotifier<AsyncValue<RutinQuarry>> {
           if (newData.currentPage <= totalPages) {
             // Add new routines to the existing list and update the page number
             List<Routine> newRoutines = [
-              ...(state.value!.routine),
-              ...(newData.routine),
+              ...(state.value!.routines),
+              ...(newData.routines),
             ];
             state = AsyncData(state.value!.copyWith(
-              routine: newRoutines,
+              routines: newRoutines,
               currentPage: newData.currentPage,
             ));
           }
         }
       }
-    } catch (error) {
-      Get.snackbar(
-        'error',
-        '$error',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+    } catch (error, stack) {
+      Get.snackbar('error', '$error');
+
+      state = AsyncValue.error(error, stack);
     }
   }
 }

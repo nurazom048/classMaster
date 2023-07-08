@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_print, unnecessary_null_comparison
 
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:get/get.dart';
 import 'package:table/services/notification%20services/models.dart';
 
 class LocalNotification {

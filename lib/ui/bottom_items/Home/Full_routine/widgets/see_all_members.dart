@@ -43,7 +43,9 @@ class SeeAllMembers extends ConsumerWidget {
                         );
                       });
                 },
-                error: (error, stackTrace) => Alert.handleError(context, error),
+                error: (error, stackTrace) {
+                  return Alert.handleError(context, error);
+                },
                 loading: () => Loaders.center(),
               ),
             ),

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import 'package:table/ui/bottom_items/Home/home_req/home_routines_controller.dart';
 import 'package:table/ui/bottom_items/search/search_screen/search_page.dart';
 import 'package:table/widgets/error/error.widget.dart';
@@ -46,18 +47,18 @@ class SearchRutineScreen extends ConsumerWidget {
             //physics: const NeverScrollableScrollPhysics(),
             controller: scrollController,
             padding: const EdgeInsets.only(bottom: 100),
-            itemCount: data.routine.length,
+            itemCount: data.routines.length,
             itemBuilder: (context, index) {
               return RoutineBoxById(
                   margin: EdgeInsets.zero,
-                  rutinName: data.routine[index].name,
+                  rutinName: data.routines[index].name,
                   onTapMore: () => RoutineDialog.CheckStatusUser_BottomSheet(
                         context,
-                        routineID: data.routine[index].id,
-                        routineName: data.routine[index].name,
+                        routineID: data.routines[index].id,
+                        routineName: data.routines[index].name,
                         routinesController: homeRoutinesNotifier,
                       ),
-                  rutinId: data.routine[index].id);
+                  rutinId: data.routines[index].id);
             },
             separatorBuilder: (context, index) => const SizedBox(height: 10),
           );

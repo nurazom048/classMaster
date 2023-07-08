@@ -65,8 +65,8 @@ class MemberController extends StateNotifier<AsyncValue<RoutineMembersModel>> {
           }
         }
       }
-    } catch (e) {
-      state = throw Exception(e);
+    } catch (error, stackTrace) {
+      state = AsyncValue.error(error, stackTrace);
     }
   }
 

@@ -33,11 +33,12 @@ class SearchRequests {
       } else if (isOnline == false) {
         throw Future.error("No Internet Connection");
       } else {
-        throw Exception(res);
+        throw res['message'];
       }
     } catch (e) {
       print(e.toString());
-      throw Future.error(e);
+      // throw AsyncValue.error(e, s);
+      throw e.toString();
     }
   }
 //! Account Search
@@ -56,12 +57,12 @@ class SearchRequests {
       if (response.statusCode == 200) {
         return AccountsResponse.fromJson(res);
       } else if (isOnline == false) {
-        throw Future.error("No Internet Connection");
+        throw "No Internet Connection";
       } else {
-        throw Exception(res);
+        throw res;
       }
     } catch (e) {
-      throw Future.error(e);
+      rethrow;
     }
   }
 }

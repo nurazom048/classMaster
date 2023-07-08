@@ -52,8 +52,8 @@ class AccountSearchScreen extends ConsumerWidget {
           );
         },
         error: (error, stackTrace) {
-          Alert.handleError(context, error);
-          return ErrorScreen(error: error.toString());
+          return Alert.handleError(context, error);
+          // return ErrorScreen(error: error.toString());
         },
         loading: () => Loaders.center(),
       ),

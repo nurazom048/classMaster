@@ -21,7 +21,6 @@ import '../../../../models/Routine/class/find_class_model.dart';
 import '../../../../widgets/appWidget/TextFromFild.dart';
 import '../../../../widgets/appWidget/buttons/cupertino_buttons.dart';
 import '../../Home/Full_routine/screen/viewMore/class_list.dart';
-import '../../Home/Full_routine/screen/viewMore/view_more_screen.dart';
 import '../widgets/show_weekday_widgets.dart';
 
 class AddClassScreen extends StatefulWidget {
