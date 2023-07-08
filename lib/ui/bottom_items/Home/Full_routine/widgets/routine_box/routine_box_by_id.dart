@@ -69,8 +69,8 @@ class _RutinBoxByIdState extends State<RoutineBoxById> {
           ref.watch(checkStatusControllerProvider(widget.rutinId).notifier);
 
       //
-      final isExpaded = ref.watch(isExpandedProvider);
-      final isExpadedNotifier = ref.watch(isExpandedProvider.notifier);
+      final isExpanded = ref.watch(isExpandedProvider);
+      final isExpandedNotifier = ref.watch(isExpandedProvider.notifier);
 
       return Container(
         constraints: const BoxConstraints(minHeight: 428),
@@ -171,7 +171,7 @@ class _RutinBoxByIdState extends State<RoutineBoxById> {
 
                     //
                     int classLenght =
-                        isExpaded == true || widget.listOfDayState.length <= 2
+                        isExpanded == true || widget.listOfDayState.length <= 2
                             ? widget.listOfDayState.length
                             : 2;
                     selectDays(sun, mon, tue, wed, thu, fri, sat);
@@ -202,10 +202,10 @@ class _RutinBoxByIdState extends State<RoutineBoxById> {
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 10),
                                     child: ExpendedButton(
-                                      isExpanded: isExpaded,
+                                      isExpanded: isExpanded,
                                       onTap: () {
                                         if (!mounted) return;
-                                        isExpadedNotifier
+                                        isExpandedNotifier
                                             .update((state) => !state);
                                       },
                                     ),

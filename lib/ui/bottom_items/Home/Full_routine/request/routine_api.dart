@@ -57,9 +57,8 @@ class Routine_Req {
           throw "error $path";
         }
       }
-    } catch (error, stackTrace) {
-      print(error.toString());
-      return Future.error(error, stackTrace);
+    } catch (error) {
+      rethrow;
     }
   }
 }

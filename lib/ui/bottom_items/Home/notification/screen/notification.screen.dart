@@ -66,7 +66,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     },
                     error: (error, stackTrace) =>
                         Alert.handleError(context, error),
-                    loading: () => Loaders.center(),
+                    loading: () => Padding(
+                      padding: const EdgeInsets.only(top: 200),
+                      child: Loaders.center(),
+                    ),
                   ),
                 )
               ],
