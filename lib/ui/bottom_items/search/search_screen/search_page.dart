@@ -1,4 +1,4 @@
-// ignore_for_file: sized_box_for_whitespace, non_constant_identifier_names, prefer_typing_uninitialized_variables, avoid_print, unused_local_variable, no_leading_underscores_for_local_identifiers
+// ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,7 +13,7 @@ import '../../Home/widgets/mydrawer.dart';
 
 //! search String provider
 final searchStringProvider = StateProvider<String>((ref) => "");
-final searchPageIndexProvider = StateProvider<int>((ref) => 0);
+final searchPageIndexProvider = StateProvider.autoDispose<int>((ref) => 0);
 
 class SearchPAge extends StatefulWidget {
   const SearchPAge({super.key});
@@ -66,7 +66,7 @@ class _SearchPAgeState extends State<SearchPAge> {
           SliverToBoxAdapter(
             child: Column(
               children: [
-                Container(
+                SizedBox(
                   height: 50,
                   child: Align(
                     alignment: Alignment.bottomCenter,
