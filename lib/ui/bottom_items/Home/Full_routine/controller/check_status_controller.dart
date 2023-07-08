@@ -31,7 +31,7 @@ class CheckStatusController
   var ref;
   final String routineId;
   final FullRoutineRequest fullRoutineRequest;
-  final memberRequest memberRequests;
+  final MemberRequest memberRequests;
   final RoutineNotification routineNotification;
   CheckStatusController(this.ref, this.routineId, this.fullRoutineRequest,
       this.memberRequests, this.routineNotification)

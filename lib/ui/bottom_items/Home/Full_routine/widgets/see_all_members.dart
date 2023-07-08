@@ -15,7 +15,7 @@ class SeeAllMembers extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final all_members = ref.watch(all_members_provider(rutinId));
+    final all_members = ref.watch(memberControllerProvider(rutinId));
     return SafeArea(
       child: Scaffold(
         body: Column(
@@ -30,20 +30,18 @@ class SeeAllMembers extends ConsumerWidget {
               height: 700,
               child: all_members.when(
                 data: (data) {
-                  return data != null
-                      ? ListView.builder(
-                          itemCount: data.members.length,
-                          itemBuilder: (context, index) {
-                            return AccountCardRow(
-                              accountData: AccountModels().copyWith(
-                                sId: data.members[index].id,
-                                image: data.members[index].image,
-                                name: data.members[index].name,
-                                username: data.members[index].username,
-                              ),
-                            );
-                          })
-                      : Container();
+                  return ListView.builder(
+                      itemCount: data.members.length,
+                      itemBuilder: (context, index) {
+                        return AccountCardRow(
+                          accountData: AccountModels().copyWith(
+                            sId: data.members[index].id,
+                            image: data.members[index].image,
+                            name: data.members[index].name,
+                            username: data.members[index].username,
+                          ),
+                        );
+                      });
                 },
                 error: (error, stackTrace) => Alert.handleError(context, error),
                 loading: () => Loaders.center(),

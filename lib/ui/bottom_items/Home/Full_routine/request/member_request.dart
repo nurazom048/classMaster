@@ -10,9 +10,9 @@ import '../../../../../constant/constant.dart';
 import '../../../../../models/message_model.dart';
 import '../../../../../models/see_all_request_model.dart';
 
-final memberRequestProvider = Provider((ref) => memberRequest());
+final memberRequestProvider = Provider((ref) => MemberRequest());
 
-class memberRequest {
+class MemberRequest {
 //
 //**********************   rutin all _members    *********** */
   Future<RoutineMembersModel?> all_members(rutin_id) async {
@@ -30,7 +30,7 @@ class memberRequest {
         print(res);
         return RoutineMembersModel.fromJson(res);
       } else {
-        throw Exception("faild to load all member list ");
+        throw Exception("failed to load all member list ");
       }
     } catch (e) {
       print(e);

@@ -58,9 +58,8 @@ class _ViewMoreState extends State<ViewMore> with TickerProviderStateMixin {
           body: NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) => [
               SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 284,
-                  width: 300,
+                child: Container(
+                  constraints: const BoxConstraints(minHeight: 240),
                   child: Column(
                     children: [
                       const AppBarCustom('Routine'),

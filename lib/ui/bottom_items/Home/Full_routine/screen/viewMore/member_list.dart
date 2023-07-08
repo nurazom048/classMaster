@@ -17,17 +17,42 @@ import '../../widgets/member_account_card.dart';
 
 final membersCountProvider = StateProvider.autoDispose<int>((ref) => 0);
 
-class MemberList extends StatelessWidget {
+class MemberList extends StatefulWidget {
   final String routineId;
   const MemberList({super.key, required this.routineId});
+
+  @override
+  State<MemberList> createState() => _MemberListState();
+}
+
+class _MemberListState extends State<MemberList> {
+  late ScrollController memberScrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the scrollController
+    memberScrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    // Dispose of the scrollController
+    memberScrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, _) {
       //! provider
-      final allMembers = ref.watch(all_members_provider(routineId));
+      final allMembers = ref.watch(memberControllerProvider(widget.routineId));
+      final allMembersNotifier =
+          ref.watch(memberControllerProvider(widget.routineId).notifier);
 
       // notifiers
-      final checkStatus = ref.watch(checkStatusControllerProvider(routineId));
+      final checkStatus =
+          ref.watch(checkStatusControllerProvider(widget.routineId));
       final String status = checkStatus.value?.activeStatus ?? '';
       final bool isCaptain = checkStatus.value?.isCaptain ?? false;
       final bool isOwner = checkStatus.value?.isOwner ?? false;
@@ -43,6 +68,7 @@ class MemberList extends StatelessWidget {
       }
 
       return ListView(
+        shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 10),
         children: [
@@ -61,11 +87,12 @@ class MemberList extends StatelessWidget {
 
           //____________________________________Requests___________________________________//
           if (isCaptain == true || isOwner == true) ...[
-            JoinRequestPart(routineID: routineId),
+            JoinRequestPart(routineID: widget.routineId),
           ],
 
           ///
           //____________________________________Members___________________________________//
+          ///
           ///
 
           HeadingRow(
@@ -80,10 +107,19 @@ class MemberList extends StatelessWidget {
                 return const Text("null");
               }
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                memberCountNotifier.update((state) => data.count);
+                memberCountNotifier.update((state) => data.totalCount);
               });
+              void scrollListener() {
+                if (memberScrollController.position.pixels ==
+                    memberScrollController.position.maxScrollExtent) {
+                  allMembersNotifier.loadMore(data.currentPage);
+                }
+              }
+
+              memberScrollController.addListener(scrollListener);
 
               return ListView.builder(
+                controller: memberScrollController,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: data.members.length,
@@ -94,7 +130,7 @@ class MemberList extends StatelessWidget {
                     accountActions(
                       context,
                       ref,
-                      rutinId: routineId,
+                      rutinId: widget.routineId,
                       username: data.members[i].username,
                       memberId: data.members[i].id,
                       isTheMemberIsCaptain: data.members[i].captain,
@@ -140,52 +176,46 @@ class JoinRequestPart extends ConsumerWidget {
             seeAllJonReq.acceptMember(ref, '', context, acceptAll: true);
           },
         ),
-        SizedBox(
+        Container(
           height: 200,
-          child: Column(
-            children: [
-              SizedBox(
-                  height: 200,
-                  child: allRequest.when(
-                    data: (data) {
-                      if (data == null) {
-                        return const ErrorScreen(error: "data null");
-                      }
-                      if (data.listAccounts.isEmpty) {
-                        return const ErrorScreen(error: "No new request ");
-                      }
+          alignment: Alignment.centerLeft,
+          child: allRequest.when(
+            data: (data) {
+              if (data == null) {
+                return const ErrorScreen(error: "data null");
+              }
+              if (data.listAccounts.isEmpty) {
+                return const ErrorScreen(error: "No new request ");
+              }
 
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        requestCountNotifier
-                            .update((state) => data.listAccounts.length);
-                      });
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                requestCountNotifier
+                    .update((state) => data.listAccounts.length);
+              });
 
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: data.listAccounts.length,
-                        itemBuilder: (context, index) {
-                          return AccountCard(
-                            accountData: data.listAccounts[index],
+              return ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemCount: data.listAccounts.length,
+                itemBuilder: (context, index) {
+                  return AccountCard(
+                    accountData: data.listAccounts[index],
 
-                            // accept or reject members
-                            acceptUsername: () {
-                              seeAllJonReq.acceptMember(ref,
-                                  data.listAccounts[index].username, context);
-                            },
-                            onRejectUsername: () {
-                              seeAllJonReq.rejectMembers(ref,
-                                  data.listAccounts[index].username, context);
-                            },
-                          );
-                        },
-                      );
+                    // accept or reject members
+                    acceptUsername: () {
+                      seeAllJonReq.acceptMember(
+                          ref, data.listAccounts[index].username, context);
                     },
-                    error: (error, stackTrace) =>
-                        Alert.handleError(context, error),
-                    loading: () => Loaders.center(),
-                  )),
-            ],
+                    onRejectUsername: () {
+                      seeAllJonReq.rejectMembers(
+                          ref, data.listAccounts[index].username, context);
+                    },
+                  );
+                },
+              );
+            },
+            error: (error, stackTrace) => Alert.handleError(context, error),
+            loading: () => Loaders.center(),
           ),
         ),
       ],

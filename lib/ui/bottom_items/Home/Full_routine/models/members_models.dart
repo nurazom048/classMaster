@@ -2,12 +2,16 @@ import 'dart:convert';
 
 class RoutineMembersModel {
   String message;
-  int count;
+  int currentPage;
+  int totalPages;
+  int totalCount;
   List<Member> members;
 
   RoutineMembersModel({
     required this.message,
-    required this.count,
+    required this.currentPage,
+    required this.totalPages,
+    required this.totalCount,
     required this.members,
   });
 
@@ -19,16 +23,36 @@ class RoutineMembersModel {
   factory RoutineMembersModel.fromJson(Map<String, dynamic> json) =>
       RoutineMembersModel(
         message: json["message"],
-        count: json["count"],
+        currentPage: json["currentPage"],
+        totalPages: json["totalPages"],
+        totalCount: json["totalCount"],
         members:
             List<Member>.from(json["members"].map((x) => Member.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "message": message,
-        "count": count,
+        "currentPage": currentPage,
+        "totalPages": totalPages,
+        "totalCount": totalCount,
         "members": List<dynamic>.from(members.map((x) => x.toJson())),
       };
+
+  RoutineMembersModel copyWith({
+    String? message,
+    int? currentPage,
+    int? totalPages,
+    int? totalCount,
+    List<Member>? members,
+  }) {
+    return RoutineMembersModel(
+      message: message ?? this.message,
+      currentPage: currentPage ?? this.currentPage,
+      totalPages: totalPages ?? this.totalPages,
+      totalCount: totalCount ?? this.totalCount,
+      members: members ?? this.members,
+    );
+  }
 }
 
 class Member {
@@ -73,4 +97,24 @@ class Member {
         "captain": captain,
         "owner": owner,
       };
+
+  Member copyWith({
+    String? id,
+    String? username,
+    String? name,
+    String? image,
+    bool? notificationOn,
+    bool? captain,
+    bool? owner,
+  }) {
+    return Member(
+      id: id ?? this.id,
+      username: username ?? this.username,
+      name: name ?? this.name,
+      image: image ?? this.image,
+      notificationOn: notificationOn ?? this.notificationOn,
+      captain: captain ?? this.captain,
+      owner: owner ?? this.owner,
+    );
+  }
 }

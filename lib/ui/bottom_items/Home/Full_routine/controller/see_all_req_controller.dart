@@ -16,7 +16,7 @@ final seeAllRequestControllerProvider = StateNotifierProvider.autoDispose
 
 class SeeAllRequestControllerClass
     extends StateNotifier<AsyncValue<SeeAllRequestModel>> {
-  memberRequest memberRequests;
+  MemberRequest memberRequests;
 
   var ref;
   String routineId;
