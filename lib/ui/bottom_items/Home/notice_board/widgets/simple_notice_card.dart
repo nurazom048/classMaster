@@ -11,7 +11,7 @@ String getTimeDuration(DateTime dateTime) {
   if (difference.inDays == 0) {
     return 'Today';
   } else if (difference.inDays == 1) {
-    return 'Tomorrow';
+    return 'Yesterday';
   } else if (difference.inDays <= 7) {
     return 'Last week';
   } else {
@@ -53,7 +53,7 @@ class SimpleNoticeCard extends StatelessWidget {
 
             if (dateTime.day != previousDateTime.day || isFirst == true)
               Text(
-                " ${getTimeDuration(dateTime)}",
+                "  ${getTimeDuration(dateTime)}",
                 style: TS.opensensBlue(
                     color: Colors.black, fontWeight: FontWeight.w400),
               ),
@@ -64,7 +64,7 @@ class SimpleNoticeCard extends StatelessWidget {
               margin: const EdgeInsets.symmetric(vertical: 5),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(8),
               ),
               child: InkWell(
                 onTap: ontap,
@@ -82,7 +82,7 @@ class SimpleNoticeCard extends StatelessWidget {
                             child: Row(
                               children: [
                                 Text(
-                                  time,
+                                  '  $time',
                                   style: const TextStyle(
                                     fontFamily: 'Inter',
                                     fontSize: 18,
