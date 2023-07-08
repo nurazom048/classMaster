@@ -45,20 +45,23 @@ class SimpleNoticeCard extends StatelessWidget {
       onLongPress: onLongPress ?? () {},
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //
 
             if (dateTime.day != previousDateTime.day || isFirst == true)
-              Text(getTimeDuration(dateTime)),
+              Text(
+                " ${getTimeDuration(dateTime)}",
+                style: TS.opensensBlue(
+                    color: Colors.black, fontWeight: FontWeight.w400),
+              ),
 
             //
             Container(
               height: 50,
               margin: const EdgeInsets.symmetric(vertical: 5),
-              width: MediaQuery.of(context).size.width - 10,
-              padding: const EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),
@@ -68,34 +71,41 @@ class SimpleNoticeCard extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        Text(
-                          time,
-                          style: const TextStyle(
-                            fontFamily: 'Inter',
-                            fontSize: 18,
-                            height: 1.86,
-                            color: Color(0xFF333333),
+                    Expanded(
+                      flex: 7,
+                      child: Row(
+                        children: [
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            width: MediaQuery.of(context).size.width * 0.61,
+                            // color: Colors.red,
+                            child: Row(
+                              children: [
+                                Text(
+                                  time,
+                                  style: const TextStyle(
+                                    fontFamily: 'Inter',
+                                    fontSize: 18,
+                                    height: 1.86,
+                                    color: Color(0xFF333333),
+                                  ),
+                                ),
+                                Text(
+                                  noticeName,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: TS.opensensBlue(
+                                      fontSize: 20,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w300),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          width: MediaQuery.of(context).size.width * 0.61,
-                          // color: Colors.red,
-                          child: Text(
-                            noticeName,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TS.opensensBlue(
-                                fontSize: 20,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w300),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                    const Icon(Icons.arrow_forward)
+                    Expanded(flex: 1, child: const Icon(Icons.arrow_forward))
                   ],
                 ),
               ),

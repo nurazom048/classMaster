@@ -22,7 +22,8 @@ class MiniAccountInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4)
+          .copyWith(top: 0),
       height: 70,
       // color: Colors.black12,
       child: GestureDetector(
@@ -54,7 +55,8 @@ class MiniAccountInfo extends StatelessWidget {
                 ),
                 const SizedBox(width: 10),
                 Container(
-                  constraints: const BoxConstraints(maxWidth: 235),
+                  constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width * 0.55),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,

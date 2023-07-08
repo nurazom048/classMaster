@@ -20,8 +20,7 @@ class ClassRow extends StatelessWidget {
       onLongPress: onLongPress ?? () {},
       child: Container(
         height: 50,
-        width: MediaQuery.of(context).size.width - 10,
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10), color: Colors.white),
         child: InkWell(
@@ -29,8 +28,15 @@ class ClassRow extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              AppText(className, color: Colors.black).heeding(),
-              const Icon(Icons.arrow_forward)
+              Expanded(
+                flex: 10,
+                child: Text(
+                  className,
+                  overflow: TextOverflow.ellipsis,
+                  style: TS.heading(),
+                ),
+              ),
+              const Expanded(flex: 1, child: Icon(Icons.arrow_forward))
             ],
           ),
         ),

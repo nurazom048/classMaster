@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 import 'package:table/ui/bottom_items/Home/Full_routine/widgets/routine_box/rutin_card_row.dart';
+import 'package:table/widgets/appWidget/buttons/expended_button.dart';
 import 'package:table/widgets/appWidget/dotted_divider.dart';
 import 'package:table/widgets/mini_account_row.dart';
 
@@ -20,12 +21,9 @@ import '../send_request_button.dart';
 import '../skelton/routine_box_id_scelton.dart';
 
 //! provider
-// final gSelectedDayProvider = StateProvider<int>((ref) {
-//   return DateTime.now().weekday;
-// });
 
-// final listOfDayStateProvider = StateProvider<List<Day?>>((ref) => []);
 final ownerNameProvider = StateProvider.autoDispose<String?>((ref) => null);
+final isExpandedProvider = StateProvider.autoDispose<bool>((ref) => false);
 
 class RoutineBoxById extends StatefulWidget {
   final String rutinName;
@@ -63,14 +61,19 @@ class _RutinBoxByIdState extends State<RoutineBoxById> {
       final checkStatus =
           ref.watch(checkStatusControllerProvider(widget.rutinId));
       final rutinDetails = ref.watch(routine_details_provider(widget.rutinId));
+
       String status = checkStatus.value?.activeStatus ?? '';
       bool notificationOn = checkStatus.value?.notificationOn ?? false;
       // Get notifier
       final checkStatusNotifier =
           ref.watch(checkStatusControllerProvider(widget.rutinId).notifier);
 
+      //
+      final isExpaded = ref.watch(isExpandedProvider);
+      final isExpadedNotifier = ref.watch(isExpandedProvider.notifier);
+
       return Container(
-        height: 450,
+        constraints: const BoxConstraints(minHeight: 428),
         margin: widget.margin ??
             const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
         padding: const EdgeInsets.symmetric(vertical: 5),
@@ -101,7 +104,10 @@ class _RutinBoxByIdState extends State<RoutineBoxById> {
                             ),
                           ),
                         ),
-                        child: AppText(widget.rutinName, fontSize: 22).title(),
+                        child: Text(
+                          widget.rutinName,
+                          style: TS.heading(),
+                        ),
                       ),
 
                       // Notification button or request button
@@ -164,35 +170,52 @@ class _RutinBoxByIdState extends State<RoutineBoxById> {
                     List<Day?> sat = data.classes.saturday;
 
                     //
-
+                    int classLenght =
+                        isExpaded == true || widget.listOfDayState.length <= 2
+                            ? widget.listOfDayState.length
+                            : 2;
                     selectDays(sun, mon, tue, wed, thu, fri, sat);
-
                     return Container(
-                      // margin: const EdgeInsets.only(top: 15),
+                      //  color: Colors.red,
                       constraints: const BoxConstraints(minHeight: 200),
-                      height: 200,
-                      child: Scrollbar(
-                        radius: const Radius.circular(8),
-                        child: ListView.builder(
-                          // shrinkWrap: true,
-                          itemCount: widget.listOfDayState.length,
-                          itemBuilder: (context, index) {
-                            if (widget.listOfDayState.isNotEmpty) {
-                              return RutineCardInfoRow(
-                                isFirst: index == 0,
-                                day: widget.listOfDayState[index],
-                                onTap: () {
-                                  if (!mounted) return;
+                      child: ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: classLenght,
+                        itemBuilder: (context, index) {
+                          if (widget.listOfDayState.isNotEmpty) {
+                            return Column(
+                              children: [
+                                RutineCardInfoRow(
+                                  isFirst: index == 0,
+                                  day: widget.listOfDayState[index],
+                                  onTap: () {
+                                    if (!mounted) return;
 
-                                  onTap(widget.listOfDayState[index], status,
-                                      context);
-                                },
-                              );
-                            } else {
-                              return const Text("No Class");
-                            }
-                          },
-                        ),
+                                    onTap(widget.listOfDayState[index], status,
+                                        context);
+                                  },
+                                ),
+                                if (index.isEqual(classLenght - 1) &&
+                                    widget.listOfDayState.length > 2)
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 10),
+                                    child: ExpendedButton(
+                                      isExpanded: isExpaded,
+                                      onTap: () {
+                                        if (!mounted) return;
+                                        isExpadedNotifier
+                                            .update((state) => !state);
+                                      },
+                                    ),
+                                  )
+                              ],
+                            );
+                          } else {
+                            return const Text("No Class");
+                          }
+                        },
                       ),
                     );
                   },
@@ -202,8 +225,6 @@ class _RutinBoxByIdState extends State<RoutineBoxById> {
                     "______________________________________________",
                   ),
                 ),
-
-                const SizedBox(height: 5)
               ],
             ),
 
@@ -212,6 +233,7 @@ class _RutinBoxByIdState extends State<RoutineBoxById> {
               children: [
                 MyDivider(
                   padding: const EdgeInsets.symmetric(vertical: 10)
+                      .copyWith(top: 0)
                       .copyWith(bottom: 3),
                 ),
                 rutinDetails.when(

@@ -59,7 +59,7 @@ class MemberAccountCard extends StatelessWidget {
 
               FittedBox(
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.55,
+                  width: MediaQuery.of(context).size.width * 0.50,
                   // color: Colors.red,
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

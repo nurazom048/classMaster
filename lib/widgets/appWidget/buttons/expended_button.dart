@@ -7,11 +7,13 @@ class ExpendedButton extends StatelessWidget {
   final dynamic onTap;
   final String? text;
   final IconData? icon;
+  final bool isExpanded;
   const ExpendedButton({
     super.key,
     this.text,
     this.onTap,
     this.icon,
+    this.isExpanded = false,
   });
 
   @override
@@ -21,23 +23,35 @@ class ExpendedButton extends StatelessWidget {
       children: [
         InkWell(
           onTap: onTap,
-          child: Text(text ?? "Expand",
-              textScaleFactor: 1.2,
-              style: TextStyle(
-                color: AppColor.nokiaBlue,
-                fontFamily: 'Open Sans',
-                fontWeight: FontWeight.w400,
-                fontSize: 12,
-                height: 1.33,
-              )),
+          child: Container(
+            // padding: const EdgeInsets.symmetric(vertical: 6),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(isExpanded == true ? 'Close' : text ?? "Expand",
+                    textScaleFactor: 1.2,
+                    style: TextStyle(
+                      color: AppColor.nokiaBlue,
+                      fontFamily: 'Open Sans',
+                      fontWeight: FontWeight.w400,
+                      fontSize: 15,
+                      height: 1.2,
+                    )),
+
+                //
+
+                Icon(
+                  icon ??
+                      (isExpanded == false
+                          ? Icons.expand_more
+                          : Icons.expand_less),
+                  size: 20,
+                  color: AppColor.nokiaBlue,
+                )
+              ],
+            ),
+          ),
         ),
-        icon == null
-            ? ExpandIcon(onPressed: (click) {})
-            : Icon(
-                icon,
-                color: AppColor.nokiaBlue,
-                size: 16,
-              )
       ],
     );
   }
