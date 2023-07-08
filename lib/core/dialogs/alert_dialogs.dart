@@ -93,16 +93,18 @@ abstract class Alert {
       );
   }
 
-  static Widget handleError(BuildContext context, dynamic error) {
+  static Widget handleError(BuildContext context, dynamic error,
+      {Widget? child}) {
     Future.delayed(const Duration(seconds: 4), () {
-      // showSnackBar(context, error.toString());
-      Get.showSnackbar(GetSnackBar(message: '$error'));
+      showSnackBar(context, error.toString());
+      // Get.showSnackbar(GetSnackBar(message: '$error'));
     });
-    return Center(
-        child: Text(
-      error.toString(),
-      style: TS.heading(),
-    ));
+    return child ??
+        Center(
+            child: Text(
+          error.toString(),
+          style: TS.heading(),
+        ));
   }
 
   //

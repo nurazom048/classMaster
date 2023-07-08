@@ -152,45 +152,53 @@ Widget homeMobileView(
           const HomeRecentNoticeWidget(),
           // uploaded Routine
           homeRoutines.when(
-            data: (data) {
-              void scrollListener() {
-                if (scrollController.position.pixels ==
-                    scrollController.position.maxScrollExtent) {
-                  print('end.........................');
-                  ref
-                      .watch(homeRoutineControllerProvider(null).notifier)
-                      .loadMore(data.currentPage);
+              data: (data) {
+                void scrollListener() {
+                  if (scrollController.position.pixels ==
+                      scrollController.position.maxScrollExtent) {
+                    print('end.........................');
+                    ref
+                        .watch(homeRoutineControllerProvider(null).notifier)
+                        .loadMore(data.currentPage);
+                  }
                 }
-              }
 
-              scrollController.addListener(scrollListener);
+                scrollController.addListener(scrollListener);
 
-              //
-              return ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                padding: const EdgeInsets.only(bottom: 100),
-                itemCount: data.homeRoutines.length,
-                itemBuilder: (context, index) {
-                  return RoutineBoxById(
-                    rutinId: data.homeRoutines[index].rutineId.id,
-                    rutinName: data.homeRoutines[index].rutineId.name,
-                    onTapMore: () => RoutineDialog.CheckStatusUser_BottomSheet(
-                      context,
-                      routineID: data.homeRoutines[index].rutineId.id,
-                      routineName: data.homeRoutines[index].rutineId.name,
-                      routinesController: homeRoutineNotifier,
+                //
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding: const EdgeInsets.only(bottom: 100),
+                  itemCount: data.homeRoutines.length,
+                  itemBuilder: (context, index) {
+                    return RoutineBoxById(
+                      rutinId: data.homeRoutines[index].rutineId.id,
+                      rutinName: data.homeRoutines[index].rutineId.name,
+                      onTapMore: () =>
+                          RoutineDialog.CheckStatusUser_BottomSheet(
+                        context,
+                        routineID: data.homeRoutines[index].rutineId.id,
+                        routineName: data.homeRoutines[index].rutineId.name,
+                        routinesController: homeRoutineNotifier,
+                      ),
+                    );
+                  },
+                );
+              },
+              loading: () => RUTINE_BOX_SKELTON,
+              error: (error, stackTrace) {
+                return Alert.handleError(
+                  context,
+                  error,
+                  child: SizedBox(
+                    height: 400,
+                    child: ErrorScreen(
+                      error: error.toString(),
                     ),
-                  );
-                },
-              );
-            },
-            loading: () => RUTINE_BOX_SKELTON,
-            error: (error, stackTrace) {
-              Alert.handleError(context, error);
-              return ErrorScreen(error: error.toString());
-            },
-          ),
+                  ),
+                );
+              }),
 
           //
         ],
@@ -257,9 +265,7 @@ class HomeRecentNoticeWidget extends ConsumerWidget {
               );
             },
             error: (error, stackTrace) {
-              Alert.handleError(context, error);
-
-              return ErrorScreen(error: error.toString());
+              return Alert.handleError(context, error);
             },
             loading: () => const RecentNoticeSliderSkelton(),
           ),

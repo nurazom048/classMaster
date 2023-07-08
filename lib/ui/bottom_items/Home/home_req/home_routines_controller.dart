@@ -27,7 +27,7 @@ class HomeRoutinesController extends StateNotifier<AsyncValue<RoutineHome>> {
     try {
       final res = await homeReq.homeRoutines(pages: 1, userID: userID);
       if (!mounted) return; // Check if the controller is still mounted
-      state = AsyncData(res);
+      state = AsyncValue.data(res);
     } catch (error, stackTrace) {
       if (!mounted) return;
       state = AsyncValue.error(error, stackTrace);
@@ -50,13 +50,15 @@ class HomeRoutinesController extends StateNotifier<AsyncValue<RoutineHome>> {
             // Add new routines to the existing list and update the page number
             List<HomeRoutine> homeRoutines = state.value!.homeRoutines
               ..addAll(newData.homeRoutines);
-            state = AsyncData(state.value!.copyWith(
+            state = AsyncValue.data(state.value!.copyWith(
                 homeRoutines: homeRoutines, currentPage: newData.currentPage));
           }
         }
       }
-    } catch (e) {
-      state = throw Exception(e);
+    } catch (error, stackTrace) {
+      if (!mounted) return;
+
+      state = AsyncValue.error(error, stackTrace);
     }
   }
 
@@ -78,14 +80,15 @@ class HomeRoutinesController extends StateNotifier<AsyncValue<RoutineHome>> {
           homeRoutines.removeWhere(
               (routine) => routine.rutineId.id == deletedRoutineID);
           if (!mounted) return;
-          state = AsyncData(state.value!.copyWith(homeRoutines: homeRoutines));
+          state = AsyncValue.data(
+              state.value!.copyWith(homeRoutines: homeRoutines));
           return Alert.showSnackBar(context, data.message);
         }
       });
-    } catch (e) {
+    } catch (error, stackTrace) {
       if (!mounted) return;
 
-      Alert.handleError(context, e);
+      state = AsyncValue.error(error, stackTrace);
     }
   }
 }

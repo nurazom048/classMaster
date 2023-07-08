@@ -90,15 +90,19 @@ class HomeReq {
     final url =
         Uri.parse('${Const.BASE_URl}/rutin/home' + searchByUserID + queryPage);
     final headers = {'Authorization': 'Bearer $getToken'};
-    final bool isOnline = await Utils.isOnlineMethod();
+    final bool isOffline = await Utils.isOnlineMethod();
     final String key = "homeRutines$url";
     var isHaveCash = await APICacheManager().isAPICacheKeyExist(key);
-    print(url);
     try {
+      // print('kjdffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
+      // print(userID);
+      // print(isHaveCash);
+      // print(!isOffline);
       // // if offline and have cash
-      if (!isOnline && isHaveCash) {
+      if (!isOffline && isHaveCash) {
+        Get.snackbar('offline', "Failed to load new data ");
         var getdata = await APICacheManager().getCacheData(key);
-        print('Foem cash $url');
+        print('From cash $url');
         return RoutineHome.fromJson(jsonDecode(getdata.syncData));
       }
 
@@ -108,11 +112,10 @@ class HomeReq {
 
       //
       final res = json.decode(response.body);
-      print(' Home *******************');
 
-      print(res);
-      print(response.statusCode);
-      print('$isOnline 5 $isHaveCash');
+      // print(res);
+      // print(response.statusCode);
+      // print('$isOffline 5 $isHaveCash');
 
       if (response.statusCode == 200) {
         RoutineHome homeRutine = RoutineHome.fromJson(res);
@@ -123,31 +126,35 @@ class HomeReq {
               APICacheDBModel(key: key, syncData: response.body);
           await APICacheManager().addCacheData(cacheDBModel);
         }
-        print('&&&&&&&&&&&    Indise 200');
 
         return homeRutine;
-      } else if (isOnline) {
+      } else if (!isOffline) {
         Get.snackbar('Connection failed', "No Internet Connection");
 
         throw "No Internet Connection";
       } else {
+        Get.snackbar('failed', "Failed to load new data ");
         if (isHaveCash) {
           var getdata = await APICacheManager().getCacheData(key);
           print('From cash $url');
           return RoutineHome.fromJson(jsonDecode(getdata.syncData));
         }
-        Get.snackbar('Connection failed', "Failed to load new data ");
 
         throw "${res["message"]}";
       }
     } catch (e) {
-      Get.snackbar('Connection failed', '$e');
-      print(e);
+      Get.snackbar('failed', "$e");
+
+      if (isHaveCash) {
+        var getdata = await APICacheManager().getCacheData(key);
+        print('From cash $url');
+        return RoutineHome.fromJson(jsonDecode(getdata.syncData));
+      }
       throw "$e";
     }
   }
 
-  // DELETE EOUTINE
+  // DELETE ROUTINE
 
   //...... Delete Rutin.....//
 
