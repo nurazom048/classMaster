@@ -6,7 +6,7 @@ import '../../widgets/appWidget/app_text.dart';
 abstract class Alert {
 //... Error AlertDialog...//
 
-  static errorAlertDialog(context, dynamic message, {String? title}) {
+  static void errorAlertDialog(context, dynamic message, {String? title}) {
     showDialog(
       context: context,
       builder: (BuildContext context) {

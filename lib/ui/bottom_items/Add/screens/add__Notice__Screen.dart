@@ -73,7 +73,8 @@ class AddNoticeScreen extends ConsumerWidget {
     );
   }
 
-  Widget _mobile(BuildContext context, WidgetRef ref, String? pdfPath) {
+  Widget _mobile(
+      BuildContext context, WidgetRef ref, Either<String, String?>? pdfPath) {
     //
     final isLoading = ref.watch(addNoticeLoaderProvider);
     final isLoadingNotifier = ref.watch(addNoticeLoaderProvider.notifier);
@@ -149,11 +150,21 @@ class AddNoticeScreen extends ConsumerWidget {
                     onPressed: () async {
                       isLoadingNotifier.update((state) => true);
                       print("pdf path : $pdfPath");
+
+                      // if(pdfPath >10mb){
+
+                      //     Alert.errorAlertDialog(context, "Only file allw under 10 mb");
+                      // }
+
                       if (pdfPath == null) {
                         Alert.errorAlertDialog(context, "select pdf");
                       }
                       if (_formKey.currentState!.validate()) {
-                        addNotice(context, pdfPath!, ref, isLoadingNotifier);
+                        pdfPath?.fold((l) {
+                          return Alert.errorAlertDialog(context, l);
+                        }, (r) {
+                          return addNotice(context, r!, ref, isLoadingNotifier);
+                        });
                       }
                     },
                   ),
@@ -169,24 +180,24 @@ class AddNoticeScreen extends ConsumerWidget {
   void addNotice(
       context, String pdfPath, WidgetRef ref, isLoadingNotifier) async {
     print("validate $pdfPath");
-    Either<String, String> res = await NoticeRequest().addNotice(
-      contentName: noticeTitleController.text,
-      description: descriptionController.text,
-      pdfFile: pdfPath,
-      ref: ref,
-    );
-    res.fold((l) {
-      isLoadingNotifier.update((state) => false);
+    // Either<String, String> res = await NoticeRequest().addNotice(
+    //   contentName: noticeTitleController.text,
+    //   description: descriptionController.text,
+    //   pdfFile: pdfPath,
+    //   ref: ref,
+    // );
+    // res.fold((l) {
+    //   isLoadingNotifier.update((state) => false);
 
-      return Alert.errorAlertDialog(context, l);
-    }, (r) {
-      ref.refresh(recentNoticeController(null));
+    //   return Alert.errorAlertDialog(context, l);
+    // }, (r) {
+    //   ref.refresh(recentNoticeController(null));
 
-      Navigator.pop(context);
-      isLoadingNotifier.update((state) => false);
+    //   Navigator.pop(context);
+    //   isLoadingNotifier.update((state) => false);
 
-      return Alert.showSnackBar(context, r);
-    });
+    //   return Alert.showSnackBar(context, r);
+    // });
   }
 }
 
@@ -206,7 +217,7 @@ class DragtoSelectFile extends ConsumerWidget {
       print('Mime: $mime');
       print('Size : ${byte / (1024 * 1024)}');
       print('URL: $url');
-      ref.watch(selectedPdfPathProvider.notifier).update((state) => url);
+      //ref.watch(selectedPdfPathProvider.notifier).update((state) => url);
     } catch (e) {
       print("error: $e");
     }

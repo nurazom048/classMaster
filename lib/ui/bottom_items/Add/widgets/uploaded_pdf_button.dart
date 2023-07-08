@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:table/helper/picker.dart';
 
 import '../../../../constant/app_color.dart';
 import '../../../../widgets/appWidget/app_text.dart';
 
 final selectedPdfPathProvider =
-    StateProvider.autoDispose<String?>((ref) => null);
+    StateProvider.autoDispose<Either<String, String?>?>((ref) => null);
 
 class UploadPDFBButton extends StatelessWidget {
   final Function(String?) onSelected;
@@ -29,9 +30,9 @@ class UploadPDFBButton extends StatelessWidget {
         final pdfPath = ref.watch(selectedPdfPathProvider);
         return InkWell(
           onTap: () async {
-            String? path = await picker.pickPDFFile();
+            Either<String, String?> path = await picker.pickPDFFile();
             ref.watch(selectedPdfPathProvider.notifier).update((state) => path);
-            onSelected(pdfPath);
+            onSelected('pdfPath');
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -40,7 +41,9 @@ class UploadPDFBButton extends StatelessWidget {
                 child: SizedBox(
                   width: 200,
                   child: Text(
-                    pdfPath ?? 'Upload Notice File (PDF)',
+                    pdfPath?.fold(
+                            (l) => 'Upload Notice File (PDF)', (r) => '$r') ??
+                        'Upload Notice File (PDF)',
                     style: TS.opensensBlue(),
                   ),
                 ),

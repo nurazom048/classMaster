@@ -161,8 +161,10 @@ class ChatsDribbles extends StatelessWidget {
             itemBuilder: (context, index) {
               final imageUrl = summary.imageLinks[index];
               return InkWell(
-                onTap: () => Get.to(
-                    () => ViewImagesFullScreen(images: summary.imageLinks)),
+                onTap: () => Get.to(() => ViewImagesFullScreen(
+                      images: summary.imageLinks,
+                      initialPage: index,
+                    )),
                 child: Container(
                   width: 100,
                   height: 100,

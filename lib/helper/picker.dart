@@ -31,36 +31,36 @@
 //   }
 // }
 import 'package:file_picker/file_picker.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:table/helper/helper_fun.dart';
 
 class picker extends HelperMethods {
   //!___ Pick Pdf.....//
-  static Future<String?> pickPDFFile() async {
+
+  static Future<Either<String, String?>> pickPDFFile() async {
     try {
-      // Pick a PDF file from the device
       final result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['pdf'],
       );
 
-      // If no file was picked, return null
       if (result == null) {
-        return null;
+        return left('selce pdf file');
       }
 
-      // Get the PDF file bytes
       final bytes = result.files.single.bytes;
-      // ignore: avoid_print
-      print(bytes);
+      final fileSizeInMB = bytes!.lengthInBytes / (1024 * 1024);
+
+      if (fileSizeInMB > 10) {
+        // Show an error message if the file size exceeds 10 MB
+        return left('file only allow uner 10 mb');
+      }
 
       final path = result.paths[0];
-
-      // Return the PDF file path (or any other necessary information)
-      return path;
+      return right(path);
     } catch (e) {
-      // ignore: avoid_print
       print("pdf picker err: $e");
-      return null;
+      return left('error:$e');
     }
   }
 }

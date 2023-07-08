@@ -159,6 +159,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
 
                                 // Lodes and end text
                                 if (data.currentPage != data.totalPages &&
+                                    data.totalPages > 10 &&
                                     i.isEqual(lenght - 1))
                                   Loaders.center()
                                 else if (i.isEqual(lenght - 1))
