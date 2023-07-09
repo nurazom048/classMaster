@@ -44,11 +44,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // One signal
     OneSignalServices.initialize();
-    // OneSignalServices.oneSignalPermission();
+    OneSignalServices.oneSignalPermission();
     // Firebase
     FirebaseAnalyticsServices.logHome();
     // AwesomeNotificationSetup
-    AwesomeNotificationSetup.initialize();
+
     AwesomeNotificationSetup.takePermiton(context);
   }
 

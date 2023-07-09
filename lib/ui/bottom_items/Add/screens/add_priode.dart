@@ -47,6 +47,7 @@ class _AppPriodePageState extends State<AppPriodePage> {
   @override
   Widget build(BuildContext context) {
     int periodNumber = widget.totalPriode == 0 ? 1 : widget.totalPriode + 1;
+    final Size size = MediaQuery.of(context).size;
 
     return SafeArea(
       child: Scaffold(
@@ -82,14 +83,14 @@ class _AppPriodePageState extends State<AppPriodePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SelectTime(
-                          width: 170,
+                          width: size.width * 0.40,
                           timeText: 'Start Time',
                           time: startTime,
                           show: showStartTime,
                           onTap: _selectStartTime,
                         ),
                         SelectTime(
-                          width: 170,
+                          width: size.width * 0.40,
                           timeText: 'End Time',
                           time: endTime,
                           show: showEndTime,

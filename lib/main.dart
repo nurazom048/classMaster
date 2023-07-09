@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:table/services/notification%20services/awn_package.dart';
 import 'package:table/services/one%20signal/onesignla.services.dart';
 import 'package:table/ui/auth_Section/auth_ui/wellcome_screen.dart';
 import 'firebase_options.dart';
@@ -28,6 +29,9 @@ void main() async {
 // Firebase analytics
 
   // FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(!kDebugMode);
+
+  // Awesome NotificationSetup
+  AwesomeNotificationSetup.initialize();
   runApp(const ProviderScope(child: MyApp()));
 }
 //

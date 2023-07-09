@@ -34,24 +34,29 @@ class _SelectDayRowState extends State<SelectDayRow> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      // color: Colors.amber,
-      height: 95,
-      child: ListView.builder(
-          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 3),
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          itemCount: 7,
-          itemBuilder: (context, index) => SelectDayChip(
-                index: index,
-                isSelected: index == selectedDays,
-                text: dayNAme[index],
-                onTap: () {
-                  setState(() => selectedDays = index);
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 7),
+      //  color: Colors.red,
+      height: 60,
+      child: ListView.separated(
+        padding: const EdgeInsets.symmetric(horizontal: 5),
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        itemCount: 7,
+        itemBuilder: (context, index) => SelectDayChip(
+          index: index,
+          isSelected: index == selectedDays,
+          text: dayNAme[index],
+          onTap: () {
+            setState(() => selectedDays = index);
 
-                  widget.selectedDay.call(index);
-                },
-              )),
+            widget.selectedDay.call(index);
+          },
+        ),
+        separatorBuilder: (context, index) {
+          return SizedBox(width: 0);
+        },
+      ),
     );
   }
 }
@@ -74,30 +79,33 @@ class SelectDayChip extends StatelessWidget {
     return InkWell(
         onTap: onTap,
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(8),
           child: Container(
-            height: 50,
-            width: 64,
+            height: 35,
+            width: 55,
 
-            //color: AppColor.background,
+            //  color: Colors.amber,
             color: isSelected ? const Color(0xFFF2F2F2) : null,
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 13),
+            // padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(text,
-                    textScaleFactor: 1.1,
+                    textScaleFactor: 1,
                     style: TS.opensensBlue(
                       fontWeight: FontWeight.w400,
+                      fontSize: 15,
                       color: isSelected ? AppColor.nokiaBlue : Colors.black,
                     )),
                 const SizedBox(height: 2),
                 CircleAvatar(
-                  radius: 18,
+                  radius: 14,
                   backgroundColor:
                       isSelected ? AppColor.nokiaBlue : AppColor.background,
                   child: Text(
                     '${day < 10 ? '0' : ''}$day',
                     style: TextStyle(
+                      fontSize: 13,
                       color: isSelected ? Colors.white : Colors.black,
                     ),
                   ),

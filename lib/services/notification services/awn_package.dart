@@ -11,20 +11,46 @@ class AwesomeNotificationSetup {
 // initialize
 
   static void initialize() async {
-    if (!kIsWeb) {
-      AwesomeNotifications().initialize(
-        null,
-        [
-          NotificationChannel(
-            channelKey: 'basic_channel',
-            channelName: 'Basic Channel',
-            channelDescription: 'Basic channel for notifications',
-            defaultColor: Colors.blue,
-            ledColor: Colors.blue,
-          ),
-        ],
-      );
-    }
+    AwesomeNotifications().initialize(
+      null,
+      [
+        NotificationChannel(
+          channelKey: 'basic_channel',
+          channelName: 'Basic Channel',
+          channelDescription: 'Basic channel for notifications',
+          defaultColor: Colors.blue,
+          ledColor: Colors.blue,
+          playSound: true,
+          importance: NotificationImportance.Max,
+          locked: true,
+          //channelShowBadge: true,
+        ),
+      ],
+      debug: true,
+    );
+    //  AwesomeNotifications().actionStream.listen((receivedAction) {
+    //         var payload = receivedAction.payload;
+
+    //         if(receivedAction.channelKey == 'basic_channel'){
+    //           //do something here
+
+    //         }
+    //       });
+    // AwesomeNotifications().setListeners
+    //   await AwesomeNotifications().setListeners(
+    //     onActionReceivedMethod: onActionReceivedMethod,
+    //     // onNotificationCreatedMethod: onNotificationCreatedMethod,
+    //     // onNotificationDisplayedMethod: onNotificationDisplayedMethod,
+    //     // onDismissActionReceivedMethod: onDismissActionReceivedMethod,
+    //   );
+    // }
+
+    //   //
+    //   /// Use this method to detect when the user taps on a notification or action button
+    //   static Future<void> onActionReceivedMethod(
+    //       ReceivedAction receivedAction) async {
+    //     debugPrint('onActionReceivedMethod');
+    //   });
   }
 
   //

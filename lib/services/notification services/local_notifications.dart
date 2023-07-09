@@ -24,24 +24,31 @@ class LocalNotification {
         // Create notification
         await AwesomeNotifications().createNotification(
           content: NotificationContent(
-            id: i,
+            id: i + newStartTime.minute + weekday + newStartTime.hour,
             channelKey: 'basic_channel',
+
             title: '${days[i].classInfo.name} class is going to start...😊',
             body:
                 'Room: ${days[i].room} \nInstructor: ${days[i].classInfo.instructorName} \nPeriod: ${days[i].start}-${days[i].end}',
             notificationLayout: NotificationLayout.Default,
-            payload: {'data': 'notification_'},
+            // payload: {'data': 'notification_'},
+            wakeUpScreen: true,
+            displayOnBackground: true,
           ),
           schedule: NotificationCalendar(
-            weekday: weekday,
+            // weekday: weekday,
             hour: newStartTime.hour,
             minute: newStartTime.minute.toInt(),
+            second: 1,
             allowWhileIdle: true,
+            repeats: true,
+            timeZone: await AwesomeNotifications().getLocalTimeZoneIdentifier(),
           ),
           actionButtons: [
             NotificationActionButton(
               key: 'dismiss',
               label: 'Dismiss',
+              isDangerousOption: true,
             ),
           ],
         );
