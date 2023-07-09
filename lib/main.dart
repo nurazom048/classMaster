@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:table/services/one%20signal/onesignla.services.dart';
 import 'package:table/ui/auth_Section/auth_ui/wellcome_screen.dart';
 import 'firebase_options.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -17,14 +18,15 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // crashlytics
+  // FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-  // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
   PlatformDispatcher.instance.onError = (error, stack) {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
   };
+  //fcm
 // Firebase analytics
-  // FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
+
   // FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(!kDebugMode);
   runApp(const ProviderScope(child: MyApp()));
 }

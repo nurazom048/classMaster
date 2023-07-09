@@ -18,6 +18,8 @@ class AuthReq {
     String? email,
     required String password,
   }) async {
+    // print('Usernmae$username || emaile$email');
+
     var loginUrl = Uri.parse('${Const.BASE_URl}/auth/login');
 
     try {

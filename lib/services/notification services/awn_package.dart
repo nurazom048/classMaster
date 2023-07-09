@@ -41,7 +41,8 @@ class AwesomeNotificationSetup {
               actions: [
                 TextButton(
                   onPressed: () {
-                    AppSettings.openNotificationSettings();
+                    //one signal permiton
+                    OneSignalServices.oneSignalPermission();
                     Navigator.pop(context);
                   },
                   child: const Text(

@@ -193,6 +193,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 hint: "Contact info",
                                 labelText:
                                     "Please provide the contact information for your academy included the current location and phone number.",
+                                errorText: SignUpValidation.validateContactInfo(
+                                    contractInfoController.text),
                                 validator: (value) =>
                                     SignUpValidation.validateContactInfo(value),
                                 focusNode: confirmPasswordFocusNode,
@@ -241,7 +243,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SignUpSwitcherButton(
                   "Already have an account?",
                   "Log in",
-                  onTap: () => Get.to(() => const LoginScreen()),
+                  onTap: () => Get.to(() => LoginScreen(
+                        emailAddress: emailController.text,
+                        passwordAddress: passwordController.text,
+                      )),
                 ),
                 const SizedBox(height: 30),
               ],

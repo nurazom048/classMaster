@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, use_build_context_synchronously
 
 import 'dart:io';
+import 'dart:math';
 
 import 'package:api_cache_manager/utils/cache_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -59,6 +60,16 @@ class AuthController extends StateNotifier<bool> {
       return Alert.showSnackBar(context, l.message);
     }, (r) {
       state = false;
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginScreen(
+            emailAddress: email,
+            passwordAddress: password,
+            usernameAddress: username,
+          ),
+        ),
+      );
       return Alert.showSnackBar(context, r.message);
     });
   }
@@ -70,38 +81,48 @@ class AuthController extends StateNotifier<bool> {
     String? email,
     required String password,
   }) async {
-    if (username == null && email == null) {
+    // print('Username $username || emails$email');
+    if ((username == null || username == '') &&
+        (email == null || email == '')) {
       Alert.conformAlert(context, "email or username is required");
     } else {
       state = true;
-      final res = await authReq.login(username: username, password: password);
+      final res = await authReq.login(
+        username: username,
+        email: email,
+        password: password,
+      );
 
       res.fold(
-        (l) async {
+        (error) async {
           state = false;
 
-          if (l.message == 'Academy request is pending') {
+          if (error.message == 'Academy request is pending') {
             Get.to(() => const PendingScreen());
           }
-          if (l.message == 'Email is not verified') {
+          if (error.message == 'Email is not verified') {
             await FirebaseAuth.instance.signInWithEmailAndPassword(
-              email: l.email!,
+              email: error.email!,
               password: password,
             );
             Get.to(() => EmailVerificationScreen(
-                  email: l.email!,
+                  email: error.email!,
                   password: password,
                 ));
             Alert.showSnackBar(context, 'Email is not verified');
           } else {
-            return Alert.errorAlertDialog(context, l.message);
+            return Alert.errorAlertDialog(context, error.message);
           }
         },
-        (r) {
+        (data) {
           state = false;
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => BottomNavBar()));
-          Alert.showSnackBar(context, r);
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BottomNavBar(),
+            ),
+          );
+          Alert.showSnackBar(context, data);
         },
       );
     }
@@ -122,12 +143,12 @@ class AuthController extends StateNotifier<bool> {
         // Remove token and navigate to the login screen
         final prefs = await SharedPreferences.getInstance();
         prefs.remove('Token');
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const LoginScreen()));
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => LoginScreen()));
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const LoginScreen(),
+            builder: (context) => LoginScreen(),
           ),
         );
 
@@ -205,8 +226,8 @@ class AuthController extends StateNotifier<bool> {
         Directory(appDir).delete();
 
         //
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const LoginScreen()));
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => LoginScreen()));
       },
     );
   }

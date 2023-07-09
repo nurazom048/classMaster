@@ -74,7 +74,7 @@ class WellComeScreen extends StatelessWidget {
               color: AppColor.nokiaBlue,
               onPressed: () {
                 Get.to(
-                  () => const LoginScreen(),
+                  () => LoginScreen(),
                   transition: Transition.rightToLeft,
                 );
               },

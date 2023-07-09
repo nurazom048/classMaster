@@ -18,11 +18,21 @@ import '../widgets/sign_up_page_switch.dart';
 import 'forgetpassword_screen.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  final String? emailAddress;
+  final String? usernameAddress;
+  final String? passwordAddress;
+  const LoginScreen({
+    super.key,
+    this.emailAddress,
+    this.usernameAddress,
+    this.passwordAddress,
+  });
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
+
+bool byUsername = true;
 
 class _LoginScreenState extends State<LoginScreen> {
   //
@@ -34,10 +44,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
+    if (widget.emailAddress != null) {
+      byUsername = false;
+      emailController.text = widget.emailAddress!;
+    }
+    if (widget.usernameAddress != null) {
+      emailController.text = widget.usernameAddress!;
+    }
+    if (widget.passwordAddress != null) {
+      _passwordController.text = widget.passwordAddress!;
+    }
     super.initState();
   }
 
-  bool byUsername = true;
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, _) {
@@ -177,7 +196,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     SignUpSwitcherButton(
                       "Do not have an account?",
                       "Sign up",
-                      onTap: () => Get.to(() => const SignUpScreen()),
+                      onTap: () => Get.to(() => SignUpScreen(
+                            emailAddress: emailController.text,
+                          )),
                     ),
 
                     ///
