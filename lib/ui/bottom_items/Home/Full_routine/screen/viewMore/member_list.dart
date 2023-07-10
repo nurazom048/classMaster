@@ -15,12 +15,14 @@ import '../../controller/see_all_req_controller.dart';
 import '../../utils/popup.dart';
 import '../../widgets/account_card_widgets.dart';
 import '../../widgets/member_account_card.dart';
+import 'package:table/ui/bottom_items/Home/Full_routine/models/members_models.dart';
 
 final membersCountProvider = StateProvider.autoDispose<int>((ref) => 0);
 
 class MemberList extends StatefulWidget {
   final String routineId;
-  const MemberList({super.key, required this.routineId});
+
+  const MemberList({Key? key, required this.routineId}) : super(key: key);
 
   @override
   State<MemberList> createState() => _MemberListState();
@@ -46,28 +48,43 @@ class _MemberListState extends State<MemberList> {
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, _) {
+      // Providers
+      final checkStatus =
+          ref.watch(checkStatusControllerProvider(widget.routineId));
+
+      return checkStatus.when(
+        data: (data) {
+          final String status = data.activeStatus;
+          final bool isCaptain = data.isCaptain;
+          final bool isOwner = data.isOwner;
+
+          if (status != 'joined') {
+            return const ErrorScreen(
+              error: "You Are Not Member In This Routine",
+            );
+          }
+
+          return onData(context, isCaptain, isOwner);
+        },
+        error: (error, stackTrace) => Alert.handleError(context, error),
+        loading: () => Loaders.center(),
+      );
+    });
+  }
+
+  Widget onData(BuildContext context, bool isCaptain, bool isOwner) {
+    return Consumer(builder: (context, ref, _) {
       //! provider
       final allMembers = ref.watch(memberControllerProvider(widget.routineId));
       final allMembersNotifier =
           ref.watch(memberControllerProvider(widget.routineId).notifier);
 
       // notifiers
-      final checkStatus =
-          ref.watch(checkStatusControllerProvider(widget.routineId));
-      final String status = checkStatus.value?.activeStatus ?? '';
-      final bool isCaptain = checkStatus.value?.isCaptain ?? false;
-      final bool isOwner = checkStatus.value?.isOwner ?? false;
-
+      // final checkStatus =
+      //     ref.watch(checkStatusControllerProvider(widget.routineId));
       // bool notificationOff = checkStatus.value?.notificationOff ?? false;
       final memberCount = ref.watch(membersCountProvider);
       final memberCountNotifier = ref.watch(membersCountProvider.notifier);
-
-      if (status != 'joined') {
-        return const ErrorScreen(
-          error: "You Are Not Member In This Routine",
-        );
-      }
-
       return RefreshIndicator(
         onRefresh: () async {
           final bool isOnline = await Utils.isOnlineMethod();

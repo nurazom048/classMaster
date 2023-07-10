@@ -70,14 +70,34 @@ class _SummaryScreenState extends State<SummaryScreen> {
     pageScrollController = ScrollController();
 
 //
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      pageScrollController
-          .jumpTo(pageScrollController.position.minScrollExtent);
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        body: Consumer(builder: (context, ref, _) {
+          // Providers
+          final checkStatus =
+              ref.watch(checkStatusControllerProvider(widget.routineID));
+
+          return checkStatus.when(
+            data: (data) {
+              return onData();
+            },
+            error: (error, stackTrace) => Alert.handleError(context, error),
+            loading: () => Loaders.center(),
+          );
+        }),
+      ),
+    );
+  }
+
+  Widget onData() {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      pageScrollController
+          .jumpTo(pageScrollController.position.minScrollExtent);
+    });
     return Consumer(builder: (BuildContext context, WidgetRef ref, _) {
       //! provider
 
@@ -126,7 +146,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                       data: (data) {
                         if (data.summaries.isEmpty) {
                           return const ErrorScreen(
-                              error: "There is no Summarys");
+                              error: "There is no Summary");
                         }
 
                         void scrollListener() {
@@ -148,6 +168,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
 
                         scrollController.addListener(scrollListener);
                         return ListView.builder(
+                          shrinkWrap: true,
                           controller: scrollController,
                           // reverse: true,
                           itemCount: data.summaries.length,

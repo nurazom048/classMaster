@@ -32,7 +32,7 @@ class PriodeClassController extends StateNotifier<AsyncValue<AllPriodeList>> {
 
     allPriode.fold(
       (l) {
-        state = AsyncValue.error(l, StackTrace.current);
+        state = AsyncValue.error(l.message, StackTrace.current);
       },
       (r) {
         state = AsyncValue.data(r);
