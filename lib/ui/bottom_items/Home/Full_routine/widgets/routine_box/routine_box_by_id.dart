@@ -62,8 +62,8 @@ class _RutinBoxByIdState extends State<RoutineBoxById> {
           ref.watch(checkStatusControllerProvider(widget.rutinId));
       final rutinDetails = ref.watch(routine_details_provider(widget.rutinId));
 
-      String status = checkStatus.value?.activeStatus ?? '';
-      bool notificationOn = checkStatus.value?.notificationOn ?? false;
+      // String status = checkStatus.value?.activeStatus ?? '';
+      // bool notificationOn = checkStatus.value?.notificationOn ?? false;
       // Get notifier
       final checkStatusNotifier =
           ref.watch(checkStatusControllerProvider(widget.rutinId).notifier);
@@ -113,6 +113,8 @@ class _RutinBoxByIdState extends State<RoutineBoxById> {
                       // Notification button or request button
                       checkStatus.when(
                         data: (data) {
+                          String status = data.activeStatus;
+                          bool notificationOn = data.notificationOn;
                           return SendReqButton(
                             isNotSendRequest: status == "not_joined",
                             isPending: status == "request_pending",
@@ -192,8 +194,8 @@ class _RutinBoxByIdState extends State<RoutineBoxById> {
                                   onTap: () {
                                     if (!mounted) return;
 
-                                    onTap(widget.listOfDayState[index], status,
-                                        context);
+                                    onTap(
+                                        widget.listOfDayState[index], context);
                                   },
                                 ),
                                 if (index.isEqual(classLenght - 1) &&
@@ -315,7 +317,7 @@ class _RutinBoxByIdState extends State<RoutineBoxById> {
 }
 
 // Navigate to the SummaryScreen when a day is tapped
-void onTap(Day? day, String status, context) {
+void onTap(Day? day, context) {
   Get.to(
     () => SummaryScreen(
       classId: day!.classId.id,

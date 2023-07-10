@@ -54,7 +54,7 @@ class _SelectDayRowState extends State<SelectDayRow> {
           },
         ),
         separatorBuilder: (context, index) {
-          return SizedBox(width: 0);
+          return const SizedBox(width: 0);
         },
       ),
     );
