@@ -22,11 +22,11 @@ class SummaryController extends StateNotifier<AsyncValue<AllSummaryModel>> {
   String? classId;
   SummaryController(this.ref, this.classId, this.summaryReq)
       : super(const AsyncLoading()) {
-    getlist();
+    getList();
   }
 
 // get summary by class id
-  getlist() async {
+  getList() async {
     try {
       AllSummaryModel res = await summaryReq.getSummaryList(classId);
       if (!mounted) return;

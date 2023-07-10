@@ -48,8 +48,8 @@ class SaveRoutineController
           }
         }
       }
-    } catch (e) {
-      state = throw Exception(e);
+    } catch (error, stackTrace) {
+      state = AsyncValue.error(error, stackTrace);
     }
   }
 }

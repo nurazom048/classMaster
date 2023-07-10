@@ -59,7 +59,7 @@ class MiniAccountInfo extends StatelessWidget {
                       maxWidth: MediaQuery.of(context).size.width * 0.55),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         // name ad user name
                         Text(

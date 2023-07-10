@@ -7,7 +7,9 @@ import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/message_model.dart';
 import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
+import 'package:table/ui/bottom_items/Home/utils/utils.dart';
 import '../../../../../../constant/constant.dart';
+import '../../../../../../local data/api_cashe_maager.dart';
 import '../../../../../../models/check_status_model.dart';
 import '../models/all_summary_models.dart';
 import 'package:http/http.dart' as http;
@@ -126,16 +128,13 @@ class SummaryRequest {
     final Uri url = Uri.parse('${Const.BASE_URl}/summary/status/$summaryID');
     final Map<String, String> headers = {'Authorization': 'Bearer $getToken'};
     // final bool isOnline = await Utils.isOnlineMethod();
-    // var isHaveCash =
-    // await MyApiCash.haveCash("checkStatus$summaryID");
+    // var isHaveCash = await MyApiCash.haveCash("checkStatus$summaryID");
 
     try {
-      // if offline and have cash
+      // // if offline and have cash
       // if (isOnline == false && isHaveCash) {
-      //   var getdata =
-      //       await APICacheManager().getCacheData("checkStatus$rutin_id");
-      //   print('From cash $getdata');
-      //   return CheckStatusModel.fromJson(jsonDecode(getdata.syncData));
+      //   final getdata = await MyApiCash.getData("checkStatus$summaryID");
+      //   return CheckStatusModel.fromJson(getdata);
       // }
 
       final response = await http.post(
@@ -161,7 +160,7 @@ class SummaryRequest {
       }
     } catch (e) {
       print(e);
-      return Future.error(e);
+      throw Future.error(e);
     }
   }
 

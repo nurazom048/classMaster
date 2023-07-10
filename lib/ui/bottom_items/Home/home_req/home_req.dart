@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 import '../../../../constant/constant.dart';
 import '../../../../local data/api_cashe_maager.dart';
 import '../../../../models/message_model.dart';
@@ -24,8 +25,7 @@ class HomeReq {
   Future<SaveRutileResponse> saveRoutines({pages}) async {
     String queryPage = "?page=$pages}";
     String? username = "";
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
+    final String? getToken = await AuthController.getToken();
     final url = Uri.parse(
         '${Const.BASE_URl}/rutin/save_rutins/' + username + queryPage);
     final headers = {'Authorization': 'Bearer $getToken'};
