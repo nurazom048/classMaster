@@ -1,7 +1,6 @@
-// ignore_for_file: non_constant_identifier_names, use_build_context_synchronously
+// ignore_for_file: non_constant_identifier_names, use_build_context_synchronously, void_checks
 
 import 'dart:io';
-import 'dart:math';
 
 import 'package:api_cache_manager/utils/cache_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,9 +12,11 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/message_model.dart';
 import 'package:table/ui/auth_Section/auth_req/auth_req.dart';
+import 'package:table/ui/bottom_items/Home/utils/utils.dart';
 import 'package:table/ui/bottom_items/bottom_navbar.dart';
 import '../../../constant/constant.dart';
 import '../../../core/dialogs/alert_dialogs.dart';
+import '../../../local data/api_cashe_maager.dart';
 import '../auth_ui/email_verification.screen.dart';
 import '../auth_ui/logIn_screen.dart';
 import '../auth_ui/pending_account.dart';
@@ -60,6 +61,7 @@ class AuthController extends StateNotifier<bool> {
       return Alert.showSnackBar(context, l.message);
     }, (r) {
       state = false;
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -81,10 +83,23 @@ class AuthController extends StateNotifier<bool> {
     String? email,
     required String password,
   }) async {
+    final bool isOnline = await Utils.isOnlineMethod();
+
+    if (!isOnline) {
+      Alert.errorAlertDialog(
+        context,
+        'You are in Offline',
+        title: 'Network Error',
+      );
+    }
+
     // print('Username $username || emails$email');
-    if ((username == null || username == '') &&
+    else if ((username == null || username == '') &&
         (email == null || email == '')) {
-      Alert.conformAlert(context, "email or username is required");
+      Alert.errorAlertDialog(
+        context,
+        "email or username is required",
+      );
     } else {
       state = true;
       final res = await authReq.login(
@@ -143,12 +158,12 @@ class AuthController extends StateNotifier<bool> {
         // Remove token and navigate to the login screen
         final prefs = await SharedPreferences.getInstance();
         prefs.remove('Token');
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => LoginScreen()));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const LoginScreen()));
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => LoginScreen(),
+            builder: (context) => const LoginScreen(),
           ),
         );
 
@@ -224,10 +239,10 @@ class AuthController extends StateNotifier<bool> {
         // delete cash
         var appDir = (await getTemporaryDirectory()).path;
         Directory(appDir).delete();
-
+        await MyApiCash.removeAll();
         //
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => LoginScreen()));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const LoginScreen()));
       },
     );
   }

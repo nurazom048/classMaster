@@ -2,12 +2,12 @@
 
 import 'dart:convert';
 import 'package:api_cache_manager/api_cache_manager.dart';
-import 'package:api_cache_manager/models/cache_db_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:table/local%20data/api_cashe_maager.dart';
 import 'package:table/models/check_status_model.dart';
 import 'package:table/ui/bottom_items/Home/utils/utils.dart';
 import '../../../../../constant/constant.dart';
@@ -22,44 +22,49 @@ class FullRoutineRequest {
   Future<CheckStatusModel> chalkStatus(routineId) async {
     final prefs = await SharedPreferences.getInstance();
     final String? getToken = prefs.getString('Token');
-    final bool isOffile = await Utils.isOnlineMethod();
-    var isHaveCash =
-        await APICacheManager().isAPICacheKeyExist("chalkStatus$routineId");
+    final bool isOnline = await Utils.isOnlineMethod();
+    final key = "chalkStatus$routineId";
+    final bool isHaveCash = await MyApiCash.haveCash(key);
 
     try {
       // if offline and have cash
-      if (!isOffile && isHaveCash) {
-        var getData =
-            await APICacheManager().getCacheData("checkStatus$routineId");
+      if (!isOnline && isHaveCash) {
+        Map<String, dynamic> getData = await MyApiCash.getData(key);
         print('from cash $getData');
-        return CheckStatusModel.fromJson(jsonDecode(getData.syncData));
-      }
-
-      final response = await http.post(
-        Uri.parse('${Const.BASE_URl}/rutin/status/$routineId'),
-        headers: {'Authorization': 'Bearer $getToken'},
-      );
-
-      if (response.statusCode == 200) {
-        // save to csh
-        APICacheDBModel cacheDBModel = APICacheDBModel(
-            key: "chackStatus$routineId", syncData: response.body);
-
-        await APICacheManager().addCacheData(cacheDBModel);
-
-        //
-        CheckStatusModel res =
-            CheckStatusModel.fromJson(jsonDecode(response.body));
-        print("res  ${jsonDecode(response.body)}");
-        return res;
+        return CheckStatusModel.fromJson(getData);
+      } else if (!isOnline) {
+        throw "You Are in Offline";
       } else {
-        throw Exception("Response body is null");
+        final response = await http.post(
+          Uri.parse('${Const.BASE_URl}/rutin/status/$routineId'),
+          headers: {'Authorization': 'Bearer $getToken'},
+        );
+
+        if (response.statusCode == 200) {
+          // save to csh
+
+          MyApiCash.saveLocal(key: key, syncData: response.body);
+
+          CheckStatusModel res =
+              CheckStatusModel.fromJson(jsonDecode(response.body));
+          print("res  ${jsonDecode(response.body)}");
+          return res;
+        } else {
+          throw Exception("Response body is null");
+        }
       }
     } catch (e) {
       Get.snackbar('Error', e.toString());
 
       print(e);
-      return Future.error(e);
+
+      if (isHaveCash) {
+        var getData =
+            await APICacheManager().getCacheData("checkStatus$routineId");
+        print('from cash $getData');
+        return CheckStatusModel.fromJson(jsonDecode(getData.syncData));
+      }
+      rethrow;
     }
   }
 

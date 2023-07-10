@@ -31,10 +31,10 @@ class AccountCard extends StatelessWidget {
                 bool isOnline = snapshot.data ?? false;
 
                 if (isOnline == true && profilepicture != null) {
-                  return CircleAvatar(
+                  return const CircleAvatar(
                     radius: 35,
                     backgroundColor: Colors.red,
-                    backgroundImage: NetworkImage(profilepicture!),
+                    // backgroundImage: NetworkImage(profilepicture!),
                   );
                 }
                 {

@@ -137,6 +137,7 @@ Widget homeMobileView(
           Alert.showSnackBar(context, 'You are in offline mode');
         } else {
           //! provider
+
           ref.refresh(homeRoutineControllerProvider(null));
           ref.refresh(recentNoticeController(null));
         }

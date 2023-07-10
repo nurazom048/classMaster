@@ -1,10 +1,12 @@
 // ignore_for_file: avoid_print, camel_case_types, non_constant_identifier_names, unused_local_variable, body_might_complete_normally_nullable
+import 'dart:async';
+import 'dart:io' as io;
 
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 import 'package:table/ui/bottom_items/Home/Full_routine/models/members_models.dart';
 import '../../../../../constant/constant.dart';
 import '../../../../../models/message_model.dart';
@@ -16,13 +18,14 @@ class MemberRequest {
 //
 //**********************   rutin all _members    *********** */
   Future<RoutineMembersModel?> all_members(rutin_id) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
+    final String? getToken = await AuthController.getToken();
+    final Uri url = Uri.parse('${Const.BASE_URl}/rutin/member/$rutin_id');
 
     try {
       final response = await http.post(
-          Uri.parse('${Const.BASE_URl}/rutin/member/$rutin_id'),
-          headers: {'Authorization': 'Bearer $getToken'});
+        url,
+        headers: {'Authorization': 'Bearer $getToken'},
+      );
 
       var res = jsonDecode(response.body);
 
@@ -34,14 +37,13 @@ class MemberRequest {
       }
     } catch (e) {
       print(e);
-      throw Exception(e);
+      rethrow;
     }
   }
 
 //**********************   addMember   *********** */
   Future<String?> addMemberReq(rutin_id, username) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
+    final String? getToken = await AuthController.getToken();
 
     try {
       final response = await http.post(
@@ -54,7 +56,7 @@ class MemberRequest {
         print(res);
         return res;
       } else {
-        throw Exception("faild to load all member list ");
+        throw Exception("failed to load all member list ");
       }
     } catch (e) {
       print(e);
@@ -64,9 +66,7 @@ class MemberRequest {
 
 //**********************   remove members   *********** */
   Future<Message> removeMemberReq(rutin_id, username) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
-
+    final String? getToken = await AuthController.getToken();
     var url =
         Uri.parse('${Const.BASE_URl}/rutin/member/remove/$rutin_id/$username');
 
@@ -90,16 +90,15 @@ class MemberRequest {
   }
 
   //.... add cap10s.../
-  Future<String?> addCaptressReq(rutinid, username) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
-    print("hi i am calling req $rutinid  $username");
+  Future<String?> addCaptressReq(routineId, username) async {
+    final String? getToken = await AuthController.getToken();
+    print("hi i am calling req $routineId  $username");
 
     final url = Uri.parse('${Const.BASE_URl}/rutin/cap10/add');
 
     final response = await http.post(url,
         headers: {'Authorization': 'Bearer $getToken'},
-        body: {"rutinid": rutinid, "username": username});
+        body: {"rutinid": routineId, "username": username});
 
     var res = jsonDecode(response.body)['message'];
 
@@ -117,16 +116,15 @@ class MemberRequest {
     }
   }
 
-  Future<String?> removeCaptansReq(rutinid, username) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
-    print("hi i am calling req $rutinid  $username");
+  Future<String?> removeCaptansReq(routineId, username) async {
+    final String? getToken = await AuthController.getToken();
+    print("hi i am calling req $routineId  $username");
 
     final url = Uri.parse('${Const.BASE_URl}/rutin/cap10/remove');
 
     final response = await http.delete(url,
         headers: {'Authorization': 'Bearer $getToken'},
-        body: {"rutinid": rutinid, "username": username});
+        body: {"rutinid": routineId, "username": username});
 
     var res = jsonDecode(response.body)['message'];
 
@@ -145,8 +143,7 @@ class MemberRequest {
   }
 
   Future<Either<String, Message>> sendRequest(rutin_id) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
+    final String? getToken = await AuthController.getToken();
 
     var url =
         Uri.parse("${Const.BASE_URl}/rutin/member/send_request/$rutin_id");
@@ -163,14 +160,17 @@ class MemberRequest {
       } else {
         return right(res);
       }
+    } on io.SocketException catch (_) {
+      throw Exception('Failed to load data');
+    } on TimeoutException catch (_) {
+      throw Exception('TimeOut Exception');
     } catch (e) {
       return left(e.toString());
     }
   }
 
   Future<Either<Message, Message>> leaveRequest(rutin_id) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
+    final String? getToken = await AuthController.getToken();
 
     var url = Uri.parse("${Const.BASE_URl}/rutin/member/leave/$rutin_id");
 
@@ -195,12 +195,11 @@ class MemberRequest {
   }
 
 //***********************   kickOut   ***********************/
-  Future<Message> kickOut(rutin_id, memberid) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
+  Future<Message> kickOut(rutin_id, memberId) async {
+    final String? getToken = await AuthController.getToken();
 
     var url =
-        Uri.parse("${Const.BASE_URl}/rutin/member/kickout/$rutin_id/$memberid");
+        Uri.parse("${Const.BASE_URl}/rutin/member/kickout/$rutin_id/$memberId");
 
     try {
       final response = await http
@@ -234,60 +233,61 @@ class MemberRequest {
       } else {
         throw Exception(res.message);
       }
+    } on io.SocketException catch (_) {
+      throw Exception('Failed to load data');
+    } on TimeoutException catch (_) {
+      throw Exception('TimeOut Exception');
     } catch (e) {
-      throw Exception(e);
+      print(e);
+      rethrow;
     }
   }
   //... see all joi request ..............///
 
   //....sell all request ....//
-  Future<SeeAllRequestModel> see_all_request(rutin_id) async {
-    print("request canme to seeAll members $rutin_id");
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
-    Uri url =
-        Uri.parse('${Const.BASE_URl}/rutin/member/see_all_request/$rutin_id');
+  Future<SeeAllRequestModel> see_all_request(routineId) async {
+    print("request canme to seeAll members $routineId");
+    final String? getToken = await AuthController.getToken();
+    final Uri url =
+        Uri.parse('${Const.BASE_URl}/rutin/member/see_all_request/$routineId');
+    final Map<String, String> headers = {'Authorization': 'Bearer $getToken'};
     try {
-      final response = await http.post(
-        url,
-        headers: {'Authorization': 'Bearer $getToken'},
-      );
+      final response = await http.post(url, headers: headers);
+      final res = jsonDecode(response.body);
       print(jsonDecode(response.body));
       if (response.statusCode == 200) {
-        // ignore: unnecessary_null_comparison
-        if (response.body != null) {
-          SeeAllRequestModel res =
-              SeeAllRequestModel.fromJson(jsonDecode(response.body));
-          print(res);
-          return res;
-        } else {
-          throw Exception("Response body is null");
-        }
+        print(res);
+        return SeeAllRequestModel.fromJson(res);
       } else {
-        throw Exception("Failed to load status");
+        throw jsonDecode(response.body)['Message'];
       }
+    } on io.SocketException catch (_) {
+      throw Exception('Failed to load data');
+    } on TimeoutException catch (_) {
+      throw Exception('TimeOut Exception');
     } catch (e) {
       print(e);
-      throw Exception(e);
+      rethrow;
     }
   }
 
   //...acceptRequest.....//
   Future<Message> acceptRequest(rutinId, username, {bool? acceptAll}) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
+    final String? getToken = await AuthController.getToken();
+    final Uri url =
+        Uri.parse('${Const.BASE_URl}/rutin/member/acsept_request/$rutinId');
+    final Map<String, String> headers = {'Authorization': 'Bearer $getToken'};
     print("$username");
 
     try {
       final response = await http.post(
-          Uri.parse('${Const.BASE_URl}/rutin/member/acsept_request/$rutinId'),
-          headers: {
-            'Authorization': 'Bearer $getToken'
-          },
-          body: {
-            "username": username,
-            'acceptAll': acceptAll == null ? 'false' : acceptAll.toString(),
-          });
+        url,
+        headers: headers,
+        body: {
+          "username": username,
+          'acceptAll': acceptAll == null ? 'false' : acceptAll.toString(),
+        },
+      );
 
       if (response.statusCode == 200) {
         var res = Message.fromJson(jsonDecode(response.body));
@@ -305,27 +305,29 @@ class MemberRequest {
 
   //
   //...acceptRequest.....//
-  Future<Message> rejectRequest(rutin_id, username) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
-    print("$username");
+  Future<Message> rejectRequest(routineId, username) async {
+    final String? getToken = await AuthController.getToken();
+    final Uri url =
+        Uri.parse('${Const.BASE_URl}/rutin/member/reject_request/$routineId');
+    final Map<String, String> headers = {'Authorization': 'Bearer $getToken'};
 
     try {
       final response = await http.post(
-          Uri.parse('${Const.BASE_URl}/rutin/member/reject_request/$rutin_id'),
-          headers: {'Authorization': 'Bearer $getToken'},
-          body: {"username": username});
+        url,
+        headers: headers,
+        body: {"username": username},
+      );
 
       var res = Message.fromJson(jsonDecode(response.body));
 
       if (response.statusCode == 200) {
         return res;
       } else {
-        throw Exception(res.message);
+        throw res.message;
       }
     } catch (e) {
       print(e);
-      throw Exception(e);
+      rethrow;
     }
   }
 }

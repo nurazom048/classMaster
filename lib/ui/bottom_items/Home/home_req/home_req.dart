@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 import 'package:api_cache_manager/api_cache_manager.dart';
-import 'package:api_cache_manager/models/cache_db_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
@@ -10,6 +9,7 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../../../../constant/constant.dart';
+import '../../../../local data/api_cashe_maager.dart';
 import '../../../../models/message_model.dart';
 import '../../../../models/Routine/saveRutine.dart';
 import '../models/home_routines_model.dart';
@@ -76,6 +76,7 @@ class HomeReq {
   //********    home Routines      *************/
 
   Future<RoutineHome> homeRoutines({pages, String? userID}) async {
+    print('Api');
     String queryPage = "?page=$pages";
     final searchByUserID = userID == null ? '' : '/$userID';
     final prefs = await SharedPreferences.getInstance();
@@ -83,18 +84,20 @@ class HomeReq {
     final status = await OneSignal.shared.getDeviceState();
     final String? osUserID = status?.userId;
     // var status = await OneSignal.shared.getDeviceState();
-    print(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
+
     //String? tokenId = status?.pushToken;
-    print("osUserID : $osUserID");
+    print("osUserID Home : $osUserID");
 
     final url =
         Uri.parse('${Const.BASE_URl}/rutin/home' + searchByUserID + queryPage);
     final headers = {'Authorization': 'Bearer $getToken'};
     final bool isOffline = await Utils.isOnlineMethod();
     final String key = "homeRutines$url";
-    var isHaveCash = await APICacheManager().isAPICacheKeyExist(key);
+    final bool isHaveCash = await MyApiCash.haveCash(key);
+    // print(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
+
+    // print('kjdffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
     try {
-      // print('kjdffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
       // print(userID);
       // print(isHaveCash);
       // print(!isOffline);
@@ -113,7 +116,7 @@ class HomeReq {
       //
       final res = json.decode(response.body);
 
-      // print(res);
+      print(res);
       // print(response.statusCode);
       // print('$isOffline 5 $isHaveCash');
 
@@ -122,9 +125,7 @@ class HomeReq {
 
         // save to csh
         if (userID == null) {
-          APICacheDBModel cacheDBModel =
-              APICacheDBModel(key: key, syncData: response.body);
-          await APICacheManager().addCacheData(cacheDBModel);
+          MyApiCash.saveLocal(key: key, syncData: response.body);
         }
 
         return homeRutine;
@@ -135,20 +136,18 @@ class HomeReq {
       } else {
         Get.snackbar('failed', "Failed to load new data ");
         if (isHaveCash) {
-          var getdata = await APICacheManager().getCacheData(key);
-          print('From cash $url');
-          return RoutineHome.fromJson(jsonDecode(getdata.syncData));
+          var getdata = await MyApiCash.getData(key);
+          return RoutineHome.fromJson(getdata);
         }
 
         throw "${res["message"]}";
       }
     } catch (e) {
-      Get.snackbar('failed', "$e");
+      Get.snackbar('error', "$e");
 
       if (isHaveCash) {
-        var getdata = await APICacheManager().getCacheData(key);
-        print('From cash $url');
-        return RoutineHome.fromJson(jsonDecode(getdata.syncData));
+        var getdata = await MyApiCash.getData(key);
+        return RoutineHome.fromJson(getdata);
       }
       throw "$e";
     }

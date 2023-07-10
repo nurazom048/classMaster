@@ -3,16 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:table/core/component/loaders.dart';
 import 'package:table/core/component/responsive.dart';
 import 'package:table/core/dialogs/alert_dialogs.dart';
-import 'package:table/ui/bottom_items/Home/notice_board/request/motice_request.dart';
 import 'package:table/widgets/appWidget/TextFromFild.dart';
 import 'package:table/widgets/heder/heder_title.dart';
 
 import '../../../../constant/app_color.dart';
 import '../../../../widgets/appWidget/buttons/cupertino_buttons.dart';
-import '../../Home/notice_board/notice controller/virew_recent_notice_controller.dart';
 import '../../Home/widgets/custom_title_bar.dart';
 import '../../Home/widgets/mydrawer.dart';
 import '../widgets/uploaded_pdf_button.dart';
@@ -95,7 +92,7 @@ class AddNoticeScreen extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   const Text(
                     "Add A New \nNotice",
                     style: TextStyle(
@@ -113,7 +110,7 @@ class AddNoticeScreen extends ConsumerWidget {
                   //     id = iD;
                   //   },
                   // ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
                   AppTextFromField(
                     margin: EdgeInsets.zero,
@@ -130,7 +127,7 @@ class AddNoticeScreen extends ConsumerWidget {
                       return null;
                     },
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
                   AppTextFromField(
                     margin: EdgeInsets.zero,
@@ -203,12 +200,12 @@ class AddNoticeScreen extends ConsumerWidget {
 
 ///
 
-class DragtoSelectFile extends ConsumerWidget {
-  DragtoSelectFile({super.key});
+class DragsSelectFile extends ConsumerWidget {
+  DragsSelectFile({super.key});
 
   late DropzoneViewController controller1;
 
-  Future<void> acceptfile(dynamic event, WidgetRef ref) async {
+  Future<void> acceptFile(dynamic event, WidgetRef ref) async {
     try {
       final mime = await controller1.getFileMIME(event);
       final byte = await controller1.getFileSize(event);
@@ -236,7 +233,7 @@ class DragtoSelectFile extends ConsumerWidget {
                 child: DropzoneView(
                   // ignore: unnecessary_this
                   onCreated: (controller) => this.controller1 = controller,
-                  onDrop: (value) => acceptfile(value, ref),
+                  onDrop: (value) => acceptFile(value, ref),
                 ),
               ),
               InkWell(
@@ -245,7 +242,7 @@ class DragtoSelectFile extends ConsumerWidget {
                     final events = await controller1.pickFiles();
 
                     print("events: $events");
-                    acceptfile(events[0], ref);
+                    acceptFile(events[0], ref);
                   } catch (e) {
                     print("Error: $e");
                   }

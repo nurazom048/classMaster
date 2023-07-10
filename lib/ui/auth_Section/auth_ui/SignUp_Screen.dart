@@ -1,3 +1,4 @@
+// ignore: file_names
 // ignore_for_file: avoid_print, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
@@ -10,7 +11,6 @@ import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 import 'package:table/ui/auth_Section/auth_ui/LogIn_Screen.dart';
 import 'package:table/ui/auth_Section/utils/singUp_validation.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
-import 'package:table/widgets/appWidget/dotted_divider.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/appWidget/buttons/cupertino_buttons.dart';
 import '../../../widgets/heder/heder_title.dart';

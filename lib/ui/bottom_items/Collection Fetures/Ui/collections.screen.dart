@@ -59,6 +59,7 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
   @override
   Widget build(BuildContext context) {
     //! providers
+
     final classNotification = ref.watch(classNotificationProvider);
     final accountData = ref.watch(accountDataProvider(widget.accountUsername));
     return SafeArea(
@@ -123,10 +124,8 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                         //   }
                         return const SizedBox();
                       },
-                      error: (error, stackTrace) {
-                        Alert.handleError(context, error);
-                        return const SizedBox();
-                      },
+                      error: (error, stackTrace) =>
+                          Alert.handleError(context, error),
                       loading: () => const SizedBox()),
 
                   //

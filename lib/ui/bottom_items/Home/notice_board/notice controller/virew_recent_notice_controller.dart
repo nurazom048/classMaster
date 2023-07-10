@@ -37,7 +37,7 @@ class UploadedRutinsController extends StateNotifier<AsyncValue<RecentNotice>> {
     }
   }
 
-// loade pore data
+// loaded more data
   void loadMore(page, context) async {
     try {
       final RecentNotice newData =

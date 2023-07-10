@@ -1,13 +1,12 @@
 // ignore_for_file: file_names, non_constant_identifier_names, unused_local_variable, body_might_complete_normally_nullable, camel_case_types, avoid_print
 
 import 'dart:convert';
-import 'package:api_cache_manager/api_cache_manager.dart';
-import 'package:api_cache_manager/models/cache_db_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:table/models/class_details_model.dart';
 
 import '../../../../../constant/constant.dart';
+import '../../../../../local data/api_cashe_maager.dart';
 import '../../utils/utils.dart';
 
 final routine_Req_provider = Provider<Routine_Req>((ref) => Routine_Req());
@@ -27,37 +26,36 @@ class Routine_Req {
 
     print(routineId);
 
+    final bool isOnline = await Utils.isOnlineMethod();
     final String path = "${Const.BASE_URl}/class/$routineId/all/class";
     final url = Uri.parse(path);
-    print(path);
-
-    final bool isOnline = await Utils.isOnlineMethod();
     final String key = "Class-$path";
-    final isHaveCache = await APICacheManager().isAPICacheKeyExist(key);
+    final isHaveCache = await MyApiCash.haveCash(key);
 
     try {
       // If offline and have cache
       if (!isOnline && isHaveCache) {
-        final getData = await APICacheManager().getCacheData(key);
-        print('From cache: $getData');
-        return NewClassDetailsModel.fromJson(jsonDecode(getData.syncData));
+        final getData = await MyApiCash.getData(key);
+        return NewClassDetailsModel.fromJson(getData);
       } else {
         final response = await http.get(url);
         final res = json.decode(response.body);
         print(res);
         if (response.statusCode == 200) {
           // Save to cache manager
-          final cacheDBModel =
-              APICacheDBModel(key: key, syncData: response.body);
-          await APICacheManager().addCacheData(cacheDBModel);
+          MyApiCash.saveLocal(key: key, syncData: response.body);
 
           final classDetails = NewClassDetailsModel.fromJson(res);
           return classDetails;
         } else {
-          throw "error $path";
+          throw "error ${res['message']}";
         }
       }
     } catch (error) {
+      if (isHaveCache) {
+        final getData = await MyApiCash.getData(key);
+        return NewClassDetailsModel.fromJson(getData);
+      }
       rethrow;
     }
   }

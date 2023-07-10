@@ -1,11 +1,11 @@
 import 'dart:convert';
-import 'package:api_cache_manager/models/cache_db_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:api_cache_manager/utils/cache_manager.dart';
 
 import '../../constant/constant.dart';
+import '../../local data/api_cashe_maager.dart';
 import '../../ui/auth_Section/auth_controller/auth_controller.dart';
 import '../../ui/bottom_items/Home/utils/utils.dart';
 import 'models.dart';
@@ -29,7 +29,7 @@ class NotificationClass {
     final headers = {'Authorization': 'Bearer $getToken'};
     final bool isOnline = await Utils.isOnlineMethod();
     final String key = "notification$url";
-    var isHaveCash = await APICacheManager().isAPICacheKeyExist(key);
+    var isHaveCash = await MyApiCash.haveCash(key);
     // ignore: avoid_print
     print(url);
     try {
@@ -44,9 +44,7 @@ class NotificationClass {
         final res = json.decode(response.body);
 
         // Save to cache
-        APICacheDBModel cacheDBModel =
-            APICacheDBModel(key: key, syncData: response.body);
-        await APICacheManager().addCacheData(cacheDBModel);
+        MyApiCash.saveLocal(key: key, syncData: response.body);
 
         return ClassNotificationList.fromJson(res);
       } else {

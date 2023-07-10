@@ -127,7 +127,7 @@ class SummaryRequest {
     final Map<String, String> headers = {'Authorization': 'Bearer $getToken'};
     // final bool isOnline = await Utils.isOnlineMethod();
     // var isHaveCash =
-    // await APICacheManager().isAPICacheKeyExist("checkStatus$summaryID");
+    // await MyApiCash.haveCash("checkStatus$summaryID");
 
     try {
       // if offline and have cash
@@ -149,7 +149,7 @@ class SummaryRequest {
         // APICacheDBModel cacheDBModel = APICacheDBModel(
         //     key: "checkStatus$rutin_id", syncData: response.body);
 
-        // await APICacheManager().addCacheData(cacheDBModel);
+        //
 
         //
         CheckStatusModel res =

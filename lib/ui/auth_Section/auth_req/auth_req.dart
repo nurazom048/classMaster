@@ -1,5 +1,6 @@
 // ignore_for_file: unused_local_variable, avoid_print
-
+import 'dart:io' as io;
+import 'dart:async';
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,7 +19,7 @@ class AuthReq {
     String? email,
     required String password,
   }) async {
-    // print('Usernmae$username || emaile$email');
+    // print('Username$username || emailed$email');
 
     var loginUrl = Uri.parse('${Const.BASE_URl}/auth/login');
 
@@ -69,11 +70,12 @@ class AuthReq {
       } else {
         return left(Message(message: message));
       }
+    } on io.SocketException catch (_) {
+      throw Exception('Failed to load data');
+    } on TimeoutException catch (_) {
+      throw Exception('TimeOut Exception');
     } catch (e) {
-      print(e);
-      return left(Message(
-        message: e.toString(),
-      ));
+      return left(Message(message: e.toString()));
     }
   }
 

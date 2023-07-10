@@ -1,8 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'dart:convert';
-import 'package:api_cache_manager/models/cache_db_model.dart';
-import 'package:api_cache_manager/utils/cache_manager.dart';
+import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:table/models/priode/all_priode_models.dart';
 
 import '../../../../../constant/constant.dart';
+import '../../../../../local data/api_cashe_maager.dart';
 import '../../../Add/screens/add_priode.dart';
 import '../../utils/utils.dart';
 
@@ -85,21 +85,19 @@ class PriodeRequest {
   ///
   ///
   /// GET : All Priode In Routine
-  Future<Either<Message, AllPriodeList>> allPriode(String routineID) async {
+  Future<AllPriodeList> allPriode(String routineID) async {
     final url = Uri.parse('${Const.BASE_URl}/rutin/all_priode/$routineID');
 
     final bool isOnline = await Utils.isOnlineMethod();
     final String key = "Priodes-$url";
-    final isHaveCache = await APICacheManager().isAPICacheKeyExist(key);
+    final bool isHaveCache = await MyApiCash.haveCash(key);
 
     try {
-      print('******************');
-      print('$isOnline $isHaveCache');
-      // If user is offline, load data from cache
+      // print('$isOnline $isHaveCache');
       if (!isOnline && isHaveCache) {
-        final getdata = await APICacheManager().getCacheData(key);
-        print('From cache: $getdata');
-        return Right(AllPriodeList.fromJson(jsonDecode(getdata.syncData)));
+        final getdata = await MyApiCash.getData(key);
+
+        return AllPriodeList.fromJson(getdata);
       }
       //
       final response = await http.get(url);
@@ -110,17 +108,16 @@ class PriodeRequest {
 
       if (response.statusCode == 200) {
         // When success, save data into cache
-        final cacheDBModel = APICacheDBModel(key: key, syncData: response.body);
-        await APICacheManager().addCacheData(cacheDBModel);
+        MyApiCash.saveLocal(key: key, syncData: response.body);
 
         // Return the response
-        return Right(allPriode);
+        return allPriode;
       } else {
-        return Left(message);
+        throw message;
       }
-    } catch (e) {
+    } on SocketException catch (e) {
       print("Error: $e");
-      return Left(Message(message: e.toString()));
+      rethrow;
     }
   }
 

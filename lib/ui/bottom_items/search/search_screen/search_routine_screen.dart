@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart';
 import 'package:table/ui/bottom_items/Home/home_req/home_routines_controller.dart';
 import 'package:table/ui/bottom_items/search/search_screen/search_page.dart';
 import 'package:table/widgets/error/error.widget.dart';

@@ -1,8 +1,6 @@
 //import 'package:awesome_notifications/awesome_notifications.dart';
 
-import 'package:app_settings/app_settings.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../one signal/onesignla.services.dart';

@@ -15,7 +15,6 @@ import '../../controller/see_all_req_controller.dart';
 import '../../utils/popup.dart';
 import '../../widgets/account_card_widgets.dart';
 import '../../widgets/member_account_card.dart';
-import 'package:table/ui/bottom_items/Home/Full_routine/models/members_models.dart';
 
 final membersCountProvider = StateProvider.autoDispose<int>((ref) => 0);
 

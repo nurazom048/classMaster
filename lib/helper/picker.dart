@@ -45,7 +45,7 @@ class picker extends HelperMethods {
       );
 
       if (result == null) {
-        return left('selce pdf file');
+        return left('select pdf file');
       }
 
       final bytes = result.files.single.bytes;
@@ -59,7 +59,6 @@ class picker extends HelperMethods {
       final path = result.paths[0];
       return right(path);
     } catch (e) {
-      print("pdf picker err: $e");
       return left('error:$e');
     }
   }

@@ -1,8 +1,8 @@
 // ignore_for_file: non_constant_identifier_names, avoid_print
+import 'dart:io' as io;
 
+import 'dart:async';
 import 'dart:convert';
-import 'package:api_cache_manager/api_cache_manager.dart';
-import 'package:api_cache_manager/models/cache_db_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -10,6 +10,7 @@ import 'package:table/models/message_model.dart';
 import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 
 import '../../../../constant/constant.dart';
+import '../../../../local data/api_cashe_maager.dart';
 import '../../Home/utils/utils.dart';
 import '../models/account_models.dart';
 
@@ -32,15 +33,13 @@ class AccountReq {
         : Uri.parse('${Const.BASE_URl}/account/');
     final headers = {'Authorization': 'Bearer $token'};
     final bool isOnline = await Utils.isOnlineMethod();
-    var isHaveCash = await APICacheManager().isAPICacheKeyExist(url.toString());
+    final key = url.toString();
+    var isHaveCash = await MyApiCash.haveCash(key);
     try {
-//
-      // if offline and have cash
+      //  if offline and have cash
       if (!isOnline && isHaveCash) {
-        //
-        var getdata = await APICacheManager().getCacheData(url.toString());
-        print('From cash $getdata');
-        return AccountModels.fromJson(jsonDecode(getdata.syncData));
+        var getdata = await MyApiCash.getData(key);
+        return AccountModels.fromJson(getdata);
       }
 
 // Request
@@ -48,24 +47,27 @@ class AccountReq {
       print(response.body);
 
       if (response.statusCode == 200) {
-        //
-
         // save to csh
-        APICacheDBModel cacheDBModel =
-            APICacheDBModel(key: url.toString(), syncData: response.body);
-        await APICacheManager().addCacheData(cacheDBModel);
-
-        // send responce
-
+        MyApiCash.saveLocal(key: url.toString(), syncData: response.body);
+        // send response
         return AccountModels.fromJson(json.decode(response.body));
       } else {
         Get.snackbar('Error', json.decode(response.body)['message']);
-
         throw 'Error retrieving account data';
       }
+    } on io.SocketException catch (_) {
+      throw Exception('Failed to load data');
+    } on TimeoutException catch (_) {
+      throw Exception('TimeOut Exception');
     } catch (e) {
-      print(e);
-      throw e.toString();
+      Get.snackbar('Error', '$e');
+      // if offline and have cash
+      if (isHaveCash) {
+        //
+        final getdata = await MyApiCash.getData(key);
+        return AccountModels.fromJson(getdata);
+      }
+      rethrow;
     }
   }
 
@@ -77,7 +79,7 @@ class AccountReq {
     String? profileImage,
     String? coverImage,
   }) async {
-    print('form eddit account ************* $profileImage');
+    print('form edit account ************* $profileImage');
     try {
       // Get token from shared preferences
       final String? getToken = await AuthController.getToken();

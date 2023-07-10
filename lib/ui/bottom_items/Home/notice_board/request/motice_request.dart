@@ -1,7 +1,8 @@
 // ignore_for_file: avoid_print, unused_result
+import 'dart:io' as Io;
 
+import 'dart:async';
 import 'dart:convert';
-import 'package:api_cache_manager/models/cache_db_model.dart';
 import 'package:api_cache_manager/utils/cache_manager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
@@ -11,6 +12,7 @@ import 'package:table/models/message_model.dart';
 import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 
 import '../../../../../constant/constant.dart';
+import '../../../../../local data/api_cashe_maager.dart';
 import '../../utils/utils.dart';
 import '../models/recent_notice_model.dart';
 
@@ -19,7 +21,7 @@ import '../models/recent_notice_model.dart';
 //   return ref.read(noticeReqProvider).recentNotice(academyID: );
 // });
 
-// recet notice
+// recent notice
 final recentNoticeProvider = FutureProvider<RecentNotice>((ref) async {
   return ref.read(noticeReqProvider).recentNotice();
 });
@@ -42,38 +44,38 @@ class NoticeRequest {
     final key = requestUri.toString();
 
     final bool isOffline = await Utils.isOnlineMethod();
-    var isHaveCash = await APICacheManager().isAPICacheKeyExist(key);
+    var isHaveCash = await MyApiCash.haveCash(key);
     try {
       // if offline and have cash
 
       if (!isOffline && isHaveCash) {
         var getdata = await APICacheManager().getCacheData(key);
-        print('Foem cash $getdata');
+        print('From cash $getdata');
         return RecentNotice.fromJson(jsonDecode(getdata.syncData));
-      }
-
-      final response = await http
-          .post(requestUri, headers: {'Authorization': 'Bearer $getToken'});
-      final res = json.decode(response.body);
-
-      if (response.statusCode == 200) {
-        // save to csh
-        APICacheDBModel cacheDBModel =
-            APICacheDBModel(key: key, syncData: response.body);
-
-        await APICacheManager().addCacheData(cacheDBModel);
-
-        print(res);
-
-        return RecentNotice.fromJson(res);
       } else {
-        print(json.decode(response.body));
-        final message = Message.fromJson(json.decode(response.body));
+        final response = await http
+            .post(requestUri, headers: {'Authorization': 'Bearer $getToken'});
+        final res = json.decode(response.body);
 
-        throw message.message;
+        if (response.statusCode == 200) {
+          // save to csh
+          MyApiCash.saveLocal(key: key, syncData: response.body);
+          print(res);
+
+          return RecentNotice.fromJson(res);
+        } else {
+          print(json.decode(response.body));
+          final message = Message.fromJson(json.decode(response.body));
+
+          throw message.message;
+        }
       }
+    } on Io.SocketException catch (_) {
+      throw Exception('Not connected. Failed to load data');
+    } on TimeoutException catch (_) {
+      throw Exception('Not connected. TimeOut Exception');
     } catch (e) {
-      throw Exception(e);
+      rethrow;
     }
   }
 
@@ -103,7 +105,7 @@ class NoticeRequest {
         print("pdf path: $pdfFile");
         request.files.add(pdfPath);
       } catch (e) {
-        print("Eror***** : $e");
+        print("Error***** : $e");
       }
     }
 
@@ -118,7 +120,7 @@ class NoticeRequest {
         // final responseBytes = await response.stream.bytesToString();
         print('response');
         print(resData);
-        return right('Notice uploade sucsessfull');
+        return right('Notice uploaded successfully');
       } else {
         return left("Server error");
       }

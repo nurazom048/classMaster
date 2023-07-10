@@ -1,5 +1,7 @@
 // ignore_for_file: unused_result
 
+import 'dart:io';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../core/dialogs/alert_dialogs.dart';
@@ -30,14 +32,11 @@ class PriodeClassController extends StateNotifier<AsyncValue<AllPriodeList>> {
   void getPriode() async {
     final allPriode = await PriodeRequest().allPriode(routineID);
 
-    allPriode.fold(
-      (l) {
-        state = AsyncValue.error(l.message, StackTrace.current);
-      },
-      (r) {
-        state = AsyncValue.data(r);
-      },
-    );
+    try {
+      state = AsyncValue.data(allPriode);
+    } on SocketException catch (e, s) {
+      AsyncValue.error(e, s);
+    }
   }
 
   //*********************   deletePriode  *************************//
