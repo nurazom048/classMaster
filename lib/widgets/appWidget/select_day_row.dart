@@ -1,5 +1,6 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 import '../../constant/app_color.dart';
 
@@ -29,7 +30,7 @@ class _SelectDayRowState extends State<SelectDayRow> {
   void initState() {
     super.initState();
     selectedDays = DateTime.now().weekday;
-    setState(() {});
+    // setState(() {});
   }
 
   @override
@@ -48,6 +49,7 @@ class _SelectDayRowState extends State<SelectDayRow> {
           isSelected: index == selectedDays,
           text: dayNAme[index],
           onTap: () {
+            if (!mounted) return;
             setState(() => selectedDays = index);
 
             widget.selectedDay.call(index);
@@ -61,7 +63,11 @@ class _SelectDayRowState extends State<SelectDayRow> {
   }
 }
 
-class SelectDayChip extends StatelessWidget {
+final intialDayProvider = StateProvider<DateTime>((ref) {
+  return initialDateTimeMakerBaseOnSunday();
+});
+
+class SelectDayChip extends ConsumerWidget {
   final String text;
   final bool isSelected;
   final dynamic onTap;
@@ -74,8 +80,9 @@ class SelectDayChip extends StatelessWidget {
     required this.index,
   });
   @override
-  Widget build(BuildContext context) {
-    int day = initialDateTimeMakerBaseOnSunday().add(Duration(days: index)).day;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final initialDay = ref.watch(intialDayProvider);
+    final int day = initialDay.add(Duration(days: index)).day;
     return InkWell(
         onTap: onTap,
         child: ClipRRect(

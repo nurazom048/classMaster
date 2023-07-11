@@ -13,6 +13,8 @@ import '../../../../constant/constant.dart';
 import '../../../../core/dialogs/alert_dialogs.dart';
 import 'package:table/models/class_model.dart';
 
+import '../../Home/Full_routine/controller/riutine_details.controller.dart';
+
 class ClassRequest {
   // ignore: body_might_complete_normally_nullable
   static Future<String?> addClass(
@@ -43,7 +45,7 @@ class ClassRequest {
         final res = json.decode(response.body);
         print(res);
         // Navigator.pop(context);
-        ref.refresh(routine_details_provider(routineId));
+        ref.refresh(routineDetailsProvider(routineId));
         //print response
         print("class created successfully");
         print(res);
@@ -89,7 +91,7 @@ class ClassRequest {
       if (response.statusCode == 200) {
         Message message =
             Message(message: json.decode(response.body)["message"]);
-        ref.refresh(routine_details_provider(routineId));
+        ref.refresh(routineDetailsProvider(routineId));
 
         print("Routine created successfully");
         Alert.showSnackBar(context, message.message);
@@ -124,7 +126,7 @@ class ClassRequest {
       if (response.statusCode == 200) {
         print("Class Deleted successfully $res ");
         Alert.showSnackBar(context, 'Class Deleted successfully');
-        ref.refresh(routine_details_provider(routineId));
+        ref.refresh(routineDetailsProvider(routineId));
 
         print(res);
       } else {

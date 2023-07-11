@@ -11,12 +11,6 @@ import '../../utils/utils.dart';
 
 final routine_Req_provider = Provider<Routine_Req>((ref) => Routine_Req());
 
-//.... routine_details_provider
-final routine_details_provider = FutureProvider.autoDispose
-    .family<NewClassDetailsModel?, String>((ref, routineId) async {
-  return ref.read(routine_Req_provider).routine_class_and_priode(routineId);
-});
-
 class Routine_Req {
   //
 

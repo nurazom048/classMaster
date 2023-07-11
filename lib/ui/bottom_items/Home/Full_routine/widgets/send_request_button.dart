@@ -73,7 +73,7 @@ class SendReqButton extends StatelessWidget {
             ),
           )
         else
-          NotificationButton(icon: nIcon, onTap: showPanel),
+           NotificationButton(icon: nIcon, onTap: showPanel),
       ],
     );
   }

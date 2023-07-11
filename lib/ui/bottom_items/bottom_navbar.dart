@@ -34,9 +34,7 @@ class BottomNavBar extends StatelessWidget {
     child: const Icon(Icons.add, color: Colors.white),
   );
 // Add popup
-  static addpopup(BuildContext context) => plusBottomSheet(
-        context,
-      );
+  static addpopup(BuildContext context) => plusBottomSheet(context);
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, _) {

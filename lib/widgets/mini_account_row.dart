@@ -5,6 +5,9 @@ import 'package:table/widgets/appWidget/app_text.dart';
 import '../ui/bottom_items/Collection Fetures/models/account_models.dart';
 import '../ui/bottom_items/Home/utils/utils.dart';
 
+
+
+
 class MiniAccountInfo extends StatelessWidget {
   final AccountModels? accountData;
   final dynamic onTapMore;
@@ -32,11 +35,13 @@ class MiniAccountInfo extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
+
+
               children: [
                 FutureBuilder(
                   future: Utils.isOnlineMethod(),
                   builder: (context, snapshot) {
-                    bool isOnline = snapshot.data ?? false;
+                  final   bool isOnline = snapshot.data ?? false;
 
                     if (isOnline && accountData?.image != null) {
                       return CircleAvatar(

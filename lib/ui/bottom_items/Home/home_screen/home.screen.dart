@@ -151,7 +151,7 @@ Widget homeMobileView(
 
           //_______________________ recent notices _________________//
           const HomeRecentNoticeWidget(),
-          // uploaded Routine
+          // // uploaded Routine
           homeRoutines.when(
               data: (data) {
                 void scrollListener() {

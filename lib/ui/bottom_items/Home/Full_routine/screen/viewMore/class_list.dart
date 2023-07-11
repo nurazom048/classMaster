@@ -12,6 +12,7 @@ import '../../../../../../widgets/error/error.widget.dart';
 import '../../../../../../widgets/heading_row.dart';
 import '../../../utils/utils.dart';
 import '../../controller/priode_controller.dart';
+import '../../controller/riutine_details.controller.dart';
 import '../../request/routine_api.dart';
 import '../../../../Add/screens/add_priode.dart';
 import '../../controller/check_status_controller.dart';
@@ -39,7 +40,7 @@ class ClassListPage extends StatelessWidget {
       print(routineId);
 
       // Provider
-      final routineDetails = ref.watch(routine_details_provider(routineId));
+      final routineDetails = ref.watch(routineDetailsProvider(routineId));
       final allPriode = ref.watch(priodeController(routineId));
       final totalPriode = ref.watch(totalPriodeCountProvider);
       final totalClass = ref.watch(totalClassCountProvider);
@@ -59,7 +60,7 @@ class ClassListPage extends StatelessWidget {
             } else {
               //! provider
 
-              ref.refresh(routine_details_provider(routineId));
+              ref.refresh(routineDetailsProvider(routineId));
               ref.refresh(priodeController(routineId));
             }
           },

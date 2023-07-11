@@ -1,6 +1,5 @@
 // ignore_for_file: non_constant_identifier_names, avoid_print
 import 'dart:io' as io;
-
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -56,9 +55,14 @@ class AccountReq {
         throw 'Error retrieving account data';
       }
     } on io.SocketException catch (_) {
-      throw Exception('Failed to load data');
+      if (isHaveCash) {
+        //
+        final getdata = await MyApiCash.getData(key);
+        return AccountModels.fromJson(getdata);
+      }
+      throw 'Failed to load data';
     } on TimeoutException catch (_) {
-      throw Exception('TimeOut Exception');
+      throw 'TimeOut Exception';
     } catch (e) {
       Get.snackbar('Error', '$e');
       // if offline and have cash

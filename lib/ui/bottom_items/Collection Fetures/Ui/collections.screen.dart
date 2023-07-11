@@ -44,17 +44,25 @@ class CollectionScreen extends ConsumerStatefulWidget {
 }
 
 class _CollectionScreenState extends ConsumerState<CollectionScreen> {
+  late ScrollController collectionPageScroll;
+
   @override
   void initState() {
-    super.initState();
+    collectionPageScroll = ScrollController();
     AwesomeNotificationSetup.takePermiton(context);
-
     FirebaseAnalyticsServices.logEvent(
       name: 'collectionsceen',
       parameters: {
         "content_type": "ontap",
       },
     );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    collectionPageScroll.dispose();
+    super.dispose();
   }
 
   @override
@@ -85,7 +93,7 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
               }
             },
             child: SingleChildScrollView(
-              //physics: const BouncingScrollPhysics(),
+              controller: collectionPageScroll,
               padding: const EdgeInsets.only(bottom: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,7 +176,7 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                       const FaIcon(FontAwesomeIcons.bookmark),
                       saxpath: 'assets/svg/undraw_personal_file_re_5joy.svg',
                       imageMargin: const EdgeInsets.only(left: 10),
-                      onTap: () => Get.to(SaveRoutinesScreen()),
+                      onTap: () => Get.to(const SaveRoutinesScreen()),
                     ),
 
                     const SizedBox(width: 20),

@@ -8,12 +8,31 @@ import '../../../../widgets/heder/heder_title.dart';
 import '../../Home/Full_routine/Summary/Summary Controller/summary_controller.dart';
 import '../../Home/Full_routine/Summary/widgets/chats.dribles .dart';
 
-class SaveSummeryScreen extends ConsumerWidget {
-  SaveSummeryScreen({super.key});
-  final scrollController = ScrollController();
+class SaveSummeryScreen extends ConsumerStatefulWidget {
+  const SaveSummeryScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _SaveSummeryScreenState();
+}
+
+class _SaveSummeryScreenState extends ConsumerState<SaveSummeryScreen> {
+  late ScrollController scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     //! provider
     final allSummary = ref.watch(summaryControllerProvider(null));
     final summaryNotifier = ref.watch(summaryControllerProvider(null).notifier);

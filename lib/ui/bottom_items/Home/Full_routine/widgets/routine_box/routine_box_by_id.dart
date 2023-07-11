@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
@@ -12,6 +13,7 @@ import 'package:table/widgets/mini_account_row.dart';
 import '../../../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../../../models/class_details_model.dart';
 import '../../controller/check_status_controller.dart';
+import '../../controller/riutine_details.controller.dart';
 import '../../screen/viewMore/view_more_screen.dart';
 import '../../Summary/summat_screens/summary_screen.dart';
 import '../../request/routine_api.dart';
@@ -30,10 +32,6 @@ class RoutineBoxById extends StatefulWidget {
   final String rutinId;
   final dynamic onTapMore;
   final EdgeInsetsGeometry? margin;
-  List<Day?> listOfDayState = [];
-  List<Day?> allDays = [];
-
-  int gSelectedDay = DateTime.now().weekday;
 
   RoutineBoxById({
     Key? key,
@@ -48,29 +46,34 @@ class RoutineBoxById extends StatefulWidget {
 }
 
 class _RutinBoxByIdState extends State<RoutineBoxById> {
+  late int gSelectedDay;
+  List<Day?> listOfDayState = [];
+  List<Day?> allDays = [];
   @override
   void initState() {
+    gSelectedDay = DateTime.now().weekday;
     super.initState();
-    widget.gSelectedDay = DateTime.now().weekday;
+  }
+
+  @override
+  void dispose() {
+    listOfDayState.clear();
+    allDays.clear();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    print('object');
     return Consumer(builder: (context, ref, _) {
       // Get providers
       final checkStatus =
           ref.watch(checkStatusControllerProvider(widget.rutinId));
-      final rutinDetails = ref.watch(routine_details_provider(widget.rutinId));
-
-      // String status = checkStatus.value?.activeStatus ?? '';
-      // bool notificationOn = checkStatus.value?.notificationOn ?? false;
-      // Get notifier
+      final rutinDetails = ref.watch(routineDetailsProvider(widget.rutinId));
       final checkStatusNotifier =
           ref.watch(checkStatusControllerProvider(widget.rutinId).notifier);
 
       //
-      final isExpanded = ref.watch(isExpandedProvider);
-      final isExpandedNotifier = ref.watch(isExpandedProvider.notifier);
 
       return Container(
         constraints: const BoxConstraints(minHeight: 428),
@@ -92,7 +95,7 @@ class _RutinBoxByIdState extends State<RoutineBoxById> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // Rutin name
+                      // Routine name
                       InkWell(
                         onTap: () => Navigator.push(
                           context,
@@ -110,7 +113,7 @@ class _RutinBoxByIdState extends State<RoutineBoxById> {
                         ),
                       ),
 
-                      // Notification button or request button
+                      //  Notification button or request button
                       checkStatus.when(
                         data: (data) {
                           String status = data.activeStatus;
@@ -146,87 +149,7 @@ class _RutinBoxByIdState extends State<RoutineBoxById> {
                   padding: const EdgeInsets.symmetric(vertical: 10)
                       .copyWith(bottom: 0),
                 ),
-
-                // Select day row
-                SelectDayRow(selectedDay: (selectedDay) {
-                  if (!mounted) return;
-
-                  setState(() {
-                    if (widget.gSelectedDay != selectedDay) {
-                      widget.gSelectedDay = selectedDay;
-                    }
-                  });
-                }),
-
-                // Rutin info and owner info
-                rutinDetails.when(
-                  data: (data) {
-                    if (data == null) return const Text("id null");
-
-                    List<Day?> sun = data.classes.sunday;
-                    List<Day?> mon = data.classes.monday;
-                    List<Day?> tue = data.classes.tuesday;
-                    List<Day?> wed = data.classes.wednesday;
-                    List<Day?> thu = data.classes.thursday;
-                    List<Day?> fri = data.classes.friday;
-                    List<Day?> sat = data.classes.saturday;
-
-                    //
-                    int classLenght =
-                        isExpanded == true || widget.listOfDayState.length <= 2
-                            ? widget.listOfDayState.length
-                            : 2;
-                    selectDays(sun, mon, tue, wed, thu, fri, sat);
-                    return Container(
-                      //  color: Colors.red,
-                      constraints: const BoxConstraints(minHeight: 200),
-                      child: ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: classLenght,
-                        itemBuilder: (context, index) {
-                          if (widget.listOfDayState.isNotEmpty) {
-                            return Column(
-                              children: [
-                                RutineCardInfoRow(
-                                  isFirst: index == 0,
-                                  day: widget.listOfDayState[index],
-                                  onTap: () {
-                                    if (!mounted) return;
-
-                                    onTap(
-                                        widget.listOfDayState[index], context);
-                                  },
-                                ),
-                                if (index.isEqual(classLenght - 1) &&
-                                    widget.listOfDayState.length > 2)
-                                  Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 10),
-                                    child: ExpendedButton(
-                                      isExpanded: isExpanded,
-                                      onTap: () {
-                                        if (!mounted) return;
-                                        isExpandedNotifier
-                                            .update((state) => !state);
-                                      },
-                                    ),
-                                  )
-                              ],
-                            );
-                          } else {
-                            return const Text("No Class");
-                          }
-                        },
-                      ),
-                    );
-                  },
-                  error: (error, stackTrace) =>
-                      Alert.handleError(context, error),
-                  loading: () => const Text(
-                    "______________________________________________",
-                  ),
-                ),
+                ClassSliderView(routineId: widget.rutinId),
               ],
             ),
 
@@ -240,10 +163,9 @@ class _RutinBoxByIdState extends State<RoutineBoxById> {
                 ),
                 rutinDetails.when(
                   data: (data) {
-                    if (data == null) {}
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       if (mounted) {
-                        String? ownerName = data?.owner.name;
+                        String? ownerName = data.owner.name;
                         ref
                             .watch(ownerNameProvider.notifier)
                             .update((state) => ownerName);
@@ -251,7 +173,7 @@ class _RutinBoxByIdState extends State<RoutineBoxById> {
                     });
 
                     return MiniAccountInfo(
-                      accountData: data?.owner,
+                      accountData: data.owner,
                       onTapMore: widget.onTapMore,
                     );
                   },
@@ -266,8 +188,98 @@ class _RutinBoxByIdState extends State<RoutineBoxById> {
       );
     });
   }
+}
 
-  void selectDays(
+final initialWeekdayProvider =
+    StateProvider.family<int, String>((ref, routineId) {
+  return DateTime.now().weekday;
+});
+
+class ClassSliderView extends ConsumerWidget {
+  final String routineId;
+  const ClassSliderView({
+    super.key,
+    required this.routineId,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    //! provider
+    final rutinDetails = ref.watch(routineDetailsProvider(routineId));
+    //
+    final initialDay = ref.watch(initialWeekdayProvider(routineId));
+    final initialDayNotifier =
+        ref.watch(initialWeekdayProvider(routineId).notifier);
+
+    //
+    final isExpanded = ref.watch(isExpandedProvider);
+    final isExpandedNotifier = ref.watch(isExpandedProvider.notifier);
+    return Column(
+      children: [
+        ///  Select day row
+        SelectDayRow(selectedDay: (selectedDay) {
+          initialDayNotifier.update((state) => selectedDay);
+        }),
+
+        rutinDetails.when(
+          data: (data) {
+            final List<Day?> sun = data.classes.sunday;
+            final List<Day?> mon = data.classes.monday;
+            final List<Day?> tue = data.classes.tuesday;
+            final List<Day?> wed = data.classes.wednesday;
+            final List<Day?> thu = data.classes.thursday;
+            final List<Day?> fri = data.classes.friday;
+            final List<Day?> sat = data.classes.saturday;
+
+            final List<Day?> current =
+                currentDay(sun, mon, tue, wed, thu, fri, sat, initialDay);
+
+            final int classLenght =
+                isExpanded == true || current.length <= 3 ? current.length : 3;
+            return ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: classLenght,
+              itemBuilder: (context, index) {
+                if (current.isNotEmpty) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      RutineCardInfoRow(
+                        isFirst: index == 0,
+                        day: current[index],
+                        onTap: () {
+                          onTap(current[index], context);
+                        },
+                      ),
+                      if (index.isEqual(classLenght - 1) && current.length > 3)
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          child: ExpendedButton(
+                            isExpanded: isExpanded,
+                            onTap: () {
+                              isExpandedNotifier.update((state) => !state);
+                            },
+                          ),
+                        )
+                    ],
+                  );
+                } else {
+                  return const Text("No Class");
+                }
+              },
+            );
+          },
+          loading: () => const SizedBox(),
+          error: (error, stackTrace) => Alert.handleError(context, error),
+        ),
+      ],
+    );
+  }
+
+  List<Day?> currentDay(
     List<Day?> sun,
     List<Day?> mon,
     List<Day?> tue,
@@ -275,62 +287,58 @@ class _RutinBoxByIdState extends State<RoutineBoxById> {
     List<Day?> thu,
     List<Day?> fri,
     List<Day?> sat,
+    int initialDay,
   ) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      List<Day?> newListOfDays;
+    List<Day?> newListOfDays;
 
-      switch (widget.gSelectedDay) {
-        case 0:
-          newListOfDays = sun;
-          break;
-        case 1:
-          newListOfDays = mon;
-          break;
-        case 2:
-          newListOfDays = tue;
-          break;
-        case 3:
-          newListOfDays = wed;
-          break;
-        case 4:
-          newListOfDays = thu;
-          break;
-        case 5:
-          newListOfDays = fri;
-          break;
-        case 6:
-          newListOfDays = sat;
-          break;
-        default:
-          // If the selected day is not valid, use an empty list
-          newListOfDays = [];
-          break;
-      }
+    switch (initialDay) {
+      case 0:
+        newListOfDays = sun;
+        break;
+      case 1:
+        newListOfDays = mon;
+        break;
+      case 2:
+        newListOfDays = tue;
+        break;
+      case 3:
+        newListOfDays = wed;
+        break;
+      case 4:
+        newListOfDays = thu;
+        break;
+      case 5:
+        newListOfDays = fri;
+        break;
+      case 6:
+        newListOfDays = sat;
+        break;
+      default:
+        // If the selected day is not valid, use an empty list
+        newListOfDays = [];
+        break;
+    }
 
-      if (mounted) {
-        setState(() {
-          widget.listOfDayState = newListOfDays;
-        });
-      }
-    });
+    // if (!mounted) {}
+
+    return newListOfDays;
   }
-}
 
-// Navigate to the SummaryScreen when a day is tapped
-void onTap(Day? day, context) {
-  Get.to(
-    () => SummaryScreen(
-      classId: day!.classId.id,
-      className: day.classId.name,
-      instructorName: day.classId.instuctorName,
-      routineID: day.routineId,
-      subjectCode: day.classId.subjectcode,
-      //
-      startTime: day.startTime,
-      endTime: day.endTime,
-      start: day.start,
-      end: day.end,
-      room: day.room,
-    ),
-  );
+  void onTap(Day? day, context) {
+    Get.to(
+      () => SummaryScreen(
+        classId: day!.classId.id,
+        className: day.classId.name,
+        instructorName: day.classId.instuctorName,
+        routineID: day.routineId,
+        subjectCode: day.classId.subjectcode,
+        //
+        startTime: day.startTime,
+        endTime: day.endTime,
+        start: day.start,
+        end: day.end,
+        room: day.room,
+      ),
+    );
+  }
 }
