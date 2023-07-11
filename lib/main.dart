@@ -16,13 +16,13 @@ void main() async {
   //firebase
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // crashlytics
-  // FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
+  // // crashlytics
+  // // FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
+  // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  // PlatformDispatcher.instance.onError = (error, stack) {
+  //   FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+  //   return true;
+  // };
   //fcm
   // Firebase analytics
   // FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(!kDebugMode);

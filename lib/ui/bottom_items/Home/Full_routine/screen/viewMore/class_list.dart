@@ -13,7 +13,6 @@ import '../../../../../../widgets/heading_row.dart';
 import '../../../utils/utils.dart';
 import '../../controller/priode_controller.dart';
 import '../../controller/riutine_details.controller.dart';
-import '../../request/routine_api.dart';
 import '../../../../Add/screens/add_priode.dart';
 import '../../controller/check_status_controller.dart';
 import '../../Summary/summat_screens/summary_screen.dart';
@@ -139,11 +138,7 @@ class ClassListPage extends StatelessWidget {
 
               routineDetails.when(
                 data: (data) {
-                  if (data == null) {
-                    return Text("Null $data");
-                  }
-
-                  int length = data.uniqClass.length;
+                  final int length = data.uniqClass.length;
 
                   return ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),

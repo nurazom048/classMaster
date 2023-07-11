@@ -1,34 +1,77 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 
-import '../auth_ui/logIn_screen.dart';
+import '../../../core/dialogs/alert_dialogs.dart';
+import '../auth_ui/cranditial_info_screen.dart';
 
 //! provider
 final googleAuthControllerProvider =
-    Provider<GooleAuthController>((ref) => GooleAuthController());
+    Provider<GoogleAuthController>((ref) => GoogleAuthController());
 
 // class
-class GooleAuthController extends ChangeNotifier {
-  var gooleSiginIn = GoogleSignIn();
+class GoogleAuthController extends ChangeNotifier {
+  //
+  GoogleSignIn googleSignIn = GoogleSignIn();
   GoogleSignInAccount? googleAccount;
   bool lodging = false;
 
-  signin(context) async {
+  Future<void> signing(context, WidgetRef ref) async {
     lodging = true;
     // pick account and store into googleAccount variable
-    GoogleSignInAccount? selectedGooleAccount = await gooleSiginIn.signIn();
-    if (selectedGooleAccount == null) {
+    GoogleSignInAccount? selectedGoogleAccount = await googleSignIn.signIn();
+    if (selectedGoogleAccount == null) {
       lodging = false;
     }
-    googleAccount = selectedGooleAccount;
+    googleAccount = selectedGoogleAccount;
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const CredentialScreen(),
-      ),
-    );
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => const CredentialScreen(),
+    //   ),
+    // );
+////////////////////////
+
+    if (googleAccount != null) {
+      final GoogleSignInAccount? googleUser = googleAccount;
+
+      final authentication = await googleUser?.authentication;
+      final idToken = authentication?.idToken;
+      final accessToken = authentication?.accessToken;
+
+      if (idToken == null && accessToken == null) {
+        Alert.errorAlertDialog(context, 'failed');
+      } else {
+        final credential = GoogleAuthProvider.credential(
+          accessToken: accessToken,
+          idToken: idToken,
+        );
+        UserCredential userCredential =
+            await FirebaseAuth.instance.signInWithCredential(credential);
+
+        // If the user is first time login thn go to credential screen else Api Call
+        if (userCredential.additionalUserInfo!.isNewUser) {
+          Get.to(() => const CredentialScreen());
+        } else {
+          final authLogin = ref.watch(authController_provider.notifier);
+          User? user = FirebaseAuth.instance.currentUser;
+          final currentUsersToken = await user?.getIdToken();
+
+          Alert.errorAlertDialog(context, 'You are verified');
+
+          // With google
+          authLogin.continueWithGoogle(
+            context,
+            googleAuthToken: currentUsersToken ?? '',
+          );
+        }
+      }
+    }
+
     // ignore: avoid_print
     print(googleAccount);
     lodging = false;

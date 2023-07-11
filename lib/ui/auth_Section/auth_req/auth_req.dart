@@ -181,6 +181,55 @@ class AuthReq {
       return left(e.toString());
     }
   }
+
+  //........ Login .........//
+  Future<Either<Message, String>> continueWithGoogle({
+    required String googleAuthToken,
+    String? accountType,
+    String? eiinNumber,
+    String? contractInfo,
+  }) async {
+    final Uri loginUrl = Uri.parse('${Const.BASE_URl}/auth/google');
+    print(loginUrl);
+
+    try {
+      final response = await http.post(loginUrl, body: {
+        "googleAuthToken": googleAuthToken,
+        "account_type": accountType == null ? '' : accountType.toLowerCase(),
+        "EIIN": eiinNumber ?? '',
+        "contractInfo": contractInfo ?? '',
+      });
+
+      Message message = Message(message: json.decode(response.body)['message']);
+      print(json.decode(response.body));
+      final accountData = json.decode(response.body);
+      print('*********************');
+      print(accountData);
+      if (response.statusCode == 201) {
+        left(Message(message: json.decode(response.body)['message']));
+      }
+      //
+      if (response.statusCode == 200) {
+        //... save token
+        await AuthController.saveToken(json.decode(response.body)["token"]);
+        await AuthController.saveAccountType(
+            accountData["account"]["account_type"]);
+        await AuthController.saveUsername(accountData["account"]["username"]);
+
+        //
+
+        return right(message.message);
+      } else {
+        return left(message);
+      }
+    } on io.SocketException catch (_) {
+      throw Exception('Failed to load data');
+    } on TimeoutException catch (_) {
+      throw Exception('TimeOut Exception');
+    } catch (e) {
+      return left(Message(message: e.toString()));
+    }
+  }
 }
 
 final authReqProvider = Provider((ref) => AuthReq());

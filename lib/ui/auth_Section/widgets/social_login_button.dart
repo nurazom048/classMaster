@@ -3,19 +3,18 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SocialLoginButton extends StatelessWidget {
   final VoidCallback onTap;
-  final bool? isphone;
+  final bool? isPhone;
   const SocialLoginButton({
     super.key,
     required this.onTap,
-    this.isphone,
+    this.isPhone,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 230,
       height: 43.84,
-      margin: const EdgeInsets.symmetric(horizontal: 100, vertical: 20)
+      margin: const EdgeInsets.symmetric(horizontal: 60, vertical: 0)
           .copyWith(bottom: 2),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
@@ -25,18 +24,19 @@ class SocialLoginButton extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             FaIcon(
-              isphone == true
+              isPhone == true
                   ? FontAwesomeIcons.phone
                   : FontAwesomeIcons.google,
               color: const Color(0xFF0168FF),
               size: 20,
             ),
+            const SizedBox(width: 6),
             // Your content here
             Text(
-              isphone == true
+              isPhone == true
                   ? 'Continue with Phone '
                   : "Continue with Google ",
               style: const TextStyle(

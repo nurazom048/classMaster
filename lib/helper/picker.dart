@@ -53,7 +53,7 @@ class picker extends HelperMethods {
 
       if (fileSizeInMB > 10) {
         // Show an error message if the file size exceeds 10 MB
-        return left('file only allow uner 10 mb');
+        return left('file only allow user 10 mb');
       }
 
       final path = result.paths[0];

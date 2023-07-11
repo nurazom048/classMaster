@@ -1,6 +1,5 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
@@ -16,7 +15,6 @@ import '../../controller/check_status_controller.dart';
 import '../../controller/riutine_details.controller.dart';
 import '../../screen/viewMore/view_more_screen.dart';
 import '../../Summary/summat_screens/summary_screen.dart';
-import '../../request/routine_api.dart';
 import '../../../../../../widgets/appWidget/select_day_row.dart';
 import '../../utils/routine_dialog.dart';
 import '../send_request_button.dart';
@@ -33,7 +31,7 @@ class RoutineBoxById extends StatefulWidget {
   final dynamic onTapMore;
   final EdgeInsetsGeometry? margin;
 
-  RoutineBoxById({
+  const RoutineBoxById({
     Key? key,
     required this.rutinName,
     required this.onTapMore,

@@ -31,10 +31,9 @@ class AccountCard extends StatelessWidget {
                 bool isOnline = snapshot.data ?? false;
 
                 if (isOnline == true && profilepicture != null) {
-                  return Container(
+                  return SizedBox(
                       height: 70,
                       width: 70,
-                      color: Colors.white,
                       child: ClipOval(
                         child: Image.network(
                           profilepicture!,

@@ -1,9 +1,13 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:table/core/component/loaders.dart';
 import 'package:table/core/dialogs/alert_dialogs.dart';
 import 'package:table/ui/auth_Section/auth_ui/SignUp_Screen.dart';
+import 'package:table/ui/auth_Section/auth_ui/cranditial_info_screen.dart';
 import 'package:table/ui/auth_Section/utils/login_validation.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 
@@ -15,6 +19,7 @@ import '../auth_controller/auth_controller.dart';
 import '../auth_controller/google_auth_controller.dart';
 import '../widgets/or.dart';
 import '../widgets/sign_up_page_switch.dart';
+import '../widgets/social_login_button.dart';
 import 'forgetpassword_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -63,6 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
       //
       final authLogin = ref.watch(authController_provider.notifier);
       final loading = ref.watch(authController_provider);
+      final googleAuthProvider = ref.read(googleAuthControllerProvider);
 
       return WillPopScope(
         onWillPop: () => Future.value(false),
@@ -167,6 +173,36 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     const OR(),
 
+                    SignUpSwitcherButton(
+                      "Do not have an account?",
+                      "Sign up",
+                      onTap: () => Get.to(() => SignUpScreen(
+                            emailAddress: emailController.text,
+                          )),
+                    ),
+                    const SizedBox(height: 20),
+                    ref.watch(googleAuthControllerProvider).lodging == true
+                        ? SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: Loaders.center(),
+                          )
+                        : SocialLoginButton(onTap: () {
+                            googleAuthProvider.signing(context, ref);
+                          }),
+
+                    ///
+                    ///
+
+                    // // continue with phone
+
+                    // SocialLoginButton(
+                    //   iphone: true,
+                    //   onTap: () async {
+                    //     Get.to(() => const PhoneNumberScreen());
+                    //   },
+                    // ),
+
                     TextButton(
                       onPressed: () {
                         authLogin.signIn(
@@ -192,41 +228,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       // ignore: prefer_const_constructors
                       child: Text('skip'),
                     ),
-
-                    SignUpSwitcherButton(
-                      "Do not have an account?",
-                      "Sign up",
-                      onTap: () => Get.to(() => SignUpScreen(
-                            emailAddress: emailController.text,
-                          )),
-                    ),
-
-                    ///
-                    ///
-                    // ref.watch(googleAuthControllerProvider).lodging == true
-                    //     ? const SizedBox(
-                    //         height: 20, width: 20, child: Progressindicator())
-                    //     : SocialLoginButton(
-                    //         onTap: () async {
-                    //           ref
-                    //               .read(googleAuthControllerProvider)
-                    //               .signing(context);
-
-                    //           if (ref
-                    //                   .watch(googleAuthControllerProvider)
-                    //                   .googleAccount !=
-                    //               null) {}
-                    //         },
-                    //       ),
-
-                    // // continue with phone
-
-                    // SocialLoginButton(
-                    //   iphone: true,
-                    //   onTap: () async {
-                    //     Get.to(() => const PhoneNumberScreen());
-                    //   },
-                    // ),
                   ],
                 ),
               ),
@@ -235,38 +236,5 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       );
     });
-  }
-}
-
-class CredentialScreen extends ConsumerWidget {
-  const CredentialScreen({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    //! provider
-    final googleUser = ref.watch(googleAuthControllerProvider).googleAccount;
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          // crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            if (googleUser != null && googleUser.photoUrl != null)
-              CircleAvatar(
-                radius: 30,
-                backgroundImage: NetworkImage(googleUser.photoUrl!),
-              ),
-            Text("id: ${googleUser?.id}"),
-            Text("Name: ${googleUser?.displayName}"),
-            Text("Email: ${googleUser?.email}"),
-            //
-
-            Text("Heder: ${googleUser?.authHeaders}"),
-            Text("server auth: ${googleUser?.serverAuthCode}"),
-          ],
-        ),
-      ),
-    );
   }
 }

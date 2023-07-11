@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pinput/pinput.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/message_model.dart';
 import 'package:table/ui/auth_Section/auth_req/auth_req.dart';
@@ -246,6 +247,55 @@ class AuthController extends StateNotifier<bool> {
       },
     );
   }
+
+  //*********************************************************** */
+  Future<void> continueWithGoogle(
+    context, {
+    required String googleAuthToken,
+    String? accountType,
+    String? eiinNumber,
+    String? contractInfo,
+  }) async {
+    final bool isOnline = await Utils.isOnlineMethod();
+
+    if (!isOnline) {
+      Alert.errorAlertDialog(
+        context,
+        'You are in Offline',
+        title: 'Network Error',
+      );
+    } else {
+      state = true;
+      final Either<Message, String> res = await authReq.continueWithGoogle(
+        googleAuthToken: googleAuthToken,
+        accountType: accountType,
+        eiinNumber: eiinNumber,
+        contractInfo: contractInfo,
+      );
+
+      res.fold(
+        (error) async {
+          state = false;
+          if (error.message == 'Academy request is pending') {
+            Get.to(() => const PendingScreen());
+          } else {
+            return Alert.errorAlertDialog(context, error.message);
+          }
+        },
+        (data) async {
+          state = false;
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => BottomNavBar(),
+          //   ),
+          //);
+          Alert.showSnackBar(context, data);
+        },
+      );
+    }
+  }
+
 // get account Type
 
   static Future<String?> getAccountType() async {

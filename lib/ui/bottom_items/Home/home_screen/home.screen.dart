@@ -11,6 +11,7 @@ import 'package:table/ui/bottom_items/Home/widgets/mydrawer.dart';
 import 'package:table/ui/bottom_items/Home/widgets/recent_notice_title.dart';
 import 'package:table/ui/bottom_items/Home/widgets/recentnoticeslider_scalton.dart';
 import 'package:table/ui/bottom_items/Home/widgets/slider/recentniticeslider_item.dart';
+import 'package:table/widgets/appWidget/app_text.dart';
 import 'package:table/widgets/error/error.widget.dart';
 import '../../../../core/component/responsive.dart';
 import '../../../../core/dialogs/alert_dialogs.dart';
@@ -63,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, _) {
-      //! provider
+      //. provider
 
       final homeRoutines = ref.watch(homeRoutineControllerProvider(null));
       // final recentNoticeList = ref.watch(recentNoticeController(null));
@@ -166,26 +167,36 @@ Widget homeMobileView(
 
                 scrollController.addListener(scrollListener);
 
-                //
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: const EdgeInsets.only(bottom: 100),
-                  itemCount: data.homeRoutines.length,
-                  itemBuilder: (context, index) {
-                    return RoutineBoxById(
-                      rutinId: data.homeRoutines[index].rutineId.id,
-                      rutinName: data.homeRoutines[index].rutineId.name,
-                      onTapMore: () =>
-                          RoutineDialog.CheckStatusUser_BottomSheet(
-                        context,
-                        routineID: data.homeRoutines[index].rutineId.id,
-                        routineName: data.homeRoutines[index].rutineId.name,
-                        routinesController: homeRoutineNotifier,
-                      ),
-                    );
-                  },
-                );
+                if (data.homeRoutines.isEmpty) {
+                  return SizedBox(
+                    height: 400,
+                    child: Center(
+                        child: Text(
+                      "You Don't have joined or created any Routines",
+                      style: TS.heading(fontSize: 16),
+                    )),
+                  );
+                } else {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: const EdgeInsets.only(bottom: 100),
+                    itemCount: data.homeRoutines.length,
+                    itemBuilder: (context, index) {
+                      return RoutineBoxById(
+                        rutinId: data.homeRoutines[index].rutineId.id,
+                        rutinName: data.homeRoutines[index].rutineId.name,
+                        onTapMore: () =>
+                            RoutineDialog.CheckStatusUser_BottomSheet(
+                          context,
+                          routineID: data.homeRoutines[index].rutineId.id,
+                          routineName: data.homeRoutines[index].rutineId.name,
+                          routinesController: homeRoutineNotifier,
+                        ),
+                      );
+                    },
+                  );
+                }
               },
               loading: () => RUTINE_BOX_SKELTON,
               error: (error, stackTrace) {

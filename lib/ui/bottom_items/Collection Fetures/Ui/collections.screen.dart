@@ -185,7 +185,7 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                       "Saved Summaries",
                       const FaIcon(FontAwesomeIcons.bookmark),
                       saxpath: 'assets/svg/undraw_my_documents_re_13dc.svg',
-                      onTap: () => Get.to(SaveSummeryScreen()),
+                      onTap: () => Get.to(const SaveSummeryScreen()),
                     ),
 
                     //

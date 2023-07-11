@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, use_build_context_synchronously, must_be_immutable, camel_case_types, library_private_types_in_public_api, unused_result
+// ignore_for_file: unused_result, must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,6 +10,8 @@ import 'package:table/widgets/heder/heder_title.dart';
 
 import '../../../../constant/app_color.dart';
 import '../../../../widgets/appWidget/buttons/cupertino_buttons.dart';
+import '../../Home/notice_board/notice controller/virew_recent_notice_controller.dart';
+import '../../Home/notice_board/request/motice_request.dart';
 import '../../Home/widgets/custom_title_bar.dart';
 import '../../Home/widgets/mydrawer.dart';
 import '../widgets/uploaded_pdf_button.dart';
@@ -150,7 +152,7 @@ class AddNoticeScreen extends ConsumerWidget {
 
                       // if(pdfPath >10mb){
 
-                      //     Alert.errorAlertDialog(context, "Only file allw under 10 mb");
+                      //     Alert.errorAlertDialog(context, "Only file allow under 10 mb");
                       // }
 
                       if (pdfPath == null) {
@@ -160,7 +162,12 @@ class AddNoticeScreen extends ConsumerWidget {
                         pdfPath?.fold((l) {
                           return Alert.errorAlertDialog(context, l);
                         }, (r) {
-                          return addNotice(context, r!, ref, isLoadingNotifier);
+                          return addNotice(
+                            context,
+                            r!,
+                            ref,
+                            isLoadingNotifier,
+                          );
                         });
                       }
                     },
@@ -177,24 +184,24 @@ class AddNoticeScreen extends ConsumerWidget {
   void addNotice(
       context, String pdfPath, WidgetRef ref, isLoadingNotifier) async {
     print("validate $pdfPath");
-    // Either<String, String> res = await NoticeRequest().addNotice(
-    //   contentName: noticeTitleController.text,
-    //   description: descriptionController.text,
-    //   pdfFile: pdfPath,
-    //   ref: ref,
-    // );
-    // res.fold((l) {
-    //   isLoadingNotifier.update((state) => false);
+    Either<String, String> res = await NoticeRequest().addNotice(
+      contentName: noticeTitleController.text,
+      description: descriptionController.text,
+      pdfFile: pdfPath,
+      ref: ref,
+    );
+    res.fold((l) {
+      isLoadingNotifier.update((state) => false);
 
-    //   return Alert.errorAlertDialog(context, l);
-    // }, (r) {
-    //   ref.refresh(recentNoticeController(null));
+      return Alert.errorAlertDialog(context, l);
+    }, (r) {
+      ref.refresh(recentNoticeController(null));
 
-    //   Navigator.pop(context);
-    //   isLoadingNotifier.update((state) => false);
+      Navigator.pop(context);
+      isLoadingNotifier.update((state) => false);
 
-    //   return Alert.showSnackBar(context, r);
-    // });
+      return Alert.showSnackBar(context, r);
+    });
   }
 }
 

@@ -125,7 +125,7 @@ class _AppTextFromFieldState extends State<AppTextFromField> {
               keyboardType: widget.keyboardType,
               obscureText: widget.obscureText ?? false,
               decoration: InputDecoration(
-                prefixStyle: TextStyle(color: Colors.amber),
+                prefixStyle: const TextStyle(color: Colors.amber),
                 suffixIcon: widget.obscureText != null
                     ? InkWell(
                         onTap: () {
@@ -154,8 +154,14 @@ class _AppTextFromFieldState extends State<AppTextFromField> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: Text(widget.showOfftext!),
+                  padding: const EdgeInsets.only(top: 5),
+                  child: Text(
+                    widget.showOfftext!,
+                    style: TS.opensensBlue(
+                        fontSize: 16,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w400),
+                  ),
                 ),
               ],
             )

@@ -22,6 +22,11 @@ class Utils {
             .update((state) => true);
       });
     } else if (scrollNotification is ScrollUpdateNotification) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref
+            .watch(hideNevBarOnScorningProvider.notifier)
+            .update((state) => true);
+      });
       // print(message);
     } else if (scrollNotification is ScrollEndNotification) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
