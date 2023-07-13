@@ -65,7 +65,12 @@ class AppTextFromField extends StatefulWidget {
               strokeWidth: 1,
               child: TextFormField(
                 validator: (value) {
-                  errorTextNotifier.update((state) => validator!(value));
+                  if (validator == null) {
+                    return null;
+                  }
+                  errorTextNotifier.update((state) {
+                    return validator!(value);
+                  });
                   return validator!(value);
                 },
                 controller: controller,

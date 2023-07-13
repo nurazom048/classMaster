@@ -1,5 +1,7 @@
 // ignore_for_file: unused_result, must_be_immutable
 
+import 'dart:io';
+import 'package:mime/mime.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
@@ -72,8 +74,7 @@ class AddNoticeScreen extends ConsumerWidget {
     );
   }
 
-  Widget _mobile(
-      BuildContext context, WidgetRef ref, Either<String, String?>? pdfPath) {
+  Widget _mobile(BuildContext context, WidgetRef ref, String? pdfPath) {
     //
     final isLoading = ref.watch(addNoticeLoaderProvider);
     final isLoadingNotifier = ref.watch(addNoticeLoaderProvider.notifier);
@@ -147,28 +148,32 @@ class AddNoticeScreen extends ConsumerWidget {
                     color: AppColor.nokiaBlue,
                     text: "Add Notice",
                     onPressed: () async {
-                      isLoadingNotifier.update((state) => true);
                       print("pdf path : $pdfPath");
-
-                      // if(pdfPath >10mb){
-
-                      //     Alert.errorAlertDialog(context, "Only file allow under 10 mb");
-                      // }
 
                       if (pdfPath == null) {
                         Alert.errorAlertDialog(context, "select pdf");
                       }
                       if (_formKey.currentState!.validate()) {
-                        pdfPath?.fold((l) {
-                          return Alert.errorAlertDialog(context, l);
-                        }, (r) {
-                          return addNotice(
+                        isLoadingNotifier.update((state) => true);
+
+                        File thePdf = File(pdfPath!);
+                        String? mineType = lookupMimeType(pdfPath);
+
+                        //
+                        if (mineType != 'application/pdf') {
+                          return Alert.errorAlertDialog(
+                              context, 'Only PDF file is allow');
+                        }
+                        if (thePdf.lengthSync() > 10 * 1024 * 1024) {
+                          // Check file size in bytes (10 MB = 10 * 1024 * 1024 bytes)
+                          return Alert.errorAlertDialog(
                             context,
-                            r!,
-                            ref,
-                            isLoadingNotifier,
+                            'Maximum file size allowed is 10 MB',
                           );
-                        });
+                        }
+
+                        return addNotice(
+                            context, pdfPath, ref, isLoadingNotifier);
                       }
                     },
                   ),
@@ -183,7 +188,6 @@ class AddNoticeScreen extends ConsumerWidget {
 
   void addNotice(
       context, String pdfPath, WidgetRef ref, isLoadingNotifier) async {
-    print("validate $pdfPath");
     Either<String, String> res = await NoticeRequest().addNotice(
       contentName: noticeTitleController.text,
       description: descriptionController.text,

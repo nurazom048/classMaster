@@ -1,8 +1,10 @@
 // ignore_for_file: avoid_print, unused_result
 import 'dart:io' as Io;
+import 'package:mime/mime.dart';
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:api_cache_manager/utils/cache_manager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
@@ -91,6 +93,14 @@ class NoticeRequest {
     final String? getToken = await AuthController.getToken();
     var url = Uri.parse('${Const.BASE_URl}/notice/add/');
 
+    File thePdf = File(pdfFile!);
+    String? mineType = lookupMimeType(pdfFile);
+
+    //
+    if (mineType != 'application/pdf') {
+      return left('Only PDF file is allow');
+    }
+
     final request = http.MultipartRequest('POST', url);
     request.headers.addAll({
       'Authorization': 'Bearer $getToken',
@@ -99,13 +109,15 @@ class NoticeRequest {
 
     request.fields['content_name'] = contentName ?? '';
     request.fields['description'] = description ?? '';
+    request.fields['mimetypeChecked'] = "true";
+
     if (pdfFile != null) {
       try {
         final pdfPath = await http.MultipartFile.fromPath('pdf_file', pdfFile);
         print("pdf path: $pdfFile");
         request.files.add(pdfPath);
       } catch (e) {
-        print("Error***** : $e");
+        return left("$e");
       }
     }
 

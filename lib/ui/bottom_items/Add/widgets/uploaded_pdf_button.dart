@@ -7,7 +7,7 @@ import '../../../../constant/app_color.dart';
 import '../../../../widgets/appWidget/app_text.dart';
 
 final selectedPdfPathProvider =
-    StateProvider.autoDispose<Either<String, String?>?>((ref) => null);
+    StateProvider.autoDispose<String?>((ref) => null);
 
 class UploadPDFBButton extends StatelessWidget {
   final Function(String?) onSelected;
@@ -30,7 +30,7 @@ class UploadPDFBButton extends StatelessWidget {
         final pdfPath = ref.watch(selectedPdfPathProvider);
         return InkWell(
           onTap: () async {
-            Either<String, String?> path = await picker.pickPDFFile();
+            String? path = await picker.pickPDFFile();
             ref.watch(selectedPdfPathProvider.notifier).update((state) => path);
             onSelected('pdfPath');
           },
@@ -41,9 +41,7 @@ class UploadPDFBButton extends StatelessWidget {
                 child: SizedBox(
                   width: 200,
                   child: Text(
-                    pdfPath?.fold(
-                            (l) => 'Upload Notice File (PDF)', (r) => '$r') ??
-                        'Upload Notice File (PDF)',
+                    pdfPath ?? 'Upload Notice File (PDF)',
                     style: TS.opensensBlue(),
                   ),
                 ),

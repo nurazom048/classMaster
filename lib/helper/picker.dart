@@ -36,30 +36,32 @@ import 'package:table/helper/helper_fun.dart';
 
 class picker extends HelperMethods {
   //!___ Pick Pdf.....//
-
-  static Future<Either<String, String?>> pickPDFFile() async {
+  static Future<String?> pickPDFFile() async {
     try {
+      // Pick a PDF file from the device
       final result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['pdf'],
       );
 
+      // If no file was picked, return null
       if (result == null) {
-        return left('select pdf file');
+        return null;
       }
 
+      // Get the PDF file bytes
       final bytes = result.files.single.bytes;
-      final fileSizeInMB = bytes!.lengthInBytes / (1024 * 1024);
-
-      if (fileSizeInMB > 10) {
-        // Show an error message if the file size exceeds 10 MB
-        return left('file only allow user 10 mb');
-      }
+      // ignore: avoid_print
+      print(bytes);
 
       final path = result.paths[0];
-      return right(path);
+
+      // Return the PDF file path (or any other necessary information)
+      return path;
     } catch (e) {
-      return left('error:$e');
+      // ignore: avoid_print
+      print("pdf picker err: $e");
+      return null;
     }
   }
 }
