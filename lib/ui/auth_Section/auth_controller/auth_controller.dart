@@ -9,7 +9,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:pinput/pinput.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/message_model.dart';
 import 'package:table/ui/auth_Section/auth_req/auth_req.dart';
@@ -22,8 +21,9 @@ import '../auth_ui/email_verification.screen.dart';
 import '../auth_ui/logIn_screen.dart';
 import '../auth_ui/pending_account.dart';
 
-final authController_provider = StateNotifierProvider.autoDispose(
-    (ref) => AuthController(ref.watch(authReqProvider)));
+final authController_provider =
+    StateNotifierProvider.autoDispose<AuthController, bool>(
+        (ref) => AuthController(ref.watch(authReqProvider)));
 
 //
 
@@ -284,12 +284,12 @@ class AuthController extends StateNotifier<bool> {
         },
         (data) async {
           state = false;
-          // Navigator.pushReplacement(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => BottomNavBar(),
-          //   ),
-          //);
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BottomNavBar(),
+            ),
+          );
           Alert.showSnackBar(context, data);
         },
       );

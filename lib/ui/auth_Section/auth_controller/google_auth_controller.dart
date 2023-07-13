@@ -60,9 +60,6 @@ class GoogleAuthController extends ChangeNotifier {
           final authLogin = ref.watch(authController_provider.notifier);
           User? user = FirebaseAuth.instance.currentUser;
           final currentUsersToken = await user?.getIdToken();
-
-          Alert.errorAlertDialog(context, 'You are verified');
-
           // With google
           authLogin.continueWithGoogle(
             context,

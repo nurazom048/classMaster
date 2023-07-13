@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Consumer(builder: (context, ref, _) {
       //
       final authLogin = ref.watch(authController_provider.notifier);
-      final loading = ref.watch(authController_provider);
+      final bool loading = ref.watch(authController_provider);
       final googleAuthProvider = ref.read(googleAuthControllerProvider);
 
       return WillPopScope(
@@ -176,25 +176,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     SignUpSwitcherButton(
                       "Do not have an account?",
                       "Sign up",
-                      onTap: () => Get.to(() => SignUpScreen(
+                      onTap: () {
+                        return Get.to(
+                          () => SignUpScreen(
                             emailAddress: emailController.text,
-                          )),
+                          ),
+                        );
+                      },
                     ),
                     const SizedBox(height: 20),
-                    ref.watch(googleAuthControllerProvider).lodging == true
-                        ? SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: Loaders.center(),
-                          )
-                        : SocialLoginButton(onTap: () {
-                            googleAuthProvider.signing(context, ref);
-                          }),
-
-                    ///
-                    ///
-
-                    // // continue with phone
+                    SocialLoginButton(
+                        isLoading: googleAuthProvider.lodging || loading,
+                        onTap: () {
+                          googleAuthProvider.signing(context, ref);
+                        }),
 
                     // SocialLoginButton(
                     //   iphone: true,
@@ -203,30 +198,33 @@ class _LoginScreenState extends State<LoginScreen> {
                     //   },
                     // ),
 
-                    TextButton(
-                      onPressed: () {
-                        authLogin.signIn(
-                          context,
-                          username: "bteb",
-                          email: null,
-                          password: "@Rahala+Nur123",
-                        );
-                      },
-                      // ignore: prefer_const_constructors
-                      child: Text('BTEB'),
-                    ),
-
-                    TextButton(
-                      onPressed: () {
-                        authLogin.signIn(
-                          context,
-                          username: "roma123",
-                          email: null,
-                          password: "@Rahala+Nur123",
-                        );
-                      },
-                      // ignore: prefer_const_constructors
-                      child: Text('skip'),
+                    Row(
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            authLogin.signIn(
+                              context,
+                              username: "bteb",
+                              email: null,
+                              password: "@Rahala+Nur123",
+                            );
+                          },
+                          // ignore: prefer_const_constructors
+                          child: Text('BTEB'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            authLogin.signIn(
+                              context,
+                              username: "roma123",
+                              email: null,
+                              password: "@Rahala+Nur123",
+                            );
+                          },
+                          // ignore: prefer_const_constructors
+                          child: Text('skip'),
+                        ),
+                      ],
                     ),
                   ],
                 ),
