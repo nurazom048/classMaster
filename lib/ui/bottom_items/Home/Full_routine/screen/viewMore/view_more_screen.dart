@@ -26,7 +26,7 @@ class ViewMore extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, _) {
-      final ownerName = ref.watch(ownerNameProvider);
+      final ownerName = ref.watch(ownerNameProvider(routineId));
 
       //
       final List<Widget> pages = [

@@ -5,11 +5,18 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../../../constant/app_color.dart';
 
-final carouselIndexProvider = StateProvider<int>((ref) => 0);
+final carouselIndexProvider =
+    StateProvider.family<int, String>((ref, key) => 0);
 
 class RecentNoticeSlider extends StatelessWidget {
-  const RecentNoticeSlider({Key? key, required this.list}) : super(key: key);
   final List<Widget> list;
+  final String ukey;
+
+  const RecentNoticeSlider({
+    Key? key,
+    required this.list,
+    required this.ukey,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +24,9 @@ class RecentNoticeSlider extends StatelessWidget {
       height: 160,
       child: Consumer(builder: (context, ref, _) {
         //! provider
-        final carouselIndex = ref.watch(carouselIndexProvider);
-        final carouselIndexNotifier = ref.read(carouselIndexProvider.notifier);
+        final carouselIndex = ref.watch(carouselIndexProvider(ukey));
+        final carouselIndexNotifier =
+            ref.read(carouselIndexProvider(ukey).notifier);
         return Column(
           children: [
             Container(

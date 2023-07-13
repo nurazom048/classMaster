@@ -3,18 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 import '../../constant/app_color.dart';
+import '../../ui/bottom_items/Home/Full_routine/widgets/routine_box/routine_box_by_ID.dart';
 
-class SelectDayRow extends StatefulWidget {
+final initialDayProvider = StateProvider<DateTime>((ref) {
+  return initialDateTimeMakerBaseOnSunday();
+});
+
+class SelectDayRow extends ConsumerWidget {
   final void Function(int) selectedDay;
+  final String routineId;
 
-  const SelectDayRow({super.key, required this.selectedDay});
+  SelectDayRow({
+    super.key,
+    required this.selectedDay,
+    required this.routineId,
+  });
 
-  @override
-  State<SelectDayRow> createState() => _SelectDayRowState();
-}
-
-class _SelectDayRowState extends State<SelectDayRow> {
-  List dayNAme = [
+  final List dayNAme = [
     "Sun",
     "Mon",
     "Tue",
@@ -24,17 +29,13 @@ class _SelectDayRowState extends State<SelectDayRow> {
     "Sat",
   ];
 
-  late int selectedDays;
-
   @override
-  void initState() {
-    super.initState();
-    selectedDays = DateTime.now().weekday;
-    // setState(() {});
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // ref.watch(initialWeekdayProvider(routineId));
+    // sleeted day
+    final selectedDays = ref.read(initialWeekdayProvider(routineId));
+    final selectedDaysNotifier =
+        ref.read(initialWeekdayProvider(routineId).notifier);
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 7),
       //  color: Colors.red,
@@ -49,10 +50,9 @@ class _SelectDayRowState extends State<SelectDayRow> {
           isSelected: index == selectedDays,
           text: dayNAme[index],
           onTap: () {
-            if (!mounted) return;
-            setState(() => selectedDays = index);
+            selectedDaysNotifier.update((state) => index);
 
-            widget.selectedDay.call(index);
+            selectedDay.call(index);
           },
         ),
         separatorBuilder: (context, index) {
@@ -62,10 +62,6 @@ class _SelectDayRowState extends State<SelectDayRow> {
     );
   }
 }
-
-final intialDayProvider = StateProvider<DateTime>((ref) {
-  return initialDateTimeMakerBaseOnSunday();
-});
 
 class SelectDayChip extends ConsumerWidget {
   final String text;
@@ -81,8 +77,10 @@ class SelectDayChip extends ConsumerWidget {
   });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final initialDay = ref.watch(intialDayProvider);
+    print('rebuild');
+    final initialDay = ref.read(initialDayProvider);
     final int day = initialDay.add(Duration(days: index)).day;
+    final Color? color = isSelected ? const Color(0xFFF2F2F2) : null;
     return InkWell(
         onTap: onTap,
         child: ClipRRect(
@@ -92,7 +90,7 @@ class SelectDayChip extends ConsumerWidget {
             width: 55,
 
             //  color: Colors.amber,
-            color: isSelected ? const Color(0xFFF2F2F2) : null,
+            color: color,
             // padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

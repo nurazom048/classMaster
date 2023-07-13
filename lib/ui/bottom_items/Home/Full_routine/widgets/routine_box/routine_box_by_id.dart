@@ -22,10 +22,21 @@ import '../skelton/routine_box_id_scelton.dart';
 
 //! provider
 
-final ownerNameProvider = StateProvider.autoDispose<String?>((ref) => null);
-final isExpandedProvider = StateProvider.autoDispose<bool>((ref) => false);
+final ownerNameProvider =
+    StateProvider.family<String?, String>((ref, keyRoutineID) {
+  return null;
+});
+final isExpandedProvider =
+    StateProvider.family<bool, String>((ref, keyRoutineID) {
+  return false;
+});
 
-class RoutineBoxById extends StatefulWidget {
+final initialWeekdayProvider =
+    StateProvider.family<int, String>((ref, routineId) {
+  return DateTime.now().weekday;
+});
+
+class RoutineBoxById extends StatelessWidget {
   final String rutinName;
   final String rutinId;
   final dynamic onTapMore;
@@ -40,43 +51,21 @@ class RoutineBoxById extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<RoutineBoxById> createState() => _RutinBoxByIdState();
-}
-
-class _RutinBoxByIdState extends State<RoutineBoxById> {
-  late int gSelectedDay;
-  List<Day?> listOfDayState = [];
-  List<Day?> allDays = [];
-  @override
-  void initState() {
-    gSelectedDay = DateTime.now().weekday;
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    listOfDayState.clear();
-    allDays.clear();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     print('object');
     return Consumer(builder: (context, ref, _) {
       // Get providers
-      final checkStatus =
-          ref.watch(checkStatusControllerProvider(widget.rutinId));
-      final rutinDetails = ref.watch(routineDetailsProvider(widget.rutinId));
+      final checkStatus = ref.watch(checkStatusControllerProvider(rutinId));
+      final rutinDetails = ref.watch(routineDetailsProvider(rutinId));
       final checkStatusNotifier =
-          ref.watch(checkStatusControllerProvider(widget.rutinId).notifier);
+          ref.watch(checkStatusControllerProvider(rutinId).notifier);
 
       //
 
       return Container(
-        constraints: const BoxConstraints(minHeight: 428),
-        margin: widget.margin ??
-            const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
+        constraints: const BoxConstraints(minHeight: 426),
+        margin:
+            margin ?? const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
         padding: const EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -99,14 +88,14 @@ class _RutinBoxByIdState extends State<RoutineBoxById> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => ViewMore(
-                              routineId: widget.rutinId,
-                              routineName: widget.rutinName,
-                              ownerName: ref.watch(ownerNameProvider),
+                              routineId: rutinId,
+                              routineName: rutinName,
+                              ownerName: ref.watch(ownerNameProvider(rutinId)),
                             ),
                           ),
                         ),
                         child: Text(
-                          widget.rutinName,
+                          rutinName,
                           style: TS.heading(),
                         ),
                       ),
@@ -125,11 +114,9 @@ class _RutinBoxByIdState extends State<RoutineBoxById> {
                               checkStatusNotifier.sendReqController(context);
                             },
                             showPanel: () {
-                              if (!mounted) return;
-
                               RoutineDialog.rutineNotificationsSelect(
                                 context,
-                                widget.rutinId,
+                                rutinId,
                               );
                             },
                           );
@@ -147,10 +134,9 @@ class _RutinBoxByIdState extends State<RoutineBoxById> {
                   padding: const EdgeInsets.symmetric(vertical: 10)
                       .copyWith(bottom: 0),
                 ),
-                ClassSliderView(routineId: widget.rutinId),
+                ClassSliderView(routineId: rutinId),
               ],
             ),
-
             // Bottom section
             Column(
               children: [
@@ -162,17 +148,15 @@ class _RutinBoxByIdState extends State<RoutineBoxById> {
                 rutinDetails.when(
                   data: (data) {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
-                      if (mounted) {
-                        String? ownerName = data.owner.name;
-                        ref
-                            .watch(ownerNameProvider.notifier)
-                            .update((state) => ownerName);
-                      }
+                      String? ownerName = data.owner.name;
+                      ref
+                          .watch(ownerNameProvider(rutinId).notifier)
+                          .update((state) => ownerName);
                     });
 
                     return MiniAccountInfo(
                       accountData: data.owner,
-                      onTapMore: widget.onTapMore,
+                      onTapMore: onTapMore,
                     );
                   },
                   error: (error, stackTrace) =>
@@ -188,11 +172,6 @@ class _RutinBoxByIdState extends State<RoutineBoxById> {
   }
 }
 
-final initialWeekdayProvider =
-    StateProvider.family<int, String>((ref, routineId) {
-  return DateTime.now().weekday;
-});
-
 class ClassSliderView extends ConsumerWidget {
   final String routineId;
   const ClassSliderView({
@@ -202,6 +181,7 @@ class ClassSliderView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    print('ClassSliderView');
     //! provider
     final rutinDetails = ref.watch(routineDetailsProvider(routineId));
     //
@@ -209,15 +189,15 @@ class ClassSliderView extends ConsumerWidget {
     final initialDayNotifier =
         ref.watch(initialWeekdayProvider(routineId).notifier);
 
-    //
-    final isExpanded = ref.watch(isExpandedProvider);
-    final isExpandedNotifier = ref.watch(isExpandedProvider.notifier);
     return Column(
       children: [
         ///  Select day row
-        SelectDayRow(selectedDay: (selectedDay) {
-          initialDayNotifier.update((state) => selectedDay);
-        }),
+        SelectDayRow(
+          routineId: routineId,
+          selectedDay: (selectedDay) {
+            initialDayNotifier.update((state) => selectedDay);
+          },
+        ),
 
         rutinDetails.when(
           data: (data) {
@@ -232,43 +212,52 @@ class ClassSliderView extends ConsumerWidget {
             final List<Day?> current =
                 currentDay(sun, mon, tue, wed, thu, fri, sat, initialDay);
 
-            final int classLenght =
-                isExpanded == true || current.length <= 3 ? current.length : 3;
-            return ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: classLenght,
-              itemBuilder: (context, index) {
-                if (current.isNotEmpty) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      RutineCardInfoRow(
-                        isFirst: index == 0,
-                        day: current[index],
-                        onTap: () {
-                          onTap(current[index], context);
-                        },
-                      ),
-                      if (index.isEqual(classLenght - 1) && current.length > 3)
-                        Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
-                          child: ExpendedButton(
-                            isExpanded: isExpanded,
-                            onTap: () {
-                              isExpandedNotifier.update((state) => !state);
-                            },
-                          ),
-                        )
-                    ],
-                  );
-                } else {
-                  return const Text("No Class");
-                }
-              },
-            );
+            return Consumer(builder: (context, ref, _) {
+              //
+              final isExpanded = ref.watch(isExpandedProvider(routineId));
+              final isExpandedNotifier =
+                  ref.watch(isExpandedProvider(routineId).notifier);
+              final int classLenght = isExpanded == true || current.length <= 3
+                  ? current.length
+                  : 3;
+              return ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: classLenght,
+                itemBuilder: (context, index) {
+                  if (current.isNotEmpty) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        RutineCardInfoRow(
+                          isFirst: index == 0,
+                          isThird: index == 2 && current.length == 3,
+                          day: current[index],
+                          onTap: () {
+                            onTap(current[index], context);
+                          },
+                        ),
+                        if (index.isEqual(classLenght - 1) &&
+                            current.length > 3)
+                          Container(
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            child: ExpendedButton(
+                              isExpanded: isExpanded,
+                              onTap: () {
+                                isExpandedNotifier.update((state) => !state);
+                              },
+                            ),
+                          )
+                      ],
+                    );
+                  } else {
+                    return const Text("No Class");
+                  }
+                },
+              );
+            });
           },
           loading: () => const SizedBox(),
           error: (error, stackTrace) => Alert.handleError(context, error),

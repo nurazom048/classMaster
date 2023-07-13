@@ -61,9 +61,13 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+  final Widget homeRecentNoticeWidget = const HomeRecentNoticeWidget();
+
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, _) {
+      print('HomeScreen');
+
       //. provider
 
       final homeRoutines = ref.watch(homeRoutineControllerProvider(null));
@@ -126,6 +130,7 @@ Widget homeMobileView(
   required ScrollController scrollController,
   required homeRoutineNotifier,
 }) {
+  print('homeMobileView');
   //
   return NotificationListener<ScrollNotification>(
     // hide bottom nav bar on scroll
@@ -155,17 +160,17 @@ Widget homeMobileView(
           // // uploaded Routine
           homeRoutines.when(
               data: (data) {
-                void scrollListener() {
-                  if (scrollController.position.pixels ==
-                      scrollController.position.maxScrollExtent) {
-                    print('end.........................');
-                    ref
-                        .watch(homeRoutineControllerProvider(null).notifier)
-                        .loadMore(data.currentPage);
-                  }
-                }
+                // void scrollListener() {
+                //   if (scrollController.position.pixels ==
+                //       scrollController.position.maxScrollExtent) {
+                //     print('end.........................');
+                //     ref
+                //         .watch(homeRoutineControllerProvider(null).notifier)
+                //         .loadMore(data.currentPage);
+                //   }
+                // }
 
-                scrollController.addListener(scrollListener);
+                // scrollController.addListener(scrollListener);
 
                 if (data.homeRoutines.isEmpty) {
                   return SizedBox(
@@ -226,6 +231,7 @@ class HomeRecentNoticeWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    print('HomeRecentNoticeWidget');
     final recentNoticeList = ref.watch(recentNoticeController(null));
 
     return Column(
@@ -241,6 +247,7 @@ class HomeRecentNoticeWidget extends ConsumerWidget {
             data: (data) {
               int length = data.notices.length;
               return RecentNoticeSlider(
+                ukey: 'Home Recent Notice',
                 list: <Widget>[
                   RecentNoticeSliderItem(
                     notice: data.notices,

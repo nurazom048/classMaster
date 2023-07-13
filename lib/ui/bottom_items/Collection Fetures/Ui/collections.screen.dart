@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:table/core/component/loaders.dart';
 import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 
@@ -67,158 +68,193 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //! providers
-
-    final classNotification = ref.watch(classNotificationProvider);
-    final accountData = ref.watch(accountDataProvider(widget.accountUsername));
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white10,
         appBar: const AppBarCustom('Collection', leadingIcon: false),
-        body: NotificationListener<ScrollNotification>(
-          // hide bottom nev bar on scroll
-          onNotification: (scrollNotification) =>
-              Utils.hideNevBarOnScroll(scrollNotification, ref),
+        body: Consumer(builder: (context, ref, _) {
+          return NotificationListener<ScrollNotification>(
+            // hide bottom nev bar on scroll
+            onNotification: (scrollNotification) =>
+                Utils.hideNevBarOnScroll(scrollNotification, ref),
 
-          //
-          child: RefreshIndicator(
-            onRefresh: () async {
-              final bool isOnline = await Utils.isOnlineMethod();
-              if (!isOnline) {
-                Alert.showSnackBar(context, 'You are in offline mood');
-              } else {
-                //! provider
-                ref.refresh(accountDataProvider(widget.accountUsername));
-                ref.refresh(classNotificationProvider);
-              }
-            },
-            child: SingleChildScrollView(
-              controller: collectionPageScroll,
-              padding: const EdgeInsets.only(bottom: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 129,
-                    child: accountData.when(
-                      data: (data) {
-                        if (data == null) {
-                          return const Text("null");
-                        } else {
-                          return AccountCard(
-                            profilepicture: data.image,
-                            name: '${data.name}',
-                            username: '@${data.username}',
-                            onTap: () => Get.to(ProfileSCreen(academyID: null)),
-                          );
-                        }
-                      },
-                      error: (error, stackTrace) =>
-                          Alert.handleError(context, error),
-                      loading: () => SizedBox(
-                          height: 100, child: Center(child: Loaders.center())),
-                    ),
-                  ),
+            //
+            child: RefreshIndicator(
+              onRefresh: () async {
+                final bool isOnline = await Utils.isOnlineMethod();
+                if (!isOnline) {
+                  Alert.showSnackBar(context, 'You are in offline mood');
+                } else {
+                  //! provider
+                  ref.refresh(accountDataProvider(widget.accountUsername));
+                  ref.refresh(classNotificationProvider);
+                }
+              },
+              child: SingleChildScrollView(
+                controller: collectionPageScroll,
+                padding: const EdgeInsets.only(bottom: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Consumer(builder: (context, ref, _) {
+                      //! providers
 
-                  ///
+                      final accountData = ref
+                          .watch(accountDataProvider(widget.accountUsername));
+                      return SizedBox(
+                        height: 129,
+                        child: accountData.when(
+                          data: (data) {
+                            if (data == null) {
+                              return const Text("null");
+                            } else {
+                              return AccountCard(
+                                profilepicture: data.image,
+                                name: '${data.name}',
+                                username: '@${data.username}',
+                                onTap: () =>
+                                    Get.to(ProfileSCreen(academyID: null)),
+                              );
+                            }
+                          },
+                          error: (error, stackTrace) =>
+                              Alert.handleError(context, error),
+                          loading: () => SizedBox(
+                              height: 100,
+                              child: Center(child: Loaders.center())),
+                        ),
+                      );
+                    }),
 
-                  const SizedBox(height: 5),
+                    ///
 
-                  classNotification.when(
-                      data: (data) {
-                        if (data == null) {}
-                        if (kDebugMode) {
-                          print('Awesome notification created');
-                        }
+                    const SizedBox(height: 5),
 
-                        LocalNotification.scheduleNotifications(data!);
+                    Consumer(builder: (context, ref, _) {
+                      final classNotification =
+                          ref.watch(classNotificationProvider);
+                      return classNotification.when(
+                          data: (data) {
+                            if (data == null) {}
+                            if (kDebugMode) {
+                              print('Awesome notification created');
+                            }
 
-                        return const SizedBox();
-                      },
-                      error: (error, stackTrace) =>
-                          Alert.handleError(context, error),
-                      loading: () => const SizedBox()),
+                            LocalNotification.scheduleNotifications(data!);
 
-                  //
-                  MyContainerButton(
-                    const FaIcon(FontAwesomeIcons.pen),
-                    "Eddit Profile",
-                    onTap: () => Get.to(const EdditAccount()),
-                  ),
-                  const SizedBox(height: 10),
-
-                  // My NoticeBoard
-
-                  FutureBuilder(
-                    future: AuthController.getAccountType(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return const SizedBox.shrink();
-                      } else if (snapshot.hasData &&
-                          snapshot.data != 'academy') {
-                        return MyContainerButton(
-                          const Icon(Icons.calendar_month),
-                          "My NoticeBoard",
-                          onTap: () => Get.to(() => ViewAllRecentNotice(),
-                              transition: Transition.rightToLeftWithFade),
-                        );
-                      } else {
-                        return const SizedBox.shrink();
-                      }
-                    },
-                  ),
-
-                  const MyDividerr(thickness: 1.0, height: 1.0),
-                  //*********************** Tilesbutton*****************************/
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Tilesbutton(
-                      "Saved\nRoutines",
-                      const FaIcon(FontAwesomeIcons.bookmark),
-                      saxpath: 'assets/svg/undraw_personal_file_re_5joy.svg',
-                      imageMargin: const EdgeInsets.only(left: 10),
-                      onTap: () => Get.to(const SaveRoutinesScreen()),
-                    ),
-
-                    const SizedBox(width: 20),
-                    //
-                    Tilesbutton(
-                      "Saved Summaries",
-                      const FaIcon(FontAwesomeIcons.bookmark),
-                      saxpath: 'assets/svg/undraw_my_documents_re_13dc.svg',
-                      onTap: () => Get.to(const SaveSummeryScreen()),
-                    ),
+                            return const SizedBox();
+                          },
+                          error: (error, stackTrace) =>
+                              Alert.handleError(context, error),
+                          loading: () => const SizedBox());
+                    }),
 
                     //
-                  ]),
-                  const MyDividerr(thickness: 1.0, height: 1.0),
+                    MyContainerButton(
+                      const FaIcon(FontAwesomeIcons.pen),
+                      "Eddit Profile",
+                      onTap: () => Get.to(const EdditAccount()),
+                    ),
+                    const SizedBox(height: 10),
 
-                  /// ********Settings ******//
+                    // My NoticeBoard
 
-                  MyContainerButton(
-                    const Icon(Icons.settings_outlined),
-                    "Settings",
-                    onTap: () => Get.to(SettingsPage()),
-                  ),
-                  MyContainerButton(
-                    const Icon(Icons.logout_outlined),
-                    "Sign out",
-                    color: Colors.red,
-                    onTap: () => AuthController.logOut(context, ref: ref),
-                  ),
+                    Consumer(builder: (context, ref, _) {
+                      //! providers
 
-                  const MyDividerr(thickness: 1.0, height: 1.0),
-                  MyContainerButton(
-                    const Icon(Icons.help_rounded),
-                    "About",
-                    onTap: () {},
-                  ),
+                      final accountData = ref
+                          .watch(accountDataProvider(widget.accountUsername));
 
-                  const SizedBox(height: 100),
-                ],
+                      return accountData.when(
+                        data: (data) {
+                          if (data!.accountType == 'academy') {
+                            return MyContainerButton(
+                              const Icon(Icons.calendar_month),
+                              "My NoticeBoard",
+                              onTap: () {
+                                Get.to(() => ViewAllRecentNotice(),
+                                    transition: Transition.rightToLeftWithFade);
+                              },
+                            );
+                          } else {
+                            return const SizedBox();
+                          }
+                        },
+                        error: (error, stackTrace) => const SizedBox.shrink(),
+                        loading: () => const SizedBox.shrink(),
+                      );
+                      // return FutureBuilder(
+                      //   future: AuthController.getAccountType(),
+                      //   builder: (context, snapshot) {
+                      //     if (snapshot.hasError) {
+                      //       return const SizedBox.shrink();
+                      //     } else if (snapshot.hasData &&
+                      //         snapshot.data != 'academy') {
+                      // return MyContainerButton(
+                      //   const Icon(Icons.calendar_month),
+                      //   "My NoticeBoard",
+                      //   onTap: () => Get.to(() => ViewAllRecentNotice(),
+                      //       transition: Transition.rightToLeftWithFade),
+                      // );
+                      //     } else {
+                      //       return const SizedBox.shrink();
+                      //     }
+                      //   },
+                      // );
+                    }),
+
+                    const MyDividerr(thickness: 1.0, height: 1.0),
+                    //*********************** Tilesbutton*****************************/
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      Tilesbutton(
+                        "Saved\nRoutines",
+                        const FaIcon(FontAwesomeIcons.bookmark),
+                        saxpath: 'assets/svg/undraw_personal_file_re_5joy.svg',
+                        imageMargin: const EdgeInsets.only(left: 10),
+                        onTap: () => Get.to(const SaveRoutinesScreen()),
+                      ),
+
+                      const SizedBox(width: 20),
+                      //
+                      Tilesbutton(
+                        "Saved Summaries",
+                        const FaIcon(FontAwesomeIcons.bookmark),
+                        saxpath: 'assets/svg/undraw_my_documents_re_13dc.svg',
+                        onTap: () => Get.to(const SaveSummeryScreen()),
+                      ),
+
+                      //
+                    ]),
+                    const MyDividerr(thickness: 1.0, height: 1.0),
+
+                    /// ********Settings ******//
+
+                    MyContainerButton(
+                      const Icon(Icons.settings_outlined),
+                      "Settings",
+                      onTap: () => Get.to(SettingsPage()),
+                    ),
+                    MyContainerButton(
+                      const Icon(Icons.logout_outlined),
+                      "Sign out",
+                      color: Colors.red,
+                      onTap: () => AuthController.logOut(context, ref: ref),
+                    ),
+
+                    const MyDividerr(thickness: 1.0, height: 1.0),
+                    MyContainerButton(
+                      const Icon(Icons.help_rounded),
+                      "About",
+                      onTap: () {},
+                    ),
+
+                    const SizedBox(height: 100),
+                  ],
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        }),
       ),
     );
   }

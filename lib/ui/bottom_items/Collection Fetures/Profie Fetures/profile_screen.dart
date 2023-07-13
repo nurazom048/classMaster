@@ -66,7 +66,7 @@ class ProfileSCreen extends StatelessWidget {
 
                       // NoticeBoard
 
-                      if (data != null && data.accountType == "user") ...[
+                      if (data != null && data.accountType == "academy") ...[
                         NoticeBoardHeader(
                             academyID: data.sId!, accountdata: data),
                         SizedBox(
@@ -75,6 +75,7 @@ class ProfileSCreen extends StatelessWidget {
                             data: (data) {
                               int length = data.notices.length;
                               return RecentNoticeSlider(
+                                ukey: '$academyID',
                                 list: <Widget>[
                                   RecentNoticeSliderItem(
                                     emptyMessage: 'No Recent Notice here',

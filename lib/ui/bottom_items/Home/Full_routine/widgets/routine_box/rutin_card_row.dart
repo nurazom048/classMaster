@@ -6,10 +6,17 @@ import '../../../../../../models/class_details_model.dart';
 class RutineCardInfoRow extends StatelessWidget {
   final Day? day;
   final bool? isFirst;
+  final bool? isThird;
   final dynamic onTap;
   final Widget? tail;
-  const RutineCardInfoRow(
-      {super.key, this.isFirst, this.onTap, this.day, this.tail});
+  const RutineCardInfoRow({
+    super.key,
+    this.isFirst,
+    this.onTap,
+    this.day,
+    this.tail,
+    this.isThird,
+  });
   String formatTime(DateTime? time) {
     return DateFormat.jm().format(time ?? DateTime.now());
   }
@@ -63,7 +70,7 @@ class RutineCardInfoRow extends StatelessWidget {
               ],
             ),
           ),
-          const DotedDivider(),
+          if (isThird == true) const SizedBox() else const DotedDivider(),
         ],
       ),
     );

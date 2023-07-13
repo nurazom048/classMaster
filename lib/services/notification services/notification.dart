@@ -13,8 +13,7 @@ import 'models.dart';
 final notificationProvider =
     Provider<NotificationClass>((ref) => NotificationClass());
 
-final classNotificationProvider =
-    FutureProvider.autoDispose<ClassNotificationList?>((ref) {
+final classNotificationProvider = FutureProvider<ClassNotificationList?>((ref) {
   return ref.read(notificationProvider).routineNotification();
 });
 

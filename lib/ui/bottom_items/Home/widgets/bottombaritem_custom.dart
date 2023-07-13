@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart' as fa;
 
 import '../../../../constant/app_color.dart';
 import '../../../../widgets/appWidget/app_text.dart';
@@ -26,7 +26,7 @@ class BottomBarItemCustom extends StatelessWidget {
       onTap: onTap,
       child: Row(
         children: [
-          FaIcon(icon, color: color),
+          fa.FaIcon(icon, color: color),
           const SizedBox(width: 5),
           Text(label, style: TS.opensensBlue(color: color, fontSize: 14)),
         ],
