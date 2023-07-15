@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpdart/fpdart.dart';
 import 'package:table/helper/picker.dart';
 
 import '../../../../constant/app_color.dart';
@@ -30,7 +29,7 @@ class UploadPDFBButton extends StatelessWidget {
         final pdfPath = ref.watch(selectedPdfPathProvider);
         return InkWell(
           onTap: () async {
-            String? path = await picker.pickPDFFile();
+            String? path = await Picker.pickPDFFile();
             ref.watch(selectedPdfPathProvider.notifier).update((state) => path);
             onSelected('pdfPath');
           },

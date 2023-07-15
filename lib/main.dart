@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:table/services/notification%20services/awn_package.dart';
 import 'package:table/ui/auth_Section/auth_ui/wellcome_screen.dart';
+import 'package:table/ui/bottom_items/Collection%20Fetures/Ui/aboutus_screen.dart';
 import 'firebase_options.dart';
 
 import 'helper/helper.dart';
@@ -16,8 +17,8 @@ void main() async {
   //firebase
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // // crashlytics
-  // // FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
+  // crashlytics
+  // FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
   // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   // PlatformDispatcher.instance.onError = (error, stack) {
   //   FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);

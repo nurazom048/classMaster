@@ -6,11 +6,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 import '../../../../constant/constant.dart';
 import '../../../../local data/api_cashe_maager.dart';
+import '../../../../local data/local_data.dart';
 import '../../../../models/message_model.dart';
 import '../../../../models/Routine/saveRutine.dart';
 import '../models/home_routines_model.dart';
@@ -25,21 +24,22 @@ class HomeReq {
   Future<SaveRutileResponse> saveRoutines({pages}) async {
     String queryPage = "?page=$pages}";
     String? username = "";
-    final String? getToken = await AuthController.getToken();
+    final headers = await LocalData.getHerder();
+
     final url = Uri.parse(
         '${Const.BASE_URl}/rutin/save_rutins/' + username + queryPage);
-    final headers = {'Authorization': 'Bearer $getToken'};
 
     //.. Request send
     try {
       final response = await http.post(url, headers: headers);
+      print(json.decode(response.body));
 
       if (response.statusCode == 200) {
         var res = json.decode(response.body);
 
         return SaveRutileResponse.fromJson(res);
       } else {
-        throw Exception("Failed to load saved routines");
+        throw "Failed to load saved routines";
       }
     } catch (e) {
       throw Exception(e.toString());
@@ -79,8 +79,6 @@ class HomeReq {
     print('Api');
     String queryPage = "?page=$pages";
     final searchByUserID = userID == null ? '' : '/$userID';
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
     final status = await OneSignal.shared.getDeviceState();
     final String? osUserID = status?.userId;
     // var status = await OneSignal.shared.getDeviceState();
@@ -90,7 +88,7 @@ class HomeReq {
 
     final url =
         Uri.parse('${Const.BASE_URl}/rutin/home' + searchByUserID + queryPage);
-    final headers = {'Authorization': 'Bearer $getToken'};
+    final headers = await LocalData.getHerder();
     final bool isOffline = await Utils.isOnlineMethod();
     final String key = "homeRutines$url";
     final bool isHaveCash = await MyApiCash.haveCash(key);
@@ -158,14 +156,15 @@ class HomeReq {
   //...... Delete Rutin.....//
 
   Future<Either<Message, Message>> deleteRutin(rutin_id) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
+    final headers = await LocalData.getHerder();
 
     var url = Uri.parse("${Const.BASE_URl}/rutin/$rutin_id");
 
     try {
-      final response = await http
-          .delete(url, headers: {'Authorization': 'Bearer $getToken'});
+      final response = await http.delete(
+        url,
+        headers: headers,
+      );
 
       if (response.statusCode == 200) {
         var res = Message.fromJson(jsonDecode(response.body));

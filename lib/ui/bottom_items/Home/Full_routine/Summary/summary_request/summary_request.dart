@@ -4,10 +4,9 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/message_model.dart';
-import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 import '../../../../../../constant/constant.dart';
+import '../../../../../../local data/local_data.dart';
 import '../../../../../../models/check_status_model.dart';
 import '../models/all_summary_models.dart';
 import 'package:http/http.dart' as http;
@@ -21,15 +20,15 @@ class SummaryRequest {
 // add summary///
   static Future<Either<Message, Message>> addSummaryRequest(
       String classId, String message, List<String> imageLinks) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
+    final Map<String, String> headers = await LocalData.getHerder();
+
     final uri = Uri.parse('${Const.BASE_URl}/summary/add/$classId');
 
     try {
       var request = http.MultipartRequest('POST', uri);
 
       // Add the authorization header
-      request.headers.addAll({'Authorization': 'Bearer $getToken'});
+      request.headers.addAll(headers);
 
       // Add the message field
       request.fields['message'] = message;
@@ -68,19 +67,20 @@ class SummaryRequest {
     String queryPage = pages != null ? "?page=$pages" : '';
     String findClassId = classId ?? '';
 
-    final String? getToken = await AuthController.getToken();
+    final Map<String, String> headers = await LocalData.getHerder();
 
     var url = Uri.parse('${Const.BASE_URl}/summary/$findClassId' + queryPage);
-    Map<String, String> headers = {'Authorization': 'Bearer $getToken'};
+
     //... send request....//
     try {
       final response = await http.get(url, headers: headers);
       var res = json.decode(response.body);
-      print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-      print(url);
-      print(res);
+      // print(url);
+      // print(res);
 
       if (response.statusCode == 200) {
+        await LocalData.setHerder(response);
+
         var listOsSummary = AllSummaryModel.fromJson(res);
 
         return listOsSummary;
@@ -96,20 +96,25 @@ class SummaryRequest {
 
   static Future<Either<Message, Message>> deleteSummary(
       String summaryID) async {
-    final String? getToken = await AuthController.getToken();
+    final Map<String, String> headers = await LocalData.getHerder();
+
     var url = Uri.parse('${Const.BASE_URl}/summary/$summaryID');
 
     print(url);
 
     //... send request....//
     try {
-      final response = await http
-          .delete(url, headers: {'Authorization': 'Bearer $getToken'});
+      final response = await http.delete(
+        url,
+        headers: headers,
+      );
       var res = json.decode(response.body);
       var message = Message.fromJson(res);
       print(res);
 
       if (response.statusCode == 200) {
+        await LocalData.setHerder(response);
+
         return right(message);
       } else {
         return left(message);
@@ -122,9 +127,9 @@ class SummaryRequest {
   //**************** SUMMARY STATUS**************** */
   //....CheckStatusModel....//
   Future<CheckStatusModel> checkStatus(summaryID) async {
-    final String? getToken = await AuthController.getToken();
+    final Map<String, String> headers = await LocalData.getHerder();
+
     final Uri url = Uri.parse('${Const.BASE_URl}/summary/status/$summaryID');
-    final Map<String, String> headers = {'Authorization': 'Bearer $getToken'};
     // final bool isOnline = await Utils.isOnlineMethod();
     // var isHaveCash = await MyApiCash.haveCash("checkStatus$summaryID");
 
@@ -141,6 +146,8 @@ class SummaryRequest {
       );
 
       if (response.statusCode == 200) {
+        await LocalData.setHerder(response);
+
 //saved cash
         // // save to csh
         // APICacheDBModel cacheDBModel = APICacheDBModel(
@@ -166,10 +173,9 @@ class SummaryRequest {
 
   Future<Either<Message, Message>> saveSummary(
       String summaryId, bool save) async {
-    final token = await AuthController.getToken();
+    final Map<String, String> headers = await LocalData.getHerder();
 
     final url = Uri.parse('${Const.BASE_URl}/summary/save');
-    final headers = {'Authorization': 'Bearer $token'};
 
     try {
       final response = await http.post(
@@ -183,6 +189,8 @@ class SummaryRequest {
       Message message = Message.fromJson(res);
 
       if (response.statusCode == 200) {
+        await LocalData.setHerder(response);
+
         return right(message);
       } else {
         throw Exception(message.message);

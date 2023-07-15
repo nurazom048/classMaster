@@ -1,6 +1,5 @@
 // ignore_for_file: unnecessary_null_comparison, use_build_context_synchronously, unused_result
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/component/loaders.dart';

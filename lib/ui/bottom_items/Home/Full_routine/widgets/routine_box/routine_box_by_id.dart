@@ -52,7 +52,6 @@ class RoutineBoxById extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('object');
     return Consumer(builder: (context, ref, _) {
       // Get providers
       final checkStatus = ref.watch(checkStatusControllerProvider(rutinId));
@@ -181,7 +180,6 @@ class ClassSliderView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print('ClassSliderView');
     //! provider
     final rutinDetails = ref.watch(routineDetailsProvider(routineId));
     //

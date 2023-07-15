@@ -6,9 +6,9 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
-import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 import 'package:table/ui/bottom_items/Home/Full_routine/models/members_models.dart';
 import '../../../../../constant/constant.dart';
+import '../../../../../local data/local_data.dart';
 import '../../../../../models/message_model.dart';
 import '../../../../../models/see_all_request_model.dart';
 
@@ -18,13 +18,13 @@ class MemberRequest {
 //
 //**********************   rutin all _members    *********** */
   Future<RoutineMembersModel?> all_members(rutin_id) async {
-    final String? getToken = await AuthController.getToken();
+    final header = await LocalData.getHerder();
     final Uri url = Uri.parse('${Const.BASE_URl}/rutin/member/$rutin_id');
 
     try {
       final response = await http.post(
         url,
-        headers: {'Authorization': 'Bearer $getToken'},
+        headers: header,
       );
 
       var res = jsonDecode(response.body);
@@ -43,12 +43,12 @@ class MemberRequest {
 
 //**********************   addMember   *********** */
   Future<String?> addMemberReq(rutin_id, username) async {
-    final String? getToken = await AuthController.getToken();
-
+    final header = await LocalData.getHerder();
     try {
       final response = await http.post(
-          Uri.parse('${Const.BASE_URl}/rutin/member/add/$rutin_id/$username'),
-          headers: {'Authorization': 'Bearer $getToken'});
+        Uri.parse('${Const.BASE_URl}/rutin/member/add/$rutin_id/$username'),
+        headers: header,
+      );
 
       var res = jsonDecode(response.body)["message"];
 
@@ -66,13 +66,12 @@ class MemberRequest {
 
 //**********************   remove members   *********** */
   Future<Message> removeMemberReq(rutin_id, username) async {
-    final String? getToken = await AuthController.getToken();
+    final header = await LocalData.getHerder();
     var url =
         Uri.parse('${Const.BASE_URl}/rutin/member/remove/$rutin_id/$username');
 
     try {
-      final response =
-          await http.post(url, headers: {'Authorization': 'Bearer $getToken'});
+      final response = await http.post(url, headers: header);
 
       var res = jsonDecode(response.body);
       print(res);
@@ -91,14 +90,13 @@ class MemberRequest {
 
   //.... add cap10s.../
   Future<String?> addCaptressReq(routineId, username) async {
-    final String? getToken = await AuthController.getToken();
+    final header = await LocalData.getHerder();
     print("hi i am calling req $routineId  $username");
 
     final url = Uri.parse('${Const.BASE_URl}/rutin/cap10/add');
 
     final response = await http.post(url,
-        headers: {'Authorization': 'Bearer $getToken'},
-        body: {"rutinid": routineId, "username": username});
+        headers: header, body: {"rutinid": routineId, "username": username});
 
     var res = jsonDecode(response.body)['message'];
 
@@ -117,14 +115,13 @@ class MemberRequest {
   }
 
   Future<String?> removeCaptansReq(routineId, username) async {
-    final String? getToken = await AuthController.getToken();
+    final header = await LocalData.getHerder();
     print("hi i am calling req $routineId  $username");
 
     final url = Uri.parse('${Const.BASE_URl}/rutin/cap10/remove');
 
     final response = await http.delete(url,
-        headers: {'Authorization': 'Bearer $getToken'},
-        body: {"rutinid": routineId, "username": username});
+        headers: header, body: {"rutinid": routineId, "username": username});
 
     var res = jsonDecode(response.body)['message'];
 
@@ -143,14 +140,12 @@ class MemberRequest {
   }
 
   Future<Either<String, Message>> sendRequest(rutin_id) async {
-    final String? getToken = await AuthController.getToken();
-
+    final header = await LocalData.getHerder();
     var url =
         Uri.parse("${Const.BASE_URl}/rutin/member/send_request/$rutin_id");
 
     try {
-      final response =
-          await http.post(url, headers: {'Authorization': 'Bearer $getToken'});
+      final response = await http.post(url, headers: header);
 
       var res = Message.fromJson(jsonDecode(response.body));
       print("req from  sendRequest ${jsonDecode(response.body)}");
@@ -170,13 +165,11 @@ class MemberRequest {
   }
 
   Future<Either<Message, Message>> leaveRequest(rutin_id) async {
-    final String? getToken = await AuthController.getToken();
-
+    final header = await LocalData.getHerder();
     var url = Uri.parse("${Const.BASE_URl}/rutin/member/leave/$rutin_id");
 
     try {
-      final response =
-          await http.post(url, headers: {'Authorization': 'Bearer $getToken'});
+      final response = await http.post(url, headers: header);
 
       print("req from  leave member ${jsonDecode(response.body)}");
 
@@ -196,14 +189,12 @@ class MemberRequest {
 
 //***********************   kickOut   ***********************/
   Future<Message> kickOut(rutin_id, memberId) async {
-    final String? getToken = await AuthController.getToken();
-
+    final header = await LocalData.getHerder();
     var url =
         Uri.parse("${Const.BASE_URl}/rutin/member/kickout/$rutin_id/$memberId");
 
     try {
-      final response = await http
-          .delete(url, headers: {'Authorization': 'Bearer $getToken'});
+      final response = await http.delete(url, headers: header);
       print("from kicked");
       print(jsonDecode(response.body));
 
@@ -246,13 +237,11 @@ class MemberRequest {
 
   //....sell all request ....//
   Future<SeeAllRequestModel> see_all_request(routineId) async {
-    print("request canme to seeAll members $routineId");
-    final String? getToken = await AuthController.getToken();
+    final header = await LocalData.getHerder();
     final Uri url =
         Uri.parse('${Const.BASE_URl}/rutin/member/see_all_request/$routineId');
-    final Map<String, String> headers = {'Authorization': 'Bearer $getToken'};
     try {
-      final response = await http.post(url, headers: headers);
+      final response = await http.post(url, headers: header);
       final res = jsonDecode(response.body);
       print(jsonDecode(response.body));
       if (response.statusCode == 200) {
@@ -273,10 +262,10 @@ class MemberRequest {
 
   //...acceptRequest.....//
   Future<Message> acceptRequest(rutinId, username, {bool? acceptAll}) async {
-    final String? getToken = await AuthController.getToken();
+    final header = await LocalData.getHerder();
     final Uri url =
         Uri.parse('${Const.BASE_URl}/rutin/member/acsept_request/$rutinId');
-    final Map<String, String> headers = {'Authorization': 'Bearer $getToken'};
+    final Map<String, String> headers = header;
     print("$username");
 
     try {
@@ -306,15 +295,14 @@ class MemberRequest {
   //
   //...acceptRequest.....//
   Future<Message> rejectRequest(routineId, username) async {
-    final String? getToken = await AuthController.getToken();
+    final header = await LocalData.getHerder();
     final Uri url =
         Uri.parse('${Const.BASE_URl}/rutin/member/reject_request/$routineId');
-    final Map<String, String> headers = {'Authorization': 'Bearer $getToken'};
 
     try {
       final response = await http.post(
         url,
-        headers: headers,
+        headers: header,
         body: {"username": username},
       );
 

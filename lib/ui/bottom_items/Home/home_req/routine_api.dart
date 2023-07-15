@@ -3,22 +3,24 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:fpdart/fpdart.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:table/local%20data/local_data.dart';
 import 'package:table/models/message_model.dart';
 import '../../../../constant/constant.dart';
 
 class RoutineAPI {
 //******    Create Rutins    ********* */
-  static Future<Either<Message, Message>> createNewRoutine(
-      {routineName}) async {
+  static Future<Either<Message, Message>> createNewRoutine({
+    required String routineName,
+  }) async {
     // Obtain shared preferences.
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
+    final header = await LocalData.getHerder();
+    final uri = Uri.parse('${Const.BASE_URl}/rutin/create');
 
     final response = await http.post(
-        Uri.parse('${Const.BASE_URl}/rutin/create'),
-        body: {"name": routineName.toString()},
-        headers: {'Authorization': 'Bearer $getToken'});
+      uri,
+      body: {"name": routineName.toString()},
+      headers: header,
+    );
 
     try {
       final res = json.decode(response.body);

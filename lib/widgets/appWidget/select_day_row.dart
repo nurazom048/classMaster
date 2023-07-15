@@ -77,7 +77,6 @@ class SelectDayChip extends ConsumerWidget {
   });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print('rebuild');
     final initialDay = ref.read(initialDayProvider);
     final int day = initialDay.add(Duration(days: index)).day;
     final Color? color = isSelected ? const Color(0xFFF2F2F2) : null;

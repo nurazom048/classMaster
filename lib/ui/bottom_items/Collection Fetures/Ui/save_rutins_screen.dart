@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/ui/bottom_items/Home/Full_routine/controller/saveroutine.controller.dart';
+import 'package:table/widgets/error/error.widget.dart';
 
 import '../../../../core/component/Loaders.dart';
 import '../../../../core/dialogs/alert_dialogs.dart';
@@ -48,25 +49,27 @@ class _SaveRoutinesScreenState extends ConsumerState<SaveRoutinesScreen> {
                   }
 
                   saveRoutinesScrolled.addListener(scrollListener);
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: data.savedRoutines.length,
-                    controller: saveRoutinesScrolled,
-                    // physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return RoutineBoxById(
-                        rutinId: data.savedRoutines[index].id,
-                        rutinName: data.savedRoutines[index].name,
-                        onTapMore: () =>
-                            RoutineDialog.CheckStatusUser_BottomSheet(
-                          context,
-                          routineID: data.savedRoutines[index].id,
-                          routineName: data.savedRoutines[index].name,
-                          routinesController: homeRoutinesNotifier,
-                        ),
-                      );
-                    },
-                  );
+                  return data.savedRoutines.isEmpty
+                      ? const ErrorScreen(error: 'No Save Routines')
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: data.savedRoutines.length,
+                          controller: saveRoutinesScrolled,
+                          // physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return RoutineBoxById(
+                              rutinId: data.savedRoutines[index].id,
+                              rutinName: data.savedRoutines[index].name,
+                              onTapMore: () =>
+                                  RoutineDialog.CheckStatusUser_BottomSheet(
+                                context,
+                                routineID: data.savedRoutines[index].id,
+                                routineName: data.savedRoutines[index].name,
+                                routinesController: homeRoutinesNotifier,
+                              ),
+                            );
+                          },
+                        );
                 },
                 error: (error, stackTrace) => Alert.handleError(context, error),
                 loading: () => Loaders.center(),

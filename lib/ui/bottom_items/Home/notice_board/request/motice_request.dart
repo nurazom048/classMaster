@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, unused_result
+// ignore_for_file: avoid_print, unused_result, library_prefixes, unused_local_variable, unnecessary_null_comparison
 import 'dart:io' as Io;
 import 'package:mime/mime.dart';
 
@@ -9,12 +9,11 @@ import 'package:api_cache_manager/utils/cache_manager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/message_model.dart';
-import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 
 import '../../../../../constant/constant.dart';
 import '../../../../../local data/api_cashe_maager.dart';
+import '../../../../../local data/local_data.dart';
 import '../../utils/utils.dart';
 import '../models/recent_notice_model.dart';
 
@@ -33,8 +32,7 @@ final noticeReqProvider = Provider<NoticeRequest>((ref) => NoticeRequest());
 class NoticeRequest {
   //******    recentNotice    ********* */
   Future<RecentNotice> recentNotice({dynamic page, String? academyID}) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
+    final headers = await LocalData.getHerder();
     final String morepage = page == null ? '' : "?page=$page";
     // Url
     final Uri recentNoticeUri =
@@ -55,8 +53,10 @@ class NoticeRequest {
         print('From cash $getdata');
         return RecentNotice.fromJson(jsonDecode(getdata.syncData));
       } else {
-        final response = await http
-            .post(requestUri, headers: {'Authorization': 'Bearer $getToken'});
+        final response = await http.post(
+          requestUri,
+          headers: headers,
+        );
         final res = json.decode(response.body);
 
         if (response.statusCode == 200) {
@@ -90,7 +90,8 @@ class NoticeRequest {
   }) async {
     // Obtain shared preferences.
 
-    final String? getToken = await AuthController.getToken();
+    final headers = await LocalData.getHerder();
+
     var url = Uri.parse('${Const.BASE_URl}/notice/add/');
 
     File thePdf = File(pdfFile!);
@@ -102,11 +103,7 @@ class NoticeRequest {
     }
 
     final request = http.MultipartRequest('POST', url);
-    request.headers.addAll({
-      'Authorization': 'Bearer $getToken',
-      "Access-Control-Allow-Origin": "*",
-    });
-
+    request.headers.addAll(headers);
     request.fields['content_name'] = contentName ?? '';
     request.fields['description'] = description ?? '';
     request.fields['mimetypeChecked'] = "true";
@@ -146,12 +143,12 @@ class NoticeRequest {
   Future<Either<Message, Message>> deleteNotice({
     required String noticeId,
   }) async {
-    final String? getToken = await AuthController.getToken();
+    final headers = await LocalData.getHerder();
+
     var url = Uri.parse('${Const.BASE_URl}/notice/$noticeId');
 
     try {
-      final response = await http
-          .delete(url, headers: {'Authorization': 'Bearer $getToken'});
+      final response = await http.delete(url, headers: headers);
       final res = json.decode(response.body);
 
       if (response.statusCode == 200) {

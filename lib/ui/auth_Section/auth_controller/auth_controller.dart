@@ -1,14 +1,11 @@
 // ignore_for_file: non_constant_identifier_names, use_build_context_synchronously, void_checks
 
-import 'dart:io';
-
 import 'package:api_cache_manager/utils/cache_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/models/message_model.dart';
 import 'package:table/ui/auth_Section/auth_req/auth_req.dart';
@@ -19,7 +16,7 @@ import '../../../core/dialogs/alert_dialogs.dart';
 import '../../../local data/api_cashe_maager.dart';
 import '../auth_ui/email_verification.screen.dart';
 import '../auth_ui/logIn_screen.dart';
-import '../auth_ui/pending_account.dart';
+import '../../wellcome_section/pending_account.dart';
 
 final authController_provider =
     StateNotifierProvider.autoDispose<AuthController, bool>(
@@ -132,6 +129,7 @@ class AuthController extends StateNotifier<bool> {
         },
         (data) {
           state = false;
+
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -205,45 +203,35 @@ class AuthController extends StateNotifier<bool> {
     );
   }
 
-  // get Token
-  static Future<String?> getToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
-    return getToken;
-  }
-
-// save token
-  static Future<void> saveToken(String token) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('Token', token);
-  }
-
-  // remove remove
-  static Future<void> removeToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('Token');
-  }
-
   // LogOut
   static Future<void> logOut(context, {required WidgetRef ref}) async {
     Alert.errorAlertDialogCallBack(
       context,
       "Are You Sure To logout ?",
       onConfirm: () async {
-        await FirebaseAuth.instance.signOut();
+        try {
+          final User? user = FirebaseAuth.instance.currentUser;
+          if (user != null) {
+            await FirebaseAuth.instance.signOut();
+          }
 
-        // Remove token and navigate to the login screen
-        final prefs = await SharedPreferences.getInstance();
-        prefs.remove('Token');
-        await APICacheManager().emptyCache();
+          // Remove token and navigate to the login screen
+          final prefs = await SharedPreferences.getInstance();
+          prefs.remove('authToken');
+          prefs.remove('refreshToken');
+          await APICacheManager().emptyCache();
 
-        // delete cash
-        var appDir = (await getTemporaryDirectory()).path;
-        Directory(appDir).delete();
-        await MyApiCash.removeAll();
-        //
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const LoginScreen()));
+          // delete cash
+          // var appDir = (await getTemporaryDirectory()).path;
+          // Directory(appDir).delete();
+          await MyApiCash.removeAll();
+          //
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const LoginScreen()));
+        } catch (e) {
+          print(e);
+          Alert.errorAlertDialog(context, '$e');
+        }
       },
     );
   }

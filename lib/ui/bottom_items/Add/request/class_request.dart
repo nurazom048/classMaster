@@ -4,10 +4,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:table/local%20data/local_data.dart';
 import 'package:table/models/message_model.dart';
-import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 import '../../../../constant/constant.dart';
 import '../../../../core/dialogs/alert_dialogs.dart';
 import 'package:table/models/class_model.dart';
@@ -20,21 +19,22 @@ class ClassRequest {
       WidgetRef ref, String routineId, context, ClassModel classModel) async {
     print("from add");
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final String? getToken = prefs.getString('Token');
+      final headers = await LocalData.getHerder();
       var url = Uri.parse('${Const.BASE_URl}/class/$routineId/addclass');
 
-      final response = await http.post(url, body: {
-        "name": classModel.className.toString(),
-        "instuctor_name": classModel.instructorName.toString(),
-        "room": classModel.roomNumber.toString(),
-        "subjectcode": classModel.subjectCode.toString(),
-        "start": classModel.startingPeriod.toString(),
-        "end": classModel.endingPeriod.toString(),
-        "num": classModel.weekday.toString(),
-      }, headers: {
-        'Authorization': 'Bearer $getToken'
-      });
+      final response = await http.post(
+        url,
+        body: {
+          "name": classModel.className.toString(),
+          "instuctor_name": classModel.instructorName.toString(),
+          "room": classModel.roomNumber.toString(),
+          "subjectcode": classModel.subjectCode.toString(),
+          "start": classModel.startingPeriod.toString(),
+          "end": classModel.endingPeriod.toString(),
+          "num": classModel.weekday.toString(),
+        },
+        headers: headers,
+      );
 
       print("  RES ..${json.decode(response.body)}");
 
@@ -65,15 +65,14 @@ class ClassRequest {
   Future<void> editClass(context, WidgetRef ref, String classId, routineId,
       ClassModel classModel) async {
     // Obtain shared preferences.
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
+    final Map<String, String> headers = await LocalData.getHerder();
 
     print("******************from edit");
 
     try {
       final response = await http.post(
         Uri.parse('${Const.BASE_URl}/class/eddit/$classId'),
-        headers: {'Authorization': 'Bearer $getToken'},
+        headers: headers,
         body: {
           "name": classModel.className.toString(),
           "room": classModel.roomNumber.toString(),
@@ -88,6 +87,7 @@ class ClassRequest {
       print(res);
 
       if (response.statusCode == 200) {
+        await LocalData.setHerder(response);
         Message message =
             Message(message: json.decode(response.body)["message"]);
         ref.refresh(routineDetailsProvider(routineId));
@@ -112,9 +112,8 @@ class ClassRequest {
   static Future<void> deleteClass(
       context, WidgetRef ref, String classId, String routineId) async {
     // Obtain shared preferences.
-    final String? getToken = await AuthController.getToken();
     Uri uri = Uri.parse('${Const.BASE_URl}/class/delete/$classId');
-    Map<String, String>? headers = {'Authorization': 'Bearer $getToken'};
+    final Map<String, String> headers = await LocalData.getHerder();
 
     try {
       final response = await http.delete(uri, headers: headers);
@@ -123,6 +122,8 @@ class ClassRequest {
       print(res);
 
       if (response.statusCode == 200) {
+        await LocalData.setHerder(response);
+
         print("Class Deleted successfully $res ");
         Alert.showSnackBar(context, 'Class Deleted successfully');
         ref.refresh(routineDetailsProvider(routineId));

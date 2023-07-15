@@ -311,10 +311,50 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
 class BluetMarkInfoText extends StatelessWidget {
   final String text;
+  final EdgeInsetsGeometry? padding;
+  final Color? color, textColor;
+  final int? flex;
+  final double? radius;
+
   const BluetMarkInfoText({
     super.key,
     required this.text,
+    this.padding,
+    this.color,
+    this.textColor,
+    this.flex,
+    this.radius,
   });
+
+  simle(context, width) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Container(
+          child: Padding(
+            padding: padding ?? const EdgeInsets.only(right: 0, top: 8),
+            child: CircleAvatar(
+              radius: radius ?? 4,
+              backgroundColor: color ?? AppColor.nokiaBlue,
+            ),
+          ),
+        ),
+        Container(
+          width: width,
+          //   flex: 1,
+          child: Text(
+            text,
+            maxLines: 3,
+            style: TS.opensensBlue(
+              color: textColor ?? Colors.black,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -324,20 +364,20 @@ class BluetMarkInfoText extends StatelessWidget {
         Expanded(
           flex: 1,
           child: Padding(
-            padding: const EdgeInsets.only(right: 6.0, top: 8),
+            padding: padding ?? const EdgeInsets.only(right: 6.0, top: 8),
             child: CircleAvatar(
-              radius: 5,
-              backgroundColor: AppColor.nokiaBlue,
+              radius: radius ?? 5,
+              backgroundColor: color ?? AppColor.nokiaBlue,
             ),
           ),
         ),
         Expanded(
-          flex: 10,
+          flex: flex ?? 10,
           child: Text(
             text,
             textAlign: TextAlign.justify,
             style: TS.opensensBlue(
-                color: Colors.black, fontWeight: FontWeight.w400),
+                color: textColor ?? Colors.black, fontWeight: FontWeight.w400),
           ),
         ),
       ],

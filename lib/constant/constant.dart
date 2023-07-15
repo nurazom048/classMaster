@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, constant_identifier_names
 
 abstract class Const {
+  static String appEmail = 'nurazom049@outlook.com';
   //static String BASE_URl = "http://localhost:3000";
 
   //adb

@@ -4,10 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import 'package:table/core/component/loaders.dart';
 import 'package:table/core/dialogs/alert_dialogs.dart';
 import 'package:table/ui/auth_Section/auth_ui/SignUp_Screen.dart';
-import 'package:table/ui/auth_Section/auth_ui/cranditial_info_screen.dart';
 import 'package:table/ui/auth_Section/utils/login_validation.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 

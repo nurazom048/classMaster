@@ -11,6 +11,7 @@ import 'package:table/models/message_model.dart';
 import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 
 import '../../../constant/constant.dart';
+import '../../../local data/local_data.dart';
 
 class AuthReq {
   //........ Login .........//
@@ -44,10 +45,17 @@ class AuthReq {
 
       //
       if (response.statusCode == 200) {
-        // print(accountData);
+        await LocalData.setHerder(response);
+        print('kkkkkkkkkkkkkkkkkkkkkkkkkkk');
+        print(response.headers['authorization']);
 
+        // print(accountData);
+        // Save the auth token from the response headers
+        final authToken = response.headers['authorization'];
+        final refreshToken = response.headers['x-refresh-token'];
+        await LocalData.saveAuthToken(authToken ?? '');
+        await LocalData.saveRefreshToken(refreshToken ?? '');
         //... save token
-        await AuthController.saveToken(accountData["token"]);
         await AuthController.saveAccountType(
             accountData["account"]["account_type"]);
         await AuthController.saveUsername(accountData["account"]["username"]);
@@ -106,6 +114,8 @@ class AuthReq {
       var res = json.decode(response.body);
       print(res);
       if (response.statusCode == 200) {
+        await LocalData.setHerder(response);
+
         return right(Message.fromJson(res));
       } else {
         return right(Message.fromJson(res));
@@ -121,19 +131,21 @@ class AuthReq {
     String oldPassword,
     String newPassword,
   ) async {
-    final String? getToken = await AuthController.getToken();
+    final Map<String, String> headers = await LocalData.getHerder();
     var url = Uri.parse('${Const.BASE_URl}/account/eddit/changepassword');
 
     try {
       final response = await http.post(
         url,
-        headers: {'Authorization': 'Bearer $getToken'},
+        headers: headers,
         body: {"oldPassword": oldPassword, "newPassword": newPassword},
       );
       print(jsonDecode(response.body));
 
       Message message = Message.fromJson(json.decode(response.body));
       if (response.statusCode == 200) {
+        await LocalData.setHerder(response);
+
         return right(message);
       } else {
         return left(message.message);
@@ -145,16 +157,18 @@ class AuthReq {
 
   //
 
-  Future<Either<String, Message>> forgetPassword(
-      {String? email, String? username, String? phone}) async {
-    final String? getToken = await AuthController.getToken();
-
-    var url = Uri.parse('${Const.BASE_URl}/account/eddit/forgotPassword');
+  Future<Either<String, Message>> forgetPassword({
+    String? email,
+    String? username,
+    String? phone,
+  }) async {
+    final Map<String, String> headers = await LocalData.getHerder();
+    final url = Uri.parse('${Const.BASE_URl}/account/eddit/forgotPassword');
 
     try {
       final response = await http.post(
         url,
-        headers: {'Authorization': 'Bearer $getToken'},
+        headers: headers,
         body: {
           "email": email.toString(),
           "username": username.toString(),
@@ -169,6 +183,8 @@ class AuthReq {
 
       print(json.decode(response.body));
       if (response.statusCode == 200) {
+        await LocalData.setHerder(response);
+
         return right(
           Message(
               message: message.message,
@@ -201,7 +217,6 @@ class AuthReq {
       });
 
       Message message = Message(message: json.decode(response.body)['message']);
-      print(json.decode(response.body));
       final accountData = json.decode(response.body);
       print('*********************');
       print(accountData);
@@ -210,8 +225,10 @@ class AuthReq {
       }
       //
       if (response.statusCode == 200) {
+        await LocalData.setHerder(response);
+
         //... save token
-        await AuthController.saveToken(json.decode(response.body)["token"]);
+        await LocalData.setHerder(response);
         await AuthController.saveAccountType(
             accountData["account"]["account_type"]);
         await AuthController.saveUsername(accountData["account"]["username"]);

@@ -78,6 +78,7 @@ dependencies:
   onesignal_flutter: ^3.5.1
   app_settings: ^4.2.0
   mime: ^1.0.4
+  url_launcher: ^6.1.12
 
 
 dev_dependencies:
@@ -102,6 +103,7 @@ flutter:
   assets:
     - assets/
     - assets/svg/
+    - assets/png/
     
   #   - images/a_dot_ham.jpeg
 

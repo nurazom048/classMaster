@@ -4,11 +4,10 @@ import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 
 import '../../../../../constant/constant.dart';
+import '../../../../../local data/local_data.dart';
 import '../../../../../models/check_status_model.dart';
 import '../../../../../models/message_model.dart';
 
@@ -17,14 +16,13 @@ final noticeboardRequestProvider =
 
 class NoticeboardRequest {
 // leave member
-  Future<Either<Message, Message>> leaveMember(String noticeBoardid) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
+  Future<Either<Message, Message>> leaveMember(String noticeBoard) async {
+    final headers = await LocalData.getHerder();
 
     try {
       final response = await http.delete(
-        Uri.parse('${Const.BASE_URl}/notice/leave/$noticeBoardid'),
-        headers: {'Authorization': 'Bearer $getToken'},
+        Uri.parse('${Const.BASE_URl}/notice/leave/$noticeBoard'),
+        headers: headers,
       );
 
       var res = Message.fromJson(jsonDecode(response.body));
@@ -41,7 +39,8 @@ class NoticeboardRequest {
 
   //
   Future<CheckStatusModel> chackStatus(String academyID) async {
-    final String? getToken = await AuthController.getToken();
+    final headers = await LocalData.getHerder();
+
     print("**********call $academyID");
 
     var url = Uri.parse('${Const.BASE_URl}/notice/status/$academyID');
@@ -49,7 +48,7 @@ class NoticeboardRequest {
     try {
       final response = await http.post(
         url,
-        headers: {'Authorization': 'Bearer $getToken'},
+        headers: headers,
       );
       print("res  ${jsonDecode(response.body)}");
 
@@ -70,14 +69,15 @@ class NoticeboardRequest {
   //
 
   Future<Either<String, Message>> sendRequest(String noticeBoardId) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
+    final headers = await LocalData.getHerder();
 
     var url = Uri.parse("${Const.BASE_URl}/notice/join/$noticeBoardId");
 
     try {
-      final response =
-          await http.post(url, headers: {'Authorization': 'Bearer $getToken'});
+      final response = await http.post(
+        url,
+        headers: headers,
+      );
 
       var res = Message.fromJson(jsonDecode(response.body));
       print("req from  sendRequest $res");
@@ -95,17 +95,19 @@ class NoticeboardRequest {
   //
   //....RutineNotification....//
   Future<Either<String, Message>> notificationOff(noticeBoardId) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
+    final headers = await LocalData.getHerder();
+
     Uri url =
         Uri.parse('${Const.BASE_URl}/notice/notification/off/$noticeBoardId');
 
     try {
-      final response =
-          await http.post(url, headers: {'Authorization': 'Bearer $getToken'});
+      final response = await http.post(
+        url,
+        headers: headers,
+      );
       Message message = Message.fromJson(jsonDecode(response.body));
 
-      /// responce
+      /// response
       if (response.statusCode == 200) {
         return right(message);
       } else {
@@ -118,17 +120,19 @@ class NoticeboardRequest {
 
   //....RutineNotification....//
   Future<Either<String, Message>> notificationOn(noticeBoardId) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
+    final headers = await LocalData.getHerder();
+
     Uri url =
         Uri.parse('${Const.BASE_URl}/notice/notification/on/$noticeBoardId');
 
     try {
-      final response =
-          await http.post(url, headers: {'Authorization': 'Bearer $getToken'});
+      final response = await http.post(
+        url,
+        headers: headers,
+      );
       Message message = Message.fromJson(jsonDecode(response.body));
 
-      /// responce
+      /// response
       if (response.statusCode == 200) {
         return right(message);
       } else {

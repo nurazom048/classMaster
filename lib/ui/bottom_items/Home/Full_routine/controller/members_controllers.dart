@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names, invalid_return_type_for_catch_error
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table/core/dialogs/alert_dialogs.dart';
@@ -38,7 +39,9 @@ class MemberController extends StateNotifier<AsyncValue<RoutineMembersModel>> {
       state = AsyncData(res!);
     } catch (error, stackTrace) {
       if (!mounted) return;
-      print(error.toString());
+      if (kDebugMode) {
+        print(error.toString());
+      }
       state = AsyncValue.error(error, stackTrace);
     }
   }
@@ -49,7 +52,9 @@ class MemberController extends StateNotifier<AsyncValue<RoutineMembersModel>> {
     try {
       if (page == state.value!.members) {
       } else {
-        print('call fore loader more $page ${state.value!.totalPages}');
+        if (kDebugMode) {
+          print('call fore loader more $page ${state.value!.totalPages}');
+        }
 
         final newData = await memberRequests.all_members(routineId);
 

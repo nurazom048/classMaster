@@ -105,7 +105,7 @@ class SimpleNoticeCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Expanded(flex: 1, child: const Icon(Icons.arrow_forward))
+                    const Expanded(flex: 1, child: Icon(Icons.arrow_forward))
                   ],
                 ),
               ),

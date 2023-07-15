@@ -6,10 +6,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:table/models/message_model.dart';
-import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
 
 import '../../../../constant/constant.dart';
 import '../../../../local data/api_cashe_maager.dart';
+import '../../../../local data/local_data.dart';
 import '../../Home/utils/utils.dart';
 import '../models/account_models.dart';
 
@@ -26,11 +26,11 @@ final accountDataProvider =
 class AccountReq {
 //... Account data...//
   Future<AccountModels> getAccountData({String? username}) async {
-    final String? token = await AuthController.getToken();
+    final headers = await LocalData.getHerder();
     final url = username != null
         ? Uri.parse('${Const.BASE_URl}/account/$username')
         : Uri.parse('${Const.BASE_URl}/account/');
-    final headers = {'Authorization': 'Bearer $token'};
+
     final bool isOnline = await Utils.isOnlineMethod();
     final key = url.toString();
     var isHaveCash = await MyApiCash.haveCash(key);
@@ -86,18 +86,15 @@ class AccountReq {
     print('form edit account ************* $profileImage');
     try {
       // Get token from shared preferences
-      final String? getToken = await AuthController.getToken();
-
+      final headers = await LocalData.getHerder();
       // Create URL
       final url = Uri.parse('${Const.BASE_URl}/account/eddit');
 
       // Create request
       final request = http.MultipartRequest('POST', url);
 
-      // Set authorization header
-      request.headers.addAll({'Authorization': 'Bearer $getToken'});
-
-      // Add fields to request
+      // Set authorization header and fields
+      request.headers.addAll(headers);
       request.fields['name'] = name;
       request.fields['username'] = username;
       request.fields['about'] = about;

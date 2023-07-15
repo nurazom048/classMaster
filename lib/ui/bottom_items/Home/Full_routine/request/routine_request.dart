@@ -6,11 +6,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table/local%20data/api_cashe_maager.dart';
 import 'package:table/models/check_status_model.dart';
 import 'package:table/ui/bottom_items/Home/utils/utils.dart';
 import '../../../../../constant/constant.dart';
+import '../../../../../local data/local_data.dart';
 import '../../../../../models/message_model.dart';
 
 //*** Providers  ******   */
@@ -20,11 +20,11 @@ class FullRoutineRequest {
   //
   //....Check StatusModel....//
   Future<CheckStatusModel> chalkStatus(routineId) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
     final bool isOnline = await Utils.isOnlineMethod();
     final key = "chalkStatus$routineId";
     final bool isHaveCash = await MyApiCash.haveCash(key);
+    final headers = await LocalData.getHerder();
+    final url = Uri.parse('${Const.BASE_URl}/rutin/status/$routineId');
 
     try {
       // if offline and have cash
@@ -36,8 +36,8 @@ class FullRoutineRequest {
         throw "You Are in Offline";
       } else {
         final response = await http.post(
-          Uri.parse('${Const.BASE_URl}/rutin/status/$routineId'),
-          headers: {'Authorization': 'Bearer $getToken'},
+          url,
+          headers: headers,
         );
 
         if (response.statusCode == 200) {
@@ -70,14 +70,12 @@ class FullRoutineRequest {
 
   //,, delete class
   Future<Message> deleteClass(context, classId) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
+    final headers = await LocalData.getHerder();
 
     var url = Uri.parse('${Const.BASE_URl}/class/delete/$classId');
 
     try {
-      final response = await http
-          .delete(url, headers: {'Authorization': 'Bearer $getToken'});
+      final response = await http.delete(url, headers: headers);
       Message message = Message.fromJson(json.decode(response.body));
 
       //
@@ -91,14 +89,13 @@ class FullRoutineRequest {
     }
   }
 
-//... Save unsve rutin.....///
+//... Save unSave rutin.....///
 
   Future<Either<String, Message>> saveUnsavedRoutineReq(
       routineId, condition) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
+    final headers = await LocalData.getHerder();
+
     final url = Uri.parse('${Const.BASE_URl}/rutin/save_unsave/$routineId');
-    final headers = {'Authorization': 'Bearer $getToken'};
 
     try {
       final response = await http.post(

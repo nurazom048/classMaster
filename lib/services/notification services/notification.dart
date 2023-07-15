@@ -6,7 +6,7 @@ import 'package:api_cache_manager/utils/cache_manager.dart';
 
 import '../../constant/constant.dart';
 import '../../local data/api_cashe_maager.dart';
-import '../../ui/auth_Section/auth_controller/auth_controller.dart';
+import '../../local data/local_data.dart';
 import '../../ui/bottom_items/Home/utils/utils.dart';
 import 'models.dart';
 
@@ -22,10 +22,9 @@ class NotificationClass {
     // ignore: avoid_print
     print('call fore notification');
 
-    final String? getToken = await AuthController.getToken();
+    final Map<String, String> headers = await LocalData.getHerder();
 
     final url = Uri.parse('${Const.BASE_URl}/class/notification');
-    final headers = {'Authorization': 'Bearer $getToken'};
     final bool isOnline = await Utils.isOnlineMethod();
     final String key = "notification$url";
     var isHaveCash = await MyApiCash.haveCash(key);
@@ -40,6 +39,8 @@ class NotificationClass {
 
       final response = await http.post(url, headers: headers);
       if (response.statusCode == 200) {
+        await LocalData.setHerder(response);
+
         final res = json.decode(response.body);
 
         // Save to cache
