@@ -56,8 +56,6 @@ class RoutineDialog {
 
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          // runSpacing: 20,
-                          // alignment: WrapAlignment.center,
                           children: [
                             if (status == "joined")
                               SquaresButton(
@@ -99,11 +97,6 @@ class RoutineDialog {
                                   ctx,
                                   !(checkStatus.value?.isSave ?? false),
                                 );
-
-                                // if (chackStatus.value?.isSave ??
-                                //     false == false) {
-                                //   ref.refresh(save_rutins_provider(1));
-                                // }
                               },
                             ),
                             if (data.isCaptain || data.isOwner) ...[

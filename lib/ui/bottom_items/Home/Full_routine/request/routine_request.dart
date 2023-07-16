@@ -41,6 +41,7 @@ class FullRoutineRequest {
         );
 
         if (response.statusCode == 200) {
+          // print(jsonDecode(response.body));
           // save to csh
 
           MyApiCash.saveLocal(key: key, syncData: response.body);

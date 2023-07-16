@@ -139,10 +139,10 @@ class MemberRequest {
     }
   }
 
-  Future<Either<String, Message>> sendRequest(rutin_id) async {
+  Future<Either<String, Message>> sendRequest(String routineId) async {
     final header = await LocalData.getHerder();
     var url =
-        Uri.parse("${Const.BASE_URl}/rutin/member/send_request/$rutin_id");
+        Uri.parse("${Const.BASE_URl}/rutin/member/send_request/$routineId");
 
     try {
       final response = await http.post(url, headers: header);

@@ -52,7 +52,11 @@ final List<AboutData> aboutList = [
           show: 'Facebook',
           link: 'https://www.facebook.com/M.M.Anik.02'),
       SocialLink(
-          icon: ConstPng.wa, show: "WhatsApp", link: 'GitHub: nurazom049'),
+        icon: ConstPng.wa,
+        show: "WhatsApp",
+        link:
+            'https://api.whatsapp.com/qr/SI32EFKIRDDUM1?autoload=1&app_absent=0',
+      ),
       SocialLink(
           icon: ConstPng.gMail,
           show: 'Gmail',
@@ -87,10 +91,11 @@ final List<AboutData> aboutList = [
       //   link:
       //       'https://api.whatsapp.com/qr/SI32EFKIRDDUM1?autoload=1&app_absent=0',
       // ),
-      // SocialLink(
-      //     icon: ConstPng.gMail,
-      //     show: 'Gmail',
-      //     link: 'https://github.com/nurazom048'),
+      SocialLink(
+        icon: ConstPng.gMail,
+        show: 'Gmail',
+        link: 'naim.octal@gmail.com',
+      ),
     ],
   ),
 ];

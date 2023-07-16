@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:table/local%20data/local_data.dart';
 import 'package:table/models/message_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:table/models/priode/all_priode_models.dart';
@@ -21,15 +21,16 @@ class PriodeRequest {
 //... Delete  Priode request....//
 
   Future<Either<String, Message>> deletePriode(String priodeId) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
+    final headers = await LocalData.getHerder();
     final url = Uri.parse('${Const.BASE_URl}/rutin/priode/remove/$priodeId');
 
     try {
       // request
 
-      final response = await http
-          .delete(url, headers: {'Authorization': 'Bearer $getToken'});
+      final response = await http.delete(
+        url,
+        headers: headers,
+      );
       final res = json.decode(response.body);
       print(res);
 
@@ -51,16 +52,18 @@ class PriodeRequest {
   //
   //... add priode....//
   Future<Either<String, Message>> addPriode(
-      String routineID, DateTime startTime, DateTime endTime) async {
+    String routineID,
+    DateTime startTime,
+    DateTime endTime,
+  ) async {
     // Obtain shared preferences.
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
-    var url = Uri.parse('${Const.BASE_URl}/rutin/priode/add/$routineID');
+    final headers = await LocalData.getHerder();
+    final url = Uri.parse('${Const.BASE_URl}/rutin/priode/add/$routineID');
 
     try {
       final response = await http.post(
         url,
-        headers: {'Authorization': 'Bearer $getToken'},
+        headers: headers,
         body: {
           "start_time": "${startTime.toIso8601String()}Z",
           "end_time": "${endTime.toIso8601String()}Z",
@@ -143,16 +146,18 @@ class PriodeRequest {
 
   //... add priode....//
   Future<Either<String, Message>> edditPriode(
-      String priodeId, DateTime startTime, DateTime endTime) async {
-    // Obtain shared preferences.
-    final prefs = await SharedPreferences.getInstance();
-    final String? getToken = prefs.getString('Token');
+    String priodeId,
+    DateTime startTime,
+    DateTime endTime,
+  ) async {
+    final headers = await LocalData.getHerder();
+
     var url = Uri.parse('${Const.BASE_URl}/rutin/priode/eddit/$priodeId');
 
     try {
       final response = await http.put(
         url,
-        headers: {'Authorization': 'Bearer $getToken'},
+        headers: headers,
         body: {
           "start_time": endMaker(startTime.toIso8601String().toString()),
           "end_time": endMaker(endTime.toIso8601String().toString()),

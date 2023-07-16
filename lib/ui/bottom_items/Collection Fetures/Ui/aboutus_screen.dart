@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:table/core/dialogs/alert_dialogs.dart';
 import 'package:table/widgets/appWidget/app_text.dart';
 import 'package:table/widgets/heder/appbar_custom.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -8,10 +7,9 @@ import '../../../../constant/constant.dart';
 import '../../../auth_Section/auth_ui/SignUp_Screen.dart';
 import '../data/about_data.dart';
 import '../data/about_model.dart';
-import '../widgets/my_divider.dart';
 
 const String aboutApp =
-    'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.';
+    'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
