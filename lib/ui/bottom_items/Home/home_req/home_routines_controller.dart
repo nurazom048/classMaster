@@ -1,6 +1,3 @@
-//_________________________
-// ignore_for_file: unused_result, avoid_print
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
@@ -39,7 +36,7 @@ class HomeRoutinesController extends StateNotifier<AsyncValue<RoutineHome>> {
     try {
       if (page == state.value!.totalPages) {
       } else {
-        print('call fore loader more $page ${state.value!.totalPages}');
+        // print('call fore loader more $page ${state.value!.totalPages}');
 
         final newData = await homeReq.homeRoutines(pages: page + 1);
 

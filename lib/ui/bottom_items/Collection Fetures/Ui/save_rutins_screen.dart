@@ -57,14 +57,17 @@ class _SaveRoutinesScreenState extends ConsumerState<SaveRoutinesScreen> {
                           controller: saveRoutinesScrolled,
                           // physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
+                            final id = data.savedRoutines[index].routineID.id;
+                            final name =
+                                data.savedRoutines[index].routineID.name;
                             return RoutineBoxById(
-                              rutinId: data.savedRoutines[index].id,
-                              rutinName: data.savedRoutines[index].name,
+                              rutinId: id,
+                              rutinName: name,
                               onTapMore: () =>
                                   RoutineDialog.CheckStatusUser_BottomSheet(
                                 context,
-                                routineID: data.savedRoutines[index].id,
-                                routineName: data.savedRoutines[index].name,
+                                routineID: id,
+                                routineName: name,
                                 routinesController: homeRoutinesNotifier,
                               ),
                             );

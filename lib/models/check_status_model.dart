@@ -26,7 +26,7 @@ class CheckStatusModel {
       isOwner: json['isOwner'] ?? false,
       isCaptain: json['isCaptain'] ?? false,
       activeStatus: json['activeStatus'] ?? '',
-      isSave: json['isSave'] ?? false,
+      isSave: json['isSave'] ?? json['isSaved'] ?? false,
       memberCount: json['memberCount'] ?? 0,
       sentRequestCount: json['sentRequestCount'] ?? 0,
       notificationOn: json['notificationOn'] ?? false,

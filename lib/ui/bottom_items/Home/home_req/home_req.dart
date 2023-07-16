@@ -21,13 +21,13 @@ final home_req_provider = Provider<HomeReq>((ref) => HomeReq());
 
 class HomeReq {
 //********    saveRoutines      *************/
-  Future<SaveRutileResponse> saveRoutines({pages}) async {
+  Future<SaveRoutineResponse> saveRoutines({pages}) async {
     String queryPage = "?page=$pages}";
     String? username = "";
     final headers = await LocalData.getHerder();
 
     final url = Uri.parse(
-        '${Const.BASE_URl}/rutin/save_rutins/' + username + queryPage);
+        '${Const.BASE_URl}/rutin/save/routines/' + username + queryPage);
 
     //.. Request send
     try {
@@ -36,8 +36,9 @@ class HomeReq {
 
       if (response.statusCode == 200) {
         var res = json.decode(response.body);
+        print(res);
 
-        return SaveRutileResponse.fromJson(res);
+        return SaveRoutineResponse.fromJson(res);
       } else {
         throw "Failed to load saved routines";
       }
@@ -46,37 +47,9 @@ class HomeReq {
     }
   }
 
-  //
-  // //********    ListOfUploadRutins      *************/
-  // Future<ListOfUploadedRutins> uploadedRutins({String? username}) async {
-  //   final prams = username != null ? '/$username' : '';
-  //   final prefs = await SharedPreferences.getInstance();
-  //   final String? getToken = prefs.getString('Token');
-  //   final url = Uri.parse('${Const.BASE_URl}/rutin/uploaded_rutins' + prams);
-  //   final headers = {'Authorization': 'Bearer $getToken'};
-
-  //   //.. Request send
-
-  //   try {
-  //     final response = await http.post(url, headers: headers);
-
-  //     if (response.statusCode == 200) {
-  //       var res = json.decode(response.body);
-  //       print(res);
-
-  //       return ListOfUploadedRutins.fromJson(res);
-  //     } else {
-  //       throw Exception("Failed to load saved routines");
-  //     }
-  //   } catch (error) {
-  //     throw Future.error(error);
-  //   }
-  // }
-
   //********    home Routines      *************/
 
   Future<RoutineHome> homeRoutines({pages, String? userID}) async {
-    print('Api');
     String queryPage = "?page=$pages";
     final searchByUserID = userID == null ? '' : '/$userID';
     final status = await OneSignal.shared.getDeviceState();
@@ -92,7 +65,7 @@ class HomeReq {
     final bool isOffline = await Utils.isOnlineMethod();
     final String key = "homeRutines$url";
     final bool isHaveCash = await MyApiCash.haveCash(key);
-    // print(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
+    print(url);
 
     // print('kjdffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
     try {
@@ -110,6 +83,7 @@ class HomeReq {
       //
       final response = await http
           .post(url, headers: headers, body: {"osUserID": osUserID ?? ''});
+      print(response);
 
       //
       final res = json.decode(response.body);

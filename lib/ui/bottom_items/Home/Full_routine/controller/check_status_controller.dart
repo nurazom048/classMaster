@@ -12,9 +12,10 @@ import '../../../../../models/message_model.dart';
 import '../request/rutine_notification.dart';
 
 //! providers
-final checkStatusControllerProvider = StateNotifierProvider.autoDispose
-    .family<CheckStatusController, AsyncValue<CheckStatusModel>, String>(
-        (ref, routineId) {
+final checkStatusControllerProvider = StateNotifierProvider.family<
+    CheckStatusController,
+    AsyncValue<CheckStatusModel>,
+    String>((ref, routineId) {
   return CheckStatusController(
     ref,
     routineId,
