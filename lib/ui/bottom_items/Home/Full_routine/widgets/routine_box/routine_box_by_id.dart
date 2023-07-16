@@ -33,7 +33,8 @@ final isExpandedProvider =
 
 final initialWeekdayProvider =
     StateProvider.family<int, String>((ref, routineId) {
-  return DateTime.now().weekday;
+  final int day = DateTime.now().weekday;
+  return day == 7 ? 0 : day;
 });
 
 class RoutineBoxById extends StatelessWidget {
@@ -183,7 +184,7 @@ class ClassSliderView extends ConsumerWidget {
     //! provider
     final rutinDetails = ref.watch(routineDetailsProvider(routineId));
     //
-    final initialDay = ref.watch(initialWeekdayProvider(routineId));
+    // final initialDay = ref.watch(initialWeekdayProvider(routineId));
     final initialDayNotifier =
         ref.watch(initialWeekdayProvider(routineId).notifier);
 
@@ -279,8 +280,6 @@ class ClassSliderView extends ConsumerWidget {
     WidgetRef ref,
   ) {
     List<Day?> newListOfDays;
-    print('{ref.watch(initialWeekdayProvider(routineId))}');
-    print('${ref.watch(initialWeekdayProvider(routineId))}');
 
     switch (ref.watch(initialWeekdayProvider(routineId))) {
       case 0:

@@ -143,6 +143,9 @@ DateTime initialDateTimeMakerBaseOnSunday() {
   }
   if (now.weekday == DateTime.saturday) {
     return now.subtract(const Duration(days: 6));
+  }
+  if (now.weekday == DateTime.sunday) {
+    return now.subtract(const Duration(days: 7));
   } else {
     return now;
   }
