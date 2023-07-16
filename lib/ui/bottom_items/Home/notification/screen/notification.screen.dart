@@ -1,12 +1,12 @@
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/core/component/loaders.dart';
-import 'package:table/core/dialogs/alert_dialogs.dart';
-import 'package:table/services/firebase/firebase_analytics.service.dart';
-import 'package:table/widgets/appWidget/app_text.dart';
-import 'package:table/widgets/error/error.widget.dart';
-import 'package:table/widgets/heder/heder_title.dart';
+import 'package:classmate/core/component/loaders.dart';
+import 'package:classmate/core/dialogs/alert_dialogs.dart';
+import 'package:classmate/services/firebase/firebase_analytics.service.dart';
+import 'package:classmate/widgets/appWidget/app_text.dart';
+import 'package:classmate/widgets/error/error.widget.dart';
+import 'package:classmate/widgets/heder/heder_title.dart';
 
 import '../../notice_board/widgets/simple_notice_card.dart';
 import '../api/notification.api.dart';

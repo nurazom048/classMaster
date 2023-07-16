@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import 'package:table/ui/bottom_items/Home/utils/utils.dart';
+import 'package:classmate/ui/bottom_items/Home/utils/utils.dart';
 
 import '../ui/bottom_items/Collection Fetures/Profie Fetures/profile_screen.dart';
 import '../ui/bottom_items/Collection Fetures/models/account_models.dart';

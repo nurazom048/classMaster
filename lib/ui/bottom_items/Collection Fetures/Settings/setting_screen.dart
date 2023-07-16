@@ -3,8 +3,8 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:table/core/dialogs/alert_dialogs.dart';
-import 'package:table/widgets/heder/heder_title.dart';
+import 'package:classmate/core/dialogs/alert_dialogs.dart';
+import 'package:classmate/widgets/heder/heder_title.dart';
 
 import '../../../auth_Section/auth_ui/change_password.dart';
 import '../Ui/eddit_account.dart';

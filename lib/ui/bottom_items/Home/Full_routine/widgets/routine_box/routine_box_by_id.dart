@@ -3,11 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import 'package:table/widgets/appWidget/app_text.dart';
-import 'package:table/ui/bottom_items/Home/Full_routine/widgets/routine_box/rutin_card_row.dart';
-import 'package:table/widgets/appWidget/buttons/expended_button.dart';
-import 'package:table/widgets/appWidget/dotted_divider.dart';
-import 'package:table/widgets/mini_account_row.dart';
+import 'package:classmate/widgets/appWidget/app_text.dart';
+import 'package:classmate/ui/bottom_items/Home/Full_routine/widgets/routine_box/rutin_card_row.dart';
+import 'package:classmate/widgets/appWidget/buttons/expended_button.dart';
+import 'package:classmate/widgets/appWidget/dotted_divider.dart';
+import 'package:classmate/widgets/mini_account_row.dart';
 
 import '../../../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../../../models/class_details_model.dart';
@@ -207,55 +207,59 @@ class ClassSliderView extends ConsumerWidget {
             final List<Day?> fri = data.classes.friday;
             final List<Day?> sat = data.classes.saturday;
 
-            final List<Day?> current =
-                currentDay(sun, mon, tue, wed, thu, fri, sat, initialDay);
+            final List<Day?> current = currentDay(
+              sun,
+              mon,
+              tue,
+              wed,
+              thu,
+              fri,
+              sat,
+              ref,
+            );
 
-            return Consumer(builder: (context, ref, _) {
-              //
-              final isExpanded = ref.watch(isExpandedProvider(routineId));
-              final isExpandedNotifier =
-                  ref.watch(isExpandedProvider(routineId).notifier);
-              final int classLenght = isExpanded == true || current.length <= 3
-                  ? current.length
-                  : 3;
-              return ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: classLenght,
-                itemBuilder: (context, index) {
-                  if (current.isNotEmpty) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        RutineCardInfoRow(
-                          isFirst: index == 0,
-                          isThird: index == 2 && current.length == 3,
-                          day: current[index],
-                          onTap: () {
-                            onTap(current[index], context);
-                          },
-                        ),
-                        if (index.isEqual(classLenght - 1) &&
-                            current.length > 3)
-                          Container(
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 10),
-                            child: ExpendedButton(
-                              isExpanded: isExpanded,
-                              onTap: () {
-                                isExpandedNotifier.update((state) => !state);
-                              },
-                            ),
-                          )
-                      ],
-                    );
-                  } else {
-                    return const Text("No Class");
-                  }
-                },
-              );
-            });
+            //
+            final isExpanded = ref.watch(isExpandedProvider(routineId));
+            final isExpandedNotifier =
+                ref.watch(isExpandedProvider(routineId).notifier);
+            final int classLenght =
+                isExpanded == true || current.length <= 3 ? current.length : 3;
+            return ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: classLenght,
+              itemBuilder: (context, index) {
+                if (current.isNotEmpty) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      RutineCardInfoRow(
+                        isFirst: index == 0,
+                        isThird: index == 2 && current.length == 3,
+                        day: current[index],
+                        onTap: () {
+                          onTap(current[index], context);
+                        },
+                      ),
+                      if (index.isEqual(classLenght - 1) && current.length > 3)
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          child: ExpendedButton(
+                            isExpanded: isExpanded,
+                            onTap: () {
+                              isExpandedNotifier.update((state) => !state);
+                            },
+                          ),
+                        )
+                    ],
+                  );
+                } else {
+                  return const Text("No Class");
+                }
+              },
+            );
           },
           loading: () => const SizedBox(),
           error: (error, stackTrace) => Alert.handleError(context, error),
@@ -272,11 +276,13 @@ class ClassSliderView extends ConsumerWidget {
     List<Day?> thu,
     List<Day?> fri,
     List<Day?> sat,
-    int initialDay,
+    WidgetRef ref,
   ) {
     List<Day?> newListOfDays;
+    print('{ref.watch(initialWeekdayProvider(routineId))}');
+    print('${ref.watch(initialWeekdayProvider(routineId))}');
 
-    switch (initialDay) {
+    switch (ref.watch(initialWeekdayProvider(routineId))) {
       case 0:
         newListOfDays = sun;
         break;
@@ -297,6 +303,9 @@ class ClassSliderView extends ConsumerWidget {
         break;
       case 6:
         newListOfDays = sat;
+        break;
+      case 7:
+        newListOfDays = sun;
         break;
       default:
         // If the selected day is not valid, use an empty list

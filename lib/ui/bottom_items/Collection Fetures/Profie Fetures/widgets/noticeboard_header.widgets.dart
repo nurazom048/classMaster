@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import 'package:table/ui/bottom_items/Collection%20Fetures/Profie%20Fetures/widgets/notice_board_join_btn.dart';
+import 'package:classmate/ui/bottom_items/Collection%20Fetures/Profie%20Fetures/widgets/notice_board_join_btn.dart';
 
 import '../../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../../widgets/appWidget/app_text.dart';

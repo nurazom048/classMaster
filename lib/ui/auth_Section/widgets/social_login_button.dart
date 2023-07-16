@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:table/core/component/loaders.dart';
+import 'package:classmate/core/component/loaders.dart';
 
 class SocialLoginButton extends StatelessWidget {
   final VoidCallback onTap;

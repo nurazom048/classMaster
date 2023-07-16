@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
-import 'package:table/ui/bottom_items/Home/Full_routine/models/members_models.dart';
+import 'package:classmate/ui/bottom_items/Home/Full_routine/models/members_models.dart';
 import '../../../../../constant/constant.dart';
 import '../../../../../local data/local_data.dart';
 import '../../../../../models/message_model.dart';

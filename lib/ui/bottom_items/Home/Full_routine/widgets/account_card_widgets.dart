@@ -1,7 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:table/widgets/appWidget/app_text.dart';
-import 'package:table/widgets/appWidget/buttons/capsule_button.dart';
+import 'package:classmate/widgets/appWidget/app_text.dart';
+import 'package:classmate/widgets/appWidget/buttons/capsule_button.dart';
 
 import '../../../../../constant/app_color.dart';
 import '../../../Collection Fetures/models/account_models.dart';

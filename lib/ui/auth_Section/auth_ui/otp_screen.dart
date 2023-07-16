@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
-import 'package:table/core/dialogs/alert_dialogs.dart';
+import 'package:classmate/core/dialogs/alert_dialogs.dart';
 
 import '../../../constant/app_color.dart';
 import '../../../widgets/appWidget/buttons/cupertino_buttons.dart';

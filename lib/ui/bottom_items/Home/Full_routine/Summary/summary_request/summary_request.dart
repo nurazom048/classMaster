@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart';
-import 'package:table/models/message_model.dart';
+import 'package:classmate/models/message_model.dart';
 import '../../../../../../constant/constant.dart';
 import '../../../../../../local data/local_data.dart';
 import '../../../../../../models/check_status_model.dart';

@@ -1,12 +1,12 @@
 // ignore_for_file: use_build_context_synchronously, unnecessary_null_comparison
 
 import 'package:flutter/material.dart';
-import 'package:table/core/dialogs/alert_dialogs.dart';
-import 'package:table/models/message_model.dart';
+import 'package:classmate/core/dialogs/alert_dialogs.dart';
+import 'package:classmate/models/message_model.dart';
 
-import 'package:table/widgets/appWidget/TextFromFild.dart';
-import 'package:table/widgets/heder/appbar_custom.dart';
-import 'package:table/widgets/pick_image.dart';
+import 'package:classmate/widgets/appWidget/TextFromFild.dart';
+import 'package:classmate/widgets/heder/appbar_custom.dart';
+import 'package:classmate/widgets/pick_image.dart';
 import '../../../../constant/app_color.dart';
 import '../../../../widgets/appWidget/buttons/cupertino_buttons.dart';
 import '../Api/account_request.dart';

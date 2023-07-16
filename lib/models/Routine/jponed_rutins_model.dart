@@ -1,4 +1,4 @@
-import 'package:table/models/Routine/search_rutin.dart';
+import 'package:classmate/models/Routine/search_rutin.dart';
 
 class JoinedRutines {
   List<Routine> routines;

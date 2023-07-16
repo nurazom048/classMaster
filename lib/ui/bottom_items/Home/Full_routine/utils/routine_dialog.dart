@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/bottom_items/Home/Full_routine/controller/check_status_controller.dart';
-import 'package:table/ui/bottom_items/Home/Full_routine/controller/members_controllers.dart';
-import 'package:table/ui/bottom_items/Home/Full_routine/widgets/chekbox_selector_button.dart';
-import 'package:table/ui/bottom_items/Home/home_req/home_routines_controller.dart';
-import 'package:table/widgets/appWidget/dotted_divider.dart';
+import 'package:classmate/ui/bottom_items/Home/Full_routine/controller/check_status_controller.dart';
+import 'package:classmate/ui/bottom_items/Home/Full_routine/controller/members_controllers.dart';
+import 'package:classmate/ui/bottom_items/Home/Full_routine/widgets/chekbox_selector_button.dart';
+import 'package:classmate/ui/bottom_items/Home/home_req/home_routines_controller.dart';
+import 'package:classmate/widgets/appWidget/dotted_divider.dart';
 import '../../../../../core/component/Loaders.dart';
 import '../../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../../widgets/text and buttons/square_button.dart';

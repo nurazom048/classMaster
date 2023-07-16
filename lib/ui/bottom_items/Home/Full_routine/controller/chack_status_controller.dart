@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:table/core/dialogs/alert_dialogs.dart';
-import 'package:table/models/check_status_model.dart';
-import 'package:table/ui/bottom_items/Home/Full_routine/request/member_request.dart';
-import 'package:table/ui/bottom_items/Home/Full_routine/request/routine_request.dart';
+import 'package:classmate/core/dialogs/alert_dialogs.dart';
+import 'package:classmate/models/check_status_model.dart';
+import 'package:classmate/ui/bottom_items/Home/Full_routine/request/member_request.dart';
+import 'package:classmate/ui/bottom_items/Home/Full_routine/request/routine_request.dart';
 
 import '../../../../../models/message_model.dart';
 import '../request/rutine_notification.dart';

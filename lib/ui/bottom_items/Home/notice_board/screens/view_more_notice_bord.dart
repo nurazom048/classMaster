@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:table/ui/bottom_items/Home/notice_board/screens/view%20more%20notice%20Bord/list_of_notice.dart';
-import 'package:table/widgets/heder/heder_title.dart';
+import 'package:classmate/ui/bottom_items/Home/notice_board/screens/view%20more%20notice%20Bord/list_of_notice.dart';
+import 'package:classmate/widgets/heder/heder_title.dart';
 
 import '../../../../../widgets/appWidget/app_text.dart';
 

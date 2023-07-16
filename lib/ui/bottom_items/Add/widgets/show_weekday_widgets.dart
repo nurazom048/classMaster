@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/bottom_items/Add/widgets/wekkday_view.dart';
+import 'package:classmate/ui/bottom_items/Add/widgets/wekkday_view.dart';
 
 import '../../../../core/component/Loaders.dart';
 import '../../../../core/dialogs/alert_dialogs.dart';

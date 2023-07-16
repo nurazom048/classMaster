@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/core/component/Loaders.dart';
-import 'package:table/ui/bottom_items/Home/notice_board/screens/view_notice_screen.dart';
-import 'package:table/widgets/appWidget/app_text.dart';
+import 'package:classmate/core/component/Loaders.dart';
+import 'package:classmate/ui/bottom_items/Home/notice_board/screens/view_notice_screen.dart';
+import 'package:classmate/widgets/appWidget/app_text.dart';
 
 import '../../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../../widgets/heder/heder_title.dart';

@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:table/models/message_model.dart';
-import 'package:table/ui/bottom_items/Home/Full_routine/Summary/models/all_summary_models.dart';
-import 'package:table/ui/bottom_items/Home/Full_routine/Summary/summary_request/summary_request.dart';
-import 'package:table/ui/bottom_items/Home/Full_routine/Summary/summat_screens/add_summary.dart';
+import 'package:classmate/models/message_model.dart';
+import 'package:classmate/ui/bottom_items/Home/Full_routine/Summary/models/all_summary_models.dart';
+import 'package:classmate/ui/bottom_items/Home/Full_routine/Summary/summary_request/summary_request.dart';
+import 'package:classmate/ui/bottom_items/Home/Full_routine/Summary/summat_screens/add_summary.dart';
 import '../../../../../../core/dialogs/alert_dialogs.dart';
 
 // providers

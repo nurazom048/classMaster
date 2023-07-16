@@ -4,14 +4,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import 'package:table/core/component/loaders.dart';
-import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
-import 'package:table/ui/bottom_items/Collection%20Fetures/Ui/aboutus_screen.dart';
+import 'package:classmate/core/component/loaders.dart';
+import 'package:classmate/ui/auth_Section/auth_controller/auth_controller.dart';
+import 'package:classmate/ui/bottom_items/Collection%20Fetures/Ui/aboutus_screen.dart';
 
-import 'package:table/ui/bottom_items/Collection%20Fetures/Ui/save_rutins_screen.dart';
-import 'package:table/ui/bottom_items/Collection%20Fetures/Ui/save_summarysscreen.dart';
-import 'package:table/widgets/account_card.dart';
-import 'package:table/widgets/heder/appbar_custom.dart';
+import 'package:classmate/ui/bottom_items/Collection%20Fetures/Ui/save_rutins_screen.dart';
+import 'package:classmate/ui/bottom_items/Collection%20Fetures/Ui/save_summarysscreen.dart';
+import 'package:classmate/widgets/account_card.dart';
+import 'package:classmate/widgets/heder/appbar_custom.dart';
 import '../../../../core/dialogs/alert_dialogs.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 

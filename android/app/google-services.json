@@ -7,12 +7,56 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:837394216188:android:e95d72547a3981f58dd379",
+        "android_client_info": {
+          "package_name": "com.edu.classmate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "837394216188-g6c4m0htb86s0288qm39c85s9f911t7o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD50R66U5baOtkiMfN7CZvuOYjvbb7pVKU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "837394216188-g6c4m0htb86s0288qm39c85s9f911t7o.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "837394216188-8j4gh2cn1b5recm3vjfpe0b1vbge7bkp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.table"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:837394216188:android:18115f8313208a028dd379",
         "android_client_info": {
           "package_name": "com.example.table"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "837394216188-i0punf7lg0rvi5jv6kc8374k36tudq3a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.table",
+            "certificate_hash": "8f6f64a69e78bdd3c28f08904fa01b2326e81d87"
+          }
+        },
         {
           "client_id": "837394216188-k8lues9qbcl0m2qom9t0a5gs9fmvaivo.apps.googleusercontent.com",
           "client_type": 1,

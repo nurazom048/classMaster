@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/widgets/heder/appbar_custom.dart';
+import 'package:classmate/widgets/heder/appbar_custom.dart';
 
 final carouselImageIndexProvider = StateProvider<int>((ref) => 0);
 

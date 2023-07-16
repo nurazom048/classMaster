@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:table/ui/bottom_items/Home/notice_board/models/recent_notice_model.dart';
-import 'package:table/ui/bottom_items/Home/notice_board/screens/view_notice_screen.dart';
-import 'package:table/widgets/appWidget/dotted_divider.dart';
+import 'package:classmate/ui/bottom_items/Home/notice_board/models/recent_notice_model.dart';
+import 'package:classmate/ui/bottom_items/Home/notice_board/screens/view_notice_screen.dart';
+import 'package:classmate/widgets/appWidget/dotted_divider.dart';
 
 import '../../../../widgets/appWidget/app_text.dart';
 import '../../Collection Fetures/models/account_models.dart';

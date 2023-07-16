@@ -3,7 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/auth_Section/auth_ui/SignUp_Screen.dart';
+import 'package:classmate/ui/auth_Section/auth_ui/SignUp_Screen.dart';
 
 import '../../../constant/app_color.dart';
 import '../../../constant/constant.dart';

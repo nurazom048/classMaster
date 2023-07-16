@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:table/widgets/appWidget/dotted_divider.dart';
+import 'package:classmate/widgets/appWidget/dotted_divider.dart';
 import '../../../../../../models/class_details_model.dart';
 
 class RutineCardInfoRow extends StatelessWidget {

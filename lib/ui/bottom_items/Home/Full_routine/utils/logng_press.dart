@@ -3,10 +3,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/constant/app_color.dart';
-import 'package:table/core/dialogs/alert_dialogs.dart';
+import 'package:classmate/constant/app_color.dart';
+import 'package:classmate/core/dialogs/alert_dialogs.dart';
 
-import 'package:table/models/priode/all_priode_models.dart';
+import 'package:classmate/models/priode/all_priode_models.dart';
 import '../../../Add/request/class_request.dart';
 import '../../../Add/screens/add_class_screen.dart';
 import '../../../Add/screens/add_priode.dart';

@@ -3,7 +3,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/widgets/appWidget/app_text.dart';
+import 'package:classmate/widgets/appWidget/app_text.dart';
 
 import '../../constant/app_color.dart';
 

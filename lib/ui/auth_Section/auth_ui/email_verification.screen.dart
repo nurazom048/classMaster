@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:table/core/dialogs/alert_dialogs.dart';
-import 'package:table/ui/auth_Section/auth_ui/forgetpassword_screen.dart';
-import 'package:table/widgets/appWidget/app_text.dart';
-import 'package:table/widgets/heder/heder_title.dart';
+import 'package:classmate/core/dialogs/alert_dialogs.dart';
+import 'package:classmate/ui/auth_Section/auth_ui/forgetpassword_screen.dart';
+import 'package:classmate/widgets/appWidget/app_text.dart';
+import 'package:classmate/widgets/heder/heder_title.dart';
 
 import '../../../constant/image_const.dart';
 

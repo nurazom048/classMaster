@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import 'package:table/core/dialogs/alert_dialogs.dart';
-import 'package:table/ui/bottom_items/Home/notice_board/screens/view_notice_screen.dart';
+import 'package:classmate/core/dialogs/alert_dialogs.dart';
+import 'package:classmate/ui/bottom_items/Home/notice_board/screens/view_notice_screen.dart';
 
 import '../../models/recent_notice_model.dart';
 import '../../notice controller/virew_recent_notice_controller.dart';

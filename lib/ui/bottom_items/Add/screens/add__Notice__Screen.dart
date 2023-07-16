@@ -5,10 +5,10 @@ import 'package:mime/mime.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:table/core/component/responsive.dart';
-import 'package:table/core/dialogs/alert_dialogs.dart';
-import 'package:table/widgets/appWidget/TextFromFild.dart';
-import 'package:table/widgets/heder/heder_title.dart';
+import 'package:classmate/core/component/responsive.dart';
+import 'package:classmate/core/dialogs/alert_dialogs.dart';
+import 'package:classmate/widgets/appWidget/TextFromFild.dart';
+import 'package:classmate/widgets/heder/heder_title.dart';
 
 import '../../../../constant/app_color.dart';
 import '../../../../widgets/appWidget/buttons/cupertino_buttons.dart';

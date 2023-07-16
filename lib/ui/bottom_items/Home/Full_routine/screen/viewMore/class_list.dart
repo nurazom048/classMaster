@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import 'package:table/core/component/loaders.dart';
-import 'package:table/ui/bottom_items/Add/screens/add_class_screen.dart';
+import 'package:classmate/core/component/loaders.dart';
+import 'package:classmate/ui/bottom_items/Add/screens/add_class_screen.dart';
 
 import '../../../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../../../models/class_details_model.dart';

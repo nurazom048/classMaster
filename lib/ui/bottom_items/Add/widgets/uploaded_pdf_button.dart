@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/helper/picker.dart';
+import 'package:classmate/helper/picker.dart';
 
 import '../../../../constant/app_color.dart';
 import '../../../../widgets/appWidget/app_text.dart';

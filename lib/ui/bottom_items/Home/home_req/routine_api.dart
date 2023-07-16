@@ -3,8 +3,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:fpdart/fpdart.dart';
-import 'package:table/local%20data/local_data.dart';
-import 'package:table/models/message_model.dart';
+import 'package:classmate/local%20data/local_data.dart';
+import 'package:classmate/models/message_model.dart';
 import '../../../../constant/constant.dart';
 
 class RoutineAPI {

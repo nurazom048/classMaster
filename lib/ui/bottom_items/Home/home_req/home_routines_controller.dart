@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:table/ui/bottom_items/Home/home_req/home_req.dart';
+import 'package:classmate/ui/bottom_items/Home/home_req/home_req.dart';
 
 import '../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../models/message_model.dart';

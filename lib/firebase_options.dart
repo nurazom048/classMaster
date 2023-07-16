@@ -55,7 +55,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyD50R66U5baOtkiMfN7CZvuOYjvbb7pVKU',
-    appId: '1:837394216188:android:18115f8313208a028dd379',
+    appId: '1:837394216188:android:e95d72547a3981f58dd379',
     messagingSenderId: '837394216188',
     projectId: 'rutinapp-cadc1',
     storageBucket: 'rutinapp-cadc1.appspot.com',
@@ -63,23 +63,23 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDbbIMg0jaarhxp9N2-jJULAsMlISsJxUM',
-    appId: '1:837394216188:ios:cf372be403aa58668dd379',
+    appId: '1:837394216188:ios:6a2b453f0e8b70088dd379',
     messagingSenderId: '837394216188',
     projectId: 'rutinapp-cadc1',
     storageBucket: 'rutinapp-cadc1.appspot.com',
-    androidClientId: '837394216188-k8lues9qbcl0m2qom9t0a5gs9fmvaivo.apps.googleusercontent.com',
-    iosClientId: '837394216188-8j4gh2cn1b5recm3vjfpe0b1vbge7bkp.apps.googleusercontent.com',
-    iosBundleId: 'com.example.table',
+    androidClientId: '837394216188-i0punf7lg0rvi5jv6kc8374k36tudq3a.apps.googleusercontent.com',
+    iosClientId: '837394216188-8f9qmjivfvprs3q04pdueurr55dm8mf5.apps.googleusercontent.com',
+    iosBundleId: 'com.edu.classmate',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyDbbIMg0jaarhxp9N2-jJULAsMlISsJxUM',
-    appId: '1:837394216188:ios:cf372be403aa58668dd379',
+    appId: '1:837394216188:ios:6a2b453f0e8b70088dd379',
     messagingSenderId: '837394216188',
     projectId: 'rutinapp-cadc1',
     storageBucket: 'rutinapp-cadc1.appspot.com',
-    androidClientId: '837394216188-k8lues9qbcl0m2qom9t0a5gs9fmvaivo.apps.googleusercontent.com',
-    iosClientId: '837394216188-8j4gh2cn1b5recm3vjfpe0b1vbge7bkp.apps.googleusercontent.com',
-    iosBundleId: 'com.example.table',
+    androidClientId: '837394216188-i0punf7lg0rvi5jv6kc8374k36tudq3a.apps.googleusercontent.com',
+    iosClientId: '837394216188-8f9qmjivfvprs3q04pdueurr55dm8mf5.apps.googleusercontent.com',
+    iosBundleId: 'com.edu.classmate',
   );
 }

@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/bottom_items/Home/Full_routine/controller/members_controllers.dart';
-import 'package:table/widgets/accound_card_row.dart';
+import 'package:classmate/ui/bottom_items/Home/Full_routine/controller/members_controllers.dart';
+import 'package:classmate/widgets/accound_card_row.dart';
 
 import '../../../../../core/component/Loaders.dart';
 import '../../../../../core/dialogs/alert_dialogs.dart';

@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:table/local%20data/local_data.dart';
+import 'package:classmate/local%20data/local_data.dart';
 
 import '../ui/bottom_items/bottom_navbar.dart';
 

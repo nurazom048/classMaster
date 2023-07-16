@@ -1,4 +1,4 @@
-import 'package:table/models/Routine/rutins.dart';
+import 'package:classmate/models/Routine/rutins.dart';
 
 class ListOfSaveRutins {
   ListOfSaveRutins({

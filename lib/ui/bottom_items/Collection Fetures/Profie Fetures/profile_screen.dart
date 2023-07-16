@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/core/component/loaders.dart';
-import 'package:table/ui/bottom_items/Collection%20Fetures/Profie%20Fetures/widgets/noticeboard_header.widgets.dart';
-import 'package:table/ui/bottom_items/Home/home_req/home_routines_controller.dart';
+import 'package:classmate/core/component/loaders.dart';
+import 'package:classmate/ui/bottom_items/Collection%20Fetures/Profie%20Fetures/widgets/noticeboard_header.widgets.dart';
+import 'package:classmate/ui/bottom_items/Home/home_req/home_routines_controller.dart';
 
 import '../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../widgets/appWidget/app_text.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:table/widgets/appWidget/app_text.dart';
+import 'package:classmate/widgets/appWidget/app_text.dart';
 
 class SignUpSwitcherButton extends StatelessWidget {
   final String startTitle;

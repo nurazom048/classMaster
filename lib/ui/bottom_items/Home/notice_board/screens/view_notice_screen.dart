@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:table/ui/bottom_items/Home/notice_board/screens/view_pdf_.dart';
-import 'package:table/widgets/appWidget/app_text.dart';
+import 'package:classmate/ui/bottom_items/Home/notice_board/screens/view_pdf_.dart';
+import 'package:classmate/widgets/appWidget/app_text.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart' as fa;
-import 'package:table/widgets/mini_account_row.dart';
+import 'package:classmate/widgets/mini_account_row.dart';
 import '../../../../../constant/app_color.dart';
 import '../../../../../widgets/heder/heder_title.dart';
 import '../../../Collection Fetures/Profie Fetures/profile_screen.dart';

@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:table/widgets/appWidget/app_text.dart';
+import 'package:classmate/widgets/appWidget/app_text.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import '../../../constant/app_color.dart';
 import '../../../constant/constant.dart';

@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/core/component/loaders.dart';
+import 'package:classmate/core/component/loaders.dart';
 
 import '../../../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../../../widgets/error/error.widget.dart';

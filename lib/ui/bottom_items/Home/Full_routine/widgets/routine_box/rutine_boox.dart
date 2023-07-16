@@ -3,15 +3,15 @@
 // import 'package:flutter/cupertino.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:table/core/dialogs/alert_dialogs.dart';
-// import 'package:table/ui/bottom_items/Account/models/account_models.dart';
-// import 'package:table/models/class_details_model.dart';
-// import 'package:table/ui/bottom_items/Home/Full_routine/Summary/summat_screens/summary_screen.dart';
-// import 'package:table/widgets/appWidget/app_text.dart';
-// import 'package:table/widgets/appWidget/buttons/expended_button.dart';
-// import 'package:table/widgets/appWidget/buttons/capsule_button.dart';
-// import 'package:table/ui/bottom_items/Home/Full_routine/widgets/routine_box/rutin_card_row.dart';
-// import 'package:table/widgets/mini_account_row.dart';
+// import 'package:classmate/core/dialogs/alert_dialogs.dart';
+// import 'package:classmate/ui/bottom_items/Account/models/account_models.dart';
+// import 'package:classmate/models/class_details_model.dart';
+// import 'package:classmate/ui/bottom_items/Home/Full_routine/Summary/summat_screens/summary_screen.dart';
+// import 'package:classmate/widgets/appWidget/app_text.dart';
+// import 'package:classmate/widgets/appWidget/buttons/expended_button.dart';
+// import 'package:classmate/widgets/appWidget/buttons/capsule_button.dart';
+// import 'package:classmate/ui/bottom_items/Home/Full_routine/widgets/routine_box/rutin_card_row.dart';
+// import 'package:classmate/widgets/mini_account_row.dart';
 // import 'package:flutter/material.dart' as ma;
 
 // // ignore: unused_import

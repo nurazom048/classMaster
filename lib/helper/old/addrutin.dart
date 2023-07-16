@@ -2,8 +2,8 @@
 
 // import 'package:flutter/material.dart';
 
-// import 'package:table/old/moidels.dart';
-// import 'package:table/old/rutinprovider.dart';
+// import 'package:classmate/old/moidels.dart';
+// import 'package:classmate/old/rutinprovider.dart';
 
 // class AddRutin extends StatefulWidget {
 //   Classmodel? classdata;

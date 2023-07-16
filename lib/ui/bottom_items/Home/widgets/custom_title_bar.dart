@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:table/ui/bottom_items/search/search_screen/search_page.dart';
+import 'package:classmate/ui/bottom_items/search/search_screen/search_page.dart';
 
 import '../../../../constant/app_color.dart';
 import '../notification/screen/notification.screen.dart';

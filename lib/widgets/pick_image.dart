@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:table/constant/app_color.dart';
-import 'package:table/helper/helper_fun.dart';
-import 'package:table/ui/bottom_items/Home/utils/utils.dart';
+import 'package:classmate/constant/app_color.dart';
+import 'package:classmate/helper/helper_fun.dart';
+import 'package:classmate/ui/bottom_items/Home/utils/utils.dart';
 import 'package:badges/badges.dart' as badges;
 
 import '../core/component/Loaders.dart';

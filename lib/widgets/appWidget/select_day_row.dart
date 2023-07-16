@@ -1,7 +1,7 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/widgets/appWidget/app_text.dart';
+import 'package:classmate/widgets/appWidget/app_text.dart';
 import '../../constant/app_color.dart';
 import '../../ui/bottom_items/Home/Full_routine/widgets/routine_box/routine_box_by_ID.dart';
 

@@ -2,12 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/constant/app_color.dart';
-import 'package:table/core/dialogs/alert_dialogs.dart';
-import 'package:table/ui/bottom_items/Add/utils/add_class_validation.dart';
-import 'package:table/ui/bottom_items/Add/widgets/select_priode_number.dart';
+import 'package:classmate/constant/app_color.dart';
+import 'package:classmate/core/dialogs/alert_dialogs.dart';
+import 'package:classmate/ui/bottom_items/Add/utils/add_class_validation.dart';
+import 'package:classmate/ui/bottom_items/Add/widgets/select_priode_number.dart';
 import 'package:flutter/material.dart' as ma;
-import 'package:table/widgets/appWidget/buttons/cupertino_buttons.dart';
+import 'package:classmate/widgets/appWidget/buttons/cupertino_buttons.dart';
 
 import '../../../../widgets/appWidget/TextFromFild.dart';
 import '../../../../widgets/day_select_dropdowen.dart';

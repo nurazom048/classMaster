@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:table/ui/auth_Section/auth_controller/auth_controller.dart';
+import 'package:classmate/ui/auth_Section/auth_controller/auth_controller.dart';
 
 import '../../../core/dialogs/alert_dialogs.dart';
 import '../auth_ui/cranditial_info_screen.dart';

@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/core/component/loaders.dart';
-import 'package:table/core/dialogs/alert_dialogs.dart';
-import 'package:table/ui/bottom_items/Home/Full_routine/Summary/Summary%20Controller/summary_controller.dart';
-import 'package:table/widgets/heder/heder_title.dart';
+import 'package:classmate/core/component/loaders.dart';
+import 'package:classmate/core/dialogs/alert_dialogs.dart';
+import 'package:classmate/ui/bottom_items/Home/Full_routine/Summary/Summary%20Controller/summary_controller.dart';
+import 'package:classmate/widgets/heder/heder_title.dart';
 import 'package:badges/badges.dart' as badges;
 import '../../../../../../constant/app_color.dart';
 import '../../../../../../helper/helper_fun.dart';

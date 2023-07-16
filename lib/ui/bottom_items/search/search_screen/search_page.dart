@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/bottom_items/search/search_screen/account_search_screen.dart';
-import 'package:table/ui/bottom_items/search/search_screen/search_routine_screen.dart';
-import 'package:table/ui/bottom_items/search/widgets/search_bar_custom.dart';
+import 'package:classmate/ui/bottom_items/search/search_screen/account_search_screen.dart';
+import 'package:classmate/ui/bottom_items/search/search_screen/search_routine_screen.dart';
+import 'package:classmate/ui/bottom_items/search/widgets/search_bar_custom.dart';
 
 import '../../../../core/component/responsive.dart';
 import '../../../../widgets/custom_tab_bar.widget.dart';

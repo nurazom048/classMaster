@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:table/widgets/appWidget/app_text.dart';
-import 'package:table/widgets/heder/appbar_custom.dart';
+import 'package:classmate/widgets/appWidget/app_text.dart';
+import 'package:classmate/widgets/heder/appbar_custom.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../constant/constant.dart';

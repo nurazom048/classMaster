@@ -3,8 +3,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/core/dialogs/alert_dialogs.dart';
-import 'package:table/ui/bottom_items/Home/Full_routine/request/member_request.dart';
+import 'package:classmate/core/dialogs/alert_dialogs.dart';
+import 'package:classmate/ui/bottom_items/Home/Full_routine/request/member_request.dart';
 import '../models/members_models.dart';
 import '../../../../../models/message_model.dart';
 

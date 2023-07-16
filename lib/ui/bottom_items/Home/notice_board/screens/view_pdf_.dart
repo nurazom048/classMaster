@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import 'package:table/core/component/loaders.dart';
-import 'package:table/widgets/error/error.widget.dart';
+import 'package:classmate/core/component/loaders.dart';
+import 'package:classmate/widgets/error/error.widget.dart';
 import '../../../../../widgets/heder/appbar_custom.dart';
 import '../../utils/utils.dart';
 

@@ -5,11 +5,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-import 'package:table/local%20data/local_data.dart';
-import 'package:table/models/message_model.dart';
+import 'package:classmate/local%20data/local_data.dart';
+import 'package:classmate/models/message_model.dart';
 import '../../../../constant/constant.dart';
 import '../../../../core/dialogs/alert_dialogs.dart';
-import 'package:table/models/class_model.dart';
+import 'package:classmate/models/class_model.dart';
 
 import '../../Home/Full_routine/controller/riutine_details.controller.dart';
 

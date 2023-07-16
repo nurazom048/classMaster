@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:table/core/dialogs/alert_dialogs.dart';
-import 'package:table/ui/bottom_items/Add/screens/add__Notice__Screen.dart';
-import 'package:table/ui/bottom_items/Add/screens/create_new_rutine.dart';
-import 'package:table/ui/bottom_items/Home/Full_routine/widgets/dash_border_button.dart';
+import 'package:classmate/core/dialogs/alert_dialogs.dart';
+import 'package:classmate/ui/bottom_items/Add/screens/add__Notice__Screen.dart';
+import 'package:classmate/ui/bottom_items/Add/screens/create_new_rutine.dart';
+import 'package:classmate/ui/bottom_items/Home/Full_routine/widgets/dash_border_button.dart';
 
 import '../../constant/app_color.dart';
 import '../../widgets/bottom_sheet_shape.dart';

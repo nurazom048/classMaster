@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:table/models/Routine/class/find_class_model.dart';
-import 'package:table/ui/bottom_items/Add/utils/add_class_validation.dart';
-import 'package:table/ui/bottom_items/Add/widgets/select_priode_number.dart';
-import 'package:table/widgets/appWidget/TextFromFild.dart';
-import 'package:table/widgets/appWidget/dotted_divider.dart';
+import 'package:classmate/models/Routine/class/find_class_model.dart';
+import 'package:classmate/ui/bottom_items/Add/utils/add_class_validation.dart';
+import 'package:classmate/ui/bottom_items/Add/widgets/select_priode_number.dart';
+import 'package:classmate/widgets/appWidget/TextFromFild.dart';
+import 'package:classmate/widgets/appWidget/dotted_divider.dart';
 
 import '../../../../constant/app_color.dart';
 

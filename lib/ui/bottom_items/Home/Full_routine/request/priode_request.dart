@@ -4,10 +4,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:table/local%20data/local_data.dart';
-import 'package:table/models/message_model.dart';
+import 'package:classmate/local%20data/local_data.dart';
+import 'package:classmate/models/message_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:table/models/priode/all_priode_models.dart';
+import 'package:classmate/models/priode/all_priode_models.dart';
 
 import '../../../../../constant/constant.dart';
 import '../../../../../local data/api_cashe_maager.dart';

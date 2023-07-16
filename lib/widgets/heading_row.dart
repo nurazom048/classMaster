@@ -1,7 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:table/widgets/appWidget/buttons/capsule_button.dart';
+import 'package:classmate/widgets/appWidget/buttons/capsule_button.dart';
 
 class HeadingRow extends StatelessWidget {
   final String heading;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:table/widgets/appWidget/buttons/cupertino_buttons.dart';
+import 'package:classmate/widgets/appWidget/buttons/cupertino_buttons.dart';
 import '../../../constant/app_color.dart';
 import '../../../widgets/heder/heder_title.dart';
 

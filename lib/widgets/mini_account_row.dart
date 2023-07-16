@@ -1,12 +1,9 @@
 //***********************   MiniAccountInfo*******************/
 import 'package:flutter/material.dart';
-import 'package:table/widgets/appWidget/app_text.dart';
+import 'package:classmate/widgets/appWidget/app_text.dart';
 
 import '../ui/bottom_items/Collection Fetures/models/account_models.dart';
 import '../ui/bottom_items/Home/utils/utils.dart';
-
-
-
 
 class MiniAccountInfo extends StatelessWidget {
   final AccountModels? accountData;
@@ -35,13 +32,11 @@ class MiniAccountInfo extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
-
-
               children: [
                 FutureBuilder(
                   future: Utils.isOnlineMethod(),
                   builder: (context, snapshot) {
-                  final   bool isOnline = snapshot.data ?? false;
+                    final bool isOnline = snapshot.data ?? false;
 
                     if (isOnline && accountData?.image != null) {
                       return CircleAvatar(

@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:table/core/dialogs/alert_dialogs.dart';
-import 'package:table/models/Routine/weekday/weekday_list.dart';
+import 'package:classmate/core/dialogs/alert_dialogs.dart';
+import 'package:classmate/models/Routine/weekday/weekday_list.dart';
 import '../../../../../models/message_model.dart';
 import '../request/weekday_req.dart';
 

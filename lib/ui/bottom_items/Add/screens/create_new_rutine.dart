@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:table/core/dialogs/alert_dialogs.dart';
-import 'package:table/models/message_model.dart';
-import 'package:table/ui/bottom_items/Home/Full_routine/screen/viewMore/view_more_screen.dart';
-import 'package:table/ui/bottom_items/Home/home_req/routine_api.dart';
-import 'package:table/widgets/appWidget/app_text.dart';
-import 'package:table/widgets/appWidget/buttons/cupertino_buttons.dart';
-import 'package:table/widgets/heder/heder_title.dart';
+import 'package:classmate/core/dialogs/alert_dialogs.dart';
+import 'package:classmate/models/message_model.dart';
+import 'package:classmate/ui/bottom_items/Home/Full_routine/screen/viewMore/view_more_screen.dart';
+import 'package:classmate/ui/bottom_items/Home/home_req/routine_api.dart';
+import 'package:classmate/widgets/appWidget/app_text.dart';
+import 'package:classmate/widgets/appWidget/buttons/cupertino_buttons.dart';
+import 'package:classmate/widgets/heder/heder_title.dart';
 import '../../../../constant/app_color.dart';
 import '../../../../widgets/appWidget/TextFromFild.dart';
 

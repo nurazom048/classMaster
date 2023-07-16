@@ -1,5 +1,5 @@
 import 'package:file_picker/file_picker.dart';
-import 'package:table/helper/helper_fun.dart';
+import 'package:classmate/helper/helper_fun.dart';
 
 class Picker extends HelperMethods {
   //!___ Pick Pdf.....//

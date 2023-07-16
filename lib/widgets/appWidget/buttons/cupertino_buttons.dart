@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:table/core/component/loaders.dart';
+import 'package:classmate/core/component/loaders.dart';
 
 class CupertinoButtonCustom extends StatelessWidget {
   const CupertinoButtonCustom({

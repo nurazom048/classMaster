@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:table/constant/app_color.dart';
+import 'package:classmate/constant/app_color.dart';
 
 class DayDropdown extends StatelessWidget {
   final String labelText;

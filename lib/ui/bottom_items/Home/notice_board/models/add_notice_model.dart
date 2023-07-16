@@ -1,4 +1,4 @@
-import 'package:table/ui/bottom_items/Home/notice_board/models/recent_notice_model.dart';
+import 'package:classmate/ui/bottom_items/Home/notice_board/models/recent_notice_model.dart';
 
 class AddNoticeMessage {
   String message;

@@ -3,10 +3,10 @@
 // // import 'package:flutter/cupertino.dart';
 // // import 'package:flutter/material.dart';
 // // import 'package:provider/provider.dart';
-// // import 'package:table/addrutin.dart';
-// // import 'package:table/classdetals.dart';
-// // import 'package:table/main.dart';
-// // import 'package:table/rutinprovider.dart';
+// // import 'package:classmate/addrutin.dart';
+// // import 'package:classmate/classdetals.dart';
+// // import 'package:classmate/main.dart';
+// // import 'package:classmate/rutinprovider.dart';
 // // import 'package:intl/intl.dart';
 
 // // class RutinPage extends StatelessWidget {

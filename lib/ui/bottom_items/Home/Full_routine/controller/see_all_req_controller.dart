@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, invalid_return_type_for_catch_error, prefer_const_constructors, unused_element, unused_result
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/ui/bottom_items/Home/Full_routine/request/member_request.dart';
+import 'package:classmate/ui/bottom_items/Home/Full_routine/request/member_request.dart';
 import '../../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../../models/see_all_request_model.dart';
 

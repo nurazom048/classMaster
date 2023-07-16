@@ -1,14 +1,14 @@
 // ignore_for_file: avoid_print
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table/core/dialogs/alert_dialogs.dart';
-import 'package:table/constant/app_color.dart';
-import 'package:table/ui/bottom_items/Home/Full_routine/controller/priode_controller.dart';
-import 'package:table/ui/bottom_items/Home/Full_routine/request/priode_request.dart';
-import 'package:table/widgets/appWidget/app_text.dart';
-import 'package:table/widgets/heder/heder_title.dart';
-import 'package:table/ui/bottom_items/Home/Full_routine/widgets/select_time.dart';
-import 'package:table/widgets/appWidget/buttons/cupertino_buttons.dart';
+import 'package:classmate/core/dialogs/alert_dialogs.dart';
+import 'package:classmate/constant/app_color.dart';
+import 'package:classmate/ui/bottom_items/Home/Full_routine/controller/priode_controller.dart';
+import 'package:classmate/ui/bottom_items/Home/Full_routine/request/priode_request.dart';
+import 'package:classmate/widgets/appWidget/app_text.dart';
+import 'package:classmate/widgets/heder/heder_title.dart';
+import 'package:classmate/ui/bottom_items/Home/Full_routine/widgets/select_time.dart';
+import 'package:classmate/widgets/appWidget/buttons/cupertino_buttons.dart';
 
 class AppPriodePage extends StatefulWidget {
   const AppPriodePage({

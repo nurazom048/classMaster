@@ -1,9 +1,9 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:table/core/dialogs/alert_dialogs.dart';
-import 'package:table/ui/bottom_items/Add/widgets/add_squrebuttons.dart';
-import 'package:table/ui/bottom_items/Add/widgets/priode_select_buttons.dart';
+import 'package:classmate/core/dialogs/alert_dialogs.dart';
+import 'package:classmate/ui/bottom_items/Add/widgets/add_squrebuttons.dart';
+import 'package:classmate/ui/bottom_items/Add/widgets/priode_select_buttons.dart';
 
 import '../../../../constant/app_color.dart';
 

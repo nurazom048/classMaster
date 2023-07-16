@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:table/constant/png_const.dart';
+import 'package:classmate/constant/png_const.dart';
 
 import 'about_model.dart';
 

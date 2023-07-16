@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:table/constant/constant.dart';
-import 'package:table/ui/wellcome_section/Widgets/send_mini_button.dart';
-import 'package:table/widgets/appWidget/TextFromFild.dart';
-import 'package:table/widgets/appWidget/app_text.dart';
-import 'package:table/widgets/heder/heder_title.dart';
+import 'package:classmate/constant/constant.dart';
+import 'package:classmate/ui/wellcome_section/Widgets/send_mini_button.dart';
+import 'package:classmate/widgets/appWidget/TextFromFild.dart';
+import 'package:classmate/widgets/appWidget/app_text.dart';
+import 'package:classmate/widgets/heder/heder_title.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../constant/image_const.dart';
