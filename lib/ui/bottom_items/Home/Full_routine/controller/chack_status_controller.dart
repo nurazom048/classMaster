@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, prefer_const_constructors, avoid_print
 
+import 'package:classmate/ui/bottom_items/Home/Full_routine/controller/saveroutine.controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
@@ -68,6 +69,7 @@ class CheckStatusController
       (response) {
         state = AsyncData(state.value!.copyWith(isSave: response.save));
 
+        ref.refresh(saveRoutineProvider);
         Alert.showSnackBar(context, response.message);
       },
     );

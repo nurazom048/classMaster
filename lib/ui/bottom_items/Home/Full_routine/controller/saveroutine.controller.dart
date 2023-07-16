@@ -4,13 +4,13 @@ import '../../../../../models/Routine/saveRutine.dart';
 import '../../home_req/home_req.dart';
 import 'package:classmate/models/Routine/search_rutin.dart';
 
-final saveRoutineProvider = StateNotifierProvider<SaveRoutineController,
-    AsyncValue<SaveRoutineResponse>>((ref) {
+final saveRoutineProvider = StateNotifierProvider.autoDispose<
+    SaveRoutineController, AsyncValue<SaveRutileResponse>>((ref) {
   return SaveRoutineController(ref.read(home_req_provider));
 });
 
 class SaveRoutineController
-    extends StateNotifier<AsyncValue<SaveRoutineResponse>> {
+    extends StateNotifier<AsyncValue<SaveRutileResponse>> {
   HomeReq homeReq;
   SaveRoutineController(this.homeReq) : super(const AsyncLoading()) {
     _init();
@@ -33,7 +33,7 @@ class SaveRoutineController
     try {
       if (page == state.value!.totalPages) {
       } else {
-        final SaveRoutineResponse newData =
+        final SaveRutileResponse newData =
             await homeReq.saveRoutines(pages: page + 1);
 
         // Check if the new data's page number is greater than the current page number
@@ -41,7 +41,7 @@ class SaveRoutineController
           int? totalPages = newData.totalPages;
           if (newData.currentPage <= totalPages) {
             // Add new routines to the existing list and update the page number
-            List<SaveRoutine> routines = state.value!.savedRoutines
+            List<Routine> routines = state.value!.savedRoutines
               ..addAll(newData.savedRoutines);
             state = AsyncData(state.value!.copyWith(
                 savedRoutines: routines, currentPage: newData.currentPage));

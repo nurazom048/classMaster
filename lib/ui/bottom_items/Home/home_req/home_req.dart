@@ -21,7 +21,7 @@ final home_req_provider = Provider<HomeReq>((ref) => HomeReq());
 
 class HomeReq {
 //********    saveRoutines      *************/
-  Future<SaveRoutineResponse> saveRoutines({pages}) async {
+  Future<SaveRutileResponse> saveRoutines({pages}) async {
     String queryPage = "?page=$pages}";
     String? username = "";
     final headers = await LocalData.getHerder();
@@ -38,7 +38,7 @@ class HomeReq {
         var res = json.decode(response.body);
         print(res);
 
-        return SaveRoutineResponse.fromJson(res);
+        return SaveRutileResponse.fromJson(res);
       } else {
         throw "Failed to load saved routines";
       }
