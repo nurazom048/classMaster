@@ -16,6 +16,7 @@ import '../../widgets/account_card_widgets.dart';
 import '../../widgets/member_account_card.dart';
 
 final membersCountProvider = StateProvider.autoDispose<int>((ref) => 0);
+final offsetProvider = StateProvider<Offset?>((ref) => null);
 
 class MemberList extends StatefulWidget {
   final String routineId;
@@ -95,83 +96,94 @@ class _MemberListState extends State<MemberList> {
             ref.refresh(checkStatusControllerProvider(widget.routineId));
           }
         },
-        child: ListView(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          children: [
-            //____________________________________Invite___________________________________//
+        child: GestureDetector(
+          onTapDown: (offset) {
+            print(offset.globalPosition);
 
-            // AppTextFromField(
-            //   margin: EdgeInsets.zero,
-            //   controller: _emailController,
-            //   hint: "Invite Student",
-            //   labelText: "Enter email address",
-            //   validator: (value) => LoginValidation.validateEmail(value),
-            // ),
-            // const SizedBox(height: 20),
-            // const DashBorderButton(),
-            // const SizedBox(height: 30),
+            ref
+                .watch(offsetProvider.notifier)
+                .update((state) => offset.globalPosition);
+          },
+          child: ListView(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            children: [
+              //____________________________________Invite___________________________________//
 
-            //____________________________________Requests___________________________________//
-            if (isCaptain == true || isOwner == true) ...[
-              JoinRequestPart(routineID: widget.routineId),
-            ],
+              // AppTextFromField(
+              //   margin: EdgeInsets.zero,
+              //   controller: _emailController,
+              //   hint: "Invite Student",
+              //   labelText: "Enter email address",
+              //   validator: (value) => LoginValidation.validateEmail(value),
+              // ),
+              // const SizedBox(height: 20),
+              // const DashBorderButton(),
+              // const SizedBox(height: 30),
 
-            ///
-            //____________________________________Members___________________________________//
-            ///
-            ///
+              //____________________________________Requests___________________________________//
+              if (isCaptain == true || isOwner == true) ...[
+                JoinRequestPart(routineID: widget.routineId),
+              ],
 
-            HeadingRow(
-              margin: EdgeInsets.zero,
-              heading: "All Members",
-              secondHeading: "$memberCount member${memberCount > 1 ? "s" : ''}",
-            ),
+              ///
+              //____________________________________Members___________________________________//
+              ///
+              ///
 
-            allMembers.when(
-              data: (data) {
-                if (data == null) {
-                  return const Text("null");
-                }
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  memberCountNotifier.update((state) => data.totalCount);
-                });
-                void scrollListener() {
-                  if (memberScrollController.position.pixels ==
-                      memberScrollController.position.maxScrollExtent) {
-                    allMembersNotifier.loadMore(data.currentPage);
+              HeadingRow(
+                margin: EdgeInsets.zero,
+                heading: "All Members",
+                secondHeading:
+                    "$memberCount member${memberCount > 1 ? "s" : ''}",
+              ),
+
+              allMembers.when(
+                data: (data) {
+                  if (data == null) {
+                    return const Text("null");
                   }
-                }
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    memberCountNotifier.update((state) => data.totalCount);
+                  });
+                  void scrollListener() {
+                    if (memberScrollController.position.pixels ==
+                        memberScrollController.position.maxScrollExtent) {
+                      allMembersNotifier.loadMore(data.currentPage);
+                    }
+                  }
 
-                memberScrollController.addListener(scrollListener);
+                  memberScrollController.addListener(scrollListener);
 
-                return ListView.builder(
-                  controller: memberScrollController,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: data.members.length,
-                  itemBuilder: (context, i) => MemberAccountCard(
-                    condition: isCaptain == true || isOwner == true,
-                    member: data.members[i],
-                    onPressed: () {
-                      accountActions(
-                        context,
-                        ref,
-                        rutinId: widget.routineId,
-                        username: data.members[i].username,
-                        memberId: data.members[i].id,
-                        isTheMemberIsCaptain: data.members[i].captain,
-                        isTheMemberIsOwner: data.members[i].owner,
-                      );
-                    },
-                  ),
-                );
-              },
-              error: (error, stackTrace) => Alert.handleError(context, error),
-              loading: () => Loaders.center(),
-            ),
-          ],
+                  return ListView.builder(
+                    controller: memberScrollController,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: data.members.length,
+                    itemBuilder: (context, i) => MemberAccountCard(
+                      condition: isCaptain == true || isOwner == true,
+                      member: data.members[i],
+                      onPressed: () {
+                        accountActions(
+                          context,
+                          ref,
+                          offset: ref.watch(offsetProvider),
+                          rutinId: widget.routineId,
+                          username: data.members[i].username,
+                          memberId: data.members[i].id,
+                          isTheMemberIsCaptain: data.members[i].captain,
+                          isTheMemberIsOwner: data.members[i].owner,
+                        );
+                      },
+                    ),
+                  );
+                },
+                error: (error, stackTrace) => Alert.handleError(context, error),
+                loading: () => Loaders.center(),
+              ),
+            ],
+          ),
         ),
       );
     });

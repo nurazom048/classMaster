@@ -10,6 +10,7 @@ import '../controller/members_controllers.dart';
 void accountActions(
   BuildContext context,
   WidgetRef ref, {
+  required Offset? offset,
   required String rutinId,
   required String username,
   required String memberId,
@@ -61,10 +62,10 @@ void accountActions(
     // Alert.showSnackBar(context, 'No Action here');
     return;
   }
-
   final result = await showMenu(
     context: context,
-    position: const RelativeRect.fromLTRB(120, 535, 0, 0),
+    position:
+        RelativeRect.fromLTRB(offset?.dx ?? 120, offset?.dy ?? 120, 20, 0),
     items: items,
     elevation: 8.0,
   );
