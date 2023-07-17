@@ -150,30 +150,31 @@ class AddNoticeScreen extends ConsumerWidget {
                     onPressed: () async {
                       print("pdf path : $pdfPath");
 
-                      if (pdfPath == null) {
-                        Alert.errorAlertDialog(context, "select pdf");
-                      }
                       if (_formKey.currentState!.validate()) {
-                        isLoadingNotifier.update((state) => true);
-
                         File thePdf = File(pdfPath!);
                         String? mineType = lookupMimeType(pdfPath);
-
+                        if (pdfPath == null) {
+                          Alert.errorAlertDialog(context, "select pdf");
+                        }
                         //
-                        if (mineType != 'application/pdf') {
+                        else if (mineType != 'application/pdf') {
                           return Alert.errorAlertDialog(
                               context, 'Only PDF file is allow');
-                        }
-                        if (thePdf.lengthSync() > 10 * 1024 * 1024) {
+                        } else if (thePdf.lengthSync() > 10 * 1024 * 1024) {
                           // Check file size in bytes (10 MB = 10 * 1024 * 1024 bytes)
                           return Alert.errorAlertDialog(
                             context,
                             'Maximum file size allowed is 10 MB',
                           );
+                        } else {
+                          isLoadingNotifier.update((state) => true);
+                          return addNotice(
+                            context,
+                            pdfPath,
+                            ref,
+                            isLoadingNotifier,
+                          );
                         }
-
-                        return addNotice(
-                            context, pdfPath, ref, isLoadingNotifier);
                       }
                     },
                   ),
