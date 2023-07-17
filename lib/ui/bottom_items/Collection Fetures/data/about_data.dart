@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:classmate/constant/png_const.dart';
+import 'package:flutter/material.dart';
 
 import 'about_model.dart';
 
@@ -71,7 +72,7 @@ final List<AboutData> aboutList = [
     ],
   ),
   AboutData(
-    color: Color.fromRGBO(242, 20, 89, 0.75),
+    color: Colors.pinkAccent,
     image: ConstPng.nime,
     name: 'Md. Naimul Islam Naim',
     position: 'IT Expert',

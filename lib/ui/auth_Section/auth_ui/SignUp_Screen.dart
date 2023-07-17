@@ -326,7 +326,7 @@ class BluetMarkInfoText extends StatelessWidget {
     this.radius,
   });
 
-  simle(context, width) {
+  simple(context, width) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,

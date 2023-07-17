@@ -9,7 +9,7 @@ import '../data/about_data.dart';
 import '../data/about_model.dart';
 
 const String aboutApp =
-    'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.';
+    'Introducing an all-in-one institute management software designed to revolutionize the way educational institutions and coaching centers operate. Our powerful software streamlines essential functions, such as creating routines and notices, facilitating seamless communication, and sharing class notes. With our intuitive interface, users can easily access real-time information about class schedules, room assignments, and teacher allocations. Say goodbye to manual paperwork and administrative hassles, as our app simplifies and automates the necessary tasks for running an institute. Experience a new level of efficiency and organization with our comprehensive institute management software.';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
@@ -19,7 +19,7 @@ class AboutScreen extends StatelessWidget {
     return Scaffold(
       appBar: const AppBarCustom('About Us'),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.only(bottom: 200),
+        padding: const EdgeInsets.only(bottom: 20),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 25),
           child: Column(
@@ -31,9 +31,8 @@ class AboutScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Container(
-                color: Colors.amber,
                 width: MediaQuery.of(context).size.width,
-                height: 300,
+                constraints: const BoxConstraints(minHeight: 400),
                 child: Text(
                   aboutApp,
                   style: TS.opensensBlue(
@@ -75,90 +74,8 @@ class AboutInfoCard extends StatelessWidget {
       children: [
         const SizedBox(height: 20),
         AboutCard(
-          image: aboutData.image,
-          name: aboutData.name,
-          username: aboutData.position,
-          color: aboutData.color,
+          aboutData: aboutData,
         ),
-        Container(
-          height: 2,
-          color: Colors.white,
-        ),
-        Container(
-          constraints: BoxConstraints(
-            maxHeight: 50,
-            maxWidth: MediaQuery.of(context).size.width,
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                flex: 1,
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(12),
-                  ),
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 1),
-                    height: 100,
-                    width: 100,
-                    color: aboutData.color,
-                    child: Center(
-                        child: Text(
-                      'Personal Info',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: 'Open Sans',
-                        fontStyle: FontStyle.normal,
-                        height: 1.0,
-                        letterSpacing: 0.0,
-                        wordSpacing: 0.0,
-                      ),
-                      textAlign: TextAlign.justify,
-                      textScaleFactor: 1.0,
-                      textWidthBasis: TextWidthBasis.parent,
-                      overflow: TextOverflow.visible,
-                    )),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    bottomRight: Radius.circular(12),
-                  ),
-                  child: Container(
-                    margin: const EdgeInsets.only(left: 1),
-                    height: 100,
-                    width: 100,
-                    color: aboutData.color,
-                    child: Center(
-                        child: Text(
-                      'Social Info',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: 'Open Sans',
-                        fontStyle: FontStyle.normal,
-                        height: 1.0,
-                        letterSpacing: 0.0,
-                        wordSpacing: 0.0,
-                      ),
-                      textAlign: TextAlign.justify,
-                      textScaleFactor: 1.0,
-                      textWidthBasis: TextWidthBasis.parent,
-                      overflow: TextOverflow.visible,
-                    )),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 10),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -167,10 +84,10 @@ class AboutInfoCard extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
                   margin: const EdgeInsets.only(right: 1),
-                  constraints:
-                      const BoxConstraints(maxHeight: 300, minHeight: 200),
+                  constraints: const BoxConstraints(maxHeight: 300),
                   width: 100,
                   color: aboutData.color,
                   child: ListView.separated(
@@ -179,14 +96,11 @@ class AboutInfoCard extends StatelessWidget {
                     itemCount: aboutData.personalInfo.length,
                     itemBuilder: (context, i) {
                       return BluetMarkInfoText(
-                        // padding: EdgeInsets.zero,
+                        padding: const EdgeInsets.only(top: 4),
                         color: Colors.white,
                         textColor: Colors.white,
-                        flex: 5,
+                        flex: 9,
                         text: ' ${aboutData.personalInfo[i]}',
-                      ).simle(
-                        context,
-                        MediaQuery.of(context).size.width * 0.36,
                       );
                     },
                     separatorBuilder: (context, index) {
@@ -196,18 +110,116 @@ class AboutInfoCard extends StatelessWidget {
                 ),
               ),
             ),
-            Expanded(
-              flex: 1,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                  constraints:
-                      const BoxConstraints(maxHeight: 200, minHeight: 100),
-                  margin: const EdgeInsets.only(left: 1),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class AboutCard extends StatelessWidget {
+  final AboutData aboutData;
+  const AboutCard({
+    super.key,
+    required this.aboutData,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 272,
+      width: MediaQuery.of(context).size.width,
+      decoration: const BoxDecoration(
+          // color: Colors.amber,
+          ),
+      child: Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          //
+
+          Positioned(
+            top: 50,
+            child: ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(12),
+                topRight: Radius.circular(12),
+              ),
+              child: Container(
+                height: 160,
+                width: MediaQuery.of(context).size.width - 50,
+                decoration: BoxDecoration(
+                  color: aboutData.color,
+                ),
+              ),
+            ),
+          ),
+
+          Positioned(
+            top: 0,
+            child: Column(
+              children: [
+                CircleAvatar(
+                  radius: 54,
+                  backgroundColor: Colors.white,
+                  child: CircleAvatar(
+                    radius: 50,
+                    // backgroundColor: Colors.red,
+                    child: ClipOval(
+                      child: Image.asset(
+                        aboutData.image,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  aboutData.name,
+                  style: TS.heading(color: Colors.white),
+                ),
+                Text(
+                  aboutData.position,
+                  style: TS.heading(color: Colors.white, fontSize: 16),
+                ),
+              ],
+            ),
+          ),
+          //
+
+          Positioned(
+              bottom: 0,
+              child: Column(
+                children: [
+                  Container(
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 2,
+                          color: Colors.white,
+                        ),
+                        Container(
+                          height: 50,
+                          width: MediaQuery.of(context).size.width,
+                          color: aboutData.color,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                ],
+              )),
+          Positioned(
+            bottom: 40,
+            child: Column(
+              children: [
+                Container(
+                  height: 50,
+                  constraints: const BoxConstraints(maxWidth: 200),
                   color: aboutData.color,
                   child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
                     physics: const NeverScrollableScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     shrinkWrap: true,
                     itemCount: aboutData.socialLink.length,
                     itemBuilder: (context, i) {
@@ -243,20 +255,9 @@ class AboutInfoCard extends StatelessWidget {
                         child: Row(
                           children: [
                             CircleAvatar(
-                              radius: 8,
+                              radius: 12,
                               backgroundImage: AssetImage(
                                 aboutData.socialLink[i].icon,
-                              ),
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width / 3,
-                              child: Text(
-                                ' ${aboutData.socialLink[i].show}',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TS.opensensBlue(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w400),
                               ),
                             ),
                           ],
@@ -264,92 +265,9 @@ class AboutInfoCard extends StatelessWidget {
                       );
                     },
                     separatorBuilder: (context, index) {
-                      return const SizedBox(height: 10);
+                      return const SizedBox(width: 10);
                     },
                   ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Future<void> _launchUrl(_url) async {
-    if (!await launchUrl(_url)) {
-      throw Exception('Could not launch $_url');
-    }
-  }
-}
-
-class AboutCard extends StatelessWidget {
-  final String image;
-  final String name;
-  final String username;
-  final Color color;
-  const AboutCard({
-    super.key,
-    required this.image,
-    required this.name,
-    required this.username,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 200,
-      width: MediaQuery.of(context).size.width,
-      decoration: const BoxDecoration(),
-      child: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          //
-
-          Positioned(
-            top: 50,
-            child: ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(12),
-                topRight: Radius.circular(12),
-              ),
-              child: Container(
-                height: 200,
-                width: MediaQuery.of(context).size.width - 50,
-                decoration: BoxDecoration(
-                  color: color,
-                ),
-              ),
-            ),
-          ),
-
-          Positioned(
-            top: 0,
-            child: Column(
-              children: [
-                CircleAvatar(
-                  radius: 54,
-                  backgroundColor: Colors.white,
-                  child: CircleAvatar(
-                    radius: 50,
-                    // backgroundColor: Colors.red,
-                    child: ClipOval(
-                      child: Image.asset(
-                        image,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20),
-                Text(
-                  name,
-                  style: TS.heading(color: Colors.white),
-                ),
-                Text(
-                  username,
-                  style: TS.heading(color: Colors.white, fontSize: 16),
                 ),
               ],
             ),
@@ -357,5 +275,11 @@ class AboutCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _launchUrl(_url) async {
+    if (!await launchUrl(_url)) {
+      throw Exception('Could not launch $_url');
+    }
   }
 }
