@@ -89,8 +89,7 @@ class PriodeRequest {
   ///
   /// GET : All Priode In Routine
   Future<AllPriodeList> allPriode(String routineID) async {
-    final url = Uri.parse('${Const.BASE_URl}/rutin/all_priode/$routineID');
-
+    final url = Uri.parse('${Const.BASE_URl}/routine/all_priode/$routineID');
     final bool isOnline = await Utils.isOnlineMethod();
     final String key = "Priodes-$url";
     final bool isHaveCache = await MyApiCash.haveCash(key);
@@ -105,7 +104,7 @@ class PriodeRequest {
       //
       final response = await http.get(url);
       final res = json.decode(response.body);
-      print(res);
+      // print(res);
       final message = Message.fromJson(res);
       final allPriode = AllPriodeList.fromJson(res);
 

@@ -73,52 +73,58 @@ class PriodeAlert {
 
   //? **********     long press to priode       *********//
 
-  static Future<dynamic> logPressOnPriode(
-      BuildContext context, priodeId, String routineId, AllPriode Priode) {
+  static Future<dynamic> logPressOnPriode({
+    required priodeId,
+    required String routineId,
+    required AllPriode Priode,
+    required BuildContext context,
+    required WidgetRef ref,
+  }) {
     return showCupertinoModalPopup(
-      context: context,
-      builder: (context) => Consumer(builder: (context, ref, _) {
-        //Provider
-        final periodNotifier = ref.watch(priodeController(routineId).notifier);
-        return CupertinoActionSheet(
-          title: const Text(" Do you want to.. ",
-              style: TextStyle(fontSize: 22, color: Colors.black87)),
-          actions: [
+        context: context,
+        builder: (d) {
+          //Provider
+          final periodNotifier =
+              ref.watch(priodeController(routineId).notifier);
+          return CupertinoActionSheet(
+            title: const Text(" Do you want to.. ",
+                style: TextStyle(fontSize: 22, color: Colors.black87)),
+            actions: [
 // Eddit
 
-            CupertinoActionSheetAction(
-              child: Text(
-                "Update",
-                style: TextStyle(color: AppColor.nokiaBlue),
+              CupertinoActionSheetAction(
+                child: Text(
+                  "Update",
+                  style: TextStyle(color: AppColor.nokiaBlue),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                          fullscreenDialog: true,
+                          builder: (context) => AppPriodePage(
+                                totalPriode: 1,
+                                routineId: routineId,
+                                priodeId: Priode.id,
+                                isEdit: true,
+                              )));
+                },
               ),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                        fullscreenDialog: true,
-                        builder: (context) => AppPriodePage(
-                              totalPriode: 1,
-                              routineId: routineId,
-                              priodeId: Priode.id,
-                              isEdit: true,
-                            )));
-              },
-            ),
 // delete
-            CupertinoActionSheetAction(
-              child: const Text("Remove", style: TextStyle(color: Colors.red)),
-              onPressed: () {
-                periodNotifier.deletePriode(ref, context, priodeId);
-              },
+              CupertinoActionSheetAction(
+                child:
+                    const Text("Remove", style: TextStyle(color: Colors.red)),
+                onPressed: () {
+                  periodNotifier.deletePriode(ref, context, priodeId);
+                },
+              ),
+            ],
+            cancelButton: CupertinoActionSheetAction(
+              child: const Text("cancel"),
+              onPressed: () => Navigator.pop(context),
             ),
-          ],
-          cancelButton: CupertinoActionSheetAction(
-            child: const Text("cancel"),
-            onPressed: () => Navigator.pop(context),
-          ),
-        );
-      }),
-    );
+          );
+        });
   }
 }

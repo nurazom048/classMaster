@@ -43,7 +43,12 @@ class WeekdayRequest {
       final response = await http.post(
           Uri.parse('${Const.BASE_URl}/class/weakday/add/$classId'),
           headers: headers,
-          body: {"num": num, "room": room, "start": start, "end": end});
+          body: {
+            "num": num,
+            "room": room,
+            "start": start,
+            "end": end,
+          });
 
       var res = Message.fromJson(jsonDecode(response.body));
 

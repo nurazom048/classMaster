@@ -45,9 +45,7 @@ class PriodeClassController extends StateNotifier<AsyncValue<AllPriodeList>> {
     BuildContext context,
     String priodeId,
   ) async {
-    Navigator.pop(context);
-
-    var deleteRes = await PriodeRequest().deletePriode(priodeId);
+    final deleteRes = await PriodeRequest().deletePriode(priodeId);
 
     deleteRes.fold(
       (l) {
@@ -55,11 +53,14 @@ class PriodeClassController extends StateNotifier<AsyncValue<AllPriodeList>> {
 
         return Alert.errorAlertDialog(context, l);
       },
+      // ignore: void_checks
       (r) {
-        ref.refresh(priodeController(routineID));
         // state = false;
 
-        Alert.showSnackBar(context, r.message);
+        ref.refresh(priodeController(routineID));
+        Navigator.pop(context);
+
+        return Alert.showSnackBar(context, r.message);
       },
     );
   }

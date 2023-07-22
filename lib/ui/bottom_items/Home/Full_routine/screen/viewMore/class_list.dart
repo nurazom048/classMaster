@@ -37,6 +37,8 @@ class ClassListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, _) {
       print(routineId);
+      // key
+      final _scaffoldKey = GlobalKey<ScaffoldState>();
 
       // Provider
       final routineDetails = ref.watch(routineDetailsProvider(routineId));
@@ -50,6 +52,7 @@ class ClassListPage extends StatelessWidget {
       final totalClassNotifier = ref.read(totalClassCountProvider.notifier);
 
       return Scaffold(
+        key: _scaffoldKey,
         backgroundColor: Colors.white10,
         body: RefreshIndicator(
           onRefresh: () async {
@@ -105,10 +108,11 @@ class ClassListPage extends StatelessWidget {
                           endTime: data.priodes[index].endTime,
                           onLongpress: () {
                             PriodeAlert.logPressOnPriode(
-                              context,
-                              priodeId,
-                              routineId,
-                              data.priodes[index],
+                              context: _scaffoldKey.currentContext!,
+                              priodeId: priodeId,
+                              routineId: routineId,
+                              Priode: data.priodes[index],
+                              ref: ref,
                             );
                           },
                         );
@@ -145,7 +149,8 @@ class ClassListPage extends StatelessWidget {
                     shrinkWrap: true,
                     itemCount: length,
                     itemBuilder: (context, index) {
-                      UniqClass uniqClass = data.uniqClass[index];
+                      final UniqClass uniqClass = data.uniqClass[index];
+                      final String classsID = uniqClass.id;
 
                       print(data);
                       if (length == 0) {
@@ -163,7 +168,7 @@ class ClassListPage extends StatelessWidget {
                           onLongPress: () {
                             PriodeAlert.logPressClass(
                               context,
-                              classId: data.classes.allClass[index].classId.id,
+                              classId: classsID,
                               rutinId: routineId,
                             );
                           },

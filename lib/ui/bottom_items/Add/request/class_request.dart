@@ -31,7 +31,7 @@ class ClassRequest {
           "subjectcode": classModel.subjectCode.toString(),
           "start": classModel.startingPeriod.toString(),
           "end": classModel.endingPeriod.toString(),
-          "num": classModel.weekday.toString(),
+          "weekday": classModel.weekday.toString(),
         },
         headers: headers,
       );
@@ -42,12 +42,12 @@ class ClassRequest {
 
       if (response.statusCode == 200) {
         final res = json.decode(response.body);
-        print(res);
+        // print(res);
         // Navigator.pop(context);
         ref.refresh(routineDetailsProvider(routineId));
         //print response
         print("class created successfully");
-        print(res);
+        // print(res);
         Alert.showSnackBar(context, 'class add successfully');
         return res['_id'];
       } else {

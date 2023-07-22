@@ -117,10 +117,10 @@ class HomeReq {
     } catch (e) {
       Get.snackbar('error', "$e");
 
-      if (isHaveCash) {
-        var getdata = await MyApiCash.getData(key);
-        return RoutineHome.fromJson(getdata);
-      }
+      // if (isHaveCash) {
+      //   var getdata = await MyApiCash.getData(key);
+      //   return RoutineHome.fromJson(getdata);
+      // }
       throw "$e";
     }
   }
