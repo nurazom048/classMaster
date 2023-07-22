@@ -10,4 +10,6 @@ class ConstPng {
   static String mmAnikNew = "assets/png/mmaniknew.jpg";
   static String nurazom = "assets/png/nurazom.jpg";
   static String nime = "assets/png/nime.jpg";
+  static String logoWithTittle = "assets/png/frem192LogoWithTittle.png";
+  static String logo = "assets/png/splashScreen.png";
 }

@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:api_cache_manager/utils/cache_manager.dart';
 
 import '../../constant/constant.dart';
 import '../../local data/api_cashe_maager.dart';
@@ -32,9 +31,10 @@ class NotificationClass {
     print(url);
     try {
       // Check if offline and have cache
+
       if (!isOnline && isHaveCash) {
-        var cacheData = await APICacheManager().getCacheData(key);
-        return ClassNotificationList.fromJson(json.decode(cacheData.syncData));
+        var getdata = await MyApiCash.getData(key);
+        return ClassNotificationList.fromJson(getdata);
       }
 
       final response = await http.post(url, headers: headers);
@@ -44,6 +44,7 @@ class NotificationClass {
         final res = json.decode(response.body);
 
         // Save to cache
+
         MyApiCash.saveLocal(key: key, syncData: response.body);
 
         return ClassNotificationList.fromJson(res);
@@ -54,13 +55,7 @@ class NotificationClass {
         return null;
       }
     } catch (e) {
-      if (isHaveCash) {
-        var cacheData = await APICacheManager().getCacheData(key);
-        return ClassNotificationList.fromJson(json.decode(cacheData.syncData));
-      }
-      Get.showSnackbar(GetSnackBar(message: 'Error $e'));
+      return null;
     }
-
-    return null;
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:classmate/core/component/loaders.dart';
@@ -26,11 +27,12 @@ class _ViewPDfState extends State<ViewPDf> {
 
   @override
   void initState() {
-    super.initState();
+    checkOnline();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       initializeFile();
     });
+    super.initState();
   }
 
   @override
@@ -45,7 +47,7 @@ class _ViewPDfState extends State<ViewPDf> {
         widget.pdfLink.substring(widget.pdfLink.lastIndexOf('/') + 1);
     final File tempFile = File('${tempPath.path}/$fileName');
     final bool checkFileExist = await tempFile.exists();
-    isOnline = await Utils.isOnlineMethod();
+    // isOnline = await Utils.isOnlineMethod();
     if (checkFileExist) {
       setState(() {
         _tempFile = tempFile;
@@ -55,6 +57,8 @@ class _ViewPDfState extends State<ViewPDf> {
 
   @override
   Widget build(BuildContext context) {
+    final bool showOfflineScreen =
+        isOnline == null || isOnline == false && _tempFile == null;
     return SafeArea(
       child: Scaffold(
         appBar: AppBarCustom(
@@ -83,36 +87,23 @@ class _ViewPDfState extends State<ViewPDf> {
           children: [
             SizedBox(
               height: MediaQuery.of(context).size.height - 100,
-              child: FutureBuilder<bool>(
-                future: Utils.isOnlineMethod(),
-                builder: (context, snapshot) {
-                  try {
-                    if (snapshot.hasError) {
-                      return ErrorScreen(error: snapshot.error.toString());
-                    }
-                    if (isOnline == null ||
-                        isOnline == false && _tempFile == null) {
-                      return const ErrorScreen(
-                          error: 'You  are in offline mood');
-                    } else if (_tempFile != null) {
-                      return SfPdfViewer.file(
-                        controller: _pdfViewerController,
-                        _tempFile!,
-                        key: _pdfViewerKey,
-                        onDocumentLoadFailed: (details) {
-                          ErrorScreen(error: details.toString());
-                        },
-                      );
-                    } else if (snapshot.data != null && _tempFile == null) {
-                      return getBody();
-                    } else {
-                      return Loaders.center();
-                    }
-                  } catch (e) {
-                    return ErrorScreen(error: '$e');
-                  }
-                },
-              ),
+              child: Builder(builder: (context) {
+                if (showOfflineScreen) {
+                  return const ErrorScreen(error: 'You  are in offline mood');
+                } else if (_tempFile != null) {
+                  return SfPdfViewer.file(
+                    controller: _pdfViewerController,
+                    _tempFile!,
+                    key: _pdfViewerKey,
+                    onDocumentLoadFailed: (details) {
+                      ErrorScreen(error: details.toString());
+                    },
+                  );
+                } else if (_tempFile == null) {
+                  return getBody();
+                }
+                return SizedBox();
+              }),
             ),
           ],
         ),
@@ -142,5 +133,10 @@ class _ViewPDfState extends State<ViewPDf> {
     } catch (e) {
       return ErrorScreen(error: e.toString());
     }
+  }
+
+  void checkOnline() async {
+    isOnline = isOnline = await Utils.isOnlineMethod();
+    setState(() {});
   }
 }

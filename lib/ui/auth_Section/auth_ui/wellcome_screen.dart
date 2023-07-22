@@ -23,16 +23,15 @@ class WellComeScreen extends StatelessWidget {
           body: Column(
             children: [
               HeaderTitle("Wellcome", context, hideArrow: true),
-              const SizedBox(height: 20),
+              const Spacer(flex: 2),
+              SizedBox(
+                height: 200,
+                child: SvgPicture.asset(ImageConst.wellcome),
+              ),
+              const Spacer(flex: 4),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 100),
-                  SizedBox(
-                    height: 200,
-                    child: SvgPicture.asset(ImageConst.wellcome),
-                  ),
-                  const SizedBox(height: 50),
                   Container(
                     alignment: Alignment.center,
                     child: Text(
@@ -74,7 +73,7 @@ class WellComeScreen extends StatelessWidget {
               color: AppColor.nokiaBlue,
               onPressed: () {
                 Get.to(
-                  () => LoginScreen(),
+                  () => const LoginScreen(),
                   transition: Transition.rightToLeft,
                 );
               },

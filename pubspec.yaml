@@ -79,12 +79,40 @@ dependencies:
   app_settings: ^4.2.0
   mime: ^1.0.4
   url_launcher: ^6.1.12
+  flutter_lints: ^2.0.0
+
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_launcher_icons: "^0.13.1"
+  flutter_native_splash: ^2.3.1
+
+
+flutter_icons:
+  android: true
+  image_path: "assets/png/logo_with_padding.png"
+
+flutter_native_splash: 
+  color: "#ffffff"
+  # color: "#42a5f5"
+  # branding: assets/png/appLogoWithTittle.png
+  image: assets/png/frem192LogoWithTittle.png
+  android: true 
+  ios: false   
+  web: false
+  android_12:
+    color: "#ffffff"
+    # image: assets/png/splashScreen.png
+    # branding: assets/png/frem192LogoWithTittle.png
+    android_gravity: center
+    # icon_background_color: "#ffffff"
+    # icon_background_color: "#42a5f5"
+
+
+
+
 
 
   
@@ -103,8 +131,14 @@ flutter:
   assets:
     - assets/
     - assets/svg/
-    - assets/png/
-    
+    - assets/png/appLogoWithTittle.png
+    - assets/png/Class Master (Logo with texts).png
+    - assets/png/newSplash.png
+    - assets/png/192 x 192.png
+    - assets/png/frem192LogoWithTittle.png
+    - assets/png/logo.png
+    - assets/png/logo_with_padding.png
+   
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

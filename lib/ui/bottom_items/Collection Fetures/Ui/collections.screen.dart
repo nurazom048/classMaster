@@ -133,20 +133,25 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                     Consumer(builder: (context, ref, _) {
                       final classNotification =
                           ref.watch(classNotificationProvider);
-                      return classNotification.when(
-                          data: (data) {
-                            if (data == null) {}
-                            if (kDebugMode) {
-                              print('Awesome notification created');
-                            }
+                      return SizedBox(
+                        height: 1,
+                        width: 1,
+                        child: classNotification.when(
+                            data: (data) {
+                              if (data == null) {
+                              } else {
+                                LocalNotification.scheduleNotifications(data);
+                              }
+                              if (kDebugMode) {
+                                print('Awesome notification created');
+                              }
 
-                            LocalNotification.scheduleNotifications(data!);
-
-                            return const SizedBox();
-                          },
-                          error: (error, stackTrace) =>
-                              Alert.handleError(context, error),
-                          loading: () => const SizedBox());
+                              return const SizedBox();
+                            },
+                            error: (error, stackTrace) =>
+                                Alert.handleError(context, error),
+                            loading: () => const SizedBox()),
+                      );
                     }),
 
                     //
