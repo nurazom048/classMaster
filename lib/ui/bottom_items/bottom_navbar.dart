@@ -1,9 +1,10 @@
+import 'package:classmate/constant/enmu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
-import 'package:classmate/ui/bottom_items/Add/screens/add__Notice__Screen.dart';
+import 'package:classmate/ui/bottom_items/Add/screens/add__notice__screen.dart';
 import 'package:classmate/ui/bottom_items/Add/screens/create_new_rutine.dart';
 import 'package:classmate/ui/bottom_items/Home/Full_routine/widgets/dash_border_button.dart';
 
@@ -185,7 +186,9 @@ plusBottomSheet(BuildContext context) {
                                   onTap: () async {
                                     final String? type =
                                         await AuthController.getAccountType();
-                                    if (type != null && type != 'academy') {
+                                    if (type != null &&
+                                        type ==
+                                            AccountType.academy.toString()) {
                                       return Get.to(() => AddNoticeScreen());
                                     } else {
                                       // ignore: use_build_context_synchronously

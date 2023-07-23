@@ -1,4 +1,4 @@
-// ignore_for_file: unused_result, must_be_immutable
+// ignore_for_file: unused_result, must_be_immutable, unnecessary_null_comparison
 
 import 'dart:io';
 import 'package:mime/mime.dart';

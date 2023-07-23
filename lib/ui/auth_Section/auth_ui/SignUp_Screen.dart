@@ -11,6 +11,7 @@ import 'package:classmate/ui/auth_Section/auth_controller/auth_controller.dart';
 import 'package:classmate/ui/auth_Section/auth_ui/LogIn_Screen.dart';
 import 'package:classmate/ui/auth_Section/utils/singUp_validation.dart';
 import 'package:classmate/widgets/appWidget/app_text.dart';
+import '../../../constant/enmu.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/appWidget/buttons/cupertino_buttons.dart';
 import '../../../widgets/heder/heder_title.dart';
@@ -70,7 +71,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
           final String selectedAccountType =
               ref.watch(selectAccountTypeProvider);
-          bool? isAcademy = selectedAccountType == 'Academy';
+          bool? isAcademy =
+              selectedAccountType == AccountType.academy.toString();
 
           return SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
@@ -99,7 +101,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             : "Email",
                         labelText: "Enter email address",
                         validator: (value) {
-                          if (selectedAccountType == 'Academy') {
+                          if (selectedAccountType ==
+                              AccountType.academy.toString()) {
                             return SignUpValidation.validateAcademyEmail(value);
                           } else {
                             return SignUpValidation.validateEmail(value);
@@ -117,7 +120,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             SignUpValidation.validateUsername(value),
                         focusNode: usernameFocusNode,
                         onFieldSubmitted: (_) {
-                          if (selectedAccountType == 'Academy') {
+                          if (selectedAccountType ==
+                              AccountType.academy.toString()) {
                             return eiinFocusNode.requestFocus();
                           } else {
                             return passwordFocusNode.requestFocus();
@@ -156,7 +160,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         },
                       ),
                       const SizedBox(height: 27),
-                      if (selectedAccountType == 'Academy')
+                      if (selectedAccountType == AccountType.academy.toString())
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 26),
                           child: Column(

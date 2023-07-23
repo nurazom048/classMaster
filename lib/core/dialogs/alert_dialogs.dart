@@ -116,7 +116,10 @@ abstract class Alert {
             "We are working on this feature. It will be available very soon...";
         return AlertDialog(
           title: Text(header ?? 'Upcoming'),
-          content: Text(message == null ? demyMessage : message.toString()),
+          content: Text(
+            message == null ? demyMessage : message.toString(),
+            style: TS.heading(fontSize: 18),
+          ),
           actions: <Widget>[
             ElevatedButton(
               onPressed: () {

@@ -1,6 +1,6 @@
 class ConstPng {
   //png Image
-  static String wa = "assets/png/wa.jpeg";
+  static String wa = "assets/png/wa.png";
   static String be = "assets/png/behanceic.jpeg";
   static String tw = "assets/png/twitter.png";
   static String fb = "assets/png/fb.png";

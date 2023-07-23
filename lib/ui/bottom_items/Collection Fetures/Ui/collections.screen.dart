@@ -12,6 +12,7 @@ import 'package:classmate/ui/bottom_items/Collection%20Fetures/Ui/save_rutins_sc
 import 'package:classmate/ui/bottom_items/Collection%20Fetures/Ui/save_summarysscreen.dart';
 import 'package:classmate/widgets/account_card.dart';
 import 'package:classmate/widgets/heder/appbar_custom.dart';
+import '../../../../constant/enmu.dart';
 import '../../../../core/dialogs/alert_dialogs.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -172,7 +173,8 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
 
                       return accountData.when(
                         data: (data) {
-                          if (data!.accountType == 'academy') {
+                          if (data?.accountType ==
+                              AccountType.academy.toString()) {
                             return MyContainerButton(
                               const Icon(Icons.calendar_month),
                               "My NoticeBoard",

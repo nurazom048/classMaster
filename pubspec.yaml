@@ -138,6 +138,9 @@ flutter:
     - assets/png/frem192LogoWithTittle.png
     - assets/png/logo.png
     - assets/png/logo_with_padding.png
+    - assets/logo/
+    - assets/logo/white_logo.png
+    - assets/png/wa.png
    
   #   - images/a_dot_ham.jpeg
 

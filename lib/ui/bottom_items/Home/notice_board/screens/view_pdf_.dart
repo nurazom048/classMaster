@@ -1,10 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import 'package:classmate/core/component/loaders.dart';
 import 'package:classmate/widgets/error/error.widget.dart';
 import '../../../../../widgets/heder/appbar_custom.dart';
 import '../../utils/utils.dart';
@@ -102,7 +100,7 @@ class _ViewPDfState extends State<ViewPDf> {
                 } else if (_tempFile == null) {
                   return getBody();
                 }
-                return SizedBox();
+                return const SizedBox();
               }),
             ),
           ],

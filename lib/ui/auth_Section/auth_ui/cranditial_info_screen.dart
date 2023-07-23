@@ -7,6 +7,7 @@ import 'package:classmate/ui/auth_Section/auth_ui/SignUp_Screen.dart';
 
 import '../../../constant/app_color.dart';
 import '../../../constant/constant.dart';
+import '../../../constant/enmu.dart';
 import '../../../core/dialogs/alert_dialogs.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/appWidget/buttons/cupertino_buttons.dart';
@@ -48,7 +49,8 @@ class _CredentialScreenState extends State<CredentialScreen> {
               ref.watch(googleAuthControllerProvider).googleAccount;
           final String selectedAccountType =
               ref.watch(selectAccountTypeProvider);
-          bool? isAcademy = selectedAccountType == 'Academy';
+          bool? isAcademy =
+              selectedAccountType == AccountType.academy.toString();
 
           //
           emailController.text = googleUser?.email ?? '';
@@ -84,7 +86,7 @@ class _CredentialScreenState extends State<CredentialScreen> {
                   hint: "Email",
                   labelText: "Enter email address",
                   validator: (value) {
-                    if (selectedAccountType == 'Academy') {
+                    if (selectedAccountType == AccountType.academy.toString()) {
                       return SignUpValidation.validateAcademyEmail(value);
                     } else {
                       return SignUpValidation.validateEmail(value);
@@ -98,7 +100,7 @@ class _CredentialScreenState extends State<CredentialScreen> {
                   hint: "Username",
                   labelText: "Enter email address",
                   validator: (value) {
-                    if (selectedAccountType == 'Academy') {
+                    if (selectedAccountType == AccountType.academy.toString()) {
                       return SignUpValidation.validateAcademyEmail(value);
                     } else {
                       return SignUpValidation.validateEmail(value);
@@ -111,7 +113,7 @@ class _CredentialScreenState extends State<CredentialScreen> {
                     // handle selected account type
                   },
                 ),
-                if (selectedAccountType == 'Academy')
+                if (selectedAccountType == AccountType.academy.toString())
                   Form(
                     key: academyFormKey,
                     child: Padding(

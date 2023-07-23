@@ -3,6 +3,8 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 
+import '../../constant/logo_const.dart';
+import '../../widgets/appWidget/app_text.dart';
 import '../one signal/onesignla.services.dart';
 
 class AwesomeNotificationSetup {
@@ -10,12 +12,12 @@ class AwesomeNotificationSetup {
 
   static void initialize() async {
     AwesomeNotifications().initialize(
-      null,
+      'resource://drawable/res_app_icon',
       [
         NotificationChannel(
           channelKey: 'basic_channel',
           channelName: 'Basic Channel',
-          channelDescription: 'Basic channel for notifications',
+          channelDescription: 'Routine And Class Notifications',
           defaultColor: Colors.blue,
           ledColor: Colors.blue,
           playSound: true,
@@ -60,8 +62,10 @@ class AwesomeNotificationSetup {
             context: context,
             builder: (context) => AlertDialog(
               title: const Text('Allow Routine Notifications'),
-              content: const Text(
-                  'Our app would like to send you notifications. It will notify you before your class starts.'),
+              content: Text(
+                'Our app would like to send you notifications. It will notify you before your class starts.',
+                style: TS.opensensBlue(color: Colors.black),
+              ),
               actions: [
                 TextButton(
                   onPressed: () {

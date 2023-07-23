@@ -14,7 +14,9 @@ class Loaders {
           child: SizedBox(
             height: 40,
             width: 40,
-            child: CircularProgressIndicator(),
+            child: RepaintBoundary(
+              child: CircularProgressIndicator(),
+            ),
           ),
         ),
       );
@@ -25,7 +27,9 @@ class Loaders {
       children: [
         CupertinoButton(
           onPressed: () {},
-          child: const CircularProgressIndicator(),
+          child: const RepaintBoundary(
+            child: CircularProgressIndicator(),
+          ),
         ),
       ],
     );

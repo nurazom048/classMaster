@@ -17,11 +17,6 @@ import '../../../../../local data/local_data.dart';
 import '../../utils/utils.dart';
 import '../models/recent_notice_model.dart';
 
-// final viewNoticeByUsernameProvider =
-//     FutureProvider<Either<String, RecentNotice>>((ref) async {
-//   return ref.read(noticeReqProvider).recentNotice(academyID: );
-// });
-
 // recent notice
 final recentNoticeProvider = FutureProvider<RecentNotice>((ref) async {
   return ref.read(noticeReqProvider).recentNotice();
@@ -91,8 +86,7 @@ class NoticeRequest {
     // Obtain shared preferences.
 
     final headers = await LocalData.getHerder();
-
-    var url = Uri.parse('${Const.BASE_URl}/notice/add/');
+    final url = Uri.parse('${Const.BASE_URl}/notice/add/');
 
     File thePdf = File(pdfFile!);
     String? mineType = lookupMimeType(pdfFile);
@@ -119,19 +113,20 @@ class NoticeRequest {
     }
 
     final response = await request.send();
-    final responced = await http.Response.fromStream(response);
-    final resData = json.decode(responced.body);
+    final responded = await http.Response.fromStream(response);
+    final resData = json.decode(responded.body);
     //print(responseBytes);
     print(response.statusCode);
 
     try {
       if (response.statusCode == 200) {
         // final responseBytes = await response.stream.bytesToString();
-        print('response');
-        print(resData);
-        return right('Notice uploaded successfully');
+        Message message = Message.fromJson(resData);
+        return right(message.message);
       } else {
-        return left("Server error");
+        print('response $resData');
+        Message message = Message.fromJson(resData);
+        return left(message.message);
       }
     } catch (e) {
       print(e.toString());
