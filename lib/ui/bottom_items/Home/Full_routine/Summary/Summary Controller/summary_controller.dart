@@ -80,11 +80,22 @@ class SummaryController extends StateNotifier<AsyncValue<AllSummaryModel>> {
   }
 
   //.. add summary..
-  void addSummarys(WidgetRef ref, context, text, imageLinks) async {
+  void addSummary(
+    WidgetRef ref,
+    context, {
+    required String classId,
+    required String message,
+    required List<String> imageLinks,
+    required bool checkedType,
+  }) async {
     ref.watch(loaderProvider.notifier).update((state) => true);
     //
-    Either<Message, Message> res =
-        await SummaryRequest.addSummaryRequest(classId!, text, imageLinks);
+    Either<Message, Message> res = await SummaryRequest.addSummaryRequest(
+      classId: classId,
+      message: message,
+      imageLinks: imageLinks,
+      checkedType: checkedType,
+    );
     ref.watch(loaderProvider.notifier).update((state) => false);
 
     //

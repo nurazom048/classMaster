@@ -7,6 +7,7 @@ import 'package:classmate/core/dialogs/alert_dialogs.dart';
 import 'package:classmate/ui/bottom_items/Home/Full_routine/Summary/Summary%20Controller/summary_controller.dart';
 import 'package:classmate/widgets/heder/heder_title.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:mime/mime.dart';
 import '../../../../../../constant/app_color.dart';
 import '../../../../../../helper/helper_fun.dart';
 import '../../../../../../widgets/appWidget/app_text.dart';
@@ -130,18 +131,8 @@ class _AddSummaryScreenState extends ConsumerState<AddSummaryScreen> {
                             text: "Add Summary Now",
                             onPressed: () async {
                               if (formKey.currentState?.validate() ?? false) {
-                                newMessage = {
-                                  'name': 'John Doe new',
-                                  'message': _summaryController.text,
-                                  'imageLinks': imageLinks,
-                                };
-
-                                addSummary.addSummarys(
-                                  ref,
-                                  context,
-                                  _summaryController.text,
-                                  imageLinks,
-                                );
+                                checkedFileType(imageLinks);
+                                checkedMaxUploadLimit(imageLinks, addSummary);
                               } else {
                                 Alert.showSnackBar(context, 'Enter the form');
                               }
@@ -157,5 +148,47 @@ class _AddSummaryScreenState extends ConsumerState<AddSummaryScreen> {
         ),
       ),
     );
+  }
+
+  void checkedFileType(List<String> imageLinks) {
+    for (int i = 0; i < imageLinks.length; i++) {
+      File theFile = File(imageLinks[i]);
+      String? mineType = lookupMimeType(imageLinks[i]);
+
+      if (mineType != 'image/jpeg' && mineType != 'image/png') {
+        return Alert.errorAlertDialog(
+          context,
+          'Only [image/jpeg, image/png] allowed',
+        );
+      } else if (theFile.lengthSync() > 10 * 1024 * 1024) {
+        // Check file size in bytes (10 MB = 10 * 1024 * 1024 bytes)
+        return Alert.errorAlertDialog(
+          context,
+          'Maximum file size allowed is 10 MB',
+        );
+      }
+    }
+  }
+
+  //
+  void checkedMaxUploadLimit(
+    List<String> imageLinks,
+    SummaryController addSummary,
+  ) {
+    if (imageLinks.length > 9) {
+      return Alert.errorAlertDialog(
+        context,
+        'Maximum file limit allowed is 10',
+      );
+    } else {
+      addSummary.addSummary(
+        ref,
+        context,
+        classId: widget.classId,
+        message: _summaryController.text,
+        imageLinks: imageLinks,
+        checkedType: true,
+      );
+    }
   }
 }

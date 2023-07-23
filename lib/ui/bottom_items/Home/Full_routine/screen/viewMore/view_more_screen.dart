@@ -7,7 +7,6 @@ import 'package:classmate/ui/bottom_items/Home/Full_routine/widgets/routine_box/
 import 'package:classmate/widgets/heder/appbar_custom.dart';
 import '../../../../../../widgets/appWidget/app_text.dart';
 import '../../../../../../widgets/custom_tab_bar.widget.dart';
-
 import 'class_list.dart';
 
 final viewMoreIndexProvider = StateProvider<int>((ref) => 0);
@@ -50,10 +49,7 @@ class ViewMore extends StatelessWidget {
                           children: [
                             const SizedBox(height: 20),
                             AppText(routineName.toUpperCase()).title(),
-                            AppText(ownerName ??
-                                    ownerName ??
-                                    "khulna polytechnic institute")
-                                .heeding(),
+                            AppText(ownerName ?? ownerName ?? "").heeding(),
                             const SizedBox(height: 25),
                           ],
                         ),

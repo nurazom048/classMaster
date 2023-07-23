@@ -62,7 +62,7 @@ class _PeriodNumberSelectorState extends State<PeriodNumberSelector> {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 0),
-      width: MediaQuery.of(context).size.width,
+      // width: MediaQuery.of(context).size.width,
       height: 200,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,23 +78,34 @@ class _PeriodNumberSelectorState extends State<PeriodNumberSelector> {
                   color: AppColor.nokiaBlue)),
           const SizedBox(height: 5),
 
-          Row(
-            children: [
-              ...List.generate(
-                widget.length,
-                (index) {
-                  return PeriodNumberButton(
-                    periodNumber: index + 1,
-                    isSelected: initialSelectedNumber == index,
-                    onSelected: () => _handleNumberSelected(index),
-                  );
-                },
-              ),
-              AddSquareButton(
-                onTap: widget.onTapToAdd,
-                isVisible: widget.onTapToAdd == null ? false : true,
-              ),
-            ],
+          SizedBox(
+            height: 65,
+            child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.only(right: 100),
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              itemCount: widget.length,
+              itemBuilder: (context, index) {
+                return Row(
+                  children: [
+                    PeriodNumberButton(
+                      periodNumber: index + 1,
+                      isSelected: initialSelectedNumber == index,
+                      onSelected: () => _handleNumberSelected(index),
+                    ),
+                    //
+                    // last of the list show add priode Button
+                    //
+                    if (widget.length - 1 == index)
+                      AddSquareButton(
+                        onTap: widget.onTapToAdd,
+                        isVisible: widget.onTapToAdd == null ? false : true,
+                      ),
+                  ],
+                );
+              },
+            ),
           ),
 
           const SizedBox(height: 20),
@@ -109,24 +120,34 @@ class _PeriodNumberSelectorState extends State<PeriodNumberSelector> {
                   height: 1.3,
                   color: AppColor.nokiaBlue)),
           const SizedBox(height: 5),
-
-          Row(
-            children: [
-              ...List.generate(
-                widget.length,
-                (index) {
-                  return PeriodNumberButton(
-                    periodNumber: index + 1,
-                    isSelected: initialEnd == index,
-                    onSelected: () => _handleEnd(index),
-                  );
-                },
-              ),
-              AddSquareButton(
-                onTap: widget.onTapToAdd,
-                isVisible: widget.onTapToAdd == null ? false : true,
-              ),
-            ],
+          SizedBox(
+            height: 65,
+            child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.only(right: 100),
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              itemCount: widget.length,
+              itemBuilder: (context, index) {
+                return Row(
+                  children: [
+                    PeriodNumberButton(
+                      periodNumber: index + 1,
+                      isSelected: initialEnd == index,
+                      onSelected: () => _handleEnd(index),
+                    ),
+                    //
+                    // last of the list show add priode Button
+                    //
+                    if (widget.length - 1 == index)
+                      AddSquareButton(
+                        onTap: widget.onTapToAdd,
+                        isVisible: widget.onTapToAdd == null ? false : true,
+                      ),
+                  ],
+                );
+              },
+            ),
           ),
         ],
       ),

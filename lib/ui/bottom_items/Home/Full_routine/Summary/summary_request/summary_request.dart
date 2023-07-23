@@ -18,8 +18,12 @@ final summaryReqProvider = Provider<SummaryRequest>((ref) => SummaryRequest());
 class SummaryRequest {
   //
 // add summary///
-  static Future<Either<Message, Message>> addSummaryRequest(
-      String classId, String message, List<String> imageLinks) async {
+  static Future<Either<Message, Message>> addSummaryRequest({
+    required String classId,
+    required String message,
+    required List<String> imageLinks,
+    required bool checkedType,
+  }) async {
     final Map<String, String> headers = await LocalData.getHerder();
 
     final uri = Uri.parse('${Const.BASE_URl}/summary/add/$classId');
@@ -32,6 +36,7 @@ class SummaryRequest {
 
       // Add the message field
       request.fields['message'] = message;
+      request.fields['checkedType'] = checkedType.toString();
 
       // Convert the image links to multipart files and add to the request
       for (int i = 0; i < imageLinks.length; i++) {

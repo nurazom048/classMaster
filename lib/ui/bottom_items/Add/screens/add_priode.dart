@@ -1,4 +1,3 @@
-// ignore_for_file: avoid_print
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
@@ -31,6 +30,8 @@ class AppPriodePage extends StatefulWidget {
 }
 
 class _AppPriodePageState extends State<AppPriodePage> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   DateTime startTime = DateTime.now();
   DateTime endTime = DateTime.now();
   bool showStartTime = false;
@@ -46,11 +47,13 @@ class _AppPriodePageState extends State<AppPriodePage> {
 
   @override
   Widget build(BuildContext context) {
+    // key
     int periodNumber = widget.totalPriode == 0 ? 1 : widget.totalPriode + 1;
     final Size size = MediaQuery.of(context).size;
 
     return SafeArea(
       child: Scaffold(
+        key: _scaffoldKey,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20)
               .copyWith(bottom: 0),
@@ -87,14 +90,18 @@ class _AppPriodePageState extends State<AppPriodePage> {
                           timeText: 'Start Time',
                           time: startTime,
                           show: showStartTime,
-                          onTap: _selectStartTime,
+                          onTap: () {
+                            _selectStartTime(
+                                _scaffoldKey.currentContext ?? context);
+                          },
                         ),
                         SelectTime(
                           width: size.width * 0.40,
                           timeText: 'End Time',
                           time: endTime,
                           show: showEndTime,
-                          onTap: _selectEndTime,
+                          onTap: () => _selectEndTime(
+                              _scaffoldKey.currentContext ?? context),
                         ),
                       ],
                     ),
@@ -105,16 +112,17 @@ class _AppPriodePageState extends State<AppPriodePage> {
                           color: AppColor.nokiaBlue,
                           text: "Add Priode",
                           onPressed: () async {
-                            setState(() {});
-
+                            if (mounted) {
+                              setState(() {});
+                            }
                             //
 
                             if (st != null && et != null) {
                               periodNotifier.addPriode(
-                                ref,
-                                context,
-                                startTime,
-                                endTime,
+                                ref: ref,
+                                context: _scaffoldKey.currentContext ?? context,
+                                startTime: startTime,
+                                endTime: endTime,
                               );
                             }
 
@@ -153,7 +161,7 @@ class _AppPriodePageState extends State<AppPriodePage> {
 
   //
 
-  void _selectStartTime() {
+  void _selectStartTime(context) {
     showTimePicker(
       context: context,
       initialTime: widget.isEdit == true
@@ -164,20 +172,21 @@ class _AppPriodePageState extends State<AppPriodePage> {
         String hour = "${value.hour < 10 ? '0' : ''}${value.hour}";
         String minute = "${value.minute < 10 ? '0' : ''}${value.minute}";
         DateTime selectedTime = DateTime.parse("2021-12-23 $hour:$minute:00");
-
-        setState(() {
-          showStartTime = true;
-          st = selectedTime;
-          startTime = selectedTime;
-          // startTimeDemo = selectedTime;
-          print(startTime.toIso8601String());
-        });
+        if (mounted) {
+          setState(() {
+            showStartTime = true;
+            st = selectedTime;
+            startTime = selectedTime;
+            // startTimeDemo = selectedTime;
+            print(startTime.toIso8601String());
+          });
+        }
       }
     });
   }
 
   //--- end time
-  void _selectEndTime() {
+  void _selectEndTime(context) {
     showTimePicker(
       context: context,
       initialTime: widget.isEdit == true
@@ -190,14 +199,16 @@ class _AppPriodePageState extends State<AppPriodePage> {
         DateTime selectedEndTime =
             DateTime.parse("2021-12-23 $hour:$minute:00");
         //
-        setState(() {
-          showEndTime = true;
+        if (mounted) {
+          setState(() {
+            showEndTime = true;
 
-          et = selectedEndTime;
-          endTime = selectedEndTime;
-          //endTimDemo = selectedEndTime;
-          print(endTime.toIso8601String());
-        });
+            et = selectedEndTime;
+            endTime = selectedEndTime;
+            //endTimDemo = selectedEndTime;
+            print(endTime.toIso8601String());
+          });
+        }
       }
     });
   }
@@ -236,7 +247,9 @@ class _AppPriodePageState extends State<AppPriodePage> {
         },
       );
 
-      setState(() {});
+      if (mounted) {
+        setState(() {});
+      }
     }
   }
 }

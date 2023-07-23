@@ -33,9 +33,15 @@ class PriodeClassController extends StateNotifier<AsyncValue<AllPriodeList>> {
     final allPriode = await PriodeRequest().allPriode(routineID);
 
     try {
+      if (!mounted) {
+        return;
+      }
       state = AsyncValue.data(allPriode);
     } on SocketException catch (e, s) {
-      AsyncValue.error(e, s);
+      if (!mounted) {
+        return;
+      }
+      state = AsyncValue.error(e, s);
     }
   }
 
@@ -67,18 +73,23 @@ class PriodeClassController extends StateNotifier<AsyncValue<AllPriodeList>> {
 
   //*********************   addPriode  *************************//
 
-  void addPriode(
-      WidgetRef ref, context, DateTime startTime, DateTime endTime) async {
+  void addPriode({
+    required WidgetRef ref,
+    required BuildContext context,
+    required DateTime startTime,
+    required DateTime endTime,
+  }) async {
     var addRes = await PriodeRequest().addPriode(routineID, startTime, endTime);
 
     addRes.fold(
       (l) {
         // state = false;
-        return Alert.errorAlertDialog(context, l);
+        Alert.errorAlertDialog(context, l);
       },
       (r) {
         //state = false;
         ref.refresh(priodeController(routineID));
+
         Alert.showSnackBar(context, r.message);
         Navigator.pop(context);
       },
