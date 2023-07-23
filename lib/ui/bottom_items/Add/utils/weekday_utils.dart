@@ -15,9 +15,9 @@ import '../../Home/Full_routine/controller/weekday_controller.dart';
 import '../../Home/Full_routine/screen/viewMore/class_list.dart';
 
 // ignore: must_be_immutable
-class AddWeekdayExpantion extends ConsumerWidget {
+class AddWeekdayExpansion extends ConsumerWidget {
   final String classId;
-  AddWeekdayExpantion({super.key, required this.classId});
+  AddWeekdayExpansion({super.key, required this.classId});
   final TextEditingController _roomCon = TextEditingController();
 
   final _weekdayFromKey = GlobalKey<FormState>();

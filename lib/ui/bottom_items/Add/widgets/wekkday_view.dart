@@ -33,7 +33,7 @@ class WeekdayView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    //total propde
+    //total priode
     final totalPriode = ref.watch(totalPriodeCountProvider);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -54,8 +54,10 @@ class WeekdayView extends ConsumerWidget {
           const DotedDivider(),
           const SizedBox(height: 20),
           PeriodNumberSelector(
+            initialStartNumber: weekday.start,
+            initialEndNumber: weekday.end,
             viewOnly: true,
-            hint: "Select Start Period",
+            hint: "Select Start Period ${weekday.start}/${weekday.end}",
             subHint: "Select End Period",
             length: totalPriode,
             onStartSelected: (number) {

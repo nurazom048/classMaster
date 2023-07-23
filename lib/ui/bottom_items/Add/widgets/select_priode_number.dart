@@ -16,6 +16,8 @@ class PeriodNumberSelector extends StatefulWidget {
   final int length;
   final dynamic onTapToAdd;
   final bool? viewOnly;
+  final int? initialStartNumber;
+  final int? initialEndNumber;
 
   const PeriodNumberSelector({
     Key? key,
@@ -26,6 +28,8 @@ class PeriodNumberSelector extends StatefulWidget {
     required this.length,
     this.viewOnly,
     this.onTapToAdd,
+    this.initialStartNumber,
+    this.initialEndNumber,
   }) : super(key: key);
 
   @override
@@ -33,15 +37,15 @@ class PeriodNumberSelector extends StatefulWidget {
 }
 
 class _PeriodNumberSelectorState extends State<PeriodNumberSelector> {
-  int initialSelectedNumber = 0;
-  int initialEnd = 0;
+  int initialStartNumber = 0;
+  int initialEndNumber = 0;
 
   void _handleNumberSelected(int number) {
     if (widget.viewOnly == true) {
       Alert.showSnackBar(context, "You Can't Change here");
-    } else if (number != initialSelectedNumber) {
+    } else if (number != initialStartNumber) {
       setState(() {
-        initialSelectedNumber = number;
+        initialStartNumber = number;
       });
     }
     widget.onStartSelected?.call(number + 1);
@@ -50,12 +54,22 @@ class _PeriodNumberSelectorState extends State<PeriodNumberSelector> {
   void _handleEnd(int number) {
     if (widget.viewOnly == true) {
       Alert.showSnackBar(context, "You Can't Change here");
-    } else if (number != initialEnd) {
+    } else if (number != initialEndNumber) {
       setState(() {
-        initialEnd = number;
+        initialEndNumber = number;
       });
     }
     widget.onEndSelected?.call(number + 1);
+  }
+
+  @override
+  void initState() {
+    if (widget.initialEndNumber != null && widget.initialEndNumber != null) {
+      initialStartNumber = widget.initialEndNumber! - 1;
+      initialEndNumber = widget.initialEndNumber! - 1;
+    }
+
+    super.initState();
   }
 
   @override
@@ -91,7 +105,7 @@ class _PeriodNumberSelectorState extends State<PeriodNumberSelector> {
                   children: [
                     PeriodNumberButton(
                       periodNumber: index + 1,
-                      isSelected: initialSelectedNumber == index,
+                      isSelected: initialStartNumber == index,
                       onSelected: () => _handleNumberSelected(index),
                     ),
                     //
@@ -133,7 +147,7 @@ class _PeriodNumberSelectorState extends State<PeriodNumberSelector> {
                   children: [
                     PeriodNumberButton(
                       periodNumber: index + 1,
-                      isSelected: initialEnd == index,
+                      isSelected: initialEndNumber == index,
                       onSelected: () => _handleEnd(index),
                     ),
                     //

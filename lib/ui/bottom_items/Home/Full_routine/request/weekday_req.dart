@@ -20,6 +20,7 @@ class WeekdayRequest {
       WeekdayList weekdayList = WeekdayList.fromJson(jsonDecode(response.body));
 
       if (response.statusCode == 200) {
+        //print(jsonDecode(response.body));
         return weekdayList;
       } else {
         throw Future.error(error);
@@ -38,17 +39,19 @@ class WeekdayRequest {
     String end,
   ) async {
     final headers = await LocalData.getHerder();
+    final uri = Uri.parse('${Const.BASE_URl}/class/weakday/add/$classId');
 
     try {
       final response = await http.post(
-          Uri.parse('${Const.BASE_URl}/class/weakday/add/$classId'),
-          headers: headers,
-          body: {
-            "num": num,
-            "room": room,
-            "start": start,
-            "end": end,
-          });
+        uri,
+        headers: headers,
+        body: {
+          "num": num,
+          "room": room,
+          "start": start,
+          "end": end,
+        },
+      );
 
       var res = Message.fromJson(jsonDecode(response.body));
 
