@@ -8,7 +8,6 @@ import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:classmate/models/message_model.dart';
-import 'package:classmate/ui/auth_Section/auth_controller/auth_controller.dart';
 
 import '../../../constant/constant.dart';
 import '../../../local data/local_data.dart';
@@ -27,9 +26,9 @@ class AuthReq {
     try {
       final status = await OneSignal.shared.getDeviceState();
       final String? osUserID = status?.userId;
-      print(
-          ';;;;;;;;;;;;;;;;;;;;;;  one signal token;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
-      print("osUserID : $osUserID");
+      // print(
+      //     ';;;;;;;;;;;;;;;;;;;;;;  one signal token;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
+      // print("osUserID : $osUserID");
       final response = await http.post(loginUrl, body: {
         "username": username ?? '',
         "email": email ?? '',
@@ -56,9 +55,8 @@ class AuthReq {
         await LocalData.saveAuthToken(authToken ?? '');
         await LocalData.saveRefreshToken(refreshToken ?? '');
         //... save token
-        await AuthController.saveAccountType(
-            accountData["account"]["account_type"]);
-        await AuthController.saveUsername(accountData["account"]["username"]);
+        await LocalData.saveAccountType(accountData["account"]["account_type"]);
+        await LocalData.saveUsername(accountData["account"]["username"]);
 
         await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: accountData["account"]["email"],
@@ -226,14 +224,19 @@ class AuthReq {
       //
       if (response.statusCode == 200) {
         await LocalData.setHerder(response);
+        // print('kkkkkkkkkkkkkkkkkkkkkkkkkkk');
+        // print(response.headers['authorization']);
 
+        // print(accountData);
+        // Save the auth token from the response headers
+        final authToken = response.headers['authorization'];
+        final refreshToken = response.headers['x-refresh-token'];
+        await LocalData.saveAuthToken(authToken ?? '');
+        await LocalData.saveRefreshToken(refreshToken ?? '');
         //... save token
-        await LocalData.setHerder(response);
-        await AuthController.saveAccountType(
-            accountData["account"]["account_type"]);
-        await AuthController.saveUsername(accountData["account"]["username"]);
-
-        //
+        print(accountData["account"]["account_type"]);
+        await LocalData.saveAccountType(accountData["account"]["account_type"]);
+        await LocalData.saveUsername(accountData["account"]["username"]);
 
         return right(message.message);
       } else {

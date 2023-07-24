@@ -68,8 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Consumer(builder: (context, ref, _) {
       print('HomeScreen');
 
-      //. provider
-
+      // provider
       final homeRoutines = ref.watch(homeRoutineControllerProvider(null));
       // final recentNoticeList = ref.watch(recentNoticeController(null));
 

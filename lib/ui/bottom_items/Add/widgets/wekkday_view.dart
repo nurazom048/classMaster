@@ -57,7 +57,7 @@ class WeekdayView extends ConsumerWidget {
             initialStartNumber: weekday.start,
             initialEndNumber: weekday.end,
             viewOnly: true,
-            hint: "Select Start Period ${weekday.start}/${weekday.end}",
+            hint: "Select Start Period",
             subHint: "Select End Period",
             length: totalPriode,
             onStartSelected: (number) {

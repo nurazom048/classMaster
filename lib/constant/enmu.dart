@@ -4,3 +4,9 @@ enum AccountType {
   student,
   academy,
 }
+
+class AccountTypeString {
+  static const user = 'user';
+  static const student = 'student';
+  static const academy = 'academy';
+}

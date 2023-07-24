@@ -8,12 +8,12 @@ class OneSignalServices {
     OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
     OneSignal.shared.setAppId('db13122e-448d-4418-9df0-b83989eef9ab');
 
-    final status = await OneSignal.shared.getDeviceState();
-    final String? osUserID = status?.userId;
-    // ignore: avoid_print
-    print(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
-    // ignore: avoid_print
-    print("osUserID : $osUserID");
+    // final status = await OneSignal.shared.getDeviceState();
+    // final String? osUserID = status?.userId;
+    // // ignore: avoid_print
+    // print(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
+    // // ignore: avoid_print
+    // print("osUserID : $osUserID");
   }
 
 // permission

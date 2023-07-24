@@ -1,4 +1,5 @@
 import 'package:classmate/constant/enmu.dart';
+import 'package:classmate/local%20data/local_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -12,7 +13,6 @@ import '../../constant/app_color.dart';
 import '../../widgets/bottom_sheet_shape.dart';
 
 import '../../core/component/responsive.dart';
-import '../auth_Section/auth_controller/auth_controller.dart';
 import 'Collection Fetures/Ui/collections.screen.dart';
 import 'Home/home_screen/home.screen.dart';
 import 'Home/widgets/bottombaritem_custom.dart';
@@ -185,10 +185,10 @@ plusBottomSheet(BuildContext context) {
                                   icon: Icons.calendar_view_day,
                                   onTap: () async {
                                     final String? type =
-                                        await AuthController.getAccountType();
+                                        await LocalData.getAccountType();
+
                                     if (type != null &&
-                                        type ==
-                                            AccountType.academy.toString()) {
+                                        type == AccountTypeString.academy) {
                                       return Get.to(() => AddNoticeScreen());
                                     } else {
                                       // ignore: use_build_context_synchronously

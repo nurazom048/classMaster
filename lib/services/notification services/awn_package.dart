@@ -3,7 +3,6 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 
-import '../../constant/logo_const.dart';
 import '../../widgets/appWidget/app_text.dart';
 import '../one signal/onesignla.services.dart';
 

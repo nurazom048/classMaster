@@ -1,6 +1,6 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 
-import '../../ui/auth_Section/auth_controller/auth_controller.dart';
+import '../../local data/local_data.dart';
 
 class FirebaseAnalyticsServices {
   // Log Events
@@ -14,7 +14,7 @@ class FirebaseAnalyticsServices {
 
   //
   static logHome() async {
-    String? username = await AuthController.getUsername();
+    String? username = await LocalData.getUsername();
 
     await FirebaseAnalytics.instance.logEvent(
       name: 'Home Screen',

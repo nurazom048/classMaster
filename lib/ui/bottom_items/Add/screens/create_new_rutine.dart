@@ -118,8 +118,8 @@ class CreateNewRoutine extends StatelessWidget {
     if (value == null || value.isEmpty) {
       return 'Routine name is required';
     }
-    if (value.trim().length > 10) {
-      return 'Routine name cannot exceed 10 words';
+    if (value.trim().length > 11) {
+      return 'Routine name cannot exceed 11 words';
     }
     return null;
   }

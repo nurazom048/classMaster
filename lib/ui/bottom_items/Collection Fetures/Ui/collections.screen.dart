@@ -173,8 +173,7 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
 
                       return accountData.when(
                         data: (data) {
-                          if (data?.accountType ==
-                              AccountType.academy.toString()) {
+                          if (data?.accountType == AccountTypeString.academy) {
                             return MyContainerButton(
                               const Icon(Icons.calendar_month),
                               "My NoticeBoard",

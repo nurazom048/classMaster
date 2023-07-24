@@ -71,8 +71,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
           final String selectedAccountType =
               ref.watch(selectAccountTypeProvider);
-          bool? isAcademy =
-              selectedAccountType == AccountType.academy.toString();
+          bool? isAcademy = selectedAccountType == AccountTypeString.academy;
 
           return SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
@@ -102,7 +101,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         labelText: "Enter email address",
                         validator: (value) {
                           if (selectedAccountType ==
-                              AccountType.academy.toString()) {
+                              AccountTypeString.academy) {
                             return SignUpValidation.validateAcademyEmail(value);
                           } else {
                             return SignUpValidation.validateEmail(value);
@@ -121,7 +120,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         focusNode: usernameFocusNode,
                         onFieldSubmitted: (_) {
                           if (selectedAccountType ==
-                              AccountType.academy.toString()) {
+                              AccountTypeString.academy) {
                             return eiinFocusNode.requestFocus();
                           } else {
                             return passwordFocusNode.requestFocus();
@@ -160,7 +159,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         },
                       ),
                       const SizedBox(height: 27),
-                      if (selectedAccountType == AccountType.academy.toString())
+                      if (selectedAccountType == AccountTypeString.academy)
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 26),
                           child: Column(

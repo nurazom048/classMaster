@@ -151,6 +151,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                           height: 480,
                           width: MediaQuery.of(context).size.width,
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               DayDropdown(
                                 labelText: "Tap Here",

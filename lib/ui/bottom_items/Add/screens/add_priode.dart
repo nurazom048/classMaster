@@ -48,8 +48,10 @@ class _AppPriodePageState extends State<AppPriodePage> {
   @override
   Widget build(BuildContext context) {
     // key
-    int periodNumber = widget.totalPriode == 0 ? 1 : widget.totalPriode + 1;
+    final int periodNumber =
+        widget.totalPriode == 0 ? 1 : widget.totalPriode + 1;
     final Size size = MediaQuery.of(context).size;
+    final h = MediaQuery.of(context).size.height;
 
     return SafeArea(
       child: Scaffold(
@@ -58,102 +60,103 @@ class _AppPriodePageState extends State<AppPriodePage> {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20)
               .copyWith(bottom: 0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               // Header
               HeaderTitle('', context, margin: EdgeInsets.zero),
-              Consumer(builder: (context, ref, _) {
-                //Provider
-                final periodNotifier =
-                    ref.watch(priodeController(widget.routineId).notifier);
-
-                final h = MediaQuery.of(context).size.height;
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: h * 0.03),
-                    Text(
-                        widget.isEdit == true
-                            ? "Eddit Priode"
-                            : 'Add A New Priode Here',
-                        style: TS.heading(fontSize: 39)),
-                    SizedBox(height: h * 0.05),
-                    Text(
-                      'Priode Number $periodNumber',
-                      textScaleFactor: 1.5,
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SelectTime(
-                          width: size.width * 0.40,
-                          timeText: 'Start Time',
-                          time: startTime,
-                          show: showStartTime,
-                          onTap: () {
-                            _selectStartTime(
-                                _scaffoldKey.currentContext ?? context);
-                          },
-                        ),
-                        SelectTime(
-                          width: size.width * 0.40,
-                          timeText: 'End Time',
-                          time: endTime,
-                          show: showEndTime,
-                          onTap: () => _selectEndTime(
-                              _scaffoldKey.currentContext ?? context),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: h * 0.45),
-                    if (widget.isEdit == false)
-                      CupertinoButtonCustom(
-                          icon: Icons.check,
-                          color: AppColor.nokiaBlue,
-                          text: "Add Priode",
-                          onPressed: () async {
-                            if (mounted) {
-                              setState(() {});
-                            }
-                            //
-
-                            if (st != null && et != null) {
-                              periodNotifier.addPriode(
-                                ref: ref,
-                                context: _scaffoldKey.currentContext ?? context,
-                                startTime: startTime,
-                                endTime: endTime,
-                              );
-                            }
-
-                            //
-                          })
-                    else
-                      CupertinoButtonCustom(
-                          icon: Icons.check,
-                          text: "Eddit priode",
-                          color: AppColor.nokiaBlue,
-                          onPressed: () async {
-                            print("Ontap to eddit");
-
-                            // setState(() {});
-                            if (widget.priodeId != null) {
-                              print('inside eddit');
-                              periodNotifier.edditPriode(
-                                ref,
-                                context,
-                                widget.priodeId!,
-                                startTime,
-                                endTime,
-                              );
-                            }
-                            //
-                          }),
-                  ],
-                );
-              }),
+              SizedBox(height: h * 0.03),
+              Text(
+                  widget.isEdit == true
+                      ? "Eddit Priode"
+                      : 'Add A New Priode Here',
+                  style: TS.heading(fontSize: 39)),
+              SizedBox(height: h * 0.05),
+              Text(
+                'Priode Number $periodNumber',
+                textScaleFactor: 1.5,
+              ),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SelectTime(
+                    width: size.width * 0.40,
+                    timeText: 'Start Time',
+                    time: startTime,
+                    show: showStartTime,
+                    onTap: () {
+                      _selectStartTime(_scaffoldKey.currentContext ?? context);
+                    },
+                  ),
+                  SelectTime(
+                    width: size.width * 0.40,
+                    timeText: 'End Time',
+                    time: endTime,
+                    show: showEndTime,
+                    onTap: () =>
+                        _selectEndTime(_scaffoldKey.currentContext ?? context),
+                  ),
+                ],
+              ),
             ],
           ),
+        ),
+        bottomNavigationBar: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 25),
+          height: 80,
+          child: Consumer(builder: (context, ref, _) {
+            // provider
+            final routineID = widget.routineId;
+            final periodNotifier =
+                ref.watch(priodeController(routineID).notifier);
+            return Column(
+              children: [
+                if (widget.isEdit == false)
+                  CupertinoButtonCustom(
+                      icon: Icons.check,
+                      color: AppColor.nokiaBlue,
+                      text: "Add Priode",
+                      onPressed: () async {
+                        if (mounted) {
+                          setState(() {});
+                        }
+
+                        if (st != null && et != null) {
+                          periodNotifier.addPriode(
+                            ref: ref,
+                            context: _scaffoldKey.currentContext ?? context,
+                            startTime: startTime,
+                            endTime: endTime,
+                          );
+                        }
+
+                        //
+                      })
+                else
+                  CupertinoButtonCustom(
+                      icon: Icons.check,
+                      text: "Eddit priode",
+                      color: AppColor.nokiaBlue,
+                      onPressed: () async {
+                        // print("Ontap to eddit");
+
+                        // setState(() {});
+                        if (widget.priodeId != null) {
+                          // print('inside eddit');
+                          periodNotifier.edditPriode(
+                            ref,
+                            context,
+                            widget.priodeId!,
+                            startTime,
+                            endTime,
+                          );
+                        }
+                        //
+                      }),
+              ],
+            );
+          }),
         ),
       ),
     );
@@ -178,7 +181,7 @@ class _AppPriodePageState extends State<AppPriodePage> {
             st = selectedTime;
             startTime = selectedTime;
             // startTimeDemo = selectedTime;
-            print(startTime.toIso8601String());
+            //   print(startTime.toIso8601String());
           });
         }
       }
@@ -232,11 +235,11 @@ class _AppPriodePageState extends State<AppPriodePage> {
     if (widget.isEdit == true) {
       final addRes =
           await PriodeRequest().findPriodesYid(widget.priodeId ?? '');
-      print("i am from cont");
+      // print("i am from cont");
 
       addRes.fold(
         (l) {
-          print(l);
+          //  print(l);
           return Alert.errorAlertDialog(context, l);
         },
         (r) {

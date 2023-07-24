@@ -49,8 +49,7 @@ class _CredentialScreenState extends State<CredentialScreen> {
               ref.watch(googleAuthControllerProvider).googleAccount;
           final String selectedAccountType =
               ref.watch(selectAccountTypeProvider);
-          bool? isAcademy =
-              selectedAccountType == AccountType.academy.toString();
+          bool? isAcademy = selectedAccountType == AccountTypeString.academy;
 
           //
           emailController.text = googleUser?.email ?? '';
@@ -86,7 +85,7 @@ class _CredentialScreenState extends State<CredentialScreen> {
                   hint: "Email",
                   labelText: "Enter email address",
                   validator: (value) {
-                    if (selectedAccountType == AccountType.academy.toString()) {
+                    if (selectedAccountType == AccountTypeString.academy) {
                       return SignUpValidation.validateAcademyEmail(value);
                     } else {
                       return SignUpValidation.validateEmail(value);
@@ -100,7 +99,7 @@ class _CredentialScreenState extends State<CredentialScreen> {
                   hint: "Username",
                   labelText: "Enter email address",
                   validator: (value) {
-                    if (selectedAccountType == AccountType.academy.toString()) {
+                    if (selectedAccountType == AccountTypeString.academy) {
                       return SignUpValidation.validateAcademyEmail(value);
                     } else {
                       return SignUpValidation.validateEmail(value);
@@ -113,7 +112,7 @@ class _CredentialScreenState extends State<CredentialScreen> {
                     // handle selected account type
                   },
                 ),
-                if (selectedAccountType == AccountType.academy.toString())
+                if (selectedAccountType == AccountTypeString.academy)
                   Form(
                     key: academyFormKey,
                     child: Padding(

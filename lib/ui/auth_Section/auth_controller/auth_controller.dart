@@ -1,11 +1,15 @@
 // ignore_for_file: non_constant_identifier_names, use_build_context_synchronously, void_checks
 
+import 'dart:io';
+
 import 'package:api_cache_manager/utils/cache_manager.dart';
+import 'package:classmate/local%20data/local_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:classmate/models/message_model.dart';
 import 'package:classmate/ui/auth_Section/auth_req/auth_req.dart';
@@ -75,7 +79,7 @@ class AuthController extends StateNotifier<bool> {
   }
 
 //******** signIn      ************ */
-  signIn(
+  Future<void> signIn(
     context, {
     String? username,
     String? email,
@@ -214,17 +218,14 @@ class AuthController extends StateNotifier<bool> {
           if (user != null) {
             await FirebaseAuth.instance.signOut();
           }
-
           // Remove token and navigate to the login screen
-          final prefs = await SharedPreferences.getInstance();
-          prefs.remove('authToken');
-          prefs.remove('refreshToken');
+          // remove all cash and local Directory
+          await LocalData.emptyLocal();
           await APICacheManager().emptyCache();
-
-          // delete cash
-          // var appDir = (await getTemporaryDirectory()).path;
-          // Directory(appDir).delete();
           await MyApiCash.removeAll();
+          var appDir = (await getTemporaryDirectory()).path;
+          Directory(appDir).delete();
+
           //
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => const LoginScreen()));
@@ -282,31 +283,5 @@ class AuthController extends StateNotifier<bool> {
         },
       );
     }
-  }
-
-// get account Type
-
-  static Future<String?> getAccountType() async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? type = prefs.getString('AccountType');
-    return type;
-  }
-// save account Type
-
-  static Future<void> saveAccountType(String token) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('AccountType', token);
-  }
-
-  static Future<String?> getUsername() async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? type = prefs.getString('username');
-    return type;
-  }
-// save account Type
-
-  static Future<void> saveUsername(String token) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('username', token);
   }
 }

@@ -6,20 +6,18 @@ import 'package:classmate/services/notification%20services/models.dart';
 class LocalNotification {
   static void scheduleNotifications(ClassNotificationList classList) async {
     var days = classList.notificationOnClasses;
-    print(" local ${days.length} on now weekday ${DateTime.now().weekday}");
+    // print(" local ${days.length} on now weekday ${DateTime.now().weekday}");
     for (int i = 0; i < days.length; i++) {
       if (days[i].num != null && days[i].startTime != null) {
         int weekday = days[i].num;
 
-        // Get.showSnackbar(GetSnackBar(
-        //     message:
-        //         "create $i sH${days[i].startTime.hour} ${days[i].startTime} "));
-        print(
-            "create $i sH${days[i].startTime.hour} ${days[i].startTime}    h:${makeTime24h(days[i].startTime)} M:${days[i].startTime.minute} $weekday ${days[i].num} ${days[i].startTime}");
-
         // Schedule notification 5 minutes before the start time
         Duration duration = const Duration(minutes: 5);
         DateTime newStartTime = days[i].startTime.subtract(duration);
+
+        //
+        print(
+            "create-$i-${days[i].startTime.hour}:${days[i].startTime.minute}:${newStartTime.minute} fore${getWeekday(weekday)} $weekday/${DateTime.now().weekday} ${days[i].startTime}");
 
         // Create notification
         await AwesomeNotifications().createNotification(
@@ -29,14 +27,14 @@ class LocalNotification {
 
             title: '${days[i].classInfo.name} class is going to start...😊',
             body:
-                'Room: ${days[i].room} \nInstructor: ${days[i].classInfo.instructorName} \nPeriod: ${days[i].start}-${days[i].end}',
+                'Room: ${days[i].classInfo.name} \nInstructor: ${days[i].classInfo.instructorName} \nPeriod: ${days[i].start}-${days[i].end}',
             notificationLayout: NotificationLayout.Default,
             // payload: {'data': 'notification_'},
             wakeUpScreen: true,
             displayOnBackground: true,
           ),
           schedule: NotificationCalendar(
-            // weekday: weekday,
+            //weekday: getWeekday(weekday),
             hour: newStartTime.hour,
             minute: newStartTime.minute.toInt(),
             second: 1,
@@ -57,6 +55,13 @@ class LocalNotification {
   }
 }
 
+int getWeekday(int weekday) {
+  if (weekday == 0) {
+    return 0;
+  } else {
+    return weekday + 1;
+  }
+}
 // class LocalNotification {
 //   static void scheduleNotifications(ClassNotificationList classList) async {
 //     var days = classList.notificationOnClasses;
