@@ -17,22 +17,23 @@ final memberRequestProvider = Provider((ref) => MemberRequest());
 class MemberRequest {
 //
 //**********************   rutin all _members    *********** */
-  Future<RoutineMembersModel?> all_members(rutin_id) async {
+  Future<RoutineMembersModel?> all_members(String routineID) async {
     final header = await LocalData.getHerder();
-    final Uri url = Uri.parse('${Const.BASE_URl}/rutin/member/$rutin_id');
+    final Uri url = Uri.parse('${Const.BASE_URl}/routine/member/$routineID');
 
     try {
+      // request
       final response = await http.post(
         url,
         headers: header,
       );
-
-      var res = jsonDecode(response.body);
-
+      final res = jsonDecode(response.body);
+      // get response
       if (response.statusCode == 200) {
         print(res);
         return RoutineMembersModel.fromJson(res);
       } else {
+        print(res);
         throw Exception("failed to load all member list ");
       }
     } catch (e) {

@@ -2,6 +2,7 @@
 
 abstract class Const {
   static String appEmail = 'nurazom049@outlook.com';
+  static String appName = 'classMaster';
   //static String BASE_URl = "http://localhost:3000";
 
   //adb
