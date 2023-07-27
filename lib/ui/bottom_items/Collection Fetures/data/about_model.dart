@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'package:flutter/widgets.dart';
 
 class AboutData {
   final String image;
@@ -19,7 +19,7 @@ class AboutData {
 }
 
 class SocialLink {
-  final String icon;
+  final Widget icon;
   final String show;
   final String link;
 

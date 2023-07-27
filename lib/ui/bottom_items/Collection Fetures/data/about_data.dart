@@ -1,13 +1,11 @@
-import 'dart:ui';
-
+import 'package:font_awesome_flutter/font_awesome_flutter.dart' as fa;
 import 'package:classmate/constant/png_const.dart';
 import 'package:flutter/material.dart';
-
 import 'about_model.dart';
 
 final List<AboutData> aboutList = [
   AboutData(
-    color: Color.fromRGBO(46, 15, 92, 1.0),
+    color: const Color.fromRGBO(46, 15, 92, 1.0),
     image: ConstPng.nurazom,
     name: 'Nur Azom',
     position: 'App Developer',
@@ -20,22 +18,22 @@ final List<AboutData> aboutList = [
     ],
     socialLink: [
       SocialLink(
-          icon: ConstPng.fb,
+          icon: const fa.FaIcon(fa.FontAwesomeIcons.facebook),
           show: 'Facebook.com',
           link: 'https://www.facebook.com/noorazom049'),
       SocialLink(
-          icon: ConstPng.wa,
+          icon: const fa.FaIcon(fa.FontAwesomeIcons.whatsapp),
           show: "whatsapp",
           link: 'https://call.whatsapp.com/video/VWXIZOCkbECmG5ADJ7lNkK'),
       SocialLink(
-          icon: ConstPng.gMail,
+          icon: const Icon(Icons.mail),
           show: 'Gmail',
           link: 'https://github.com/nurazom048'),
     ],
   ),
   // Add more AboutData objects here...
   AboutData(
-    color: Color.fromRGBO(196, 56, 255, 1.0),
+    color: const Color.fromRGBO(196, 56, 255, 1.0),
     image: ConstPng.mmAnik,
     name: 'M. M. Anik',
     position: 'Ui/UX Designer',
@@ -49,26 +47,29 @@ final List<AboutData> aboutList = [
     ],
     socialLink: [
       SocialLink(
-          icon: ConstPng.fb,
+          icon: const fa.FaIcon(fa.FontAwesomeIcons.facebook),
           show: 'Facebook',
           link: 'https://www.facebook.com/M.M.Anik.02'),
       SocialLink(
-        icon: ConstPng.wa,
+        icon: const fa.FaIcon(fa.FontAwesomeIcons.whatsapp),
         show: "WhatsApp",
         link:
             'https://api.whatsapp.com/qr/SI32EFKIRDDUM1?autoload=1&app_absent=0',
       ),
       SocialLink(
-          icon: ConstPng.gMail,
+          icon: const Icon(Icons.mail),
           show: 'Gmail',
           link: 'https://github.com/nurazom048'),
       SocialLink(
-        icon: ConstPng.tw,
+        icon: const fa.FaIcon(fa.FontAwesomeIcons.twitter),
         show: 'Twitter.com/MMAnik02',
         link: 'https://github.com/nurazom048',
       ),
       SocialLink(
-          icon: ConstPng.be, show: 'Behance.net', link: 'Behance.net/mmanik'),
+        icon: const fa.FaIcon(fa.FontAwesomeIcons.behance),
+        show: 'Behance.net',
+        link: 'Behance.net/mmanik',
+      ),
     ],
   ),
   AboutData(
@@ -83,17 +84,17 @@ final List<AboutData> aboutList = [
     ],
     socialLink: [
       SocialLink(
-          icon: ConstPng.fb,
+          icon: const fa.FaIcon(fa.FontAwesomeIcons.facebook),
           show: 'Facebook',
           link: 'https://www.facebook.com/naim.octal'),
       // SocialLink(
-      //   icon: ConstPng.wa,
+      //   icon: const fa.FaIcon(fa.FontAwesomeIcons.whatsapp),
       //   show: "WhatsApp",
       //   link:
       //       'https://api.whatsapp.com/qr/SI32EFKIRDDUM1?autoload=1&app_absent=0',
       // ),
       SocialLink(
-        icon: ConstPng.gMail,
+        icon: const Icon(Icons.mail),
         show: 'Gmail',
         link: 'naim.octal@gmail.com',
       ),

@@ -19,7 +19,7 @@ import '../../../widgets/heder/heder_title.dart';
 import '../widgets/sign_up_page_switch.dart';
 import '../widgets/who_are_you_button.dart';
 
-final selectAccountTypeProvider = StateProvider<String>((ref) => 'Student');
+final selectAccountTypeProvider = StateProvider<String>((ref) => 'student');
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key, this.emailAddress, this.phoneNumberString})

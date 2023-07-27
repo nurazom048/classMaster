@@ -1,3 +1,4 @@
+import 'package:classmate/ui/bottom_items/Collection%20Fetures/Ui/aboutus_screen.dart';
 import 'package:classmate/ui/wellcome_section/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -56,7 +57,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFFEFF6FF),
         primarySwatch: Colors.blue,
       ),
-      //  home: const LoginScreen(),
+      //home: const AboutScreen(),
       home: const SplashScreen(),
     );
   }

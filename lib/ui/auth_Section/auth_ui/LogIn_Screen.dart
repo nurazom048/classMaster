@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
@@ -203,35 +204,35 @@ class _LoginScreenState extends State<LoginScreen> {
                     //     Get.to(() => const PhoneNumberScreen());
                     //   },
                     // ),
-
-                    Row(
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            authLogin.signIn(
-                              context,
-                              username: "bteb",
-                              email: null,
-                              password: "@Rahala+Nur123",
-                            );
-                          },
-                          // ignore: prefer_const_constructors
-                          child: Text('BTEB'),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            authLogin.signIn(
-                              context,
-                              username: "roma123",
-                              email: null,
-                              password: "@Rahala+Nur123",
-                            );
-                          },
-                          // ignore: prefer_const_constructors
-                          child: Text('skip'),
-                        ),
-                      ],
-                    ),
+                    if (kDebugMode)
+                      Row(
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              authLogin.signIn(
+                                context,
+                                username: "bteb",
+                                email: null,
+                                password: "@Rahala+Nur123",
+                              );
+                            },
+                            // ignore: prefer_const_constructors
+                            child: Text('BTEB'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              authLogin.signIn(
+                                context,
+                                username: "roma123",
+                                email: null,
+                                password: "@Rahala+Nur123",
+                              );
+                            },
+                            // ignore: prefer_const_constructors
+                            child: Text('skip'),
+                          ),
+                        ],
+                      ),
                   ],
                 ),
               ),

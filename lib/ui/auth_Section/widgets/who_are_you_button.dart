@@ -8,7 +8,7 @@ import '../auth_ui/SignUp_Screen.dart';
 
 class WhoAreYouButton extends ConsumerWidget {
   final void Function(String)? onAccountType;
-  String selectedRole = 'Student';
+  String selectedRole = 'student';
 
   WhoAreYouButton({Key? key, required this.onAccountType}) : super(key: key);
 
@@ -32,8 +32,8 @@ class WhoAreYouButton extends ConsumerWidget {
                 flex: 1,
                 child: InkWell(
                   onTap: () {
-                    selectAccountTypeNotifier.update((state) => 'Student');
-                    selectedRole = 'Student';
+                    selectAccountTypeNotifier.update((state) => 'student');
+                    selectedRole = 'student';
                     onAccountType?.call(selectedRole);
                   },
                   child: Container(
@@ -41,19 +41,19 @@ class WhoAreYouButton extends ConsumerWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8.0),
                       border: Border.all(
-                        color: borderColor('Student', selected),
+                        color: borderColor('student', selected),
                         width: 1.0,
                       ),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        radio('Student', selected),
+                        radio('student', selected),
                         const SizedBox(width: 7),
                         Text(
                           "Student",
                           style: TextStyle(
-                            color: textColor('Student', selected),
+                            color: textColor('student', selected),
                             fontWeight: FontWeight.w400,
                             fontSize: 20,
                           ),
@@ -68,8 +68,8 @@ class WhoAreYouButton extends ConsumerWidget {
                 flex: 1,
                 child: InkWell(
                   onTap: () {
-                    selectAccountTypeNotifier.update((state) => 'Academy');
-                    selectedRole = 'Academy';
+                    selectAccountTypeNotifier.update((state) => 'academy');
+                    selectedRole = 'academy';
                     onAccountType?.call(selectedRole);
                   },
                   child: Container(
@@ -77,19 +77,19 @@ class WhoAreYouButton extends ConsumerWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8.0),
                       border: Border.all(
-                        color: borderColor('Academy', selected),
+                        color: borderColor('academy', selected),
                         width: 1.0,
                       ),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        radio('Academy', selected),
+                        radio('academy', selected),
                         const SizedBox(width: 7),
                         Text(
                           "Academy",
                           style: TextStyle(
-                            color: textColor('Academy', selected),
+                            color: textColor('academy', selected),
                             fontWeight: FontWeight.w400,
                             fontSize: 20,
                           ),

@@ -50,7 +50,7 @@ class _CredentialScreenState extends State<CredentialScreen> {
           final String selectedAccountType =
               ref.watch(selectAccountTypeProvider);
           bool? isAcademy = selectedAccountType == AccountTypeString.academy;
-
+          print(selectedAccountType);
           //
           emailController.text = googleUser?.email ?? '';
           nameController.text = googleUser?.displayName ?? '';
@@ -112,7 +112,7 @@ class _CredentialScreenState extends State<CredentialScreen> {
                     // handle selected account type
                   },
                 ),
-                if (selectedAccountType == AccountTypeString.academy)
+                if (isAcademy == true)
                   Form(
                     key: academyFormKey,
                     child: Padding(

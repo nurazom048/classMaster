@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:classmate/widgets/appWidget/app_text.dart';
 import 'package:classmate/widgets/heder/appbar_custom.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart' as fa;
 
 import '../../../../constant/constant.dart';
 import '../../../auth_Section/auth_ui/SignUp_Screen.dart';
@@ -28,6 +29,9 @@ class AboutScreen extends StatelessWidget {
               Text(
                 'About App',
                 style: TS.opensensBlue(fontSize: 22),
+              ),
+              fa.FaIcon(
+                fa.FontAwesomeIcons.github,
               ),
               const SizedBox(height: 20),
               Container(
@@ -168,6 +172,9 @@ class AboutCard extends StatelessWidget {
                       child: Image.asset(
                         aboutData.image,
                         fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(Icons.error);
+                        },
                       ),
                     ),
                   ),
@@ -256,9 +263,8 @@ class AboutCard extends StatelessWidget {
                           children: [
                             CircleAvatar(
                               radius: 12,
-                              backgroundImage: AssetImage(
-                                aboutData.socialLink[i].icon,
-                              ),
+                              backgroundColor: Colors.white,
+                              child: aboutData.socialLink[i].icon,
                             ),
                           ],
                         ),
