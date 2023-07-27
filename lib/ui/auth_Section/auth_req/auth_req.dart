@@ -2,6 +2,7 @@
 import 'dart:io' as io;
 import 'dart:async';
 import 'dart:convert';
+import 'package:classmate/constant/enmu.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
@@ -10,6 +11,7 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:classmate/models/message_model.dart';
 
 import '../../../constant/constant.dart';
+import '../../../helper/helper_fun.dart';
 import '../../../local data/local_data.dart';
 
 class AuthReq {
@@ -96,15 +98,15 @@ class AuthReq {
     String? eiinNumber,
     String? contractInfo,
   }) async {
+    final uri = Uri.parse('${Const.BASE_URl}/auth/create');
     try {
       //... send request
-      final response =
-          await http.post(Uri.parse('${Const.BASE_URl}/auth/create'), body: {
+      final response = await http.post(uri, body: {
         "name": name,
         "username": username,
         "password": password,
         "email": email,
-        "account_type": accountType.toLowerCase(),
+        "account_type": HelperMethods.getAccountType(accountType),
         "EIIN": eiinNumber ?? '',
         "contractInfo": contractInfo ?? '',
       });
@@ -209,7 +211,7 @@ class AuthReq {
     try {
       final response = await http.post(loginUrl, body: {
         "googleAuthToken": googleAuthToken,
-        "account_type": accountType == null ? '' : accountType.toLowerCase(),
+        "account_type": HelperMethods.getAccountType(accountType),
         "EIIN": eiinNumber ?? '',
         "contractInfo": contractInfo ?? '',
       });

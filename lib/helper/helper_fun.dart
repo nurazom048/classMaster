@@ -5,6 +5,8 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../constant/enmu.dart';
+
 class HelperMethods {
   //! Pick image and compressed....//
   static Future<String?> pickAndCompressImage() async {
@@ -146,4 +148,20 @@ class HelperMethods {
   //     // print(e);
   //  }
   // }
+
+  static String getAccountType(String? type) {
+    if (type == null) {
+      return AccountTypeString.user;
+    }
+
+    final String accountType = type.toLowerCase();
+
+    if (accountType == AccountTypeString.student) {
+      return AccountTypeString.user;
+    } else if (accountType == AccountTypeString.academy) {
+      return AccountTypeString.academy;
+    } else {
+      return AccountTypeString.user;
+    }
+  }
 }

@@ -2,6 +2,7 @@ import 'package:classmate/ui/auth_Section/auth_ui/wellcome_screen.dart';
 import 'package:get/get.dart';
 import 'package:classmate/local%20data/local_data.dart';
 
+import '../constant/enmu.dart';
 import '../ui/bottom_items/bottom_navbar.dart';
 
 Future<void> navigateBaseOnToken() async {
