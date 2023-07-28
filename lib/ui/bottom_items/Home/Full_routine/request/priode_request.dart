@@ -151,7 +151,7 @@ class PriodeRequest {
   ) async {
     final headers = await LocalData.getHerder();
 
-    var url = Uri.parse('${Const.BASE_URl}/rutin/priode/eddit/$priodeId');
+    var url = Uri.parse('${Const.BASE_URl}/rutin/priode/edit/$priodeId');
 
     try {
       final response = await http.put(

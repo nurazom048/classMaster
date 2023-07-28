@@ -10,8 +10,8 @@ class AwesomeNotificationSetup {
 // initialize
 
   static void initialize() async {
-    AwesomeNotifications().initialize(
-      'resource://drawable/res_app_icon',
+    await AwesomeNotifications().initialize(
+      null,
       [
         NotificationChannel(
           channelKey: 'basic_channel',
@@ -46,10 +46,11 @@ class AwesomeNotificationSetup {
 
     //   //
     //   /// Use this method to detect when the user taps on a notification or action button
-    //   static Future<void> onActionReceivedMethod(
-    //       ReceivedAction receivedAction) async {
-    //     debugPrint('onActionReceivedMethod');
-    //   });
+    Future<void> onActionReceivedMethod(ReceivedAction receivedAction) async {
+      debugPrint('onActionReceivedMethod');
+    }
+
+    ;
   }
 
   //
@@ -102,4 +103,6 @@ class AwesomeNotificationSetup {
       },
     );
   }
+
+  //
 }
