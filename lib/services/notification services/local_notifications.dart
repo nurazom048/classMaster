@@ -24,7 +24,7 @@ class LocalNotification {
         // Create notification
         final isCreated = await AwesomeNotifications().createNotification(
           content: NotificationContent(
-            id: i + weekday + newStartTime.minute + newStartTime.hour,
+            id: i + newStartTime.minute + weekday + newStartTime.hour,
             channelKey: 'basic_channel',
             title: '${days[i].classInfo.name} class is going to start...😊',
             body:
