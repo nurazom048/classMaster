@@ -43,8 +43,8 @@ class CreateNewRoutine extends StatelessWidget {
                   AppTextFromField(
                     margin: EdgeInsets.zero,
                     controller: _routineNameController,
-                    hint: "Routine name",
-                    labelText: "Enter class name",
+                    hint: "Routine name (in short)",
+                    labelText: "Enter Routine Short name",
                     validator: (value) => routineNameValidator(value),
                   ),
 
