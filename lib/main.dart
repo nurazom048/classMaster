@@ -1,10 +1,9 @@
-import 'package:classmate/ui/bottom_items/Collection%20Fetures/Ui/aboutus_screen.dart';
 import 'package:classmate/ui/wellcome_section/splash_screen.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
@@ -12,24 +11,21 @@ import 'package:classmate/services/notification%20services/awn_package.dart';
 import 'constant/constant.dart';
 import 'firebase_options.dart';
 
-import 'helper/helper.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   //firebase
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // crashlytics
-  // FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
-  // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-  // PlatformDispatcher.instance.onError = (error, stack) {
-  //   FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-  //   return true;
-  // };
-  //fcm
-  // Firebase analytics
-  // FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(!kDebugMode);
+  //crashlytics
+  FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
+  // fcm
+  FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(!kDebugMode);
 
   // Awesome NotificationSetup
   AwesomeNotificationSetup.initialize();
