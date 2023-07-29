@@ -49,7 +49,9 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     if (widget.emailAddress != null) {
-      byUsername = false;
+      if (widget.usernameAddress == null) {
+        byUsername = false;
+      }
       emailController.text = widget.emailAddress!;
     }
     if (widget.usernameAddress != null) {

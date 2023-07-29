@@ -273,42 +273,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
           eiinNumber: eiinController.text,
           contractInfo: contractInfoController.text,
         );
-
-    // User? user = FirebaseAuth.instance.currentUser;
-    // if (user?.emailVerified == true) {
-    //   // ref.read(authController_provider.notifier).createAccount(
-    //   //       context: context,
-    //   // name: nameController.text,
-    //   // email: emailController.text,
-    //   // username: usernameController.text,
-    //   // password: passwordController.text,
-    //   //     );
-
-    //   //   await FirebaseAuth.instance.signOut();
-    //   Alert.showSnackBar(context, 'Already have a account');
-    //   // Navigator.pop(context);
-    // } else {
-    //   // CREATE FIREBASE INSTANCE
-    //   try {
-    //     await FirebaseAuth.instance.createUserWithEmailAndPassword(
-    //       email: emailController.text,
-    //       password: passwordController.text,
-    //     );
-    //     // await FirebaseAuth.instance.signInWithEmailAndPassword(
-    //     //   email: emailController.text,
-
-    //     Get.to(
-    //       () => EmailVerificationScreen(
-    // email: emailController.text,
-    // name: nameController.text,
-    // username: usernameController.text,
-    // password: passwordController.text,
-    //       ),
-    //     );
-    //   } catch (e) {
-    //     Alert.showSnackBar(context, e);
-    //   }
-    // }
   }
 }
 
