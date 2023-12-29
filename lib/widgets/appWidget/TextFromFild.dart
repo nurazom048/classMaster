@@ -26,6 +26,7 @@ class AppTextFromField extends StatefulWidget {
     this.obscureText,
     this.showOfftext,
     this.marlines = 5,
+    this.autofillHints,
     this.errorText,
   });
 
@@ -40,6 +41,8 @@ class AppTextFromField extends StatefulWidget {
   final String? showOfftext;
   final int? marlines;
   final String? errorText;
+  final Iterable<String>? autofillHints;
+
   bool? obscureText;
   // Multiline
   multiline() {
@@ -75,6 +78,7 @@ class AppTextFromField extends StatefulWidget {
                 },
                 controller: controller,
                 maxLines: marlines,
+                autofillHints: autofillHints,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: labelText ?? "Enter your $hint ",

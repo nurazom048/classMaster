@@ -88,154 +88,162 @@ class _LoginScreenState extends State<LoginScreen> {
               padding: const EdgeInsets.only(bottom: 400),
               child: Form(
                 key: formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    HeaderTitle(
-                      "Log In",
-                      context,
-                      hideArrow: true,
-                      onTap: () {},
-                    ),
-                    const SizedBox(height: 40),
-                    const AppText("   Login To Continue").title(),
-                    const SizedBox(height: 30),
+                child: AutofillGroup(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      HeaderTitle(
+                        "Log In",
+                        context,
+                        hideArrow: true,
+                        onTap: () {},
+                      ),
+                      const SizedBox(height: 40),
+                      const AppText("   Login To Continue").title(),
+                      const SizedBox(height: 30),
 
-                    ///
+                      ///
 
-                    AppTextFromField(
-                      controller:
-                          byUsername ? usernameController : emailController,
-                      hint: byUsername ? 'Username' : "Email",
-                      labelText: byUsername
-                          ? "Enter Username "
-                          : "Enter email address",
-                      validator: (value) {
-                        if (byUsername == true) {
-                          return LoginValidation.validUsername(value);
-                        } else {
-                          return LoginValidation.validateEmail(value);
-                        }
-                      },
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              setState(() => byUsername = !byUsername);
-                            },
-                            child: Text(
-                              byUsername ? 'With Email?' : 'With Username?',
+                      AppTextFromField(
+                        autofillHints: const [AutofillHints.email],
+                        controller:
+                            byUsername ? usernameController : emailController,
+                        hint: byUsername ? 'Username' : "Email",
+                        labelText: byUsername
+                            ? "Enter Username "
+                            : "Enter email address",
+                        validator: (value) {
+                          if (byUsername == true) {
+                            return LoginValidation.validUsername(value);
+                          } else {
+                            return LoginValidation.validateEmail(value);
+                          }
+                        },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                setState(() => byUsername = !byUsername);
+                              },
+                              child: Text(
+                                byUsername ? 'With Email?' : 'With Username?',
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
 
-                    AppTextFromField(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 5, horizontal: 25),
-                      controller: _passwordController,
-                      obscureText: true,
-                      hint: "password",
-                      labelText: "Enter a valid password",
-                      validator: (value) =>
-                          LoginValidation.validatePassword(value),
-                    ),
+                      AppTextFromField(
+                        autofillHints: const [AutofillHints.password],
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 25),
+                        controller: _passwordController,
+                        obscureText: true,
+                        hint: "password",
+                        labelText: "Enter a valid password",
+                        validator: (value) =>
+                            LoginValidation.validatePassword(value),
+                      ),
 
-                    //
-                    const SizedBox(height: 30),
+                      //
+                      const SizedBox(height: 30),
 
-                    SignUpSwitcherButton("", "Forgot your Password?",
-                        onTap: () async {
-                      await FirebaseAuth.instance.signOut();
-                      return Get.to(() => ForgetPasswordScreen(
-                            email: emailController.text,
-                          ));
-                    }),
-                    const SizedBox(height: 30),
+                      SignUpSwitcherButton("", "Forgot your Password?",
+                          onTap: () async {
+                        await FirebaseAuth.instance.signOut();
+                        return Get.to(() => ForgetPasswordScreen(
+                              email: emailController.text,
+                            ));
+                      }),
+                      const SizedBox(height: 30),
 
-                    CupertinoButtonCustom(
-                      isLoading: loading,
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
-                      color: AppColor.nokiaBlue,
-                      text: "Log In",
-                      onPressed: () async {
-                        if (formKey.currentState?.validate() ?? false) {
-                          authLogin.signIn(
-                            context,
-                            username: usernameController.text.trim(),
-                            email: emailController.text.trim(),
-                            password: _passwordController.text,
-                          );
-                        } else {
-                          Alert.showSnackBar(context, 'Fill the form');
-                        }
-                      },
-                    ),
+                      CupertinoButtonCustom(
+                        isLoading: loading,
+                        padding: const EdgeInsets.symmetric(horizontal: 40),
+                        color: AppColor.nokiaBlue,
+                        text: "Log In",
+                        onPressed: () async {
+                          if (formKey.currentState?.validate() ?? false) {
+                            authLogin.signIn(
+                              context,
+                              username: usernameController.text.trim(),
+                              email: emailController.text.trim(),
+                              password: _passwordController.text,
+                            );
+                          } else {
+                            Alert.showSnackBar(context, 'Fill the form');
+                          }
+                        },
+                      ),
 
-                    //
+                      //
 
-                    const OR(),
+                      const OR(),
 
-                    SignUpSwitcherButton(
-                      "Do not have an account?",
-                      "Sign up",
-                      onTap: () {
-                        return Get.to(
-                          () => SignUpScreen(
-                            emailAddress: emailController.text,
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 20),
-                    SocialLoginButton(
-                        isLoading: googleAuthProvider.lodging || loading,
+                      SignUpSwitcherButton(
+                        "Do not have an account?",
+                        "Sign up",
                         onTap: () {
-                          googleAuthProvider.signing(context, ref);
-                        }),
-
-                    // SocialLoginButton(
-                    //   iphone: true,
-                    //   onTap: () async {
-                    //     Get.to(() => const PhoneNumberScreen());
-                    //   },
-                    // ),
-                    if (kDebugMode)
-                      Row(
-                        children: [
-                          TextButton(
-                            onPressed: () {
-                              authLogin.signIn(
-                                context,
-                                username: "bteb",
-                                email: null,
-                                password: "@Rahala+Nur123",
-                              );
-                            },
-                            // ignore: prefer_const_constructors
-                            child: Text('BTEB'),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              authLogin.signIn(
-                                context,
-                                username: "roma123",
-                                email: null,
-                                password: "@Rahala+Nur123",
-                              );
-                            },
-                            // ignore: prefer_const_constructors
-                            child: Text('skip'),
-                          ),
-                        ],
+                          return Get.to(
+                            () => SignUpScreen(
+                              emailAddress: emailController.text,
+                            ),
+                          );
+                        },
                       ),
-                  ],
+
+                      //****************************************************************************************************/
+                      // --------------------------------- Continue With Google --------------------------------------------/
+                      //****************************************************************************************************/
+                      //const SizedBox(height: 20),
+                      SocialLoginButton(
+                          isLoading: googleAuthProvider.lodging || loading,
+                          onTap: () {
+                            googleAuthProvider.signing(context, ref);
+                          }),
+
+                      // SocialLoginButton(
+                      //   iphone: true,
+                      //   onTap: () async {
+                      //     Get.to(() => const PhoneNumberScreen());
+                      //   },
+                      // ),
+                      if (kDebugMode)
+                        Row(
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                authLogin.signIn(
+                                  context,
+                                  username: "bteb",
+                                  email: null,
+                                  password: "@Rahala+Nur123",
+                                );
+                              },
+                              // ignore: prefer_const_constructors
+                              child: Text('BTEB'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                authLogin.signIn(
+                                  context,
+                                  username: "roma123",
+                                  email: null,
+                                  password: "@Rahala+Nur123",
+                                );
+                              },
+                              // ignore: prefer_const_constructors
+                              child: Text('skip'),
+                            ),
+                          ],
+                        ),
+                    ],
+                  ),
                 ),
               ),
             ),

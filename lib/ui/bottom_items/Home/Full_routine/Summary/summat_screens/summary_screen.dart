@@ -10,11 +10,13 @@ import 'package:classmate/core/component/loaders.dart';
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
 import 'package:classmate/ui/bottom_items/Home/Full_routine/Summary/summat_screens/add_summary.dart';
 import 'package:classmate/widgets/error/error.widget.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 import '../../controller/check_status_controller.dart';
 import '../Summary Controller/summary_controller.dart';
 import '../widgets/add_summary_button.dart';
 import '../widgets/chats.dribles .dart';
 import '../widgets/summary_header.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 // ignore: constant_identifier_names
 const String DEMO_PROFILE_IMAGE =
@@ -54,6 +56,7 @@ class SummaryScreen extends StatefulWidget {
 
 late ScrollController scrollController;
 late ScrollController pageScrollController;
+late IO.Socket socket;
 
 class _SummaryScreenState extends State<SummaryScreen> {
   @override
@@ -68,6 +71,15 @@ class _SummaryScreenState extends State<SummaryScreen> {
     super.initState();
     scrollController = ScrollController();
     pageScrollController = ScrollController();
+    // //socket
+    // socket = IO.io(
+    //     'http://localhost:3000',
+    //     OptionBuilder()
+    //         .setTransports(['websocket']) // for Flutter or Dart VM
+    //         .disableAutoConnect() // disable auto-connection
+    //         .setExtraHeaders({'foo': 'bar'}) // optional
+    //         .build());
+    // socket.connect();
 
 //
   }
@@ -226,4 +238,3 @@ class _SummaryScreenState extends State<SummaryScreen> {
 }
 
 ///
-

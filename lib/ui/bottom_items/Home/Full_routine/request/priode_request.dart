@@ -18,7 +18,11 @@ import '../../utils/utils.dart';
 final priodeRequestProvider = Provider<PriodeRequest>((ref) => PriodeRequest());
 
 class PriodeRequest {
-//... Delete  Priode request....//
+  //
+  //
+//*******************************************************************************/
+//--------------------------------- Delete Priode  ------------------------------/
+//*******************************************************************************/
 
   Future<Either<String, Message>> deletePriode(String priodeId) async {
     final headers = await LocalData.getHerder();

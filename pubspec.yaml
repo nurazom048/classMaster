@@ -80,6 +80,7 @@ dependencies:
   mime: ^1.0.4
   url_launcher: ^6.1.12
   flutter_lints: ^2.0.0
+  socket_io_client: ^2.0.3+1
 
 
 

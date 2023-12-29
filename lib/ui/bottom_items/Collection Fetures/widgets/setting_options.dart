@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-/// ***** SeetingOption **** */
-class SeetingOption extends StatelessWidget {
+/// ***** SeatingOption **** */
+class SeatingOption extends StatelessWidget {
   final String title;
   final String? subtitle;
   final dynamic onTap;
   final IconData icon;
-  const SeetingOption({
+  const SeatingOption({
     required this.title,
     this.subtitle,
     required this.onTap,

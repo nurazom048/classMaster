@@ -76,183 +76,195 @@ class _SignUpScreenState extends State<SignUpScreen> {
           return SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.only(bottom: 400),
-            child: Column(
-              children: [
-                HeaderTitle("Sign Up", context),
-                const SizedBox(height: 10),
-                Form(
-                  key: formKey,
-                  child: Column(
-                    children: [
-                      AppTextFromField(
-                        controller: nameController,
-                        hint: isAcademy == true ? "Academy Name" : "Name",
-                        validator: (value) =>
-                            SignUpValidation.validateName(value),
-                        focusNode: nameFocusNode,
-                        onFieldSubmitted: (_) => emailFocusNode.requestFocus(),
-                      ),
-                      AppTextFromField(
-                        showOfftext: widget.phoneNumberString,
-                        controller: emailController,
-                        hint: widget.phoneNumberString != null
-                            ? "PhoneNumber"
-                            : "Email",
-                        labelText: "Enter email address",
-                        validator: (value) {
-                          if (selectedAccountType ==
-                              AccountTypeString.academy) {
-                            return SignUpValidation.validateAcademyEmail(value);
-                          } else {
-                            return SignUpValidation.validateEmail(value);
-                          }
-                        },
-                        focusNode: emailFocusNode,
-                        onFieldSubmitted: (_) =>
-                            usernameFocusNode.requestFocus(),
-                      ),
-                      AppTextFromField(
-                        controller: usernameController,
-                        hint: "username",
-                        labelText: "Chose a User for your Account",
-                        validator: (value) =>
-                            SignUpValidation.validateUsername(value),
-                        focusNode: usernameFocusNode,
-                        onFieldSubmitted: (_) {
-                          if (selectedAccountType ==
-                              AccountTypeString.academy) {
-                            return eiinFocusNode.requestFocus();
-                          } else {
-                            return passwordFocusNode.requestFocus();
-                          }
-                        },
-                      ),
-                      AppTextFromField(
-                        controller: passwordController,
-                        hint: "password",
-                        labelText: "Enter a valid password",
-                        validator: (value) =>
-                            SignUpValidation.validatePassword(value),
-                        focusNode: passwordFocusNode,
-                        onFieldSubmitted: (_) =>
-                            confirmPasswordFocusNode.requestFocus(),
-                      ),
-                      AppTextFromField(
-                        controller: confirmPasswordController,
-                        hint: "Confirm Password",
-                        labelText: "Enter the same password",
-                        validator: (value) =>
-                            SignUpValidation.validateConfirmPassword(
-                                value, passwordController.text),
-                        focusNode: confirmPasswordFocusNode,
-                        onFieldSubmitted: (_) =>
-                            formKey.currentState?.validate(),
-                      ),
-                      WhoAreYouButton(
-                        onAccountType: (accountType) {
-                          // setState(() {});
-                          // ref
-                          //     .watch(selectAccountTypeProvider.notifier)
-                          //     .update((state) => accountType);
-
-                          print(accountType);
-                        },
-                      ),
-                      const SizedBox(height: 27),
-                      if (selectedAccountType == AccountTypeString.academy)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 26),
-                          child: Column(
-                            children: [
-                              // Text(
-                              //     'To create an Academy account, it may take time to physically verify your academy.',
-                              //     style: TS.opensensBlue(color: Colors.black)),
-                              // const SizedBox(height: 10),
-                              // Text(
-                              //   'To create an Academy account, please fill out the form and send a request to our team. We will review your request and accept it as soon as possible.',
-                              //   style: TS.opensensBlue(
-                              //     color: Colors.black,
-                              //     fontWeight: FontWeight.w400,
-                              //   ),
-                              // ),
-                              const SizedBox(height: 10),
-                              AppTextFromField(
-                                margin: EdgeInsets.zero,
-                                focusNode: eiinFocusNode,
-                                controller: eiinController,
-                                hint: "EIIN Number",
-                                validator: (value) =>
-                                    SignUpValidation.validateEinNumber(value),
-                                onFieldSubmitted: (_) {
-                                  return passwordFocusNode.requestFocus();
-                                },
-                              ),
-
-                              AppTextFromField(
-                                marlines: 10,
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 15),
-                                controller: contractInfoController,
-                                hint: "Contact info",
-                                labelText:
-                                    "Please provide the contact information for your academy included the current location and phone number.",
-                                errorText: SignUpValidation.validateContactInfo(
-                                    contractInfoController.text),
-                                validator: (value) =>
-                                    SignUpValidation.validateContactInfo(value),
-                                focusNode: confirmPasswordFocusNode,
-                                onFieldSubmitted: (_) =>
-                                    formKey.currentState?.validate(),
-                              ).multiline(),
-                              const SizedBox(height: 16),
-
-                              ListView.separated(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: Const.SignUpInfoText.length,
-                                itemBuilder: (context, i) {
-                                  return BluetMarkInfoText(
-                                    text: Const.SignUpInfoText[i],
-                                  );
-                                },
-                                separatorBuilder: (context, index) {
-                                  return const SizedBox(height: 16);
-                                },
-                              ),
-
-                              const SizedBox(height: 16),
-                            ],
-                          ),
+            child: AutofillGroup(
+              child: Column(
+                children: [
+                  HeaderTitle("Sign Up", context),
+                  const SizedBox(height: 10),
+                  Form(
+                    key: formKey,
+                    child: Column(
+                      children: [
+                        AppTextFromField(
+                          autofillHints: const [AutofillHints.name],
+                          controller: nameController,
+                          hint: isAcademy == true ? "Academy Name" : "Name",
+                          validator: (value) =>
+                              SignUpValidation.validateName(value),
+                          focusNode: nameFocusNode,
+                          onFieldSubmitted: (_) =>
+                              emailFocusNode.requestFocus(),
                         ),
-                    ],
+                        AppTextFromField(
+                          autofillHints: const [AutofillHints.email],
+                          showOfftext: widget.phoneNumberString,
+                          controller: emailController,
+                          hint: widget.phoneNumberString != null
+                              ? "PhoneNumber"
+                              : "Email",
+                          labelText: "Enter email address",
+                          validator: (value) {
+                            if (selectedAccountType ==
+                                AccountTypeString.academy) {
+                              return SignUpValidation.validateAcademyEmail(
+                                  value);
+                            } else {
+                              return SignUpValidation.validateEmail(value);
+                            }
+                          },
+                          focusNode: emailFocusNode,
+                          onFieldSubmitted: (_) =>
+                              usernameFocusNode.requestFocus(),
+                        ),
+                        AppTextFromField(
+                          autofillHints: const [AutofillHints.username],
+                          controller: usernameController,
+                          hint: "username",
+                          labelText: "Chose a User for your Account",
+                          validator: (value) =>
+                              SignUpValidation.validateUsername(value),
+                          focusNode: usernameFocusNode,
+                          onFieldSubmitted: (_) {
+                            if (selectedAccountType ==
+                                AccountTypeString.academy) {
+                              return eiinFocusNode.requestFocus();
+                            } else {
+                              return passwordFocusNode.requestFocus();
+                            }
+                          },
+                        ),
+                        AppTextFromField(
+                          controller: passwordController,
+                          hint: "password",
+                          labelText: "Enter a valid password",
+                          validator: (value) =>
+                              SignUpValidation.validatePassword(value),
+                          focusNode: passwordFocusNode,
+                          onFieldSubmitted: (_) =>
+                              confirmPasswordFocusNode.requestFocus(),
+                        ),
+                        AppTextFromField(
+                          controller: confirmPasswordController,
+                          hint: "Confirm Password",
+                          labelText: "Enter the same password",
+                          validator: (value) =>
+                              SignUpValidation.validateConfirmPassword(
+                                  value, passwordController.text),
+                          focusNode: confirmPasswordFocusNode,
+                          onFieldSubmitted: (_) =>
+                              formKey.currentState?.validate(),
+                        ),
+                        WhoAreYouButton(
+                          onAccountType: (accountType) {
+                            // setState(() {});
+                            // ref
+                            //     .watch(selectAccountTypeProvider.notifier)
+                            //     .update((state) => accountType);
+
+                            print(accountType);
+                          },
+                        ),
+                        const SizedBox(height: 27),
+                        if (selectedAccountType == AccountTypeString.academy)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 26),
+                            child: Column(
+                              children: [
+                                // Text(
+                                //     'To create an Academy account, it may take time to physically verify your academy.',
+                                //     style: TS.opensensBlue(color: Colors.black)),
+                                // const SizedBox(height: 10),
+                                // Text(
+                                //   'To create an Academy account, please fill out the form and send a request to our team. We will review your request and accept it as soon as possible.',
+                                //   style: TS.opensensBlue(
+                                //     color: Colors.black,
+                                //     fontWeight: FontWeight.w400,
+                                //   ),
+                                // ),
+                                const SizedBox(height: 10),
+                                AppTextFromField(
+                                  margin: EdgeInsets.zero,
+                                  focusNode: eiinFocusNode,
+                                  controller: eiinController,
+                                  hint: "EIIN Number",
+                                  validator: (value) =>
+                                      SignUpValidation.validateEinNumber(value),
+                                  onFieldSubmitted: (_) {
+                                    return passwordFocusNode.requestFocus();
+                                  },
+                                ),
+
+                                AppTextFromField(
+                                  autofillHints: const [
+                                    AutofillHints.addressCity
+                                  ],
+                                  marlines: 10,
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 15),
+                                  controller: contractInfoController,
+                                  hint: "Contact info",
+                                  labelText:
+                                      "Please provide the contact information for your academy included the current location and phone number.",
+                                  errorText:
+                                      SignUpValidation.validateContactInfo(
+                                          contractInfoController.text),
+                                  validator: (value) =>
+                                      SignUpValidation.validateContactInfo(
+                                          value),
+                                  focusNode: confirmPasswordFocusNode,
+                                  onFieldSubmitted: (_) =>
+                                      formKey.currentState?.validate(),
+                                ).multiline(),
+                                const SizedBox(height: 16),
+
+                                ListView.separated(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: Const.SignUpInfoText.length,
+                                  itemBuilder: (context, i) {
+                                    return BluetMarkInfoText(
+                                      text: Const.SignUpInfoText[i],
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) {
+                                    return const SizedBox(height: 16);
+                                  },
+                                ),
+
+                                const SizedBox(height: 16),
+                              ],
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                CupertinoButtonCustom(
-                  icon: isAcademy ? Icons.send : Icons.check,
-                  isLoading: loading,
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
-                  color: AppColor.nokiaBlue,
-                  text: isAcademy ? 'Send Create Request' : "Sign up",
-                  onPressed: () async {
-                    if (formKey.currentState?.validate() ?? false) {
-                      signUp(ref);
-                    } else {
-                      Alert.showSnackBar(context, 'Invalid From');
-                    }
-                  },
-                ),
-                const SizedBox(height: 30),
-                SignUpSwitcherButton(
-                  "Already have an account?",
-                  "Log in",
-                  onTap: () => Get.to(() => LoginScreen(
-                        emailAddress: emailController.text,
-                        passwordAddress: passwordController.text,
-                      )),
-                ),
-                const SizedBox(height: 30),
-              ],
+                  const SizedBox(height: 20),
+                  CupertinoButtonCustom(
+                    icon: isAcademy ? Icons.send : Icons.check,
+                    isLoading: loading,
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    color: AppColor.nokiaBlue,
+                    text: isAcademy ? 'Send Create Request' : "Sign up",
+                    onPressed: () async {
+                      if (formKey.currentState?.validate() ?? false) {
+                        signUp(ref);
+                      } else {
+                        Alert.showSnackBar(context, 'Invalid From');
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 30),
+                  SignUpSwitcherButton(
+                    "Already have an account?",
+                    "Log in",
+                    onTap: () => Get.to(() => LoginScreen(
+                          emailAddress: emailController.text,
+                          passwordAddress: passwordController.text,
+                        )),
+                  ),
+                  const SizedBox(height: 30),
+                ],
+              ),
             ),
           );
         }),

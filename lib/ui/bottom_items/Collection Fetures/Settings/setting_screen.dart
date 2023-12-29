@@ -37,13 +37,13 @@ class SettingsPage extends StatelessWidget {
                     ),
                   ),
 
-                  SeetingOption(
+                  SeatingOption(
                     title: 'Edit profile',
                     icon: Icons.person,
                     onTap: () => Get.to(const EdditAccount()),
                   ),
 
-                  SeetingOption(
+                  SeatingOption(
                     title: 'Change password',
                     icon: Icons.lock,
                     onTap: () => Get.to(
@@ -51,7 +51,7 @@ class SettingsPage extends StatelessWidget {
                       transition: Transition.rightToLeft,
                     ),
                   ),
-                  SeetingOption(
+                  SeatingOption(
                     title: 'Theem',
                     subtitle: "theme",
                     icon: Icons.nightlight_sharp,
@@ -72,7 +72,7 @@ class SettingsPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SeetingOption(
+                  SeatingOption(
                     title: 'Notification settings',
                     icon: Icons.notifications,
                     onTap: () => AppSettings.openNotificationSettings(),

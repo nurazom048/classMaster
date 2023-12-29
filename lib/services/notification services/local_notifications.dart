@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_print, unnecessary_null_comparison
 
-import 'dart:math';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:classmate/services/notification%20services/models.dart';
 

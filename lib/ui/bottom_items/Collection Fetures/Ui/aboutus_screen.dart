@@ -30,9 +30,6 @@ class AboutScreen extends StatelessWidget {
                 'About App',
                 style: TS.opensensBlue(fontSize: 22),
               ),
-              fa.FaIcon(
-                fa.FontAwesomeIcons.github,
-              ),
               const SizedBox(height: 20),
               Container(
                 width: MediaQuery.of(context).size.width,
