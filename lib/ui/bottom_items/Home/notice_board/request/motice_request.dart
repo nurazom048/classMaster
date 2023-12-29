@@ -145,10 +145,10 @@ class NoticeRequest {
     try {
       final response = await http.delete(url, headers: headers);
       final res = json.decode(response.body);
+      print('res trying to delete : $res');
 
       if (response.statusCode == 200) {
         Message message = Message.fromJson(res);
-        print(res);
 
         return right(message);
       } else {
@@ -157,6 +157,7 @@ class NoticeRequest {
         return left(message);
       }
     } catch (e) {
+      print('e trying to delete : $e');
       return left(Message(message: e.toString()));
     }
   }

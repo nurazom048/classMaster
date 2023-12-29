@@ -72,6 +72,8 @@ class ViewAllRecentNotice extends ConsumerWidget {
                       previousDateTime: notice.time,
                       isFirst: index == 0,
                       onLongPress: () {
+                        print(accountModel.sId!);
+                        print(academyID);
                         return NoticeboardDilog.logPressNotice(
                           context,
                           noticeBoardId: accountModel.sId!,

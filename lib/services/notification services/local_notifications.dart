@@ -18,40 +18,46 @@ class LocalNotification {
 
         //
         print(
-            "create-$i-${days[i].startTime.hour}:${days[i].startTime.minute}:${newStartTime.minute} fore${getWeekday(weekday)} $weekday/${DateTime.now().weekday} ${days[i].startTime}");
+            "create-$i-${days[i].startTime.hour}:${days[i].startTime.minute}:${newStartTime.minute} modifi ${getWeekday(weekday)} Mongo$weekday/today${DateTime.now().weekday} ${days[i].startTime}");
 
         // Create notification
-        final isCreated = await AwesomeNotifications().createNotification(
-          content: NotificationContent(
-            id: i + newStartTime.minute + weekday + newStartTime.hour,
-            channelKey: 'basic_channel',
-            title: '${days[i].classInfo.name} class is going to start...😊',
-            body:
-                'Room: ${days[i].classInfo.name} \nInstructor: ${days[i].classInfo.instructorName} \nPeriod: ${days[i].start}-${days[i].end}',
-            notificationLayout: NotificationLayout.Default,
-            // payload: {'data': 'notification_'},
-            wakeUpScreen: true,
-            displayOnBackground: true,
-          ),
-          schedule: NotificationCalendar(
-            weekday: getWeekday(weekday),
-            hour: newStartTime.hour,
-            minute: newStartTime.minute.toInt(),
-            // minute: after30s.minute,
-            // second: after30s.second,
-            allowWhileIdle: true,
-            repeats: true,
-            timeZone: await AwesomeNotifications().getLocalTimeZoneIdentifier(),
-          ),
-          actionButtons: [
-            NotificationActionButton(
-              key: 'dismiss',
-              label: 'Dismiss',
-              isDangerousOption: true,
+        try {
+          final isCreated = await AwesomeNotifications().createNotification(
+            content: NotificationContent(
+              id: i + newStartTime.minute + weekday + newStartTime.hour,
+              channelKey: 'basic_channel',
+              title: '${days[i].classInfo.name} class is going to start...😊',
+              body:
+                  'Room: ${days[i].classInfo.name} \nInstructor: ${days[i].classInfo.instructorName} \nPeriod: ${days[i].start}-${days[i].end}',
+              notificationLayout: NotificationLayout.Default,
+              // payload: {'data': 'notification_'},
+              wakeUpScreen: true,
+              displayOnBackground: true,
             ),
-          ],
-        );
-        print("isCreated : $isCreated");
+            schedule: NotificationCalendar(
+              weekday: getWeekday(weekday),
+              hour: newStartTime.hour,
+              minute: newStartTime.minute.toInt(),
+              // minute: after30s.minute,
+              // second: after30s.second,
+              allowWhileIdle: true,
+              repeats: true,
+              timeZone:
+                  await AwesomeNotifications().getLocalTimeZoneIdentifier(),
+            ),
+            actionButtons: [
+              NotificationActionButton(
+                key: 'dismiss',
+                label: 'Dismiss',
+                isDangerousOption: true,
+              ),
+            ],
+          );
+          print("isCreated : $isCreated");
+        } catch (e) {
+          print(
+              'Error create local notification :${getWeekday(weekday)} /$weekday : $e');
+        }
       }
     }
   }
@@ -59,7 +65,7 @@ class LocalNotification {
 
 int getWeekday(int weekday) {
   if (weekday == 0) {
-    return 0;
+    return 7;
   } else {
     return weekday;
   }

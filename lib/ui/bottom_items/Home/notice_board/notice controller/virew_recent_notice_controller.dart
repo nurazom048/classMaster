@@ -60,9 +60,9 @@ class UploadedRutinsController extends StateNotifier<AsyncValue<RecentNotice>> {
 
   // Delete Notice
   void deleteNotice(context, WidgetRef ref, {required String noticeId}) async {
-    final responce = await noticeRequest.deleteNotice(noticeId: noticeId);
+    final response = await noticeRequest.deleteNotice(noticeId: noticeId);
 
-    responce.fold((error) {
+    response.fold((error) {
       return Alert.errorAlertDialog(context, error.message);
     }, (data) {
       // ignore: unused_result

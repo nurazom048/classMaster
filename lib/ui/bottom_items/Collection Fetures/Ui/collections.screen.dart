@@ -141,6 +141,7 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                             data: (data) {
                               if (data == null) {
                               } else {
+                                print(data);
                                 LocalNotification.scheduleNotifications(data);
                               }
                               if (kDebugMode) {

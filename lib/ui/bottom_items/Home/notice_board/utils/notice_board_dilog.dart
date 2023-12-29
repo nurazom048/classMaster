@@ -108,7 +108,7 @@ class NoticeboardDilog {
           title: const Text(" Do you want to.. ?",
               style: TextStyle(fontSize: 22, color: Colors.black87)),
           actions: [
-            // ddelete
+            // delete
 
             if (isOwner)
               CupertinoActionSheetAction(
