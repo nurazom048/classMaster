@@ -63,21 +63,25 @@ class HomeReq {
         Uri.parse('${Const.BASE_URl}/rutin/home' + searchByUserID + queryPage);
     final headers = await LocalData.getHerder();
     final bool isOffline = await Utils.isOnlineMethod();
-    final String key = "homeRutines$url";
+    final String key = "HomeRoutine_offline_data_$url";
     final bool isHaveCash = await MyApiCash.haveCash(key);
-    print(url);
+    print('kjdffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
 
-    // print('kjdffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
+    print(url);
+    print("isOffline : ${!isOffline} && isHaveCash: $isHaveCash");
+    // var getdata = await APICacheManager().getCacheData(key);
+    // print('offline : ${jsonDecode(getdata.syncData)}}');
+
     try {
       // print(userID);
       // print(isHaveCash);
       // print(!isOffline);
-      // // if offline and have cash
+      // if offline and have cash
       if (!isOffline && isHaveCash) {
         Get.snackbar('offline', "Failed to load new data ");
-        var getdata = await APICacheManager().getCacheData(key);
+        var getdata = await MyApiCash.getData(key);
         print('From cash $url');
-        return RoutineHome.fromJson(jsonDecode(getdata.syncData));
+        return RoutineHome.fromJson(getdata);
       }
 
       //
@@ -95,9 +99,9 @@ class HomeReq {
       if (response.statusCode == 200) {
         RoutineHome homeRutine = RoutineHome.fromJson(res);
 
-        // save to csh
+        // save to local offline
         if (userID == null) {
-          MyApiCash.saveLocal(key: key, syncData: response.body);
+          MyApiCash.saveLocal(key: key, response: response.body);
         }
 
         return homeRutine;

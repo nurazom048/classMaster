@@ -44,7 +44,7 @@ class FullRoutineRequest {
           // print(jsonDecode(response.body));
           // save to csh
 
-          MyApiCash.saveLocal(key: key, syncData: response.body);
+          MyApiCash.saveLocal(key: key, response: response.body);
 
           CheckStatusModel res =
               CheckStatusModel.fromJson(jsonDecode(response.body));

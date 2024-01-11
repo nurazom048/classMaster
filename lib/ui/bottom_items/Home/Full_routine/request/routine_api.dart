@@ -37,7 +37,7 @@ class Routine_Req {
         print(res);
         if (response.statusCode == 200) {
           // Save to cache manager
-          MyApiCash.saveLocal(key: key, syncData: response.body);
+          MyApiCash.saveLocal(key: key, response: response.body);
 
           final classDetails = NewClassDetailsModel.fromJson(res);
           return classDetails;

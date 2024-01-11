@@ -45,7 +45,7 @@ class NotificationClass {
 
         // Save to cache
 
-        MyApiCash.saveLocal(key: key, syncData: response.body);
+        MyApiCash.saveLocal(key: key, response: response.body);
 
         return ClassNotificationList.fromJson(res);
       } else {

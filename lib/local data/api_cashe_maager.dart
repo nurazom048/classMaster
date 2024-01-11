@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:api_cache_manager/models/cache_db_model.dart';
 import 'package:api_cache_manager/utils/cache_manager.dart';
 import 'package:classmate/local%20data/local_data.dart';
@@ -12,13 +11,13 @@ class MyApiCash {
 //
 //*************************************************************************************** */
 
-  static void saveLocal({required String key, required String syncData}) async {
+  static void saveLocal({required String key, required String response}) async {
 // i also add username to make it uniq to multiple account login
     final String? username = await LocalData.getUsername();
 
     //
     APICacheDBModel cacheDBModel =
-        APICacheDBModel(key: key, syncData: syncData);
+        APICacheDBModel(key: "$key+$username", syncData: response.toString());
     APICacheManager().deleteCache("$key+$username");
     await APICacheManager().addCacheData(cacheDBModel);
   }

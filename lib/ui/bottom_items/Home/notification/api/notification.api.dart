@@ -37,7 +37,7 @@ class NotificationApi {
 
       if (response.statusCode == 200) {
         // Save to cache
-        MyApiCash.saveLocal(key: key, syncData: response.body);
+        MyApiCash.saveLocal(key: key, response: response.body);
         final res = NotificationModel.fromJson(jsonDecode(response.body));
         return Right(res);
       } else {

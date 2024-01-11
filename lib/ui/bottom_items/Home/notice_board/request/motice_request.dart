@@ -56,7 +56,7 @@ class NoticeRequest {
 
         if (response.statusCode == 200) {
           // save to csh
-          MyApiCash.saveLocal(key: key, syncData: response.body);
+          MyApiCash.saveLocal(key: key, response: response.body);
           print(res);
 
           return RecentNotice.fromJson(res);

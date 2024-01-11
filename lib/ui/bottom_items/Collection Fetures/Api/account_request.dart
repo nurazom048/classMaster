@@ -47,7 +47,7 @@ class AccountReq {
 
       if (response.statusCode == 200) {
         // save to csh
-        MyApiCash.saveLocal(key: url.toString(), syncData: response.body);
+        MyApiCash.saveLocal(key: key, response: response.body);
         // send response
         return AccountModels.fromJson(json.decode(response.body));
       } else {

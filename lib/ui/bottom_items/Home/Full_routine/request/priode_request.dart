@@ -114,7 +114,7 @@ class PriodeRequest {
 
       if (response.statusCode == 200) {
         // When success, save data into cache
-        MyApiCash.saveLocal(key: key, syncData: response.body);
+        MyApiCash.saveLocal(key: key, response: response.body);
 
         // Return the response
         return allPriode;
