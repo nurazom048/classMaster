@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:classmate/widgets/appWidget/app_text.dart';
 import 'package:classmate/widgets/heder/appbar_custom.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart' as fa;
 
 import '../../../../constant/constant.dart';
-import '../../../auth_Section/auth_ui/SignUp_Screen.dart';
+import '../../../auth_Section/auth_ui/signup_screen.dart';
 import '../data/about_data.dart';
 import '../data/about_model.dart';
 
@@ -170,7 +169,7 @@ class AboutCard extends StatelessWidget {
                         aboutData.image,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
-                          return Icon(Icons.error);
+                          return const Icon(Icons.error);
                         },
                       ),
                     ),
@@ -194,20 +193,18 @@ class AboutCard extends StatelessWidget {
               bottom: 0,
               child: Column(
                 children: [
-                  Container(
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 2,
-                          color: Colors.white,
-                        ),
-                        Container(
-                          height: 50,
-                          width: MediaQuery.of(context).size.width,
-                          color: aboutData.color,
-                        ),
-                      ],
-                    ),
+                  Column(
+                    children: [
+                      Container(
+                        height: 2,
+                        color: Colors.white,
+                      ),
+                      Container(
+                        height: 50,
+                        width: MediaQuery.of(context).size.width,
+                        color: aboutData.color,
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 10),
                 ],
@@ -229,7 +226,7 @@ class AboutCard extends StatelessWidget {
                     itemBuilder: (context, i) {
                       return InkWell(
                         onTap: () async {
-                          print(aboutData.socialLink[i].show);
+                          // print(aboutData.socialLink[i].show);
                           if (aboutData.socialLink[i].show == 'Gmail') {
                             String? encodeQueryParameters(
                                 Map<String, String> params) {
@@ -280,9 +277,9 @@ class AboutCard extends StatelessWidget {
     );
   }
 
-  Future<void> _launchUrl(_url) async {
-    if (!await launchUrl(_url)) {
-      throw Exception('Could not launch $_url');
+  Future<void> _launchUrl(url) async {
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
     }
   }
 }

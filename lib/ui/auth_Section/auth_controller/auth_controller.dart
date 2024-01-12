@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, use_build_context_synchronously, void_checks
+// ignore_for_file: non_constant_identifier_names, use_build_context_synchronously, void_checks, avoid_print
 
 import 'dart:io';
 

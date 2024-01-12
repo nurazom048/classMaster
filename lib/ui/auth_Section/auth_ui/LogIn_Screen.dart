@@ -1,13 +1,10 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
-import 'package:classmate/ui/auth_Section/auth_ui/SignUp_Screen.dart';
-import 'package:classmate/ui/auth_Section/utils/login_validation.dart';
+import 'package:classmate/ui/auth_Section/auth_ui/signup_screen.dart';
 import 'package:classmate/widgets/appWidget/app_text.dart';
 
 import '../../../constant/app_color.dart';
@@ -16,6 +13,7 @@ import '../../../widgets/appWidget/buttons/cupertino_buttons.dart';
 import '../../../widgets/heder/heder_title.dart';
 import '../auth_controller/auth_controller.dart';
 import '../auth_controller/google_auth_controller.dart';
+import '../utils/login_validation.dart';
 import '../widgets/or.dart';
 import '../widgets/sign_up_page_switch.dart';
 import '../widgets/social_login_button.dart';

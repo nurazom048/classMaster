@@ -12,7 +12,7 @@ import 'package:classmate/widgets/mini_account_row.dart';
 import '../../../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../../../models/class_details_model.dart';
 import '../../controller/check_status_controller.dart';
-import '../../controller/riutine_details.controller.dart';
+import '../../controller/routine_details.controller.dart';
 import '../../screen/viewMore/view_more_screen.dart';
 import '../../Summary/summat_screens/summary_screen.dart';
 import '../../../../../../widgets/appWidget/select_day_row.dart';

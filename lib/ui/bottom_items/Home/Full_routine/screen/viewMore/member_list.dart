@@ -98,8 +98,6 @@ class _MemberListState extends State<MemberList> {
         },
         child: GestureDetector(
           onTapDown: (offset) {
-            print(offset.globalPosition);
-
             ref
                 .watch(offsetProvider.notifier)
                 .update((state) => offset.globalPosition);

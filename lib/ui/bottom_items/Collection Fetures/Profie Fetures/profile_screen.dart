@@ -12,7 +12,7 @@ import '../../../../widgets/heder/heder_title.dart';
 import '../../Home/Full_routine/utils/routine_dialog.dart';
 import '../../Home/Full_routine/widgets/routine_box/routine_box_by_ID.dart';
 import '../../Home/Full_routine/widgets/skelton/routine_box_id_scelton.dart';
-import '../../Home/notice_board/notice controller/virew_recent_notice_controller.dart';
+import '../../Home/notice_board/notice controller/view_recent_notice_controller.dart';
 import '../../Home/widgets/recentnoticeslider_scalton.dart';
 import '../../Home/widgets/slider/recentniticeslider_item.dart';
 import '../../Home/widgets/slider/recentnoticeslider.dart';

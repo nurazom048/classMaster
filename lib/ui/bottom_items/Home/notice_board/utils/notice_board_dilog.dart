@@ -7,7 +7,7 @@ import '../../../../../widgets/appWidget/dotted_divider.dart';
 import '../../../Collection Fetures/utils/confrom_alart_dilog.dart';
 import '../../Full_routine/widgets/chekbox_selector_button.dart';
 import '../notice controller/noticeboard_satus_controller.dart';
-import '../notice controller/virew_recent_notice_controller.dart';
+import '../notice controller/view_recent_notice_controller.dart';
 
 class NoticeboardDilog {
   //   notficationSeleect

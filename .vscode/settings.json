@@ -1,6 +1,7 @@
 {
     "fluttergpt.apiKey": "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",
     "cSpell.words": [
+        "aboutus",
         "accountdata",
         "accountimage",
         "addclass",
@@ -28,6 +29,7 @@
         "deletesummary",
         "dilog",
         "Dividerr",
+        "dribles",
         "dropdowen",
         "dropzone",
         "eddit",
@@ -41,6 +43,7 @@
         "fullscreen",
         "getdata",
         "giventime",
+        "googleform",
         "hxwm",
         "imagelink",
         "instuctor",
@@ -48,6 +51,7 @@
         "lenght",
         "localdata",
         "Longpress",
+        "LTRB",
         "maager",
         "morepage",
         "mydrawer",
@@ -82,11 +86,14 @@
         "Scelton",
         "sevendays",
         "sherdprifaranc",
+        "signup",
+        "singup",
         "subjectcode",
         "syncfusion",
         "Tilesbutton",
         "Tokenn",
         "ukey",
+        "unsave",
         "vsync",
         "Wellcome"
     ]

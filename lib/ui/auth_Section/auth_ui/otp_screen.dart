@@ -7,7 +7,7 @@ import 'package:classmate/core/dialogs/alert_dialogs.dart';
 import '../../../constant/app_color.dart';
 import '../../../widgets/appWidget/buttons/cupertino_buttons.dart';
 import '../../../widgets/heder/heder_title.dart';
-import 'SignUp_Screen.dart';
+import 'signup_screen.dart';
 
 class OtpScreen extends StatefulWidget {
   final String verificationId;

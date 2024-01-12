@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:classmate/core/component/Loaders.dart';
@@ -7,7 +9,7 @@ import 'package:classmate/widgets/appWidget/app_text.dart';
 import '../../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../../widgets/heder/heder_title.dart';
 import '../../../Collection Fetures/models/account_models.dart';
-import '../notice controller/virew_recent_notice_controller.dart';
+import '../notice controller/view_recent_notice_controller.dart';
 import '../utils/notice_board_dilog.dart';
 import '../widgets/simple_notice_card.dart';
 
@@ -48,7 +50,6 @@ class ViewAllRecentNotice extends ConsumerWidget {
               void scrollListener() {
                 if (scrollController.position.pixels ==
                     scrollController.position.maxScrollExtent) {
-                  // ignore: avoid_print
                   print("reached the end");
                   ref
                       .watch(recentNoticeController(null).notifier)

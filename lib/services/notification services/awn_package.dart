@@ -46,11 +46,6 @@ class AwesomeNotificationSetup {
 
     //   //
     //   /// Use this method to detect when the user taps on a notification or action button
-    Future<void> onActionReceivedMethod(ReceivedAction receivedAction) async {
-      print('onActionReceivedMethod');
-    }
-
-    ;
   }
 
   //

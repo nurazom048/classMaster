@@ -1,4 +1,4 @@
-// ignore_for_file: unused_result, must_be_immutable, unnecessary_null_comparison
+// ignore_for_file: unused_result, must_be_immutable, unnecessary_null_comparison, avoid_print
 
 import 'dart:io';
 import 'package:mime/mime.dart';
@@ -12,8 +12,8 @@ import 'package:classmate/widgets/heder/heder_title.dart';
 
 import '../../../../constant/app_color.dart';
 import '../../../../widgets/appWidget/buttons/cupertino_buttons.dart';
-import '../../Home/notice_board/notice controller/virew_recent_notice_controller.dart';
-import '../../Home/notice_board/request/motice_request.dart';
+import '../../Home/notice_board/notice controller/view_recent_notice_controller.dart';
+import '../../Home/notice_board/request/notice_request.dart';
 import '../../Home/widgets/custom_title_bar.dart';
 import '../../Home/widgets/mydrawer.dart';
 import '../widgets/uploaded_pdf_button.dart';

@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, library_prefixes
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +10,6 @@ import 'package:classmate/core/component/loaders.dart';
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
 import 'package:classmate/ui/bottom_items/Home/Full_routine/Summary/summat_screens/add_summary.dart';
 import 'package:classmate/widgets/error/error.widget.dart';
-import 'package:socket_io_client/socket_io_client.dart';
 import '../../controller/check_status_controller.dart';
 import '../Summary Controller/summary_controller.dart';
 import '../widgets/add_summary_button.dart';
@@ -151,7 +150,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                 height: MediaQuery.of(context).size.height,
                 child: Builder(builder: (context) {
                   if (status != 'joined') {
-                    return ErrorScreen(error: Const.CANT_SEE_SUMMARYS);
+                    return ErrorScreen(error: Const.CANT_SEE_SUMMARY);
                   }
                   return Container(
                     child: allSummary.when(
@@ -165,8 +164,6 @@ class _SummaryScreenState extends State<SummaryScreen> {
                           if (scrollController.position.pixels ==
                               scrollController.position.maxScrollExtent) {
                             if (data.currentPage != data.totalPages) {
-                              print('?TOPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP');
-
                               print(
                                   'current page ${data.currentPage}  ${data.totalPages}');
                               summaryNotifier.loadMore(

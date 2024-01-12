@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:email_validator/email_validator.dart';
 
 class SignUpValidation {

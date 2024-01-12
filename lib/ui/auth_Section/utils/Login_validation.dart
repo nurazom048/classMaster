@@ -1,6 +1,6 @@
-class LoginValidation {
-  //final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+// ignore_for_file: file_names
 
+class LoginValidation {
   static String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
       return 'Email is required';

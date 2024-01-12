@@ -17,7 +17,7 @@ abstract class Const {
   static String accountimage =
       "https://th.bing.com/th/id/OIP.iSu2RcCcdm78xbxNDJMJSgHaEo?pid=ImgDet&rs=1";
 
-  static String CANT_SEE_SUMMARYS =
+  static String CANT_SEE_SUMMARY =
       'You are not a member of this routine.\nTo view the summary,\nyou need to become a member first.';
 
 // signUp info textList

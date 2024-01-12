@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
 
 import '../models/recent_notice_model.dart';
-import '../request/motice_request.dart';
+import '../request/notice_request.dart';
 
 //! Provider
 final recentNoticeController = StateNotifierProvider.family<
@@ -43,8 +43,8 @@ class UploadedRutinsController extends StateNotifier<AsyncValue<RecentNotice>> {
       final RecentNotice newData =
           await noticeRequest.recentNotice(page: page + 1);
 
-      print(
-          "total ${newData.totalPages} : giver page $page newcp ${newData.currentPage}   ");
+      // print(
+      //     "total ${newData.totalPages} : giver page $page new current page  ${newData.currentPage}   ");
 
       if (newData.currentPage != state.value?.currentPage) {
         List<Notice> notices = List.from(

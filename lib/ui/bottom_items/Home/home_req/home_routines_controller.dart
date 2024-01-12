@@ -36,8 +36,6 @@ class HomeRoutinesController extends StateNotifier<AsyncValue<RoutineHome>> {
     try {
       if (page == state.value!.totalPages) {
       } else {
-        // print('call fore loader more $page ${state.value!.totalPages}');
-
         final newData = await homeReq.homeRoutines(pages: page + 1);
 
         // Check if the new data's page number is greater than the current page number

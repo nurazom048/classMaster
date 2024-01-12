@@ -1,4 +1,4 @@
-import 'package:classmate/constant/enmu.dart';
+import 'package:classmate/constant/enum.dart';
 import 'package:classmate/local%20data/local_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

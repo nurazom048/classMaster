@@ -1,20 +1,20 @@
-// ignore_for_file: unused_local_variable
+// ignore_for_file: unused_local_variable, avoid_print
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:classmate/ui/auth_Section/auth_ui/SignUp_Screen.dart';
+import 'package:classmate/ui/auth_Section/auth_ui/signup_screen.dart';
 
 import '../../../constant/app_color.dart';
 import '../../../constant/constant.dart';
-import '../../../constant/enmu.dart';
+import '../../../constant/enum.dart';
 import '../../../core/dialogs/alert_dialogs.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/appWidget/buttons/cupertino_buttons.dart';
 import '../../../widgets/heder/heder_title.dart';
 import '../auth_controller/auth_controller.dart';
 import '../auth_controller/google_auth_controller.dart';
-import '../utils/singUp_validation.dart';
+import '../utils/singup_validation.dart';
 import '../widgets/who_are_you_button.dart';
 
 class CredentialScreen extends StatefulWidget {

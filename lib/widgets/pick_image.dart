@@ -36,7 +36,7 @@ class _PickImageState extends State<PickImage> {
   @override
   Widget build(BuildContext context) {
     //
-    Widget pickImageBagges = CircleAvatar(
+    Widget pickImageBadges = CircleAvatar(
       radius: 21,
       backgroundColor: AppColor.nokiaBlue,
       child: CircleAvatar(
@@ -44,7 +44,7 @@ class _PickImageState extends State<PickImage> {
         radius: 20,
         child: IconButton(
           onPressed: () async {
-            String? imagePath = await HelperMethods.pickAndCompressImage();
+            String? imagePath = await Multiple.pickAndCompressImage();
 
             setState(() {
               _image = imagePath != null ? File(imagePath) : null;
@@ -56,7 +56,7 @@ class _PickImageState extends State<PickImage> {
       ),
     );
 
-    Widget pickCoverBagges = CircleAvatar(
+    Widget pickCoverBadges = CircleAvatar(
       radius: 21,
       backgroundColor: AppColor.nokiaBlue,
       child: CircleAvatar(
@@ -64,7 +64,7 @@ class _PickImageState extends State<PickImage> {
         radius: 20,
         child: IconButton(
           onPressed: () async {
-            String? imagePath = await HelperMethods.pickAndCompressImage();
+            String? imagePath = await Multiple.pickAndCompressImage();
 
             setState(() {
               _imageCover = imagePath != null ? File(imagePath) : null;
@@ -89,7 +89,7 @@ class _PickImageState extends State<PickImage> {
               position: BadgePosition.bottomEnd(bottom: -3, end: 12),
               badgeStyle:
                   const badges.BadgeStyle(badgeColor: Colors.transparent),
-              badgeContent: pickCoverBagges,
+              badgeContent: pickCoverBadges,
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 15),
                 height: 150,
@@ -107,7 +107,7 @@ class _PickImageState extends State<PickImage> {
               position: BadgePosition.bottomEnd(),
               badgeStyle:
                   const badges.BadgeStyle(badgeColor: Colors.transparent),
-              badgeContent: pickImageBagges,
+              badgeContent: pickImageBadges,
               child: ClipOval(
                 child: Container(
                   height: 120,

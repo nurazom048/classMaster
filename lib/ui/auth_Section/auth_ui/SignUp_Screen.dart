@@ -1,4 +1,3 @@
-// ignore: file_names
 // ignore_for_file: avoid_print, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
@@ -8,10 +7,10 @@ import 'package:classmate/constant/app_color.dart';
 import 'package:classmate/constant/constant.dart';
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
 import 'package:classmate/ui/auth_Section/auth_controller/auth_controller.dart';
-import 'package:classmate/ui/auth_Section/auth_ui/LogIn_Screen.dart';
+import 'package:classmate/ui/auth_Section/auth_ui/logIn_screen.dart';
 import 'package:classmate/ui/auth_Section/utils/singUp_validation.dart';
 import 'package:classmate/widgets/appWidget/app_text.dart';
-import '../../../constant/enmu.dart';
+import '../../../constant/enum.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/appWidget/buttons/cupertino_buttons.dart';
 import '../../../widgets/heder/heder_title.dart';
@@ -310,16 +309,14 @@ class BluetMarkInfoText extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Container(
-          child: Padding(
-            padding: padding ?? const EdgeInsets.only(right: 0, top: 8),
-            child: CircleAvatar(
-              radius: radius ?? 4,
-              backgroundColor: color ?? AppColor.nokiaBlue,
-            ),
+        Padding(
+          padding: padding ?? const EdgeInsets.only(right: 0, top: 8),
+          child: CircleAvatar(
+            radius: radius ?? 4,
+            backgroundColor: color ?? AppColor.nokiaBlue,
           ),
         ),
-        Container(
+        SizedBox(
           width: width,
           //   flex: 1,
           child: Text(

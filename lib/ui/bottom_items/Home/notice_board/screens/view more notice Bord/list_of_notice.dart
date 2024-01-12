@@ -5,7 +5,7 @@ import 'package:classmate/core/dialogs/alert_dialogs.dart';
 import 'package:classmate/ui/bottom_items/Home/notice_board/screens/view_notice_screen.dart';
 
 import '../../models/recent_notice_model.dart';
-import '../../notice controller/virew_recent_notice_controller.dart';
+import '../../notice controller/view_recent_notice_controller.dart';
 import '../../widgets/simple_notice_card.dart';
 
 ////////////////////////////////////

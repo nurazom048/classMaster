@@ -2,7 +2,6 @@
 import 'dart:io' as io;
 import 'dart:async';
 import 'dart:convert';
-import 'package:classmate/constant/enmu.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
@@ -106,7 +105,7 @@ class AuthReq {
         "username": username,
         "password": password,
         "email": email,
-        "account_type": HelperMethods.getAccountType(accountType),
+        "account_type": Multiple.getAccountType(accountType),
         "EIIN": eiinNumber ?? '',
         "contractInfo": contractInfo ?? '',
       });
@@ -211,7 +210,7 @@ class AuthReq {
     try {
       final response = await http.post(loginUrl, body: {
         "googleAuthToken": googleAuthToken,
-        "account_type": HelperMethods.getAccountType(accountType),
+        "account_type": Multiple.getAccountType(accountType),
         "EIIN": eiinNumber ?? '',
         "contractInfo": contractInfo ?? '',
       });

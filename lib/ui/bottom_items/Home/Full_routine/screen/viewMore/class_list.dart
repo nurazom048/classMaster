@@ -12,11 +12,11 @@ import '../../../../../../widgets/error/error.widget.dart';
 import '../../../../../../widgets/heading_row.dart';
 import '../../../utils/utils.dart';
 import '../../controller/priode_controller.dart';
-import '../../controller/riutine_details.controller.dart';
+import '../../controller/routine_details.controller.dart';
 import '../../../../Add/screens/add_priode.dart';
 import '../../controller/check_status_controller.dart';
 import '../../Summary/summat_screens/summary_screen.dart';
-import '../../utils/logng_press.dart';
+import '../../utils/long_press.dart';
 import '../../widgets/class_row.dart';
 import '../../widgets/priode_widget.dart';
 
@@ -38,7 +38,7 @@ class ClassListPage extends StatelessWidget {
     return Consumer(builder: (context, ref, _) {
       print(routineId);
       // key
-      final _scaffoldKey = GlobalKey<ScaffoldState>();
+      final scaffoldKey = GlobalKey<ScaffoldState>();
 
       // Provider
       final routineDetails = ref.watch(routineDetailsProvider(routineId));
@@ -52,7 +52,7 @@ class ClassListPage extends StatelessWidget {
       final totalClassNotifier = ref.read(totalClassCountProvider.notifier);
 
       return Scaffold(
-        key: _scaffoldKey,
+        key: scaffoldKey,
         backgroundColor: Colors.white10,
         body: RefreshIndicator(
           onRefresh: () async {
@@ -109,7 +109,7 @@ class ClassListPage extends StatelessWidget {
                             endTime: data.priodes[index].endTime,
                             onLongpress: () {
                               PriodeAlert.logPressOnPriode(
-                                context: _scaffoldKey.currentContext!,
+                                context: scaffoldKey.currentContext!,
                                 priodeId: priodeId,
                                 routineId: routineId,
                                 Priode: data.priodes[index],

@@ -1,7 +1,6 @@
 // ignore_for_file: file_names, non_constant_identifier_names, prefer_interpolation_to_compose_strings, unused_local_variable, avoid_print
 
 import 'dart:convert';
-import 'package:api_cache_manager/api_cache_manager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
@@ -20,7 +19,9 @@ import '../utils/utils.dart';
 final home_req_provider = Provider<HomeReq>((ref) => HomeReq());
 
 class HomeReq {
-//********    saveRoutines      *************/
+//************************************************************************************/
+//---------------------- saveRoutines Api Request  -----------------------------------/
+//************************************************************************************/
   Future<SaveRutileResponse> saveRoutines({pages}) async {
     String queryPage = "?page=$pages}";
     String? username = "";
@@ -46,8 +47,9 @@ class HomeReq {
       throw Exception(e.toString());
     }
   }
-
-  //********    home Routines      *************/
+//************************************************************************************/
+//---------------------- Home Routines Api Request  -----------------------------------/
+//************************************************************************************/
 
   Future<RoutineHome> homeRoutines({pages, String? userID}) async {
     String queryPage = "?page=$pages";
@@ -65,17 +67,11 @@ class HomeReq {
     final bool isOffline = await Utils.isOnlineMethod();
     final String key = "HomeRoutine_offline_data_$url";
     final bool isHaveCash = await MyApiCash.haveCash(key);
-    print('kjdffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
-
-    print(url);
-    print("isOffline : ${!isOffline} && isHaveCash: $isHaveCash");
-    // var getdata = await APICacheManager().getCacheData(key);
-    // print('offline : ${jsonDecode(getdata.syncData)}}');
+    // print('kjdffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
+    // print(url);
+    // print("isOffline : ${!isOffline} && isHaveCash: $isHaveCash");
 
     try {
-      // print(userID);
-      // print(isHaveCash);
-      // print(!isOffline);
       // if offline and have cash
       if (!isOffline && isHaveCash) {
         Get.snackbar('offline', "Failed to load new data ");
@@ -93,8 +89,6 @@ class HomeReq {
       final res = json.decode(response.body);
 
       print(res);
-      // print(response.statusCode);
-      // print('$isOffline 5 $isHaveCash');
 
       if (response.statusCode == 200) {
         RoutineHome homeRutine = RoutineHome.fromJson(res);
@@ -120,18 +114,12 @@ class HomeReq {
       }
     } catch (e) {
       Get.snackbar('error', "$e");
-
-      // if (isHaveCash) {
-      //   var getdata = await MyApiCash.getData(key);
-      //   return RoutineHome.fromJson(getdata);
-      // }
       throw "$e";
     }
   }
-
-  // DELETE ROUTINE
-
-  //...... Delete Rutin.....//
+//************************************************************************************/
+//---------------------- DeleteRoutine Api Request  -----------------------------------/
+//************************************************************************************/
 
   Future<Either<Message, Message>> deleteRutin(rutin_id) async {
     final headers = await LocalData.getHerder();

@@ -1,11 +1,9 @@
 // ignore_for_file: avoid_print, unused_result, library_prefixes, unused_local_variable, unnecessary_null_comparison
 import 'dart:io' as Io;
 import 'package:mime/mime.dart';
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:api_cache_manager/utils/cache_manager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
@@ -44,9 +42,9 @@ class NoticeRequest {
       // if offline and have cash
 
       if (!isOffline && isHaveCash) {
-        var getdata = await APICacheManager().getCacheData(key);
+        var getdata = await MyApiCash.getData(key);
         print('From cash $getdata');
-        return RecentNotice.fromJson(jsonDecode(getdata.syncData));
+        return RecentNotice.fromJson(getdata);
       } else {
         final response = await http.post(
           requestUri,
@@ -55,7 +53,7 @@ class NoticeRequest {
         final res = json.decode(response.body);
 
         if (response.statusCode == 200) {
-          // save to csh
+          // save to cash
           MyApiCash.saveLocal(key: key, response: response.body);
           print(res);
 

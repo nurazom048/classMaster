@@ -110,8 +110,8 @@ class _AddSummaryScreenState extends ConsumerState<AddSummaryScreen> {
                         ),
                         IconButton(
                           onPressed: () async {
-                            List<String>? imagelink = await HelperMethods
-                                .pickAndCompressMultipleImages();
+                            List<String>? imagelink =
+                                await Multiple.pickAndCompressMultipleImages();
 
                             if (imagelink != null) {
                               setState(() {

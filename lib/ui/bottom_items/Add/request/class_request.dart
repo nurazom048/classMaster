@@ -11,7 +11,7 @@ import '../../../../constant/constant.dart';
 import '../../../../core/dialogs/alert_dialogs.dart';
 import 'package:classmate/models/class_model.dart';
 
-import '../../Home/Full_routine/controller/riutine_details.controller.dart';
+import '../../Home/Full_routine/controller/routine_details.controller.dart';
 
 class ClassRequest {
   // ignore: body_might_complete_normally_nullable

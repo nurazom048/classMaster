@@ -20,7 +20,7 @@ import '../../../../services/notification services/awn_package.dart';
 import '../Full_routine/widgets/routine_box/routine_box_by_id.dart';
 import '../Full_routine/widgets/skelton/routine_box_id_scelton.dart';
 import '../home_req/home_routines_controller.dart';
-import '../notice_board/notice controller/virew_recent_notice_controller.dart';
+import '../notice_board/notice controller/view_recent_notice_controller.dart';
 import '../notice_board/screens/view_all_recent_notice.dart';
 import '../widgets/custom_title_bar.dart';
 import '../widgets/slider/recentnoticeslider.dart';

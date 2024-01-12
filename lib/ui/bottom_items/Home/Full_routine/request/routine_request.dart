@@ -1,7 +1,6 @@
 // ignore_for_file: non_constant_identifier_names, unnecessary_null_comparison, avoid_print
 
 import 'dart:convert';
-import 'package:api_cache_manager/api_cache_manager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
@@ -60,10 +59,8 @@ class FullRoutineRequest {
       print(e);
 
       if (isHaveCash) {
-        var getData =
-            await APICacheManager().getCacheData("checkStatus$routineId");
-        print('from cash $getData');
-        return CheckStatusModel.fromJson(jsonDecode(getData.syncData));
+        var getData = await MyApiCash.getData(key);
+        return CheckStatusModel.fromJson(getData);
       }
       rethrow;
     }

@@ -1,7 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:classmate/helper/helper_fun.dart';
 
-class Picker extends HelperMethods {
+class Picker extends Multiple {
   //!___ Pick Pdf.....//
   static Future<String?> pickPDFFile() async {
     try {

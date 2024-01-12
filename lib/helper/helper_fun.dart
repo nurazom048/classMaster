@@ -5,9 +5,9 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../constant/enmu.dart';
+import '../constant/enum.dart';
 
-class HelperMethods {
+class Multiple {
   //! Pick image and compressed....//
   static Future<String?> pickAndCompressImage() async {
     // Define a method that compresses the image and returns the compressed image path
@@ -59,7 +59,7 @@ class HelperMethods {
     return await compressAndReturnImagePath();
   }
 
-//? Pick multile image
+//? Pick multiple image
   static Future<List<String>?> pickAndCompressMultipleImages() async {
     // Define a method that compresses the images and returns a list of compressed image paths
     Future<List<String>?> compressAndReturnImagePaths(
