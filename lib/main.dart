@@ -10,6 +10,7 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:classmate/services/notification%20services/awn_package.dart';
 import 'constant/constant.dart';
 import 'firebase_options.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +35,14 @@ void main() async {
   // await Future.delayed(const Duration(seconds: 1));
   // FlutterNativeSplash.remove();
 
-  runApp(const ProviderScope(child: MyApp()));
+  //* sentry crash report
+  await SentryFlutter.init((options) {
+    options.dsn =
+        'https://17fd9ac810472652be659f50fd826efb@o4506556979150848.ingest.sentry.io/4506556985311232';
+    // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+    // We recommend adjusting this value in production.
+    options.tracesSampleRate = 1.0;
+  }, appRunner: () => runApp(const ProviderScope(child: MyApp())));
 }
 //
 
