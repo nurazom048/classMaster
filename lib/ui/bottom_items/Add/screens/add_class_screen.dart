@@ -137,7 +137,9 @@ class _AddClassScreenState extends State<AddClassScreen> {
                                 labelText: "Tap Here",
                                 onPressed: () {},
                                 onChanged: (selectedDay) {
-                                  _selectedDay = selectedDay;
+                                  setState(() {
+                                    _selectedDay = selectedDay;
+                                  });
                                 },
                               ),
                               Padding(
@@ -232,14 +234,11 @@ class _AddClassScreenState extends State<AddClassScreen> {
           widget.routineId,
           startTime,
           endTime,
-          ClassModel(
+          ClassModelUpdate(
             className: _classNameController.text,
             instructorName: _instructorController.text,
             roomNumber: _roomController.text,
             subjectCode: _subCodeController.text,
-            weekday: _selectedDay!,
-            startTime: startTime,
-            endTime: endTime,
           ));
     } else {
       if (_selectedDay == null) {

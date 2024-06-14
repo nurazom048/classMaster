@@ -15,8 +15,8 @@ import 'package:classmate/models/class_model.dart';
 import '../../Home/Full_routine/controller/routine_details.controller.dart';
 
 class ClassRequest {
-  // ignore: body_might_complete_normally_nullable
-  static Future<String?> addClass(
+  //************************ Add Class Request ********************** */
+  static Future<String> addClass(
     WidgetRef ref,
     String routineId,
     context,
@@ -24,7 +24,6 @@ class ClassRequest {
     DateTime startTime,
     DateTime endTime,
   ) async {
-    print("from add");
     try {
       final headers = await LocalData.getHerder();
       var url = Uri.parse('${Const.BASE_URl}/class/$routineId/addclass');
@@ -49,12 +48,8 @@ class ClassRequest {
 
       if (response.statusCode == 200) {
         final res = json.decode(response.body);
-        // print(res);
-        // Navigator.pop(context);
         ref.refresh(routineDetailsProvider(routineId));
-        //print response
         print("class created successfully");
-        // print(res);
         Alert.showSnackBar(context, 'class add successfully');
         return res['_id'];
       } else {
@@ -66,27 +61,25 @@ class ClassRequest {
       print("from server");
       print(e);
       Alert.handleError(context, e);
+      return 'Failed to add $e';
     }
+    return 'Failed to add';
   }
+  //************************* Edit Class Request ************************ */
 
   Future<void> editClass(context, WidgetRef ref, String classId, routineId,
-      DateTime startTime, DateTime endTime, ClassModel classModel) async {
+      DateTime startTime, DateTime endTime, ClassModelUpdate classModel) async {
     // Obtain shared preferences.
     final Map<String, String> headers = await LocalData.getHerder();
 
-    print("******************from edit");
-
     try {
       final response = await http.post(
-        Uri.parse('${Const.BASE_URl}/class/eddit/$classId'),
+        Uri.parse('${Const.BASE_URl}/class/edit/$classId'),
         headers: headers,
         body: {
           "name": classModel.className.toString(),
-          "room": classModel.roomNumber.toString(),
           "subjectcode": classModel.subjectCode.toString(),
           "instuctor_name": classModel.instructorName.toString(),
-          "start_time": endMaker(startTime.toIso8601String().toString()),
-          "end_time": endMaker(endTime.toIso8601String().toString()),
         },
       );
 
@@ -138,7 +131,6 @@ class ClassRequest {
         print(res);
       } else {
         Alert.handleError(context, json.decode(response.body));
-        // throw Exception(json.decode(response.body));
       }
     } catch (e) {
       print(e);

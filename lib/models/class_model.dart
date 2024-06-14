@@ -39,3 +39,17 @@ class ClassModel {
     );
   }
 }
+
+class ClassModelUpdate {
+  String className;
+  String instructorName;
+  String subjectCode;
+  String roomNumber;
+
+  ClassModelUpdate({
+    required this.className,
+    required this.instructorName,
+    required this.subjectCode,
+    required this.roomNumber,
+  });
+}
