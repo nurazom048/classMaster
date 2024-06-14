@@ -57,7 +57,7 @@ class SearchRutineScreen extends ConsumerWidget {
                         routineName: data.routines[index].name,
                         routinesController: homeRoutinesNotifier,
                       ),
-                  rutinId: data.routines[index].id);
+                  routineId: data.routines[index].id);
             },
             separatorBuilder: (context, index) => const SizedBox(height: 10),
           );

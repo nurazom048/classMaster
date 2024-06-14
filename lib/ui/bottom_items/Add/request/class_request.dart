@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'package:classmate/ui/bottom_items/Home/Full_routine/utils/popup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
@@ -16,7 +17,13 @@ import '../../Home/Full_routine/controller/routine_details.controller.dart';
 class ClassRequest {
   // ignore: body_might_complete_normally_nullable
   static Future<String?> addClass(
-      WidgetRef ref, String routineId, context, ClassModel classModel) async {
+    WidgetRef ref,
+    String routineId,
+    context,
+    ClassModel classModel,
+    DateTime startTime,
+    DateTime endTime,
+  ) async {
     print("from add");
     try {
       final headers = await LocalData.getHerder();
@@ -29,8 +36,8 @@ class ClassRequest {
           "instuctor_name": classModel.instructorName.toString(),
           "room": classModel.roomNumber.toString(),
           "subjectcode": classModel.subjectCode.toString(),
-          "start": classModel.startingPeriod.toString(),
-          "end": classModel.endingPeriod.toString(),
+          "start_time": endMaker(startTime.toIso8601String().toString()),
+          "end_time": endMaker(endTime.toIso8601String().toString()),
           "weekday": classModel.weekday.toString(),
         },
         headers: headers,
@@ -63,7 +70,7 @@ class ClassRequest {
   }
 
   Future<void> editClass(context, WidgetRef ref, String classId, routineId,
-      ClassModel classModel) async {
+      DateTime startTime, DateTime endTime, ClassModel classModel) async {
     // Obtain shared preferences.
     final Map<String, String> headers = await LocalData.getHerder();
 
@@ -78,8 +85,8 @@ class ClassRequest {
           "room": classModel.roomNumber.toString(),
           "subjectcode": classModel.subjectCode.toString(),
           "instuctor_name": classModel.instructorName.toString(),
-          "start": classModel.startingPeriod.toString(),
-          "end": classModel.endingPeriod.toString(),
+          "start_time": endMaker(startTime.toIso8601String().toString()),
+          "end_time": endMaker(endTime.toIso8601String().toString()),
         },
       );
 

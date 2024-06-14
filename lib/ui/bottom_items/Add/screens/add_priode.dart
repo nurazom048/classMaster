@@ -258,16 +258,3 @@ class _AppPriodePageState extends State<AppPriodePage> {
     }
   }
 }
-
-String endMaker(String test) {
-  List<String> words = test.split(' ');
-  String lastWord = words.last;
-
-  if (lastWord.endsWith('Z')) {
-    return test;
-  } else {
-    String modifiedLastWord = '${lastWord}Z';
-    words[words.length - 1] = modifiedLastWord;
-    return words.join(' ');
-  }
-}

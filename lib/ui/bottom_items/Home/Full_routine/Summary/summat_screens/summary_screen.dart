@@ -31,8 +31,7 @@ class SummaryScreen extends StatefulWidget {
   //
   final DateTime? startTime;
   final DateTime? endTime;
-  final int? start; //priode start
-  final int? end; //priode end
+
   final String? room;
 
   const SummaryScreen({
@@ -44,8 +43,6 @@ class SummaryScreen extends StatefulWidget {
     required this.subjectCode,
     this.startTime,
     this.endTime,
-    this.start,
-    this.end,
     this.room,
   });
 
@@ -113,7 +110,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
       //! provider
 
       print("ClassId : ${widget.classId}");
-      print("priode : ${widget.start}");
+      print("priode : ${widget.startTime}");
 
       //! provider
       final allSummary = ref.watch(summaryControllerProvider(widget.classId));
@@ -140,8 +137,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                     //
                     startTime: widget.startTime,
                     endTime: widget.endTime,
-                    start: widget.start,
-                    end: widget.end,
+
                     room: widget.room,
                   ),
                 ),

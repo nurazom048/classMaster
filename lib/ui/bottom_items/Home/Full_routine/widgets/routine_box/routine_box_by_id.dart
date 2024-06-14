@@ -39,7 +39,7 @@ final initialWeekdayProvider =
 
 class RoutineBoxById extends StatelessWidget {
   final String rutinName;
-  final String rutinId;
+  final String routineId;
   final dynamic onTapMore;
   final EdgeInsetsGeometry? margin;
 
@@ -47,7 +47,7 @@ class RoutineBoxById extends StatelessWidget {
     Key? key,
     required this.rutinName,
     required this.onTapMore,
-    required this.rutinId,
+    required this.routineId,
     this.margin,
   }) : super(key: key);
 
@@ -55,10 +55,10 @@ class RoutineBoxById extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, _) {
       // Get providers
-      final checkStatus = ref.watch(checkStatusControllerProvider(rutinId));
-      final rutinDetails = ref.watch(routineDetailsProvider(rutinId));
+      final checkStatus = ref.watch(checkStatusControllerProvider(routineId));
+      final rutinDetails = ref.watch(routineDetailsProvider(routineId));
       final checkStatusNotifier =
-          ref.watch(checkStatusControllerProvider(rutinId).notifier);
+          ref.watch(checkStatusControllerProvider(routineId).notifier);
 
       //
 
@@ -88,9 +88,10 @@ class RoutineBoxById extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) => ViewMore(
-                              routineId: rutinId,
+                              routineId: routineId,
                               routineName: rutinName,
-                              ownerName: ref.watch(ownerNameProvider(rutinId)),
+                              ownerName:
+                                  ref.watch(ownerNameProvider(routineId)),
                             ),
                           ),
                         ),
@@ -116,7 +117,7 @@ class RoutineBoxById extends StatelessWidget {
                             showPanel: () {
                               RoutineDialog.rutineNotificationsSelect(
                                 context,
-                                rutinId,
+                                routineId,
                               );
                             },
                           );
@@ -134,7 +135,7 @@ class RoutineBoxById extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 10)
                       .copyWith(bottom: 0),
                 ),
-                ClassSliderView(routineId: rutinId),
+                ClassSliderView(routineId: routineId),
               ],
             ),
             // Bottom section
@@ -150,7 +151,7 @@ class RoutineBoxById extends StatelessWidget {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       String? ownerName = data.owner.name;
                       ref
-                          .watch(ownerNameProvider(rutinId).notifier)
+                          .watch(ownerNameProvider(routineId).notifier)
                           .update((state) => ownerName);
                     });
 
@@ -328,8 +329,6 @@ class ClassSliderView extends ConsumerWidget {
         //
         startTime: day.startTime,
         endTime: day.endTime,
-        start: day.start,
-        end: day.end,
         room: day.room,
       ),
     );

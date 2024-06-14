@@ -1,16 +1,12 @@
-// ignore_for_file: use_build_context_synchronously, no_leading_underscores_for_local_identifiers, avoid_print
-
 import 'dart:convert';
+import 'package:classmate/ui/bottom_items/Home/Full_routine/widgets/select_time.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
 import 'package:classmate/models/class_model.dart';
 import 'package:classmate/ui/bottom_items/Add/request/class_request.dart';
-import 'package:classmate/ui/bottom_items/Add/screens/add_priode.dart';
 import 'package:classmate/ui/bottom_items/Add/utils/add_class_validation.dart';
-import 'package:classmate/ui/bottom_items/Add/widgets/select_priode_number.dart';
 import 'package:classmate/widgets/appWidget/app_text.dart';
 import 'package:classmate/widgets/day_select_dropdowen.dart';
 
@@ -20,7 +16,6 @@ import '../../../../constant/constant.dart';
 import '../../../../models/Routine/class/find_class_model.dart';
 import '../../../../widgets/appWidget/TextFromFild.dart';
 import '../../../../widgets/appWidget/buttons/cupertino_buttons.dart';
-import '../../Home/Full_routine/screen/viewMore/class_list.dart';
 import '../widgets/show_weekday_widgets.dart';
 
 class AddClassScreen extends StatefulWidget {
@@ -44,6 +39,13 @@ class AddClassScreen extends StatefulWidget {
 }
 
 class _AddClassScreenState extends State<AddClassScreen> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  bool showStartTime = false;
+  bool showEndTime = false;
+  DateTime? st;
+  DateTime? et;
+
   // Text editing controllers
   final _classNameController = TextEditingController();
   final _instructorController = TextEditingController();
@@ -58,20 +60,8 @@ class _AddClassScreenState extends State<AddClassScreen> {
   late DateTime startTime = DateTime.now();
   late DateTime endTime = DateTime.now().add(const Duration(minutes: 30));
 
-  //.. just for ui
-  late DateTime startTimeDemo = DateTime.now();
-  late DateTime endTimeDemo = DateTime.now();
-
   // Selected day of the week
   int? _selectedDay;
-
-  // Start and end time variables
-  DateTime? st;
-  DateTime? et;
-
-  // Start and end period variables
-  int startPeriod = 1;
-  int endPeriod = 1;
 
   @override
   void initState() {
@@ -83,6 +73,8 @@ class _AddClassScreenState extends State<AddClassScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+
     print(widget.routineId);
     return Consumer(builder: (context, ref, _) {
       return Scaffold(
@@ -108,7 +100,6 @@ class _AddClassScreenState extends State<AddClassScreen> {
                       else
                         const AppText("Add Class").title(),
 
-                      //
                       const SizedBox(height: 20),
 
                       // Class name
@@ -139,8 +130,6 @@ class _AddClassScreenState extends State<AddClassScreen> {
                       ),
                       const SizedBox(height: 20),
 
-                      // //! weekday list when eddit
-
                       if (widget.isUpdate == true && widget.classId != null)
                         ShowWeekdayWidgets(classId: widget.classId!)
                       else if (widget.isEdit == true && widget.classId != null)
@@ -160,46 +149,55 @@ class _AddClassScreenState extends State<AddClassScreen> {
                                   _selectedDay = selectedDay;
                                 },
                               ),
-
-                              //
-
-                              ...List.generate(
-                                1,
-                                (index) => PeriodNumberSelector(
-                                  hint: " Select Start Period",
-                                  subHint: " Select End Period",
-                                  length: ref.read(totalPriodeCountProvider),
-                                  onStartSelected: (number) {
-                                    startPeriod = number;
-                                  },
-                                  onEndSelected: (number) {
-                                    endPeriod = number;
-                                  },
-                                  onTapToAdd: () {
-                                    Get.to(
-                                        AppPriodePage(
-                                          routineId: widget.routineId,
-                                          totalPriode: ref
-                                              .read(totalPriodeCountProvider),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                        horizontal: 5, vertical: 20)
+                                    .copyWith(bottom: 0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    // Header
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        SelectTime(
+                                          width: size.width * 0.40,
+                                          timeText: 'Start Time',
+                                          time: startTime,
+                                          show: showStartTime,
+                                          onTap: () {
+                                            _selectStartTime(
+                                                _scaffoldKey.currentContext ??
+                                                    context);
+                                          },
                                         ),
-                                        transition: Transition.rightToLeft);
-                                  },
+                                        SelectTime(
+                                          width: size.width * 0.40,
+                                          timeText: 'End Time',
+                                          time: endTime,
+                                          show: showEndTime,
+                                          onTap: () => _selectEndTime(
+                                              _scaffoldKey.currentContext ??
+                                                  context),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               ),
-
-                              //
+                              const SizedBox(height: 20),
                               AppTextFromField(
                                 margin:
                                     const EdgeInsets.symmetric(horizontal: 22)
                                         .copyWith(top: 0),
                                 controller: _roomController,
                                 hint: "Classroom Number",
-                                labelText: "EnterClassroom Number in this day",
+                                labelText: "Enter Classroom Number in this day",
                                 validator: (value) =>
                                     AddClassValidator.roomNumber(value),
                               ),
-
-                              //
                             ],
                           ),
                         ),
@@ -211,15 +209,14 @@ class _AddClassScreenState extends State<AddClassScreen> {
                         text: widget.isUpdate == true
                             ? 'Update Class'
                             : widget.isEdit == true
-                                ? "Eddit Class"
+                                ? "Edit Class"
                                 : "Create Class",
                         color: AppColor.nokiaBlue,
                         onPressed: () async {
-                          //   print("object");
                           if (_formKey.currentState!.validate()) {
                             _onTapToButton(ref);
                           } else {
-                            Alert.showSnackBar(context, 'fill the from');
+                            Alert.showSnackBar(context, 'Fill the form');
                           }
                         },
                       ),
@@ -238,53 +235,46 @@ class _AddClassScreenState extends State<AddClassScreen> {
   void _onTapToButton(WidgetRef ref) async {
     if (!mounted) return;
 
-    print("onTap ${widget.isEdit}");
-
     if (widget.isEdit == true || widget.isUpdate == true) {
-      if (!mounted) return;
-
       ClassRequest().editClass(
           context,
           ref,
           widget.classId ?? "",
           widget.routineId,
+          startTime,
+          endTime,
           ClassModel(
             className: _classNameController.text,
             instructorName: _instructorController.text,
             roomNumber: _roomController.text,
             subjectCode: _subCodeController.text,
-            startingPeriod: startPeriod,
-            endingPeriod: endPeriod,
-            weekday: 1,
+            weekday: _selectedDay!,
             startTime: startTime,
-            endTime: startTime,
+            endTime: endTime,
           ));
-      if (!mounted) return;
     } else {
-      if (!mounted) return;
-
       if (_selectedDay == null) {
         Alert.errorAlertDialog(context, 'Select day');
       } else {
         String? newclassID = await ClassRequest.addClass(
-            ref,
-            widget.routineId,
-            context,
-            ClassModel(
-              className: _classNameController.text,
-              instructorName: _instructorController.text,
-              roomNumber: _roomController.text,
-              subjectCode: _subCodeController.text,
-              startingPeriod: startPeriod,
-              endingPeriod: endPeriod,
-              weekday: _selectedDay!,
-              startTime: startTime,
-              endTime: startTime,
-            ));
+          ref,
+          widget.routineId,
+          context,
+          ClassModel(
+            className: _classNameController.text,
+            instructorName: _instructorController.text,
+            roomNumber: _roomController.text,
+            subjectCode: _subCodeController.text,
+            weekday: _selectedDay!,
+            startTime: startTime,
+            endTime: endTime,
+          ),
+          endTime,
+          startTime,
+        );
 
-        //
         if (newclassID == null) {
-          Alert.showSnackBar(context, 'something went wrong');
+          Alert.showSnackBar(context, 'Something went wrong');
         } else {
           if (!mounted) return;
 
@@ -312,26 +302,17 @@ class _AddClassScreenState extends State<AddClassScreen> {
           );
         }
       }
-
-      //
     }
   }
 
-  //
-  // find class
   Future<FindClass?> findClass() async {
     print("classId: ${widget.classId}");
     Uri uri = Uri.parse('${Const.BASE_URl}/class/find/class/${widget.classId}');
     try {
       final response = await http.get(uri);
 
-      //.. response
       if (response.statusCode == 200) {
-        print(response.body);
         FindClass foundClass = FindClass.fromJson(json.decode(response.body));
-        if (!mounted) {}
-
-        //
         setState(() {
           _classNameController.text = foundClass.classes.name;
           _instructorController.text = foundClass.classes.instuctorName;
@@ -346,5 +327,39 @@ class _AddClassScreenState extends State<AddClassScreen> {
     return null;
   }
 
-  //
+  void _selectStartTime(context) {
+    showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(startTime),
+    ).then((value) {
+      if (value != null) {
+        setState(() {
+          showStartTime = true;
+          startTime = DateTime(startTime.year, startTime.month, startTime.day,
+              value.hour, value.minute);
+        });
+      }
+    });
+  }
+
+  void _selectEndTime(context) {
+    showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(endTime),
+    ).then((value) {
+      if (value != null) {
+        DateTime selectedEndTime = DateTime(
+            endTime.year, endTime.month, endTime.day, value.hour, value.minute);
+
+        if (selectedEndTime.isAfter(startTime)) {
+          setState(() {
+            showEndTime = true;
+            endTime = selectedEndTime;
+          });
+        } else {
+          Alert.showSnackBar(context, 'End time must be after start time');
+        }
+      }
+    });
+  }
 }

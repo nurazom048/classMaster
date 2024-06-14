@@ -63,7 +63,7 @@ class ShowWeekdayWidgets extends ConsumerWidget {
                         parent: animation,
                         curve: Curves.easeOut,
                       )),
-                      child: AddWeekdayExpansion(classId: classId),
+                      child: AddWeekdayPopUp(classId: classId),
                     );
                   },
                 ),

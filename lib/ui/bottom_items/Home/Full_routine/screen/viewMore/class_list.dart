@@ -11,16 +11,12 @@ import '../../../../../../models/class_details_model.dart';
 import '../../../../../../widgets/error/error.widget.dart';
 import '../../../../../../widgets/heading_row.dart';
 import '../../../utils/utils.dart';
-import '../../controller/priode_controller.dart';
 import '../../controller/routine_details.controller.dart';
-import '../../../../Add/screens/add_priode.dart';
 import '../../controller/check_status_controller.dart';
 import '../../Summary/summat_screens/summary_screen.dart';
 import '../../utils/long_press.dart';
 import '../../widgets/class_row.dart';
-import '../../widgets/priode_widget.dart';
 
-final totalPriodeCountProvider = StateProvider.autoDispose<int>((ref) => 0);
 final totalClassCountProvider = StateProvider.autoDispose<int>((ref) => 0);
 
 class ClassListPage extends StatelessWidget {
@@ -42,13 +38,9 @@ class ClassListPage extends StatelessWidget {
 
       // Provider
       final routineDetails = ref.watch(routineDetailsProvider(routineId));
-      final allPriode = ref.watch(priodeController(routineId));
-      final totalPriode = ref.watch(totalPriodeCountProvider);
-      final totalClass = ref.watch(totalClassCountProvider);
 
       // Notifiers
       final checkStatus = ref.watch(checkStatusControllerProvider(routineId));
-      final totalPriodeNotifier = ref.read(totalPriodeCountProvider.notifier);
       final totalClassNotifier = ref.read(totalClassCountProvider.notifier);
 
       return Scaffold(
@@ -63,7 +55,6 @@ class ClassListPage extends StatelessWidget {
               //! provider
 
               ref.refresh(routineDetailsProvider(routineId));
-              ref.refresh(priodeController(routineId));
             }
           },
           child: Builder(builder: (context) {
@@ -71,68 +62,11 @@ class ClassListPage extends StatelessWidget {
               shrinkWrap: true,
               padding: const EdgeInsets.symmetric(horizontal: 10),
               children: [
-                //----------------------- "Priode Lists" -------------------------//
-                HeadingRow(
-                  heading: "Priode List",
-                  secondHeading:
-                      "$totalPriode priode${totalPriode > 1 ? "s" : ''}",
-                  margin: EdgeInsets.zero,
-                  buttonText: "Add Priode",
-                  onTap: () => Get.to(
-                    () => AppPriodePage(
-                      routineId: routineId,
-                      routineName: routineName,
-                      isEdit: false,
-                      totalPriode: totalPriode,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 140,
-                  child: allPriode.when(
-                    data: (data) {
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: data.priodes.length,
-                        itemBuilder: (context, index) {
-                          String priodeId = data.priodes[index].id;
-                          int length = data.priodes.length;
-
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            totalPriodeNotifier.update((state) => length);
-                          });
-
-                          return PriodeWidget(
-                            priodeNumber: data.priodes[index].priodeNumber,
-                            startTime: data.priodes[index].startTime,
-                            endTime: data.priodes[index].endTime,
-                            onLongpress: () {
-                              PriodeAlert.logPressOnPriode(
-                                context: scaffoldKey.currentContext!,
-                                priodeId: priodeId,
-                                routineId: routineId,
-                                Priode: data.priodes[index],
-                                ref: ref,
-                              );
-                            },
-                          );
-                        },
-                      );
-                    },
-                    error: (error, stackTrace) {
-                      Alert.handleError(context, error);
-                      return ErrorScreen(error: error.toString());
-                    },
-                    loading: () => Loaders.center(height: 200, width: 100),
-                  ),
-                ),
-
                 //----------------------- "Class List" -------------------------//
                 HeadingRow(
                   heading: "Class List",
-                  secondHeading:
-                      "$totalClass classes${totalClass > 1 ? "s" : ''}",
+                  secondHeading: '',
+                  //"$totalClass classes${totalClass > 1 ? "s" : ''}",
                   margin: const EdgeInsets.only(top: 10),
                   buttonText: "Add Class",
                   onTap: () {
@@ -143,15 +77,15 @@ class ClassListPage extends StatelessWidget {
 
                 routineDetails.when(
                   data: (data) {
-                    final int length = data.uniqClass.length;
+                    final int length = data.allClass.length;
 
                     return ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: length,
                       itemBuilder: (context, index) {
-                        final UniqClass uniqClass = data.uniqClass[index];
-                        final String classsID = uniqClass.id;
+                        final AllClass allClass = data.allClass[index];
+                        final String classsID = allClass.id;
 
                         print(data);
                         if (length == 0) {
@@ -164,8 +98,8 @@ class ClassListPage extends StatelessWidget {
                         return Container(
                           margin: const EdgeInsets.only(bottom: 10),
                           child: ClassRow(
-                            id: uniqClass.id,
-                            className: uniqClass.name,
+                            id: allClass.id,
+                            className: allClass.name,
                             onLongPress: () {
                               PriodeAlert.logPressClass(
                                 context,
@@ -175,11 +109,11 @@ class ClassListPage extends StatelessWidget {
                             },
                             ontap: () => Get.to(
                               () => SummaryScreen(
-                                classId: uniqClass.id,
-                                routineID: uniqClass.rutinId,
-                                className: uniqClass.name,
-                                instructorName: uniqClass.instuctorName,
-                                subjectCode: uniqClass.subjectcode,
+                                classId: allClass.id,
+                                routineID: allClass.id,
+                                className: allClass.name,
+                                instructorName: allClass.instuctorName,
+                                subjectCode: allClass.subjectcode,
                               ),
                             ),
                           ),

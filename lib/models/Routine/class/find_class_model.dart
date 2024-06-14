@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:classmate/ui/bottom_items/Home/Full_routine/utils/popup.dart';
+
 FindClass findClassFromJson(String str) => FindClass.fromJson(json.decode(str));
 
 String findClassToJson(FindClass data) => json.encode(data.toJson());
@@ -51,7 +53,7 @@ class Classs {
         name: json["name"],
         instuctorName: json["instuctor_name"],
         subjectcode: json["subjectcode"],
-        rutinId: json["rutin_id"],
+        rutinId: json["routine_id"],
         v: json["__v"],
       );
 
@@ -60,7 +62,7 @@ class Classs {
         "name": name,
         "instuctor_name": instuctorName,
         "subjectcode": subjectcode,
-        "rutin_id": rutinId,
+        "routine_id": rutinId,
         "__v": v,
       };
 }
@@ -71,9 +73,8 @@ class Weekday {
   String classId;
   String room;
   int num;
-  int start;
-  int end;
-  int v;
+  DateTime startTime;
+  DateTime endTime;
 
   Weekday({
     required this.id,
@@ -81,9 +82,8 @@ class Weekday {
     required this.classId,
     required this.room,
     required this.num,
-    required this.start,
-    required this.end,
-    required this.v,
+    required this.startTime,
+    required this.endTime,
   });
 
   factory Weekday.fromJson(Map<String, dynamic> json) => Weekday(
@@ -92,9 +92,8 @@ class Weekday {
         classId: json["class_id"],
         room: json["room"],
         num: json["num"],
-        start: json["start"],
-        end: json["end"],
-        v: json["__v"],
+        startTime: DateTime.parse(endMaker(json["start_time"])),
+        endTime: DateTime.parse(endMaker(json["end_time"])),
       );
 
   Map<String, dynamic> toJson() => {
@@ -103,8 +102,7 @@ class Weekday {
         "class_id": classId,
         "room": room,
         "num": num,
-        "start": start,
-        "end": end,
-        "__v": v,
+        "start_time": startTime.toIso8601String(),
+        "end_time": endTime.toIso8601String(),
       };
 }

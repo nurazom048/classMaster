@@ -73,7 +73,7 @@ class _SaveRoutinesScreenState extends ConsumerState<SaveRoutinesScreen> {
                               final id = data.savedRoutines[index].id;
                               final name = data.savedRoutines[index].name;
                               return RoutineBoxById(
-                                rutinId: id,
+                                routineId: id,
                                 rutinName: name,
                                 onTapMore: () =>
                                     RoutineDialog.CheckStatusUser_BottomSheet(

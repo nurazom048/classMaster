@@ -1,3 +1,5 @@
+import 'package:classmate/ui/bottom_items/Home/Full_routine/utils/popup.dart';
+
 class ClassNotificationList {
   List<ClassNotification> notificationOnClasses;
 
@@ -50,8 +52,8 @@ class ClassNotification {
       start: json['start'],
       end: json['end'],
       v: json['__v'],
-      startTime: DateTime.parse(json['start_time']),
-      endTime: DateTime.parse(json['end_time']),
+      startTime: DateTime.parse(endMaker(json["start_time"])),
+      endTime: DateTime.parse(endMaker(json["end_time"])),
     );
   }
 }

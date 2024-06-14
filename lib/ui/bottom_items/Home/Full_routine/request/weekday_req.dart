@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:classmate/ui/bottom_items/Home/Full_routine/utils/popup.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
@@ -14,7 +15,7 @@ class WeekdayRequest {
   static Future<WeekdayList> showWeekdayList(String classId) async {
     try {
       final response = await http.get(
-        Uri.parse('${Const.BASE_URl}/class/weakday/show/$classId'),
+        Uri.parse('${Const.BASE_URl}/class/weekday/show/$classId'),
       );
       Message error = Message.fromJson(jsonDecode(response.body));
       WeekdayList weekdayList = WeekdayList.fromJson(jsonDecode(response.body));
@@ -35,11 +36,11 @@ class WeekdayRequest {
     String classId,
     String? room,
     String num,
-    String start,
-    String end,
+    DateTime startTime,
+    DateTime endTime,
   ) async {
     final headers = await LocalData.getHerder();
-    final uri = Uri.parse('${Const.BASE_URl}/class/weakday/add/$classId');
+    final uri = Uri.parse('${Const.BASE_URl}/class/weekday/add/$classId');
 
     try {
       final response = await http.post(
@@ -48,8 +49,8 @@ class WeekdayRequest {
         body: {
           "num": num,
           "room": room,
-          "start": start,
-          "end": end,
+          "start_time": endMaker(startTime.toIso8601String().toString()),
+          "end_time": endMaker(endTime.toIso8601String().toString()),
         },
       );
 

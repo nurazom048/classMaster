@@ -1,8 +1,7 @@
-// ignore_for_file: non_constant_identifier_names
-
 import 'dart:convert';
 
-import '../ui/bottom_items/Collection Fetures/models/account_models.dart';
+import 'package:classmate/ui/bottom_items/Collection%20Fetures/models/account_models.dart';
+import 'package:classmate/ui/bottom_items/Home/Full_routine/utils/popup.dart';
 
 NewClassDetailsModel newClassDetailsModelFromJson(String str) =>
     NewClassDetailsModel.fromJson(json.decode(str));
@@ -12,43 +11,39 @@ String newClassDetailsModelToJson(NewClassDetailsModel data) =>
 
 class NewClassDetailsModel {
   String id;
-  String rutinName;
-  List<Priode> priodes;
-  List<UniqClass> uniqClass;
+  String routineName;
+  List<AllClass> allClass;
   Classes classes;
   AccountModels owner;
 
   NewClassDetailsModel({
     required this.id,
-    required this.rutinName,
-    required this.priodes,
+    required this.routineName,
     required this.classes,
     required this.owner,
-    required this.uniqClass,
+    required this.allClass,
   });
 
   factory NewClassDetailsModel.fromJson(Map<String, dynamic> json) =>
       NewClassDetailsModel(
         id: json["_id"],
-        rutinName: json["rutin_name"],
-        priodes:
-            List<Priode>.from(json["priodes"].map((x) => Priode.fromJson(x))),
+        routineName: json["routine_name"],
         classes: Classes.fromJson(json["Classes"] ?? {}),
         owner: AccountModels.fromJson(json["owner"]),
-        uniqClass: List<UniqClass>.from(
-            json["uniqClass"].map((x) => UniqClass.fromJson(x))),
+        allClass: List<AllClass>.from(
+            json["AllClass"].map((x) => AllClass.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "_id": id,
-        "rutin_name": rutinName,
-        "priodes": List<dynamic>.from(priodes.map((x) => x.toJson())),
+        "routine_name": routineName,
+        "Classes": classes.toJson(),
         "owner": owner.toJson(),
+        "AllClass": List<dynamic>.from(allClass.map((x) => x.toJson())),
       };
 }
 
 class Classes {
-  List<Day> allClass;
   List<Day> sunday;
   List<Day> monday;
   List<Day> tuesday;
@@ -58,7 +53,6 @@ class Classes {
   List<Day> saturday;
 
   Classes({
-    required this.allClass,
     required this.sunday,
     required this.monday,
     required this.tuesday,
@@ -69,8 +63,6 @@ class Classes {
   });
 
   factory Classes.fromJson(Map<String, dynamic> json) => Classes(
-        allClass:
-            List<Day>.from(json["allClass"]?.map((x) => Day.fromJson(x)) ?? []),
         sunday:
             List<Day>.from(json["Sunday"]?.map((x) => Day.fromJson(x)) ?? []),
         monday:
@@ -86,6 +78,16 @@ class Classes {
         saturday:
             List<Day>.from(json["Saturday"]?.map((x) => Day.fromJson(x)) ?? []),
       );
+
+  Map<String, dynamic> toJson() => {
+        "Sunday": List<dynamic>.from(sunday.map((x) => x.toJson())),
+        "Monday": List<dynamic>.from(monday.map((x) => x.toJson())),
+        "Tuesday": List<dynamic>.from(tuesday.map((x) => x.toJson())),
+        "Wednesday": List<dynamic>.from(wednesday.map((x) => x.toJson())),
+        "Thursday": List<dynamic>.from(thursday.map((x) => x.toJson())),
+        "Friday": List<dynamic>.from(friday.map((x) => x.toJson())),
+        "Saturday": List<dynamic>.from(saturday.map((x) => x.toJson())),
+      };
 }
 
 class Day {
@@ -94,8 +96,6 @@ class Day {
   String routineId;
   ClassId classId;
   int num;
-  int start;
-  int end;
   DateTime startTime;
   DateTime endTime;
 
@@ -105,8 +105,6 @@ class Day {
     required this.routineId,
     required this.classId,
     required this.num,
-    required this.start,
-    required this.end,
     required this.startTime,
     required this.endTime,
   });
@@ -117,10 +115,8 @@ class Day {
         routineId: json["routine_id"],
         classId: ClassId.fromJson(json["class_id"]),
         num: json["num"],
-        start: json["start"],
-        end: json["end"],
-        startTime: DateTime.parse(json["start_time"]),
-        endTime: DateTime.parse(json["end_time"]),
+        startTime: DateTime.parse(endMaker(json["start_time"])),
+        endTime: DateTime.parse(endMaker(json["end_time"])),
       );
 
   Map<String, dynamic> toJson() => {
@@ -129,10 +125,8 @@ class Day {
         "routine_id": routineId,
         "class_id": classId.toJson(),
         "num": num,
-        "start": start,
-        "end": end,
-        "start_time": startTime.toIso8601String(),
-        "end_time": endTime.toIso8601String(),
+        "start_time": endMaker(startTime.toIso8601String().toString()),
+        "end_time": endMaker(endTime.toIso8601String().toString()),
       };
 }
 
@@ -142,7 +136,7 @@ class ClassId {
   String instuctorName;
   String? room;
   String subjectcode;
-  String rutinId;
+  String routineId;
 
   ClassId({
     required this.id,
@@ -150,7 +144,7 @@ class ClassId {
     required this.instuctorName,
     this.room,
     required this.subjectcode,
-    required this.rutinId,
+    required this.routineId,
   });
 
   factory ClassId.fromJson(Map<String, dynamic> json) => ClassId(
@@ -159,7 +153,7 @@ class ClassId {
         instuctorName: json["instuctor_name"],
         room: json["room"],
         subjectcode: json["subjectcode"],
-        rutinId: json["rutin_id"],
+        routineId: json["routine_id"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -168,87 +162,46 @@ class ClassId {
         "instuctor_name": instuctorName,
         "room": room,
         "subjectcode": subjectcode,
-        "rutin_id": rutinId,
+        "routine_id": routineId,
       };
 }
 
-class Priode {
-  String id;
-  int priodeNumber;
-  DateTime startTime;
-  DateTime endTime;
-  String rutinId;
-
-  Priode({
-    required this.id,
-    required this.priodeNumber,
-    required this.startTime,
-    required this.endTime,
-    required this.rutinId,
-  });
-
-  factory Priode.fromJson(Map<String, dynamic> json) => Priode(
-        id: json["_id"],
-        priodeNumber: json["priode_number"],
-        startTime: DateTime.parse(json["start_time"]),
-        endTime: DateTime.parse(json["end_time"]),
-        rutinId: json["rutin_id"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "_id": id,
-        "priode_number": priodeNumber,
-        "start_time": startTime.toIso8601String(),
-        "end_time": endTime.toIso8601String(),
-        "rutin_id": rutinId,
-      };
-}
-
-class UniqClass {
+class AllClass {
   String id;
   String name;
   String instuctorName;
   String subjectcode;
   List<String> weekday;
-  String rutinId;
+  String routineId;
   int v;
 
-  UniqClass({
+  AllClass({
     required this.id,
     required this.name,
     required this.instuctorName,
     required this.subjectcode,
     required this.weekday,
-    required this.rutinId,
+    required this.routineId,
     required this.v,
   });
 
-  UniqClass copyWith({
-    String? id,
-    String? name,
-    String? instuctorName,
-    String? subjectcode,
-    List<String>? weekday,
-    String? rutinId,
-    int? v,
-  }) =>
-      UniqClass(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        instuctorName: instuctorName ?? this.instuctorName,
-        subjectcode: subjectcode ?? this.subjectcode,
-        weekday: weekday ?? this.weekday,
-        rutinId: rutinId ?? this.rutinId,
-        v: v ?? this.v,
-      );
-
-  factory UniqClass.fromJson(Map<String, dynamic> json) => UniqClass(
+  factory AllClass.fromJson(Map<String, dynamic> json) => AllClass(
         id: json["_id"],
         name: json["name"],
         instuctorName: json["instuctor_name"],
         subjectcode: json["subjectcode"],
         weekday: List<String>.from(json["weekday"].map((x) => x)),
-        rutinId: json["rutin_id"],
+        routineId: json["routine_id"],
         v: json["__v"],
       );
+
+  Map<String, dynamic> toJson() => {
+        "_id": id,
+        "name": name,
+        "instuctor_name": instuctorName,
+        "subjectcode": subjectcode,
+        "weekday": List<dynamic>.from(weekday.map((x) => x)),
+        "routine_id": routineId,
+        "__v": v,
+      };
 }

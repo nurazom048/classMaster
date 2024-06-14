@@ -188,7 +188,7 @@ Widget homeMobileView(
                     itemCount: data.homeRoutines.length,
                     itemBuilder: (context, index) {
                       return RoutineBoxById(
-                        rutinId: data.homeRoutines[index].rutineId.id,
+                        routineId: data.homeRoutines[index].rutineId.id,
                         rutinName: data.homeRoutines[index].rutineId.name,
                         onTapMore: () =>
                             RoutineDialog.CheckStatusUser_BottomSheet(

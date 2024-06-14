@@ -1,3 +1,5 @@
+import 'package:classmate/ui/bottom_items/Home/Full_routine/utils/popup.dart';
+
 class AllPriodeList {
   final String message;
   final List<AllPriode> priodes;
@@ -36,8 +38,8 @@ class AllPriode {
     return AllPriode(
       id: json['_id'],
       priodeNumber: json['priode_number'],
-      startTime: DateTime.parse(json['start_time']),
-      endTime: DateTime.parse(json['end_time']),
+      startTime: DateTime.parse(endMaker(json["start_time"])),
+      endTime: DateTime.parse(endMaker(json["end_time"])),
       rutinId: json['rutin_id'],
       v: json['__v'],
     );

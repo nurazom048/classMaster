@@ -81,3 +81,16 @@ void accountActions(
     }
   }
 }
+
+// end maker "z"
+String endMaker(String test) {
+  test = test.trim();
+
+  // Check if the string ends with 'Z'
+  if (test.endsWith('Z')) {
+    return test;
+  } else {
+    // Append 'Z' to the string if it does not end with 'Z'
+    return '${test}Z';
+  }
+}

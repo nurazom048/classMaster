@@ -6,11 +6,11 @@ abstract class Const {
   //static String BASE_URl = "http://localhost:3000";
 
   //adb
-  //static String BASE_URl = "http://10.0.2.2:3000";
+  static String BASE_URl = "http://10.0.2.2:3000";
   //home wifi
   // static String BASE_URl = "http://192.168.31.229:3000";
   // render sojobe7394@telvetto.com. 13 jan 2024
-  static String BASE_URl = "https://classmaster-tu2c.onrender.com";
+  //static String BASE_URl = "https://classmaster-tu2c.onrender.com";
   //static String BASE_URl = "https://noticeapp-ifsc.onrender.com";
 
   // static String BASE_URl = "http://192.168.0.125:3000";

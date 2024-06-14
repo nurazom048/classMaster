@@ -36,12 +36,13 @@ class WeekDayControllerClass extends StateNotifier<AsyncValue<WeekdayList>> {
     }
   }
 
-  // add weekday
-
-  addWeekday(
-      context, WidgetRef ref, String num, String room, start, end) async {
+//******************************************************************************** */
+//-------------------------- Add Weekday ------------------------------------------//
+//******************************************************************************** */
+  addWeekday(context, WidgetRef ref, String num, String room,
+      DateTime startTime, DateTime endTime) async {
     Either<Message, Message> res =
-        await WeekdayRequest.addWeekday(classId, room, num, start, end);
+        await WeekdayRequest.addWeekday(classId, room, num, startTime, endTime);
 
     res.fold((error) {
       return Alert.errorAlertDialog(context, error.message);
@@ -52,7 +53,9 @@ class WeekDayControllerClass extends StateNotifier<AsyncValue<WeekdayList>> {
     });
   }
 
-  //
+//******************************************************************************** */
+//-------------------------- Delete Weekday ------------------------------------------//
+//******************************************************************************** */
   deleteWeekday(context, String id, String classId) async {
     Either<Message, WeekdayList> res =
         await WeekdayRequest.deleteWeekday(id, classId);

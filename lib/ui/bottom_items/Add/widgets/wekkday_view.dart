@@ -1,13 +1,12 @@
 // ignore_for_file: avoid_print
 
+import 'package:classmate/ui/bottom_items/Home/Full_routine/widgets/select_time.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:classmate/models/Routine/class/find_class_model.dart';
-import 'package:classmate/ui/bottom_items/Add/widgets/select_priode_number.dart';
 import 'package:classmate/widgets/appWidget/app_text.dart';
 import '../../../../constant/app_color.dart';
 import '../../../../widgets/appWidget/dotted_divider.dart';
-import '../../Home/Full_routine/screen/viewMore/class_list.dart';
 
 class WeekdayView extends ConsumerWidget {
   final Weekday weekday;
@@ -33,8 +32,9 @@ class WeekdayView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final Size size = MediaQuery.of(context).size;
+
     //total priode
-    final totalPriode = ref.watch(totalPriodeCountProvider);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
@@ -53,19 +53,36 @@ class WeekdayView extends ConsumerWidget {
         children: [
           const DotedDivider(),
           const SizedBox(height: 20),
-          PeriodNumberSelector(
-            initialStartNumber: weekday.start,
-            initialEndNumber: weekday.end,
-            viewOnly: true,
-            hint: "Select Start Period",
-            subHint: "Select End Period",
-            length: totalPriode,
-            onStartSelected: (number) {
-              print(number);
-            },
-            onEndSelected: (number) {
-              print(number);
-            },
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              // Header
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SelectTime(
+                    width: size.width * 0.40,
+                    timeText: 'Start Time',
+                    time: weekday.startTime,
+                    show: true,
+                    onTap: () {},
+                    // _selectStartTime(
+                    //     _scaffoldKey.currentContext ?? context);
+                  ),
+                  SelectTime(
+                      width: size.width * 0.40,
+                      timeText: 'End Time',
+                      time: weekday.startTime,
+                      show: true,
+                      onTap: () {}
+
+                      //  => _selectEndTime(
+                      //     _scaffoldKey.currentContext ?? context),
+                      ),
+                ],
+              ),
+            ],
           ),
           const SizedBox(height: 20),
           Padding(
