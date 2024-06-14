@@ -130,7 +130,7 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                     ///
 
                     const SizedBox(height: 5),
-
+// update notification
                     Consumer(builder: (context, ref, _) {
                       final classNotification =
                           ref.watch(classNotificationProvider);

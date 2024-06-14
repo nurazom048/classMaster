@@ -24,14 +24,12 @@ class AddClassScreen extends StatefulWidget {
   final String routineId;
   final String? routineName;
   final String? classId;
-  final bool? isEdit;
   final bool? isUpdate;
 
   const AddClassScreen({
     super.key,
     required this.routineId,
     this.classId,
-    this.isEdit = false,
     this.isUpdate = false,
     this.routineName,
   });
@@ -46,10 +44,10 @@ class _AddClassScreenState extends State<AddClassScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   // Text editing controllers
-  final TextEditingController classNameController = TextEditingController();
-  final TextEditingController instructorController = TextEditingController();
-  final TextEditingController roomController = TextEditingController();
-  final TextEditingController subCodeController = TextEditingController();
+  final _classNameController = TextEditingController();
+  final _instructorController = TextEditingController();
+  final _roomController = TextEditingController();
+  final _subCodeController = TextEditingController();
   // Selected day of the week
   int? _selectedDay;
   bool showStartTime = false;
@@ -88,7 +86,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                       HeaderTitle(widget.routineName ?? '', context),
                       const SizedBox(height: 40),
 
-                      if (widget.isEdit == true) ...[
+                      if (widget.isUpdate == true) ...[
                         const AppText("Edit Mode").title(),
                         Text("Update information",
                             style: TS.heading(fontSize: 24))
@@ -99,7 +97,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
 
                       // Class name
                       AppTextFromField(
-                        controller: classNameController,
+                        controller: _classNameController,
                         hint: "Class name",
                         labelText: "Enter class name",
                         validator: (value) =>
@@ -108,7 +106,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
 
                       // Instructor name
                       AppTextFromField(
-                        controller: instructorController,
+                        controller: _instructorController,
                         hint: "Instructor Name",
                         labelText: "Enter Instructor Name",
                         validator: (value) =>
@@ -117,7 +115,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
 
                       // Subject code
                       AppTextFromField(
-                        controller: subCodeController,
+                        controller: _subCodeController,
                         keyboardType: TextInputType.number,
                         hint: "Subject Code",
                         labelText: "Enter Subject Code",
@@ -126,8 +124,6 @@ class _AddClassScreenState extends State<AddClassScreen> {
                       const SizedBox(height: 20),
 
                       if (widget.isUpdate == true && widget.classId != null)
-                        ShowWeekdayWidgets(classId: widget.classId!)
-                      else if (widget.isEdit == true && widget.classId != null)
                         ShowWeekdayWidgets(classId: widget.classId!)
                       else
                         Container(
@@ -187,7 +183,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                                 margin:
                                     const EdgeInsets.symmetric(horizontal: 22)
                                         .copyWith(top: 0),
-                                controller: roomController,
+                                controller: _roomController,
                                 hint: "Classroom Number",
                                 labelText: "Enter Classroom Number in this day",
                                 validator: (value) =>
@@ -203,9 +199,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 25),
                         text: widget.isUpdate == true
                             ? 'Update Class'
-                            : widget.isEdit == true
-                                ? "Edit Class"
-                                : "Create Class",
+                            : "Create Class",
                         color: AppColor.nokiaBlue,
                         onPressed: () async {
                           if (formKey.currentState!.validate()) {
@@ -230,7 +224,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
   void _onTapToButton(WidgetRef ref) async {
     if (!mounted) return;
 
-    if (widget.isEdit == true || widget.isUpdate == true) {
+    if (widget.isUpdate == true) {
       ClassRequest().editClass(
           context,
           ref,
@@ -239,10 +233,10 @@ class _AddClassScreenState extends State<AddClassScreen> {
           startTime,
           endTime,
           ClassModel(
-            className: classNameController.text,
-            instructorName: instructorController.text,
-            roomNumber: roomController.text,
-            subjectCode: subCodeController.text,
+            className: _classNameController.text,
+            instructorName: _instructorController.text,
+            roomNumber: _roomController.text,
+            subjectCode: _subCodeController.text,
             weekday: _selectedDay!,
             startTime: startTime,
             endTime: endTime,
@@ -256,10 +250,10 @@ class _AddClassScreenState extends State<AddClassScreen> {
           widget.routineId,
           context,
           ClassModel(
-            className: classNameController.text,
-            instructorName: instructorController.text,
-            roomNumber: roomController.text,
-            subjectCode: subCodeController.text,
+            className: _classNameController.text,
+            instructorName: _instructorController.text,
+            roomNumber: _roomController.text,
+            subjectCode: _subCodeController.text,
             weekday: _selectedDay!,
             startTime: startTime,
             endTime: endTime,
@@ -309,9 +303,9 @@ class _AddClassScreenState extends State<AddClassScreen> {
       if (response.statusCode == 200) {
         FindClass foundClass = FindClass.fromJson(json.decode(response.body));
         setState(() {
-          classNameController.text = foundClass.classes.name;
-          instructorController.text = foundClass.classes.instuctorName;
-          subCodeController.text = foundClass.classes.subjectcode;
+          _classNameController.text = foundClass.classes.name;
+          _instructorController.text = foundClass.classes.instuctorName;
+          _subCodeController.text = foundClass.classes.subjectcode;
         });
       } else {
         throw Exception('Failed to load data');

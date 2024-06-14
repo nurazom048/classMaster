@@ -12,12 +12,13 @@ import 'models.dart';
 final notificationProvider =
     Provider<NotificationClass>((ref) => NotificationClass());
 
-final classNotificationProvider = FutureProvider<ClassNotificationList?>((ref) {
+final classNotificationProvider =
+    FutureProvider<AllClassForNotification?>((ref) {
   return ref.read(notificationProvider).routineNotification();
 });
 
 class NotificationClass {
-  Future<ClassNotificationList?> routineNotification() async {
+  Future<AllClassForNotification?> routineNotification() async {
     // ignore: avoid_print
     print('call fore notification');
 
@@ -34,7 +35,7 @@ class NotificationClass {
 
       if (!isOnline && isHaveCash) {
         var getdata = await MyApiCash.getData(key);
-        return ClassNotificationList.fromJson(getdata);
+        return AllClassForNotification.fromJson(getdata);
       }
 
       final response = await http.post(url, headers: headers);
@@ -47,7 +48,7 @@ class NotificationClass {
 
         MyApiCash.saveLocal(key: key, response: response.body);
 
-        return ClassNotificationList.fromJson(res);
+        return AllClassForNotification.fromJson(res);
       } else {
         final res = json.decode(response.body);
         Get.showSnackbar(GetSnackBar(message: '$res'));

@@ -71,7 +71,7 @@ class ClassListPage extends StatelessWidget {
                   buttonText: "Add Class",
                   onTap: () {
                     Get.to(() =>
-                        AddClassScreen(routineId: routineId, isEdit: false));
+                        AddClassScreen(routineId: routineId, isUpdate: false));
                   },
                 ),
 

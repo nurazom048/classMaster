@@ -37,7 +37,7 @@ class PriodeAlert {
                     builder: (context) => AddClassScreen(
                       routineId: rutinId,
                       classId: classId,
-                      isEdit: true,
+                      isUpdate: true,
                     ),
                   ),
                 );

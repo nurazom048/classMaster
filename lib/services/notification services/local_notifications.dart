@@ -4,8 +4,8 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:classmate/services/notification%20services/models.dart';
 
 class LocalNotification {
-  static void scheduleNotifications(ClassNotificationList classList) async {
-    var days = classList.notificationOnClasses;
+  static void scheduleNotifications(AllClassForNotification data) async {
+    var days = data.allClasses;
     // print(" local ${days.length} on now weekday ${DateTime.now().weekday}");
     for (int i = 0; i < days.length; i++) {
       if (days[i].num != null && days[i].startTime != null) {
@@ -18,17 +18,17 @@ class LocalNotification {
 
         //
         print(
-            "create-$i-${days[i].startTime.hour}:${days[i].startTime.minute}:${newStartTime.minute} modifi ${getWeekday(weekday)} Mongo$weekday/today${DateTime.now().weekday} ${days[i].startTime}");
+            "create-$i-${days[i].startTime.hour}:${days[i].startTime.minute}:${newStartTime.minute} modified ${getWeekday(weekday)} Mongo$weekday/today${DateTime.now().weekday} ${days[i].startTime}");
 
         // Create notification
         try {
           final isCreated = await AwesomeNotifications().createNotification(
             content: NotificationContent(
-              id: i + newStartTime.minute + weekday + newStartTime.hour,
+              id: i,
               channelKey: 'basic_channel',
-              title: '${days[i].classInfo.name} class is going to start...😊',
+              title: '${days[i].classId.name} class is going to start...😊',
               body:
-                  'Room: ${days[i].classInfo.name} \nInstructor: ${days[i].classInfo.instructorName} \nPeriod: ${days[i].start}-${days[i].end}',
+                  'Room: ${days[i].classId.name} \nInstructor: ${days[i].classId.instructorName} \nPeriod: ${days[i].startTime}-${days[i].endTime}',
               notificationLayout: NotificationLayout.Default,
               // payload: {'data': 'notification_'},
               wakeUpScreen: true,

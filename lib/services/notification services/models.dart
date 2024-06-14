@@ -1,87 +1,74 @@
-import 'package:classmate/ui/bottom_items/Home/Full_routine/utils/popup.dart';
+class AllClassForNotification {
+  List<ClassForNotification> allClasses;
 
-class ClassNotificationList {
-  List<ClassNotification> notificationOnClasses;
+  AllClassForNotification({required this.allClasses});
 
-  ClassNotificationList({
-    required this.notificationOnClasses,
-  });
+  factory AllClassForNotification.fromJson(Map<String, dynamic> json) {
+    final List<dynamic> classList = json['allClassForNotification'];
+    final List<ClassForNotification> classes = classList
+        .map((classJson) => ClassForNotification.fromJson(classJson))
+        .toList();
 
-  factory ClassNotificationList.fromJson(Map<String, dynamic> json) {
-    return ClassNotificationList(
-      notificationOnClasses: (json['notificationOnClasses'] as List<dynamic>?)
-              ?.map((x) => ClassNotification.fromJson(x))
-              .toList() ??
-          [],
-    );
+    return AllClassForNotification(allClasses: classes);
   }
 }
 
-class ClassNotification {
+class ClassForNotification {
   String id;
   String routineId;
-  ClassInfo classInfo;
+  ClassId classId;
   String room;
   int num;
-  int start;
-  int end;
-  int v;
   DateTime startTime;
   DateTime endTime;
 
-  ClassNotification({
+  ClassForNotification({
     required this.id,
     required this.routineId,
-    required this.classInfo,
+    required this.classId,
     required this.room,
     required this.num,
-    required this.start,
-    required this.end,
-    required this.v,
     required this.startTime,
     required this.endTime,
   });
 
-  factory ClassNotification.fromJson(Map<String, dynamic> json) {
-    return ClassNotification(
+  factory ClassForNotification.fromJson(Map<String, dynamic> json) {
+    return ClassForNotification(
       id: json['_id'],
       routineId: json['routine_id'],
-      classInfo: ClassInfo.fromJson(json['class_id']),
+      classId: ClassId.fromJson(json['class_id']),
       room: json['room'],
       num: json['num'],
-      start: json['start'],
-      end: json['end'],
-      v: json['__v'],
-      startTime: DateTime.parse(endMaker(json["start_time"])),
-      endTime: DateTime.parse(endMaker(json["end_time"])),
+      startTime: DateTime.parse(json['start_time']),
+      endTime: DateTime.parse(json['end_time']),
     );
   }
 }
 
-class ClassInfo {
+class ClassId {
   String id;
   String name;
   String instructorName;
   String subjectCode;
-  String rutinId;
+  String routineId;
   int v;
 
-  ClassInfo({
+  ClassId({
     required this.id,
     required this.name,
     required this.instructorName,
     required this.subjectCode,
-    required this.rutinId,
+    required this.routineId,
     required this.v,
   });
 
-  factory ClassInfo.fromJson(Map<String, dynamic> json) {
-    return ClassInfo(
+  factory ClassId.fromJson(Map<String, dynamic> json) {
+    return ClassId(
       id: json['_id'],
       name: json['name'],
       instructorName: json['instuctor_name'],
       subjectCode: json['subjectcode'],
-      rutinId: json['rutin_id'],
+      routineId: json['routine_id'],
       v: json['__v'],
     );
   }
