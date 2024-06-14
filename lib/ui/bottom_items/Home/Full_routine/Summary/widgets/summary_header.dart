@@ -60,7 +60,7 @@ class SummaryHeader extends StatelessWidget {
                   children: [
                     if (startTime != null && endTime != null)
                       Text(
-                        '${formatTime(startTime)}\n-\n${formatTime(endTime)}',
+                        '${formatTime(startTime)}\n      -\n${formatTime(endTime)}',
                         textScaleFactor: 1.2,
                         style: const TextStyle(
                           fontFamily: 'Inter',

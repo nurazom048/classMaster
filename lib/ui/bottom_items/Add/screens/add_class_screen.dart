@@ -41,34 +41,28 @@ class AddClassScreen extends StatefulWidget {
 }
 
 class _AddClassScreenState extends State<AddClassScreen> {
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  bool showStartTime = false;
-  bool showEndTime = false;
-  DateTime? st;
-  DateTime? et;
+  // Key
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   // Text editing controllers
-  final _classNameController = TextEditingController();
-  final _instructorController = TextEditingController();
-  final _roomController = TextEditingController();
-  final _subCodeController = TextEditingController();
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-
-  // Form key for validation
-  final _formKey = GlobalKey<FormState>();
-
-  // Default start and end times
-  late DateTime startTime = DateTime.now();
-  late DateTime endTime = DateTime.now().add(const Duration(minutes: 30));
-
+  final TextEditingController classNameController = TextEditingController();
+  final TextEditingController instructorController = TextEditingController();
+  final TextEditingController roomController = TextEditingController();
+  final TextEditingController subCodeController = TextEditingController();
   // Selected day of the week
   int? _selectedDay;
+  bool showStartTime = false;
+  bool showEndTime = false;
+
+  // Default start and end times
+  DateTime startTime = DateTime.now();
+  DateTime endTime = DateTime.now().add(const Duration(minutes: 30));
 
   @override
   void initState() {
     super.initState();
-    if (widget.isEdit == true || widget.isUpdate == true) {
+    if (widget.isUpdate == true) {
       findClass();
     }
   }
@@ -77,7 +71,6 @@ class _AddClassScreenState extends State<AddClassScreen> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
-    print(widget.routineId);
     return Consumer(builder: (context, ref, _) {
       return Scaffold(
         key: scaffoldKey,
@@ -88,25 +81,25 @@ class _AddClassScreenState extends State<AddClassScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Form(
-                  key: _formKey,
+                  key: formKey,
                   child: Column(
                     children: <Widget>[
                       // Header
                       HeaderTitle(widget.routineName ?? '', context),
                       const SizedBox(height: 40),
 
-                      if (widget.isEdit == true)
-                        const AppText("Edit Class").title()
-                      else if (widget.isUpdate == true)
-                        const AppText("Update Class").title()
-                      else
+                      if (widget.isEdit == true) ...[
+                        const AppText("Edit Mode").title(),
+                        Text("Update information",
+                            style: TS.heading(fontSize: 24))
+                      ] else
                         const AppText("Add Class").title(),
 
                       const SizedBox(height: 20),
 
                       // Class name
                       AppTextFromField(
-                        controller: _classNameController,
+                        controller: classNameController,
                         hint: "Class name",
                         labelText: "Enter class name",
                         validator: (value) =>
@@ -115,7 +108,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
 
                       // Instructor name
                       AppTextFromField(
-                        controller: _instructorController,
+                        controller: instructorController,
                         hint: "Instructor Name",
                         labelText: "Enter Instructor Name",
                         validator: (value) =>
@@ -124,7 +117,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
 
                       // Subject code
                       AppTextFromField(
-                        controller: _subCodeController,
+                        controller: subCodeController,
                         keyboardType: TextInputType.number,
                         hint: "Subject Code",
                         labelText: "Enter Subject Code",
@@ -171,7 +164,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                                           show: showStartTime,
                                           onTap: () {
                                             _selectStartTime(
-                                                _scaffoldKey.currentContext ??
+                                                scaffoldKey.currentContext ??
                                                     context);
                                           },
                                         ),
@@ -181,7 +174,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                                           time: endTime,
                                           show: showEndTime,
                                           onTap: () => _selectEndTime(
-                                              _scaffoldKey.currentContext ??
+                                              scaffoldKey.currentContext ??
                                                   context),
                                         ),
                                       ],
@@ -194,7 +187,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                                 margin:
                                     const EdgeInsets.symmetric(horizontal: 22)
                                         .copyWith(top: 0),
-                                controller: _roomController,
+                                controller: roomController,
                                 hint: "Classroom Number",
                                 labelText: "Enter Classroom Number in this day",
                                 validator: (value) =>
@@ -215,7 +208,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                                 : "Create Class",
                         color: AppColor.nokiaBlue,
                         onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
+                          if (formKey.currentState!.validate()) {
                             _onTapToButton(ref);
                           } else {
                             Alert.showSnackBar(context, 'Fill the form');
@@ -246,10 +239,10 @@ class _AddClassScreenState extends State<AddClassScreen> {
           startTime,
           endTime,
           ClassModel(
-            className: _classNameController.text,
-            instructorName: _instructorController.text,
-            roomNumber: _roomController.text,
-            subjectCode: _subCodeController.text,
+            className: classNameController.text,
+            instructorName: instructorController.text,
+            roomNumber: roomController.text,
+            subjectCode: subCodeController.text,
             weekday: _selectedDay!,
             startTime: startTime,
             endTime: endTime,
@@ -263,10 +256,10 @@ class _AddClassScreenState extends State<AddClassScreen> {
           widget.routineId,
           context,
           ClassModel(
-            className: _classNameController.text,
-            instructorName: _instructorController.text,
-            roomNumber: _roomController.text,
-            subjectCode: _subCodeController.text,
+            className: classNameController.text,
+            instructorName: instructorController.text,
+            roomNumber: roomController.text,
+            subjectCode: subCodeController.text,
             weekday: _selectedDay!,
             startTime: startTime,
             endTime: endTime,
@@ -316,15 +309,14 @@ class _AddClassScreenState extends State<AddClassScreen> {
       if (response.statusCode == 200) {
         FindClass foundClass = FindClass.fromJson(json.decode(response.body));
         setState(() {
-          _classNameController.text = foundClass.classes.name;
-          _instructorController.text = foundClass.classes.instuctorName;
-          _subCodeController.text = foundClass.classes.subjectcode;
+          classNameController.text = foundClass.classes.name;
+          instructorController.text = foundClass.classes.instuctorName;
+          subCodeController.text = foundClass.classes.subjectcode;
         });
       } else {
         throw Exception('Failed to load data');
       }
     } catch (e) {
-      // ignore: use_build_context_synchronously
       Alert.handleError(context, e.toString());
     }
     return null;

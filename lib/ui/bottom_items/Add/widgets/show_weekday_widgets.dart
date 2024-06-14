@@ -5,7 +5,7 @@ import 'package:classmate/ui/bottom_items/Add/widgets/wekkday_view.dart';
 import '../../../../core/component/Loaders.dart';
 import '../../../../core/dialogs/alert_dialogs.dart';
 import '../../Home/Full_routine/controller/weekday_controller.dart';
-import '../utils/weekday_utils.dart';
+import '../utils/add_weekday_screen.dart';
 import 'add_weekday_button.dart';
 
 class ShowWeekdayWidgets extends ConsumerWidget {
@@ -63,12 +63,12 @@ class ShowWeekdayWidgets extends ConsumerWidget {
                         parent: animation,
                         curve: Curves.easeOut,
                       )),
-                      child: AddWeekdayPopUp(classId: classId),
+                      child: AddWeekdayScreen(classId: classId),
                     );
                   },
                 ),
               );
-            }),
+            })
       ],
     );
   }
