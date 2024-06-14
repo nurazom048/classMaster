@@ -48,7 +48,7 @@ class ShowWeekdayWidgets extends ConsumerWidget {
         ),
         AddWeekdayButton(
             icon: Icons.add,
-            text: 'Add Weekday',
+            text: 'Add More Weekday',
             onPressed: () {
               Navigator.of(context).push(
                 PageRouteBuilder(

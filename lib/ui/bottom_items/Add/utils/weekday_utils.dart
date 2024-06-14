@@ -126,7 +126,7 @@ class _AddWeekdayPopUpState extends State<AddWeekdayPopUp> {
                     AppTextFromField(
                       controller: _roomController,
                       hint: "Classroom Number",
-                      labelText: "Enter Classroom Number in this day",
+                      labelText: "",
                       keyboardType: TextInputType.text,
                       validator: (value) => AddClassValidator.roomNumber(value),
                     ),

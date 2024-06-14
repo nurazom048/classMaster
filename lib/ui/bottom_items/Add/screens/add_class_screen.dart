@@ -189,7 +189,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                                   ],
                                 ),
                               ),
-                              const SizedBox(height: 20),
+                              const SizedBox(height: 16),
                               AppTextFromField(
                                 margin:
                                     const EdgeInsets.symmetric(horizontal: 22)
