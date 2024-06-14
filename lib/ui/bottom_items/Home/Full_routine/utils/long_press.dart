@@ -6,11 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:classmate/constant/app_color.dart';
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
 
-import 'package:classmate/models/priode/all_priode_models.dart';
 import '../../../Add/request/class_request.dart';
 import '../../../Add/screens/add_class_screen.dart';
-import '../../../Add/screens/add_priode.dart';
-import '../controller/priode_controller.dart';
 
 class PriodeAlert {
 //
@@ -69,62 +66,5 @@ class PriodeAlert {
         );
       }),
     );
-  }
-
-  //? **********     long press to priode       *********//
-
-  static Future<dynamic> logPressOnPriode({
-    required priodeId,
-    required String routineId,
-    required AllPriode Priode,
-    required BuildContext context,
-    required WidgetRef ref,
-  }) {
-    return showCupertinoModalPopup(
-        context: context,
-        builder: (d) {
-          //Provider
-          final periodNotifier =
-              ref.watch(priodeController(routineId).notifier);
-          return CupertinoActionSheet(
-            title: const Text(" Do you want to.. ",
-                style: TextStyle(fontSize: 22, color: Colors.black87)),
-            actions: [
-// Eddit
-
-              CupertinoActionSheetAction(
-                child: Text(
-                  "Update",
-                  style: TextStyle(color: AppColor.nokiaBlue),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                          fullscreenDialog: true,
-                          builder: (context) => AppPriodePage(
-                                totalPriode: 1,
-                                routineId: routineId,
-                                priodeId: Priode.id,
-                                isEdit: true,
-                              )));
-                },
-              ),
-// delete
-              CupertinoActionSheetAction(
-                child:
-                    const Text("Remove", style: TextStyle(color: Colors.red)),
-                onPressed: () {
-                  periodNotifier.deletePriode(ref, context, priodeId);
-                },
-              ),
-            ],
-            cancelButton: CupertinoActionSheetAction(
-              child: const Text("cancel"),
-              onPressed: () => Navigator.pop(context),
-            ),
-          );
-        });
   }
 }

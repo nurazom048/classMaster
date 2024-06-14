@@ -10,6 +10,7 @@ class SummaryHeader extends StatelessWidget {
   final String classId;
   final String? className;
   final String? instructorName;
+  final String subjectCode;
   //
   final DateTime? startTime;
   final DateTime? endTime;
@@ -22,6 +23,7 @@ class SummaryHeader extends StatelessWidget {
     required this.classId,
     this.className,
     this.instructorName,
+    required this.subjectCode,
     //
     this.startTime,
     this.endTime,
@@ -83,7 +85,9 @@ class SummaryHeader extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          start == null ? "priode" : '$start/$end',
+                          start == null
+                              ? "code - $subjectCode"
+                              : '$instructorName',
                           overflow: TextOverflow.ellipsis,
                           style: TS.opensensBlue(color: Colors.black),
                         ),

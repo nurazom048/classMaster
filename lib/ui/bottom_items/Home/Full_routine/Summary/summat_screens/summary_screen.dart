@@ -26,7 +26,7 @@ class SummaryScreen extends StatefulWidget {
   final String routineID;
   //Header
   final String? className;
-  final String? subjectCode;
+  final String subjectCode;
   final String? instructorName;
   //
   final DateTime? startTime;
@@ -133,11 +133,9 @@ class _SummaryScreenState extends State<SummaryScreen> {
                     classId: widget.classId,
                     className: widget.className,
                     instructorName: widget.instructorName,
-
-                    //
                     startTime: widget.startTime,
                     endTime: widget.endTime,
-
+                    subjectCode: widget.subjectCode,
                     room: widget.room,
                   ),
                 ),

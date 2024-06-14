@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print, unused_local_variable, use_build_context_synchronously, unused_result
 
+import 'package:classmate/ui/bottom_items/Home/Full_routine/utils/long_press.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
@@ -14,7 +15,6 @@ import '../../../utils/utils.dart';
 import '../../controller/routine_details.controller.dart';
 import '../../controller/check_status_controller.dart';
 import '../../Summary/summat_screens/summary_screen.dart';
-import '../../utils/long_press.dart';
 import '../../widgets/class_row.dart';
 
 final totalClassCountProvider = StateProvider.autoDispose<int>((ref) => 0);
@@ -110,7 +110,7 @@ class ClassListPage extends StatelessWidget {
                             ontap: () => Get.to(
                               () => SummaryScreen(
                                 classId: allClass.id,
-                                routineID: allClass.id,
+                                routineID: allClass.routineId,
                                 className: allClass.name,
                                 instructorName: allClass.instuctorName,
                                 subjectCode: allClass.subjectcode,

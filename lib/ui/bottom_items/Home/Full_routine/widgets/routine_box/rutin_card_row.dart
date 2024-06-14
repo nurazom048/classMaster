@@ -82,6 +82,7 @@ class TitleAndSubtitle extends StatelessWidget {
     super.key,
     required this.title,
     required this.subtitle,
+    this.subtitle3,
     this.crossAxisAlignment,
     this.sbtitleSize,
     this.textScaleFactor,
@@ -89,6 +90,7 @@ class TitleAndSubtitle extends StatelessWidget {
 
   final String title;
   final String subtitle;
+  final String? subtitle3;
   final CrossAxisAlignment? crossAxisAlignment;
   final double? sbtitleSize, textScaleFactor;
 
@@ -122,6 +124,20 @@ class TitleAndSubtitle extends StatelessWidget {
             color: const Color(0xFF0168FF),
           ),
         ),
+
+        if (subtitle3 != null)
+          Text(
+            textScaleFactor == null ? '\n$subtitle3' : subtitle,
+            textScaleFactor: textScaleFactor ?? 1.2,
+            maxLines: 2,
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.w500,
+              fontSize: sbtitleSize ?? 12,
+              height: 1.3,
+              color: const Color(0xFF0168FF),
+            ),
+          ),
       ],
     );
   }
