@@ -9,8 +9,10 @@ import '../auth_controller/auth_controller.dart';
 import '../utils/change_pw_validator.dart';
 
 class ChangePasswordPage extends ConsumerWidget {
-  const ChangePasswordPage({Key? key}) : super(key: key);
-
+  ChangePasswordPage({Key? key}) : super(key: key);
+  // key
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Providers
@@ -24,11 +26,9 @@ class ChangePasswordPage extends ConsumerWidget {
     final TextEditingController confirmPasswordController =
         TextEditingController();
 
-    // Form key
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
     return SafeArea(
       child: Scaffold(
+        key: scaffoldKey,
         // appBar: AppBar(
         //   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         //   bottom: PreferredSize(

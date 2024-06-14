@@ -47,12 +47,12 @@ class SettingsPage extends StatelessWidget {
                     title: 'Change password',
                     icon: Icons.lock,
                     onTap: () => Get.to(
-                      () => const ChangePasswordPage(),
+                      () => ChangePasswordPage(),
                       transition: Transition.rightToLeft,
                     ),
                   ),
                   SeatingOption(
-                    title: 'Theem',
+                    title: 'Theme',
                     subtitle: "theme",
                     icon: Icons.nightlight_sharp,
                     // onTap: () => SettingsUtils.showThemeSelectionSheet(

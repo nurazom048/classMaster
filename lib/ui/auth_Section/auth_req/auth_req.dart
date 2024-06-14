@@ -131,7 +131,7 @@ class AuthReq {
     String newPassword,
   ) async {
     final Map<String, String> headers = await LocalData.getHerder();
-    var url = Uri.parse('${Const.BASE_URl}/account/eddit/changepassword');
+    var url = Uri.parse('${Const.BASE_URl}/account/edit/change_password');
 
     try {
       final response = await http.post(
