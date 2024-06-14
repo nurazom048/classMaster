@@ -73,7 +73,7 @@ class WeekdayView extends ConsumerWidget {
                   SelectTime(
                       width: size.width * 0.40,
                       timeText: 'End Time',
-                      time: weekday.startTime,
+                      time: weekday.endTime,
                       show: true,
                       onTap: () {}
 

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:classmate/ui/bottom_items/Home/Full_routine/widgets/select_time.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -322,6 +324,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
         throw Exception('Failed to load data');
       }
     } catch (e) {
+      // ignore: use_build_context_synchronously
       Alert.handleError(context, e.toString());
     }
     return null;
