@@ -22,7 +22,8 @@ class AwesomeNotificationSetup {
           playSound: true,
           importance: NotificationImportance.Max,
           locked: true,
-          //channelShowBadge: true,
+          //channelShowBadge: true,'
+          onlyAlertOnce: true,
         ),
       ],
       debug: true,

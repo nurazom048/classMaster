@@ -14,6 +14,7 @@ import '../../controller/check_status_controller.dart';
 import '../Summary Controller/summary_controller.dart';
 import '../widgets/add_summary_button.dart';
 import '../widgets/summary_header.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 // ignore: constant_identifier_names
 const String DEMO_PROFILE_IMAGE =
@@ -50,6 +51,8 @@ late ScrollController pageScrollController;
 
 class _SummaryScreenState extends State<SummaryScreen> {
   @override
+  late IO.Socket socket; // Declare the socket variable at the class level
+
   void dispose() {
     scrollController.dispose(); // Dispose the ScrollController
     pageScrollController.dispose(); // Dispose the ScrollController
@@ -61,6 +64,33 @@ class _SummaryScreenState extends State<SummaryScreen> {
     super.initState();
     scrollController = ScrollController();
     pageScrollController = ScrollController();
+    _initializeSocket();
+  }
+
+  void _initializeSocket() {
+    // Initialize socket connection
+    socket = IO.io(
+      'http://10.0.2.2:4000', // Replace with your server URL
+      IO.OptionBuilder()
+          .setTransports(['websocket']) // Specify transport
+          .enableAutoConnect() // Enable auto-connect
+          .build(),
+    );
+
+    // Listen for connection
+    socket.onConnect((_) {
+      print('Connected to the server');
+    });
+
+    // Listen for messages
+    socket.on('chat message', (data) {
+      print('Message received: $data');
+    });
+
+    // Listen for disconnection
+    socket.onDisconnect((_) {
+      print('Disconnected from the server');
+    });
   }
 
   @override
