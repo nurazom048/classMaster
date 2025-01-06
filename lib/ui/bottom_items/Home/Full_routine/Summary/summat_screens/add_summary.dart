@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:classmate/ui/bottom_items/Home/Full_routine/Summary/socket%20services/socketCon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:classmate/core/component/loaders.dart';
@@ -12,13 +13,17 @@ import '../../../../../../constant/app_color.dart';
 import '../../../../../../helper/helper_fun.dart';
 import '../../../../../../widgets/appWidget/app_text.dart';
 import '../../../../../../widgets/appWidget/buttons/cupertino_buttons.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 final loaderProvider = StateProvider<bool>((ref) => false);
 
 class AddSummaryScreen extends ConsumerStatefulWidget {
-  const AddSummaryScreen({Key? key, required this.classId}) : super(key: key);
+  const AddSummaryScreen(
+      {Key? key, required this.classId, required this.routineId})
+      : super(key: key);
 
   final String classId;
+  final String routineId;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -29,10 +34,21 @@ final _summaryController = TextEditingController();
 final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
 Map<String, dynamic>? newMessage;
-
 List<String> imageLinks = [];
 
 class _AddSummaryScreenState extends ConsumerState<AddSummaryScreen> {
+  @override
+  void initState() {
+    super.initState();
+    SocketService.initializeSocket().then((_) {
+      setState(() {
+        print('Socket initialized.');
+      });
+    }).catchError((error) {
+      print('Error initializing socket: $error');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -132,7 +148,8 @@ class _AddSummaryScreenState extends ConsumerState<AddSummaryScreen> {
                             onPressed: () async {
                               if (formKey.currentState?.validate() ?? false) {
                                 checkedFileType(imageLinks);
-                                checkedMaxUploadLimit(imageLinks, addSummary);
+                                checkedMaxUploadLimit(
+                                    imageLinks, ref, addSummary);
                               } else {
                                 Alert.showSnackBar(context, 'Enter the form');
                               }
@@ -170,18 +187,22 @@ class _AddSummaryScreenState extends ConsumerState<AddSummaryScreen> {
     }
   }
 
-  //
   void checkedMaxUploadLimit(
     List<String> imageLinks,
+    ref,
     SummaryController addSummary,
   ) {
     if (imageLinks.length > 9) {
-      return Alert.errorAlertDialog(
+      Alert.errorAlertDialog(
         context,
         'Maximum file limit allowed is 10',
       );
-    } else {
+      return;
+    }
+
+    try {
       addSummary.addSummary(
+        routineId: widget.routineId,
         ref,
         context,
         classId: widget.classId,
@@ -189,6 +210,8 @@ class _AddSummaryScreenState extends ConsumerState<AddSummaryScreen> {
         imageLinks: imageLinks,
         checkedType: true,
       );
+    } catch (e) {
+      print('Error sending message: $e');
     }
   }
 }

@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print, library_prefixes
 
+import 'package:classmate/ui/bottom_items/Home/Full_routine/Summary/socket%20services/socketCon.dart';
 import 'package:classmate/ui/bottom_items/Home/Full_routine/Summary/widgets/chats.dribles%20.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -51,8 +52,6 @@ late ScrollController pageScrollController;
 
 class _SummaryScreenState extends State<SummaryScreen> {
   @override
-  late IO.Socket socket; // Declare the socket variable at the class level
-
   void dispose() {
     scrollController.dispose(); // Dispose the ScrollController
     pageScrollController.dispose(); // Dispose the ScrollController
@@ -64,35 +63,29 @@ class _SummaryScreenState extends State<SummaryScreen> {
     super.initState();
     scrollController = ScrollController();
     pageScrollController = ScrollController();
-    _initializeSocket();
-  }
 
-  void _initializeSocket() {
-    // Initialize socket connection
-    socket = IO.io(
-      'http://10.0.2.2:4000', // Replace with your server URL
-      IO.OptionBuilder()
-          .setTransports(['websocket']) // Specify transport
-          .enableAutoConnect() // Enable auto-connect
-          .build(),
-    );
-
-    // Listen for connection
-    socket.onConnect((_) {
-      print('Connected to the server');
-    });
-
-    // Listen for messages
-    socket.on('chat message', (data) {
-      print('Message received: $data');
-    });
-
-    // Listen for disconnection
-    socket.onDisconnect((_) {
-      print('Disconnected from the server');
+    // Initialize the SocketService and join the room after initialization
+    SocketService.initializeSocket().then((_) {
+      // Join the room after socket initialization
+      SocketService.joinRoom(widget.routineID);
+    }).catchError((error) {
+      print('Error initializing socket: $error');
     });
   }
 
+  void _listenToChatMessages() {
+    SocketService.socket.on('chat message', (data) {
+      setState(() {});
+      print('Message received: ${data['message']} in room: ${data['room']}');
+    });
+  }
+
+  // Message received base on room id
+  // SocketService.socket.on('chat message', (data) {
+  //   final message = data['message'];
+  //   final room = data['room'];
+  //   print('Message received in room $room: $message');
+  // });
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -158,6 +151,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                     }
 
                     scrollController.addListener(() {
+                      _listenToChatMessages();
                       if (scrollController.position.pixels ==
                           scrollController.position.maxScrollExtent) {
                         if (data.currentPage != data.totalPages) {
@@ -199,15 +193,28 @@ class _SummaryScreenState extends State<SummaryScreen> {
         ),
         floatingActionButton: isCaptain || isOwner
             ? AddSummaryButton(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                      fullscreenDialog: true,
-                      builder: (context) =>
-                          AddSummaryScreen(classId: widget.classId),
-                    ),
-                  );
+                onTap: () async {
+                  // Initialize the SocketService and join the room after initialization
+                  SocketService.initializeSocket().then((_) {
+                    // Join the room after socket initialization
+                    SocketService.sendMessage(room: widget.routineID);
+                  }).catchError((error) {
+                    print('Error initializing socket: $error');
+                  });
+                  // Message received base on room id
+                  // SocketService.socket.on('chat message', (data) {
+                  //   final message = data['message'];
+                  //   final room = data['room'];
+                  //   print('Message received in room $room: $message');
+                  // });
+                  // Navigator.push(
+                  //   context,
+                  //   CupertinoPageRoute(
+                  //     fullscreenDialog: true,
+                  //     builder: (context) => AddSummaryScreen(
+                  //         classId: widget.classId, routineId: widget.routineID),
+                  //   ),
+                  // );
                 },
               )
             : const SizedBox(),

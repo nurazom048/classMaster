@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print, prefer_interpolation_to_compose_strings
 
 import 'dart:convert';
+import 'package:classmate/ui/bottom_items/Home/Full_routine/Summary/socket%20services/socketCon.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart';
@@ -20,6 +21,7 @@ class SummaryRequest {
 // add summary///
   static Future<Either<Message, Message>> addSummaryRequest({
     required String classId,
+    required String routineId,
     required String message,
     required List<String> imageLinks,
     required bool checkedType,
@@ -44,6 +46,9 @@ class SummaryRequest {
             await http.MultipartFile.fromPath('imageLinks', imageLinks[i]);
         request.files.add(file);
       }
+// socket to this room
+
+      SocketService.sendMessage(room: routineId);
 
       // Send the request and wait for the response
 

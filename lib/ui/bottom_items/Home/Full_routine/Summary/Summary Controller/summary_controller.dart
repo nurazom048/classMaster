@@ -84,6 +84,7 @@ class SummaryController extends StateNotifier<AsyncValue<AllSummaryModel>> {
     WidgetRef ref,
     context, {
     required String classId,
+    required String routineId,
     required String message,
     required List<String> imageLinks,
     required bool checkedType,
@@ -92,6 +93,7 @@ class SummaryController extends StateNotifier<AsyncValue<AllSummaryModel>> {
     //
     Either<Message, Message> res = await SummaryRequest.addSummaryRequest(
       classId: classId,
+      routineId: routineId,
       message: message,
       imageLinks: imageLinks,
       checkedType: checkedType,
@@ -103,6 +105,7 @@ class SummaryController extends StateNotifier<AsyncValue<AllSummaryModel>> {
       return Alert.errorAlertDialog(context, error.message);
     }, (r) {
       ref.refresh(summaryControllerProvider(classId));
+
       Navigator.of(context).pop();
       return Alert.showSnackBar(context, r.message);
     });
