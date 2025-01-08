@@ -14,8 +14,7 @@ final routine_Req_provider = Provider<Routine_Req>((ref) => Routine_Req());
 class Routine_Req {
   //
 
-  Future<NewClassDetailsModel?> routine_class_and_priode(
-      String routineId) async {
+  Future<AllClassesResponse?> routine_class_and_priode(String routineId) async {
     print('*****************************************');
 
     print(routineId);
@@ -30,7 +29,7 @@ class Routine_Req {
       // If offline and have cache
       if (!isOnline && isHaveCache) {
         final getData = await MyApiCash.getData(key);
-        return NewClassDetailsModel.fromJson(getData);
+        return AllClassesResponse.fromJson(getData);
       } else {
         final response = await http.get(url);
         final res = json.decode(response.body);
@@ -39,7 +38,7 @@ class Routine_Req {
           // Save to cache manager
           MyApiCash.saveLocal(key: key, response: response.body);
 
-          final classDetails = NewClassDetailsModel.fromJson(res);
+          final classDetails = AllClassesResponse.fromJson(res);
           return classDetails;
         } else {
           throw "error ${res['message']}";
@@ -48,7 +47,7 @@ class Routine_Req {
     } catch (error) {
       if (isHaveCache) {
         final getData = await MyApiCash.getData(key);
-        return NewClassDetailsModel.fromJson(getData);
+        return AllClassesResponse.fromJson(getData);
       }
       rethrow;
     }

@@ -59,17 +59,17 @@ class Routine {
 
   factory Routine.fromJson(Map<String, dynamic> json) {
     return Routine(
-      id: json['_id'],
-      name: json['name'],
-      owner: Owner.fromJson(json['ownerid']),
+      id: json['id'],
+      name: json['routineName'],
+      owner: Owner.fromJson(json['routineOwner']),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      '_id': id,
-      'name': name,
-      'ownerid': owner.toJson(),
+      'id': id,
+      'routineName': name,
+      'routineOwner': owner.toJson(),
     };
   }
 
@@ -101,7 +101,7 @@ class Owner {
 
   factory Owner.fromJson(Map<String, dynamic> json) {
     return Owner(
-      id: json['_id'],
+      id: json['id'],
       username: json['username'],
       name: json['name'],
       image: json['image'],
@@ -110,7 +110,7 @@ class Owner {
 
   Map<String, dynamic> toJson() {
     return {
-      '_id': id,
+      'id': id,
       'username': username,
       'name': name,
       'image': image,

@@ -109,32 +109,32 @@ class HomeRoutine {
 
 class RutineId {
   String id;
-  String name;
+  String routineName;
 
   RutineId({
     required this.id,
-    required this.name,
+    required this.routineName,
   });
 
   factory RutineId.fromJson(Map<String, dynamic> json) {
     return RutineId(
-      id: json["_id"],
-      name: json["name"],
+      id: json["id"],
+      routineName: json["routineName"], // Use routineName from JSON
     );
   }
 
   RutineId copyWith({
     String? id,
-    String? name,
+    String? routineName,
   }) {
     return RutineId(
       id: id ?? this.id,
-      name: name ?? this.name,
+      routineName: routineName ?? this.routineName,
     );
   }
 
   Map<String, dynamic> toJson() => {
-        "_id": id,
-        "name": name,
+        "id": id,
+        "routineName": routineName, // Use routineName for serialization
       };
 }

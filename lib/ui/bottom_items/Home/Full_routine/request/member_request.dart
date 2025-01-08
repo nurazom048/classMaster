@@ -94,10 +94,10 @@ class MemberRequest {
     final header = await LocalData.getHerder();
     print("hi i am calling req $routineId  $username");
 
-    final url = Uri.parse('${Const.BASE_URl}/rutin/cap10/add');
+    final url = Uri.parse('${Const.BASE_URl}/routine/captain/add');
 
     final response = await http.post(url,
-        headers: header, body: {"rutinid": routineId, "username": username});
+        headers: header, body: {"routineId": routineId, "username": username});
 
     var res = jsonDecode(response.body)['message'];
 
@@ -119,10 +119,10 @@ class MemberRequest {
     final header = await LocalData.getHerder();
     print("hi i am calling req $routineId  $username");
 
-    final url = Uri.parse('${Const.BASE_URl}/rutin/cap10/remove');
+    final url = Uri.parse('${Const.BASE_URl}/routine/captain/remove');
 
     final response = await http.delete(url,
-        headers: header, body: {"rutinid": routineId, "username": username});
+        headers: header, body: {"routineId": routineId, "username": username});
 
     var res = jsonDecode(response.body)['message'];
 

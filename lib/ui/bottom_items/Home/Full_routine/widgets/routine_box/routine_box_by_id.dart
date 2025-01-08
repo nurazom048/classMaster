@@ -201,13 +201,13 @@ class ClassSliderView extends ConsumerWidget {
 
         rutinDetails.when(
           data: (data) {
-            final List<Day?> sun = data.classes.sunday;
-            final List<Day?> mon = data.classes.monday;
-            final List<Day?> tue = data.classes.tuesday;
-            final List<Day?> wed = data.classes.wednesday;
-            final List<Day?> thu = data.classes.thursday;
-            final List<Day?> fri = data.classes.friday;
-            final List<Day?> sat = data.classes.saturday;
+            final List<Day?> sun = data.weekdayClasses.saturday;
+            final List<Day?> mon = data.weekdayClasses.monday;
+            final List<Day?> tue = data.weekdayClasses.tuesday;
+            final List<Day?> wed = data.weekdayClasses.wednesday;
+            final List<Day?> thu = data.weekdayClasses.thursday;
+            final List<Day?> fri = data.weekdayClasses.friday;
+            final List<Day?> sat = data.weekdayClasses.saturday;
 
             final List<Day?> current = currentDay(
               sun,
@@ -321,11 +321,11 @@ class ClassSliderView extends ConsumerWidget {
   void onTap(Day? day, context) {
     Get.to(
       () => SummaryScreen(
-        classId: day!.classId.id,
-        className: day.classId.name,
-        instructorName: day.classId.instuctorName,
+        classId: day!.id,
+        className: day.name,
+        instructorName: day.instructorName,
         routineID: day.routineId,
-        subjectCode: day.classId.subjectcode,
+        subjectCode: day.subjectCode,
         //
         startTime: day.startTime,
         endTime: day.endTime,

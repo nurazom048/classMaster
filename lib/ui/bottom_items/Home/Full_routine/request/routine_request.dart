@@ -93,7 +93,7 @@ class FullRoutineRequest {
       routineId, condition) async {
     final headers = await LocalData.getHerder();
 
-    final url = Uri.parse('${Const.BASE_URl}/rutin/save_unsave/$routineId');
+    final url = Uri.parse('${Const.BASE_URl}/routine/save_unsave/$routineId');
 
     try {
       final response = await http.post(

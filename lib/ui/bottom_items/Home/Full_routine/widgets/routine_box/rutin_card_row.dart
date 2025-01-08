@@ -50,7 +50,7 @@ class RutineCardInfoRow extends StatelessWidget {
                 const SizedBox(width: 15),
 
                 TitleAndSubtitle(
-                  title: day?.classId.name ?? " Subject Name ",
+                  title: day?.name ?? " Subject Name ",
                   subtitle: day?.room ?? "room",
                 ),
 

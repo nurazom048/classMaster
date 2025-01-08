@@ -7,13 +7,13 @@ import '../../../../../models/class_details_model.dart';
 import '../request/routine_api.dart';
 
 final routineDetailsProvider = StateNotifierProvider.family<
-        RoutineDetailsController, AsyncValue<NewClassDetailsModel>, String>(
+        RoutineDetailsController, AsyncValue<AllClassesResponse>, String>(
     (ref, routineId) =>
         RoutineDetailsController(ref.read(routine_Req_provider), routineId));
 
 //** RoutineDetailsController ****/
 class RoutineDetailsController
-    extends StateNotifier<AsyncValue<NewClassDetailsModel>> {
+    extends StateNotifier<AsyncValue<AllClassesResponse>> {
   final Routine_Req homeApi;
   final String routineId;
 
@@ -23,7 +23,7 @@ class RoutineDetailsController
   }
   getStatus() async {
     try {
-      final NewClassDetailsModel? res =
+      final AllClassesResponse? res =
           await homeApi.routine_class_and_priode(routineId);
 
       if (res == null) {}
