@@ -16,8 +16,9 @@ class AllSummaryModel {
   factory AllSummaryModel.fromJson(Map<String, dynamic> json) {
     return AllSummaryModel(
       message: json['message'],
-      summaries: List<Summary>.from(
-          json['summaries'].map((summary) => Summary.fromJson(summary))),
+      summaries: (json['summaries'] as List<dynamic>)
+          .map((summary) => Summary.fromJson(summary))
+          .toList(),
       currentPage: json['currentPage'],
       totalPages: json['totalPages'],
       totalCount: json['totalCount'],
@@ -43,7 +44,7 @@ class AllSummaryModel {
 
 class Summary {
   String id;
-  OwnerId ownerId;
+  Owner ownerId;
   String text;
   List<String> imageLinks;
   String routineId;
@@ -62,8 +63,8 @@ class Summary {
 
   factory Summary.fromJson(Map<String, dynamic> json) {
     return Summary(
-      id: json['_id'],
-      ownerId: OwnerId.fromJson(json['ownerId']),
+      id: json['id'],
+      ownerId: Owner.fromJson(json['owner']),
       text: json['text'],
       imageLinks: List<String>.from(json['imageLinks']),
       routineId: json['routineId'],
@@ -73,22 +74,22 @@ class Summary {
   }
 }
 
-class OwnerId {
+class Owner {
   String id;
   String username;
   String name;
   String? image;
 
-  OwnerId({
+  Owner({
     required this.id,
     required this.username,
     required this.name,
     this.image,
   });
 
-  factory OwnerId.fromJson(Map<String, dynamic> json) {
-    return OwnerId(
-      id: json['_id'],
+  factory Owner.fromJson(Map<String, dynamic> json) {
+    return Owner(
+      id: json['id'],
       username: json['username'],
       name: json['name'],
       image: json['image'],
