@@ -37,7 +37,8 @@ class ExpanedWeekDay extends StatelessWidget {
           border: Border.all(color: AppColor.nokiaBlue),
           borderRadius: BorderRadius.circular(8)),
       child: ExpansionTile(
-        title: Text(sevendays[weekday?.num ?? 0],
+        //title: Text(sevendays[weekday?.num ?? 0],
+        title: Text('todo',
             style: TextStyle(fontSize: 18, color: AppColor.nokiaBlue)),
         trailing: const Icon(Icons.delete, color: Colors.red),
         children: [

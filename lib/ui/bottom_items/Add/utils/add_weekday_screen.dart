@@ -30,7 +30,7 @@ class _AddWeekdayScreenState extends State<AddWeekdayScreen> {
   bool showEndTime = false;
   DateTime startTime = DateTime.now();
   DateTime endTime = DateTime.now().add(const Duration(minutes: 30));
-  int? selectedDay;
+  String? selectedDay;
 
   @override
   Widget build(BuildContext context) {

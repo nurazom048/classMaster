@@ -1,10 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:classmate/constant/app_color.dart';
 
+// Define the list of full day names and their abbreviations
+final List<String> sevendaysFull = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday"
+];
+
+final List<String> sevendaysAbbr = [
+  "sun",
+  "mon",
+  "tue",
+  "wed",
+  "thu",
+  "fri",
+  "sat"
+];
+
 class DayDropdown extends StatelessWidget {
   final String labelText;
-  final Function(int) onChanged;
-
+  final Function(String) onChanged;
   final dynamic onPressed;
 
   const DayDropdown({
@@ -16,23 +36,12 @@ class DayDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Define the list of days
-    final List<String> sevendays = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday"
-    ];
-
-    // Define the list of dropdown menu items using sevendays list
+    // Define the list of dropdown menu items using sevendaysAbbr list
     final List<DropdownMenuItem<int>> dayItems = List.generate(
-      sevendays.length,
+      sevendaysAbbr.length,
       (index) => DropdownMenuItem(
         value: index,
-        child: Text(sevendays[index], style: const TextStyle(fontSize: 18)),
+        child: Text(sevendaysAbbr[index], style: const TextStyle(fontSize: 18)),
       ),
     );
 
@@ -42,7 +51,7 @@ class DayDropdown extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Select Day ",
+            "Select Day",
             style: TextStyle(
                 fontFamily: 'Open Sans',
                 fontStyle: FontStyle.normal,
@@ -54,7 +63,12 @@ class DayDropdown extends StatelessWidget {
           const SizedBox(height: 10),
           DropdownButtonFormField(
             items: dayItems,
-            onChanged: (value) => onChanged(value ?? 0),
+            onChanged: (value) {
+              if (value != null) {
+                // Use the index to get the abbreviation and pass it back
+                onChanged(sevendaysAbbr[value]);
+              }
+            },
             decoration: InputDecoration(
               hintText: labelText,
               hintStyle: TextStyle(fontSize: 18, color: AppColor.nokiaBlue),

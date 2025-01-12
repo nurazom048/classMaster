@@ -49,7 +49,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
   final _roomController = TextEditingController();
   final _subCodeController = TextEditingController();
   // Selected day of the week
-  int? _selectedDay;
+  String? _selectedDay;
   bool showStartTime = false;
   bool showEndTime = false;
 
@@ -294,7 +294,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
   }
 
   Future<FindClass?> findClass() async {
-    print("classId: ${widget.classId}");
+    print("from find class classId: ${widget.classId}");
     Uri uri = Uri.parse('${Const.BASE_URl}/class/find/class/${widget.classId}');
     try {
       final response = await http.get(uri);

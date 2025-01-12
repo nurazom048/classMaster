@@ -48,12 +48,10 @@ class PriodeAlert {
               child: const Text("Remove class",
                   style: TextStyle(color: Colors.red)),
               onPressed: () {
-                // Navigator.of(context).pop();
-                //
                 Alert.errorAlertDialogCallBack(context,
                     'Do you want to delete this Class? You can\'t undo this action.',
                     onConfirm: () {
-                  ClassRequest.deleteClass(context, ref, classId, rutinId);
+                  ClassRequest.removeClass(context, ref, classId, rutinId);
                   Navigator.of(context).pop();
                 });
               },

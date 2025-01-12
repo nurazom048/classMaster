@@ -42,7 +42,8 @@ class WeekdayView extends ConsumerWidget {
           border: Border.all(color: AppColor.nokiaBlue),
           borderRadius: BorderRadius.circular(8)),
       child: ExpansionTile(
-        title: Text(sevendays[weekday.num],
+        // title: Text(sevendays[weekday].,
+        title: Text('todo',
             style: TextStyle(fontSize: 18, color: AppColor.nokiaBlue)),
         trailing: showDeleteButton == true
             ? InkWell(

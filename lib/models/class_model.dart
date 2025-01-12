@@ -5,7 +5,7 @@ class ClassModel {
   String roomNumber;
   DateTime startTime;
   DateTime endTime;
-  int weekday;
+  String weekday;
 
   ClassModel({
     required this.className,
@@ -26,7 +26,7 @@ class ClassModel {
     num? endingPeriod,
     DateTime? startTime,
     DateTime? endTime,
-    int? weekday,
+    String? weekday,
   }) {
     return ClassModel(
       className: className ?? this.className,

@@ -32,26 +32,24 @@ class ClassRequest {
         url,
         body: {
           "name": classModel.className.toString(),
-          "instuctor_name": classModel.instructorName.toString(),
+          "instructorName": classModel.instructorName.toString(),
           "room": classModel.roomNumber.toString(),
-          "subjectcode": classModel.subjectCode.toString(),
-          "start_time": endMaker(startTime.toIso8601String().toString()),
-          "end_time": endMaker(endTime.toIso8601String().toString()),
+          "subjectCode": classModel.subjectCode.toString(),
+          "startTime": endMaker(startTime.toIso8601String().toString()),
+          "endTime": endMaker(endTime.toIso8601String().toString()),
           "weekday": classModel.weekday.toString(),
         },
         headers: headers,
       );
 
-      print("  RES ..${json.decode(response.body)}");
+      // print("  RES ..${json.decode(response.body)}");
 
-      //
-
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         final res = json.decode(response.body);
         ref.refresh(routineDetailsProvider(routineId));
-        print("class created successfully");
+        print("class created successfully ${res["class"]['id']}");
         Alert.showSnackBar(context, 'class add successfully');
-        return res['_id'];
+        return res["class"]['id'];
       } else {
         var message = json.decode(response.body)["message"];
 
@@ -78,8 +76,8 @@ class ClassRequest {
         headers: headers,
         body: {
           "name": classModel.className.toString(),
-          "subjectcode": classModel.subjectCode.toString(),
-          "instuctor_name": classModel.instructorName.toString(),
+          "subjectCode": classModel.subjectCode.toString(),
+          "instructorName": classModel.instructorName.toString(),
         },
       );
 
@@ -107,12 +105,16 @@ class ClassRequest {
     }
   }
 
-  // delete class
+  //************************* delete Class ************************ */
 
-  static Future<void> deleteClass(
-      context, WidgetRef ref, String classId, String routineId) async {
+  static Future<void> removeClass(
+    context,
+    WidgetRef ref,
+    String classId,
+    String routineId,
+  ) async {
     // Obtain shared preferences.
-    Uri uri = Uri.parse('${Const.BASE_URl}/class/delete/$classId');
+    Uri uri = Uri.parse('${Const.BASE_URl}/class/remove/$classId');
     final Map<String, String> headers = await LocalData.getHerder();
 
     try {
