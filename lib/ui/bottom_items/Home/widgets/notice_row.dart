@@ -20,7 +20,7 @@ class NoticeRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DateTime dateTime = notice.time;
+    DateTime dateTime = notice.createdAt;
 
     return Container(
       height: 50,
@@ -51,7 +51,7 @@ class NoticeRow extends StatelessWidget {
                       width: MediaQuery.of(context).size.width * 0.50,
                       // color: Colors.red,
                       child: Text(
-                        notice.contentName,
+                        notice.title,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         style: TS.opensensBlue(

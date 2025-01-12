@@ -27,18 +27,6 @@ class AccountsResponse {
     totalCount = json['totalCount'];
   }
 
-  Map<String, dynamic> toJson() {
-    // ignore: prefer_collection_literals
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    if (accounts != null) {
-      data['accounts'] = accounts!.map((v) => v.toJson()).toList();
-    }
-    data['currentPage'] = currentPage;
-    data['totalPages'] = totalPages;
-    data['totalCount'] = totalCount;
-    return data;
-  }
-
   AccountsResponse copyWith({
     List<AccountModels>? accounts,
     int? currentPage,

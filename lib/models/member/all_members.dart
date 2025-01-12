@@ -19,14 +19,4 @@ class AllMemberModel {
       });
     }
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['message'] = message;
-    data['count'] = count;
-    if (members != null) {
-      data['members'] = members!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
 }

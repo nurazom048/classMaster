@@ -1,13 +1,8 @@
 import 'dart:convert';
-
 import 'package:classmate/ui/bottom_items/Collection%20Fetures/models/account_models.dart';
-import 'package:classmate/ui/bottom_items/Home/Full_routine/utils/popup.dart';
 
 AllClassesResponse allClassesResponseFromJson(String str) =>
     AllClassesResponse.fromJson(json.decode(str));
-
-String allClassesResponseToJson(AllClassesResponse data) =>
-    json.encode(data.toJson());
 
 class AllClassesResponse {
   final List<AllClass> allClass;
@@ -28,14 +23,6 @@ class AllClassesResponse {
       weekdayClasses: Classes.fromJson(json['weekdayClasses']),
       owner: AccountModels.fromJson(json['owner']),
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'allClass': allClass.map((e) => e.toJson()).toList(),
-      'weekdayClasses': weekdayClasses.toJson(),
-      'owner': owner.toJson(),
-    };
   }
 }
 

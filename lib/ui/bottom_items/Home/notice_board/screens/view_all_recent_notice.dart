@@ -65,12 +65,13 @@ class ViewAllRecentNotice extends ConsumerWidget {
                 itemBuilder: (context, index) {
                   if (index < data.notices.length) {
                     final notice = data.notices[index];
-                    final accountModel = data.notices[index].academyId;
+                    final accountModel = data.notices[index].account;
                     return SimpleNoticeCard(
                       id: notice.id,
-                      dateTime: data.notices[index == 0 ? 0 : index - 1].time,
-                      noticeName: notice.contentName,
-                      previousDateTime: notice.time,
+                      dateTime:
+                          data.notices[index == 0 ? 0 : index - 1].createdAt,
+                      noticeName: notice.title,
+                      previousDateTime: notice.createdAt,
                       isFirst: index == 0,
                       onLongPress: () {
                         print(accountModel.sId!);

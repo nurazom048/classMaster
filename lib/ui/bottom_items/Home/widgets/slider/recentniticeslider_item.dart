@@ -33,16 +33,16 @@ class RecentNoticeSliderItem extends StatelessWidget {
             if (singleCondition == true)
               NoticeRow(
                 notice: notice[index],
-                accountModels: recentNotice.notices[index].academyId,
+                accountModels: recentNotice.notices[index].account,
               )
             else if (condition == true) ...[
               NoticeRow(
                 notice: notice[index],
-                accountModels: recentNotice.notices[index].academyId,
+                accountModels: recentNotice.notices[index].account,
               ),
               NoticeRow(
                 notice: notice[index + 1],
-                accountModels: recentNotice.notices[index + 1].academyId,
+                accountModels: recentNotice.notices[index + 1].account,
               ),
             ] else
               Expanded(

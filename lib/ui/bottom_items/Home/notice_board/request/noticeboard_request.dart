@@ -41,8 +41,6 @@ class NoticeboardRequest {
   Future<CheckStatusModel> chackStatus(String academyID) async {
     final headers = await LocalData.getHerder();
 
-    print("**********call $academyID");
-
     var url = Uri.parse('${Const.BASE_URl}/notice/status/$academyID');
 
     try {
@@ -58,7 +56,7 @@ class NoticeboardRequest {
         print("res  ${jsonDecode(response.body)}");
         return res;
       } else {
-        throw Exception("Somthing went Worng");
+        throw Exception("Soothing went Wrong");
       }
     } catch (e) {
       print(e);

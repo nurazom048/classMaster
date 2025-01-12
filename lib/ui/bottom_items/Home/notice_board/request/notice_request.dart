@@ -96,7 +96,7 @@ class NoticeRequest {
 
     final request = http.MultipartRequest('POST', url);
     request.headers.addAll(headers);
-    request.fields['content_name'] = contentName ?? '';
+    request.fields['title'] = contentName ?? '';
     request.fields['description'] = description ?? '';
     request.fields['mimetypeChecked'] = "true";
 

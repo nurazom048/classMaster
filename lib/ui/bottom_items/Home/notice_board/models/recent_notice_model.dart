@@ -1,9 +1,4 @@
-import 'dart:convert';
-
 import '../../../Collection Fetures/models/account_models.dart';
-
-RecentNotice recentNoticeFromJson(String str) =>
-    RecentNotice.fromJson(json.decode(str));
 
 class RecentNotice {
   String message;
@@ -47,79 +42,44 @@ class RecentNotice {
 
 class Notice {
   String id;
-  String contentName;
+  String title;
   String pdf;
   String? description;
-  AccountModels academyId;
-  DateTime time;
+  AccountModels account;
+  DateTime createdAt;
 
   Notice({
     required this.id,
-    required this.contentName,
+    required this.title,
     required this.pdf,
     this.description,
-    required this.academyId,
-    required this.time,
+    required this.account,
+    required this.createdAt,
   });
 
   Notice copyWith({
     String? id,
-    String? contentName,
+    String? title,
     String? pdf,
     String? description,
-    AccountModels? academyId,
-    DateTime? time,
+    AccountModels? account,
+    DateTime? createdAt,
   }) =>
       Notice(
         id: id ?? this.id,
-        contentName: contentName ?? this.contentName,
+        title: title ?? this.title,
         pdf: pdf ?? this.pdf,
         description: description ?? this.description,
-        academyId: academyId ?? this.academyId,
-        time: time ?? this.time,
+        account: account ?? this.account,
+        createdAt: createdAt ?? this.createdAt,
       );
 
   factory Notice.fromJson(Map<String, dynamic> json) => Notice(
-        id: json["_id"],
-        contentName: json["content_name"],
-        pdf: json["pdf"] == "" ? null : json["pdf"],
-        description: json["description"],
-        academyId: AccountModels.fromJson(json["academyID"]),
-        time: DateTime.parse(json["time"]),
+        id: json["id"],
+        title: json["title"],
+        pdf: json["pdf"],
+        description: json["description"] ?? null, // Null-safe handling
+        account: AccountModels.fromJson(json["Account"]),
+        createdAt: DateTime.parse(json["createdAt"]),
       );
 }
-
-// class AcademyId {
-//   String id;
-//   String username;
-//   String name;
-
-//   AcademyId({
-//     required this.id,
-//     required this.username,
-//     required this.name,
-//   });
-
-//   AcademyId copyWith({
-//     String? id,
-//     String? username,
-//     String? name,
-//   }) =>
-//       AcademyId(
-//         id: id ?? this.id,
-//         username: username ?? this.username,
-//         name: name ?? this.name,
-//       );
-
-//   factory AcademyId.fromJson(Map<String, dynamic> json) => AcademyId(
-//         id: json["_id"],
-//         username: json["username"],
-//         name: json["name"],
-//       );
-
-//   Map<String, dynamic> toJson() => {
-//         "_id": id,
-//         "username": username,
-//         "name": name,
-//       };
-// }

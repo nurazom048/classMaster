@@ -1,4 +1,5 @@
 class AccountModels {
+  String? id;
   String? sId;
   String? username;
   String? name;
@@ -10,6 +11,7 @@ class AccountModels {
   String? coverImage;
 
   AccountModels({
+    this.id,
     this.sId,
     this.username,
     this.name,
@@ -22,6 +24,7 @@ class AccountModels {
 
   AccountModels.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
+    id = json['id'];
     username = json['username'];
     name = json['name'];
     password = json['password'];
@@ -32,18 +35,8 @@ class AccountModels {
     coverImage = json['coverImage'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = sId;
-    data['username'] = username;
-    data['name'] = name;
-    data['password'] = password;
-    data['image'] = image;
-    data['position'] = position;
-    return data;
-  }
-
   AccountModels copyWith({
+    String? id,
     String? sId,
     String? username,
     String? name,
@@ -52,6 +45,7 @@ class AccountModels {
     String? position,
   }) {
     return AccountModels(
+      id: sId ?? this.id,
       sId: sId ?? this.sId,
       username: username ?? this.username,
       name: name ?? this.name,

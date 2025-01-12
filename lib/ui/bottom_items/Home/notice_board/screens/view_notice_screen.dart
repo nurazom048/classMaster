@@ -35,7 +35,7 @@ class NoticeViewScreen extends StatelessWidget {
                 const AppText("View Notice").title(),
                 const SizedBox(height: 20),
                 AppText("Title", color: AppColor.nokiaBlue).heeding(),
-                AppText(notice.contentName).heeding(),
+                AppText(notice.title).heeding(),
                 const SizedBox(height: 20),
                 AppText("Description", color: AppColor.nokiaBlue).heeding(),
                 AppText(notice.description ?? '').heeding(),
@@ -49,11 +49,11 @@ class NoticeViewScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 80),
                 MiniAccountInfo(
-                  accountData: notice.academyId,
+                  accountData: notice.account,
                   hideMore: true,
                   onTap: () => Get.to(() => ProfileSCreen(
-                        academyID: notice.academyId.sId,
-                        username: notice.academyId.username,
+                        academyID: notice.account.id,
+                        username: notice.account.username,
                       )),
                 )
               ],
