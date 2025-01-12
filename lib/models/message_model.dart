@@ -11,6 +11,7 @@ class Message {
   String? ownerName;
   String? email;
   PendingAccount? pendigAccount;
+  String? unverifiedEmail;
 
   Message({
     required this.message,
@@ -23,21 +24,23 @@ class Message {
     this.ownerName,
     this.email,
     this.pendigAccount,
+    this.unverifiedEmail,
   });
 
   factory Message.fromJson(Map<String, dynamic> json) {
     return Message(
-      message: json['message'],
-      save: json['save'],
-      activeStatus:
-          json['activeStatus'] != null ? json['activeStatus'].toString() : null,
-      notificationOff: json['notification_Off'] ?? false,
-      notificationOn: json['notificationOn'] ?? false,
-      routineID: json['routineID'] ?? '',
-      pendigAccount: json['pendigAccount'] == null
-          ? null
-          : PendingAccount.fromJson(json['pendigAccount']),
-    );
+        message: json['message'],
+        save: json['save'],
+        activeStatus: json['activeStatus'] != null
+            ? json['activeStatus'].toString()
+            : null,
+        notificationOff: json['notification_Off'] ?? false,
+        notificationOn: json['notificationOn'] ?? false,
+        routineID: json['routineID'] ?? '',
+        pendigAccount: json['pendigAccount'] == null
+            ? null
+            : PendingAccount.fromJson(json['pendigAccount']),
+        unverifiedEmail: json['email']);
   }
 
   Map<String, dynamic> toJson() => {
@@ -57,7 +60,6 @@ class PendingAccount {
   String password;
   String accountType;
   DateTime sendTime;
-  int v;
 
   PendingAccount({
     required this.id,
@@ -71,7 +73,6 @@ class PendingAccount {
     required this.password,
     required this.accountType,
     required this.sendTime,
-    required this.v,
   });
 
   factory PendingAccount.fromJson(Map<String, dynamic> json) {
@@ -86,7 +87,6 @@ class PendingAccount {
       password: json['password'],
       accountType: json['account_type'],
       sendTime: DateTime.parse(json['sendTime']),
-      v: json['__v'],
     );
   }
 }

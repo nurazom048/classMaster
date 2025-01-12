@@ -59,10 +59,12 @@ class AuthController extends StateNotifier<bool> {
     );
 
     res.fold((l) async {
+      print('left' + l.message);
       state = false;
       return Alert.showSnackBar(context, l.message);
     }, (r) {
       state = false;
+      print('right' + r.message);
 
       Navigator.pushReplacement(
         context,

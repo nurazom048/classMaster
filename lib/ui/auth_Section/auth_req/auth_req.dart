@@ -20,33 +20,29 @@ class AuthReq {
     String? email,
     required String password,
   }) async {
-    // print('Username$username || emailed$email');
-
     var loginUrl = Uri.parse('${Const.BASE_URl}/auth/login');
 
     try {
       final status = await OneSignal.shared.getDeviceState();
-      final String? osUserID = status?.userId;
-      // print(
-      //     ';;;;;;;;;;;;;;;;;;;;;;  one signal token;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
-      // print("osUserID : $osUserID");
+      final String? oneSignalUserId = status?.userId;
+
       final response = await http.post(loginUrl, body: {
         "username": username ?? '',
         "email": email ?? '',
         "password": password,
-        "osUserID": osUserID ?? ''
+        "oneSignalUserId": oneSignalUserId ?? ''
       });
 
       var message = json.decode(response.body)["message"];
       print(json.decode(response.body));
       final accountData = json.decode(response.body);
-      print('*********************');
+
       print(accountData);
 
       //
       if (response.statusCode == 200) {
         await LocalData.setHerder(response);
-        print('kkkkkkkkkkkkkkkkkkkkkkkkkkk');
+
         print(response.headers['authorization']);
 
         // print(accountData);
@@ -67,9 +63,10 @@ class AuthReq {
         return right(message);
       } else if (response.statusCode == 401) {
         final accountData = json.decode(response.body);
+
         return left(Message(
           message: message,
-          email: accountData["account"]["email"] ?? accountData['email'],
+          email: accountData['email'],
         ));
       } else if (response.statusCode == 402) {
         final pendingAccount = json.decode(response.body);
@@ -105,8 +102,7 @@ class AuthReq {
         "username": username,
         "password": password,
         "email": email,
-        "account_type": Multiple.getAccountType(accountType),
-        "EIIN": eiinNumber ?? '',
+        "accountType": Multiple.getAccountType(accountType),
         "contractInfo": contractInfo ?? '',
       });
 
