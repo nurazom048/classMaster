@@ -158,7 +158,7 @@ class AuthReq {
     String? phone,
   }) async {
     final Map<String, String> headers = await LocalData.getHerder();
-    final url = Uri.parse('${Const.BASE_URl}/account/eddit/forgotPassword');
+    final url = Uri.parse('${Const.BASE_URl}/account/edit/forgotPassword');
 
     try {
       final response = await http.post(

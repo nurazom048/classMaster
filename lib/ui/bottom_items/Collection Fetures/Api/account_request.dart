@@ -88,7 +88,7 @@ class AccountReq {
       // Get token from shared preferences
       final headers = await LocalData.getHerder();
       // Create URL
-      final url = Uri.parse('${Const.BASE_URl}/account/eddit');
+      final url = Uri.parse('${Const.BASE_URl}/account/edit');
 
       // Create request
       final request = http.MultipartRequest('POST', url);
