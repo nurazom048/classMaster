@@ -35,7 +35,7 @@ class Message {
             ? json['activeStatus'].toString()
             : null,
         notificationOff: json['notification_Off'] ?? false,
-        notificationOn: json['notificationOn'] ?? false,
+        notificationOn: json['notificationOn'],
         routineID: json['routineID'] ?? '',
         pendigAccount: json['pendigAccount'] == null
             ? null

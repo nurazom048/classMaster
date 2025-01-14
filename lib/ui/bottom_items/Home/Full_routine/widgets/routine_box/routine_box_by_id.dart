@@ -201,7 +201,7 @@ class ClassSliderView extends ConsumerWidget {
 
         rutinDetails.when(
           data: (data) {
-            final List<Day?> sun = data.weekdayClasses.saturday;
+            final List<Day?> sun = data.weekdayClasses.sunday;
             final List<Day?> mon = data.weekdayClasses.monday;
             final List<Day?> tue = data.weekdayClasses.tuesday;
             final List<Day?> wed = data.weekdayClasses.wednesday;

@@ -28,11 +28,11 @@ class AccountModels {
     username = json['username'];
     name = json['name'];
     password = json['password'];
-    image = json['image'];
+    image = json['image'] == "null" ? null : json['image'];
     position = json['position'];
     about = json['about'];
     accountType = json['account_type'];
-    coverImage = json['coverImage'];
+    coverImage = json['coverImage'] == "null" ? null : json['coverImage'];
   }
 
   AccountModels copyWith({

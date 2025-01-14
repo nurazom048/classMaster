@@ -34,23 +34,23 @@ class WeekdayRequest {
   //
   static Future<Either<Message, Message>> addWeekday(
     String classId,
-    String? room,
-    String num,
+    String room,
+    String day,
     DateTime startTime,
     DateTime endTime,
   ) async {
     final headers = await LocalData.getHerder();
-    final uri = Uri.parse('${Const.BASE_URl}/class/weekday/add/$classId');
+    final uri = Uri.parse('${Const.BASE_URl}/class/weekday/$classId');
 
     try {
-      final response = await http.post(
+      final response = await http.put(
         uri,
         headers: headers,
         body: {
-          "num": num,
+          "day": day,
           "room": room,
-          "start_time": endMaker(startTime.toIso8601String().toString()),
-          "end_time": endMaker(endTime.toIso8601String().toString()),
+          "startTime": endMaker(startTime.toIso8601String().toString()),
+          "endTime": endMaker(endTime.toIso8601String().toString()),
         },
       );
 
@@ -74,7 +74,7 @@ class WeekdayRequest {
 
     try {
       final response = await http.delete(
-        Uri.parse('${Const.BASE_URl}/class/weakday/delete/$id/$classID'),
+        Uri.parse('${Const.BASE_URl}/class/weekday/$id'),
         headers: headers,
       );
 

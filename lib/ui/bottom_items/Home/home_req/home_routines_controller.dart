@@ -72,8 +72,7 @@ class HomeRoutinesController extends StateNotifier<AsyncValue<RoutineHome>> {
         //
         if (deletedRoutineID != null) {
           List<HomeRoutine> homeRoutines = state.value!.homeRoutines;
-          homeRoutines.removeWhere(
-              (routine) => routine.rutineId.id == deletedRoutineID);
+          homeRoutines.removeWhere((routine) => routine.id == deletedRoutineID);
           if (!mounted) return;
           state = AsyncValue.data(
               state.value!.copyWith(homeRoutines: homeRoutines));

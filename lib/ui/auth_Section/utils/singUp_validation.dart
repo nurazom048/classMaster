@@ -55,14 +55,14 @@ class SignUpValidation {
     if (value.contains(' ')) {
       return 'Spaces are not allowed';
     }
-    if (!RegExp(r'^[a-z]+$').hasMatch(value)) {
-      return 'special characters is not allow on Username';
+    if (!RegExp(r'^[a-zA-Z0-9]+$').hasMatch(value)) {
+      return 'Special characters are not allowed in the username';
     }
     if (value.length < 4) {
       return 'Username must be at least 4 characters long';
     }
     if (value.length > 40) {
-      return 'Maximum 40 characters or spaces allowed';
+      return 'Maximum 40 characters allowed';
     }
     return null;
   }

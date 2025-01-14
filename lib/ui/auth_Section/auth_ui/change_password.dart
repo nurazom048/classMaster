@@ -8,34 +8,35 @@ import '../../../widgets/heder/heder_title.dart';
 import '../auth_controller/auth_controller.dart';
 import '../utils/change_pw_validator.dart';
 
-class ChangePasswordPage extends ConsumerWidget {
-  ChangePasswordPage({Key? key}) : super(key: key);
+class ChangePasswordPage extends ConsumerStatefulWidget {
+  const ChangePasswordPage({Key? key}) : super(key: key);
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _ChangePasswordPageState createState() => _ChangePasswordPageState();
+}
+
+class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
   // key
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  // Text editing controllers
+  final TextEditingController currentPasswordController =
+      TextEditingController();
+  final TextEditingController newPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     // Providers
     final loading = ref.watch(authController_provider);
     final authController = ref.watch(authController_provider.notifier);
 
-    // Text editing controllers
-    final TextEditingController currentPasswordController =
-        TextEditingController();
-    final TextEditingController newPasswordController = TextEditingController();
-    final TextEditingController confirmPasswordController =
-        TextEditingController();
-
     return SafeArea(
       child: Scaffold(
         key: scaffoldKey,
-        // appBar: AppBar(
-        //   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        //   bottom: PreferredSize(
-        //     preferredSize: MediaQuery.of(context).size / 40,
-        //     child: HeaderTitle("Change Password", context),
-        //   ),
-        // ),
         body: SingleChildScrollView(
           child: Form(
             key: formKey,
@@ -47,7 +48,6 @@ class ChangePasswordPage extends ConsumerWidget {
                 const SizedBox(height: 20),
                 AppTextFromField(
                   controller: currentPasswordController,
-                  // obscureText: true,
                   hint: 'Current Password',
                   validator: (value) =>
                       ChangePwValidator.validateCurrentPassword(value),
@@ -79,7 +79,12 @@ class ChangePasswordPage extends ConsumerWidget {
                   color: AppColor.nokiaBlue,
                   text: "Change Password",
                   onPressed: () async {
+                    // Unfocus the current keyboard to hide it
+                    FocusScope.of(context).unfocus();
+
+                    // Validate the form
                     if (formKey.currentState?.validate() ?? false) {
+                      // Call the password change method
                       authController.changepassword(
                         currentPasswordController.text,
                         confirmPasswordController.text,

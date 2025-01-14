@@ -1,3 +1,5 @@
+import 'package:classmate/ui/bottom_items/Collection%20Fetures/models/account_models.dart';
+
 class RutinQuarry {
   List<Routine> routines;
   int currentPage;
@@ -49,7 +51,7 @@ class RutinQuarry {
 class Routine {
   String id;
   String name;
-  Owner owner;
+  AccountModels owner;
 
   Routine({
     required this.id,
@@ -61,7 +63,7 @@ class Routine {
     return Routine(
       id: json['id'],
       name: json['routineName'],
-      owner: Owner.fromJson(json['routineOwner']),
+      owner: AccountModels.fromJson(json['routineOwner']),
     );
   }
 
@@ -69,65 +71,18 @@ class Routine {
     return {
       'id': id,
       'routineName': name,
-      'routineOwner': owner.toJson(),
     };
   }
 
   Routine copyWith({
     String? id,
     String? name,
-    Owner? owner,
+    AccountModels? owner,
   }) {
     return Routine(
       id: id ?? this.id,
       name: name ?? this.name,
       owner: owner ?? this.owner,
-    );
-  }
-}
-
-class Owner {
-  String id;
-  String username;
-  String name;
-  String? image;
-
-  Owner({
-    required this.id,
-    required this.username,
-    required this.name,
-    this.image,
-  });
-
-  factory Owner.fromJson(Map<String, dynamic> json) {
-    return Owner(
-      id: json['id'],
-      username: json['username'],
-      name: json['name'],
-      image: json['image'],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'username': username,
-      'name': name,
-      'image': image,
-    };
-  }
-
-  Owner copyWith({
-    String? id,
-    String? username,
-    String? name,
-    String? image,
-  }) {
-    return Owner(
-      id: id ?? this.id,
-      username: username ?? this.username,
-      name: name ?? this.name,
-      image: image ?? this.image,
     );
   }
 }

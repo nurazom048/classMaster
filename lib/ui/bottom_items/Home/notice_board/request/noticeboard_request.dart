@@ -92,11 +92,9 @@ class NoticeboardRequest {
 
   //
   //....RutineNotification....//
-  Future<Either<String, Message>> notificationOff(noticeBoardId) async {
+  Future<Either<String, Message>> notificationOff(String routineID) async {
     final headers = await LocalData.getHerder();
-
-    Uri url =
-        Uri.parse('${Const.BASE_URl}/notice/notification/off/$noticeBoardId');
+    Uri url = Uri.parse('${Const.BASE_URl}/notice/notification/off/$routineID');
 
     try {
       final response = await http.post(
@@ -117,11 +115,10 @@ class NoticeboardRequest {
   }
 
   //....RutineNotification....//
-  Future<Either<String, Message>> notificationOn(noticeBoardId) async {
+  Future<Either<String, Message>> notificationOn(String routineID) async {
     final headers = await LocalData.getHerder();
-
-    Uri url =
-        Uri.parse('${Const.BASE_URl}/notice/notification/on/$noticeBoardId');
+    print('RutineNotification $routineID');
+    Uri url = Uri.parse('${Const.BASE_URl}/notice/notification/on/$routineID');
 
     try {
       final response = await http.post(

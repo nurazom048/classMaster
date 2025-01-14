@@ -24,7 +24,7 @@ class RoutineDetailsController
   getStatus() async {
     try {
       final AllClassesResponse? res =
-          await homeApi.routine_class_and_priode(routineId);
+          await homeApi.all_class_in_routine(routineId);
 
       if (res == null) {}
 

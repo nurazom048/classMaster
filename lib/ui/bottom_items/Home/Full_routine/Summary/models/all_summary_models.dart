@@ -44,32 +44,52 @@ class AllSummaryModel {
 
 class Summary {
   String id;
-  Owner ownerId;
   String text;
   List<String> imageLinks;
-  String routineId;
-  String classId;
   DateTime createdAt;
+  String routineId;
+  ClassDetail classDetail;
+  Owner owner;
 
   Summary({
     required this.id,
-    required this.ownerId,
     required this.text,
     required this.imageLinks,
-    required this.routineId,
-    required this.classId,
     required this.createdAt,
+    required this.routineId,
+    required this.classDetail,
+    required this.owner,
   });
 
   factory Summary.fromJson(Map<String, dynamic> json) {
     return Summary(
       id: json['id'],
-      ownerId: Owner.fromJson(json['owner']),
       text: json['text'],
       imageLinks: List<String>.from(json['imageLinks']),
-      routineId: json['routineId'],
-      classId: json['classId'],
       createdAt: DateTime.parse(json['createdAt']),
+      routineId: json['routineId'],
+      classDetail: ClassDetail.fromJson(json['class']),
+      owner: Owner.fromJson(json['owner']),
+    );
+  }
+}
+
+class ClassDetail {
+  String id;
+  String name;
+  String instructorName;
+
+  ClassDetail({
+    required this.id,
+    required this.name,
+    required this.instructorName,
+  });
+
+  factory ClassDetail.fromJson(Map<String, dynamic> json) {
+    return ClassDetail(
+      id: json['id'],
+      name: json['name'],
+      instructorName: json['instructorName'],
     );
   }
 }

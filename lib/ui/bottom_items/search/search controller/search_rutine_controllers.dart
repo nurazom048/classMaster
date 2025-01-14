@@ -1,9 +1,5 @@
-// Create a state notifier provider named SearchRutineController
-// ignore_for_file: avoid_print
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-
 import '../../../../models/Routine/search_rutin.dart';
 import '../search_request/search_requests.dart';
 

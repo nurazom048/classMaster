@@ -67,8 +67,6 @@ class HomeReq {
     final bool isOffline = await Utils.isOnlineMethod();
     final String key = "HomeRoutine_offline_data_$url";
     final bool isHaveCash = await MyApiCash.haveCash(key);
-    // print('kjdffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
-    // print(url);
     // print("isOffline : ${!isOffline} && isHaveCash: $isHaveCash");
 
     try {

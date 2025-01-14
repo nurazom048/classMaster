@@ -4,17 +4,18 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:classmate/services/notification%20services/models.dart';
 
 class LocalNotification {
-  static void scheduleNotifications(AllClassForNotification data) async {
-    var days = data.allClasses;
+  static void scheduleNotifications(ClassNotificationResponse data) async {
+    var days = data.allClassForNotification;
     // print(" local ${days.length} on now weekday ${DateTime.now().weekday}");
     for (int i = 0; i < days.length; i++) {
-      if (days[i].num != null && days[i].startTime != null) {
-        int weekday = days[i].num;
+      if (days[i].day != null && days[i].startTime != null) {
+        int weekday = getWeekdayInt(days[i].day);
 
         // Schedule notification 5 minutes before the start time
         Duration duration = const Duration(minutes: 5);
         DateTime newStartTime = days[i].startTime.subtract(duration);
-        print('current time ${DateTime.now()}');
+        print(
+            'current time ${DateTime.now()} : weekday ${DateTime.now().weekday} ');
 
         //
         print(
@@ -26,9 +27,10 @@ class LocalNotification {
             content: NotificationContent(
               id: i,
               channelKey: 'basic_channel',
-              title: '${days[i].classId.name} class is going to start...😊',
+              title:
+                  '${days[i].classDetails.name} class is going to start...😊',
               body:
-                  'Room: ${days[i].classId.name} \nInstructor: ${days[i].classId.instructorName} \nPeriod: ${days[i].startTime}-${days[i].endTime}',
+                  'Room: ${days[i].classDetails.name} \nInstructor: ${days[i].classDetails.instructorName} \nPeriod: ${days[i].startTime}-${days[i].endTime}',
               notificationLayout: NotificationLayout.Default,
               // payload: {'data': 'notification_'},
               wakeUpScreen: true,
@@ -69,4 +71,16 @@ int getWeekday(int weekday) {
   } else {
     return weekday;
   }
+}
+
+int getWeekdayInt(String shortDay) {
+  const List<String> days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+
+  int dayIndex = days.indexOf(shortDay.toLowerCase());
+
+  if (dayIndex == -1) {
+    throw ArgumentError("Invalid day string: $shortDay");
+  }
+
+  return dayIndex + 1;
 }

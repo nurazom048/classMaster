@@ -72,7 +72,7 @@ class NoticeBoardStatusProvider
       (errorMessage) => Alert.errorAlertDialog(context, errorMessage),
       (response) {
         state = AsyncData(
-          state.value!.copyWith(notificationOn: false),
+          state.value!.copyWith(notificationOn: response.notificationOn),
         );
 
         Alert.showSnackBar(context, response.message);
@@ -88,7 +88,7 @@ class NoticeBoardStatusProvider
       (errorMessage) => Alert.errorAlertDialog(context, errorMessage),
       (response) {
         state = AsyncData(
-          state.value!.copyWith(notificationOn: true),
+          state.value!.copyWith(notificationOn: response.notificationOn),
         );
 
         Alert.showSnackBar(context, response.message);

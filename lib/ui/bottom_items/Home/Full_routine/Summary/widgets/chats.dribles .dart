@@ -57,9 +57,8 @@ class ChatsDribbles extends StatelessWidget {
       children: [
         InkWell(
           onTap: () => Get.to(() => ViewImagesFullScreen(
-                images: summary.ownerId.image != null
-                    ? [summary.ownerId.image!]
-                    : [],
+                images:
+                    summary.owner.image != null ? [summary.owner.image!] : [],
               )),
           child: Padding(
             padding: const EdgeInsets.only(top: 9),
@@ -67,7 +66,7 @@ class ChatsDribbles extends StatelessWidget {
               radius: 23,
               backgroundColor: Colors.black,
               backgroundImage:
-                  NetworkImage(summary.ownerId.image ?? DEMO_PROFILE_IMAGE),
+                  NetworkImage(summary.owner.image ?? DEMO_PROFILE_IMAGE),
             ),
           ),
         ),
@@ -86,7 +85,7 @@ class ChatsDribbles extends StatelessWidget {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.60,
                         child: Text(
-                          summary.ownerId.name,
+                          summary.owner.name,
                           textScaleFactor: 1.4,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -110,8 +109,8 @@ class ChatsDribbles extends StatelessWidget {
                     ],
                   ),
                   IconButton(
-                    onPressed: () =>
-                        showActionSheet(context, summary.id, summary.classId),
+                    onPressed: () => showActionSheet(
+                        context, summary.id, summary.classDetail.id),
                     icon: const Icon(Icons.more_vert),
                   ),
                 ],

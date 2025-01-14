@@ -13,12 +13,12 @@ final notificationProvider =
     Provider<NotificationClass>((ref) => NotificationClass());
 
 final classNotificationProvider =
-    FutureProvider<AllClassForNotification?>((ref) {
-  return ref.read(notificationProvider).routineNotification();
+    FutureProvider<ClassNotificationResponse?>((ref) {
+  return ref.read(notificationProvider).classNotifications();
 });
 
 class NotificationClass {
-  Future<AllClassForNotification?> routineNotification() async {
+  Future<ClassNotificationResponse?> classNotifications() async {
     // ignore: avoid_print
     print('call fore notification');
 
@@ -35,7 +35,7 @@ class NotificationClass {
 
       if (!isOnline && isHaveCash) {
         var getdata = await MyApiCash.getData(key);
-        return AllClassForNotification.fromJson(getdata);
+        return ClassNotificationResponse.fromJson(getdata);
       }
 
       final response = await http.post(url, headers: headers);
@@ -48,7 +48,7 @@ class NotificationClass {
 
         MyApiCash.saveLocal(key: key, response: response.body);
 
-        return AllClassForNotification.fromJson(res);
+        return ClassNotificationResponse.fromJson(res);
       } else {
         final res = json.decode(response.body);
         Get.showSnackbar(GetSnackBar(message: '$res'));

@@ -20,7 +20,7 @@ class SearchRequests {
 //.... Routine Search .....///
   Future<RutinQuarry> searchRoutine(String? valu, {int? page}) async {
     final String pages = page == null ? '' : '&page=$page';
-    var url = Uri.parse('${Const.BASE_URl}/rutin/search?src=$valu$pages');
+    var url = Uri.parse('${Const.BASE_URl}/routine/search?src=$valu$pages');
     final bool isOnline = await Utils.isOnlineMethod();
 
     try {

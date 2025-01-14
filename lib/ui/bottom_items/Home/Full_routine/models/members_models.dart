@@ -79,7 +79,7 @@ class Member {
   String toRawJson() => json.encode(toJson());
 
   factory Member.fromJson(Map<String, dynamic> json) => Member(
-        id: json["_id"],
+        id: json["id"],
         username: json["username"],
         name: json["name"],
         image: json["image"],

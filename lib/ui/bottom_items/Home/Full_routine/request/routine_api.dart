@@ -14,11 +14,8 @@ final routine_Req_provider = Provider<Routine_Req>((ref) => Routine_Req());
 class Routine_Req {
   //
 
-  Future<AllClassesResponse?> routine_class_and_priode(String routineId) async {
-    print('*****************************************');
-
-    print(routineId);
-
+  Future<AllClassesResponse?> all_class_in_routine(String routineId) async {
+//
     final bool isOnline = await Utils.isOnlineMethod();
     final String path = "${Const.BASE_URl}/class/$routineId/all/class";
     final url = Uri.parse(path);

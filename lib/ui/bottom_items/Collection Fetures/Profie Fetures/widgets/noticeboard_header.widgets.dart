@@ -61,6 +61,7 @@ class NoticeBoardHeader extends ConsumerWidget {
   }
 
   noticeBoardSheet(BuildContext context, String academyID) {
+    print('notification $academyID');
     showModalBottomSheet(
         elevation: 0,
         barrierColor: Colors.black26,

@@ -1,75 +1,71 @@
-class AllClassForNotification {
-  List<ClassForNotification> allClasses;
+class ClassNotificationResponse {
+  List<Weekday> allClassForNotification;
 
-  AllClassForNotification({required this.allClasses});
+  ClassNotificationResponse({required this.allClassForNotification});
 
-  factory AllClassForNotification.fromJson(Map<String, dynamic> json) {
-    final List<dynamic> classList = json['allClassForNotification'];
-    final List<ClassForNotification> classes = classList
-        .map((classJson) => ClassForNotification.fromJson(classJson))
-        .toList();
-
-    return AllClassForNotification(allClasses: classes);
-  }
+  factory ClassNotificationResponse.fromJson(Map<String, dynamic> json) =>
+      ClassNotificationResponse(
+        allClassForNotification: List<Weekday>.from(
+            json["allClassForNotification"].map((x) => Weekday.fromJson(x))),
+      );
 }
 
-class ClassForNotification {
+class Weekday {
   String id;
   String routineId;
-  ClassId classId;
+  String classId;
   String room;
-  int num;
+  String day;
   DateTime startTime;
   DateTime endTime;
+  DateTime createdAt;
+  DateTime updatedAt;
+  ClassDetails classDetails;
 
-  ClassForNotification({
+  Weekday({
     required this.id,
     required this.routineId,
     required this.classId,
     required this.room,
-    required this.num,
+    required this.day,
     required this.startTime,
     required this.endTime,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.classDetails,
   });
 
-  factory ClassForNotification.fromJson(Map<String, dynamic> json) {
-    return ClassForNotification(
-      id: json['_id'],
-      routineId: json['routine_id'],
-      classId: ClassId.fromJson(json['class_id']),
-      room: json['room'],
-      num: json['num'],
-      startTime: DateTime.parse(json['start_time']),
-      endTime: DateTime.parse(json['end_time']),
-    );
-  }
+  factory Weekday.fromJson(Map<String, dynamic> json) => Weekday(
+        id: json["id"],
+        routineId: json["routineId"],
+        classId: json["classId"],
+        room: json["room"],
+        day: json["Day"],
+        startTime: DateTime.parse(json["startTime"]),
+        endTime: DateTime.parse(json["endTime"]),
+        createdAt: DateTime.parse(json["createdAt"]),
+        updatedAt: DateTime.parse(json["updatedAt"]),
+        classDetails: ClassDetails.fromJson(json["class"]),
+      );
 }
 
-class ClassId {
+class ClassDetails {
   String id;
   String name;
   String instructorName;
   String subjectCode;
-  String routineId;
-  int v;
 
-  ClassId({
+  ClassDetails({
     required this.id,
     required this.name,
     required this.instructorName,
     required this.subjectCode,
-    required this.routineId,
-    required this.v,
   });
 
-  factory ClassId.fromJson(Map<String, dynamic> json) {
-    return ClassId(
-      id: json['_id'],
-      name: json['name'],
-      instructorName: json['instuctor_name'],
-      subjectCode: json['subjectcode'],
-      routineId: json['routine_id'],
-      v: json['__v'],
-    );
-  }
+  factory ClassDetails.fromJson(Map<String, dynamic> json) => ClassDetails(
+        id: json["id"],
+        name: json["name"],
+        instructorName: json["instructorName"],
+        subjectCode: json["subjectCode"],
+      );
 }

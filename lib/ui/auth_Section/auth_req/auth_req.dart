@@ -52,11 +52,11 @@ class AuthReq {
         await LocalData.saveAuthToken(authToken ?? '');
         await LocalData.saveRefreshToken(refreshToken ?? '');
         //... save token
-        await LocalData.saveAccountType(accountData["account"]["account_type"]);
+        await LocalData.saveAccountType(accountData["account"]["accountType"]);
         await LocalData.saveUsername(accountData["account"]["username"]);
 
         await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: accountData["account"]["email"],
+          email: accountData["account"]["accountData"]["email"],
           password: password,
         );
 

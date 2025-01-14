@@ -65,10 +65,11 @@ class _AddWeekdayScreenState extends State<AddWeekdayScreen> {
                     ),
                   ),
                   DayDropdown(
-                    labelText: "Tap Here",
-                    onPressed: () {},
-                    onChanged: (day) => selectedDay = day,
-                  ),
+                      labelText: "Tap Here",
+                      onPressed: () {},
+                      onChanged: (day) {
+                        selectedDay = day;
+                      }),
                   const SizedBox(height: 5),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

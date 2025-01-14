@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print, library_prefixes
 
 import 'package:classmate/ui/bottom_items/Home/Full_routine/Summary/socket%20services/socketCon.dart';
+import 'package:classmate/ui/bottom_items/Home/Full_routine/Summary/summat_screens/add_summary.dart';
 import 'package:classmate/ui/bottom_items/Home/Full_routine/Summary/widgets/chats.dribles%20.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:classmate/constant/constant.dart';
 import 'package:classmate/core/component/loaders.dart';
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
-import 'package:classmate/ui/bottom_items/Home/Full_routine/Summary/summat_screens/add_summary.dart';
 import 'package:classmate/widgets/error/error.widget.dart';
 import '../../controller/check_status_controller.dart';
 import '../Summary Controller/summary_controller.dart';
@@ -194,27 +194,27 @@ class _SummaryScreenState extends State<SummaryScreen> {
         floatingActionButton: isCaptain || isOwner
             ? AddSummaryButton(
                 onTap: () async {
-                  // Initialize the SocketService and join the room after initialization
-                  SocketService.initializeSocket().then((_) {
-                    // Join the room after socket initialization
-                    SocketService.sendMessage(room: widget.routineID);
-                  }).catchError((error) {
-                    print('Error initializing socket: $error');
-                  });
-                  // Message received base on room id
-                  // SocketService.socket.on('chat message', (data) {
-                  //   final message = data['message'];
-                  //   final room = data['room'];
-                  //   print('Message received in room $room: $message');
+                  // // Initialize the SocketService and join the room after initialization
+                  // SocketService.initializeSocket().then((_) {
+                  //   // Join the room after socket initialization
+                  //   SocketService.sendMessage(room: widget.routineID);
+                  // }).catchError((error) {
+                  //   print('Error initializing socket: $error');
                   // });
-                  // Navigator.push(
-                  //   context,
-                  //   CupertinoPageRoute(
-                  //     fullscreenDialog: true,
-                  //     builder: (context) => AddSummaryScreen(
-                  //         classId: widget.classId, routineId: widget.routineID),
-                  //   ),
-                  // );
+                  //  Message received base on room id
+                  SocketService.socket.on('chat message', (data) {
+                    final message = data['message'];
+                    final room = data['room'];
+                    print('Message received in room $room: $message');
+                  });
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      fullscreenDialog: true,
+                      builder: (context) => AddSummaryScreen(
+                          classId: widget.classId, routineId: widget.routineID),
+                    ),
+                  );
                 },
               )
             : const SizedBox(),
