@@ -103,7 +103,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ///
 
                       AppTextFromField(
-                        autofillHints: const [AutofillHints.email],
+                        autofillHints: byUsername == true
+                            ? const [AutofillHints.username]
+                            : const [AutofillHints.email],
                         controller:
                             byUsername ? usernameController : emailController,
                         hint: byUsername ? 'Username' : "Email",

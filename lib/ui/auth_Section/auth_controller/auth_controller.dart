@@ -107,7 +107,7 @@ class AuthController extends StateNotifier<bool> {
     } else {
       state = true;
       final res = await authReq.login(
-        username: username,
+        username: email != null ? null : username,
         email: email,
         password: password,
       );
