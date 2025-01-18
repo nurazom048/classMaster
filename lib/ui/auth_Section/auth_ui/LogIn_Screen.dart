@@ -220,13 +220,13 @@ class _LoginScreenState extends State<LoginScreen> {
                               onPressed: () {
                                 authLogin.signIn(
                                   context,
-                                  username: "bteb",
+                                  username: "dipjobs",
                                   email: null,
-                                  password: "@Rahala+Nur123",
+                                  password: "@Nurazom123",
                                 );
                               },
                               // ignore: prefer_const_constructors
-                              child: Text('BTEB'),
+                              child: Text('DipJobs'),
                             ),
                             TextButton(
                               onPressed: () {

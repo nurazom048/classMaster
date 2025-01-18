@@ -23,7 +23,7 @@ class FullRoutineRequest {
     final key = "chalkStatus$routineId";
     final bool isHaveCash = await MyApiCash.haveCash(key);
     final headers = await LocalData.getHerder();
-    final url = Uri.parse('${Const.BASE_URl}/rutin/status/$routineId');
+    final url = Uri.parse('${Const.BASE_URl}/routine/status/$routineId');
 
     try {
       // if offline and have cash

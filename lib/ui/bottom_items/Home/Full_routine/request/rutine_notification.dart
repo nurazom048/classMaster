@@ -18,7 +18,7 @@ class RoutineNotification {
     final headers = await LocalData.getHerder();
 
     final url =
-        Uri.parse('${Const.BASE_URl}/rutin/notification/off/$routineID');
+        Uri.parse('${Const.BASE_URl}/routine/notification/off/$routineID');
 
     try {
       final response = await http.post(
@@ -41,7 +41,7 @@ class RoutineNotification {
   //....RoutineNotification....//
   Future<Either<String, Message>> notificationOn(routineID) async {
     final headers = await LocalData.getHerder();
-    Uri url = Uri.parse('${Const.BASE_URl}/rutin/notification/on/$routineID');
+    Uri url = Uri.parse('${Const.BASE_URl}/routine/notification/on/$routineID');
 
     try {
       final response = await http.post(

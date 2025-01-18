@@ -14,7 +14,7 @@ class RoutineAPI {
   }) async {
     // Obtain shared preferences.
     final header = await LocalData.getHerder();
-    final uri = Uri.parse('${Const.BASE_URl}/rutin/create');
+    final uri = Uri.parse('${Const.BASE_URl}/routine/create');
 
     final response = await http.post(
       uri,
@@ -27,13 +27,13 @@ class RoutineAPI {
       Message message = Message.fromJson(res);
 
       //
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         // ignore: avoid_print
         print(res);
         return right(
           Message(
             message: message.message,
-            routineID: res['routine']['_id'],
+            routineID: res['routine']['id'],
             routineName: res['routine']['name'],
             ownerName: res['user']['name'],
           ),

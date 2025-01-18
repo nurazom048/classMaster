@@ -66,7 +66,7 @@ class AuthReq {
 
         return left(Message(
           message: message,
-          email: accountData['email'],
+          email: accountData['email'] ?? accountData["account"]["email"],
         ));
       } else if (response.statusCode == 402) {
         final pendingAccount = json.decode(response.body);

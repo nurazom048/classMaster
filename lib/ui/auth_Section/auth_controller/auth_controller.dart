@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, use_build_context_synchronously, void_checks, avoid_print
+// ignore_for_file: non_constant_identifier_names, use_build_context_synchronously, void_checks, avoid_print, unnecessary_null_comparison
 
 import 'dart:io';
 
@@ -70,7 +70,7 @@ class AuthController extends StateNotifier<bool> {
         context,
         MaterialPageRoute(
           builder: (context) => LoginScreen(
-            emailAddress: email,
+            emailAddress: username != null ? email : null,
             passwordAddress: password,
             usernameAddress: username,
           ),

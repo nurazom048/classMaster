@@ -44,7 +44,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final nameFocusNode = FocusNode();
   final emailFocusNode = FocusNode();
   final usernameFocusNode = FocusNode();
-  final eiinFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
   final confirmPasswordFocusNode = FocusNode();
 
@@ -126,7 +125,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           onFieldSubmitted: (_) {
                             if (selectedAccountType ==
                                 AccountTypeString.academy) {
-                              return eiinFocusNode.requestFocus();
+                              return passwordFocusNode.requestFocus();
                             } else {
                               return passwordFocusNode.requestFocus();
                             }
@@ -181,17 +180,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 //   ),
                                 // ),
                                 const SizedBox(height: 10),
-                                AppTextFromField(
-                                  margin: EdgeInsets.zero,
-                                  focusNode: eiinFocusNode,
-                                  controller: eiinController,
-                                  hint: "EIIN Number",
-                                  validator: (value) =>
-                                      SignUpValidation.validateEinNumber(value),
-                                  onFieldSubmitted: (_) {
-                                    return passwordFocusNode.requestFocus();
-                                  },
-                                ),
 
                                 AppTextFromField(
                                   autofillHints: const [

@@ -28,7 +28,7 @@ class HomeReq {
     final headers = await LocalData.getHerder();
 
     final url = Uri.parse(
-        '${Const.BASE_URl}/rutin/save/routines/' + username + queryPage);
+        '${Const.BASE_URl}/routine/save/routines/' + username + queryPage);
 
     //.. Request send
     try {
@@ -61,8 +61,8 @@ class HomeReq {
     //String? tokenId = status?.pushToken;
     print("osUserID Home : $osUserID");
 
-    final url =
-        Uri.parse('${Const.BASE_URl}/rutin/home' + searchByUserID + queryPage);
+    final url = Uri.parse(
+        '${Const.BASE_URl}/routine/home' + searchByUserID + queryPage);
     final headers = await LocalData.getHerder();
     final bool isOffline = await Utils.isOnlineMethod();
     final String key = "HomeRoutine_offline_data_$url";
@@ -122,7 +122,7 @@ class HomeReq {
   Future<Either<Message, Message>> deleteRutin(rutin_id) async {
     final headers = await LocalData.getHerder();
 
-    var url = Uri.parse("${Const.BASE_URl}/rutin/$rutin_id");
+    var url = Uri.parse("${Const.BASE_URl}/routine/$rutin_id");
 
     try {
       final response = await http.delete(
