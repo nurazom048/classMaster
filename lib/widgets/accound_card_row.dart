@@ -41,10 +41,10 @@ class AccountCardRow extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return InkWell(
-      onTap: accountData.sId != null
+      onTap: accountData.id != null
           ? () => Get.to(
                 ProfileSCreen(
-                  academyID: accountData.sId,
+                  academyID: accountData.id,
                   username: accountData.username,
                 ),
               )

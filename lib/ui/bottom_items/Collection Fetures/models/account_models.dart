@@ -1,6 +1,5 @@
 class AccountModels {
   String? id;
-  String? sId;
   String? username;
   String? name;
   String? password;
@@ -12,7 +11,6 @@ class AccountModels {
 
   AccountModels({
     this.id,
-    this.sId,
     this.username,
     this.name,
     this.password,
@@ -23,7 +21,6 @@ class AccountModels {
   });
 
   AccountModels.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
     id = json['id'];
     username = json['username'];
     name = json['name'];
@@ -46,7 +43,6 @@ class AccountModels {
   }) {
     return AccountModels(
       id: sId ?? this.id,
-      sId: sId ?? this.sId,
       username: username ?? this.username,
       name: name ?? this.name,
       password: password ?? this.password,

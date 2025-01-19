@@ -34,7 +34,6 @@ class ProfileSCreen extends StatelessWidget {
       //!provider
 
       final recentNoticeList = ref.watch(recentNoticeController(academyID));
-
       final accountData = ref.watch(accountDataProvider(username));
       final uploadedRoutines =
           ref.watch(homeRoutineControllerProvider(academyID));
@@ -68,7 +67,7 @@ class ProfileSCreen extends StatelessWidget {
 
                       if (data != null && data.accountType == "academy") ...[
                         NoticeBoardHeader(
-                            academyID: data.sId!, accountdata: data),
+                            academyID: data.id!, accountdata: data),
                         SizedBox(
                           height: 181,
                           child: recentNoticeList.when(

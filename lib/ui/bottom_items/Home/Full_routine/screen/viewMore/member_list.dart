@@ -132,6 +132,7 @@ class _MemberListState extends State<MemberList> {
 
               HeadingRow(
                 margin: EdgeInsets.zero,
+                ButtonViability: true,
                 heading: "All Members",
                 secondHeading:
                     "$memberCount member${memberCount > 1 ? "s" : ''}",
@@ -207,6 +208,7 @@ class JoinRequestPart extends ConsumerWidget {
     return Column(
       children: [
         HeadingRow(
+          ButtonViability: true,
           heading: "Join Requests",
           secondHeading: "$requestCount",
           margin: EdgeInsets.zero,

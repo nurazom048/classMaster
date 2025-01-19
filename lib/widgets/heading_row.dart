@@ -10,6 +10,7 @@ class HeadingRow extends StatelessWidget {
   final dynamic onTap;
   final double? paddingTop;
   final EdgeInsetsGeometry? margin;
+  final bool ButtonViability;
 
   const HeadingRow({
     required this.heading,
@@ -18,6 +19,7 @@ class HeadingRow extends StatelessWidget {
     this.onTap,
     this.buttonText,
     this.margin,
+    this.ButtonViability = false,
     super.key,
   });
 
@@ -57,11 +59,14 @@ class HeadingRow extends StatelessWidget {
             ],
           ),
           if (buttonText != null)
-            CapsuleButton(
-              buttonText ?? '',
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              onTap: onTap,
-            ),
+            ButtonViability == true
+                ? CapsuleButton(
+                    buttonText ?? '',
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
+                    onTap: onTap,
+                  )
+                : const SizedBox()
         ],
       ),
     );

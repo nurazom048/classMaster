@@ -20,7 +20,7 @@ class ViewAllRecentNotice extends ConsumerWidget {
   final scrollController = ScrollController();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final String? academyID = accountData?.sId;
+    final String? academyID = accountData?.id;
     final String title = accountData?.name ?? "Back to Home";
 
     //! View Recent Notices
@@ -74,11 +74,11 @@ class ViewAllRecentNotice extends ConsumerWidget {
                       previousDateTime: notice.createdAt,
                       isFirst: index == 0,
                       onLongPress: () {
-                        print(accountModel.sId!);
+                        print(accountModel.id!);
                         print(academyID);
                         return NoticeboardDilog.logPressNotice(
                           context,
-                          noticeBoardId: accountModel.sId!,
+                          noticeBoardId: accountModel.id!,
                           academyID: academyID,
                           noticeId: notice.id,
                         );

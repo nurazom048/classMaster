@@ -42,7 +42,9 @@ class AccountSearchScreen extends ConsumerWidget {
             itemCount: data.accounts?.length ?? 0,
             itemBuilder: (context, index) {
               if (data.accounts!.isNotEmpty) {
-                return AccountCardRow(accountData: data.accounts![index]);
+                return AccountCardRow(
+                  accountData: data.accounts![index],
+                );
               } else {
                 return const ErrorScreen(error: 'No Account found');
               }

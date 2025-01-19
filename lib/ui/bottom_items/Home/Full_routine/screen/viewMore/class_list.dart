@@ -63,16 +63,28 @@ class ClassListPage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               children: [
                 //----------------------- "Class List" -------------------------//
-                HeadingRow(
-                  heading: "Class List",
-                  secondHeading: '',
-                  //"$totalClass classes${totalClass > 1 ? "s" : ''}",
-                  margin: const EdgeInsets.only(top: 10),
-                  buttonText: "Add Class",
-                  onTap: () {
-                    Get.to(() =>
-                        AddClassScreen(routineId: routineId, isUpdate: false));
+
+                // Add Classs Button can Only see Captain or owner
+                checkStatus.when(
+                  data: (data) {
+                    return HeadingRow(
+                      heading: "Class List",
+                      secondHeading: '',
+                      // "$totalClass classes${totalClass > 1 ? "s" : ''}",
+                      margin: const EdgeInsets.only(top: 10),
+                      buttonText: "Add Class",
+                      ButtonViability: data.isCaptain || data.isOwner,
+                      onTap: () {
+                        Get.to(() => AddClassScreen(
+                            routineId: routineId, isUpdate: false));
+                      },
+                    );
                   },
+                  error: (error, stackTrace) {
+                    Alert.handleError(context, error);
+                    return ErrorScreen(error: error.toString());
+                  },
+                  loading: () => Loaders.center(),
                 ),
 
                 routineDetails.when(
