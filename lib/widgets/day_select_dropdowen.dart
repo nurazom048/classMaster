@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:classmate/constant/app_color.dart';
+
+import '../core/constant/app_color.dart';
 
 // Define the list of full day names and their abbreviations
 final List<String> sevendaysFull = [

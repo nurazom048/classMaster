@@ -10,8 +10,7 @@ import 'package:classmate/core/dialogs/alert_dialogs.dart';
 import 'package:classmate/ui/auth_Section/auth_ui/forgetpassword_screen.dart';
 import 'package:classmate/widgets/appWidget/app_text.dart';
 import 'package:classmate/widgets/heder/heder_title.dart';
-
-import '../../../constant/image_const.dart';
+import '../../../core/constant/image_const.dart';
 
 class EmailVerificationScreen extends ConsumerStatefulWidget {
   final String email;

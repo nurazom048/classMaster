@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, deprecated_member_use
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +9,7 @@ import 'package:classmate/core/dialogs/alert_dialogs.dart';
 import 'package:classmate/ui/auth_Section/auth_ui/signup_screen.dart';
 import 'package:classmate/widgets/appWidget/app_text.dart';
 
-import '../../../constant/app_color.dart';
+import '../../../core/constant/app_color.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/appWidget/buttons/cupertino_buttons.dart';
 import '../../../widgets/heder/heder_title.dart';

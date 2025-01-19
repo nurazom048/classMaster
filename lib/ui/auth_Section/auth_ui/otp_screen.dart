@@ -1,10 +1,12 @@
+// ignore_for_file: use_build_context_synchronously, duplicate_ignore
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
 
-import '../../../constant/app_color.dart';
+import '../../../core/constant/app_color.dart';
 import '../../../widgets/appWidget/buttons/cupertino_buttons.dart';
 import '../../../widgets/heder/heder_title.dart';
 import 'signup_screen.dart';

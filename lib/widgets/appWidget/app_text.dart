@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../constant/app_color.dart';
+import '../../core/constant/app_color.dart';
 
 class AppText {
   final double? fontSize;

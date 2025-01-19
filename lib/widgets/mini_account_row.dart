@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:classmate/widgets/appWidget/app_text.dart';
 
-import '../ui/bottom_items/Collection Fetures/models/account_models.dart';
-import '../ui/bottom_items/Home/utils/utils.dart';
+import '../ui/bottom_nevbar_items/Collection Fetures/models/account_models.dart';
+import '../ui/bottom_nevbar_items/Home/utils/utils.dart';
 
 class MiniAccountInfo extends StatelessWidget {
   final AccountModels? accountData;

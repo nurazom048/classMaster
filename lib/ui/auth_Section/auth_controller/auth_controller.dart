@@ -3,7 +3,7 @@
 import 'dart:io';
 
 import 'package:api_cache_manager/utils/cache_manager.dart';
-import 'package:classmate/local%20data/local_data.dart';
+import 'package:classmate/core/local%20data/local_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,11 +13,11 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:classmate/models/message_model.dart';
 import 'package:classmate/ui/auth_Section/auth_req/auth_req.dart';
-import 'package:classmate/ui/bottom_items/Home/utils/utils.dart';
-import 'package:classmate/ui/bottom_items/bottom_navbar.dart';
-import '../../../constant/constant.dart';
+import 'package:classmate/ui/bottom_nevbar_items/Home/utils/utils.dart';
+import 'package:classmate/ui/bottom_nevbar_items/bottom_navbar.dart';
+import '../../../core/constant/constant.dart';
 import '../../../core/dialogs/alert_dialogs.dart';
-import '../../../local data/api_cashe_maager.dart';
+import '../../../core/local data/api_cashe_maager.dart';
 import '../auth_ui/email_verification.screen.dart';
 import '../auth_ui/logIn_screen.dart';
 import '../../wellcome_section/pending_account.dart';
@@ -59,12 +59,10 @@ class AuthController extends StateNotifier<bool> {
     );
 
     res.fold((l) async {
-      print('left' + l.message);
       state = false;
       return Alert.showSnackBar(context, l.message);
     }, (r) {
       state = false;
-      print('right' + r.message);
 
       Navigator.pushReplacement(
         context,

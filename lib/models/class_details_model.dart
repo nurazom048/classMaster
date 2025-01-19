@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:classmate/ui/bottom_items/Collection%20Fetures/models/account_models.dart';
+import 'package:classmate/ui/bottom_nevbar_items/Collection%20Fetures/models/account_models.dart';
 
 AllClassesResponse allClassesResponseFromJson(String str) =>
     AllClassesResponse.fromJson(json.decode(str));

@@ -1,7 +1,7 @@
 //
 import 'package:flutter/material.dart';
 
-import '../constant/app_color.dart';
+import '../core/constant/app_color.dart';
 import 'appWidget/app_text.dart';
 
 class CustomTabBar extends StatelessWidget {
@@ -10,7 +10,8 @@ class CustomTabBar extends StatelessWidget {
   final ValueChanged<int> onTabSelected;
   final EdgeInsetsGeometry? margin;
 
-  const CustomTabBar({super.key, 
+  const CustomTabBar({
+    super.key,
     required this.tabItems,
     required this.selectedIndex,
     required this.onTabSelected,

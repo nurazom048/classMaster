@@ -1,4 +1,4 @@
-import 'package:classmate/ui/bottom_items/Home/Full_routine/utils/popup.dart';
+import 'package:classmate/ui/bottom_nevbar_items/Home/Full_routine/utils/popup.dart';
 
 class AllPriodeList {
   final String message;

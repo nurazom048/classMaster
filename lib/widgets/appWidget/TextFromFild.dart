@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:classmate/widgets/appWidget/app_text.dart';
 
-import '../../constant/app_color.dart';
+import '../../core/constant/app_color.dart';
 
 final errorTextProvider = StateProvider.autoDispose<String?>((ref) {
   return null;

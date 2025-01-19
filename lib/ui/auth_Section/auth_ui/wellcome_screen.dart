@@ -1,11 +1,13 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:classmate/widgets/appWidget/app_text.dart';
 
-import '../../../constant/app_color.dart';
-import '../../../constant/image_const.dart';
+import '../../../core/constant/app_color.dart';
+import '../../../core/constant/image_const.dart';
 import '../../../widgets/appWidget/buttons/cupertino_buttons.dart';
 import '../../../widgets/heder/heder_title.dart';
 

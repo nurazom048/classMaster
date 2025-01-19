@@ -1,6 +1,6 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 
-import '../../local data/local_data.dart';
+import '../../core/local data/local_data.dart';
 
 class FirebaseAnalyticsServices {
   // Log Events

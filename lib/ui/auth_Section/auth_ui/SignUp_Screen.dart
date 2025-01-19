@@ -3,14 +3,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import 'package:classmate/constant/app_color.dart';
-import 'package:classmate/constant/constant.dart';
+
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
 import 'package:classmate/ui/auth_Section/auth_controller/auth_controller.dart';
 import 'package:classmate/ui/auth_Section/auth_ui/logIn_screen.dart';
 import 'package:classmate/ui/auth_Section/utils/singUp_validation.dart';
 import 'package:classmate/widgets/appWidget/app_text.dart';
-import '../../../constant/enum.dart';
+import '../../../core/constant/app_color.dart';
+import '../../../core/constant/constant.dart';
+import '../../../core/constant/enum.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/appWidget/buttons/cupertino_buttons.dart';
 import '../../../widgets/heder/heder_title.dart';

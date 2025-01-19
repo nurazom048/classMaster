@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:classmate/ui/auth_Section/auth_ui/signup_screen.dart';
 
-import '../../../constant/app_color.dart';
-import '../../../constant/constant.dart';
-import '../../../constant/enum.dart';
+import '../../../core/constant/app_color.dart';
+import '../../../core/constant/constant.dart';
+import '../../../core/constant/enum.dart';
 import '../../../core/dialogs/alert_dialogs.dart';
 import '../../../widgets/appWidget/TextFromFild.dart';
 import '../../../widgets/appWidget/buttons/cupertino_buttons.dart';

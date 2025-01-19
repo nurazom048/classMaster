@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:classmate/constant/app_color.dart';
+import '../../../core/constant/app_color.dart';
 import '../../../widgets/appWidget/app_text.dart';
 import '../auth_ui/signup_screen.dart';
 

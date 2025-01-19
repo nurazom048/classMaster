@@ -1,4 +1,4 @@
-import 'package:classmate/ui/bottom_items/Collection%20Fetures/models/account_models.dart';
+import 'package:classmate/ui/bottom_nevbar_items/Collection%20Fetures/models/account_models.dart';
 
 class RutinQuarry {
   List<Routine> routines;

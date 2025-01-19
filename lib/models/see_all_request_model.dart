@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 
-import '../ui/bottom_items/Collection Fetures/models/account_models.dart';
+import '../ui/bottom_nevbar_items/Collection Fetures/models/account_models.dart';
 
 SeeAllRequestModel seeAllRequestModelFromJson(String str) =>
     SeeAllRequestModel.fromJson(json.decode(str));

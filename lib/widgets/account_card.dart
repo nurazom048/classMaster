@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: deprecated_member_use
 
-import '../ui/bottom_items/Home/utils/utils.dart';
+import 'package:flutter/material.dart';
+import '../ui/bottom_nevbar_items/Home/utils/utils.dart';
 
 class AccountCard extends StatelessWidget {
   final dynamic onTap;

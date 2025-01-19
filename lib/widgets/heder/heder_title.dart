@@ -1,8 +1,9 @@
 // ignore_for_file: avoid_renaming_method_parameters
 
 import 'package:flutter/material.dart';
-import 'package:classmate/constant/constant.dart';
 import 'package:classmate/widgets/appWidget/app_text.dart';
+
+import '../../core/constant/constant.dart';
 
 class HeaderTitle extends StatelessWidget {
   const HeaderTitle(

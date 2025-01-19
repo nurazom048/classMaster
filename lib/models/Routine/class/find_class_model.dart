@@ -1,5 +1,5 @@
 import 'dart:convert';
-import '../../../ui/bottom_items/Home/Full_routine/utils/popup.dart';
+import '../../../ui/bottom_nevbar_items/Home/Full_routine/utils/popup.dart';
 
 FindClass findClassFromJson(String str) => FindClass.fromJson(json.decode(str));
 

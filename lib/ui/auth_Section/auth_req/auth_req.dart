@@ -9,9 +9,9 @@ import 'package:http/http.dart' as http;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:classmate/models/message_model.dart';
 
-import '../../../constant/constant.dart';
-import '../../../helper/helper_fun.dart';
-import '../../../local data/local_data.dart';
+import '../../../core/constant/constant.dart';
+import '../../../core/helper/helper_fun.dart';
+import '../../../core/local data/local_data.dart';
 
 class AuthReq {
   //........ Login .........//
