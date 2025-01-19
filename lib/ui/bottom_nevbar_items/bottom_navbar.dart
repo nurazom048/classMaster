@@ -1,21 +1,23 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:classmate/core/local%20data/local_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
-import 'package:classmate/ui/bottom_nevbar_items/Add/screens/create_new_rutine.dart';
-import 'package:classmate/ui/bottom_nevbar_items/Home/Full_routine/widgets/dash_border_button.dart';
 
 import '../../core/constant/app_color.dart';
 import '../../core/constant/enum.dart';
-import '../../widgets/bottom_sheet_shape.dart';
 
 import '../../core/component/responsive.dart';
-import 'Add/screens/add__Notice__Screen.dart';
-import 'Collection Fetures/Ui/collections.screen.dart';
-import 'Home/home_screen/home.screen.dart';
-import 'Home/widgets/bottombaritem_custom.dart';
+import '../../core/widgets/bottom_sheet_shape.dart';
+import '../../features/notice_fetures/presentation/screens/add__Notice__Screen.dart';
+import '../../features/routine_Fetures/presentation/screens/create_new_rutine.dart';
+import '../../features/routine_Fetures/presentation/widgets/static_widgets/dash_border_button.dart';
+import '../../features/Collection Fetures/Ui/collections.screen.dart';
+import '../../features/home_fetures/presentation/screens/home.screen.dart';
+import '../../core/widgets/widgets/bottombaritem_custom.dart';
 
 final bottomNavBarIndexProvider = StateProvider<int>((ref) => 0);
 final showPlusProvider = StateProvider<bool>((ref) => false);

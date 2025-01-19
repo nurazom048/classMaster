@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../widgets/appWidget/app_text.dart';
+import '../export_core.dart';
 
 abstract class Alert {
 //... Error AlertDialog...//

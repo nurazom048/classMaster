@@ -1,4 +1,4 @@
-import 'package:classmate/ui/wellcome_section/splash_screen.dart';
+import 'package:classmate/features/wellcome_splash/presentation/screen/splash_screen.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';

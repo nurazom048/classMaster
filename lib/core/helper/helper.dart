@@ -1,8 +1,8 @@
 // ignore_for_file: avoid_print
 
-import 'package:classmate/ui/auth_Section/auth_ui/wellcome_screen.dart';
 import 'package:get/get.dart';
 import 'package:classmate/core/local%20data/local_data.dart';
+import '../../features/wellcome_splash/presentation/screen/wellcome_screen.dart';
 import '../../ui/bottom_nevbar_items/bottom_navbar.dart';
 
 Future<void> navigateBaseOnToken() async {

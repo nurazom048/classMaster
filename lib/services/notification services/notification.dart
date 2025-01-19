@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import '../../core/constant/constant.dart';
 import '../../core/local data/api_cashe_maager.dart';
 import '../../core/local data/local_data.dart';
-import '../../ui/bottom_nevbar_items/Home/utils/utils.dart';
+import '../../features/home_fetures/presentation/utils/utils.dart';
 import 'models.dart';
 
 final notificationProvider =
