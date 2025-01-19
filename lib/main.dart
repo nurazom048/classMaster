@@ -9,7 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:classmate/services/notification%20services/awn_package.dart';
 import 'core/constant/constant.dart';
-import 'firebase_options.dart';
+import 'services/firebase/firebase_options.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 void main() async {
