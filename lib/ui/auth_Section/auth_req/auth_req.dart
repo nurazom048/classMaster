@@ -8,10 +8,10 @@ import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:classmate/models/message_model.dart';
-
 import '../../../core/constant/constant.dart';
 import '../../../core/helper/helper_fun.dart';
 import '../../../core/local data/local_data.dart';
+import 'package:flutter/foundation.dart'; // For kIsWeb
 
 class AuthReq {
   //........ Login .........//
@@ -23,62 +23,69 @@ class AuthReq {
     var loginUrl = Uri.parse('${Const.BASE_URl}/auth/login');
 
     try {
-      final status = await OneSignal.shared.getDeviceState();
-      final String? oneSignalUserId = status?.userId;
+      String? oneSignalUserId;
+      if (!kIsWeb) {
+        final status = await OneSignal.shared.getDeviceState();
+        oneSignalUserId = status?.userId;
+      }
 
-      final response = await http.post(loginUrl, body: {
+      final body = {
         "username": username ?? '',
         "email": email ?? '',
         "password": password,
-        "oneSignalUserId": oneSignalUserId ?? ''
-      });
+      };
 
-      var message = json.decode(response.body)["message"];
-      print(json.decode(response.body));
-      final accountData = json.decode(response.body);
+      if (oneSignalUserId != null) {
+        body["oneSignalUserId"] = oneSignalUserId;
+      }
 
-      print(accountData);
+      final response = await http.post(loginUrl, body: body);
+      final responseBody = json.decode(response.body);
 
-      //
+      print(responseBody);
+
+      final message = responseBody["message"];
+      if (message == null || message is! String) {
+        throw Exception("Invalid or missing 'message' in response");
+      }
+
       if (response.statusCode == 200) {
+        final accountData = responseBody["account"];
+        if (accountData == null || accountData is! Map<String, dynamic>) {
+          throw Exception("Invalid 'account' data in response");
+        }
+
+        final email = accountData["accountData"]?["email"];
+        if (email == null || email is! String) {
+          throw Exception("Invalid or missing email in account data");
+        }
+
         await LocalData.setHerder(response);
+        await LocalData.saveAuthToken(response.headers['authorization'] ?? '');
+        await LocalData.saveRefreshToken(
+            response.headers['x-refresh-token'] ?? '');
+        await LocalData.saveAccountType(accountData["accountType"]);
+        await LocalData.saveUsername(accountData["username"]);
 
-        print(response.headers['authorization']);
-
-        // print(accountData);
-        // Save the auth token from the response headers
-        final authToken = response.headers['authorization'];
-        final refreshToken = response.headers['x-refresh-token'];
-        await LocalData.saveAuthToken(authToken ?? '');
-        await LocalData.saveRefreshToken(refreshToken ?? '');
-        //... save token
-        await LocalData.saveAccountType(accountData["account"]["accountType"]);
-        await LocalData.saveUsername(accountData["account"]["username"]);
-
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: accountData["account"]["accountData"]["email"],
-          password: password,
-        );
+        await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: email, password: password);
 
         return right(message);
       } else if (response.statusCode == 401) {
-        final accountData = json.decode(response.body);
-
-        return left(Message(
-          message: message,
-          email: accountData['email'] ?? accountData["account"]["email"],
-        ));
+        final email =
+            responseBody['email'] ?? responseBody["account"]?["email"];
+        return left(Message(message: message, email: email));
       } else if (response.statusCode == 402) {
-        final pendingAccount = json.decode(response.body);
-        return left(Message.fromJson(pendingAccount));
+        return left(Message.fromJson(responseBody));
       } else {
         return left(Message(message: message));
       }
     } on io.SocketException catch (_) {
       throw Exception('Failed to load data');
     } on TimeoutException catch (_) {
-      throw Exception('TimeOut Exception');
+      throw Exception('Timeout Exception');
     } catch (e) {
+      print(e);
       return left(Message(message: e.toString()));
     }
   }

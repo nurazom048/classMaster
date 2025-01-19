@@ -31,10 +31,6 @@ void main() async {
   // Awesome NotificationSetup
   AwesomeNotificationSetup.initialize();
 
-  // // Splash screen
-  // await Future.delayed(const Duration(seconds: 1));
-  // FlutterNativeSplash.remove();
-
   //* sentry crash report
   await SentryFlutter.init((options) {
     options.dsn =

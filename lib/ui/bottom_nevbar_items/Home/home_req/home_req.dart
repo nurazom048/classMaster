@@ -1,10 +1,10 @@
 // ignore_for_file: file_names, non_constant_identifier_names, prefer_interpolation_to_compose_strings, unused_local_variable, avoid_print
 
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:http/http.dart' as http;
 import '../../../../core/constant/constant.dart';
 import '../../../../core/local data/api_cashe_maager.dart';
@@ -54,60 +54,55 @@ class HomeReq {
   Future<RoutineHome> homeRoutines({pages, String? userID}) async {
     String queryPage = "?page=$pages";
     final searchByUserID = userID == null ? '' : '/$userID';
-    final status = await OneSignal.shared.getDeviceState();
-    final String? osUserID = status?.userId;
-    // var status = await OneSignal.shared.getDeviceState();
-
-    //String? tokenId = status?.pushToken;
-    print("osUserID Home : $osUserID");
 
     final url = Uri.parse(
         '${Const.BASE_URl}/routine/home' + searchByUserID + queryPage);
     final headers = await LocalData.getHerder();
+
+    // Check online status
     final bool isOffline = await Utils.isOnlineMethod();
     final String key = "HomeRoutine_offline_data_$url";
-    final bool isHaveCash = await MyApiCash.haveCash(key);
-    // print("isOffline : ${!isOffline} && isHaveCash: $isHaveCash");
+
+    // Bypass SQLite cache for web
+    final bool isHaveCash = !kIsWeb && await MyApiCash.haveCash(key);
 
     try {
-      // if offline and have cash
-      if (!isOffline && isHaveCash) {
+      // Handle offline and cache availability
+      if (!kIsWeb && !isOffline && isHaveCash) {
         Get.snackbar('offline', "Failed to load new data ");
         var getdata = await MyApiCash.getData(key);
-        print('From cash $url');
+        print('From cache $url');
         return RoutineHome.fromJson(getdata);
       }
 
-      //
-      final response = await http
-          .post(url, headers: headers, body: {"osUserID": osUserID ?? ''});
+      // Make the API request
+      final response = await http.post(
+        url,
+        headers: headers,
+      );
       print(response);
 
-      //
       final res = json.decode(response.body);
-
       print(res);
 
       if (response.statusCode == 200) {
-        RoutineHome homeRutine = RoutineHome.fromJson(res);
+        RoutineHome homeRoutine = RoutineHome.fromJson(res);
 
-        // save to local offline
-        if (userID == null) {
+        // Save to local cache if not on web
+        if (!kIsWeb && userID == null) {
           MyApiCash.saveLocal(key: key, response: response.body);
         }
 
-        return homeRutine;
+        return homeRoutine;
       } else if (!isOffline) {
         Get.snackbar('Connection failed', "No Internet Connection");
-
         throw "No Internet Connection";
       } else {
         Get.snackbar('failed', "Failed to load new data ");
-        if (isHaveCash) {
+        if (!kIsWeb && isHaveCash) {
           var getdata = await MyApiCash.getData(key);
           return RoutineHome.fromJson(getdata);
         }
-
         throw "${res["message"]}";
       }
     } catch (e) {
@@ -115,6 +110,7 @@ class HomeReq {
       throw "$e";
     }
   }
+
 //************************************************************************************/
 //---------------------- DeleteRoutine Api Request  -----------------------------------/
 //************************************************************************************/
