@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, deprecated_member_use
+// ignore_for_file: file_names, deprecated_member_use, use_build_context_synchronously
 
 import 'package:classmate/core/widgets/appWidget/buttons/cupertino_buttons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,11 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/constant/app_color.dart';
 import '../../../../core/widgets/appWidget/TextFromFild.dart';
 import '../../../../core/widgets/appWidget/app_text.dart';
 import '../../../../core/widgets/heder/heder_title.dart';
 
+import '../../../../route/route_constant.dart';
 import '../providers/auth_controller.dart';
 import '../providers/google_auth_controller.dart';
 import '../utils/validators/Login_validation.dart';
@@ -158,9 +160,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       SignUpSwitcherButton("", "Forgot your Password?",
                           onTap: () async {
                         await FirebaseAuth.instance.signOut();
-                        return Get.to(() => ForgetPasswordScreen(
-                              email: emailController.text,
-                            ));
+
+                        context.pushNamed(
+                          RouteConst.forgetPassword,
+                          extra: emailController.text.trim().toString(),
+                        );
                       }),
                       const SizedBox(height: 30),
 
@@ -191,10 +195,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         "Do not have an account?",
                         "Sign up",
                         onTap: () {
-                          return Get.to(
-                            () => SignUpScreen(
-                              emailAddress: emailController.text,
-                            ),
+                          context.pushNamed(
+                            RouteConst.signUp,
+                            extra: emailController.text.trim().toString(),
                           );
                         },
                       ),

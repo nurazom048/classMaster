@@ -1,4 +1,4 @@
-import 'package:classmate/features/wellcome_splash/presentation/screen/splash_screen.dart';
+import 'package:classmate/route/app_router.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:classmate/services/notification%20services/awn_package.dart';
+import 'package:url_strategy/url_strategy.dart';
 import 'core/constant/constant.dart';
 import 'services/firebase/firebase_options.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -15,21 +16,25 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  //firebase
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  if (!kIsWeb) {
+    //firebase
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
 
-  //crashlytics
-  FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
-  // fcm
-  FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(!kDebugMode);
-
+    //crashlytics
+    FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+    PlatformDispatcher.instance.onError = (error, stack) {
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+      return true;
+    };
+    // fcm
+    FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(!kDebugMode);
+  }
   // Awesome NotificationSetup
   AwesomeNotificationSetup.initialize();
+  // remove # path
+  setPathUrlStrategy();
 
   //* sentry crash report
   await SentryFlutter.init((options) {
@@ -49,7 +54,7 @@ class MyApp extends StatelessWidget {
 //
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return GetMaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: Const.appName,
       theme: ThemeData(
@@ -58,7 +63,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       //home: const AboutScreen(),
-      home: const SplashScreen(),
+      routeInformationParser: AppRouters().router.routeInformationParser,
+      routerDelegate: AppRouters().router.routerDelegate,
     );
   }
 }

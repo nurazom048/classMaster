@@ -1,6 +1,6 @@
 class ImageConst {
   //Svg Image
-  static String forget = "assets/svg/behanceic.jpeg";
+  static String forget = "assets/svg/forget_password.svg";
   static String accessDenied = "assets/svg/undraw_access_denied_re_awnf.svg";
   static String confirmed = "assets/svg/undraw_confirmed_re_sef7.svg";
   static String mailSent = "assets/svg/undraw_mail_sent_re_0ofv.svg";

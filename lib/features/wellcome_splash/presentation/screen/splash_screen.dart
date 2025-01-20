@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constant/png_const.dart';
-import '../../../../core/helper/helper.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -11,14 +10,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   @override
-  void initState() {
-    navigateBaseOnToken();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    navigateBaseOnToken();
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
