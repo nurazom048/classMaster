@@ -1,19 +1,18 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:classmate/core/local%20data/local_data.dart';
+import 'package:classmate/route/route_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
-
+import 'package:go_router/go_router.dart';
 import '../core/constant/app_color.dart';
 import '../core/constant/enum.dart';
-
 import '../core/component/responsive.dart';
 import '../core/widgets/bottom_sheet_shape.dart';
 import '../features/notice_fetures/presentation/screens/add__Notice__Screen.dart';
-import '../features/routine_Fetures/presentation/screens/create_new_rutine.dart';
 import '../features/routine_Fetures/presentation/widgets/static_widgets/dash_border_button.dart';
 import '../features/Collection Fetures/Ui/collections.screen.dart';
 import '../features/home_fetures/presentation/screens/home.screen.dart';
@@ -203,8 +202,10 @@ plusBottomSheet(BuildContext context) {
                                     DashBorderButtonMini(
                                       text: "Routine",
                                       icon: Icons.blender_outlined,
-                                      onTap: () =>
-                                          Get.to(() => CreateNewRoutine()),
+                                      onTap: () {
+                                        context.pushNamed(
+                                            RouteConst.createRoutine);
+                                      },
                                     ),
                                   ],
                                 ),

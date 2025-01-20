@@ -1,13 +1,14 @@
 // ignore_for_file: avoid_print, unused_local_variable, use_build_context_synchronously, unused_result
 
-import 'package:classmate/features/routine_Fetures/presentation/screens/add_class_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../../../features/home_fetures/presentation/utils/utils.dart';
 import '../../../../../../features/routine_Fetures/presentation/providers/routine_details.controller.dart';
 import '../../../../../../features/routine_Fetures/presentation/providers/check_status_controller.dart';
 import '../../../../core/export_core.dart';
+import '../../../../route/route_constant.dart';
 import '../../../routine_summary_fetures/presentation/screens/summary_screen.dart';
 import '../../data/models/class_details_model.dart';
 import '../utils/long_press.dart';
@@ -71,8 +72,11 @@ class ClassListPage extends StatelessWidget {
                       buttonText: "Add Class",
                       ButtonViability: data.isCaptain || data.isOwner,
                       onTap: () {
-                        Get.to(() => AddClassScreen(
-                            routineId: routineId, isUpdate: false));
+                        context.pushNamed(
+                          RouteConst.addClass,
+                          extra: false,
+                          params: {'routineId': routineId},
+                        );
                       },
                     );
                   },
@@ -91,7 +95,7 @@ class ClassListPage extends StatelessWidget {
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: length,
-                      itemBuilder: (context, index) {
+                      itemBuilder: (contexts, index) {
                         final AllClass allClass = data.allClass[index];
                         final String classsID = allClass.id;
 

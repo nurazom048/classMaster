@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../../../route/route_constant.dart';
 import '../../constant/app_color.dart';
 import '../../../features/notification/screen/notification.screen.dart';
-import '../../../features/search_fetures/presentation/screens/search_page.dart';
 
 class CustomTitleBar extends StatelessWidget {
   final String title;
   final IconData? icon;
   final double elevation;
-  final Widget? acction;
+  final Widget? action;
 
   const CustomTitleBar(
     this.title, {
     this.icon,
     this.elevation = 5.0,
-    this.acction,
+    this.action,
     Key? key,
   }) : super(key: key);
 
@@ -64,13 +65,7 @@ class CustomTitleBar extends StatelessWidget {
                 const Spacer(flex: 18),
                 InkWell(
                   onTap: () {
-                    Get.to(() => const SearchPAge(),
-                        transition: Transition.rightToLeft);
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //       builder: (context) => const SearchPAge()),
-                    // );
+                    GoRouter.of(context).pushNamed(RouteConst.searchPage);
                   },
                   child: Icon(
                     icon ?? Icons.search,
@@ -90,7 +85,7 @@ class CustomTitleBar extends StatelessWidget {
                     color: AppColor.nokiaBlue,
                   ),
                 ),
-                acction ?? const SizedBox(width: 0),
+                action ?? const SizedBox(width: 0),
                 const Spacer(flex: 1),
               ],
             ),

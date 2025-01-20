@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,7 +16,7 @@ final googleAuthControllerProvider =
 
 // class
 class GoogleAuthController extends ChangeNotifier {
-  static final client_Id =
+  static const client_Id =
       "837394216188-04oqhda86s60gke2v74qd6igl33ag0si.apps.googleusercontent.com";
   //
   GoogleSignIn googleSignIn = GoogleSignIn(clientId: client_Id);

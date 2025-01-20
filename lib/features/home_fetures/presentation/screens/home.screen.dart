@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' as gx;
 import 'package:classmate/services/one%20signal/onesignla.services.dart';
 import 'package:classmate/features/home_fetures/data/models/home_routines_model.dart';
 import 'package:classmate/features/home_fetures/presentation/utils/utils.dart';
@@ -236,8 +236,10 @@ class HomeRecentNoticeWidget extends ConsumerWidget {
     return Column(
       children: [
         RecentNoticeTitle(
-          onTap: () => Get.to(() => ViewAllRecentNotice(),
-              transition: Transition.rightToLeftWithFade),
+          onTap: () {
+            return gx.Get.to(() => ViewAllRecentNotice(),
+                transition: gx.Transition.rightToLeftWithFade);
+          },
         ),
         SizedBox(
           height: 160,

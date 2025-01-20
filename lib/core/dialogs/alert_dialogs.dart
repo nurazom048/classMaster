@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../export_core.dart';
 
@@ -84,13 +85,22 @@ abstract class Alert {
 
   //.... show snackbar ...//
   static void showSnackBar(BuildContext context, dynamic text) {
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          content: Text(text.toString()),
-        ),
-      );
+    Get.snackbar(
+      "Message",
+      text.toString(),
+      snackPosition: SnackPosition.TOP,
+      //backgroundColor: Colors.white,
+      colorText: Colors.black,
+      borderRadius: 10,
+      backgroundColor: Colors.white,
+    );
+    //   ScaffoldMessenger.of(context)
+    //     ..hideCurrentSnackBar()
+    //     ..showSnackBar(
+    //       SnackBar(
+    //         content: Text(text.toString()),
+    //       ),
+    //     );
   }
 
   static Widget handleError(BuildContext context, dynamic error,

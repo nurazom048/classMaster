@@ -1,21 +1,23 @@
-import 'package:classmate/features/routine_Fetures/presentation/screens/view_more_screen.dart';
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import '../../../../core/export_core.dart';
+import '../../../../route/route_constant.dart';
 import '../../../home_fetures/data/datasources/routine_api.dart';
+import 'package:go_router/go_router.dart';
 
 final createRoutineLoaderProvider = StateProvider<bool>((ref) => false);
 
 class CreateNewRoutine extends StatelessWidget {
-  // ignore: use_key_in_widget_constructors
   CreateNewRoutine({Key? key});
   final _routineNameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    double h = MediaQuery.of(context).size.height;
+    final double h = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -92,16 +94,8 @@ class CreateNewRoutine extends StatelessWidget {
           await Future.delayed(const Duration(seconds: 2));
           createRoutineLoaderNotifier.update((state) => false);
           // Wait for 5 seconds
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ViewMore(
-                routineId: data.routineID!,
-                routineName: data.routineName ?? 'Routine Name',
-                ownerName: data.ownerName ?? 'Owner Name',
-              ),
-            ),
-          );
+          GoRouter.of(context).pushNamed(RouteConst.viewRoutine,
+              params: {"routineID": data.routineID!}, extra: data.routineName);
         }
         return Alert.showSnackBar(context, data.message);
       },

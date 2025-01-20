@@ -34,8 +34,7 @@ class RoutineAPI {
           Message(
             message: message.message,
             routineID: res['routine']['id'],
-            routineName: res['routine']['name'],
-            ownerName: res['user']['name'],
+            routineName: res['routine']['routineName'],
           ),
         );
       } else {

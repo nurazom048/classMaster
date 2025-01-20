@@ -113,6 +113,7 @@ class RoutineDialog {
                                             'Do you want to delete this routine? You can\'t undo this action.',
                                         onConfirm: (bool isConfirmed) {
                                           if (isConfirmed) {
+                                            Navigator.of(context).pop();
                                             routinesController.deleteRutin(
                                                 routineID, context);
                                           }

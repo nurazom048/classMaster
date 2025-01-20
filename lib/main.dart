@@ -4,9 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:classmate/services/notification%20services/awn_package.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'core/constant/constant.dart';
@@ -52,17 +51,20 @@ class MyApp extends StatelessWidget {
 //
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      title: Const.appName,
-      theme: ThemeData(
-        useMaterial3: true,
-        scaffoldBackgroundColor: const Color(0xFFEFF6FF),
-        primarySwatch: Colors.blue,
+    return GetMaterialApp(
+      home: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        title: Const.appName,
+        theme: ThemeData(
+          useMaterial3: true,
+          scaffoldBackgroundColor: const Color(0xFFEFF6FF),
+          primarySwatch: Colors.blue,
+        ),
+        //home: const AboutScreen(),
+
+        routeInformationParser: AppRouters().router.routeInformationParser,
+        routerDelegate: AppRouters().router.routerDelegate,
       ),
-      //home: const AboutScreen(),
-      routeInformationParser: AppRouters().router.routeInformationParser,
-      routerDelegate: AppRouters().router.routerDelegate,
     );
   }
 }
