@@ -14,8 +14,10 @@ final googleAuthControllerProvider =
 
 // class
 class GoogleAuthController extends ChangeNotifier {
+  static final client_Id =
+      "837394216188-04oqhda86s60gke2v74qd6igl33ag0si.apps.googleusercontent.com";
   //
-  GoogleSignIn googleSignIn = GoogleSignIn();
+  GoogleSignIn googleSignIn = GoogleSignIn(clientId: client_Id);
   GoogleSignInAccount? googleAccount;
   bool lodging = false;
 

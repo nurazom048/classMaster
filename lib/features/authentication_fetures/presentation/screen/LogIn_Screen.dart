@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart';
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constant/app_color.dart';
@@ -20,8 +19,6 @@ import '../utils/validators/Login_validation.dart';
 import '../widgets/static_widget/or.dart';
 import '../widgets/static_widget/sign_up_page_switch.dart';
 import '../widgets/static_widget/social_login_button.dart';
-import 'SignUp_Screen.dart';
-import 'forgetpassword_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   final String? emailAddress;

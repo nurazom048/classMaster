@@ -16,21 +16,19 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (!kIsWeb) {
-    //firebase
-    await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform);
+  //firebase
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-    //crashlytics
-    FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
-    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-    PlatformDispatcher.instance.onError = (error, stack) {
-      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-      return true;
-    };
-    // fcm
-    FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(!kDebugMode);
-  }
+  //crashlytics
+  FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
+  // fcm
+  FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(!kDebugMode);
+  // }
   // Awesome NotificationSetup
   AwesomeNotificationSetup.initialize();
   // remove # path
