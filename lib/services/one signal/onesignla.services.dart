@@ -1,4 +1,5 @@
 import 'package:app_settings/app_settings.dart';
+import 'package:flutter/foundation.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class OneSignalServices {
@@ -10,21 +11,25 @@ class OneSignalServices {
 
     // final status = await OneSignal.shared.getDeviceState();
     // final String? osUserID = status?.userId;
-    // // ignore: avoid_print
-    // print(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
-    // // ignore: avoid_print
     // print("osUserID : $osUserID");
   }
 
 // permission
   static void oneSignalPermission() {
-    OneSignal.shared.promptUserForPushNotificationPermission().then((value) {
-      if (value == true) {
-        // ignore: avoid_print
-        print('accept Permission $value');
-      } else {
-        AppSettings.openNotificationSettings();
-      }
-    });
+    if (!kIsWeb) {
+      // OneSignal initialization for mobile only
+
+      OneSignal.shared.promptUserForPushNotificationPermission().then((value) {
+        if (value == true) {
+          // ignore: avoid_print
+          print('accept Permission $value');
+        } else {
+          AppSettings.openNotificationSettings();
+        }
+      });
+    } else {
+      print("OneSignal not supported on web");
+      // Optionally implement a web-specific notification system (e.g., browser notifications)
+    }
   }
 }

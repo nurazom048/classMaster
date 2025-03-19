@@ -132,7 +132,7 @@ class AuthReq {
     String oldPassword,
     String newPassword,
   ) async {
-    final Map<String, String> headers = await LocalData.getHerder();
+    final Map<String, String> headers = await LocalData.getHeader();
     var url = Uri.parse('${Const.BASE_URl}/account/edit/change_password');
 
     try {
@@ -163,7 +163,7 @@ class AuthReq {
     String? username,
     String? phone,
   }) async {
-    final Map<String, String> headers = await LocalData.getHerder();
+    final Map<String, String> headers = await LocalData.getHeader();
     final url = Uri.parse('${Const.BASE_URl}/account/edit/forgotPassword');
 
     try {

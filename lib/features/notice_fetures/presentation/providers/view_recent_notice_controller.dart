@@ -26,7 +26,7 @@ class UploadedRutinsController extends StateNotifier<AsyncValue<RecentNotice>> {
   /// get all recent notice
   _init() async {
     try {
-      final res = await noticeRequest.recentNotice(academyID: academyID);
+      final res = await noticeRequest.fetchRecentNotice(academyId: academyID);
       if (!mounted) return;
 
       state = AsyncData(res);
@@ -41,7 +41,7 @@ class UploadedRutinsController extends StateNotifier<AsyncValue<RecentNotice>> {
   void loadMore(page, context) async {
     try {
       final RecentNotice newData =
-          await noticeRequest.recentNotice(page: page + 1);
+          await noticeRequest.fetchRecentNotice(page: page + 1);
 
       // print(
       //     "total ${newData.totalPages} : giver page $page new current page  ${newData.currentPage}   ");

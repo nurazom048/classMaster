@@ -14,16 +14,23 @@ class RouterHelper {
     print("Token: $token  refreshToken: $refreshToken");
     print("Current location: ${state.location}");
 
+    // ✅ If the user is authenticated, allow them to access protected routes
     if (token != null && refreshToken != null) {
       if (state.subloc == '/') {
         print('Redirecting authenticated user to /home');
-        return '/home'; // Redirect authenticated users to home
+        return '/home';
       }
       return null; // Allow navigation for authenticated users
     }
 
-    // 🚀 Fix: Redirect unauthenticated users from Splash to Login
-    if (state.location == '/') {
+    // ✅ Prevent infinite loop: Do NOT redirect if already on the login page
+    if (state.subloc == '/auth/login') {
+      print('Already on login screen, no redirect needed.');
+      return null;
+    }
+
+    // 🚀 Fix: Redirect only from Splash or unknown routes to Login
+    if (state.subloc == '/') {
       print('Redirecting unauthenticated user to /auth/login');
       return '/auth/login';
     }

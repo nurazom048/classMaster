@@ -1,51 +1,34 @@
 import 'dart:convert';
-import 'package:api_cache_manager/models/cache_db_model.dart';
-import 'package:api_cache_manager/utils/cache_manager.dart';
+import 'package:hive/hive.dart';
 import 'package:classmate/core/local%20data/local_data.dart';
 
-class MyApiCash {
-  //
-//************************************************************************************* */
-//
-//................ save Api response With unq key     ...................................//
-//
-//*************************************************************************************** */
+class MyApiCache {
+  static const String boxName = "apiCache";
 
-  static void saveLocal({required String key, required String response}) async {
-// i also add username to make it uniq to multiple account login
+  static Future<void> saveLocal(
+      {required String key, required String response}) async {
     final String? username = await LocalData.getUsername();
-
-    //
-    APICacheDBModel cacheDBModel =
-        APICacheDBModel(key: "$key+$username", syncData: response.toString());
-    APICacheManager().deleteCache("$key+$username");
-    await APICacheManager().addCacheData(cacheDBModel);
+    final cacheKey = "$key+$username";
+    var box = await Hive.openBox(boxName);
+    await box.put(cacheKey, response);
   }
 
-// is Have Cash
-  static Future<bool> haveCash(String key) async {
-    // i also add username to make it uniq to multiple account login
+  static Future<bool> haveCache(String key) async {
     final String? username = await LocalData.getUsername();
-    final bool = await APICacheManager().isAPICacheKeyExist("$key+$username");
-    return bool;
+    final cacheKey = "$key+$username";
+    var box = await Hive.openBox(boxName);
+    return box.containsKey(cacheKey);
   }
 
-  // getData
   static Future<Map<String, dynamic>> getData(String key) async {
-    // i also add username to make it uniq to multiple account login
     final String? username = await LocalData.getUsername();
-    APICacheDBModel getData =
-        await APICacheManager().getCacheData("$key+$username");
-
-    return jsonDecode(getData.syncData);
+    final cacheKey = "$key+$username";
+    var box = await Hive.openBox(boxName);
+    return jsonDecode(box.get(cacheKey));
   }
 
-//******************************************************************* */
-//
-//................ empty cash     ...................................//
-//
-//******************************************************************* */
   static Future<void> removeAll() async {
-    await APICacheManager().emptyCache();
+    var box = await Hive.openBox(boxName);
+    await box.clear();
   }
 }

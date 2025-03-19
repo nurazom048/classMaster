@@ -1,119 +1,88 @@
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive/hive.dart';
 
 class LocalData {
-  // const String
+  static const String _authBox = 'authBox';
   static const String _accountType = "AccountType";
-  static const String _username = "'username'";
+  static const String _username = "username";
   static const String _authToken = "authToken";
   static const String _refreshToken = "refreshToken";
 
-//************************************************************************************* */
-//
-//................ save Auth and refresh token header....................................//
-//
-//*************************************************************************************** */
+//***********************************************************************************///
+//................ save Auth and refresh token header.................................//
+//*********************************************************************************** */
 
-  // Auth And Refresh Token
+  // Open the Hive box
+  static Future<Box> _openBox() async {
+    return await Hive.openBox(_authBox);
+  }
+
+  // Save Auth Token
   static Future<void> saveAuthToken(String token) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_authToken, token);
+    var box = await Hive.openBox('authBox');
+    box.put('authToken', token);
   }
 
   static Future<String?> getAuthToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_authToken);
+    var box = await Hive.openBox('authBox');
+    return box.get('authToken');
   }
 
+  // Save Refresh Token
   static Future<void> saveRefreshToken(String token) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_refreshToken, token);
+    final box = await _openBox();
+    await box.put(_refreshToken, token);
   }
 
   static Future<String?> getRefreshToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_refreshToken);
+    final box = await _openBox();
+    return box.get(_refreshToken);
   }
 
   // Get header
-  static Future<Map<String, String>> getHerder() async {
-    final String? authTokenn = await LocalData.getAuthToken();
-    final String? refreshTokenn = await LocalData.getRefreshToken();
-
-    //
-    final Map<String, String> headers = {
-      'Authorization': 'Bearer $authTokenn',
-      'x-refresh-token': "$refreshTokenn",
+  static Future<Map<String, String>> getHeader() async {
+    final String? authToken = await getAuthToken();
+    final String? refreshToken = await getRefreshToken();
+    return {
+      'Authorization': 'Bearer $authToken',
+      'x-refresh-token': refreshToken ?? '',
     };
-
-    return headers;
   }
 
-  // Get header
   static Future<void> setHerder(response) async {
-    final String? currentAuthToken = await LocalData.getAuthToken();
-    final String? refreshToken = await LocalData.getRefreshToken();
+    final authToken = response.headers?['authorization'] as String?;
+    final newRefreshToken = response.headers?['x-refresh-token'] as String?;
 
-    //
-    final authToken = response.headers?['authorization'];
-    final newRefreshToken = response.headers?['x-refresh-token'];
-    //
-    if (authToken != currentAuthToken && authToken != null) {
-      await LocalData.saveAuthToken(authToken);
-    }
-
-    if (refreshToken != newRefreshToken && newRefreshToken != null) {
-      // ignore: avoid_print
-      print('NewRefreshToken saved......................');
-
+    if (newRefreshToken != null && newRefreshToken.isNotEmpty) {
+      print('New RefreshToken saved');
       await LocalData.saveRefreshToken(newRefreshToken);
     }
   }
 
-//
-//****************************************************************** */
-//
-//................ Save localData.....................................//
-//
-//****************************************************************** */
-
-// save and get account Type
+  // Save and Get Account Type
+  static Future<void> saveAccountType(String type) async {
+    final box = await _openBox();
+    await box.put(_accountType, type);
+  }
 
   static Future<String?> getAccountType() async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? type = prefs.getString(_accountType);
-    return type;
+    final box = await _openBox();
+    return box.get(_accountType);
   }
 
-// save account Type
-  static Future<void> saveAccountType(String token) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_accountType, token);
+  // Save and Get Username
+  static Future<void> saveUsername(String username) async {
+    final box = await _openBox();
+    await box.put(_username, username);
   }
 
-//******************* save and get username  ************************** */
   static Future<String?> getUsername() async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? type = prefs.getString(_username);
-    return type;
-  }
-// save account Type
-
-  static Future<void> saveUsername(String token) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_username, token);
+    final box = await _openBox();
+    return box.get(_username);
   }
 
-//****************************************************************** */
-//
-//................ remove data localData.............................//
-//
-//****************************************************************** */
-
+  // Clear All Stored Data
   static Future<void> emptyLocal() async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.remove(_authToken);
-    prefs.remove(_refreshToken);
-    prefs.remove(_accountType);
-    prefs.remove(_username);
+    final box = await _openBox();
+    await box.clear();
   }
 }

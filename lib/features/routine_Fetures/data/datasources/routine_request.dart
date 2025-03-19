@@ -20,14 +20,14 @@ class FullRoutineRequest {
   Future<CheckStatusModel> chalkStatus(routineId) async {
     final bool isOnline = await Utils.isOnlineMethod();
     final key = "chalkStatus$routineId";
-    final bool isHaveCash = await MyApiCash.haveCash(key);
-    final headers = await LocalData.getHerder();
+    final bool isHaveCash = await MyApiCache.haveCache(key);
+    final headers = await LocalData.getHeader();
     final url = Uri.parse('${Const.BASE_URl}/routine/status/$routineId');
 
     try {
       // if offline and have cash
       if (!isOnline && isHaveCash) {
-        Map<String, dynamic> getData = await MyApiCash.getData(key);
+        Map<String, dynamic> getData = await MyApiCache.getData(key);
         print('from cash $getData');
         return CheckStatusModel.fromJson(getData);
       } else if (!isOnline) {
@@ -42,7 +42,7 @@ class FullRoutineRequest {
           // print(jsonDecode(response.body));
           // save to csh
 
-          MyApiCash.saveLocal(key: key, response: response.body);
+          MyApiCache.saveLocal(key: key, response: response.body);
 
           CheckStatusModel res =
               CheckStatusModel.fromJson(jsonDecode(response.body));
@@ -58,7 +58,7 @@ class FullRoutineRequest {
       print(e);
 
       if (isHaveCash) {
-        var getData = await MyApiCash.getData(key);
+        var getData = await MyApiCache.getData(key);
         return CheckStatusModel.fromJson(getData);
       }
       rethrow;
@@ -67,7 +67,7 @@ class FullRoutineRequest {
 
   //,, delete class
   Future<Message> deleteClass(context, classId) async {
-    final headers = await LocalData.getHerder();
+    final headers = await LocalData.getHeader();
 
     var url = Uri.parse('${Const.BASE_URl}/class/delete/$classId');
 
@@ -90,7 +90,7 @@ class FullRoutineRequest {
 
   Future<Either<String, Message>> saveUnsavedRoutineReq(
       routineId, condition) async {
-    final headers = await LocalData.getHerder();
+    final headers = await LocalData.getHeader();
 
     final url = Uri.parse('${Const.BASE_URl}/routine/save_unsave/$routineId');
 

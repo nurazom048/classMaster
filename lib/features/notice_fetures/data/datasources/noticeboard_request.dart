@@ -15,7 +15,7 @@ final noticeboardRequestProvider =
 class NoticeboardRequest {
 // leave member
   Future<Either<Message, Message>> leaveMember(String noticeBoard) async {
-    final headers = await LocalData.getHerder();
+    final headers = await LocalData.getHeader();
 
     try {
       final response = await http.delete(
@@ -37,7 +37,7 @@ class NoticeboardRequest {
 
   //
   Future<CheckStatusModel> chackStatus(String academyID) async {
-    final headers = await LocalData.getHerder();
+    final headers = await LocalData.getHeader();
 
     var url = Uri.parse('${Const.BASE_URl}/notice/status/$academyID');
 
@@ -65,7 +65,7 @@ class NoticeboardRequest {
   //
 
   Future<Either<String, Message>> sendRequest(String noticeBoardId) async {
-    final headers = await LocalData.getHerder();
+    final headers = await LocalData.getHeader();
 
     var url = Uri.parse("${Const.BASE_URl}/notice/join/$noticeBoardId");
 
@@ -91,7 +91,7 @@ class NoticeboardRequest {
   //
   //....RutineNotification....//
   Future<Either<String, Message>> notificationOff(String routineID) async {
-    final headers = await LocalData.getHerder();
+    final headers = await LocalData.getHeader();
     Uri url = Uri.parse('${Const.BASE_URl}/notice/notification/off/$routineID');
 
     try {
@@ -114,7 +114,7 @@ class NoticeboardRequest {
 
   //....RutineNotification....//
   Future<Either<String, Message>> notificationOn(String routineID) async {
-    final headers = await LocalData.getHerder();
+    final headers = await LocalData.getHeader();
     print('RutineNotification $routineID');
     Uri url = Uri.parse('${Const.BASE_URl}/notice/notification/on/$routineID');
 

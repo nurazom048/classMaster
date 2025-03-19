@@ -25,7 +25,7 @@ class SummaryRequest {
     required List<String> imageLinks,
     required bool checkedType,
   }) async {
-    final Map<String, String> headers = await LocalData.getHerder();
+    final Map<String, String> headers = await LocalData.getHeader();
 
     final uri = Uri.parse('${Const.BASE_URl}/summary/add/$classId');
 
@@ -78,7 +78,7 @@ class SummaryRequest {
     String queryPage = pages != null ? "?page=$pages" : '';
     String findClassId = classId ?? '';
 
-    final Map<String, String> headers = await LocalData.getHerder();
+    final Map<String, String> headers = await LocalData.getHeader();
 
     var url = Uri.parse('${Const.BASE_URl}/summary/$findClassId' + queryPage);
 
@@ -107,7 +107,7 @@ class SummaryRequest {
 
   static Future<Either<Message, Message>> deleteSummary(
       String summaryID) async {
-    final Map<String, String> headers = await LocalData.getHerder();
+    final Map<String, String> headers = await LocalData.getHeader();
 
     var url = Uri.parse('${Const.BASE_URl}/summary/$summaryID');
 
@@ -138,11 +138,11 @@ class SummaryRequest {
   //**************** SUMMARY STATUS**************** */
   //....CheckStatusModel....//
   Future<CheckStatusModel> checkStatus(summaryID) async {
-    final Map<String, String> headers = await LocalData.getHerder();
+    final Map<String, String> headers = await LocalData.getHeader();
 
     final Uri url = Uri.parse('${Const.BASE_URl}/summary/status/$summaryID');
     // final bool isOnline = await Utils.isOnlineMethod();
-    // var isHaveCash = await MyApiCash.haveCash("checkStatus$summaryID");
+    // var isHaveCash = awaitMyApiCache.haveCache("checkStatus$summaryID");
 
     try {
       // // if offline and have cash
@@ -184,7 +184,7 @@ class SummaryRequest {
 
   Future<Either<Message, Message>> saveSummary(
       String summaryId, bool save) async {
-    final Map<String, String> headers = await LocalData.getHerder();
+    final Map<String, String> headers = await LocalData.getHeader();
 
     final url = Uri.parse('${Const.BASE_URl}/summary/save');
 

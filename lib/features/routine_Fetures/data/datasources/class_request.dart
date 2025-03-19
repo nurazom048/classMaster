@@ -22,7 +22,7 @@ class ClassRequest {
     DateTime endTime,
   ) async {
     try {
-      final headers = await LocalData.getHerder();
+      final headers = await LocalData.getHeader();
       var url = Uri.parse('${Const.BASE_URl}/class/$routineId/addclass');
 
       final response = await http.post(
@@ -65,7 +65,7 @@ class ClassRequest {
   Future<void> editClass(context, WidgetRef ref, String classId, routineId,
       DateTime startTime, DateTime endTime, ClassModelUpdate classModel) async {
     // Obtain shared preferences.
-    final Map<String, String> headers = await LocalData.getHerder();
+    final Map<String, String> headers = await LocalData.getHeader();
 
     try {
       final response = await http.post(
@@ -112,7 +112,7 @@ class ClassRequest {
   ) async {
     // Obtain shared preferences.
     Uri uri = Uri.parse('${Const.BASE_URl}/class/remove/$classId');
-    final Map<String, String> headers = await LocalData.getHerder();
+    final Map<String, String> headers = await LocalData.getHeader();
 
     try {
       final response = await http.delete(uri, headers: headers);

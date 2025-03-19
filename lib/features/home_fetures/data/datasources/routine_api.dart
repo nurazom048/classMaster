@@ -13,7 +13,7 @@ class RoutineAPI {
     required String routineName,
   }) async {
     // Obtain shared preferences.
-    final header = await LocalData.getHerder();
+    final header = await LocalData.getHeader();
     final uri = Uri.parse('${Const.BASE_URl}/routine/create');
 
     final response = await http.post(

@@ -22,19 +22,19 @@ class NotificationClass {
     // ignore: avoid_print
     print('call fore notification');
 
-    final Map<String, String> headers = await LocalData.getHerder();
+    final Map<String, String> headers = await LocalData.getHeader();
 
     final url = Uri.parse('${Const.BASE_URl}/class/notification');
     final bool isOnline = await Utils.isOnlineMethod();
     final String key = "notification$url";
-    var isHaveCash = await MyApiCash.haveCash(key);
+    var isHaveCash = await MyApiCache.haveCache(key);
     // ignore: avoid_print
     print(url);
     try {
       // Check if offline and have cache
 
       if (!isOnline && isHaveCash) {
-        var getdata = await MyApiCash.getData(key);
+        var getdata = await MyApiCache.getData(key);
         return ClassNotificationResponse.fromJson(getdata);
       }
 
@@ -46,7 +46,7 @@ class NotificationClass {
 
         // Save to cache
 
-        MyApiCash.saveLocal(key: key, response: response.body);
+        MyApiCache.saveLocal(key: key, response: response.body);
 
         return ClassNotificationResponse.fromJson(res);
       } else {

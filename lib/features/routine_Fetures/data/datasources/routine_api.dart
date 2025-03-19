@@ -20,12 +20,12 @@ class Routine_Req {
     final String path = "${Const.BASE_URl}/class/$routineId/all/class";
     final url = Uri.parse(path);
     final String key = "Class-$path";
-    final isHaveCache = await MyApiCash.haveCash(key);
+    final isHaveCache = await MyApiCache.haveCache(key);
 
     try {
       // If offline and have cache
       if (!isOnline && isHaveCache) {
-        final getData = await MyApiCash.getData(key);
+        final getData = await MyApiCache.getData(key);
         return AllClassesResponse.fromJson(getData);
       } else {
         final response = await http.get(url);
@@ -33,7 +33,7 @@ class Routine_Req {
         print(res);
         if (response.statusCode == 200) {
           // Save to cache manager
-          MyApiCash.saveLocal(key: key, response: response.body);
+          MyApiCache.saveLocal(key: key, response: response.body);
 
           final classDetails = AllClassesResponse.fromJson(res);
           return classDetails;
@@ -43,7 +43,7 @@ class Routine_Req {
       }
     } catch (error) {
       if (isHaveCache) {
-        final getData = await MyApiCash.getData(key);
+        final getData = await MyApiCache.getData(key);
         return AllClassesResponse.fromJson(getData);
       }
       rethrow;

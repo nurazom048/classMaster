@@ -17,58 +17,59 @@ import '../models/recent_notice_model.dart';
 
 // recent notice
 final recentNoticeProvider = FutureProvider<RecentNotice>((ref) async {
-  return ref.read(noticeReqProvider).recentNotice();
+  return ref.read(noticeReqProvider).fetchRecentNotice();
 });
 
 final noticeReqProvider = Provider<NoticeRequest>((ref) => NoticeRequest());
 
 class NoticeRequest {
   //******    recentNotice    ********* */
-  Future<RecentNotice> recentNotice({dynamic page, String? academyID}) async {
-    final headers = await LocalData.getHerder();
-    final String morepage = page == null ? '' : "?page=$page";
-    // Url
-    final Uri recentNoticeUri =
-        Uri.parse('${Const.BASE_URl}/notice/recent$morepage');
-    final Uri viewNoticeByAcademyIDUri =
-        Uri.parse('${Const.BASE_URl}/notice/recent/$academyID$morepage');
-    final Uri requestUri =
-        academyID == null ? recentNoticeUri : viewNoticeByAcademyIDUri;
-    final key = requestUri.toString();
+  Future<RecentNotice> fetchRecentNotice({int? page, String? academyId}) async {
+    final headers = await LocalData.getHeader();
+    print("Headers before sending request: $headers");
 
-    final bool isOffline = await Utils.isOnlineMethod();
-    var isHaveCash = await MyApiCash.haveCash(key);
+    // Construct URL
+    final pageQuery = page == null ? '' : "?page=$page";
+    final baseUrl = Const.BASE_URl;
+    final recentNoticeUrl = Uri.parse('$baseUrl/notice/recent$pageQuery');
+    final academyNoticeUrl =
+        Uri.parse('$baseUrl/notice/recent/$academyId$pageQuery');
+    final requestUrl = academyId == null ? recentNoticeUrl : academyNoticeUrl;
+    final cacheKey = requestUrl.toString();
+
+    // Check connectivity and cache
+    final isOnline = await Utils.isOnlineMethod();
+    final hasCache = await MyApiCache.haveCache(cacheKey);
+
     try {
-      // if offline and have cash
-
-      if (!isOffline && isHaveCash) {
-        var getdata = await MyApiCash.getData(key);
-        print('From cash $getdata');
-        return RecentNotice.fromJson(getdata);
-      } else {
-        final response = await http.post(
-          requestUri,
-          headers: headers,
-        );
-        final res = json.decode(response.body);
-
-        if (response.statusCode == 200) {
-          // save to cash
-          MyApiCash.saveLocal(key: key, response: response.body);
-          print(res);
-
-          return RecentNotice.fromJson(res);
-        } else {
-          print(json.decode(response.body));
-          final message = Message.fromJson(json.decode(response.body));
-
-          throw message.message;
-        }
+      // Return cached data if offline and cache exists
+      if (!isOnline && hasCache) {
+        final cachedData = await MyApiCache.getData(cacheKey);
+        print('From cache: $cachedData');
+        return RecentNotice.fromJson(cachedData);
       }
-    } on Io.SocketException catch (_) {
+
+      // Make API request
+      final response = await http.post(
+        requestUrl,
+        headers: headers,
+      );
+      final responseData = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        // Cache successful response
+        await MyApiCache.saveLocal(key: cacheKey, response: response.body);
+        print(responseData);
+        return RecentNotice.fromJson(responseData);
+      } else {
+        print(responseData);
+        final errorMessage = Message.fromJson(responseData);
+        throw errorMessage.message;
+      }
+    } on Io.SocketException {
       throw Exception('Not connected. Failed to load data');
-    } on TimeoutException catch (_) {
-      throw Exception('Not connected. TimeOut Exception');
+    } on TimeoutException {
+      throw Exception('Connection timed out');
     } catch (e) {
       rethrow;
     }
@@ -83,7 +84,7 @@ class NoticeRequest {
   }) async {
     // Obtain shared preferences.
 
-    final headers = await LocalData.getHerder();
+    final headers = await LocalData.getHeader();
     final url = Uri.parse('${Const.BASE_URl}/notice/add/');
 
     File thePdf = File(pdfFile!);
@@ -136,8 +137,7 @@ class NoticeRequest {
   Future<Either<Message, Message>> deleteNotice({
     required String noticeId,
   }) async {
-    final headers = await LocalData.getHerder();
-
+    final headers = await LocalData.getHeader();
     var url = Uri.parse('${Const.BASE_URl}/notice/$noticeId');
 
     try {

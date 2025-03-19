@@ -38,7 +38,7 @@ class WeekdayRequest {
     DateTime startTime,
     DateTime endTime,
   ) async {
-    final headers = await LocalData.getHerder();
+    final headers = await LocalData.getHeader();
     final uri = Uri.parse('${Const.BASE_URl}/class/weekday/$classId');
 
     try {
@@ -69,7 +69,7 @@ class WeekdayRequest {
 
   static Future<Either<Message, WeekdayList>> deleteWeekday(
       String id, String classID) async {
-    final headers = await LocalData.getHerder();
+    final headers = await LocalData.getHeader();
 
     try {
       final response = await http.delete(

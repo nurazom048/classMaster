@@ -86,7 +86,7 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                 } else {
                   //! provider
                   ref.refresh(accountDataProvider(widget.accountUsername));
-                  ref.refresh(classNotificationProvider);
+                  // ref.refresh(classNotificationProvider);
                 }
               },
               child: SingleChildScrollView(
@@ -95,27 +95,23 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    //! providers
+                    // UI Consumer to watch account data provider
                     Consumer(builder: (context, ref, _) {
-                      //! providers
-
                       final accountData = ref
                           .watch(accountDataProvider(widget.accountUsername));
                       return SizedBox(
                         height: 129,
                         child: accountData.when(
-                          data: (data) {
-                            if (data == null) {
-                              return const Text("null");
-                            } else {
-                              return AccountCard(
-                                profilepicture: data.image,
-                                name: '${data.name}',
-                                username: '@${data.username}',
-                                onTap: () =>
-                                    Get.to(ProfileSCreen(academyID: null)),
-                              );
-                            }
-                          },
+                          data: (data) => data != null
+                              ? AccountCard(
+                                  profilepicture: data.image,
+                                  name: '${data.name}',
+                                  username: '@${data.username}',
+                                  onTap: () =>
+                                      Get.to(ProfileSCreen(academyID: null)),
+                                )
+                              : const Text("No Data Available"),
                           error: (error, stackTrace) =>
                               Alert.handleError(context, error),
                           loading: () => SizedBox(
@@ -125,10 +121,9 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                       );
                     }),
 
-                    ///
-
                     const SizedBox(height: 5),
-// update notification
+
+// Consumer for updating notifications
                     Consumer(builder: (context, ref, _) {
                       final classNotification =
                           ref.watch(classNotificationProvider);
@@ -136,21 +131,16 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                         height: 1,
                         width: 1,
                         child: classNotification.when(
-                            data: (data) {
-                              if (data == null) {
-                              } else {
-                                print(data);
-                                LocalNotification.scheduleNotifications(data);
-                              }
-                              if (kDebugMode) {
-                                print('Awesome notification created');
-                              }
-
-                              return const SizedBox();
-                            },
-                            error: (error, stackTrace) =>
-                                Alert.handleError(context, error),
-                            loading: () => const SizedBox()),
+                          data: (data) {
+                            if (data != null) {
+                              LocalNotification.scheduleNotifications(data);
+                            }
+                            return const SizedBox();
+                          },
+                          error: (error, stackTrace) =>
+                              Alert.handleError(context, error),
+                          loading: () => const SizedBox(),
+                        ),
                       );
                     }),
 

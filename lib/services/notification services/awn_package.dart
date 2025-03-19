@@ -1,6 +1,9 @@
 //import 'package:awesome_notifications/awesome_notifications.dart';
 
+// ignore_for_file: avoid_print
+
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../core/export_core.dart';
 import '../one signal/onesignla.services.dart';
@@ -50,53 +53,57 @@ class AwesomeNotificationSetup {
 
   //
   static takePermiton(context) {
-    AwesomeNotifications().isNotificationAllowed().then(
-      (isAllowed) {
-        if (!isAllowed) {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: const Text('Allow Routine Notifications'),
-              content: Text(
-                'Our app would like to send you notifications. It will notify you before your class starts.',
-                style: TS.opensensBlue(color: Colors.black),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    //one signal permiton
-                    OneSignalServices.oneSignalPermission();
-                    Navigator.pop(context);
-                  },
-                  child: const Text(
-                    'Don\'t Allow',
-                    style: TextStyle(color: Colors.grey, fontSize: 18),
-                  ),
+    if (!kIsWeb) {
+      AwesomeNotifications().isNotificationAllowed().then(
+        (isAllowed) {
+          if (!isAllowed) {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Allow Routine Notifications'),
+                content: Text(
+                  'Our app would like to send you notifications. It will notify you before your class starts.',
+                  style: TS.opensensBlue(color: Colors.black),
                 ),
-                TextButton(
-                  onPressed: () {
-                    //one signal permiton
-                    OneSignalServices.oneSignalPermission();
-                    //awesome notification permiton
-                    AwesomeNotifications()
-                        .requestPermissionToSendNotifications()
-                        .then((_) => Navigator.pop(context));
-                  },
-                  child: const Text(
-                    'Allow',
-                    style: TextStyle(
-                      color: Colors.teal,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      //one signal permiton
+                      OneSignalServices.oneSignalPermission();
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      'Don\'t Allow',
+                      style: TextStyle(color: Colors.grey, fontSize: 18),
                     ),
                   ),
-                ),
-              ],
-            ),
-          );
-        }
-      },
-    );
+                  TextButton(
+                    onPressed: () {
+                      //one signal permiton
+                      OneSignalServices.oneSignalPermission();
+                      //awesome notification permiton
+                      AwesomeNotifications()
+                          .requestPermissionToSendNotifications()
+                          .then((_) => Navigator.pop(context));
+                    },
+                    child: const Text(
+                      'Allow',
+                      style: TextStyle(
+                        color: Colors.teal,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+        },
+      );
+    } else {
+      print("notifications not supported on web");
+    }
   }
 
   //

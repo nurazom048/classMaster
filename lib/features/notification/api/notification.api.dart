@@ -21,13 +21,13 @@ class NotificationApi {
   Future<Either<Message, NotificationModel>> getNotification() async {
     final bool isOnline = await Utils.isOnlineMethod();
     const String key = 'notification';
-    final bool isCached = await MyApiCash.haveCash(key);
+    final bool isCached = await MyApiCache.haveCache(key);
     final Uri uri = Uri.parse('${Const.BASE_URl}/notification');
 
     try {
       // If offline and have cache
       if (!isOnline && isCached) {
-        final cachedData = await MyApiCash.getData(key);
+        final cachedData = await MyApiCache.getData(key);
         return Right(NotificationModel.fromJson(cachedData));
       }
       // request
@@ -35,7 +35,7 @@ class NotificationApi {
 
       if (response.statusCode == 200) {
         // Save to cache
-        MyApiCash.saveLocal(key: key, response: response.body);
+        MyApiCache.saveLocal(key: key, response: response.body);
         final res = NotificationModel.fromJson(jsonDecode(response.body));
         return Right(res);
       } else {

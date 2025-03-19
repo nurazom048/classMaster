@@ -17,7 +17,7 @@ class SocketService {
 
   // Asynchronous initialization of the socket
   static Future<void> initializeSocket() async {
-    final headers = await LocalData.getHerder(); // Fetch headers asynchronously
+    final headers = await LocalData.getHeader(); // Fetch headers asynchronously
 
     _socket = IO.io(
       'http://10.0.2.2:4000',

@@ -17,7 +17,7 @@ class MemberRequest {
 //
 //**********************   rutin all _members    *********** */
   Future<RoutineMembersModel?> all_members(String routineID) async {
-    final header = await LocalData.getHerder();
+    final header = await LocalData.getHeader();
     final Uri url = Uri.parse('${Const.BASE_URl}/routine/member/$routineID');
 
     try {
@@ -43,7 +43,7 @@ class MemberRequest {
 
 //**********************   addMember   *********** */
   Future<String?> addMemberReq(rutin_id, username) async {
-    final header = await LocalData.getHerder();
+    final header = await LocalData.getHeader();
     try {
       final response = await http.post(
         Uri.parse('${Const.BASE_URl}/routine/member/add/$rutin_id/$username'),
@@ -66,7 +66,7 @@ class MemberRequest {
 
 //**********************   remove members   *********** */
   Future<Message> removeMemberReq(rutin_id, username) async {
-    final header = await LocalData.getHerder();
+    final header = await LocalData.getHeader();
     var url = Uri.parse(
         '${Const.BASE_URl}/routine/member/remove/$rutin_id/$username');
 
@@ -90,7 +90,7 @@ class MemberRequest {
 
   //.... add cap10s.../
   Future<String?> addCaptressReq(routineId, username) async {
-    final header = await LocalData.getHerder();
+    final header = await LocalData.getHeader();
     print("hi i am calling req $routineId  $username");
 
     final url = Uri.parse('${Const.BASE_URl}/routine/captain/add');
@@ -115,7 +115,7 @@ class MemberRequest {
   }
 
   Future<String?> removeCaptansReq(routineId, username) async {
-    final header = await LocalData.getHerder();
+    final header = await LocalData.getHeader();
     print("hi i am calling req $routineId  $username");
 
     final url = Uri.parse('${Const.BASE_URl}/routine/captain/remove');
@@ -140,7 +140,7 @@ class MemberRequest {
   }
 
   Future<Either<String, Message>> sendRequest(String routineId) async {
-    final header = await LocalData.getHerder();
+    final header = await LocalData.getHeader();
     var url =
         Uri.parse("${Const.BASE_URl}/routine/member/send_request/$routineId");
 
@@ -165,7 +165,7 @@ class MemberRequest {
   }
 
   Future<Either<Message, Message>> leaveRequest(rutin_id) async {
-    final header = await LocalData.getHerder();
+    final header = await LocalData.getHeader();
     var url = Uri.parse("${Const.BASE_URl}/routine/member/leave/$rutin_id");
 
     try {
@@ -189,7 +189,7 @@ class MemberRequest {
 
 //***********************   kickOut   ***********************/
   Future<Message> kickOut(rutin_id, memberId) async {
-    final header = await LocalData.getHerder();
+    final header = await LocalData.getHeader();
     var url = Uri.parse(
         "${Const.BASE_URl}/routine/member/kickout/$rutin_id/$memberId");
 
@@ -237,7 +237,7 @@ class MemberRequest {
 
   //....sell all request ....//
   Future<SeeAllRequestModel> see_all_request(routineId) async {
-    final header = await LocalData.getHerder();
+    final header = await LocalData.getHeader();
     final Uri url = Uri.parse(
         '${Const.BASE_URl}/routine/member/see_all_request/$routineId');
     try {
@@ -262,7 +262,7 @@ class MemberRequest {
 
   //...acceptRequest.....//
   Future<Message> acceptRequest(rutinId, username, {bool? acceptAll}) async {
-    final header = await LocalData.getHerder();
+    final header = await LocalData.getHeader();
     final Uri url =
         Uri.parse('${Const.BASE_URl}/routine/member/acsept_request/$rutinId');
     final Map<String, String> headers = header;
@@ -295,7 +295,7 @@ class MemberRequest {
   //
   //...acceptRequest.....//
   Future<Message> rejectRequest(routineId, username) async {
-    final header = await LocalData.getHerder();
+    final header = await LocalData.getHeader();
     final Uri url =
         Uri.parse('${Const.BASE_URl}/routine/member/reject_request/$routineId');
 

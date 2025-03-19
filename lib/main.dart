@@ -35,6 +35,7 @@ void main() async {
   // Initialize Hive
   await Hive.initFlutter();
   await Hive.openBox('signUpInfo'); // Open a box
+
   //* sentry crash report
   await SentryFlutter.init((options) {
     options.dsn =

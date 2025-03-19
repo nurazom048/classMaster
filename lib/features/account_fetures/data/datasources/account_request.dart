@@ -1,11 +1,8 @@
-// ignore_for_file: non_constant_identifier_names, avoid_print
 import 'dart:io' as io;
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-
 import '../../../../core/constant/constant.dart';
 import '../../../../core/local data/api_cashe_maager.dart';
 import '../../../../core/local data/local_data.dart';
@@ -13,65 +10,52 @@ import '../../../../core/models/message_model.dart';
 import '../../../home_fetures/presentation/utils/utils.dart';
 import '../models/account_models.dart';
 
-final AccountReqProvider = Provider<AccountReq>((ref) {
-  return AccountReq();
-});
-//
+// Provider for AccountReq instance
+final accountReqProvider = Provider<AccountReq>((ref) => AccountReq());
 
+// FutureProvider for fetching account data
 final accountDataProvider =
     FutureProvider.family<AccountModels?, String?>((ref, username) async {
-  return ref.watch(AccountReqProvider).getAccountData(username: username);
+  final accountReq = ref.watch(accountReqProvider);
+  return accountReq.getAccountData(username: username);
 });
 
 class AccountReq {
-//... Account data...//
+  // Fetches account data from API or cache
   Future<AccountModels> getAccountData({String? username}) async {
-    final headers = await LocalData.getHerder();
-    final url = username != null
-        ? Uri.parse('${Const.BASE_URl}/account/$username')
-        : Uri.parse('${Const.BASE_URl}/account/');
+    final headers = await LocalData.getHeader();
+    final url = Uri.parse('${Const.BASE_URl}/account/${username ?? ''}');
+    final cacheKey = url.toString();
 
-    final bool isOnline = await Utils.isOnlineMethod();
-    final key = url.toString();
-    var isHaveCash = await MyApiCash.haveCash(key);
+    final isOnline = await Utils.isOnlineMethod();
+    final hasCache = await MyApiCache.haveCache(cacheKey);
+
     try {
-      //  if offline and have cash
-      if (!isOnline && isHaveCash) {
-        var getdata = await MyApiCash.getData(key);
-        return AccountModels.fromJson(getdata);
+      // If offline and cache exists, return cached data
+      if (!isOnline && hasCache) {
+        return AccountModels.fromJson(await MyApiCache.getData(cacheKey));
       }
 
-// Request
+      // Make API request
       final response = await http.post(url, headers: headers);
-      print(response.body);
-
       if (response.statusCode == 200) {
-        // save to csh
-        MyApiCash.saveLocal(key: key, response: response.body);
-        // send response
+        await MyApiCache.saveLocal(key: cacheKey, response: response.body);
         return AccountModels.fromJson(json.decode(response.body));
-      } else {
-        Get.snackbar('Error', json.decode(response.body)['message']);
-        throw 'Error retrieving account data';
       }
-    } on io.SocketException catch (_) {
-      if (isHaveCash) {
-        //
-        final getdata = await MyApiCash.getData(key);
-        return AccountModels.fromJson(getdata);
+      throw Exception(json.decode(response.body)['message'] ?? 'Unknown error');
+    } on io.SocketException {
+      // Return cached data if available
+      if (hasCache) {
+        return AccountModels.fromJson(await MyApiCache.getData(cacheKey));
       }
-      throw 'Failed to load data';
-    } on TimeoutException catch (_) {
-      throw 'TimeOut Exception';
+      throw Exception('No internet connection');
+    } on TimeoutException {
+      throw Exception('Request timed out');
     } catch (e) {
-      Get.snackbar('Error', '$e');
-      // if offline and have cash
-      if (isHaveCash) {
-        //
-        final getdata = await MyApiCash.getData(key);
-        return AccountModels.fromJson(getdata);
+      if (hasCache) {
+        return AccountModels.fromJson(await MyApiCache.getData(cacheKey));
       }
-      rethrow;
+      throw Exception('An unexpected error occurred');
     }
   }
 
@@ -86,7 +70,7 @@ class AccountReq {
     print('form edit account ************* $profileImage');
     try {
       // Get token from shared preferences
-      final headers = await LocalData.getHerder();
+      final headers = await LocalData.getHeader();
       // Create URL
       final url = Uri.parse('${Const.BASE_URl}/account/edit');
 

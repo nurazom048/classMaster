@@ -1,8 +1,6 @@
 // ignore_for_file: non_constant_identifier_names, use_build_context_synchronously, void_checks, avoid_print, unnecessary_null_comparison
 
-import 'dart:io';
-
-import 'package:api_cache_manager/utils/cache_manager.dart';
+import 'package:go_router/go_router.dart';
 import 'package:classmate/core/local%20data/local_data.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,7 +9,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:classmate/features/authentication_fetures/data/datasources/auth_req.dart';
 import 'package:classmate/features/home_fetures/presentation/utils/utils.dart';
@@ -19,6 +16,7 @@ import 'package:classmate/ui/bottom_nevbar_items/bottom_navbar.dart';
 
 import '../../../../core/export_core.dart';
 import '../../../../core/local data/api_cashe_maager.dart';
+import '../../../../route/route_constant.dart';
 import '../../../wellcome_splash/presentation/screen/pending_account.dart';
 import '../screen/LogIn_Screen.dart';
 import '../screen/email_verification.screen.dart';
@@ -140,13 +138,9 @@ class AuthController extends StateNotifier<bool> {
         },
         (data) {
           state = false;
-
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => BottomNavBar(),
-            ),
-          );
+          // land to the Home screen
+          GoRouter.of(context).pushNamed(RouteConst.home);
+          Alert.showSnackBar(context, data);
           Alert.showSnackBar(context, data);
         },
       );
@@ -214,28 +208,27 @@ class AuthController extends StateNotifier<bool> {
     );
   }
 
-  // LogOut
-  static Future<void> logOut(context, {required WidgetRef ref}) async {
+//******** logout  ************ */
+  static Future<void> logOut(BuildContext context,
+      {required WidgetRef ref}) async {
     Alert.errorAlertDialogCallBack(
       context,
-      "Are You Sure To logout ?",
+      "Are You Sure To logout?",
       onConfirm: () async {
         try {
           final User? user = FirebaseAuth.instance.currentUser;
           if (user != null) {
             await FirebaseAuth.instance.signOut();
           }
-          // Remove token and navigate to the login screen
-          // remove all cash and local Directory
-          await LocalData.emptyLocal();
-          await APICacheManager().emptyCache();
-          await MyApiCash.removeAll();
-          var appDir = (await getTemporaryDirectory()).path;
-          Directory(appDir).delete();
 
-          //
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const LoginScreen()));
+          // Clear local data
+          await LocalData.emptyLocal();
+
+          // Ensure navigation happens only if the context is still valid
+          if (!context.mounted) return;
+
+          // 🚀 Replace navigation stack (User cannot go back)
+          GoRouter.of(context).goNamed(RouteConst.login);
         } catch (e) {
           print(e);
           Alert.errorAlertDialog(context, '$e');
