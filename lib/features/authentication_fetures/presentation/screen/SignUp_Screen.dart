@@ -10,6 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
+import 'package:hive/hive.dart';
 import '../../../../core/constant/app_color.dart';
 import '../../../../core/constant/constant.dart';
 import '../../../../core/constant/enum.dart';
@@ -46,7 +47,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final usernameFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
   final confirmPasswordFocusNode = FocusNode();
-
   @override
   void initState() {
     super.initState();
@@ -56,8 +56,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
 
     if (widget.phoneNumberString != null) {
-      emailController.text = widget.phoneNumberString!;
+      phoneNumberController.text = widget.phoneNumberString!;
     }
+
+    var signUpInfoHive = Hive.box('signUpInfo');
+
+    // Load stored signup data if available
+    setState(() {
+      emailController.text = signUpInfoHive.get('email', defaultValue: '');
+      nameController.text = signUpInfoHive.get('name', defaultValue: '');
+      usernameController.text =
+          signUpInfoHive.get('username', defaultValue: '');
+      passwordController.text =
+          signUpInfoHive.get('password', defaultValue: '');
+      eiinController.text = signUpInfoHive.get('eiinNumber', defaultValue: '');
+      contractInfoController.text =
+          signUpInfoHive.get('contractInfo', defaultValue: '');
+    });
+
+    print("Loaded signup data from Hive ${emailController.text}");
   }
 
   @override
@@ -261,6 +278,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
 //
   void signUp(WidgetRef ref) async {
+    var signUpInfoHive = Hive.box('signUpInfo');
+    signUpInfoHive.put('email', emailController.text);
+    signUpInfoHive.put('name', nameController.text);
+    signUpInfoHive.put('username', usernameController.text);
+    signUpInfoHive.put('password', passwordController.text);
+    signUpInfoHive.put('eiinNumber', eiinController.text);
+    signUpInfoHive.put('contractInfo', contractInfoController.text);
+
+    print("Signup data saved in Hive");
+
     //
     ref.read(authController_provider.notifier).createAccount(
           context: context,

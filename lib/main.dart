@@ -11,6 +11,7 @@ import 'package:url_strategy/url_strategy.dart';
 import 'core/constant/constant.dart';
 import 'services/firebase/firebase_options.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,12 +28,13 @@ void main() async {
   };
   // fcm
   FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(!kDebugMode);
-  // }
   // Awesome NotificationSetup
   AwesomeNotificationSetup.initialize();
   // remove # path
   setPathUrlStrategy();
-
+  // Initialize Hive
+  await Hive.initFlutter();
+  await Hive.openBox('signUpInfo'); // Open a box
   //* sentry crash report
   await SentryFlutter.init((options) {
     options.dsn =

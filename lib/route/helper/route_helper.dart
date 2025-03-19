@@ -11,7 +11,6 @@ class RouterHelper {
     final String? token = await LocalData.getAuthToken();
     final String? refreshToken = await LocalData.getRefreshToken();
 
-    // Log tokens and current location for debugging
     print("Token: $token  refreshToken: $refreshToken");
     print("Current location: ${state.location}");
 
@@ -20,18 +19,15 @@ class RouterHelper {
         print('Redirecting authenticated user to /home');
         return '/home'; // Redirect authenticated users to home
       }
-      // Allow navigation for authenticated users
-      return null;
+      return null; // Allow navigation for authenticated users
     }
 
-    // If user is unauthenticated, redirect protected routes to login
-    if (state.location.startsWith('/routine') ||
-        state.location.startsWith('/home')) {
+    // 🚀 Fix: Redirect unauthenticated users from Splash to Login
+    if (state.location == '/') {
       print('Redirecting unauthenticated user to /auth/login');
       return '/auth/login';
     }
 
-    // Allow access for non-protected routes
-    return null;
+    return null; // Allow access for other non-protected routes
   }
 }

@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:classmate/features/authentication_fetures/data/datasources/auth_req.dart';
@@ -61,14 +62,20 @@ class AuthController extends StateNotifier<bool> {
     res.fold((l) async {
       state = false;
       return Alert.showSnackBar(context, l.message);
-    }, (r) {
+    }, (r) async {
       state = false;
 
+      // Delete signup info from Hive
+      var signUpInfoHive = Hive.box('signUpInfo');
+      await signUpInfoHive.clear(); // Clears all stored signup data
+      print("Signup data deleted from Hive");
+
+      // Navigate to Login Screen
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => LoginScreen(
-            emailAddress: username != null ? email : null,
+            emailAddress: username.isNotEmpty ? email : null,
             passwordAddress: password,
             usernameAddress: username,
           ),
