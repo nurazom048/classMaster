@@ -43,7 +43,7 @@ class AccountCardRow extends ConsumerWidget {
     return InkWell(
       onTap: accountData.id != null
           ? () => Get.to(
-                ProfileSCreen(
+                ProfileScreen(
                   academyID: accountData.id,
                   username: accountData.username,
                 ),

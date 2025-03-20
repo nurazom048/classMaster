@@ -15,7 +15,7 @@ import '../../../../core/constant/constant.dart';
 import '../../../../core/constant/image_const.dart';
 
 import '../../../../core/widgets/appWidget/buttons/cupertino_buttons.dart';
-import '../providers/auth_controller.dart';
+import '../../domain/providers/auth_controller.dart';
 import '../utils/validators/forget_validation.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {

@@ -1,5 +1,8 @@
 // ignore_for_file: non_constant_identifier_names, use_build_context_synchronously, void_checks, avoid_print, unnecessary_null_comparison
 
+import 'package:classmate/core/constant/constant.dart';
+import 'package:classmate/core/dialogs/alert_dialogs.dart';
+import 'package:classmate/features/authentication_fetures/presentation/screen/email_verification.screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:classmate/core/local%20data/local_data.dart';
 
@@ -10,16 +13,14 @@ import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:classmate/features/authentication_fetures/data/datasources/auth_req.dart';
-import 'package:classmate/features/home_fetures/presentation/utils/utils.dart';
-import 'package:classmate/ui/bottom_nevbar_items/bottom_navbar.dart';
 
-import '../../../../core/export_core.dart';
-import '../../../../core/local data/api_cashe_maager.dart';
+import '../../../../core/models/message_model.dart';
 import '../../../../route/route_constant.dart';
+import '../../../../ui/bottom_navbar.dart';
+import '../../../home_fetures/presentation/utils/utils.dart';
 import '../../../wellcome_splash/presentation/screen/pending_account.dart';
-import '../screen/LogIn_Screen.dart';
-import '../screen/email_verification.screen.dart';
+import '../../data/datasources/auth_req.dart';
+import '../../presentation/screen/LogIn_Screen.dart';
 
 final authController_provider =
     StateNotifierProvider.autoDispose<AuthController, bool>(

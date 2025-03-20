@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../../core/dialogs/alert_dialogs.dart';
-import '../screen/cranditial_info_screen.dart';
+import '../../presentation/screen/cranditial_info_screen.dart';
 import 'auth_controller.dart';
 
 //! provider

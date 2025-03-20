@@ -28,7 +28,6 @@ class OneSignalServices {
         }
       });
     } else {
-      print("OneSignal not supported on web");
       // Optionally implement a web-specific notification system (e.g., browser notifications)
     }
   }

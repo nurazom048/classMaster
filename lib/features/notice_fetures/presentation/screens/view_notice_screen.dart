@@ -49,7 +49,7 @@ class NoticeViewScreen extends StatelessWidget {
                 MiniAccountInfo(
                   accountData: notice.account,
                   hideMore: true,
-                  onTap: () => Get.to(() => ProfileSCreen(
+                  onTap: () => Get.to(() => ProfileScreen(
                         academyID: notice.account.id,
                         username: notice.account.username,
                       )),

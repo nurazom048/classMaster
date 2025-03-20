@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constant/app_color.dart';
 
-import '../providers/auth_controller.dart';
+import '../../domain/providers/auth_controller.dart';
 import '../utils/validators/change_pw_validator.dart';
 
 class ChangePasswordPage extends ConsumerStatefulWidget {

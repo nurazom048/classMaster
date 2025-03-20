@@ -13,8 +13,9 @@ import '../../../../core/widgets/appWidget/app_text.dart';
 import '../../../../core/widgets/heder/heder_title.dart';
 
 import '../../../../route/route_constant.dart';
-import '../providers/auth_controller.dart';
-import '../providers/google_auth_controller.dart';
+import '../../domain/providers/auth_controller.dart';
+import '../../domain/providers/google_auth_controller.dart';
+
 import '../utils/validators/Login_validation.dart';
 import '../widgets/static_widget/or.dart';
 import '../widgets/static_widget/sign_up_page_switch.dart';

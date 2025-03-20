@@ -11,8 +11,8 @@ import '../../../../core/constant/enum.dart';
 import '../../../../core/dialogs/alert_dialogs.dart';
 
 import '../../../../core/widgets/appWidget/buttons/cupertino_buttons.dart';
-import '../providers/auth_controller.dart';
-import '../providers/google_auth_controller.dart';
+import '../../domain/providers/auth_controller.dart';
+import '../../domain/providers/google_auth_controller.dart';
 import '../utils/validators/singUp_validation.dart';
 import '../widgets/static_widget/who_are_you_button.dart';
 import 'SignUp_Screen.dart';

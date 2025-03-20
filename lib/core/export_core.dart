@@ -24,4 +24,4 @@ export '../core/widgets/setting_options.dart';
 export '../core/app_icons_icons.dart';
 export '../core/app_icons_icons.dart';
 export '../core/app_icons_icons.dart';
-export '../core/app_icons_icons.dart';
+export 'helper/app_exception.dart';

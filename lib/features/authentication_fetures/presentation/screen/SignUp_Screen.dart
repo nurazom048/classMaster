@@ -14,7 +14,7 @@ import 'package:hive/hive.dart';
 import '../../../../core/constant/app_color.dart';
 import '../../../../core/constant/constant.dart';
 import '../../../../core/constant/enum.dart';
-import '../providers/auth_controller.dart';
+import '../../domain/providers/auth_controller.dart';
 import '../utils/validators/singUp_validation.dart';
 import '../widgets/static_widget/sign_up_page_switch.dart';
 import '../widgets/static_widget/who_are_you_button.dart';

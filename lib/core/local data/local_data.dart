@@ -4,7 +4,6 @@ class LocalData {
   static const String _authBox = 'authBox';
   static const String _accountType = "AccountType";
   static const String _username = "username";
-  static const String _authToken = "authToken";
   static const String _refreshToken = "refreshToken";
 
 //***********************************************************************************///
@@ -49,11 +48,9 @@ class LocalData {
   }
 
   static Future<void> setHerder(response) async {
-    final authToken = response.headers?['authorization'] as String?;
     final newRefreshToken = response.headers?['x-refresh-token'] as String?;
 
     if (newRefreshToken != null && newRefreshToken.isNotEmpty) {
-      print('New RefreshToken saved');
       await LocalData.saveRefreshToken(newRefreshToken);
     }
   }

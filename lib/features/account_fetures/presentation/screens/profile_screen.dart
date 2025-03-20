@@ -13,102 +13,73 @@ import '../../../notice_fetures/presentation/providers/view_recent_notice_contro
 import '../../../../core/widgets/widgets/recentnoticeslider_scalton.dart';
 import '../../../../core/widgets/widgets/slider/recentniticeslider_item.dart';
 import '../../../../core/widgets/widgets/slider/recentnoticeslider.dart';
-import '../../data/datasources/account_request.dart';
+import '../../domain/providers/account_providers.dart';
 import '../widgets/profile_top.widgetsl.dart';
 
-class ProfileSCreen extends StatelessWidget {
-  ProfileSCreen({super.key, this.academyID, this.username});
+class ProfileScreen extends ConsumerWidget {
+  const ProfileScreen({super.key, this.academyID, this.username});
 
   final String? academyID;
   final String? username;
-  final scrollController = ScrollController();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     print("academyID : $academyID");
     print("username : $username");
-    return Consumer(builder: (context, ref, _) {
-      //!provider
 
-      final recentNoticeList = ref.watch(recentNoticeController(academyID));
-      final accountData = ref.watch(accountDataProvider(username));
-      final uploadedRoutines =
-          ref.watch(homeRoutineControllerProvider(academyID));
-      final uploadedRoutinesNotifier =
-          ref.watch(homeRoutineControllerProvider(academyID).notifier);
+    //! Riverpod Providers
+    final recentNoticeList = ref.watch(recentNoticeController(academyID));
+    final accountData = ref.watch(accountDataProvider(username));
+    final uploadedRoutines =
+        ref.watch(homeRoutineControllerProvider(academyID));
 
-      //
+    // Read notifier instead of watching to prevent unnecessary rebuilds
+    final uploadedRoutinesNotifier =
+        ref.read(homeRoutineControllerProvider(academyID).notifier);
 
-      return SafeArea(
-        child: Scaffold(
-          body: ListView(
-            children: [
-              HeaderTitle(
-                "Profile",
-                context,
-                margin:
-                    const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-              ),
+    return SafeArea(
+      child: Scaffold(
+        body: ListView(
+          children: [
+            HeaderTitle(
+              "Profile",
+              context,
+              margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+            ),
 
-              //! Profile Top
-
-              accountData.when(
-                data: (data) {
-                  print("account type : ${data?.accountType}");
-                  return Column(
+            //! Profile Top
+            accountData.when(
+              data: (data) {
+                return data.fold(
+                  (l) => const Center(child: Text("User data not found")),
+                  (r) => Column(
                     children: [
-                      // Profile Top
-                      ProfileTop(accountData: data),
+                      ProfileTop(accountData: r),
 
-                      // NoticeBoard
-
-                      if (data != null && data.accountType == "academy") ...[
+                      //! Notice Board Section (For Academy)
+                      if (r.accountType == "academy") ...[
                         NoticeBoardHeader(
-                            academyID: data.id!, accountdata: data),
+                          academyID: r.id!,
+                          accountdata: r,
+                        ),
                         SizedBox(
                           height: 181,
                           child: recentNoticeList.when(
-                            data: (data) {
-                              int length = data.notices.length;
+                            data: (noticeData) {
+                              int length = noticeData.notices.length;
                               return RecentNoticeSlider(
                                 ukey: '$academyID',
-                                list: <Widget>[
-                                  RecentNoticeSliderItem(
+                                list: List.generate(
+                                  (length / 2).ceil(),
+                                  (index) => RecentNoticeSliderItem(
                                     emptyMessage: 'No Recent Notice here',
-                                    notice: data.notices,
-                                    index: 0,
-                                    condition: length >= 2,
-                                    singleCondition: length == 1,
-                                    recentNotice: data,
+                                    notice: noticeData.notices,
+                                    index: index * 2,
+                                    condition: length >= (index + 1) * 2,
+                                    singleCondition: length == index * 2 + 1,
+                                    recentNotice: noticeData,
                                   ),
-
-                                  //
-                                  RecentNoticeSliderItem(
-                                    emptyMessage: 'No Recent Notice here',
-                                    notice: data.notices,
-                                    index: 2,
-                                    condition: length >= 4,
-                                    singleCondition: length == 3,
-                                    recentNotice: data,
-                                  ), //
-                                  RecentNoticeSliderItem(
-                                    emptyMessage: 'No Recent Notice here',
-                                    notice: data.notices,
-                                    index: 3,
-                                    condition: length >= 6,
-                                    singleCondition: length == 5,
-                                    recentNotice: data,
-                                  ),
-
-                                  RecentNoticeSliderItem(
-                                    emptyMessage: 'No Recent Notice here',
-                                    notice: data.notices,
-                                    index: 4,
-                                    condition: length >= 8,
-                                    singleCondition: length == 7,
-                                    recentNotice: data,
-                                  ),
-                                ],
+                                ),
                               );
                             },
                             error: (error, stackTrace) =>
@@ -118,47 +89,44 @@ class ProfileSCreen extends StatelessWidget {
                         ),
                       ]
                     ],
+                  ),
+                );
+              },
+              error: (error, stackTrace) => Alert.handleError(context, error),
+              loading: () => Loaders.center(height: 400),
+            ),
+
+            //! Routines Section
+            const SizedBox(height: 20),
+            Text("   Routines", style: TS.heading()),
+            const SizedBox(height: 10),
+
+            uploadedRoutines.when(
+              data: (routineData) => ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                padding: const EdgeInsets.only(bottom: 100),
+                itemCount: routineData.homeRoutines.length,
+                itemBuilder: (context, index) {
+                  final routine = routineData.homeRoutines[index];
+                  return RoutineBoxById(
+                    routineId: routine.id,
+                    rutinName: routine.routineName,
+                    onTapMore: () => RoutineDialog.CheckStatusUser_BottomSheet(
+                      context,
+                      routineID: routine.id,
+                      routineName: routine.routineName,
+                      routinesController: uploadedRoutinesNotifier,
+                    ),
                   );
                 },
-                error: (error, stackTrace) => Alert.handleError(context, error),
-                loading: () => Loaders.center(height: 400),
               ),
-
-              //
-
-              //********** Routines ***********************/
-              Text("   Routines", style: TS.heading()),
-              const SizedBox(height: 10),
-              uploadedRoutines.when(
-                data: (data) {
-                  //
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    padding: const EdgeInsets.only(bottom: 100),
-                    itemCount: data.homeRoutines.length,
-                    itemBuilder: (context, index) {
-                      return RoutineBoxById(
-                        routineId: data.homeRoutines[index].id,
-                        rutinName: data.homeRoutines[index].routineName,
-                        onTapMore: () =>
-                            RoutineDialog.CheckStatusUser_BottomSheet(
-                          context,
-                          routineID: data.homeRoutines[index].id,
-                          routineName: data.homeRoutines[index].routineName,
-                          routinesController: uploadedRoutinesNotifier,
-                        ),
-                      );
-                    },
-                  );
-                },
-                loading: () => RUTINE_BOX_SKELTON,
-                error: (error, stackTrace) => Alert.handleError(context, error),
-              ),
-            ],
-          ),
+              loading: () => RUTINE_BOX_SKELTON,
+              error: (error, stackTrace) => Alert.handleError(context, error),
+            ),
+          ],
         ),
-      );
-    });
+      ),
+    );
   }
 }
