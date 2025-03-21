@@ -1,153 +1,78 @@
-// ignore_for_file: avoid_print, unnecessary_null_comparison, deprecated_member_use
+// ignore_for_file: avoid_print, unnecessary_null_comparison
 
-import 'dart:io';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:classmate/core/constant/enum.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image/image.dart' as img; // Alias to avoid conflicts
 import 'package:path_provider/path_provider.dart';
-
-import '../../core/constant/enum.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'dart:typed_data';
 
 class Multiple {
-  //! Pick image and compressed....//
-  static Future<String?> pickAndCompressImage() async {
-    // Define a method that compresses the image and returns the compressed image path
-    Future<String?> compressAndReturnImagePath() async {
-      // Pick an image from the gallery
-      final picker = ImagePicker();
-      final pickedFile = await picker.getImage(source: ImageSource.gallery);
-
-      // If no image was picked, return null
-      if (pickedFile == null) {
-        return null;
-      }
-
-      // Read the image bytes and get the original size
-      final imageBytes = await pickedFile.readAsBytes();
-      final originalSize = imageBytes.length;
-
-      // Compress the image with the specified dimensions and quality
-      final compressedBytes = await FlutterImageCompress.compressWithList(
-        imageBytes,
-        minHeight: 800,
-        minWidth: 800,
-        quality: 70,
-      );
-
-      // If compression failed, return a default image path
-      if (compressedBytes == null) {
-        return 'assets/images/default_image.jpg';
-      }
-
-      // Save the compressed image to temporary directory
-      final directory = await getTemporaryDirectory();
-      final path =
-          '${directory.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
-      final compressedImageFile = File(path);
-      await compressedImageFile.writeAsBytes(compressedBytes);
-
-      // Get the compressed size and print the original and compressed sizes and the compressed image path
-      final compressedSize = compressedImageFile.lengthSync();
-      print('Original size: ${originalSize ~/ 1024} KB');
-      print('Compressed size: ${compressedSize ~/ 1024} KB');
-      print('Compressed image path: $path');
-
-      // Return the compressed image path
-      return compressedImageFile.path;
-    }
-
-    // Compress the image and return the compressed image path
-    return await compressAndReturnImagePath();
-  }
-
-//? Pick multiple image
-  static Future<List<String>?> pickAndCompressMultipleImages() async {
-    // Define a method that compresses the images and returns a list of compressed image paths
-    Future<List<String>?> compressAndReturnImagePaths(
-        List<XFile> pickedFiles) async {
-      List<String> compressedImagePaths = [];
-
-      for (int i = 0; i < pickedFiles.length; i++) {
-        // Read the image bytes and get the original size
-        final imageBytes = await pickedFiles[i].readAsBytes();
-        final originalSize = imageBytes.length;
-
-        // Compress the image with the specified dimensions and quality
-        final compressedBytes = await FlutterImageCompress.compressWithList(
-          imageBytes,
-          minHeight: 800,
-          minWidth: 800,
-          quality: 70,
-        );
-
-        // If compression failed, skip this image
-        if (compressedBytes == null) {
-          continue;
-        }
-
-        // Save the compressed image to temporary directory
-        final directory = await getTemporaryDirectory();
-        final path =
-            '${directory.path}/${DateTime.now().millisecondsSinceEpoch}_$i.jpg';
-        final compressedImageFile = File(path);
-        await compressedImageFile.writeAsBytes(compressedBytes);
-
-        // Get the compressed size and print the original and compressed sizes and the compressed image path
-        final compressedSize = compressedImageFile.lengthSync();
-        print('Original size: ${originalSize ~/ 1024} KB');
-        print('Compressed size: ${compressedSize ~/ 1024} KB');
-        print('Compressed image path: $path');
-
-        // Add the compressed image path to the list
-        compressedImagePaths.add(compressedImageFile.path);
-      }
-
-      if (compressedImagePaths.isNotEmpty) {
-        // Return the list of compressed image paths
-        return compressedImagePaths;
-      } else {
-        // Return null if no images were successfully compressed
-        return null;
-      }
-    }
-
-    // Pick multiple images from the gallery
+  static Future<List<XFile>?> pickAndCompressMultipleImages() async {
+    print('Starting image picker');
     final picker = ImagePicker();
     final pickedFiles = await picker.pickMultiImage();
+    print('Picker completed');
 
-    // If no images were picked, return null
     if (pickedFiles == null || pickedFiles.isEmpty) {
+      print('No images picked');
       return null;
     }
 
-    // Compress the images and return the list of compressed image paths
-    return await compressAndReturnImagePaths(pickedFiles);
+    print('Picked ${pickedFiles.length} images');
+    List<XFile> compressedImages = [];
+
+    for (var pickedFile in pickedFiles) {
+      print('Processing image: ${pickedFile.path}');
+      final imageBytes = await pickedFile.readAsBytes();
+      final originalSize = imageBytes.length;
+      print('Original size: ${originalSize ~/ 1024} KB');
+
+      // Decode the image
+      img.Image? decodedImage = img.decodeImage(imageBytes);
+      if (decodedImage == null) {
+        print('Failed to decode image: ${pickedFile.path}');
+        continue;
+      }
+
+      // Resize to minHeight: 800, minWidth: 800 while maintaining aspect ratio
+      img.Image resizedImage = img.copyResize(
+        decodedImage,
+        width: decodedImage.width > 800 ? 800 : decodedImage.width,
+        height: decodedImage.height > 800 ? 800 : decodedImage.height,
+        //maintainAspect: true,
+      );
+
+      // Compress to JPEG with quality 70
+      final Uint8List compressedBytes = Uint8List.fromList(
+        img.encodeJpg(resizedImage, quality: 70),
+      );
+      final compressedSize = compressedBytes.length;
+      print('Compressed size: ${compressedSize ~/ 1024} KB');
+
+      if (kIsWeb) {
+        // Web: Create XFile from bytes
+        final compressedXFile = XFile.fromData(
+          compressedBytes,
+          name: pickedFile.name,
+          mimeType: 'image/jpeg',
+        );
+        compressedImages.add(compressedXFile);
+        print('Web: Compressed image added - ${compressedXFile.path}');
+      } else {
+        // Native: Save to temp directory
+        final directory = await getTemporaryDirectory();
+        final path =
+            '${directory.path}/${DateTime.now().millisecondsSinceEpoch}_${pickedFile.name}';
+
+        print('Compressed image path: $path');
+        compressedImages.add(XFile(path));
+      }
+    }
+
+    print('Total images picked and compressed: ${compressedImages.length}');
+    return compressedImages.isNotEmpty ? compressedImages : null;
   }
-
-  //!.. Simple image pick ...
-
-  // Future<void> _pickImage(ImageSource source) async {
-  //
-  //     final picker = ImagePicker();
-  //     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-  //     setState(() {
-  //       print("image path " + _image.toString());
-
-  //       print("the image is" + _image.toString());
-  //       if (pickedFile != null) {
-  //         _image = File(pickedFile.path);
-
-  //         //... save token
-  //       }
-  //     });
-
-  //     if (_image != null) {
-  //       final prefs = await SharedPreferences.getInstance();
-  //       var saveImage = await prefs.setString('Image', _image!.path);
-  //     }
-
-  //     // print(e);
-  //  }
-  // }
 
   static String getAccountType(String? type) {
     if (type == null) {

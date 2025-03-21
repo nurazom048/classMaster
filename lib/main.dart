@@ -1,24 +1,32 @@
+// Core Flutter and Dart imports
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+
+// State management and routing
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import 'package:classmate/route/app_router.dart';
+
+// Firebase-related imports
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:classmate/services/notification%20services/awn_package.dart';
-import 'package:url_strategy/url_strategy.dart';
-import 'core/constant/constant.dart';
 import 'services/firebase/firebase_options.dart';
+
+// Third-party utilities
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:url_strategy/url_strategy.dart';
+
+// App-specific imports
+import 'core/constant/constant.dart';
+import 'services/notification services/awn_package.dart'; // Fixed typo in path
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  //firebase
+  //firebase initialize
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
   //crashlytics
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;

@@ -1,9 +1,11 @@
+import 'package:image_picker/image_picker.dart';
+
 class AccountUpdate {
   final String name;
   final String username;
   final String about;
-  final String? profileImage;
-  final String? coverImage;
+  final XFile? profileImage;
+  final XFile? coverImage;
 
   const AccountUpdate({
     required this.name,

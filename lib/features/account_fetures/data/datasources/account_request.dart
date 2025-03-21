@@ -1,8 +1,12 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io' as io;
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import '../../../../core/local data/api_cashe_maager.dart';
 import '../../../../core/local data/local_data.dart';
 import '../../../home_fetures/presentation/utils/utils.dart';
@@ -61,8 +65,8 @@ class AccountRepositoryImpl implements AccountRepository {
     required String name,
     required String username,
     required String about,
-    String? profileImage,
-    String? coverImage,
+    XFile? profileImage,
+    XFile? coverImage,
   }) async {
     try {
       final headers = await LocalData.getHeader();
@@ -75,12 +79,39 @@ class AccountRepositoryImpl implements AccountRepository {
       request.fields['about'] = about;
 
       if (profileImage != null) {
-        final image = await http.MultipartFile.fromPath('image', profileImage);
-        request.files.add(image);
+        if (kIsWeb) {
+          // Web: Use bytes
+          final bytes = await profileImage.readAsBytes();
+          request.files.add(http.MultipartFile.fromBytes(
+            'image',
+            bytes,
+            filename: profileImage.name,
+          ));
+        } else {
+          // Native: Use file path
+          request.files.add(await http.MultipartFile.fromPath(
+            'image',
+            profileImage.path, // Use .path here
+          ));
+        }
       }
+
       if (coverImage != null) {
-        final cover = await http.MultipartFile.fromPath('cover', coverImage);
-        request.files.add(cover);
+        if (kIsWeb) {
+          // Web: Use bytes
+          final bytes = await coverImage.readAsBytes();
+          request.files.add(http.MultipartFile.fromBytes(
+            'cover',
+            bytes,
+            filename: coverImage.name,
+          ));
+        } else {
+          // Native: Use file path
+          request.files.add(await http.MultipartFile.fromPath(
+            'cover',
+            coverImage.path, // Use .path here
+          ));
+        }
       }
 
       final streamedResponse = await request.send();
@@ -91,8 +122,10 @@ class AccountRepositoryImpl implements AccountRepository {
       }
 
       return Left(AppException(
-          message: 'Failed to update account: ${response.statusCode}'));
+        message: 'Failed to update account: ${response.statusCode}',
+      ));
     } catch (e) {
+      print('Error in updateAccount: $e');
       return Left(AppException(message: 'Error updating account: $e'));
     }
   }

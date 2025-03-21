@@ -2,9 +2,10 @@
 
 import 'dart:convert';
 import 'package:classmate/features/routine_summary_fetures/presentation/socket%20services/socketCon.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:http/http.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../../core/export_core.dart';
 import '../../../../core/local data/local_data.dart';
 import '../../../routine_Fetures/data/models/check_status_model.dart';
@@ -22,49 +23,49 @@ class SummaryRequest {
     required String classId,
     required String routineId,
     required String message,
-    required List<String> imageLinks,
+    required List<XFile> imageLinks, // Changed to XFile
     required bool checkedType,
   }) async {
     final Map<String, String> headers = await LocalData.getHeader();
-
     final uri = Uri.parse('${Const.BASE_URl}/summary/add/$classId');
 
     try {
       var request = http.MultipartRequest('POST', uri);
-
-      // Add the authorization header
       request.headers.addAll(headers);
 
-      // Add the message field
       request.fields['message'] = message;
       request.fields['checkedType'] = checkedType.toString();
 
-      // Convert the image links to multipart files and add to the request
-      for (int i = 0; i < imageLinks.length; i++) {
-        MultipartFile file =
-            await http.MultipartFile.fromPath('imageLinks', imageLinks[i]);
-        request.files.add(file);
+      // Add images based on platform
+      for (var image in imageLinks) {
+        if (kIsWeb) {
+          final bytes = await image.readAsBytes();
+          request.files.add(http.MultipartFile.fromBytes(
+            'imageLinks',
+            bytes,
+            filename: image.name,
+          ));
+        } else {
+          request.files.add(await http.MultipartFile.fromPath(
+            'imageLinks',
+            image.path,
+          ));
+        }
       }
-// socket to this room
 
+      // Socket notification
       SocketService.sendMessage(room: routineId);
 
-      // Send the request and wait for the response
-
       var streamedResponse = await request.send();
-
       var rs = await http.Response.fromStream(streamedResponse);
       final result = jsonDecode(rs.body) as Map<String, dynamic>;
 
       if (streamedResponse.statusCode == 201) {
-        // print('Summary created successfully');
         return right(Message(message: result["message"].toString()));
       } else {
-        // print('Error creating summary: ${response.reasonPhrase}');
         return right(Message(message: result["message"].toString()));
       }
     } catch (error) {
-      //print('Error creating summary: $error');
       return left(Message(message: error.toString()));
     }
   }

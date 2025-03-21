@@ -5,7 +5,8 @@ import 'package:classmate/core/export_core.dart';
 import 'package:classmate/features/account_fetures/presentation/utils/eddit_account.validation.dart';
 import '../../data/models/account_models.dart';
 import '../../data/models/account_update.dart';
-import '../../domain/providers/account_providers.dart'; // Assuming providers are here
+import '../../domain/providers/account_providers.dart';
+import 'package:image_picker/image_picker.dart'; // For XFile
 
 class EditAccount extends ConsumerStatefulWidget {
   const EditAccount({super.key});
@@ -27,8 +28,8 @@ class _EditAccountState extends ConsumerState<EditAccount> {
 
   // State
   bool isLoading = false;
-  String? profileImagePath;
-  String? coverImagePath;
+  XFile? profileImage; // Changed to XFile?
+  XFile? coverImage; // Changed to XFile?
   String? netProfileImage;
   String? netCoverImage;
 
@@ -65,9 +66,9 @@ class _EditAccountState extends ConsumerState<EditAccount> {
                   netWorkCoverImage: netCoverImage,
                   isEddit: true,
                   onCoverImagePath: (coverPath) =>
-                      setState(() => coverImagePath = coverPath),
+                      setState(() => coverImage = coverPath),
                   onImagePathSelected: (profilePath) =>
-                      setState(() => profileImagePath = profilePath),
+                      setState(() => profileImage = profilePath),
                 ),
                 AppTextFromField(
                   controller: nameController,
@@ -106,12 +107,9 @@ class _EditAccountState extends ConsumerState<EditAccount> {
   }
 
   Future<void> _loadInitialData() async {
-    // Await the Future to get the Either result
     final Either<AppException, AccountModels> eitherResult =
         await ref.read(accountDataProvider(null).future);
     eitherResult.fold(
-      // Now you can safely call fold on the Either result
-
       (error) => Alert.showSnackBar(context, 'Failed to load data: $error'),
       (account) {
         if (mounted) {
@@ -135,15 +133,13 @@ class _EditAccountState extends ConsumerState<EditAccount> {
       name: nameController.text,
       username: usernameController.text,
       about: aboutController.text,
-      profileImage: profileImagePath,
-      coverImage: coverImagePath,
+      profileImage: profileImage, // Now XFile?
+      coverImage: coverImage, // Now XFile?
     );
 
-    // Await the Future to get the Either result
     final Either<AppException, String> eitherResult =
         await ref.read(updateAccountProvider(updateData).future);
 
-    // Use fold after awaiting the result
     eitherResult.fold(
       (error) => Alert.showSnackBar(context, 'Update failed: $error'),
       (message) {

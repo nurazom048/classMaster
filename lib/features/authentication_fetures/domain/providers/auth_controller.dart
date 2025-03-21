@@ -3,6 +3,7 @@
 import 'package:classmate/core/constant/constant.dart';
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
 import 'package:classmate/features/authentication_fetures/presentation/screen/email_verification.screen.dart';
+import 'package:classmate/features/notice_fetures/presentation/utils/pdf_utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:classmate/core/local%20data/local_data.dart';
 
@@ -224,7 +225,7 @@ class AuthController extends StateNotifier<bool> {
 
           // Clear local data
           await LocalData.emptyLocal();
-
+          await PdfUtils.clearPdfCache(); // Clear cache on logout
           // Ensure navigation happens only if the context is still valid
           if (!context.mounted) return;
 

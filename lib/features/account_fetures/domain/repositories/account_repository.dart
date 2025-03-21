@@ -1,4 +1,5 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../../core/export_core.dart';
 import '../../data/models/account_models.dart';
 
@@ -9,7 +10,7 @@ abstract class AccountRepository {
     required String name,
     required String username,
     required String about,
-    String? profileImage,
-    String? coverImage,
+    XFile? profileImage, // Changed from String? to XFile?
+    XFile? coverImage, // Changed from String? to XFile?
   });
 }

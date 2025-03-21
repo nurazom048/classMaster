@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:classmate/features/routine_summary_fetures/data/models/all_summary_models.dart';
 import 'package:classmate/features/routine_summary_fetures/data/datasources/summary_request.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../core/models/message_model.dart';
 import '../screens/add_summary.dart';
@@ -80,17 +81,18 @@ class SummaryController extends StateNotifier<AsyncValue<AllSummaryModel>> {
   }
 
   //.. add summary..
+
   void addSummary(
     WidgetRef ref,
     context, {
     required String classId,
     required String routineId,
     required String message,
-    required List<String> imageLinks,
+    required List<XFile> imageLinks, // Changed to XFile
     required bool checkedType,
   }) async {
     ref.watch(loaderProvider.notifier).update((state) => true);
-    //
+
     Either<Message, Message> res = await SummaryRequest.addSummaryRequest(
       classId: classId,
       routineId: routineId,
@@ -98,17 +100,17 @@ class SummaryController extends StateNotifier<AsyncValue<AllSummaryModel>> {
       imageLinks: imageLinks,
       checkedType: checkedType,
     );
+
     ref.watch(loaderProvider.notifier).update((state) => false);
 
-    //
-    res.fold((error) {
-      return Alert.errorAlertDialog(context, error.message);
-    }, (r) {
-      ref.refresh(summaryControllerProvider(classId));
-
-      Navigator.of(context).pop();
-      return Alert.showSnackBar(context, r.message);
-    });
+    res.fold(
+      (error) => Alert.errorAlertDialog(context, error.message),
+      (r) {
+        ref.refresh(summaryControllerProvider(classId));
+        Navigator.of(context).pop();
+        Alert.showSnackBar(context, r.message);
+      },
+    );
   }
 
   // DELETE summary
