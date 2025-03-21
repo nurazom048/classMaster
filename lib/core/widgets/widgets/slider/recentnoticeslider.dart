@@ -1,4 +1,4 @@
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider/carousel_slider.dart' as slider;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -36,8 +36,8 @@ class RecentNoticeSlider extends StatelessWidget {
               width: double.infinity,
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(5)),
-              child: CarouselSlider(
-                options: CarouselOptions(
+              child: slider.CarouselSlider(
+                options: slider.CarouselOptions(
                   height: 120.0,
                   viewportFraction: 1,
                   onPageChanged: (index, reason) {

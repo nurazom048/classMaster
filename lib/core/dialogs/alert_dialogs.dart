@@ -106,6 +106,7 @@ abstract class Alert {
   static Widget handleError(BuildContext context, dynamic error,
       {Widget? child}) {
     Future.delayed(const Duration(seconds: 4), () {
+      // ignore: use_build_context_synchronously
       showSnackBar(context, error.toString());
       // Get.showSnackbar(GetSnackBar(message: '$error'));
     });

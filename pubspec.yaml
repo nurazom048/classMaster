@@ -21,7 +21,7 @@ dependencies:
   toggle_switch: ^2.1.0
   pinput: ^2.2.31
   smooth_page_indicator: ^1.1.0
-  carousel_slider: ^4.2.1
+  carousel_slider: ^5.0.0
   custom_pop_up_menu: ^1.2.4
   expandable_text: ^2.3.0
 
@@ -33,7 +33,7 @@ dependencies:
 
   # State Management and Utilities
   flutter_riverpod: ^2.2.0
-  get: ^4.6.5
+  get: ^4.7.2
   fpdart: ^0.5.0
   email_validator: ^2.1.16
   intl: ^0.18.1
@@ -46,17 +46,17 @@ dependencies:
   path_provider: ^2.0.15
   cached_network_image: ^3.2.3
   # File and Media Handling
-  image_picker: ^1.0.7
-  file_picker: ^5.3.1
+  image_picker: ^1.1.2  # Latest as of March 2025, check pub.dev for updates
+  file_picker: ^9.2.1
   image: ^4.1.7
   flutter_document_picker: ^5.2.3
   flutter_dropzone: ^3.0.5
   mime: ^1.0.4
-  syncfusion_flutter_pdfviewer: ^21.2.3
+  syncfusion_flutter_pdfviewer: ^20.4.54
 
   # Firebase and Analytics
   firebase_core: ^2.9.0
-  firebase_auth: 
+  firebase_auth:
   firebase_crashlytics: ^3.3.3
   firebase_analytics: ^10.4.3
   google_sign_in: ^6.1.0
@@ -73,6 +73,7 @@ dependencies:
   app_settings: ^4.2.0
   sentry_flutter: ^7.14.0
   flutter_lints: ^2.0.0
+
 
 dev_dependencies:
   flutter_test:

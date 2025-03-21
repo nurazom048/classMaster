@@ -1,4 +1,4 @@
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider/carousel_slider.dart' as slider;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -31,7 +31,7 @@ class ViewImagesFullScreen extends ConsumerWidget {
           const SizedBox(width: 16),
         ],
       ),
-      body: CarouselSlider(
+      body: slider.CarouselSlider(
           items: List.generate(
             images.length,
             (index) {
@@ -47,7 +47,7 @@ class ViewImagesFullScreen extends ConsumerWidget {
               );
             },
           ),
-          options: CarouselOptions(
+          options: slider.CarouselOptions(
             height: MediaQuery.of(context).size.height,
 
             //height: 400,

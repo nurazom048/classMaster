@@ -1,9 +1,8 @@
 // ignore_for_file: avoid_print, unused_result, library_prefixes, unused_local_variable, unnecessary_null_comparison
 import 'dart:io' as Io;
-import 'package:mime/mime.dart';
+import 'package:flutter/foundation.dart';
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
@@ -13,6 +12,7 @@ import '../../../../../core/local data/api_cashe_maager.dart';
 import '../../../../../core/local data/local_data.dart';
 import '../../../../core/models/message_model.dart';
 import '../../../home_fetures/presentation/utils/utils.dart';
+import '../../domain/interface/pdf_interface.dart' show PdfFileData;
 import '../models/recent_notice_model.dart';
 
 // recent notice
@@ -79,21 +79,11 @@ class NoticeRequest {
   Future<Either<String, String>> addNotice({
     String? contentName,
     String? description,
-    String? pdfFile,
+    PdfFileData? pdfFileData,
     required WidgetRef ref,
   }) async {
-    // Obtain shared preferences.
-
     final headers = await LocalData.getHeader();
     final url = Uri.parse('${Const.BASE_URl}/notice/add/');
-
-    File thePdf = File(pdfFile!);
-    String? mineType = lookupMimeType(pdfFile);
-
-    //
-    if (mineType != 'application/pdf') {
-      return left('Only PDF file is allow');
-    }
 
     final request = http.MultipartRequest('POST', url);
     request.headers.addAll(headers);
@@ -101,29 +91,45 @@ class NoticeRequest {
     request.fields['description'] = description ?? '';
     request.fields['mimetypeChecked'] = "true";
 
-    if (pdfFile != null) {
+    if (pdfFileData != null) {
       try {
-        final pdfPath = await http.MultipartFile.fromPath('pdf_file', pdfFile);
-        print("pdf path: $pdfFile");
-        request.files.add(pdfPath);
+        if (kIsWeb) {
+          if (pdfFileData.bytes != null) {
+            request.files.add(
+              http.MultipartFile.fromBytes(
+                'pdf_file',
+                pdfFileData.bytes!,
+                filename: pdfFileData.name,
+              ),
+            );
+          } else {
+            return left('No PDF bytes provided on web');
+          }
+        } else {
+          if (pdfFileData.path != null) {
+            final pdfPath = await http.MultipartFile.fromPath(
+                'pdf_file', pdfFileData.path!);
+            request.files.add(pdfPath);
+          } else {
+            return left('No PDF path provided on non-web');
+          }
+        }
       } catch (e) {
-        return left("$e");
+        return left("Error uploading PDF: $e");
       }
     }
 
     final response = await request.send();
     final responded = await http.Response.fromStream(response);
     final resData = json.decode(responded.body);
-    //print(responseBytes);
-    print(response.statusCode);
+    print("Response status: ${response.statusCode}");
+    print("Response data: $resData");
 
     try {
       if (response.statusCode == 200) {
-        // final responseBytes = await response.stream.bytesToString();
         Message message = Message.fromJson(resData);
         return right(message.message);
       } else {
-        print('response $resData');
         Message message = Message.fromJson(resData);
         return left(message.message);
       }

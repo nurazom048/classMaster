@@ -2,26 +2,22 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Attach to Edge",
-            "port": 9222,
-            "request": "attach",
-            "type": "msedge",
-            "webRoot": "${workspaceFolder}"
-        },
-        {
-            "name": "classMaster",
+            "name": "ClassMaster (Edge, Release, Port 5000)",
             "request": "launch",
             "type": "dart",
             "program": "lib/main.dart",
             "args": [
+                "-d",
+                "edge",
+                "--release",
                 "--web-port",
-                "5000"
+                "5000",
+                "--web-hostname",
+                "localhost"
             ],
+            "flutterMode": "release",
             "cwd": "${workspaceFolder}",
-            "env": {
-                "FLUTTER_WEB_DEBUGGER": "true"
-            },
-            "preLaunchTask": "flutter run -d chrome"
+            "preLaunchTask": "flutterClean"
         }
     ]
 }

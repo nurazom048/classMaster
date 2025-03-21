@@ -1,6 +1,6 @@
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider/carousel_slider.dart' as slider;
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:shimmer/shimmer.dart' as shimmer;
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../constant/app_color.dart';
@@ -10,6 +10,9 @@ class RecentNoticeSliderSkelton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    slider.CarouselSliderController buttonCarouselController =
+        slider.CarouselSliderController();
+
     return SizedBox(
       height: 165,
       child: Column(
@@ -22,14 +25,14 @@ class RecentNoticeSliderSkelton extends StatelessWidget {
               //color: Colors.white,
               borderRadius: BorderRadius.circular(5),
             ),
-            child: Shimmer.fromColors(
+            child: shimmer.Shimmer.fromColors(
               baseColor: Colors.grey[300]!,
               highlightColor: Colors.grey[100]!,
               period: const Duration(seconds: 2),
               enabled: true,
-              child: CarouselSlider(
-                carouselController: CarouselController(),
-                options: CarouselOptions(
+              child: slider.CarouselSlider(
+                carouselController: buttonCarouselController,
+                options: slider.CarouselOptions(
                   height: 120.0,
                   viewportFraction: 1,
                   autoPlay: true,
@@ -46,7 +49,7 @@ class RecentNoticeSliderSkelton extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          Shimmer.fromColors(
+          shimmer.Shimmer.fromColors(
             baseColor: Colors.grey[300]!,
             highlightColor: Colors.grey[100]!,
             period: const Duration(seconds: 2),
