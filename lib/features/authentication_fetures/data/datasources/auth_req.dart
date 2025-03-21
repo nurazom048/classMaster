@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import '../../../../core/export_core.dart';
@@ -115,6 +116,10 @@ class AuthReq {
       var res = json.decode(response.body);
       print(res);
       if (response.statusCode == 200) {
+        // Delete signup info from Hive
+        var signUpInfoHive = Hive.box('signUpInfo');
+        await signUpInfoHive.clear(); // Clears all stored signup data
+        print("Signup data deleted from Hive");
         await LocalData.setHerder(response);
 
         return right(Message.fromJson(res));

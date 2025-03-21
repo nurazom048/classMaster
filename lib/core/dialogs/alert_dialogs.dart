@@ -30,7 +30,7 @@ abstract class Alert {
   }
 
   static errorAlertDialogCallBack(BuildContext context, dynamic message,
-      {required dynamic onConfirm}) {
+      {required onConfirm}) {
     showDialog(
       context: context,
       builder: (BuildContext context) {

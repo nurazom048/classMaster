@@ -65,20 +65,17 @@ class AuthController extends StateNotifier<bool> {
     }, (r) async {
       state = false;
 
-      // Delete signup info from Hive
-      var signUpInfoHive = Hive.box('signUpInfo');
-      await signUpInfoHive.clear(); // Clears all stored signup data
-      print("Signup data deleted from Hive");
-
       // Navigate to Login Screen
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => LoginScreen(
-            emailAddress: username.isNotEmpty ? email : null,
-            passwordAddress: password,
-            usernameAddress: username,
-          ),
+          builder: (context) {
+            return LoginScreen(
+              emailAddress: username.isNotEmpty ? email : null,
+              passwordAddress: password,
+              usernameAddress: username,
+            );
+          },
         ),
       );
       return Alert.showSnackBar(context, r.message);
@@ -112,7 +109,7 @@ class AuthController extends StateNotifier<bool> {
     } else {
       state = true;
       final res = await authReq.login(
-        username: email != null ? null : username,
+        username: email == null || email == '' ? username : null,
         email: email,
         password: password,
       );
@@ -217,23 +214,30 @@ class AuthController extends StateNotifier<bool> {
       context,
       "Are You Sure To logout?",
       onConfirm: () async {
+        // Dismiss the dialog immediately before async operations
+        GoRouter.of(context).pop();
+
         try {
-          final User? user = FirebaseAuth.instance.currentUser;
+          // Sign out from Firebase if user exists
+          final user = FirebaseAuth.instance.currentUser;
           if (user != null) {
             await FirebaseAuth.instance.signOut();
           }
 
-          // Clear local data
+          // Clear local data and PDF cache
           await LocalData.emptyLocal();
-          await PdfUtils.clearPdfCache(); // Clear cache on logout
-          // Ensure navigation happens only if the context is still valid
+          await PdfUtils.clearPdfCache();
+
+          // Ensure context is still valid before navigating
           if (!context.mounted) return;
 
-          // 🚀 Replace navigation stack (User cannot go back)
+          // Replace navigation stack to login screen
           GoRouter.of(context).goNamed(RouteConst.login);
         } catch (e) {
-          print(e);
-          Alert.errorAlertDialog(context, '$e');
+          print('Logout error: $e');
+          if (context.mounted) {
+            Alert.errorAlertDialog(context, '$e');
+          }
         }
       },
     );

@@ -38,7 +38,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
-  final eiinController = TextEditingController();
   final contractInfoController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
@@ -69,7 +68,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
           signUpInfoHive.get('username', defaultValue: '');
       passwordController.text =
           signUpInfoHive.get('password', defaultValue: '');
-      eiinController.text = signUpInfoHive.get('eiinNumber', defaultValue: '');
       contractInfoController.text =
           signUpInfoHive.get('contractInfo', defaultValue: '');
     });
@@ -283,7 +281,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     signUpInfoHive.put('name', nameController.text);
     signUpInfoHive.put('username', usernameController.text);
     signUpInfoHive.put('password', passwordController.text);
-    signUpInfoHive.put('eiinNumber', eiinController.text);
     signUpInfoHive.put('contractInfo', contractInfoController.text);
 
     print("Signup data saved in Hive");
@@ -296,7 +293,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
           username: usernameController.text,
           password: passwordController.text,
           accountType: ref.watch(selectAccountTypeProvider),
-          eiinNumber: eiinController.text,
           contractInfo: contractInfoController.text,
         );
   }
