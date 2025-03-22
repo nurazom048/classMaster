@@ -28,7 +28,7 @@ class AccountModels {
     image = json['image'] == "null" ? null : json['image'];
     position = json['position'];
     about = json['about'];
-    accountType = json['account_type'];
+    accountType = json['accountType'];
     coverImage = json['coverImage'] == "null" ? null : json['coverImage'];
   }
 

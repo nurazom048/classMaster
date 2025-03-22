@@ -4,8 +4,6 @@ import 'package:mime/mime.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import '../../../../core/export_core.dart';
 import '../../data/datasources/notice_request.dart';
 import '../../domain/interface/pdf_interface.dart' show PdfFileData;

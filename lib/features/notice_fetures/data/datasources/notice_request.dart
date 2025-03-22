@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print, unused_result, library_prefixes, unused_local_variable, unnecessary_null_comparison
 import 'dart:io' as Io;
+import 'package:classmate/features/notice_fetures/domain/repositories/notice_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -22,8 +23,9 @@ final recentNoticeProvider = FutureProvider<RecentNotice>((ref) async {
 
 final noticeReqProvider = Provider<NoticeRequest>((ref) => NoticeRequest());
 
-class NoticeRequest {
+class NoticeRequest implements NoticeRepository {
   //******    recentNotice    ********* */
+  @override
   Future<RecentNotice> fetchRecentNotice({int? page, String? academyId}) async {
     final headers = await LocalData.getHeader();
     print("Headers before sending request: $headers");
@@ -76,6 +78,7 @@ class NoticeRequest {
   }
 
   //******    add notice     ********* */
+  @override
   Future<Either<String, String>> addNotice({
     String? contentName,
     String? description,
@@ -140,6 +143,7 @@ class NoticeRequest {
   }
 
   //******    DELETE Notice     ********* */
+  @override
   Future<Either<Message, Message>> deleteNotice({
     required String noticeId,
   }) async {

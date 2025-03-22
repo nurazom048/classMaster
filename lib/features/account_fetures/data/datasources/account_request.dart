@@ -30,11 +30,14 @@ class AccountRepositoryImpl implements AccountRepository {
       {String? username}) async {
     try {
       final headers = await LocalData.getHeader();
-      final url = Uri.parse('${Const.BASE_URl}/account/${username ?? ''}');
+      final url = username != null
+          ? Uri.parse('${Const.BASE_URl}/account/$username')
+          : Uri.parse('${Const.BASE_URl}/account/');
       final cacheKey = url.toString();
 
       final isOnline = await Utils.isOnlineMethod();
       final hasCache = await MyApiCache.haveCache(cacheKey);
+      print('Hit on url: ${cacheKey}');
 
       // If offline, return cached data
       if (!isOnline && hasCache) {

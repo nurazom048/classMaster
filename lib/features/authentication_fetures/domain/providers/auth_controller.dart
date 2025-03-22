@@ -214,7 +214,7 @@ class AuthController extends StateNotifier<bool> {
       "Are You Sure To logout?",
       onConfirm: () async {
         // Dismiss the dialog immediately before async operations
-        GoRouter.of(context).pop();
+        Navigator.of(context).pop();
 
         try {
           // Sign out from Firebase if user exists

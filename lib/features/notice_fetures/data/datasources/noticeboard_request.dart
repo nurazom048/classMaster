@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:classmate/features/notice_fetures/domain/repositories/noticeboard_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
@@ -12,8 +13,9 @@ import '../../../routine_Fetures/data/models/check_status_model.dart';
 final noticeboardRequestProvider =
     Provider<NoticeboardRequest>((ref) => NoticeboardRequest());
 
-class NoticeboardRequest {
+class NoticeboardRequest implements NoticeboardRepository {
 // leave member
+  @override
   Future<Either<Message, Message>> leaveMember(String noticeBoard) async {
     final headers = await LocalData.getHeader();
 
@@ -36,7 +38,8 @@ class NoticeboardRequest {
   }
 
   //
-  Future<CheckStatusModel> chackStatus(String academyID) async {
+  @override
+  Future<CheckStatusModel> checkStatus(String academyID) async {
     final headers = await LocalData.getHeader();
 
     var url = Uri.parse('${Const.BASE_URl}/notice/status/$academyID');
@@ -64,6 +67,7 @@ class NoticeboardRequest {
 
   //
 
+  @override
   Future<Either<String, Message>> sendRequest(String noticeBoardId) async {
     final headers = await LocalData.getHeader();
 
@@ -90,6 +94,7 @@ class NoticeboardRequest {
 
   //
   //....RutineNotification....//
+  @override
   Future<Either<String, Message>> notificationOff(String routineID) async {
     final headers = await LocalData.getHeader();
     Uri url = Uri.parse('${Const.BASE_URl}/notice/notification/off/$routineID');
@@ -113,6 +118,7 @@ class NoticeboardRequest {
   }
 
   //....RutineNotification....//
+  @override
   Future<Either<String, Message>> notificationOn(String routineID) async {
     final headers = await LocalData.getHeader();
     print('RutineNotification $routineID');

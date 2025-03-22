@@ -51,7 +51,7 @@ class seeAllMembers extends ConsumerWidget {
                     if (data != null && data.members.isNotEmpty) {
                       return AccountCardRow(
                         accountData: AccountModels().copyWith(
-                          sId: data.members[index].id,
+                          id: data.members[index].id,
                           image: data.members[index].image,
                           name: data.members[index].name,
                           username: data.members[index].username,

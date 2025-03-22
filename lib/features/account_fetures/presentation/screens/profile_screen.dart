@@ -48,48 +48,54 @@ class ProfileScreen extends ConsumerWidget {
             ),
 
             //! Profile Top
-            accountData.when(
-              data: (data) {
-                return data.fold(
-                  (l) => const Center(child: Text("User data not found")),
-                  (r) => Column(
-                    children: [
-                      ProfileTop(accountData: r),
 
-                      //! Notice Board Section (For Academy)
-                      if (r.accountType == "academy") ...[
-                        NoticeBoardHeader(
-                          academyID: r.id!,
-                          accountdata: r,
-                        ),
-                        SizedBox(
-                          height: 181,
-                          child: recentNoticeList.when(
-                            data: (noticeData) {
-                              int length = noticeData.notices.length;
-                              return RecentNoticeSlider(
-                                ukey: '$academyID',
-                                list: List.generate(
-                                  (length / 2).ceil(),
-                                  (index) => RecentNoticeSliderItem(
-                                    emptyMessage: 'No Recent Notice here',
-                                    notice: noticeData.notices,
-                                    index: index * 2,
-                                    condition: length >= (index + 1) * 2,
-                                    singleCondition: length == index * 2 + 1,
-                                    recentNotice: noticeData,
-                                  ),
-                                ),
-                              );
-                            },
-                            error: (error, stackTrace) =>
-                                Alert.handleError(context, error),
-                            loading: () => const RecentNoticeSliderSkelton(),
+            accountData.when(
+              data: (either) {
+                return either.fold(
+                  (l) {
+                    return const Center(child: Text("User data not found"));
+                  },
+                  (r) {
+                    return Column(
+                      children: [
+                        ProfileTop(accountData: r),
+                        //! Notice Board Section (For Academy)
+
+                        if (r.accountType == "academy") ...[
+                          NoticeBoardHeader(
+                            academyID: r.id!,
+                            accountdata: r,
                           ),
-                        ),
-                      ]
-                    ],
-                  ),
+                          SizedBox(
+                            height: 181,
+                            child: recentNoticeList.when(
+                              data: (noticeData) {
+                                print("user profile date right $noticeData");
+                                int length = noticeData.notices.length;
+                                return RecentNoticeSlider(
+                                  ukey: '$academyID',
+                                  list: List.generate(
+                                    (length / 2).ceil(),
+                                    (index) => RecentNoticeSliderItem(
+                                      emptyMessage: 'No Recent Notice here',
+                                      notice: noticeData.notices,
+                                      index: index * 2,
+                                      condition: length >= (index + 1) * 2,
+                                      singleCondition: length == index * 2 + 1,
+                                      recentNotice: noticeData,
+                                    ),
+                                  ),
+                                );
+                              },
+                              error: (error, stackTrace) =>
+                                  Alert.handleError(context, error),
+                              loading: () => const RecentNoticeSliderSkelton(),
+                            ),
+                          ),
+                        ]
+                      ],
+                    );
+                  },
                 );
               },
               error: (error, stackTrace) => Alert.handleError(context, error),

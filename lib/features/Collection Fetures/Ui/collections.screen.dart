@@ -93,16 +93,21 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                         height: 129,
                         child: accountData.when(
                           data: (data) => data.fold(
-                              (l) => const Center(
-                                    child: Text("No Data Available"),
-                                  ),
-                              (r) => AccountCard(
-                                    profilepicture: r.image,
-                                    name: r.name ?? "",
-                                    username: '@${r.username}',
-                                    onTap: () => Get.to(
-                                        const ProfileScreen(academyID: null)),
-                                  )),
+                            (l) => const Center(
+                              child: Text("No Data Available"),
+                            ),
+                            (r) => AccountCard(
+                              profilepicture: r.image,
+                              name: r.name ?? "",
+                              username: '@${r.username}',
+                              onTap: () => Get.to(
+                                ProfileScreen(
+                                  academyID: r.id,
+                                  username: r.username,
+                                ),
+                              ),
+                            ),
+                          ),
                           error: (error, stackTrace) =>
                               Alert.handleError(context, error),
                           loading: () => SizedBox(

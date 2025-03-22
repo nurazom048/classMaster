@@ -36,7 +36,7 @@ class NoticeBoardStatusProvider
   Future<void> getStatus() async {
     try {
       final CheckStatusModel data =
-          await noticeboardRequest.chackStatus(academyID);
+          await noticeboardRequest.checkStatus(academyID);
 
       if (mounted) {
         state = AsyncData(data);
