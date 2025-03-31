@@ -45,7 +45,7 @@ class NoticeViewScreen extends StatelessWidget {
                   ViewPdfButton(
                     onTap:
                         () => Get.to(transition: Transition.rightToLeft, () {
-                          // return ViewPDf(pdfLink: notice.pdf);
+                          return ViewPDf(pdfLink: notice.pdf);
                         }),
                   ),
                   const SizedBox(height: 80),
