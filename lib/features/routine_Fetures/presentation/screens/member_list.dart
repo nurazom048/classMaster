@@ -44,146 +44,155 @@ class _MemberListState extends State<MemberList> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(builder: (context, ref, _) {
-      // Providers
-      final checkStatus =
-          ref.watch(checkStatusControllerProvider(widget.routineId));
+    return Consumer(
+      builder: (context, ref, _) {
+        // Providers
+        final checkStatus = ref.watch(
+          checkStatusControllerProvider(widget.routineId),
+        );
 
-      return checkStatus.when(
-        data: (data) {
-          final String status = data.activeStatus;
-          final bool isCaptain = data.isCaptain;
-          final bool isOwner = data.isOwner;
+        return checkStatus.when(
+          data: (data) {
+            final String status = data.activeStatus;
+            final bool isCaptain = data.isCaptain;
+            final bool isOwner = data.isOwner;
 
-          if (status != 'joined') {
-            return const ErrorScreen(
-              error: "You Are Not Member In This Routine",
-            );
-          }
+            if (status != 'joined') {
+              return const ErrorScreen(
+                error: "You Are Not Member In This Routine",
+              );
+            }
 
-          return onData(context, isCaptain, isOwner);
-        },
-        error: (error, stackTrace) => Alert.handleError(context, error),
-        loading: () => Loaders.center(),
-      );
-    });
+            return onData(context, isCaptain, isOwner);
+          },
+          error: (error, stackTrace) => Alert.handleError(context, error),
+          loading: () => Loaders.center(),
+        );
+      },
+    );
   }
 
   Widget onData(BuildContext context, bool isCaptain, bool isOwner) {
-    return Consumer(builder: (context, ref, _) {
-      //! provider
-      final allMembers = ref.watch(memberControllerProvider(widget.routineId));
-      final allMembersNotifier =
-          ref.watch(memberControllerProvider(widget.routineId).notifier);
+    return Consumer(
+      builder: (context, ref, _) {
+        //! provider
+        final allMembers = ref.watch(
+          memberControllerProvider(widget.routineId),
+        );
+        final allMembersNotifier = ref.watch(
+          memberControllerProvider(widget.routineId).notifier,
+        );
 
-      // notifiers
-      // final checkStatus =
-      //     ref.watch(checkStatusControllerProvider(widget.routineId));
-      // bool notificationOff = checkStatus.value?.notificationOff ?? false;
-      final memberCount = ref.watch(membersCountProvider);
-      final memberCountNotifier = ref.watch(membersCountProvider.notifier);
-      return RefreshIndicator(
-        onRefresh: () async {
-          final bool isOnline = await Utils.isOnlineMethod();
-          if (!isOnline) {
-            Alert.showSnackBar(context, 'You are in offline mode');
-          } else {
-            //! provider
+        // notifiers
+        // final checkStatus =
+        //     ref.watch(checkStatusControllerProvider(widget.routineId));
+        // bool notificationOff = checkStatus.value?.notificationOff ?? false;
+        final memberCount = ref.watch(membersCountProvider);
+        final memberCountNotifier = ref.watch(membersCountProvider.notifier);
+        return RefreshIndicator(
+          onRefresh: () async {
+            final bool isOnline = await Utils.isOnlineMethod();
+            if (!isOnline) {
+              Alert.showSnackBar(context, 'You are in offline mode');
+            } else {
+              //! provider
 
-            ref.refresh(memberControllerProvider(widget.routineId));
-            ref.refresh(checkStatusControllerProvider(widget.routineId));
-          }
-        },
-        child: GestureDetector(
-          onTapDown: (offset) {
-            ref
-                .watch(offsetProvider.notifier)
-                .update((state) => offset.globalPosition);
+              ref.refresh(memberControllerProvider(widget.routineId));
+              ref.refresh(checkStatusControllerProvider(widget.routineId));
+            }
           },
-          child: ListView(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            children: [
-              //____________________________________Invite___________________________________//
+          child: GestureDetector(
+            onTapDown: (offset) {
+              ref
+                  .watch(offsetProvider.notifier)
+                  .update((state) => offset.globalPosition);
+            },
+            child: ListView(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              children: [
+                //____________________________________Invite___________________________________//
 
-              // AppTextFromField(
-              //   margin: EdgeInsets.zero,
-              //   controller: _emailController,
-              //   hint: "Invite Student",
-              //   labelText: "Enter email address",
-              //   validator: (value) => LoginValidation.validateEmail(value),
-              // ),
-              // const SizedBox(height: 20),
-              // const DashBorderButton(),
-              // const SizedBox(height: 30),
+                // AppTextFromField(
+                //   margin: EdgeInsets.zero,
+                //   controller: _emailController,
+                //   hint: "Invite Student",
+                //   labelText: "Enter email address",
+                //   validator: (value) => LoginValidation.validateEmail(value),
+                // ),
+                // const SizedBox(height: 20),
+                // const DashBorderButton(),
+                // const SizedBox(height: 30),
 
-              //____________________________________Requests___________________________________//
-              if (isCaptain == true || isOwner == true) ...[
-                JoinRequestPart(routineID: widget.routineId),
-              ],
+                //____________________________________Requests___________________________________//
+                if (isCaptain == true || isOwner == true) ...[
+                  JoinRequestPart(routineID: widget.routineId),
+                ],
 
-              ///
-              //____________________________________Members___________________________________//
-              ///
-              ///
+                ///
+                //____________________________________Members___________________________________//
+                ///
+                ///
+                HeadingRow(
+                  margin: EdgeInsets.zero,
+                  ButtonViability: true,
+                  heading: "All Members",
+                  secondHeading:
+                      "$memberCount member${memberCount > 1 ? "s" : ''}",
+                ),
 
-              HeadingRow(
-                margin: EdgeInsets.zero,
-                ButtonViability: true,
-                heading: "All Members",
-                secondHeading:
-                    "$memberCount member${memberCount > 1 ? "s" : ''}",
-              ),
-
-              allMembers.when(
-                data: (data) {
-                  if (data == null) {
-                    return const Text("null");
-                  }
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    memberCountNotifier.update((state) => data.totalCount);
-                  });
-                  void scrollListener() {
-                    if (memberScrollController.position.pixels ==
-                        memberScrollController.position.maxScrollExtent) {
-                      allMembersNotifier.loadMore(data.currentPage);
+                allMembers.when(
+                  data: (data) {
+                    if (data == null) {
+                      return const Text("null");
                     }
-                  }
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      memberCountNotifier.update((state) => data.totalCount);
+                    });
+                    void scrollListener() {
+                      if (memberScrollController.position.pixels ==
+                          memberScrollController.position.maxScrollExtent) {
+                        allMembersNotifier.loadMore(data.currentPage);
+                      }
+                    }
 
-                  memberScrollController.addListener(scrollListener);
+                    memberScrollController.addListener(scrollListener);
 
-                  return ListView.builder(
-                    controller: memberScrollController,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: data.members.length,
-                    itemBuilder: (context, i) => MemberAccountCard(
-                      condition: isCaptain == true || isOwner == true,
-                      member: data.members[i],
-                      onPressed: () {
-                        accountActions(
-                          context,
-                          ref,
-                          offset: ref.watch(offsetProvider),
-                          rutinId: widget.routineId,
-                          username: data.members[i].username,
-                          memberId: data.members[i].id,
-                          isTheMemberIsCaptain: data.members[i].captain,
-                          isTheMemberIsOwner: data.members[i].owner,
-                        );
-                      },
-                    ),
-                  );
-                },
-                error: (error, stackTrace) => Alert.handleError(context, error),
-                loading: () => Loaders.center(),
-              ),
-            ],
+                    return ListView.builder(
+                      controller: memberScrollController,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: data.members.length,
+                      itemBuilder:
+                          (context, i) => MemberAccountCard(
+                            condition: isCaptain == true || isOwner == true,
+                            member: data.members[i],
+                            onPressed: () {
+                              accountActions(
+                                context,
+                                ref,
+                                offset: ref.watch(offsetProvider),
+                                routineID: widget.routineId,
+                                username: data.members[i].username,
+                                memberId: data.members[i].id,
+                                isTheMemberIsCaptain: data.members[i].captain,
+                                isTheMemberIsOwner: data.members[i].owner,
+                              );
+                            },
+                          ),
+                    );
+                  },
+                  error:
+                      (error, stackTrace) => Alert.handleError(context, error),
+                  loading: () => Loaders.center(),
+                ),
+              ],
+            ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 }
 
@@ -197,10 +206,11 @@ class JoinRequestPart extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     //! provider
     final allRequest = ref.watch(seeAllRequestControllerProvider(routineID));
-    final seeAllJonReq =
-        ref.read(seeAllRequestControllerProvider(routineID).notifier);
+    final seeAllJonReq = ref.read(
+      seeAllRequestControllerProvider(routineID).notifier,
+    );
 
-//
+    //
     final requestCount = ref.watch(requestCountProvider);
     final requestCountNotifier = ref.watch(requestCountProvider.notifier);
     return Column(
@@ -228,28 +238,33 @@ class JoinRequestPart extends ConsumerWidget {
               }
 
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                requestCountNotifier
-                    .update((state) => data.listAccounts.length);
+                requestCountNotifier.update(
+                  (state) => data.listAccounts.length,
+                );
               });
 
               return ListView.builder(
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
                 itemCount: data.listAccounts.length,
-                itemBuilder: (context, index) {
+                itemBuilder: (context, i) {
                   return AccountCard(
-                    accountData: data.listAccounts[index],
+                    accountData: data.listAccounts[i],
 
                     // accept or reject members
                     acceptUsername: () {
                       seeAllJonReq.acceptMember(
-                          ref, data.listAccounts[index].username, context);
+                        ref,
+                        data.listAccounts[i].username,
+                        context,
+                      );
                     },
                     onRejectUsername: () {
-                      print(
-                          'on reject username : ${data.listAccounts[index].username}');
                       seeAllJonReq.rejectMembers(
-                          ref, data.listAccounts[index].username, context);
+                        ref,
+                        data.listAccounts[i].username,
+                        context,
+                      );
                     },
                   );
                 },

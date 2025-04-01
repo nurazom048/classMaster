@@ -7,11 +7,17 @@ import '../../data/models/see_all_request_model.dart';
 
 //! Provider
 final seeAllRequestControllerProvider = StateNotifierProvider.autoDispose
-    .family<SeeAllRequestControllerClass, AsyncValue<SeeAllRequestModel>,
-        String>((ref, classId) {
-  return SeeAllRequestControllerClass(
-      ref, classId, ref.read(memberRequestProvider));
-});
+    .family<
+      SeeAllRequestControllerClass,
+      AsyncValue<SeeAllRequestModel>,
+      String
+    >((ref, classId) {
+      return SeeAllRequestControllerClass(
+        ref,
+        classId,
+        ref.read(memberRequestProvider),
+      );
+    });
 //----------------------------------------------------------------//
 
 class SeeAllRequestControllerClass
@@ -21,7 +27,7 @@ class SeeAllRequestControllerClass
   var ref;
   String routineId;
   SeeAllRequestControllerClass(this.ref, this.routineId, this.memberRequests)
-      : super(AsyncLoading()) {
+    : super(AsyncLoading()) {
     getAllRequestList();
   }
 
@@ -41,11 +47,14 @@ class SeeAllRequestControllerClass
       state = AsyncValue.error(err, stack);
     }
   }
-//... Accept request.....//
+  //... Accept request.....//
 
   void acceptMember(WidgetRef ref, username, context, {bool? acceptAll}) async {
-    final res =
-        memberRequests.acceptRequest(routineId, username, acceptAll: acceptAll);
+    final res = memberRequests.acceptRequest(
+      routineId,
+      username,
+      acceptAll: acceptAll,
+    );
 
     res.catchError((error) => Alert.handleError(context, error));
     res.then((value) {
@@ -54,7 +63,7 @@ class SeeAllRequestControllerClass
     });
   }
 
-//... rejectMembers request.....//
+  //... rejectMembers request.....//
   void rejectMembers(WidgetRef ref, username, context) async {
     final res = memberRequests.rejectRequest(routineId, username);
 

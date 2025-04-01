@@ -12,20 +12,23 @@ import '../../../../core/export_core.dart';
 import '../models/see_all_request_model.dart';
 
 final memberRequestProvider = Provider((ref) => MemberRequest());
+final allMembersProvider = FutureProvider.family<RoutineMembersModel, String>((
+  ref,
+  rutin_id,
+) async {
+  return ref.watch(memberRequestProvider).seeAllMemberReq(rutin_id);
+});
 
 class MemberRequest {
-//
-//**********************   rutin all _members    *********** */
+  //
+  //**********************   rutin all _members    *********** */
   Future<RoutineMembersModel?> all_members(String routineID) async {
     final header = await LocalData.getHeader();
     final Uri url = Uri.parse('${Const.BASE_URl}/routine/member/$routineID');
 
     try {
       // request
-      final response = await http.post(
-        url,
-        headers: header,
-      );
+      final response = await http.post(url, headers: header);
       final res = jsonDecode(response.body);
       // get response
       if (response.statusCode == 200) {
@@ -41,7 +44,7 @@ class MemberRequest {
     }
   }
 
-//**********************   addMember   *********** */
+  //**********************   addMember   *********** */
   Future<String?> addMemberReq(rutin_id, username) async {
     final header = await LocalData.getHeader();
     try {
@@ -64,11 +67,12 @@ class MemberRequest {
     }
   }
 
-//**********************   remove members   *********** */
+  //**********************   remove members   *********** */
   Future<Message> removeMemberReq(rutin_id, username) async {
     final header = await LocalData.getHeader();
     var url = Uri.parse(
-        '${Const.BASE_URl}/routine/member/remove/$rutin_id/$username');
+      '${Const.BASE_URl}/routine/member/remove/$rutin_id/$username',
+    );
 
     try {
       final response = await http.post(url, headers: header);
@@ -95,8 +99,11 @@ class MemberRequest {
 
     final url = Uri.parse('${Const.BASE_URl}/routine/captain/add');
 
-    final response = await http.post(url,
-        headers: header, body: {"routineId": routineId, "username": username});
+    final response = await http.post(
+      url,
+      headers: header,
+      body: {"routineId": routineId, "username": username},
+    );
 
     var res = jsonDecode(response.body)['message'];
 
@@ -120,8 +127,11 @@ class MemberRequest {
 
     final url = Uri.parse('${Const.BASE_URl}/routine/captain/remove');
 
-    final response = await http.delete(url,
-        headers: header, body: {"routineId": routineId, "username": username});
+    final response = await http.delete(
+      url,
+      headers: header,
+      body: {"routineId": routineId, "username": username},
+    );
 
     var res = jsonDecode(response.body)['message'];
 
@@ -141,8 +151,9 @@ class MemberRequest {
 
   Future<Either<String, Message>> sendRequest(String routineId) async {
     final header = await LocalData.getHeader();
-    var url =
-        Uri.parse("${Const.BASE_URl}/routine/member/send_request/$routineId");
+    var url = Uri.parse(
+      "${Const.BASE_URl}/routine/member/send_request/$routineId",
+    );
 
     try {
       final response = await http.post(url, headers: header);
@@ -187,17 +198,15 @@ class MemberRequest {
     }
   }
 
-//***********************   kickOut   ***********************/
-  Future<Message> kickOut(rutin_id, memberId) async {
+  //***********************   remove Members   ***********************/
+  Future<Message> remove_member(routineID, memberID) async {
     final header = await LocalData.getHeader();
     var url = Uri.parse(
-        "${Const.BASE_URl}/routine/member/kickout/$rutin_id/$memberId");
+      "${Const.BASE_URl}/routine/member/kickout/$routineID/$memberID",
+    );
 
     try {
       final response = await http.delete(url, headers: header);
-      print("from kicked");
-      print(jsonDecode(response.body));
-
       var res = Message.fromJson(jsonDecode(response.body));
 
       if (response.statusCode == 200) {
@@ -239,7 +248,8 @@ class MemberRequest {
   Future<SeeAllRequestModel> see_all_request(routineId) async {
     final header = await LocalData.getHeader();
     final Uri url = Uri.parse(
-        '${Const.BASE_URl}/routine/member/see_all_request/$routineId');
+      '${Const.BASE_URl}/routine/member/see_all_request/$routineId',
+    );
     try {
       final response = await http.post(url, headers: header);
       final res = jsonDecode(response.body);
@@ -261,10 +271,11 @@ class MemberRequest {
   }
 
   //...acceptRequest.....//
-  Future<Message> acceptRequest(rutinId, username, {bool? acceptAll}) async {
+  Future<Message> acceptRequest(routineID, username, {bool? acceptAll}) async {
     final header = await LocalData.getHeader();
-    final Uri url =
-        Uri.parse('${Const.BASE_URl}/routine/member/acsept_request/$rutinId');
+    final Uri url = Uri.parse(
+      '${Const.BASE_URl}/routine/member/accept_request/$routineID',
+    );
     final Map<String, String> headers = header;
     print("$username");
 
@@ -294,10 +305,11 @@ class MemberRequest {
 
   //
   //...acceptRequest.....//
-  Future<Message> rejectRequest(routineId, username) async {
+  Future<Message> rejectRequest(routineID, username) async {
     final header = await LocalData.getHeader();
-    final Uri url =
-        Uri.parse('${Const.BASE_URl}/routine/member/reject_request/$routineId');
+    final Uri url = Uri.parse(
+      '${Const.BASE_URl}/routine/member/reject_request/$routineID',
+    );
 
     try {
       final response = await http.post(
@@ -307,7 +319,7 @@ class MemberRequest {
       );
 
       var res = Message.fromJson(jsonDecode(response.body));
-
+      print('from response : ${jsonDecode(response.body)}');
       if (response.statusCode == 200) {
         return res;
       } else {
@@ -319,8 +331,3 @@ class MemberRequest {
     }
   }
 }
-
-final allMembersProvider =
-    FutureProvider.family<RoutineMembersModel, String>((ref, rutin_id) async {
-  return ref.watch(memberRequestProvider).seeAllMemberReq(rutin_id);
-});

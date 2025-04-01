@@ -11,24 +11,24 @@ void accountActions(
   BuildContext context,
   WidgetRef ref, {
   required Offset? offset,
-  required String rutinId,
+  required String routineID,
   required String username,
   required String memberId,
   required bool isTheMemberIsCaptain,
   required bool isTheMemberIsOwner,
 }) async {
-  final checkStatus = ref.watch(checkStatusControllerProvider(rutinId));
+  final checkStatus = ref.watch(checkStatusControllerProvider(routineID));
   final bool isOwner = checkStatus.value?.isOwner ?? false;
   final bool isCaptain = checkStatus.value?.isCaptain ?? false;
-  final membersCon = ref.watch(memberControllerProvider(rutinId).notifier);
+  final membersCon = ref.watch(memberControllerProvider(routineID).notifier);
 
   List<PopupMenuItem<String>> items = [];
 
   if ((isCaptain || isOwner) && !isTheMemberIsOwner && !isTheMemberIsCaptain) {
     items.add(
       const PopupMenuItem<String>(
-        value: 'kickOut',
-        child: Text('kickOut', style: TextStyle(color: Colors.red)),
+        value: 'Remove_Member',
+        child: Text('Remove Member', style: TextStyle(color: Colors.red)),
       ),
     );
   }
@@ -36,48 +36,49 @@ void accountActions(
   if ((isOwner || isCaptain) && !isTheMemberIsCaptain && !isTheMemberIsOwner) {
     items.add(
       const PopupMenuItem<String>(
-        value: 'make_captains',
-        child: Text(
-          'Make Captains',
-          style: TextStyle(color: Colors.blue),
-        ),
+        value: 'Make_Captain',
+        child: Text('Make Captain', style: TextStyle(color: Colors.blue)),
       ),
     );
   } else if (isOwner && isTheMemberIsCaptain) {
     items.add(
       const PopupMenuItem<String>(
-        value: 'remove_captains',
-        child: Text(
-          'Remove Captains',
-          style: TextStyle(color: Colors.blue),
-        ),
+        value: 'Remove_Captaincy',
+        child: Text('Remove captaincy', style: TextStyle(color: Colors.blue)),
       ),
     );
   }
 
   if (items.isEmpty) {
-    Get.snackbar('Sorry', 'No Action here',
-        // snackPosition: SnackPosition.BOTTOM,
-        margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 10));
+    Get.snackbar(
+      'Sorry',
+      'No Action here',
+      // snackPosition: SnackPosition.BOTTOM,
+      margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+    );
     // Alert.showSnackBar(context, 'No Action here');
     return;
   }
   final result = await showMenu(
     context: context,
-    position:
-        RelativeRect.fromLTRB(offset?.dx ?? 120, offset?.dy ?? 120, 20, 0),
+    position: RelativeRect.fromLTRB(
+      offset?.dx ?? 120,
+      offset?.dy ?? 120,
+      20,
+      0,
+    ),
     items: items,
     elevation: 8.0,
   );
 
   if (result != null) {
     // Handle selected menu item
-    if (result == 'kickOut') {
-      membersCon.kickedOutMember(memberId, context);
-    } else if (result == 'make_captains') {
-      membersCon.AddCaptans(rutinId, username, context);
-    } else if (result == 'remove_captains') {
-      membersCon.removeCaptans(rutinId, username, context);
+    if (result == 'Remove_Member') {
+      membersCon.removeMember(memberId, context);
+    } else if (result == 'Make_Captain') {
+      membersCon.AddCaptans(routineID, username, context);
+    } else if (result == 'Remove_Captaincy') {
+      membersCon.removeCaptans(routineID, username, context);
     }
   }
 }
