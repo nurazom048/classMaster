@@ -27,8 +27,8 @@ import 'theme/light_theme.dart'; // Specific ThemeData for the light mode.
 import 'theme/dark_theme.dart'; // Specific ThemeData for the dark mode.
 
 void main() async {
-  // Ensure that Flutter widgets are initialized before running any other code.
-  WidgetsFlutterBinding.ensureInitialized();
+  // All initializations EXCEPT WidgetsFlutterBinding.ensureInitialized() happen here,
+  // as they might be needed before Sentry's zone or have their own requirements.
 
   //firebase initialize
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -60,8 +60,13 @@ void main() async {
         'https://17fd9ac810472652be659f50fd826efb@o4506556979150848.ingest.sentry.io/4506556985311232';
     options.tracesSampleRate = 1.0; // Capture 100% of transactions for performance monitoring.
   },
-  // Wrap the app launch in ProviderScope for Riverpod state management.
-  appRunner: () => runApp(const ProviderScope(child: MyApp())));
+  appRunner: () {
+    // Ensure that Flutter widgets are initialized *within the Sentry-managed zone*,
+    // right before running the app. This helps prevent Zone mismatch errors.
+    WidgetsFlutterBinding.ensureInitialized();
+    // Wrap the app launch in ProviderScope for Riverpod state management.
+    runApp(const ProviderScope(child: MyApp()));
+  });
 }
 
 // MyApp is a ConsumerWidget to enable listening to Riverpod providers (like themeNotifierProvider).
