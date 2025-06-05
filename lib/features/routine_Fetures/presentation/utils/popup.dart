@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 
-import '../providers/check_status_controller.dart';
+import '../providers/checkbox_selector_button.dart';
 import '../providers/members_controllers.dart';
 
 void accountActions(

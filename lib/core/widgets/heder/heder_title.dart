@@ -22,7 +22,7 @@ class HeaderTitle extends StatelessWidget {
   @override
   Widget build(BuildContext contextt) {
     return Container(
-      margin: margin ?? EdgeInsets.only(left: 25.5, top: KTopPadding),
+      margin: margin ?? EdgeInsets.only(left: 25.5, top: KtopPadding),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -31,12 +31,13 @@ class HeaderTitle extends StatelessWidget {
             children: [
               if (hideArrow == false)
                 InkWell(
-                    onTap: () => onTap ?? Navigator.pop(context),
-                    child: const Icon(
-                      Icons.arrow_back_ios,
-                      size: 25,
-                      color: Colors.black,
-                    )),
+                  onTap: () => onTap ?? Navigator.pop(context),
+                  child: const Icon(
+                    Icons.arrow_back_ios,
+                    size: 25,
+                    color: Colors.black,
+                  ),
+                ),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.8,
                 child: Text(
@@ -48,8 +49,8 @@ class HeaderTitle extends StatelessWidget {
               ),
             ],
           ),
-          //
 
+          //
           widget ?? const SizedBox.shrink(),
         ],
       ),

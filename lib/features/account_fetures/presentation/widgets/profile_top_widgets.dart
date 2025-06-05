@@ -6,10 +6,7 @@ import '../../data/models/account_models.dart';
 
 class ProfileTop extends StatelessWidget {
   final AccountModels? accountData;
-  const ProfileTop({
-    Key? key,
-    required this.accountData,
-  }) : super(key: key);
+  const ProfileTop({super.key, required this.accountData});
 
   @override
   Widget build(BuildContext context) {

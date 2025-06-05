@@ -13,8 +13,7 @@ import 'signup_screen.dart';
 class OtpScreen extends StatefulWidget {
   final String verificationId;
   final String? phoneNumber;
-  const OtpScreen({Key? key, required this.verificationId, this.phoneNumber})
-      : super(key: key);
+  const OtpScreen({super.key, required this.verificationId, this.phoneNumber});
 
   @override
   State<OtpScreen> createState() => _MyVerifyState();
@@ -24,16 +23,16 @@ String? smsCode;
 
 class _MyVerifyState extends State<OtpScreen> {
   @override
-
   //
   Widget build(BuildContext context) {
     final defaultPinTheme = PinTheme(
       width: 56,
       height: 56,
       textStyle: const TextStyle(
-          fontSize: 20,
-          color: Color.fromRGBO(30, 60, 87, 1),
-          fontWeight: FontWeight.w600),
+        fontSize: 20,
+        color: Color.fromRGBO(30, 60, 87, 1),
+        fontWeight: FontWeight.w600,
+      ),
       decoration: BoxDecoration(
         border: Border.all(color: const Color.fromRGBO(234, 239, 243, 1)),
         borderRadius: BorderRadius.circular(20),
@@ -75,14 +74,10 @@ class _MyVerifyState extends State<OtpScreen> {
                     "Phone Verification",
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                   const Text(
                     "We need to register your phone without getting started!",
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
+                    style: TextStyle(fontSize: 16),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 30),
@@ -104,45 +99,53 @@ class _MyVerifyState extends State<OtpScreen> {
                     color: AppColor.nokiaBlue,
                     text: "Verify Phone Number",
                     onPressed: () async {
-                      // Get.to(() => const OtpScreen());
                       if (smsCode != null) {
-                        //  verifi otp then go to create account create account
-
                         try {
-                          // verifi otp
+                          // Verify OTP
                           PhoneAuthCredential credential =
                               PhoneAuthProvider.credential(
-                                  verificationId: widget.verificationId,
-                                  smsCode: smsCode!);
+                                verificationId: widget.verificationId,
+                                smsCode: smsCode!,
+                              );
 
                           // Sign the user in (or link) with the credential
                           await auth.signInWithCredential(credential);
-                          //
+
                           // ignore: use_build_context_synchronously
-                          Alert.showSnackBar(context, "Verifi sucsess");
-                          Get.to(() => SignUpScreen(
-                              phoneNumberString: widget.phoneNumber));
+                          Alert.showSnackBar(context, "Verify success");
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (context) => SignUpScreen(
+                                    phoneNumberString: widget.phoneNumber,
+                                  ),
+                            ),
+                          );
                         } catch (e) {
                           Alert.showSnackBar(context, e.toString());
                         }
                       } else {
-                        Alert.showSnackBar(context, "Please EnterPin");
+                        Alert.showSnackBar(context, "Please Enter PIN");
                       }
                     },
                   ),
-
                   Row(
                     children: [
                       TextButton(
-                          onPressed: () {
-                            // Get.to(()=>);
-                          },
-                          child: const Text(
-                            "Edit Phone Number ?",
-                            style: TextStyle(color: Colors.black),
-                          ))
+                        onPressed: () {
+                          // Navigator.push(
+                          // context,
+                          // MaterialPageRoute(builder: (context)=>);
+                        },
+                        child: const Text(
+                          "Edit Phone Number ?",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),

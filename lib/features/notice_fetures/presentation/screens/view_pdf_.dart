@@ -31,7 +31,7 @@ import '../utils/pdf_utils.dart';
 class ViewPDf extends StatefulWidget {
   final String pdfLink; // URL of the PDF to display
 
-  const ViewPDf({Key? key, required this.pdfLink}) : super(key: key);
+  const ViewPDf({super.key, required this.pdfLink});
 
   @override
   _ViewPDfState createState() => _ViewPDfState();

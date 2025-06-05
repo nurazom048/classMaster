@@ -12,18 +12,20 @@ class MiniAccountInfo extends StatelessWidget {
   final bool hideMore;
 
   const MiniAccountInfo({
-    Key? key,
+    super.key,
     this.accountData,
     this.onTapMore,
     this.onTap,
     this.hideMore = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4)
-          .copyWith(top: 0),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 4,
+        vertical: 4,
+      ).copyWith(top: 0),
       height: 70,
       // color: Colors.black12,
       child: GestureDetector(
@@ -56,22 +58,24 @@ class MiniAccountInfo extends StatelessWidget {
                 const SizedBox(width: 10),
                 Container(
                   constraints: BoxConstraints(
-                      maxWidth: MediaQuery.of(context).size.width * 0.55),
+                    maxWidth: MediaQuery.of(context).size.width * 0.55,
+                  ),
                   child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // name ad user name
-                        Text(
-                          "${accountData?.name}",
-                          maxLines: 2,
-                          style: TS.opensensBlue(
-                            color: Colors.black,
-                          ),
-                        ),
-                        AppText("@${accountData?.username}", fontSize: 16)
-                            .heeding()
-                      ]),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // name ad user name
+                      Text(
+                        "${accountData?.name}",
+                        maxLines: 2,
+                        style: TS.opensensBlue(color: Colors.black),
+                      ),
+                      AppText(
+                        "@${accountData?.username}",
+                        fontSize: 16,
+                      ).heeding(),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -81,7 +85,7 @@ class MiniAccountInfo extends StatelessWidget {
                 icon: const Icon(Icons.more_vert),
               )
             else
-              const SizedBox()
+              const SizedBox(),
           ],
         ),
       ),

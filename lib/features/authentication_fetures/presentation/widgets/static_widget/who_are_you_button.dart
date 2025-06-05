@@ -11,12 +11,13 @@ class WhoAreYouButton extends ConsumerWidget {
   final void Function(String)? onAccountType;
   String selectedRole = 'student';
 
-  WhoAreYouButton({Key? key, required this.onAccountType}) : super(key: key);
+  WhoAreYouButton({super.key, required this.onAccountType});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectAccountTypeNotifier =
-        ref.watch(selectAccountTypeProvider.notifier);
+    final selectAccountTypeNotifier = ref.watch(
+      selectAccountTypeProvider.notifier,
+    );
     final selected = ref.watch(selectAccountTypeProvider);
 
     return Container(

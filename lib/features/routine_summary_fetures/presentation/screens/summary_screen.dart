@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/export_core.dart';
-import '../../../routine_Fetures/presentation/providers/check_status_controller.dart';
+import '../../../routine_Fetures/presentation/providers/checkbox_selector_button.dart';
 import '../providers/summary_controller.dart';
 import '../widgets/static_widgets/add_summary_button.dart';
 import '../widgets/static_widgets/summary_header.dart';
@@ -61,12 +61,14 @@ class _SummaryScreenState extends State<SummaryScreen> {
     pageScrollController = ScrollController();
 
     // Initialize the SocketService and join the room after initialization
-    SocketService.initializeSocket().then((_) {
-      // Join the room after socket initialization
-      SocketService.joinRoom(widget.routineID);
-    }).catchError((error) {
-      print('Error initializing socket: $error');
-    });
+    SocketService.initializeSocket()
+        .then((_) {
+          // Join the room after socket initialization
+          SocketService.joinRoom(widget.routineID);
+        })
+        .catchError((error) {
+          print('Error initializing socket: $error');
+        });
   }
 
   void _listenToChatMessages() {
@@ -86,31 +88,37 @@ class _SummaryScreenState extends State<SummaryScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Consumer(builder: (context, ref, _) {
-          final checkStatus =
-              ref.watch(checkStatusControllerProvider(widget.routineID));
+        body: Consumer(
+          builder: (context, ref, _) {
+            final checkStatus = ref.watch(
+              checkStatusControllerProvider(widget.routineID),
+            );
 
-          return checkStatus.when(
-            data: (data) => onData(ref, data),
-            error: (error, stackTrace) => Alert.handleError(context, error),
-            loading: () => Loaders.center(),
-          );
-        }),
+            return checkStatus.when(
+              data: (data) => onData(ref, data),
+              error: (error, stackTrace) => Alert.handleError(context, error),
+              loading: () => Loaders.center(),
+            );
+          },
+        ),
       ),
     );
   }
 
   Widget onData(WidgetRef ref, dynamic data) {
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      pageScrollController
-          .jumpTo(pageScrollController.position.minScrollExtent);
+      pageScrollController.jumpTo(
+        pageScrollController.position.minScrollExtent,
+      );
     });
 
     final allSummary = ref.watch(summaryControllerProvider(widget.classId));
-    final checkStatus =
-        ref.watch(checkStatusControllerProvider(widget.routineID));
-    final summaryNotifier =
-        ref.watch(summaryControllerProvider(widget.classId).notifier);
+    final checkStatus = ref.watch(
+      checkStatusControllerProvider(widget.routineID),
+    );
+    final summaryNotifier = ref.watch(
+      summaryControllerProvider(widget.classId).notifier,
+    );
 
     String status = checkStatus.value?.activeStatus ?? '';
     final bool isCaptain = checkStatus.value?.isCaptain ?? false;
@@ -120,19 +128,20 @@ class _SummaryScreenState extends State<SummaryScreen> {
       child: Scaffold(
         body: NestedScrollView(
           controller: pageScrollController,
-          headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            SliverToBoxAdapter(
-              child: SummaryHeader(
-                classId: widget.classId,
-                className: widget.className,
-                instructorName: widget.instructorName,
-                startTime: widget.startTime,
-                endTime: widget.endTime,
-                subjectCode: widget.subjectCode,
-                room: widget.room,
-              ),
-            ),
-          ],
+          headerSliverBuilder:
+              (context, innerBoxIsScrolled) => [
+                SliverToBoxAdapter(
+                  child: SummaryHeader(
+                    classId: widget.classId,
+                    className: widget.className,
+                    instructorName: widget.instructorName,
+                    startTime: widget.startTime,
+                    endTime: widget.endTime,
+                    subjectCode: widget.subjectCode,
+                    room: widget.room,
+                  ),
+                ),
+              ],
           body: SizedBox(
             height: MediaQuery.of(context).size.height,
             child: Builder(
@@ -152,7 +161,9 @@ class _SummaryScreenState extends State<SummaryScreen> {
                           scrollController.position.maxScrollExtent) {
                         if (data.currentPage != data.totalPages) {
                           summaryNotifier.loadMore(
-                              data.currentPage, data.totalPages);
+                            data.currentPage,
+                            data.totalPages,
+                          );
                         }
                       }
                     });
@@ -179,41 +190,45 @@ class _SummaryScreenState extends State<SummaryScreen> {
                       },
                     );
                   },
-                  error: (error, stackTrace) =>
-                      Alert.handleError(context, error),
+                  error:
+                      (error, stackTrace) => Alert.handleError(context, error),
                   loading: () => Loaders.center(),
                 );
               },
             ),
           ),
         ),
-        floatingActionButton: isCaptain || isOwner
-            ? AddSummaryButton(
-                onTap: () async {
-                  // // Initialize the SocketService and join the room after initialization
-                  // SocketService.initializeSocket().then((_) {
-                  //   // Join the room after socket initialization
-                  //   SocketService.sendMessage(room: widget.routineID);
-                  // }).catchError((error) {
-                  //   print('Error initializing socket: $error');
-                  // });
-                  //  Message received base on room id
-                  SocketService.socket.on('chat message', (data) {
-                    final message = data['message'];
-                    final room = data['room'];
-                    print('Message received in room $room: $message');
-                  });
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                      fullscreenDialog: true,
-                      builder: (context) => AddSummaryScreen(
-                          classId: widget.classId, routineId: widget.routineID),
-                    ),
-                  );
-                },
-              )
-            : const SizedBox(),
+        floatingActionButton:
+            isCaptain || isOwner
+                ? AddSummaryButton(
+                  onTap: () async {
+                    // // Initialize the SocketService and join the room after initialization
+                    // SocketService.initializeSocket().then((_) {
+                    //   // Join the room after socket initialization
+                    //   SocketService.sendMessage(room: widget.routineID);
+                    // }).catchError((error) {
+                    //   print('Error initializing socket: $error');
+                    // });
+                    //  Message received base on room id
+                    SocketService.socket.on('chat message', (data) {
+                      final message = data['message'];
+                      final room = data['room'];
+                      print('Message received in room $room: $message');
+                    });
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        fullscreenDialog: true,
+                        builder:
+                            (context) => AddSummaryScreen(
+                              classId: widget.classId,
+                              routineId: widget.routineID,
+                            ),
+                      ),
+                    );
+                  },
+                )
+                : const SizedBox(),
       ),
     );
   }

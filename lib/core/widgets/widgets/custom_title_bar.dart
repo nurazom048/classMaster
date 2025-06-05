@@ -18,8 +18,8 @@ class CustomTitleBar extends StatelessWidget {
     this.icon,
     this.elevation = 5.0,
     this.action,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -76,8 +76,10 @@ class CustomTitleBar extends StatelessWidget {
                 const SizedBox(width: 5),
                 InkWell(
                   onTap: () {
-                    Get.to(() => const NotificationScreen(),
-                        transition: Transition.rightToLeft);
+                    Get.to(
+                      () => const NotificationScreen(),
+                      transition: Transition.rightToLeft,
+                    );
                   },
                   child: Icon(
                     icon ?? Icons.notifications_outlined,
@@ -91,11 +93,7 @@ class CustomTitleBar extends StatelessWidget {
             ),
           ),
         ),
-        Divider(
-          color: AppColor.nokiaBlue,
-          thickness: 1,
-          height: 1,
-        )
+        Divider(color: AppColor.nokiaBlue, thickness: 1, height: 1),
       ],
     );
   }

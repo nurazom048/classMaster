@@ -19,20 +19,28 @@ class MyDrawer extends StatelessWidget {
           DrawerItems(
             icon: Icons.home,
             text: "Home",
-            onTap: () => Get.to(() => const HomeScreen()),
+            onTap:
+                () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomeScreen()),
+                ),
           ),
 
           DrawerItems(
             icon: Icons.search,
             text: "Search",
-            onTap: () => Get.to(() => const SearchPAge()),
+            onTap:
+                () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SearchPage()),
+                ),
           ),
 
           //Add
           DrawerItems(
             widget: BottomNavBar.add,
             text: "Add",
-            onTap: () => BottomNavBar.addpopup(context),
+            onTap: () => BottomNavBar.addPopup(context),
           ),
         ],
       ),

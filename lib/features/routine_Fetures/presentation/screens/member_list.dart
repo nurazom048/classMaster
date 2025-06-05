@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/state_manager.dart';
 
 import '../../../../../../features/home_fetures/presentation/utils/utils.dart';
-import '../../../../../../features/routine_Fetures/presentation/providers/check_status_controller.dart';
+import '../providers/checkbox_selector_button.dart';
 import '../../../../../../features/routine_Fetures/presentation/providers/members_controllers.dart';
 import '../../../../../../features/routine_Fetures/presentation/providers/see_all_req_controller.dart';
 import '../../../../core/export_core.dart';
@@ -19,7 +19,7 @@ final offsetProvider = StateProvider<Offset?>((ref) => null);
 class MemberList extends StatefulWidget {
   final String routineId;
 
-  const MemberList({Key? key, required this.routineId}) : super(key: key);
+  const MemberList({super.key, required this.routineId});
 
   @override
   State<MemberList> createState() => _MemberListState();

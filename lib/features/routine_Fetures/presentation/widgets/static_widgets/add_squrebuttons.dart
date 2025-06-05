@@ -6,9 +6,11 @@ class AddSquareButton extends StatelessWidget {
   final dynamic onTap;
   final bool isVisible;
 
-  const AddSquareButton(
-      {Key? key, required this.onTap, required this.isVisible})
-      : super(key: key);
+  const AddSquareButton({
+    super.key,
+    required this.onTap,
+    required this.isVisible,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +27,7 @@ class AddSquareButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
             border: Border.all(width: 1, color: const Color(0xFF0168FF)),
           ),
-          child: Center(
-            child: Text('+', style: TS.opensensBlue(fontSize: 25)),
-          ),
+          child: Center(child: Text('+', style: TS.opensensBlue(fontSize: 25))),
         ),
       ),
     );

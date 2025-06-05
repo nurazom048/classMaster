@@ -15,13 +15,13 @@ class PickImage extends StatefulWidget {
   final Function(XFile?) onCoverImagePath;
 
   const PickImage({
+    super.key,
     required this.onImagePathSelected,
     required this.onCoverImagePath,
     required this.netWorkImage,
     required this.netWorkCoverImage,
     this.isEddit = false,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
   State<PickImage> createState() => _PickImageState();
@@ -49,8 +49,9 @@ class _PickImageState extends State<PickImage> {
           onPressed: () async {
             print('Picking profile image');
             final picker = ImagePicker();
-            final pickedFile =
-                await picker.pickImage(source: ImageSource.gallery);
+            final pickedFile = await picker.pickImage(
+              source: ImageSource.gallery,
+            );
             if (pickedFile != null) {
               print('Profile image picked: ${pickedFile.path}');
               setState(() => _image = pickedFile);
@@ -74,8 +75,9 @@ class _PickImageState extends State<PickImage> {
           onPressed: () async {
             print('Picking cover image');
             final picker = ImagePicker();
-            final pickedFile =
-                await picker.pickImage(source: ImageSource.gallery);
+            final pickedFile = await picker.pickImage(
+              source: ImageSource.gallery,
+            );
             if (pickedFile != null) {
               print('Cover image picked: ${pickedFile.path}');
               setState(() => _imageCover = pickedFile);
@@ -100,8 +102,9 @@ class _PickImageState extends State<PickImage> {
             child: badges.Badge(
               showBadge: widget.isEddit,
               position: badges.BadgePosition.bottomEnd(bottom: -3, end: 12),
-              badgeStyle:
-                  const badges.BadgeStyle(badgeColor: Colors.transparent),
+              badgeStyle: const badges.BadgeStyle(
+                badgeColor: Colors.transparent,
+              ),
               badgeContent: pickCoverBadges,
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 15),
@@ -118,8 +121,9 @@ class _PickImageState extends State<PickImage> {
             child: badges.Badge(
               showBadge: widget.isEddit,
               position: badges.BadgePosition.bottomEnd(),
-              badgeStyle:
-                  const badges.BadgeStyle(badgeColor: Colors.transparent),
+              badgeStyle: const badges.BadgeStyle(
+                badgeColor: Colors.transparent,
+              ),
               badgeContent: pickImageBadges,
               child: ClipOval(
                 child: Container(
@@ -145,34 +149,34 @@ class _PickImageState extends State<PickImage> {
       print('Displaying local cover image: ${_imageCover!.path}');
       return kIsWeb
           ? FutureBuilder<Uint8List>(
-              future: _imageCover!.readAsBytes(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  print('Cover image bytes loaded');
-                  return Image.memory(
-                    snapshot.data!,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      print('Error displaying cover image bytes: $error');
-                      return const Icon(Icons.error);
-                    },
-                  );
-                } else if (snapshot.hasError) {
-                  print('Error loading cover image bytes: ${snapshot.error}');
-                  return const Icon(Icons.error);
-                }
-                print('Loading cover image bytes');
-                return const CircularProgressIndicator();
-              },
-            )
-          : Image.file(
-              File(_imageCover!.path),
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                print('Error loading native cover image: $error');
+            future: _imageCover!.readAsBytes(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                print('Cover image bytes loaded');
+                return Image.memory(
+                  snapshot.data!,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    print('Error displaying cover image bytes: $error');
+                    return const Icon(Icons.error);
+                  },
+                );
+              } else if (snapshot.hasError) {
+                print('Error loading cover image bytes: ${snapshot.error}');
                 return const Icon(Icons.error);
-              },
-            );
+              }
+              print('Loading cover image bytes');
+              return const CircularProgressIndicator();
+            },
+          )
+          : Image.file(
+            File(_imageCover!.path),
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              print('Error loading native cover image: $error');
+              return const Icon(Icons.error);
+            },
+          );
     } else if (widget.netWorkCoverImage != null) {
       print('Displaying network cover image: ${widget.netWorkCoverImage}');
       return Image.network(
@@ -202,34 +206,34 @@ class _PickImageState extends State<PickImage> {
       print('Displaying local profile image: ${_image!.path}');
       return kIsWeb
           ? FutureBuilder<Uint8List>(
-              future: _image!.readAsBytes(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  print('Profile image bytes loaded');
-                  return Image.memory(
-                    snapshot.data!,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      print('Error displaying profile image bytes: $error');
-                      return const Icon(Icons.error);
-                    },
-                  );
-                } else if (snapshot.hasError) {
-                  print('Error loading profile image bytes: ${snapshot.error}');
-                  return const Icon(Icons.error);
-                }
-                print('Loading profile image bytes');
-                return const CircularProgressIndicator();
-              },
-            )
-          : Image.file(
-              File(_image!.path),
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                print('Error loading native profile image: $error');
+            future: _image!.readAsBytes(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                print('Profile image bytes loaded');
+                return Image.memory(
+                  snapshot.data!,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    print('Error displaying profile image bytes: $error');
+                    return const Icon(Icons.error);
+                  },
+                );
+              } else if (snapshot.hasError) {
+                print('Error loading profile image bytes: ${snapshot.error}');
                 return const Icon(Icons.error);
-              },
-            );
+              }
+              print('Loading profile image bytes');
+              return const CircularProgressIndicator();
+            },
+          )
+          : Image.file(
+            File(_image!.path),
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              print('Error loading native profile image: $error');
+              return const Icon(Icons.error);
+            },
+          );
     } else if (widget.netWorkImage != null) {
       print('Displaying network profile image: ${widget.netWorkImage}');
       return Image.network(

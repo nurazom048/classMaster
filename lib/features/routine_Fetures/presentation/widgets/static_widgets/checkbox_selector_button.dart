@@ -4,14 +4,14 @@ class CheckBoxSelector extends StatelessWidget {
   final IconData icon;
   final Color? color;
   final String text;
-  final bool? isChacked;
+  final bool? isChecked;
   final VoidCallback onTap;
   const CheckBoxSelector({
     super.key,
     required this.icon,
     required this.text,
     this.color,
-    this.isChacked,
+    this.isChecked,
     required this.onTap,
   });
 
@@ -34,10 +34,12 @@ class CheckBoxSelector extends StatelessWidget {
                   Text(text, style: TextStyle(color: color ?? Colors.black)),
                 ],
               ),
-              if (isChacked != null)
-                Icon(isChacked == true
-                    ? Icons.check
-                    : Icons.check_box_outline_blank_rounded),
+              if (isChecked != null)
+                Icon(
+                  isChecked == true
+                      ? Icons.check
+                      : Icons.check_box_outline_blank_rounded,
+                ),
             ],
           ),
         ),

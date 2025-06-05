@@ -6,12 +6,7 @@ class AppText {
   final double? fontSize;
   final String data;
   final Color? color;
-  const AppText(
-    this.data, {
-    Key? key,
-    this.fontSize,
-    this.color,
-  });
+  const AppText(this.data, {this.fontSize, this.color});
 
   //
 
@@ -51,8 +46,11 @@ class AppText {
 class TS {
   // Heading
 
-  static TextStyle heading(
-      {Color? color, double? fontSize, FontWeight? fontWeight}) {
+  static TextStyle heading({
+    Color? color,
+    double? fontSize,
+    FontWeight? fontWeight,
+  }) {
     return TextStyle(
       fontFamily: 'Open Sans',
       fontStyle: FontStyle.normal,
@@ -63,9 +61,12 @@ class TS {
     );
   }
 
-// open sens blue
-  static TextStyle opensensBlue(
-      {Color? color, double? fontSize, FontWeight? fontWeight}) {
+  // open sens blue
+  static TextStyle opensensBlue({
+    Color? color,
+    double? fontSize,
+    FontWeight? fontWeight,
+  }) {
     return TextStyle(
       fontFamily: 'Open Sans',
       fontStyle: FontStyle.normal,

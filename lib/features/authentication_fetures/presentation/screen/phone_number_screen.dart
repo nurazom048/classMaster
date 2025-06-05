@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../core/constant/app_color.dart';
 
-import '../widgets/static_widget/pnone_number_textfields.dart';
+import '../widgets/static_widget/phone_number_textfield.dart';
 import 'otp_screen.dart';
 
 class PhoneNumberScreen extends StatefulWidget {
-  const PhoneNumberScreen({Key? key}) : super(key: key);
+  const PhoneNumberScreen({super.key});
 
   @override
   State<PhoneNumberScreen> createState() => _MyPhoneState();
@@ -50,15 +50,15 @@ class _MyPhoneState extends State<PhoneNumberScreen> {
                     const SizedBox(height: 126),
                     const Text(
                       "Phone Verification",
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 10),
                     const Text(
                       "We need to register your phone without getting started!",
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
+                      style: TextStyle(fontSize: 16),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 30),
@@ -75,23 +75,25 @@ class _MyPhoneState extends State<PhoneNumberScreen> {
                       color: AppColor.nokiaBlue,
                       text: "Send the code",
                       onPressed: () async {
-                        String fullphoneNum =
+                        String fullPhoneNumber =
                             countryController.text + phoneNumberController.text;
                         if (formKey.currentState?.validate() ?? false) {
-                          // firebse send code to phone number
+                          // firebase send code to phone number
                           await FirebaseAuth.instance.verifyPhoneNumber(
                             //phone number
-                            phoneNumber: fullphoneNum,
+                            phoneNumber: fullPhoneNumber,
                             verificationCompleted:
                                 (PhoneAuthCredential credential) {},
                             verificationFailed: (FirebaseAuthException e) {},
-                            codeSent:
-                                (String verificationId, int? resendToken) {
+                            codeSent: (
+                              String verificationId,
+                              int? resendToken,
+                            ) {
                               // go to otp screen
                               Get.to(
                                 () => OtpScreen(
                                   verificationId: verificationId,
-                                  phoneNumber: fullphoneNum,
+                                  phoneNumber: fullPhoneNumber,
                                 ),
                               );
                             },

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:mime/mime.dart';
@@ -13,7 +15,7 @@ import '../../../../core/widgets/widgets/mydrawer.dart';
 import '../../../routine_Fetures/presentation/widgets/static_widgets/uploaded_pdf_button.dart';
 
 class AddNoticeScreen extends ConsumerWidget {
-  AddNoticeScreen({Key? key});
+  AddNoticeScreen({super.key});
 
   final _formKey = GlobalKey<FormState>();
   final TextEditingController descriptionController = TextEditingController();
@@ -109,9 +111,11 @@ class AddNoticeScreen extends ConsumerWidget {
                     labelText: "Describe what the notice is about.",
                   ).multiline(),
                   const SizedBox(height: 60),
-                  UploadPDFBButton(onSelected: (pdfFileData) {
-                    print('onSelected called with: ${pdfFileData}');
-                  }),
+                  UploadPDFButton(
+                    onSelected: (pdfFileData) {
+                      print('onSelected called with: $pdfFileData');
+                    },
+                  ),
                   const SizedBox(height: 60),
                   CupertinoButtonCustom(
                     icon: Icons.check,
@@ -141,11 +145,14 @@ class AddNoticeScreen extends ConsumerWidget {
                           }
                         } else {
                           File thePdf = File(currentPdfData.path!);
-                          String? mimeType =
-                              lookupMimeType(currentPdfData.path!);
+                          String? mimeType = lookupMimeType(
+                            currentPdfData.path!,
+                          );
                           if (mimeType != 'application/pdf') {
                             Alert.errorAlertDialog(
-                                context, 'Only PDF files are allowed');
+                              context,
+                              'Only PDF files are allowed',
+                            );
                             return;
                           }
                           if (thePdf.lengthSync() > 10 * 1024 * 1024) {
@@ -159,7 +166,11 @@ class AddNoticeScreen extends ConsumerWidget {
 
                         isLoadingNotifier.update((state) => true);
                         await addNotice(
-                            context, currentPdfData, ref, isLoadingNotifier);
+                          context,
+                          currentPdfData,
+                          ref,
+                          isLoadingNotifier,
+                        );
                       }
                     },
                   ),
@@ -172,22 +183,30 @@ class AddNoticeScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> addNotice(BuildContext context, PdfFileData pdfData,
-      WidgetRef ref, StateController<bool> isLoadingNotifier) async {
+  Future<void> addNotice(
+    BuildContext context,
+    PdfFileData pdfData,
+    WidgetRef ref,
+    StateController<bool> isLoadingNotifier,
+  ) async {
     Either<String, String> res = await NoticeRequest().addNotice(
       contentName: noticeTitleController.text,
       description: descriptionController.text,
       pdfFileData: pdfData,
       ref: ref,
     );
-    res.fold((l) {
-      isLoadingNotifier.update((state) => false);
-      Alert.errorAlertDialog(context, l);
-    }, (r) {
-      ref.refresh(recentNoticeController(null));
-      Navigator.pop(context);
-      isLoadingNotifier.update((state) => false);
-      Alert.showSnackBar(context, r);
-    });
+    res.fold(
+      (l) {
+        isLoadingNotifier.update((state) => false);
+        Alert.errorAlertDialog(context, l);
+      },
+      (r) {
+        // ignore: unused_result
+        ref.refresh(recentNoticeController(null));
+        Navigator.pop(context);
+        isLoadingNotifier.update((state) => false);
+        Alert.showSnackBar(context, r);
+      },
+    );
   }
 }

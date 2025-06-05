@@ -31,16 +31,17 @@ class SquaresButton extends StatelessWidget {
         children: [
           count != null && count! > 0
               ? Positioned(
-                  top: 3,
-                  right: 8,
-                  child: Text(
-                    '$count',
-                    style: const TextStyle(
-                        color: Colors.red,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold),
+                top: 3,
+                right: 8,
+                child: Text(
+                  '$count',
+                  style: const TextStyle(
+                    color: Colors.red,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
                   ),
-                )
+                ),
+              )
               : const Positioned(top: 3, right: 8, child: SizedBox.shrink()),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 6),
@@ -50,6 +51,7 @@ class SquaresButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
+                  // ignore: deprecated_member_use
                   color: Colors.black.withOpacity(0.5),
                   spreadRadius: 0.4,
                   blurRadius: 90000,
@@ -61,24 +63,26 @@ class SquaresButton extends StatelessWidget {
               children: [
                 Icon(
                   status == false ? icon : inActiveIcon,
-                  color: status == false
-                      ? color ?? Colors.blue.shade400
-                      : Colors.black12,
+                  color:
+                      status == false
+                          ? color ?? Colors.blue.shade400
+                          : Colors.black12,
                   size: 36,
                 ),
                 Text(
                   inActiveText == null
                       ? text
                       : status == true
-                          ? text
-                          : inActiveText!,
+                      ? text
+                      : inActiveText!,
                   style: TextStyle(
-                    color: status == false
-                        ? color ?? Colors.blue.shade400
-                        : Colors.black87,
+                    color:
+                        status == false
+                            ? color ?? Colors.blue.shade400
+                            : Colors.black87,
                     fontSize: 15,
                   ),
-                )
+                ),
               ],
             ),
           ),

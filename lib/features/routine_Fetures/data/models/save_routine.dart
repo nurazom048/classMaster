@@ -1,6 +1,6 @@
 // ignore_for_file: file_names
 
-import 'package:classmate/features/search_fetures/data/models/search_rutin.dart';
+import 'package:classmate/features/search_fetures/data/models/search_routine.dart';
 
 class SaveRutileResponse {
   List<Routine> savedRoutines;

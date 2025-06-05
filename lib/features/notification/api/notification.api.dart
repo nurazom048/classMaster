@@ -5,17 +5,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 import '../../../core/export_core.dart';
-import '../../../core/local data/api_cashe_maager.dart';
+import '../../../core/local data/api_cache_manager.dart';
 import '../../home_fetures/presentation/utils/utils.dart';
 import '../model/notification.model.dart';
 
-final notificationApiProvider =
-    Provider<NotificationApi>((ref) => NotificationApi());
+final notificationApiProvider = Provider<NotificationApi>(
+  (ref) => NotificationApi(),
+);
 
 final notificationsProvider =
     FutureProvider.autoDispose<Either<Message, NotificationModel>>((ref) async {
-  return ref.read(notificationApiProvider).getNotification();
-});
+      return ref.read(notificationApiProvider).getNotification();
+    });
 
 class NotificationApi {
   Future<Either<Message, NotificationModel>> getNotification() async {

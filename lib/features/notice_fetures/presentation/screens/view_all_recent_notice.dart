@@ -5,12 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../features/account_fetures/data/models/account_models.dart';
 import '../../../../core/export_core.dart';
 import '../providers/view_recent_notice_controller.dart';
-import '../utils/notice_board_dilog.dart';
+import '../utils/notice_board_dialog.dart';
 import '../widgets/static_widgets/simple_notice_card.dart';
 import 'view_notice_screen.dart';
 
 class ViewAllRecentNotice extends ConsumerWidget {
-  ViewAllRecentNotice({Key? key, this.accountData}) : super(key: key);
+  ViewAllRecentNotice({super.key, this.accountData});
 
   final AccountModels? accountData;
   final scrollController = ScrollController();
@@ -26,21 +26,25 @@ class ViewAllRecentNotice extends ConsumerWidget {
       child: Scaffold(
         body: NestedScrollView(
           controller: scrollController,
-          headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            SliverToBoxAdapter(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  HeaderTitle(title, context),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 20),
-                    child: const AppText("All \nrecent notice.....").title(),
+          headerSliverBuilder:
+              (context, innerBoxIsScrolled) => [
+                SliverToBoxAdapter(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      HeaderTitle(title, context),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 20,
+                        ),
+                        child:
+                            const AppText("All \nrecent notice.....").title(),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-          ],
+                ),
+              ],
           body: recentNoticeList.when(
             data: (data) {
               void scrollListener() {
@@ -72,7 +76,7 @@ class ViewAllRecentNotice extends ConsumerWidget {
                       onLongPress: () {
                         print(accountModel.id!);
                         print(academyID);
-                        return NoticeboardDilog.logPressNotice(
+                        return NoticeboardDialog.logPressNotice(
                           context,
                           noticeBoardId: accountModel.id!,
                           academyID: academyID,
@@ -83,20 +87,18 @@ class ViewAllRecentNotice extends ConsumerWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => NoticeViewScreen(
-                              notice: notice,
-                              accountModel: accountModel,
-                            ),
+                            builder:
+                                (context) => NoticeViewScreen(
+                                  notice: notice,
+                                  accountModel: accountModel,
+                                ),
                           ),
                         );
                       },
                     );
                   } else if (data.currentPage < data.totalPages) {
                     return Column(
-                      children: [
-                        const SizedBox(height: 20),
-                        Loaders.center(),
-                      ],
+                      children: [const SizedBox(height: 20), Loaders.center()],
                     );
                   } else {
                     return Container();

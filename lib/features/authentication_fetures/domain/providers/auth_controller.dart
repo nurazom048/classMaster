@@ -18,13 +18,15 @@ import '../../../../core/models/message_model.dart';
 import '../../../../route/route_constant.dart';
 import '../../../../ui/bottom_navbar.dart';
 import '../../../home_fetures/presentation/utils/utils.dart';
-import '../../../wellcome_splash/presentation/screen/pending_account.dart';
+import '../../../welcome_splash/presentation/screen/pending_account.dart'
+    show PendingScreen;
 import '../../data/datasources/auth_req.dart';
 import '../../presentation/screen/LogIn_Screen.dart';
 
 final authController_provider =
     StateNotifierProvider.autoDispose<AuthController, bool>(
-        (ref) => AuthController(ref.watch(authReqProvider)));
+      (ref) => AuthController(ref.watch(authReqProvider)),
+    );
 
 //
 
@@ -34,7 +36,7 @@ class AuthController extends StateNotifier<bool> {
 
   //
 
-//******** createAccount      ************ */
+  //******** createAccount      ************ */
   createAccount({
     required BuildContext context,
     required String name,
@@ -42,7 +44,6 @@ class AuthController extends StateNotifier<bool> {
     required String password,
     required String email,
     required String accountType,
-    String? eiinNumber,
     String? contractInfo,
   }) async {
     state = true;
@@ -54,34 +55,36 @@ class AuthController extends StateNotifier<bool> {
       password: password,
       email: email,
       accountType: accountType,
-      eiinNumber: eiinNumber,
       contractInfo: contractInfo,
     );
 
-    res.fold((l) async {
-      state = false;
-      return Alert.showSnackBar(context, l.message);
-    }, (r) async {
-      state = false;
+    res.fold(
+      (l) async {
+        state = false;
+        return Alert.showSnackBar(context, l.message);
+      },
+      (r) async {
+        state = false;
 
-      // Navigate to Login Screen
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) {
-            return LoginScreen(
-              emailAddress: username.isNotEmpty ? email : null,
-              passwordAddress: password,
-              usernameAddress: username,
-            );
-          },
-        ),
-      );
-      return Alert.showSnackBar(context, r.message);
-    });
+        // Navigate to Login Screen
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return LoginScreen(
+                emailAddress: username.isNotEmpty ? email : null,
+                passwordAddress: password,
+                usernameAddress: username,
+              );
+            },
+          ),
+        );
+        return Alert.showSnackBar(context, r.message);
+      },
+    );
   }
 
-//******** signIn      ************ */
+  //******** signIn      ************ */
   Future<void> signIn(
     context, {
     String? username,
@@ -97,14 +100,10 @@ class AuthController extends StateNotifier<bool> {
         title: 'Network Error',
       );
     }
-
     // print('Username $username || emails$email');
     else if ((username == null || username == '') &&
         (email == null || email == '')) {
-      Alert.errorAlertDialog(
-        context,
-        "email or username is required",
-      );
+      Alert.errorAlertDialog(context, "email or username is required");
     } else {
       state = true;
       final res = await authReq.login(
@@ -118,17 +117,26 @@ class AuthController extends StateNotifier<bool> {
           state = false;
 
           if (error.message == 'Academy request is pending') {
-            Get.to(() => const PendingScreen());
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const PendingScreen()),
+            );
           }
           if (error.message == 'Email is not verified') {
             await FirebaseAuth.instance.signInWithEmailAndPassword(
               email: error.email!,
               password: password,
             );
-            Get.to(() => EmailVerificationScreen(
-                  email: error.email!,
-                  password: password,
-                ));
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder:
+                    (context) => EmailVerificationScreen(
+                      email: error.email!,
+                      password: password,
+                    ),
+              ),
+            );
             Alert.showSnackBar(context, 'Email is not verified');
           } else {
             return Alert.errorAlertDialog(context, error.message);
@@ -145,7 +153,7 @@ class AuthController extends StateNotifier<bool> {
     }
   }
 
-//******** change password  ************ */
+  //******** change password  ************ */
   void changepassword(oldPassword, newPassword, context) async {
     state = true;
     final res = await authReq.changePassword(oldPassword, newPassword);
@@ -160,13 +168,13 @@ class AuthController extends StateNotifier<bool> {
         // Remove token and navigate to the login screen
         final prefs = await SharedPreferences.getInstance();
         prefs.remove('Token');
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const LoginScreen()));
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(
-            builder: (context) => const LoginScreen(),
-          ),
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+        );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
         );
 
         Alert.showSnackBar(context, r.message);
@@ -174,10 +182,14 @@ class AuthController extends StateNotifier<bool> {
     );
   }
 
-//******** forotpasswprd  ************ */
+  //******** forgotPassword  ************ */
 
-  void forgotPassword(context,
-      {String? email, String? username, String? phone}) async {
+  void forgotPassword(
+    context, {
+    String? email,
+    String? username,
+    String? phone,
+  }) async {
     state = true;
     final res = await authReq.forgetPassword(email: email, phone: phone);
 
@@ -206,36 +218,40 @@ class AuthController extends StateNotifier<bool> {
     );
   }
 
-//******** logout  ************ */
-  static Future<void> logOut(BuildContext context,
-      {required WidgetRef ref}) async {
+  //******** logout  ************ */
+  static Future<void> logOut(
+    BuildContext context, {
+    required WidgetRef ref,
+  }) async {
     Alert.errorAlertDialogCallBack(
       context,
       "Are You Sure To logout?",
-      onConfirm: () async {
-        // Dismiss the dialog immediately before async operations
-        Navigator.of(context).pop();
+      onConfirm: (isConfirmed) async {
+        if (isConfirmed) {
+          // Dismiss the dialog immediately before async operations
+          Navigator.of(context).pop();
 
-        try {
-          // Sign out from Firebase if user exists
-          final user = FirebaseAuth.instance.currentUser;
-          if (user != null) {
-            await FirebaseAuth.instance.signOut();
-          }
+          try {
+            // Sign out from Firebase if user exists
+            final user = FirebaseAuth.instance.currentUser;
+            if (user != null) {
+              await FirebaseAuth.instance.signOut();
+            }
 
-          // Clear local data and PDF cache
-          await LocalData.emptyLocal();
-          await PdfUtils.clearPdfCache();
+            // Clear local data and PDF cache
+            await LocalData.emptyLocal();
+            await PdfUtils.clearPdfCache();
 
-          // Ensure context is still valid before navigating
-          if (!context.mounted) return;
+            // Ensure context is still valid before navigating
+            if (!context.mounted) return;
 
-          // Replace navigation stack to login screen
-          GoRouter.of(context).goNamed(RouteConst.login);
-        } catch (e) {
-          print('Logout error: $e');
-          if (context.mounted) {
-            Alert.errorAlertDialog(context, '$e');
+            // Replace navigation stack to login screen
+            GoRouter.of(context).goNamed(RouteConst.login);
+          } catch (e) {
+            print('Logout error: $e');
+            if (context.mounted) {
+              Alert.errorAlertDialog(context, '$e');
+            }
           }
         }
       },
@@ -247,7 +263,6 @@ class AuthController extends StateNotifier<bool> {
     context, {
     required String googleAuthToken,
     String? accountType,
-    String? eiinNumber,
     String? contractInfo,
   }) async {
     final bool isOnline = await Utils.isOnlineMethod();
@@ -263,7 +278,6 @@ class AuthController extends StateNotifier<bool> {
       final Either<Message, String> res = await authReq.continueWithGoogle(
         googleAuthToken: googleAuthToken,
         accountType: accountType,
-        eiinNumber: eiinNumber,
         contractInfo: contractInfo,
       );
 
@@ -271,7 +285,10 @@ class AuthController extends StateNotifier<bool> {
         (error) async {
           state = false;
           if (error.message == 'Academy request is pending') {
-            Get.to(() => const PendingScreen());
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const PendingScreen()),
+            );
           } else {
             return Alert.errorAlertDialog(context, error.message);
           }
@@ -280,9 +297,7 @@ class AuthController extends StateNotifier<bool> {
           state = false;
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(
-              builder: (context) => BottomNavBar(),
-            ),
+            MaterialPageRoute(builder: (context) => BottomNavBar()),
           );
           Alert.showSnackBar(context, data);
         },

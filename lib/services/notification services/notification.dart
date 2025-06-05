@@ -4,16 +4,18 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import '../../core/constant/constant.dart';
-import '../../core/local data/api_cashe_maager.dart';
+import '../../core/local data/api_cache_manager.dart';
 import '../../core/local data/local_data.dart';
 import '../../features/home_fetures/presentation/utils/utils.dart';
 import 'models.dart';
 
-final notificationProvider =
-    Provider<NotificationClass>((ref) => NotificationClass());
+final notificationProvider = Provider<NotificationClass>(
+  (ref) => NotificationClass(),
+);
 
-final classNotificationProvider =
-    FutureProvider<ClassNotificationResponse?>((ref) {
+final classNotificationProvider = FutureProvider<ClassNotificationResponse?>((
+  ref,
+) {
   return ref.read(notificationProvider).classNotifications();
 });
 

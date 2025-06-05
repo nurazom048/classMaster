@@ -10,9 +10,9 @@
 //   final Function(String?) onSelected;
 
 //   const SelectNoticeBoardDropDowen({
-//     Key? key,
+// super.key,
 //     required this.onSelected,
-//   }) : super(key: key);
+//   });
 
 //   @override
 //   _MyDropdownButtonState createState() => _MyDropdownButtonState();

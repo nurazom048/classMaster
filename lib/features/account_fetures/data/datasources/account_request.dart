@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import '../../../../core/local data/api_cashe_maager.dart';
+import '../../../../core/local data/api_cache_manager.dart';
 import '../../../../core/local data/local_data.dart';
 import '../../../home_fetures/presentation/utils/utils.dart';
 import '../../domain/repositories/account_repository.dart';
@@ -26,23 +26,26 @@ class GetAccountData {
 
 class AccountRepositoryImpl implements AccountRepository {
   @override
-  Future<Either<AppException, AccountModels>> getAccountData(
-      {String? username}) async {
+  Future<Either<AppException, AccountModels>> getAccountData({
+    String? username,
+  }) async {
     try {
       final headers = await LocalData.getHeader();
-      final url = username != null
-          ? Uri.parse('${Const.BASE_URl}/account/$username')
-          : Uri.parse('${Const.BASE_URl}/account/');
+      final url =
+          username != null
+              ? Uri.parse('${Const.BASE_URl}/account/$username')
+              : Uri.parse('${Const.BASE_URl}/account/');
       final cacheKey = url.toString();
 
       final isOnline = await Utils.isOnlineMethod();
       final hasCache = await MyApiCache.haveCache(cacheKey);
-      print('Hit on url: ${cacheKey}');
+      print('Hit on url: $cacheKey');
 
       // If offline, return cached data
       if (!isOnline && hasCache) {
         return Right(
-            AccountModels.fromJson(await MyApiCache.getData(cacheKey)));
+          AccountModels.fromJson(await MyApiCache.getData(cacheKey)),
+        );
       }
 
       final response = await http.post(url, headers: headers);
@@ -52,8 +55,11 @@ class AccountRepositoryImpl implements AccountRepository {
         return Right(AccountModels.fromJson(json.decode(response.body)));
       }
 
-      return Left(AppException(
-          message: json.decode(response.body)['message'] ?? 'Unknown error'));
+      return Left(
+        AppException(
+          message: json.decode(response.body)['message'] ?? 'Unknown error',
+        ),
+      );
     } on io.SocketException {
       return Left(AppException(message: 'No internet connection'));
     } on TimeoutException {
@@ -85,17 +91,21 @@ class AccountRepositoryImpl implements AccountRepository {
         if (kIsWeb) {
           // Web: Use bytes
           final bytes = await profileImage.readAsBytes();
-          request.files.add(http.MultipartFile.fromBytes(
-            'image',
-            bytes,
-            filename: profileImage.name,
-          ));
+          request.files.add(
+            http.MultipartFile.fromBytes(
+              'image',
+              bytes,
+              filename: profileImage.name,
+            ),
+          );
         } else {
           // Native: Use file path
-          request.files.add(await http.MultipartFile.fromPath(
-            'image',
-            profileImage.path, // Use .path here
-          ));
+          request.files.add(
+            await http.MultipartFile.fromPath(
+              'image',
+              profileImage.path, // Use .path here
+            ),
+          );
         }
       }
 
@@ -103,17 +113,21 @@ class AccountRepositoryImpl implements AccountRepository {
         if (kIsWeb) {
           // Web: Use bytes
           final bytes = await coverImage.readAsBytes();
-          request.files.add(http.MultipartFile.fromBytes(
-            'cover',
-            bytes,
-            filename: coverImage.name,
-          ));
+          request.files.add(
+            http.MultipartFile.fromBytes(
+              'cover',
+              bytes,
+              filename: coverImage.name,
+            ),
+          );
         } else {
           // Native: Use file path
-          request.files.add(await http.MultipartFile.fromPath(
-            'cover',
-            coverImage.path, // Use .path here
-          ));
+          request.files.add(
+            await http.MultipartFile.fromPath(
+              'cover',
+              coverImage.path, // Use .path here
+            ),
+          );
         }
       }
 
@@ -124,9 +138,11 @@ class AccountRepositoryImpl implements AccountRepository {
         return const Right("Account updated successfully");
       }
 
-      return Left(AppException(
-        message: 'Failed to update account: ${response.statusCode}',
-      ));
+      return Left(
+        AppException(
+          message: 'Failed to update account: ${response.statusCode}',
+        ),
+      );
     } catch (e) {
       print('Error in updateAccount: $e');
       return Left(AppException(message: 'Error updating account: $e'));

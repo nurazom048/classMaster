@@ -14,11 +14,11 @@ class WeekdayView extends ConsumerWidget {
   final dynamic showDeleteButton;
 
   WeekdayView({
-    Key? key,
+    super.key,
     required this.weekday,
     required this.onTap,
     required this.showDeleteButton,
-  }) : super(key: key);
+  });
 
   final List<String> sevendays = [
     "Sunday",
@@ -27,7 +27,7 @@ class WeekdayView extends ConsumerWidget {
     "Wednesday",
     "Thursday",
     "Friday",
-    "Saturday"
+    "Saturday",
   ];
 
   @override
@@ -38,18 +38,23 @@ class WeekdayView extends ConsumerWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
-          color: const Color(0x0fa7cbff),
-          border: Border.all(color: AppColor.nokiaBlue),
-          borderRadius: BorderRadius.circular(8)),
+        color: const Color(0x0fa7cbff),
+        border: Border.all(color: AppColor.nokiaBlue),
+        borderRadius: BorderRadius.circular(8),
+      ),
       child: ExpansionTile(
         // title: Text(sevendays[weekday].,
-        title: Text('todo',
-            style: TextStyle(fontSize: 18, color: AppColor.nokiaBlue)),
-        trailing: showDeleteButton == true
-            ? InkWell(
-                onTap: onTap,
-                child: const Icon(Icons.delete, color: Colors.red))
-            : const SizedBox(),
+        title: Text(
+          'todo',
+          style: TextStyle(fontSize: 18, color: AppColor.nokiaBlue),
+        ),
+        trailing:
+            showDeleteButton == true
+                ? InkWell(
+                  onTap: onTap,
+                  child: const Icon(Icons.delete, color: Colors.red),
+                )
+                : const SizedBox(),
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const DotedDivider(),
@@ -72,15 +77,15 @@ class WeekdayView extends ConsumerWidget {
                     //     _scaffoldKey.currentContext ?? context);
                   ),
                   SelectTime(
-                      width: size.width * 0.40,
-                      timeText: 'End Time',
-                      time: weekday.endTime,
-                      show: true,
-                      onTap: () {}
+                    width: size.width * 0.40,
+                    timeText: 'End Time',
+                    time: weekday.endTime,
+                    show: true,
+                    onTap: () {},
 
-                      //  => _selectEndTime(
-                      //     _scaffoldKey.currentContext ?? context),
-                      ),
+                    //  => _selectEndTime(
+                    //     _scaffoldKey.currentContext ?? context),
+                  ),
                 ],
               ),
             ],
@@ -94,12 +99,13 @@ class WeekdayView extends ConsumerWidget {
                 Text(
                   "Classroom Number",
                   style: TextStyle(
-                      fontFamily: 'Open Sans',
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16.0,
-                      height: 1.3,
-                      color: AppColor.nokiaBlue),
+                    fontFamily: 'Open Sans',
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16.0,
+                    height: 1.3,
+                    color: AppColor.nokiaBlue,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Text(weekday.room, style: TS.heading()),

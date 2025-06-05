@@ -4,16 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class Tilesbutton extends StatelessWidget {
+class TilesButton extends StatelessWidget {
   final String text;
   final Widget icon;
   final dynamic onTap;
   final String saxpath;
   final EdgeInsetsGeometry? imageMargin;
 
-  const Tilesbutton(this.text, this.icon,
-      {Key? key, this.onTap, required this.saxpath, this.imageMargin})
-      : super(key: key);
+  const TilesButton(
+    this.text,
+    this.icon, {
+    super.key,
+    this.onTap,
+    required this.saxpath,
+    this.imageMargin,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,28 +29,33 @@ class Tilesbutton extends StatelessWidget {
         width: 138,
         height: 174,
         decoration: BoxDecoration(
-            color: const Color.fromRGBO(1, 104, 255, 0.10),
-            borderRadius: BorderRadius.circular(15)),
+          color: const Color.fromRGBO(1, 104, 255, 0.10),
+          borderRadius: BorderRadius.circular(15),
+        ),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: Column(
             children: [
-              Stack(children: [
-                const Positioned(right: 2, child: Icon(Icons.arrow_forward)),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
+              Stack(
+                children: [
+                  const Positioned(right: 2, child: Icon(Icons.arrow_forward)),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
                       margin: imageMargin,
                       height: 92,
                       child: Center(
-                          child: SvgPicture.asset(
-                        saxpath,
-                        height: 92,
-                        fit: BoxFit.cover,
-                      ))),
-                ),
-                const SizedBox(height: 1),
-              ]),
+                        child: SvgPicture.asset(
+                          saxpath,
+                          height: 92,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 1),
+                ],
+              ),
               Text(
                 text,
                 textAlign: TextAlign.center,

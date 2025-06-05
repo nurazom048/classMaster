@@ -9,7 +9,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../../core/constant/constant.dart';
-import '../../../../../core/local data/api_cashe_maager.dart';
+import '../../../../core/local data/api_cache_manager.dart';
 import '../../../../../core/local data/local_data.dart';
 import '../../../../core/models/message_model.dart';
 import '../../../home_fetures/presentation/utils/utils.dart';
@@ -34,8 +34,9 @@ class NoticeRequest implements NoticeRepository {
     final pageQuery = page == null ? '' : "?page=$page";
     final baseUrl = Const.BASE_URl;
     final recentNoticeUrl = Uri.parse('$baseUrl/notice/recent$pageQuery');
-    final academyNoticeUrl =
-        Uri.parse('$baseUrl/notice/recent/$academyId$pageQuery');
+    final academyNoticeUrl = Uri.parse(
+      '$baseUrl/notice/recent/$academyId$pageQuery',
+    );
     final requestUrl = academyId == null ? recentNoticeUrl : academyNoticeUrl;
     final cacheKey = requestUrl.toString();
 
@@ -52,10 +53,7 @@ class NoticeRequest implements NoticeRepository {
       }
 
       // Make API request
-      final response = await http.post(
-        requestUrl,
-        headers: headers,
-      );
+      final response = await http.post(requestUrl, headers: headers);
       final responseData = json.decode(response.body);
 
       if (response.statusCode == 200) {
@@ -111,7 +109,9 @@ class NoticeRequest implements NoticeRepository {
         } else {
           if (pdfFileData.path != null) {
             final pdfPath = await http.MultipartFile.fromPath(
-                'pdf_file', pdfFileData.path!);
+              'pdf_file',
+              pdfFileData.path!,
+            );
             request.files.add(pdfPath);
           } else {
             return left('No PDF path provided on non-web');

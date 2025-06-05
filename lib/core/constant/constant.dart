@@ -23,16 +23,16 @@ abstract class Const {
   static String CANT_SEE_SUMMARY =
       'You are not a member of this routine.\nTo view the summary,\nyou need to become a member first.';
 
-// signUp info textList
+  // signUp info textList
   static List<String> SignUpInfoText = [
     "To create a academy account , it may take time to physically verify your academy",
     'This information will allow our team to visit your academy physically for verification.',
     'fill out the form and send a request to our team . We will review your request and accept it as soon as possible.',
-    'Don\'t worry, this contact information will not be visible to the public'
+    'Don\'t worry, this contact information will not be visible to the public',
   ];
 }
 
-double KTopPadding = 25;
+double KtopPadding = 25;
 
 const String FORGOT_MAIL_SEND_MESSAGE =
     'Reset email has been sent. Please check your Inbox and set a new password. If you don\'t find this email in your inbox, please check your spam folder.';

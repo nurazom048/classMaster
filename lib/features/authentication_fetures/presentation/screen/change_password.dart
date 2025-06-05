@@ -1,4 +1,4 @@
-import 'package:classmate/core/widgets/appWidget/TextFromFild.dart';
+import 'package:classmate/core/widgets/appWidget/text_form_field.dart';
 import 'package:classmate/core/widgets/appWidget/buttons/cupertino_buttons.dart';
 import 'package:classmate/core/widgets/heder/heder_title.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +10,7 @@ import '../../domain/providers/auth_controller.dart';
 import '../utils/validators/change_pw_validator.dart';
 
 class ChangePasswordPage extends ConsumerStatefulWidget {
-  const ChangePasswordPage({Key? key}) : super(key: key);
+  const ChangePasswordPage({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -50,27 +50,28 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                 AppTextFromField(
                   controller: currentPasswordController,
                   hint: 'Current Password',
-                  validator: (value) =>
-                      ChangePwValidator.validateCurrentPassword(value),
+                  validator:
+                      (value) =>
+                          ChangePwValidator.validateCurrentPassword(value),
                 ),
                 const SizedBox(height: 16),
                 AppTextFromField(
                   controller: newPasswordController,
                   obscureText: true,
                   hint: 'New Password',
-                  validator: (value) =>
-                      ChangePwValidator.validateNewPassword(value),
+                  validator:
+                      (value) => ChangePwValidator.validateNewPassword(value),
                 ),
                 const SizedBox(height: 16),
                 AppTextFromField(
                   controller: confirmPasswordController,
                   obscureText: true,
                   hint: 'Confirm New Password',
-                  validator: (value) =>
-                      ChangePwValidator.validateConfirmPassword(
-                    value,
-                    newPasswordController.text,
-                  ),
+                  validator:
+                      (value) => ChangePwValidator.validateConfirmPassword(
+                        value,
+                        newPasswordController.text,
+                      ),
                 ),
                 const SizedBox(height: 100),
                 CupertinoButtonCustom(

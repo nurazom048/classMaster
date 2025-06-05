@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:classmate/core/widgets/my_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
@@ -7,9 +8,9 @@ import 'package:classmate/features/notice_fetures/presentation/widgets/static_wi
 
 import '../../../../../core/export_core.dart';
 import '../../screens/view_all_recent_notice.dart';
-import '../../../../routine_Fetures/presentation/widgets/static_widgets/chekbox_selector_button.dart';
-import '../../../../routine_Fetures/presentation/widgets/static_widgets/routine_box_id_scelton.dart';
-import '../../providers/noticeboard_satus_controller.dart';
+import '../../../../routine_Fetures/presentation/widgets/static_widgets/checkbox_selector_button.dart';
+import '../../../../routine_Fetures/presentation/widgets/static_widgets/routine_box_id_skeleton.dart';
+import '../../providers/noticeboard_status_controller.dart';
 import '../../../../account_fetures/data/models/account_models.dart';
 
 class NoticeBoardHeader extends ConsumerWidget {
@@ -26,8 +27,9 @@ class NoticeBoardHeader extends ConsumerWidget {
     print("NoticeStatus $academyID");
     //! PRovider
     final noticeBoardStatus = ref.watch(noticeBoardStatusProvider(academyID));
-    final statusNotifier =
-        ref.watch(noticeBoardStatusProvider(academyID).notifier);
+    final statusNotifier = ref.watch(
+      noticeBoardStatusProvider(academyID).notifier,
+    );
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -35,12 +37,15 @@ class NoticeBoardHeader extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           InkWell(
-              onTap: () => Get.to(
+            onTap:
+                () => Get.to(
                   () => ViewAllRecentNotice(accountData: accountdata),
-                  transition: Transition.rightToLeftWithFade),
+                  transition: Transition.rightToLeftWithFade,
+                ),
 
-              //
-              child: Text("NoticeBoard", style: TS.heading())),
+            //
+            child: Text("NoticeBoard", style: TS.heading()),
+          ),
           noticeBoardStatus.when(
             data: (data) {
               return NoticeBoardJoinButton(
@@ -61,17 +66,20 @@ class NoticeBoardHeader extends ConsumerWidget {
   noticeBoardSheet(BuildContext context, String academyID) {
     print('notification $academyID');
     showModalBottomSheet(
-        elevation: 0,
-        barrierColor: Colors.black26,
-        backgroundColor: Colors.transparent,
-        context: context,
-        builder: (BuildContext context) {
-          return Consumer(builder: (context, ref, _) {
+      elevation: 0,
+      barrierColor: Colors.black26,
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (BuildContext context) {
+        return Consumer(
+          builder: (context, ref, _) {
             //! provider
-            final noticeBoardStatus =
-                ref.watch(noticeBoardStatusProvider(academyID));
-            final statusNotifier =
-                ref.watch(noticeBoardStatusProvider(academyID).notifier);
+            final noticeBoardStatus = ref.watch(
+              noticeBoardStatusProvider(academyID),
+            );
+            final statusNotifier = ref.watch(
+              noticeBoardStatusProvider(academyID).notifier,
+            );
 
             //
             bool notificationOn = false;
@@ -83,15 +91,17 @@ class NoticeBoardHeader extends ConsumerWidget {
               width: MediaQuery.of(context).size.width - 10,
               child: Card(
                 color: Colors.white,
-                margin: const EdgeInsets.all(18.0)
-                    .copyWith(left: 30, right: 30, bottom: 30),
+                margin: const EdgeInsets.all(
+                  18.0,
+                ).copyWith(left: 30, right: 30, bottom: 30),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
+                  borderRadius: BorderRadius.circular(15),
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     CheckBoxSelector(
-                      isChacked: notificationOn,
+                      isChecked: notificationOn,
                       icon: Icons.notifications_active,
                       text: "notifications_active",
                       onTap: () {
@@ -101,7 +111,7 @@ class NoticeBoardHeader extends ConsumerWidget {
                       },
                     ),
                     CheckBoxSelector(
-                      isChacked: notificationOn == false ? true : false,
+                      isChecked: notificationOn == false ? true : false,
                       icon: Icons.notifications_off,
                       text: "Notification Off",
                       color: Colors.red,
@@ -116,21 +126,33 @@ class NoticeBoardHeader extends ConsumerWidget {
                       icon: Icons.logout_sharp,
                       text: "Leave",
                       color: Colors.red,
-                      onTap: () => Alert.errorAlertDialogCallBack(
-                        context,
-                        "Are you sure you want to leave?",
-                        onConfirm: (bool isYes) {
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            statusNotifier.leaveMember(context);
-                          });
-                        },
-                      ),
+                      onTap: () {
+                        if (context.mounted) {
+                          Alert.errorAlertDialogCallBack(
+                            context,
+                            "Are you sure you want to leave?",
+                            onConfirm: (bool isYes) {
+                              if (isYes && context.mounted) {
+                                WidgetsBinding.instance.addPostFrameCallback((
+                                  _,
+                                ) {
+                                  if (context.mounted) {
+                                    statusNotifier.leaveMember(context);
+                                  }
+                                });
+                              }
+                            },
+                          );
+                        }
+                      },
                     ),
                   ],
                 ),
               ),
             );
-          });
-        });
+          },
+        );
+      },
+    );
   }
 }

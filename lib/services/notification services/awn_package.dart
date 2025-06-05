@@ -6,7 +6,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../core/export_core.dart';
-import '../one signal/onesignla.services.dart';
+import '../one signal/oneSignal.services.dart';
 
 class AwesomeNotificationSetup {
   // initialize
@@ -52,7 +52,7 @@ class AwesomeNotificationSetup {
   }
 
   //
-  static takePermiton(context) {
+  static takePermission(context) {
     if (!kIsWeb) {
       // AwesomeNotifications().isNotificationAllowed().then(
       //   (isAllowed) {

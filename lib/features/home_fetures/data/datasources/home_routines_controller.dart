@@ -7,7 +7,10 @@ import '../../../../core/models/message_model.dart';
 import '../models/home_routines_model.dart';
 
 final homeRoutineControllerProvider = StateNotifierProvider.family<
-    HomeRoutinesController, AsyncValue<RoutineHome>, String?>((ref, userID) {
+  HomeRoutinesController,
+  AsyncValue<RoutineHome>,
+  String?
+>((ref, userID) {
   return HomeRoutinesController(ref.read(home_req_provider), userID);
 });
 
@@ -15,7 +18,7 @@ class HomeRoutinesController extends StateNotifier<AsyncValue<RoutineHome>> {
   HomeReq homeReq;
   final String? userID;
   HomeRoutinesController(this.homeReq, this.userID)
-      : super(const AsyncLoading()) {
+    : super(const AsyncLoading()) {
     _init();
   }
 
@@ -31,7 +34,7 @@ class HomeRoutinesController extends StateNotifier<AsyncValue<RoutineHome>> {
     }
   }
 
-// Loader More
+  // Loader More
   void loadMore(page) async {
     try {
       if (page == state.value!.totalPages) {
@@ -43,10 +46,14 @@ class HomeRoutinesController extends StateNotifier<AsyncValue<RoutineHome>> {
           int? totalPages = newData.totalPages;
           if (newData.currentPage <= totalPages) {
             // Add new routines to the existing list and update the page number
-            List<HomeRoutine> homeRoutines = state.value!.homeRoutines
-              ..addAll(newData.homeRoutines);
-            state = AsyncValue.data(state.value!.copyWith(
-                homeRoutines: homeRoutines, currentPage: newData.currentPage));
+            List<HomeRoutine> homeRoutines =
+                state.value!.homeRoutines..addAll(newData.homeRoutines);
+            state = AsyncValue.data(
+              state.value!.copyWith(
+                homeRoutines: homeRoutines,
+                currentPage: newData.currentPage,
+              ),
+            );
           }
         }
       }
@@ -57,28 +64,33 @@ class HomeRoutinesController extends StateNotifier<AsyncValue<RoutineHome>> {
     }
   }
 
-  // DELETED routine
-  //... Delete Rutin...//
+  //... Delete Routine...//
 
-  void deleteRutin(String routineID, context) async {
+  void deleteRoutine(String routineID, context) async {
     try {
-      Either<Message, Message> res = await homeReq.deleteRutin(routineID);
+      Either<Message, Message> res = await homeReq.deleteRoutine(routineID);
 
-      res.fold((error) {
-        return Alert.showSnackBar(context, error.message);
-      }, (data) {
-        String? deletedRoutineID = data.routineID;
+      res.fold(
+        (error) {
+          return Alert.showSnackBar(context, error.message);
+        },
+        (data) {
+          String? deletedRoutineID = data.routineID;
 
-        //
-        if (deletedRoutineID != null) {
-          List<HomeRoutine> homeRoutines = state.value!.homeRoutines;
-          homeRoutines.removeWhere((routine) => routine.id == deletedRoutineID);
-          if (!mounted) return;
-          state = AsyncValue.data(
-              state.value!.copyWith(homeRoutines: homeRoutines));
-          return Alert.showSnackBar(context, data.message);
-        }
-      });
+          //
+          if (deletedRoutineID != null) {
+            List<HomeRoutine> homeRoutines = state.value!.homeRoutines;
+            homeRoutines.removeWhere(
+              (routine) => routine.id == deletedRoutineID,
+            );
+            if (!mounted) return;
+            state = AsyncValue.data(
+              state.value!.copyWith(homeRoutines: homeRoutines),
+            );
+            return Alert.showSnackBar(context, data.message);
+          }
+        },
+      );
     } catch (error, stackTrace) {
       if (!mounted) return;
 

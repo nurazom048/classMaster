@@ -35,10 +35,6 @@ class AuthReq {
         "password": password,
       };
 
-      if (oneSignalUserId != null) {
-        body["oneSignalUserId"] = oneSignalUserId;
-      }
-
       final response = await http.post(loginUrl, body: body);
       final responseBody = json.decode(response.body);
 
@@ -101,7 +97,6 @@ class AuthReq {
     required password,
     required email,
     required String accountType,
-    String? eiinNumber,
     String? contractInfo,
   }) async {
     final uri = Uri.parse('${Const.BASE_URl}/auth/create');
@@ -215,7 +210,6 @@ class AuthReq {
   Future<Either<Message, String>> continueWithGoogle({
     required String googleAuthToken,
     String? accountType,
-    String? eiinNumber,
     String? contractInfo,
   }) async {
     final Uri loginUrl = Uri.parse('${Const.BASE_URl}/auth/google');
@@ -227,7 +221,6 @@ class AuthReq {
         body: {
           "googleAuthToken": googleAuthToken,
           "account_type": Multiple.getAccountType(accountType),
-          "EIIN": eiinNumber ?? '',
           "contractInfo": contractInfo ?? '',
         },
       );

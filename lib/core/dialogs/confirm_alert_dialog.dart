@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class ConfromAlartDilog extends StatelessWidget {
+class ConfirmAlertDialog extends StatelessWidget {
   final String title;
   final String message;
   final Function(bool) onConfirm;
 
-  const ConfromAlartDilog({
+  const ConfirmAlertDialog({
     super.key,
     required this.title,
     required this.message,

@@ -85,7 +85,10 @@ class MemberController extends StateNotifier<AsyncValue<RoutineMembersModel>> {
 
   //******** Add Captans   ************** */
   void AddCaptans(routineId, username, context) async {
-    final message = await memberRequests.addCaptressReq(routineId, username);
+    final String message = await memberRequests.addCaptressReq(
+      routineId,
+      username,
+    );
     //  print("from comptroller : $message");
 
     Alert.showSnackBar(context, message);
@@ -94,32 +97,35 @@ class MemberController extends StateNotifier<AsyncValue<RoutineMembersModel>> {
   void removeCaptans(routineId, username, context) async {
     final message = await memberRequests.removeCaptansReq(routineId, username);
 
-    Alert.showSnackBar(context, message);
+    Alert.showSnackBar(context, message as String);
   }
 
   //...  select and remove member .....//
-  void removeMembers(BuildContext context, username) async {
-    Future<Message> message = memberRequests.removeMemberReq(
-      routineId,
-      username,
-    );
-
-    message.catchError((error) => Alert.handleError(context, error));
-    message.then((value) => Alert.showSnackBar(context, value.message));
+  void removeMembers(BuildContext context, String username) async {
+    try {
+      final message = await memberRequests.removeMemberReq(routineId, username);
+      if (context.mounted) {
+        Alert.showSnackBar(context, message.message);
+      }
+    } catch (error) {
+      if (context.mounted) {
+        Alert.handleError(context, error);
+      }
+    }
   }
 
   //******** addMember   ************** */
   void addMember(username, context) async {
     final message = await memberRequests.addMemberReq(routineId, username);
 
-    Alert.showSnackBar(context, message);
+    Alert.showSnackBar(context, message as String);
   }
 
   //******** remove member   ************** */
   void removeMember(username, context) async {
     final message = await memberRequests.removeMemberReq(routineId, username);
 
-    Alert.showSnackBar(context, message);
+    Alert.showSnackBar(context, message as String);
   }
 
   //******** remove_member   ************** */

@@ -16,7 +16,7 @@ class AccountCardRow extends ConsumerWidget {
     required this.accountData,
     this.suffix,
     this.removeCaptans,
-    this.buttotext,
+    this.buttontext,
     this.color,
     this.addCapotes = false,
     this.onUsername = _defaultOnUsername,
@@ -28,7 +28,7 @@ class AccountCardRow extends ConsumerWidget {
   static void _defaultOnUsername(String? n, String? q) {}
   final AccountModels accountData;
 
-  final String? buttotext;
+  final String? buttontext;
   final Color? color;
   final bool? addCapotes;
   final Function(String?, String?) onUsername;
@@ -41,19 +41,22 @@ class AccountCardRow extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return InkWell(
-      onTap: accountData.id != null
-          ? () => Get.to(
+      onTap:
+          accountData.id != null
+              ? () => Get.to(
                 ProfileScreen(
                   academyID: accountData.id,
                   username: accountData.username,
                 ),
               )
-          : () {},
+              : () {},
       child: Container(
         padding:
             padding ?? const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(8)),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+        ),
         height: 80,
         width: MediaQuery.of(context).size.width,
         child: Center(
@@ -88,25 +91,30 @@ class AccountCardRow extends ConsumerWidget {
                   width: MediaQuery.of(context).size.width * 0.70,
                   // color: Colors.red,
                   child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(accountData.name ?? '',
-                            maxLines: 2,
-                            textScaleFactor: 1.3,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontFamily: 'Open Sans',
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.w600,
-                              height: 1.3,
-                              color: Colors.black,
-                            )),
-                        Text(
-                          "@${accountData.username}",
-                          style: const TextStyle(
-                              fontSize: 16, color: Colors.black),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        accountData.name ?? '',
+                        maxLines: 2,
+                        textScaleFactor: 1.3,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontFamily: 'Open Sans',
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w600,
+                          height: 1.3,
+                          color: Colors.black,
                         ),
-                      ]),
+                      ),
+                      Text(
+                        "@${accountData.username}",
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               // Row(
@@ -152,17 +160,23 @@ class AccountCardRow extends ConsumerWidget {
               if (removeCaptans != null)
                 IconButton(
                   onPressed: removeCaptans,
-                  icon: const Icon(Icons.delete_rounded,
-                      color: CupertinoColors.systemRed),
+                  icon: const Icon(
+                    Icons.delete_rounded,
+                    color: CupertinoColors.systemRed,
+                  ),
                 ),
 
-              if (buttotext != null && suffix == null)
+              if (buttontext != null && suffix == null)
                 TextButton(
-                    onPressed: addCapotes == true
-                        ? () => addCaptansAlart(context)
-                        : () => onUsername(accountData.username, ""),
-                    child: Text(buttotext ?? "",
-                        style: TextStyle(color: color ?? Colors.blue))),
+                  onPressed:
+                      addCapotes == true
+                          ? () => addCaptansAlart(context)
+                          : () => onUsername(accountData.username, ""),
+                  child: Text(
+                    buttontext ?? "",
+                    style: TextStyle(color: color ?? Colors.blue),
+                  ),
+                ),
               const Spacer(flex: 2),
             ],
           ),
@@ -171,7 +185,7 @@ class AccountCardRow extends ConsumerWidget {
     );
   }
 
-//... add capotes with position .../
+  //... add capotes with position .../
 
   addCaptansAlart(context) {
     showDialog(
@@ -183,9 +197,11 @@ class AccountCardRow extends ConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
-                  controller: position,
-                  decoration:
-                      const InputDecoration(hintText: "enter position  name")),
+                controller: position,
+                decoration: const InputDecoration(
+                  hintText: "enter position  name",
+                ),
+              ),
               const SizedBox(height: 17),
               Align(
                 alignment: Alignment.bottomRight,

@@ -7,12 +7,12 @@ class SeatingOption extends StatelessWidget {
   final dynamic onTap;
   final IconData icon;
   const SeatingOption({
+    super.key,
     required this.title,
     this.subtitle,
     required this.onTap,
     required this.icon,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

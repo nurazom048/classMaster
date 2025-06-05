@@ -11,7 +11,8 @@ import '../../data/datasources/routine_request.dart';
 ///
 final routineControllerProvider =
     StateNotifierProvider<RoutineController, bool?>(
-        (ref) => RoutineController(ref.watch(fullRoutineProvider)));
+      (ref) => RoutineController(ref.watch(fullRoutineProvider)),
+    );
 
 ///
 class RoutineController extends StateNotifier<bool?> {
@@ -20,11 +21,16 @@ class RoutineController extends StateNotifier<bool?> {
   RoutineController(this.fullRoutineRequest) : super(null);
 
   //......Delete Class....//
-
-  void deleteClass(String classId, BuildContext context) {
-    fullRoutineRequest
-        .deleteClass(context, classId)
-        .catchError((error) => Alert.handleError(context, error))
-        .then((value) => Alert.showSnackBar(context, value.message));
+  Future<void> deleteClass(String classId, BuildContext context) async {
+    try {
+      final value = await fullRoutineRequest.deleteClass(context, classId);
+      if (context.mounted) {
+        Alert.showSnackBar(context, value.message);
+      }
+    } catch (error) {
+      if (context.mounted) {
+        Alert.handleError(context, error);
+      }
+    }
   }
 }

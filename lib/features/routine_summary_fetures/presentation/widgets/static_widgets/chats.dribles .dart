@@ -16,10 +16,7 @@ import '../../screens/summary_screen.dart';
 class ChatsDribbles extends StatelessWidget {
   final Summary summary;
 
-  const ChatsDribbles({
-    Key? key,
-    required this.summary,
-  }) : super(key: key);
+  const ChatsDribbles({super.key, required this.summary});
 
   @override
   Widget build(BuildContext context) {
@@ -55,17 +52,27 @@ class ChatsDribbles extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         InkWell(
-          onTap: () => Get.to(() => ViewImagesFullScreen(
-                images:
-                    summary.owner.image != null ? [summary.owner.image!] : [],
-              )),
+          onTap:
+              () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder:
+                      (context) => ViewImagesFullScreen(
+                        images:
+                            summary.owner.image != null
+                                ? [summary.owner.image!]
+                                : [],
+                      ),
+                ),
+              ),
           child: Padding(
             padding: const EdgeInsets.only(top: 9),
             child: CircleAvatar(
               radius: 23,
               backgroundColor: Colors.black,
-              backgroundImage:
-                  NetworkImage(summary.owner.image ?? DEMO_PROFILE_IMAGE),
+              backgroundImage: NetworkImage(
+                summary.owner.image ?? DEMO_PROFILE_IMAGE,
+              ),
             ),
           ),
         ),
@@ -108,18 +115,18 @@ class ChatsDribbles extends StatelessWidget {
                     ],
                   ),
                   IconButton(
-                    onPressed: () => showActionSheet(
-                        context, summary.id, summary.classDetail.id),
+                    onPressed:
+                        () => showActionSheet(
+                          context,
+                          summary.id,
+                          summary.classDetail.id,
+                        ),
                     icon: const Icon(Icons.more_vert),
                   ),
                 ],
               ),
               const SizedBox(height: 3),
-              const SizedBox(
-                height: 2,
-                width: 100,
-                child: DotedDivider(),
-              ),
+              const SizedBox(height: 2, width: 100, child: DotedDivider()),
 
               //
               const SizedBox(height: 4),
@@ -149,20 +156,24 @@ class ChatsDribbles extends StatelessWidget {
       children: [
         const SizedBox(height: 20),
         Container(
-          constraints: const BoxConstraints(
-            minHeight: 0,
-            maxHeight: 100,
-          ),
+          constraints: const BoxConstraints(minHeight: 0, maxHeight: 100),
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: summary.imageLinks.length,
             itemBuilder: (context, index) {
               final imageUrl = summary.imageLinks[index];
               return InkWell(
-                onTap: () => Get.to(() => ViewImagesFullScreen(
-                      images: summary.imageLinks,
-                      initialPage: index,
-                    )),
+                onTap:
+                    () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (context) => ViewImagesFullScreen(
+                              images: summary.imageLinks,
+                              initialPage: index,
+                            ),
+                      ),
+                    ),
                 child: Container(
                   width: 100,
                   height: 100,
@@ -189,80 +200,105 @@ class ChatsDribbles extends StatelessWidget {
 
     showCupertinoModalPopup(
       context: parentContext,
-      builder: (BuildContext context) => Consumer(builder: (context, ref, _) {
-        //! Providers
-        final statusProvider = ref.watch(summaryStatusProvider(summaryID));
-        final statusNotifier =
-            ref.watch(summaryStatusProvider(summaryID).notifier);
-        final summaryNotifier =
-            ref.watch(summaryControllerProvider(classID).notifier);
+      builder:
+          (BuildContext context) => Consumer(
+            builder: (context, ref, _) {
+              //! Providers
+              final statusProvider = ref.watch(
+                summaryStatusProvider(summaryID),
+              );
+              final statusNotifier = ref.watch(
+                summaryStatusProvider(summaryID).notifier,
+              );
+              final summaryNotifier = ref.watch(
+                summaryControllerProvider(classID).notifier,
+              );
 
-        return CupertinoActionSheet(
-          title: Text('Do You Want To  ...? ', style: TS.heading(fontSize: 19)),
-          // message: const Text('Select an action'),
-          actions: <Widget>[
-            statusProvider.when(
-              data: (data) {
-                final String save = data.isSummarySaved == true
-                    ? "saved    "
-                    : "add to save     ";
-                final IconData saveIc = data.isSummarySaved == true
-                    ? Icons.bookmark_added
-                    : Icons.bookmark_add;
-                return Column(
-                  children: [
-                    CupertinoActionSheetAction(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(save,
-                                style: const TextStyle(color: Colors.black)),
-                            Icon(saveIc),
+              return CupertinoActionSheet(
+                title: Text(
+                  'Do You Want To  ...? ',
+                  style: TS.heading(fontSize: 19),
+                ),
+                // message: const Text('Select an action'),
+                actions: <Widget>[
+                  statusProvider.when(
+                    data: (data) {
+                      final String save =
+                          data.isSummarySaved == true
+                              ? "saved    "
+                              : "add to save     ";
+                      final IconData saveIc =
+                          data.isSummarySaved == true
+                              ? Icons.bookmark_added
+                              : Icons.bookmark_add;
+                      return Column(
+                        children: [
+                          CupertinoActionSheetAction(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  save,
+                                  style: const TextStyle(color: Colors.black),
+                                ),
+                                Icon(saveIc),
+                              ],
+                            ),
+                            onPressed: () {
+                              statusNotifier.unsavedSummary(
+                                parentContext,
+                                summaryID: summaryID,
+                                condition:
+                                    data.isSummarySaved == true ? false : true,
+                              );
+                            },
+                          ),
+                          if (data.isOwner || data.isCaptain) ...[
+                            const SizedBox(height: 2, child: DotedDivider()),
+                            CupertinoActionSheetAction(
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Delete    ',
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                  Icon(Icons.delete, color: Colors.red),
+                                ],
+                              ),
+                              onPressed: () {
+                                Alert.errorAlertDialogCallBack(
+                                  context,
+                                  "Are you sure You want to Delete This Summary",
+                                  onConfirm: (isConfirmed) {
+                                    if (isConfirmed) {
+                                      summaryNotifier.deleteSummary(
+                                        parentContext,
+                                        summaryID,
+                                      );
+                                    }
+                                  },
+                                );
+                              },
+                            ),
                           ],
-                        ),
-                        onPressed: () {
-                          statusNotifier.unsavedSummary(
-                            parentContext,
-                            summaryID: summaryID,
-                            condition:
-                                data.isSummarySaved == true ? false : true,
-                          );
-                        }),
-                    if (data.isOwner || data.isCaptain) ...[
-                      const SizedBox(height: 2, child: DotedDivider()),
-                      CupertinoActionSheetAction(
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('Delete    ',
-                                style: TextStyle(color: Colors.red)),
-                            Icon(Icons.delete, color: Colors.red),
-                          ],
-                        ),
-                        onPressed: () {
-                          Alert.errorAlertDialogCallBack(context,
-                              "Are you sure You want to Delete This Summary",
-                              onConfirm: () {
-                            summaryNotifier.deleteSummary(
-                                parentContext, summaryID);
-                          });
-                        },
-                      ),
-                    ]
-                  ],
-                );
-              },
-              error: (error, stackTrace) => Alert.handleError(context, error),
-              loading: () => Loaders.center(height: 100),
-            ),
-          ],
-          cancelButton: CupertinoActionSheetAction(
-            isDefaultAction: true,
-            onPressed: () => Navigator.pop(parentContext),
-            child: const Text('Close'),
+                        ],
+                      );
+                    },
+                    error:
+                        (error, stackTrace) =>
+                            Alert.handleError(context, error),
+                    loading: () => Loaders.center(height: 100),
+                  ),
+                ],
+                cancelButton: CupertinoActionSheetAction(
+                  isDefaultAction: true,
+                  onPressed: () => Navigator.pop(parentContext),
+                  child: const Text('Close'),
+                ),
+              );
+            },
           ),
-        );
-      }),
     );
   }
 
@@ -305,7 +341,7 @@ class ChatsDribbles extends StatelessWidget {
   //                         context,
   //                         "Are you sure you want to delete this summary?",
   //                         onConfirm: () {
-  //                           summaryNotifier.deletesummary(
+  //                           summaryNotifier.deleteSummary(
   //                               parentContext, summaryID);
   //                         },
   //                       );

@@ -4,23 +4,47 @@ import 'package:get/get.dart';
 import '../export_core.dart';
 
 abstract class Alert {
-//... Error AlertDialog...//
+  // Show Snackbar
+  static void showSnackBar(BuildContext context, String message) {
+    if (context.mounted) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(message)));
+    }
+  }
 
-  static void errorAlertDialog(BuildContext context, dynamic message,
-      {String? title}) {
-    showDialog(
+  // Handle error
+  static Widget handleError(
+    BuildContext context,
+    dynamic error, {
+    Widget? child,
+  }) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (context.mounted) {
+        showSnackBar(context, error.toString());
+      }
+    });
+
+    return child ?? Center(child: Text(error.toString(), style: TS.heading()));
+  }
+
+  // Error AlertDialog
+  static Future<void> errorAlertDialog(
+    BuildContext context,
+    dynamic message, {
+    String? title,
+  }) async {
+    if (!context.mounted) return;
+
+    await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(
-            title ?? 'Error',
-          ),
+          title: Text(title ?? 'Error'),
           content: Text(message.toString(), style: TS.heading(fontSize: 18)),
           actions: <Widget>[
             ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+              onPressed: () => Navigator.of(context).pop(),
               child: const Text('OK'),
             ),
           ],
@@ -29,26 +53,33 @@ abstract class Alert {
     );
   }
 
-  static errorAlertDialogCallBack(BuildContext context, dynamic message,
-      {required onConfirm}) {
-    showDialog(
+  static Future<void> errorAlertDialogCallBack(
+    BuildContext context,
+    dynamic message, {
+    required void Function(bool isConfirmed) onConfirm,
+  }) async {
+    if (!context.mounted) return;
+
+    await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Alert',
-              style: TextStyle(fontWeight: FontWeight.bold)),
-          content:
-              Text(message.toString(), style: const TextStyle(fontSize: 16)),
-          actions: <Widget>[
-            ElevatedButton(
-              onPressed: onConfirm, // Invoke the onConfirm callback
-              child: const Text('Yes',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+          title: const Text('Confirmation'),
+          content: Text(message.toString()),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                onConfirm(true); // User confirmed
+              },
+              child: const Text('YES'),
             ),
-            ElevatedButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('No',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                onConfirm(false); // User cancelled
+              },
+              child: const Text('NO'),
             ),
           ],
         );
@@ -56,86 +87,65 @@ abstract class Alert {
     );
   }
 
-  static conformAlert(BuildContext context, dynamic message,
-      {Function? onTapYes}) {
+  static conformAlert(
+    BuildContext context,
+    dynamic message, {
+    Function? onTapYes,
+  }) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Alert',
-              style: TextStyle(fontWeight: FontWeight.bold)),
-          content:
-              Text(message.toString(), style: const TextStyle(fontSize: 16)),
-          actions: <Widget>[
-            ElevatedButton(
-              onPressed: () => onTapYes,
-              child: const Text('Yes',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-            ElevatedButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('No',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  //.... show snackbar ...//
-  static void showSnackBar(BuildContext context, dynamic text) {
-    Get.snackbar(
-      "Message",
-      text.toString(),
-      snackPosition: SnackPosition.TOP,
-      //backgroundColor: Colors.white,
-      colorText: Colors.black,
-      borderRadius: 10,
-      backgroundColor: Colors.white,
-    );
-    //   ScaffoldMessenger.of(context)
-    //     ..hideCurrentSnackBar()
-    //     ..showSnackBar(
-    //       SnackBar(
-    //         content: Text(text.toString()),
-    //       ),
-    //     );
-  }
-
-  static Widget handleError(BuildContext context, dynamic error,
-      {Widget? child}) {
-    Future.delayed(const Duration(seconds: 4), () {
-      // ignore: use_build_context_synchronously
-      showSnackBar(context, error.toString());
-      // Get.showSnackbar(GetSnackBar(message: '$error'));
-    });
-    return child ??
-        Center(
-            child: Text(
-          error.toString(),
-          style: TS.heading(),
-        ));
-  }
-
-  //
-  static upcoming(context, {String? header, dynamic message}) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        const String demyMessage =
-            "We are working on this feature. It will be available very soon...";
-        return AlertDialog(
-          title: Text(header ?? 'Upcoming'),
+          title: const Text(
+            'Alert',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           content: Text(
-            message == null ? demyMessage : message.toString(),
-            style: TS.heading(fontSize: 18),
+            message.toString(),
+            style: const TextStyle(fontSize: 16),
           ),
           actions: <Widget>[
             ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+              onPressed: () => onTapYes,
+              child: const Text(
+                'Yes',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text(
+                'No',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // upcoming fetures informations
+  static void upcoming(
+    BuildContext context, {
+    String? header,
+    dynamic message,
+  }) {
+    if (!context.mounted) return;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        const String demyMessage = "We are working on this feature...";
+        return AlertDialog(
+          title: Text(header ?? 'Upcoming'),
+          content: Text(
+            message?.toString() ?? demyMessage,
+            style: TS.heading(fontSize: 18),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(),
               child: const Text('OK'),
             ),
           ],

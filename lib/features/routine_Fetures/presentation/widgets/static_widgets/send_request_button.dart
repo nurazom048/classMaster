@@ -16,7 +16,7 @@ class SendReqButton extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
 
   const SendReqButton({
-    Key? key,
+    super.key,
     required this.isNotSendRequest,
     required this.isPending,
     required this.isMember,
@@ -27,16 +27,18 @@ class SendReqButton extends StatelessWidget {
     this.icon,
     this.colorBG,
     this.padding,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    IconData nIcon = notificationOn == false
-        ? Icons.notifications_off
-        : Icons.notifications_active;
-    String text = isNotSendRequest
-        ? "Send Request"
-        : isPending
+    IconData nIcon =
+        notificationOn == false
+            ? Icons.notifications_off
+            : Icons.notifications_active;
+    String text =
+        isNotSendRequest
+            ? "Send Request"
+            : isPending
             ? "Request Pending"
             : "";
 
@@ -64,11 +66,7 @@ class SendReqButton extends StatelessWidget {
                 ),
                 const SizedBox(width: 5),
                 if (icon != null)
-                  Icon(
-                    icon,
-                    size: 20,
-                    color: color ?? AppColor.nokiaBlue,
-                  ),
+                  Icon(icon, size: 20, color: color ?? AppColor.nokiaBlue),
               ],
             ),
           )

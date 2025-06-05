@@ -1,20 +1,23 @@
-// export 'package:go_router/go_router.dart';
-
+// route_constant.dart
 class RouteConst {
-  static String home = 'home';
+  // Core routes
+  static const String home = 'home';
+  static const String splash = '/';
 
-  // auth
-  static String login = 'login';
-  static String signUp = 'signUp';
-  static String forgetPassword = 'forgetPassword';
+  // Auth routes
+  static const String login = 'login';
+  static const String signUp = 'signUp';
+  static const String forgetPassword = 'forgetPassword';
 
-  //Routine
-  static String createRoutine = 'createRoutine';
-  static String viewRoutine = 'viewRoutine';
-  static String addClass = 'addClass';
+  // Routine routes
+  static const String createRoutine = 'createRoutine';
+  static const String viewRoutine = 'viewRoutine';
+  static const String addClass = 'addClass';
 
-  // Search
-  static String searchPage = 'searchPage';
-  static String searchAccount = 'searchAccount';
-  static String searchRoutine = 'searchRoutine';
+  // Search routes
+  static const String searchPage = 'SearchPage';
+
+  // Account routes
+  static const String editAccount = 'edit-account';
+  static const String settingsPage = 'settings';
 }

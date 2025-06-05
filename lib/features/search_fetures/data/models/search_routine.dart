@@ -1,22 +1,22 @@
 import '../../../account_fetures/data/models/account_models.dart';
 
-class RutinQuarry {
+class RoutineQuery {
   List<Routine> routines;
   int currentPage;
   int totalPages;
   int totalCount;
 
-  RutinQuarry({
+  RoutineQuery({
     required this.routines,
     required this.currentPage,
     required this.totalPages,
     required this.totalCount,
   });
 
-  factory RutinQuarry.fromJson(Map<String, dynamic> json) {
+  factory RoutineQuery.fromJson(Map<String, dynamic> json) {
     var list = json['routines'] as List;
     List<Routine> routines = list.map((i) => Routine.fromJson(i)).toList();
-    return RutinQuarry(
+    return RoutineQuery(
       routines: routines,
       currentPage: json['currentPage'],
       totalPages: json['totalPages'],
@@ -33,13 +33,13 @@ class RutinQuarry {
     };
   }
 
-  RutinQuarry copyWith({
+  RoutineQuery copyWith({
     List<Routine>? routines,
     int? currentPage,
     int? totalPages,
     int? totalCount,
   }) {
-    return RutinQuarry(
+    return RoutineQuery(
       routines: routines ?? this.routines,
       currentPage: currentPage ?? this.currentPage,
       totalPages: totalPages ?? this.totalPages,
@@ -53,11 +53,7 @@ class Routine {
   String name;
   AccountModels owner;
 
-  Routine({
-    required this.id,
-    required this.name,
-    required this.owner,
-  });
+  Routine({required this.id, required this.name, required this.owner});
 
   factory Routine.fromJson(Map<String, dynamic> json) {
     return Routine(
@@ -68,17 +64,10 @@ class Routine {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'routineName': name,
-    };
+    return {'id': id, 'routineName': name};
   }
 
-  Routine copyWith({
-    String? id,
-    String? name,
-    AccountModels? owner,
-  }) {
+  Routine copyWith({String? id, String? name, AccountModels? owner}) {
     return Routine(
       id: id ?? this.id,
       name: name ?? this.name,

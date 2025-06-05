@@ -20,59 +20,62 @@ class _NotificationScreenState extends State<NotificationScreen> {
     super.initState();
 
     FirebaseAnalyticsServices.logEvent(
-      name: "notificationscreen",
-      parameters: {
-        "content_type": "ontap",
-      },
+      name: "notificationScreen",
+      parameters: {"content_type": "ontap"},
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(builder: (context, ref, _) {
-      // provider
-      final notifications = ref.watch(notificationsProvider);
-      return SafeArea(
-        child: Scaffold(
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                HeaderTitle('Notifications', context),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 26)
-                          .copyWith(top: 0),
-                  child: notifications.when(
-                    data: (data) {
-                      return data.fold(
-                        (error) => ErrorScreen(error: error.message),
-                        (value) => Column(
-                          children: List.generate(
-                            value.notifications.length,
-                            (i) => NotificationCard(
-                              notification: value.notifications[i],
-                              previousDateTime:
-                                  value.notifications[i].createdAt,
-                              isFirst: i == 0,
+    return Consumer(
+      builder: (context, ref, _) {
+        // provider
+        final notifications = ref.watch(notificationsProvider);
+        return SafeArea(
+          child: Scaffold(
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  HeaderTitle('Notifications', context),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 26,
+                    ).copyWith(top: 0),
+                    child: notifications.when(
+                      data: (data) {
+                        return data.fold(
+                          (error) => ErrorScreen(error: error.message),
+                          (value) => Column(
+                            children: List.generate(
+                              value.notifications.length,
+                              (i) => NotificationCard(
+                                notification: value.notifications[i],
+                                previousDateTime:
+                                    value.notifications[i].createdAt,
+                                isFirst: i == 0,
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                    error: (error, stackTrace) =>
-                        Alert.handleError(context, error),
-                    loading: () => Padding(
-                      padding: const EdgeInsets.only(top: 200),
-                      child: Loaders.center(),
+                        );
+                      },
+                      error:
+                          (error, stackTrace) =>
+                              Alert.handleError(context, error),
+                      loading:
+                          () => Padding(
+                            padding: const EdgeInsets.only(top: 200),
+                            child: Loaders.center(),
+                          ),
                     ),
                   ),
-                )
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 }
 
@@ -82,11 +85,11 @@ class NotificationCard extends StatelessWidget {
   final DateTime previousDateTime;
 
   const NotificationCard({
-    Key? key,
+    super.key,
     required this.notification,
     required this.previousDateTime,
     this.isFirst = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -96,8 +99,10 @@ class NotificationCard extends StatelessWidget {
         if (notification.createdAt != previousDateTime || isFirst)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16),
-            child: Text(getTimeDuration(notification.createdAt),
-                style: TS.opensensBlue(color: Colors.black)),
+            child: Text(
+              getTimeDuration(notification.createdAt),
+              style: TS.opensensBlue(color: Colors.black),
+            ),
           ),
         Container(
           margin: const EdgeInsets.symmetric(vertical: 4),

@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, avoid_print
 
 import 'dart:convert';
-import 'package:classmate/core/widgets/appWidget/TextFromFild.dart';
+import 'package:classmate/core/widgets/appWidget/text_form_field.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -70,158 +70,172 @@ class _AddClassScreenState extends State<AddClassScreen> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
-    return Consumer(builder: (context, ref, _) {
-      return Scaffold(
-        key: scaffoldKey,
-        backgroundColor: const Color(0xFFEFF6FF),
-        body: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    children: <Widget>[
-                      // Header
-                      HeaderTitle(widget.routineName ?? '', context),
-                      const SizedBox(height: 40),
+    return Consumer(
+      builder: (context, ref, _) {
+        return Scaffold(
+          key: scaffoldKey,
+          backgroundColor: const Color(0xFFEFF6FF),
+          body: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      children: <Widget>[
+                        // Header
+                        HeaderTitle(widget.routineName ?? '', context),
+                        const SizedBox(height: 40),
 
-                      if (widget.isUpdate == true) ...[
-                        const AppText("Edit Mode").title(),
-                        Text("Update information",
-                            style: TS.heading(fontSize: 24))
-                      ] else
-                        const AppText("Add Class").title(),
-
-                      const SizedBox(height: 20),
-
-                      // Class name
-                      AppTextFromField(
-                        controller: _classNameController,
-                        hint: "Class name",
-                        labelText: "Enter class name",
-                        validator: (value) =>
-                            AddClassValidator.className(value),
-                      ),
-
-                      // Instructor name
-                      AppTextFromField(
-                        controller: _instructorController,
-                        hint: "Instructor Name",
-                        labelText: "Enter Instructor Name",
-                        validator: (value) =>
-                            AddClassValidator.instructorName(value),
-                      ),
-
-                      // Subject code
-                      AppTextFromField(
-                        controller: _subCodeController,
-                        keyboardType: TextInputType.number,
-                        hint: "Subject Code",
-                        labelText: "Enter Subject Code",
-                        validator: (value) => AddClassValidator.subCode(value),
-                      ),
-                      const SizedBox(height: 20),
-
-                      if (widget.isUpdate == true && widget.classId != null)
-                        ShowWeekdayWidgets(classId: widget.classId!)
-                      else
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 16),
-                          height: 480,
-                          width: MediaQuery.of(context).size.width,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              DayDropdown(
-                                labelText: "Tap Here",
-                                onPressed: () {},
-                                onChanged: (selectedDay) {
-                                  setState(() {
-                                    _selectedDay = selectedDay;
-                                  });
-                                },
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                        horizontal: 5, vertical: 20)
-                                    .copyWith(bottom: 0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    // Header
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        SelectTime(
-                                          width: size.width * 0.40,
-                                          timeText: 'Start Time',
-                                          time: startTime,
-                                          show: showStartTime,
-                                          onTap: () {
-                                            _selectStartTime(
-                                                scaffoldKey.currentContext ??
-                                                    context);
-                                          },
-                                        ),
-                                        SelectTime(
-                                          width: size.width * 0.40,
-                                          timeText: 'End Time',
-                                          time: endTime,
-                                          show: showEndTime,
-                                          onTap: () => _selectEndTime(
-                                              scaffoldKey.currentContext ??
-                                                  context),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-                              AppTextFromField(
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 22)
-                                        .copyWith(top: 0),
-                                controller: _roomController,
-                                hint: "Classroom Number",
-                                labelText: "Enter Classroom Number in this day",
-                                validator: (value) =>
-                                    AddClassValidator.roomNumber(value),
-                              ),
-                            ],
+                        if (widget.isUpdate == true) ...[
+                          const AppText("Edit Mode").title(),
+                          Text(
+                            "Update information",
+                            style: TS.heading(fontSize: 24),
                           ),
+                        ] else
+                          const AppText("Add Class").title(),
+
+                        const SizedBox(height: 20),
+
+                        // Class name
+                        AppTextFromField(
+                          controller: _classNameController,
+                          hint: "Class name",
+                          labelText: "Enter class name",
+                          validator:
+                              (value) => AddClassValidator.className(value),
                         ),
 
-                      const SizedBox(height: 30),
-                      CupertinoButtonCustom(
-                        icon: widget.isUpdate == true ? Icons.check : null,
-                        padding: const EdgeInsets.symmetric(horizontal: 25),
-                        text: widget.isUpdate == true
-                            ? 'Update Class'
-                            : "Create Class",
-                        color: AppColor.nokiaBlue,
-                        onPressed: () async {
-                          if (formKey.currentState!.validate()) {
-                            _onTapToButton(ref);
-                          } else {
-                            Alert.showSnackBar(context, 'Fill the form');
-                          }
-                        },
-                      ),
-                      const SizedBox(height: 200),
-                    ],
+                        // Instructor name
+                        AppTextFromField(
+                          controller: _instructorController,
+                          hint: "Instructor Name",
+                          labelText: "Enter Instructor Name",
+                          validator:
+                              (value) =>
+                                  AddClassValidator.instructorName(value),
+                        ),
+
+                        // Subject code
+                        AppTextFromField(
+                          controller: _subCodeController,
+                          keyboardType: TextInputType.number,
+                          hint: "Subject Code",
+                          labelText: "Enter Subject Code",
+                          validator:
+                              (value) => AddClassValidator.subCode(value),
+                        ),
+                        const SizedBox(height: 20),
+
+                        if (widget.isUpdate == true && widget.classId != null)
+                          ShowWeekdayWidgets(classId: widget.classId!)
+                        else
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 16),
+                            height: 480,
+                            width: MediaQuery.of(context).size.width,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                DayDropdown(
+                                  labelText: "Tap Here",
+                                  onPressed: () {},
+                                  onChanged: (selectedDay) {
+                                    setState(() {
+                                      _selectedDay = selectedDay;
+                                    });
+                                  },
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 5,
+                                    vertical: 20,
+                                  ).copyWith(bottom: 0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      // Header
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          SelectTime(
+                                            width: size.width * 0.40,
+                                            timeText: 'Start Time',
+                                            time: startTime,
+                                            show: showStartTime,
+                                            onTap: () {
+                                              _selectStartTime(
+                                                scaffoldKey.currentContext ??
+                                                    context,
+                                              );
+                                            },
+                                          ),
+                                          SelectTime(
+                                            width: size.width * 0.40,
+                                            timeText: 'End Time',
+                                            time: endTime,
+                                            show: showEndTime,
+                                            onTap:
+                                                () => _selectEndTime(
+                                                  scaffoldKey.currentContext ??
+                                                      context,
+                                                ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                AppTextFromField(
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 22,
+                                  ).copyWith(top: 0),
+                                  controller: _roomController,
+                                  hint: "Classroom Number",
+                                  labelText:
+                                      "Enter Classroom Number in this day",
+                                  validator:
+                                      (value) =>
+                                          AddClassValidator.roomNumber(value),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                        const SizedBox(height: 30),
+                        CupertinoButtonCustom(
+                          icon: widget.isUpdate == true ? Icons.check : null,
+                          padding: const EdgeInsets.symmetric(horizontal: 25),
+                          text:
+                              widget.isUpdate == true
+                                  ? 'Update Class'
+                                  : "Create Class",
+                          color: AppColor.nokiaBlue,
+                          onPressed: () async {
+                            if (formKey.currentState!.validate()) {
+                              _onTapToButton(ref);
+                            } else {
+                              Alert.showSnackBar(context, 'Fill the form');
+                            }
+                          },
+                        ),
+                        const SizedBox(height: 200),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-      );
-    });
+            ],
+          ),
+        );
+      },
+    );
   }
 
   void _onTapToButton(WidgetRef ref) async {
@@ -229,18 +243,19 @@ class _AddClassScreenState extends State<AddClassScreen> {
 
     if (widget.isUpdate == true) {
       ClassRequest().editClass(
-          context,
-          ref,
-          widget.classId ?? "",
-          widget.routineId,
-          startTime,
-          endTime,
-          ClassModelUpdate(
-            className: _classNameController.text,
-            instructorName: _instructorController.text,
-            roomNumber: _roomController.text,
-            subjectCode: _subCodeController.text,
-          ));
+        context,
+        ref,
+        widget.classId ?? "",
+        widget.routineId,
+        startTime,
+        endTime,
+        ClassModelUpdate(
+          className: _classNameController.text,
+          instructorName: _instructorController.text,
+          roomNumber: _roomController.text,
+          subjectCode: _subCodeController.text,
+        ),
+      );
     } else {
       if (_selectedDay == null) {
         Alert.errorAlertDialog(context, 'Select day');
@@ -267,16 +282,18 @@ class _AddClassScreenState extends State<AddClassScreen> {
         Navigator.pushReplacement(
           context,
           PageRouteBuilder(
-            pageBuilder: (BuildContext context, Animation<double> animation,
-                Animation<double> secondaryAnimation) {
+            pageBuilder: (
+              BuildContext context,
+              Animation<double> animation,
+              Animation<double> secondaryAnimation,
+            ) {
               return SlideTransition(
                 position: Tween<Offset>(
                   begin: const Offset(1, 0),
                   end: Offset.zero,
-                ).animate(CurvedAnimation(
-                  parent: animation,
-                  curve: Curves.easeOut,
-                )),
+                ).animate(
+                  CurvedAnimation(parent: animation, curve: Curves.easeOut),
+                ),
                 child: AddClassScreen(
                   routineId: widget.routineId,
                   classId: newclassID,
@@ -320,8 +337,13 @@ class _AddClassScreenState extends State<AddClassScreen> {
       if (value != null) {
         setState(() {
           showStartTime = true;
-          startTime = DateTime(startTime.year, startTime.month, startTime.day,
-              value.hour, value.minute);
+          startTime = DateTime(
+            startTime.year,
+            startTime.month,
+            startTime.day,
+            value.hour,
+            value.minute,
+          );
         });
       }
     });
@@ -334,7 +356,12 @@ class _AddClassScreenState extends State<AddClassScreen> {
     ).then((value) {
       if (value != null) {
         DateTime selectedEndTime = DateTime(
-            endTime.year, endTime.month, endTime.day, value.hour, value.minute);
+          endTime.year,
+          endTime.month,
+          endTime.day,
+          value.hour,
+          value.minute,
+        );
 
         if (selectedEndTime.isAfter(startTime)) {
           setState(() {

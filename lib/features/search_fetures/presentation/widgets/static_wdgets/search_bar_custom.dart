@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class SearchBarCustom extends StatefulWidget {
   final Function(String)? onChanged;
 
-  const SearchBarCustom({Key? key, required this.onChanged}) : super(key: key);
+  const SearchBarCustom({super.key, required this.onChanged});
 
   @override
   _SearchBarCustomState createState() => _SearchBarCustomState();
@@ -57,8 +57,10 @@ class _SearchBarCustomState extends State<SearchBarCustom> {
                   },
                   icon: const Icon(Icons.close, size: 18.0),
                 ),
-                contentPadding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                contentPadding: const EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 10,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: const BorderSide(

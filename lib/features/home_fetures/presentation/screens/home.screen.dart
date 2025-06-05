@@ -3,13 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart' as gx;
-import 'package:classmate/services/one%20signal/onesignla.services.dart';
+import 'package:classmate/services/one%20signal/oneSignal.services.dart';
 import 'package:classmate/features/home_fetures/data/models/home_routines_model.dart';
 import 'package:classmate/features/home_fetures/presentation/utils/utils.dart';
 import 'package:classmate/core/widgets/widgets/mydrawer.dart';
 import 'package:classmate/core/widgets/widgets/recent_notice_title.dart';
-import 'package:classmate/core/widgets/widgets/recentnoticeslider_scalton.dart';
-import 'package:classmate/core/widgets/widgets/slider/recentniticeslider_item.dart';
+import 'package:classmate/core/widgets/widgets/recent_notice_slider_skeleton.dart';
+import 'package:classmate/core/widgets/widgets/slider/recent_notice_slider_item.dart';
 import '../../../../core/component/responsive.dart';
 import '../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../core/widgets/appWidget/app_text.dart';
@@ -19,10 +19,10 @@ import '../../../../services/notification services/awn_package.dart';
 import '../../../notice_fetures/presentation/screens/view_all_recent_notice.dart';
 import '../../../routine_Fetures/presentation/utils/routine_dialog.dart';
 import '../../../routine_Fetures/presentation/widgets/dynamic_widgets/routine_box_by_id.dart';
-import '../../../routine_Fetures/presentation/widgets/static_widgets/routine_box_id_scelton.dart';
+import '../../../routine_Fetures/presentation/widgets/static_widgets/routine_box_id_skeleton.dart';
 import '../../../notice_fetures/presentation/providers/view_recent_notice_controller.dart';
 import '../../../../core/widgets/widgets/custom_title_bar.dart';
-import '../../../../core/widgets/widgets/slider/recentnoticeslider.dart';
+import '../../../../core/widgets/widgets/slider/recent_notice_slider.dart';
 import '../../data/datasources/home_routines_controller.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
     FirebaseAnalyticsServices.logHome();
     // AwesomeNotificationSetup
 
-    AwesomeNotificationSetup.takePermiton(context);
+    AwesomeNotificationSetup.takePermission(context);
   }
 
   @override
@@ -196,7 +196,7 @@ Widget homeMobileView(
                   itemBuilder: (context, index) {
                     return RoutineBoxById(
                       routineId: data.homeRoutines[index].id,
-                      rutinName: data.homeRoutines[index].routineName,
+                      routineName: data.homeRoutines[index].routineName,
                       onTapMore:
                           () => RoutineDialog.CheckStatusUser_BottomSheet(
                             context,
@@ -209,7 +209,7 @@ Widget homeMobileView(
                 );
               }
             },
-            loading: () => RUTINE_BOX_SKELTON,
+            loading: () => ROUTINE_BOX_SKELTON,
             error: (error, stackTrace) {
               return Alert.handleError(
                 context,

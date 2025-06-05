@@ -11,7 +11,7 @@ import 'package:go_router/go_router.dart';
 final createRoutineLoaderProvider = StateProvider<bool>((ref) => false);
 
 class CreateNewRoutine extends StatelessWidget {
-  CreateNewRoutine({Key? key});
+  CreateNewRoutine();
   final _routineNameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
@@ -21,8 +21,10 @@ class CreateNewRoutine extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20)
-              .copyWith(bottom: 20),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 20,
+          ).copyWith(bottom: 20),
           child: Form(
             key: _formKey,
             child: SizedBox(
@@ -47,21 +49,23 @@ class CreateNewRoutine extends StatelessWidget {
                   //----------------------------------------------------------------//
                   const Spacer(),
 
-                  Consumer(builder: (context, ref, _) {
-                    final isLoading = ref.watch(createRoutineLoaderProvider);
+                  Consumer(
+                    builder: (context, ref, _) {
+                      final isLoading = ref.watch(createRoutineLoaderProvider);
 
-                    return CupertinoButtonCustom(
-                      isLoading: isLoading,
-                      padding: EdgeInsets.zero,
-                      text: "Create Routine",
-                      color: AppColor.nokiaBlue,
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          _onTapToButton(context, ref);
-                        }
-                      },
-                    );
-                  }),
+                      return CupertinoButtonCustom(
+                        isLoading: isLoading,
+                        padding: EdgeInsets.zero,
+                        text: "Create Routine",
+                        color: AppColor.nokiaBlue,
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            _onTapToButton(context, ref);
+                          }
+                        },
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
@@ -76,8 +80,9 @@ class CreateNewRoutine extends StatelessWidget {
       routineName: _routineNameController.text,
     );
 
-    final createRoutineLoaderNotifier =
-        ref.watch(createRoutineLoaderProvider.notifier);
+    final createRoutineLoaderNotifier = ref.watch(
+      createRoutineLoaderProvider.notifier,
+    );
 
     //
     createRoutineLoaderNotifier.update((state) => true);
@@ -94,8 +99,11 @@ class CreateNewRoutine extends StatelessWidget {
           await Future.delayed(const Duration(seconds: 2));
           createRoutineLoaderNotifier.update((state) => false);
           // Wait for 5 seconds
-          GoRouter.of(context).pushNamed(RouteConst.viewRoutine,
-              params: {"routineID": data.routineID!}, extra: data.routineName);
+          GoRouter.of(context).pushNamed(
+            RouteConst.viewRoutine,
+            params: {"routineID": data.routineID!},
+            extra: data.routineName,
+          );
         }
         return Alert.showSnackBar(context, data.message);
       },

@@ -3,10 +3,10 @@ import 'package:classmate/features/search_fetures/presentation/providers/search_
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/export_core.dart';
-import '../../../../core/widgets/accound_card_row.dart';
+import '../../../../core/widgets/account_card_row.dart';
 
 class AccountSearchScreen extends ConsumerWidget {
-  AccountSearchScreen({Key? key}) : super(key: key);
+  AccountSearchScreen({super.key});
   final scrollController = ScrollController();
 
   @override
@@ -39,15 +39,13 @@ class AccountSearchScreen extends ConsumerWidget {
             itemCount: data.accounts?.length ?? 0,
             itemBuilder: (context, index) {
               if (data.accounts!.isNotEmpty) {
-                return AccountCardRow(
-                  accountData: data.accounts![index],
-                );
+                return AccountCardRow(accountData: data.accounts![index]);
               } else {
                 return const ErrorScreen(error: 'No Account found');
               }
             },
-            separatorBuilder: (BuildContext context, int index) =>
-                const SizedBox(height: 10),
+            separatorBuilder:
+                (BuildContext context, int index) => const SizedBox(height: 10),
           );
         },
         error: (error, stackTrace) {

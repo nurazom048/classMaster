@@ -14,10 +14,10 @@ class MyContainerButton extends StatelessWidget {
   const MyContainerButton(
     this.icon,
     this.text, {
+    super.key,
     this.color,
-    Key? key,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +36,9 @@ class MyContainerButton extends StatelessWidget {
             margin: const EdgeInsets.only(bottom: 5, top: 5),
             width: size.width / 1.8,
             decoration: BoxDecoration(
-                color: const Color.fromRGBO(1, 104, 255, 0.10),
-                borderRadius: BorderRadius.circular(10)),
+              color: const Color.fromRGBO(1, 104, 255, 0.10),
+              borderRadius: BorderRadius.circular(10),
+            ),
             child: Text(
               text,
               textScaleFactor: 1.1,

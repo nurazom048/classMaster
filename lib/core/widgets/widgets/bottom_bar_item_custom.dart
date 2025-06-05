@@ -15,8 +15,8 @@ class BottomBarItemCustom extends StatelessWidget {
     required this.isSelected,
     required this.icon,
     required this.label,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

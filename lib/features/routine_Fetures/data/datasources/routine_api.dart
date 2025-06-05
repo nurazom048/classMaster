@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../../core/constant/constant.dart';
-import '../../../../../core/local data/api_cashe_maager.dart';
+import '../../../../core/local data/api_cache_manager.dart';
 import '../../../../../features/home_fetures/presentation/utils/utils.dart';
 import '../models/class_details_model.dart';
 
@@ -15,7 +15,7 @@ class Routine_Req {
   //
 
   Future<AllClassesResponse?> all_class_in_routine(String routineId) async {
-//
+    //
     final bool isOnline = await Utils.isOnlineMethod();
     final String path = "${Const.BASE_URl}/class/$routineId/all/class";
     final url = Uri.parse(path);

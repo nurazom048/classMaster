@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../core/export_core.dart';
-import '../../../../routine_Fetures/presentation/widgets/dynamic_widgets/rutin_card_row.dart';
+import '../../../../routine_Fetures/presentation/widgets/dynamic_widgets/routine_card_row.dart';
 
 class SummaryHeader extends StatelessWidget {
   final String classId;
@@ -19,7 +19,7 @@ class SummaryHeader extends StatelessWidget {
   final String? room;
 
   const SummaryHeader({
-    Key? key,
+    super.key,
     required this.classId,
     this.className,
     this.instructorName,
@@ -30,7 +30,7 @@ class SummaryHeader extends StatelessWidget {
     this.start,
     this.end,
     this.room,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +47,11 @@ class SummaryHeader extends StatelessWidget {
           HeaderTitle(
             "Summary",
             context,
-            margin: const EdgeInsets.only(top: 20, left: 20, bottom: 8)
-                .copyWith(right: 1),
+            margin: const EdgeInsets.only(
+              top: 20,
+              left: 20,
+              bottom: 8,
+            ).copyWith(right: 1),
           ),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
@@ -81,26 +84,25 @@ class SummaryHeader extends StatelessWidget {
                 SizedBox(
                   width: 90,
                   child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          start == null
-                              ? "code - $subjectCode"
-                              : '$instructorName',
-                          overflow: TextOverflow.ellipsis,
-                          style: TS.opensensBlue(color: Colors.black),
-                        ),
-                        Text(
-                          instructorName ?? "Instructor Name",
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.right,
-                          style: const TextStyle(
-                            color: Colors.black,
-                          ),
-                        ),
-                      ]),
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        start == null
+                            ? "code - $subjectCode"
+                            : '$instructorName',
+                        overflow: TextOverflow.ellipsis,
+                        style: TS.opensensBlue(color: Colors.black),
+                      ),
+                      Text(
+                        instructorName ?? "Instructor Name",
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.right,
+                        style: const TextStyle(color: Colors.black),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

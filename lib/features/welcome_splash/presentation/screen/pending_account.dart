@@ -1,14 +1,14 @@
 // ignore_for_file: library_private_types_in_public_api, unused_local_variable
 
+import 'package:classmate/features/welcome_splash/presentation/Widgets/send_mini_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:classmate/features/wellcome_splash/presentation/Widgets/send_mini_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/constant/image_const.dart';
 import '../../../../core/export_core.dart';
 
 class PendingScreen extends StatefulWidget {
-  const PendingScreen({Key? key}) : super(key: key);
+  const PendingScreen({super.key});
 
   @override
   _PendingScreenState createState() => _PendingScreenState();
@@ -28,8 +28,9 @@ class _PendingScreenState extends State<PendingScreen> {
             children: [
               HeaderTitle('Verification Pending', context),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25)
-                    .copyWith(top: 20),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 25,
+                ).copyWith(top: 20),
                 child: Column(
                   children: [
                     Container(
@@ -39,6 +40,7 @@ class _PendingScreenState extends State<PendingScreen> {
                         color: Colors.white,
                         boxShadow: [
                           BoxShadow(
+                            // ignore: deprecated_member_use
                             color: Colors.black.withOpacity(0.25),
                             blurRadius: 5,
                             offset: const Offset(0, 0),
@@ -100,14 +102,17 @@ class _PendingScreenState extends State<PendingScreen> {
                             // Do something with the message
                             final String message = messageController.text;
                             String? encodeQueryParameters(
-                                Map<String, String> params) {
+                              Map<String, String> params,
+                            ) {
                               return params.entries
-                                  .map((MapEntry<String, String> e) =>
-                                      '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+                                  .map(
+                                    (MapEntry<String, String> e) =>
+                                        '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}',
+                                  )
                                   .join('&');
                             }
 
-// ···
+                            // ···
                             final Uri emailLaunchUri = Uri(
                               scheme: 'mailto',
                               path: Const.appEmail,
@@ -121,7 +126,7 @@ class _PendingScreenState extends State<PendingScreen> {
                           }
                         },
                       ),
-                      const SizedBox(height: 20)
+                      const SizedBox(height: 20),
                     ],
                   ),
                 ),

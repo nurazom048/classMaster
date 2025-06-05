@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:classmate/core/local%20data/api_cashe_maager.dart';
+import 'package:classmate/core/local%20data/api_cache_manager.dart';
 import 'package:classmate/features/home_fetures/presentation/utils/utils.dart';
 import '../../../../../core/local data/local_data.dart';
 import '../../../../core/export_core.dart';
@@ -33,10 +33,7 @@ class FullRoutineRequest {
       } else if (!isOnline) {
         throw "You Are in Offline";
       } else {
-        final response = await http.post(
-          url,
-          headers: headers,
-        );
+        final response = await http.post(url, headers: headers);
 
         if (response.statusCode == 200) {
           // print(jsonDecode(response.body));
@@ -44,8 +41,9 @@ class FullRoutineRequest {
 
           MyApiCache.saveLocal(key: key, response: response.body);
 
-          CheckStatusModel res =
-              CheckStatusModel.fromJson(jsonDecode(response.body));
+          CheckStatusModel res = CheckStatusModel.fromJson(
+            jsonDecode(response.body),
+          );
           print("res  ${jsonDecode(response.body)}");
           return res;
         } else {
@@ -86,10 +84,12 @@ class FullRoutineRequest {
     }
   }
 
-//... Save unSave rutin.....///
+  //... Save unSave rutin.....///
 
   Future<Either<String, Message>> saveUnsavedRoutineReq(
-      routineId, condition) async {
+    routineId,
+    condition,
+  ) async {
     final headers = await LocalData.getHeader();
 
     final url = Uri.parse('${Const.BASE_URl}/routine/save_unsave/$routineId');

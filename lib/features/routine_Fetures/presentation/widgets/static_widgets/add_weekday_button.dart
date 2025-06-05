@@ -5,12 +5,12 @@ class AddWeekdayButton extends StatelessWidget {
   final String text;
   final IconData icon;
 
-  const AddWeekdayButton(
-      {Key? key,
-      required this.onPressed,
-      required this.text,
-      required this.icon})
-      : super(key: key);
+  const AddWeekdayButton({
+    super.key,
+    required this.onPressed,
+    required this.text,
+    required this.icon,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +21,7 @@ class AddWeekdayButton extends StatelessWidget {
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.white24,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.end,

@@ -12,21 +12,23 @@ import '../screens/add_summary.dart';
 
 // providers
 final summaryControllerProvider = StateNotifierProvider.autoDispose
-    .family<SummaryController, AsyncValue<AllSummaryModel>, String?>(
-        (ref, classId) {
-  return SummaryController(ref, classId, ref.watch(summaryReqProvider));
-});
+    .family<SummaryController, AsyncValue<AllSummaryModel>, String?>((
+      ref,
+      classId,
+    ) {
+      return SummaryController(ref, classId, ref.watch(summaryReqProvider));
+    });
 
 class SummaryController extends StateNotifier<AsyncValue<AllSummaryModel>> {
   SummaryRequest summaryReq;
   Ref ref;
   String? classId;
   SummaryController(this.ref, this.classId, this.summaryReq)
-      : super(const AsyncLoading()) {
+    : super(const AsyncLoading()) {
     getList();
   }
 
-// get summary by class id
+  // get summary by class id
   getList() async {
     try {
       AllSummaryModel res = await summaryReq.getSummaryList(classId);
@@ -40,34 +42,39 @@ class SummaryController extends StateNotifier<AsyncValue<AllSummaryModel>> {
     }
   }
 
-// Load more summaries
+  // Load more summaries
   Future<void> loadMore(int currentPage, int totalPages) async {
     if (currentPage == totalPages) {
-      print('r kisu nai vai');
+      print('reached to end');
     } else if (currentPage < totalPages) {
       print("current: $currentPage total: $totalPages");
       try {
-        AllSummaryModel newData =
-            await summaryReq.getSummaryList(classId, pages: currentPage + 1);
+        AllSummaryModel newData = await summaryReq.getSummaryList(
+          classId,
+          pages: currentPage + 1,
+        );
         if (!mounted) return;
         print(
-            "new current: ${newData.currentPage} total: ${newData.totalPages}");
+          "new current: ${newData.currentPage} total: ${newData.totalPages}",
+        );
 
         if (newData.currentPage != newData.totalCount ||
             newData.currentPage > newData.totalCount) {
-          state = AsyncValue.data(state.value!.copyWith(
-            summaries: [
-              ...state.value!.summaries,
-              ...newData.summaries.where((newSummary) {
-                // Filter out any summaries with duplicate IDs
-                return !state.value!.summaries.any(
-                  (existingSummary) => existingSummary.id == newSummary.id,
-                );
-              }).toList(),
-            ],
-            currentPage: newData.currentPage,
-            totalPages: newData.totalPages,
-          ));
+          state = AsyncValue.data(
+            state.value!.copyWith(
+              summaries: [
+                ...state.value!.summaries,
+                ...newData.summaries.where((newSummary) {
+                  // Filter out any summaries with duplicate IDs
+                  return !state.value!.summaries.any(
+                    (existingSummary) => existingSummary.id == newSummary.id,
+                  );
+                }),
+              ],
+              currentPage: newData.currentPage,
+              totalPages: newData.totalPages,
+            ),
+          );
           // state = AsyncValue.data(state.value!.copyWith(
           //     summaries: [...state.value!.summaries, ...newData.summaries],
           //     currentPage: newData.currentPage,
@@ -103,33 +110,34 @@ class SummaryController extends StateNotifier<AsyncValue<AllSummaryModel>> {
 
     ref.watch(loaderProvider.notifier).update((state) => false);
 
-    res.fold(
-      (error) => Alert.errorAlertDialog(context, error.message),
-      (r) {
-        ref.refresh(summaryControllerProvider(classId));
-        Navigator.of(context).pop();
-        Alert.showSnackBar(context, r.message);
-      },
-    );
+    res.fold((error) => Alert.errorAlertDialog(context, error.message), (r) {
+      ref.refresh(summaryControllerProvider(classId));
+      Navigator.of(context).pop();
+      Alert.showSnackBar(context, r.message);
+    });
   }
 
   // DELETE summary
   void deleteSummary(context, summaryID) async {
     print('fromController');
     //
-    Either<Message, Message> res =
-        await SummaryRequest.deleteSummary(summaryID);
+    Either<Message, Message> res = await SummaryRequest.deleteSummary(
+      summaryID,
+    );
 
     //
     if (!mounted) {}
 
-    res.fold((error) {
-      print(error);
-      return Alert.errorAlertDialog(context, error.message);
-    }, (r) {
-      ref.refresh(summaryControllerProvider(classId));
-      Navigator.pop(context);
-      return Alert.showSnackBar(context, r.message);
-    });
+    res.fold(
+      (error) {
+        print(error);
+        return Alert.errorAlertDialog(context, error.message);
+      },
+      (r) {
+        ref.refresh(summaryControllerProvider(classId));
+        Navigator.pop(context);
+        return Alert.showSnackBar(context, r.message);
+      },
+    );
   }
 }

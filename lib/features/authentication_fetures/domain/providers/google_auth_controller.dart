@@ -11,8 +11,9 @@ import '../../presentation/screen/cranditial_info_screen.dart';
 import 'auth_controller.dart';
 
 //! provider
-final googleAuthControllerProvider =
-    Provider<GoogleAuthController>((ref) => GoogleAuthController());
+final googleAuthControllerProvider = Provider<GoogleAuthController>(
+  (ref) => GoogleAuthController(),
+);
 
 // class
 class GoogleAuthController extends ChangeNotifier {
@@ -38,7 +39,7 @@ class GoogleAuthController extends ChangeNotifier {
     //     builder: (context) => const CredentialScreen(),
     //   ),
     // );
-////////////////////////
+    ////////////////////////
 
     if (googleAccount != null) {
       final GoogleSignInAccount? googleUser = googleAccount;
@@ -54,12 +55,15 @@ class GoogleAuthController extends ChangeNotifier {
           accessToken: accessToken,
           idToken: idToken,
         );
-        UserCredential userCredential =
-            await FirebaseAuth.instance.signInWithCredential(credential);
+        UserCredential userCredential = await FirebaseAuth.instance
+            .signInWithCredential(credential);
 
         // If the user is first time login thn go to credential screen else Api Call
         if (userCredential.additionalUserInfo!.isNewUser) {
-          Get.to(() => const CredentialScreen());
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const CredentialScreen()),
+          );
         } else {
           final authLogin = ref.watch(authController_provider.notifier);
           User? user = FirebaseAuth.instance.currentUser;

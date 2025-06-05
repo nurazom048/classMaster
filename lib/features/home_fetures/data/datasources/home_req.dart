@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import '../../../../core/constant/constant.dart';
 import '../../../../core/local data/local_data.dart';
 import '../../../../core/models/message_model.dart';
-import '../../../routine_Fetures/data/models/saveRutine.dart';
+import '../../../routine_Fetures/data/models/save_routine.dart';
 import '../../presentation/utils/utils.dart';
 import '../models/home_routines_model.dart';
 
@@ -18,16 +18,17 @@ import '../models/home_routines_model.dart';
 final home_req_provider = Provider<HomeReq>((ref) => HomeReq());
 
 class HomeReq {
-//************************************************************************************/
-//---------------------- saveRoutines Api Request  -----------------------------------/
-//************************************************************************************/
+  //************************************************************************************/
+  //---------------------- saveRoutines Api Request  -----------------------------------/
+  //************************************************************************************/
   Future<SaveRutileResponse> saveRoutines({pages}) async {
     String queryPage = "?page=$pages}";
     String? username = "";
     final headers = await LocalData.getHeader();
 
     final url = Uri.parse(
-        '${Const.BASE_URl}/routine/save/routines/' + username + queryPage);
+      '${Const.BASE_URl}/routine/save/routines/' + username + queryPage,
+    );
 
     //.. Request send
     try {
@@ -46,16 +47,17 @@ class HomeReq {
       throw Exception(e.toString());
     }
   }
-//************************************************************************************/
-//---------------------- Home Routines Api Request  -----------------------------------/
-//************************************************************************************/
+  //************************************************************************************/
+  //---------------------- Home Routines Api Request  -----------------------------------/
+  //************************************************************************************/
 
   Future<RoutineHome> homeRoutines({pages, String? userID}) async {
     String queryPage = "?page=$pages";
     final searchByUserID = userID == null ? '' : '/$userID';
 
     final url = Uri.parse(
-        '${Const.BASE_URl}/routine/home' + searchByUserID + queryPage);
+      '${Const.BASE_URl}/routine/home' + searchByUserID + queryPage,
+    );
     final headers = await LocalData.getHeader();
 
     // Check online status
@@ -100,29 +102,23 @@ class HomeReq {
     }
   }
 
-//************************************************************************************/
-//---------------------- DeleteRoutine Api Request  -----------------------------------/
-//************************************************************************************/
+  //************************************************************************************/
+  //---------------------- DeleteRoutine Api Request  -----------------------------------/
+  //************************************************************************************/
 
-  Future<Either<Message, Message>> deleteRutin(rutin_id) async {
+  Future<Either<Message, Message>> deleteRoutine(rutin_id) async {
     final headers = await LocalData.getHeader();
 
     var url = Uri.parse("${Const.BASE_URl}/routine/$rutin_id");
 
     try {
-      final response = await http.delete(
-        url,
-        headers: headers,
-      );
+      final response = await http.delete(url, headers: headers);
 
       if (response.statusCode == 200) {
         var res = Message.fromJson(jsonDecode(response.body));
         print("req from delete req ${res.message}");
 
-        return right(Message(
-          message: res.message,
-          routineID: rutin_id,
-        ));
+        return right(Message(message: res.message, routineID: rutin_id));
       } else {
         var res = Message.fromJson(jsonDecode(response.body));
         return left(res);

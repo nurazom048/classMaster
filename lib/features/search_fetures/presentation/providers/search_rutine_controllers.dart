@@ -2,31 +2,35 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import '../../data/models/search_rutin.dart';
+import '../../data/models/search_routine.dart';
 import '../../../../features/search_fetures/data/datasources/search_requests.dart';
 
 final searchRutineController = StateNotifierProvider.family<
-        SearchRutineController, AsyncValue<RutinQuarry>, String>(
-    (ref, searchString) => SearchRutineController(
-          ref,
-          searchString,
-          ref.read(searchControllersProvider),
-        ));
+  SearchRutineController,
+  AsyncValue<RoutineQuery>,
+  String
+>(
+  (ref, searchString) => SearchRutineController(
+    ref,
+    searchString,
+    ref.read(searchControllersProvider),
+  ),
+);
 
 // Define the SearchRutineController class
-class SearchRutineController extends StateNotifier<AsyncValue<RutinQuarry>> {
+class SearchRutineController extends StateNotifier<AsyncValue<RoutineQuery>> {
   final Ref ref;
   final String searchString;
   final SearchRequests search;
 
   SearchRutineController(this.ref, this.searchString, this.search)
-      : super(const AsyncLoading()) {
+    : super(const AsyncLoading()) {
     getItems();
   }
 
   Future<void> getItems() async {
     try {
-      final RutinQuarry data = await search.searchRoutine(searchString);
+      final RoutineQuery data = await search.searchRoutine(searchString);
       if (!mounted) return;
       state = AsyncValue.data(data);
     } catch (err, stack) {
@@ -35,7 +39,7 @@ class SearchRutineController extends StateNotifier<AsyncValue<RutinQuarry>> {
   }
 
   //
-// Loader More
+  // Loader More
   void loadMore(int page) async {
     try {
       if (page == state.value!.totalPages) {
@@ -43,8 +47,10 @@ class SearchRutineController extends StateNotifier<AsyncValue<RutinQuarry>> {
       } else {
         print('Call for loading more data: $page / ${state.value!.totalPages}');
 
-        final RutinQuarry newData =
-            await search.searchRoutine(searchString, page: page + 1);
+        final RoutineQuery newData = await search.searchRoutine(
+          searchString,
+          page: page + 1,
+        );
 
         // Check if the new data's page number is greater than the current page number
         if (newData.currentPage > state.value!.currentPage) {
@@ -55,10 +61,12 @@ class SearchRutineController extends StateNotifier<AsyncValue<RutinQuarry>> {
               ...(state.value!.routines),
               ...(newData.routines),
             ];
-            state = AsyncData(state.value!.copyWith(
-              routines: newRoutines,
-              currentPage: newData.currentPage,
-            ));
+            state = AsyncData(
+              state.value!.copyWith(
+                routines: newRoutines,
+                currentPage: newData.currentPage,
+              ),
+            );
           }
         }
       }

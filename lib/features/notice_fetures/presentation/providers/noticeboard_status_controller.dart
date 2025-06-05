@@ -10,21 +10,23 @@ import '../../data/datasources/noticeboard_request.dart';
 // notice code update
 //! providers
 final noticeBoardStatusProvider = StateNotifierProvider.autoDispose
-    .family<NoticeBoardStatusProvider, AsyncValue<CheckStatusModel>, String>(
-        (ref, academyID) {
-  return NoticeBoardStatusProvider(
-      academyID, ref.read(noticeboardRequestProvider));
-});
+    .family<NoticeBoardStatusProvider, AsyncValue<CheckStatusModel>, String>((
+      ref,
+      academyID,
+    ) {
+      return NoticeBoardStatusProvider(
+        academyID,
+        ref.read(noticeboardRequestProvider),
+      );
+    });
 
 class NoticeBoardStatusProvider
     extends StateNotifier<AsyncValue<CheckStatusModel>> {
   final String academyID;
   final NoticeboardRequest noticeboardRequest;
 
-  NoticeBoardStatusProvider(
-    this.academyID,
-    this.noticeboardRequest,
-  ) : super(AsyncLoading()) {
+  NoticeBoardStatusProvider(this.academyID, this.noticeboardRequest)
+    : super(AsyncLoading()) {
     getStatus();
   }
 
@@ -35,8 +37,9 @@ class NoticeBoardStatusProvider
 
   Future<void> getStatus() async {
     try {
-      final CheckStatusModel data =
-          await noticeboardRequest.checkStatus(academyID);
+      final CheckStatusModel data = await noticeboardRequest.checkStatus(
+        academyID,
+      );
 
       if (mounted) {
         state = AsyncData(data);
@@ -56,9 +59,7 @@ class NoticeBoardStatusProvider
     result.fold(
       (errorMessage) => Alert.errorAlertDialog(context, errorMessage),
       (response) {
-        state = AsyncData(
-          state.value!.copyWith(activeStatus: "joined"),
-        );
+        state = AsyncData(state.value!.copyWith(activeStatus: "joined"));
 
         Alert.showSnackBar(context, response.message);
       },
@@ -99,17 +100,29 @@ class NoticeBoardStatusProvider
   //***********  leaveMember *********** */
 
   Future<void> leaveMember(BuildContext context) async {
-    final result = await noticeboardRequest.leaveMember(academyID);
+    try {
+      final result = await noticeboardRequest.leaveMember(academyID);
 
-    result.fold(
-      (error) => Alert.showSnackBar(context, error.message),
-      (response) {
-        state = AsyncData(
-          state.value!.copyWith(activeStatus: "not_joined"),
-        );
+      if (!context.mounted) return;
 
-        Alert.showSnackBar(context, response.message);
-      },
-    );
+      result.fold(
+        (error) {
+          if (context.mounted) {
+            Alert.showSnackBar(context, error.message);
+          }
+        },
+        (response) {
+          state = AsyncData(state.value!.copyWith(activeStatus: "not_joined"));
+
+          if (context.mounted) {
+            Alert.showSnackBar(context, response.message);
+          }
+        },
+      );
+    } catch (error) {
+      if (context.mounted) {
+        Alert.showSnackBar(context, error.toString());
+      }
+    }
   }
 }

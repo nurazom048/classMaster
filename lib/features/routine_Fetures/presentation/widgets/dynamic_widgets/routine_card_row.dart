@@ -5,13 +5,13 @@ import 'package:intl/intl.dart';
 import '../../../../../core/widgets/appWidget/dotted_divider.dart';
 import '../../../data/models/class_details_model.dart';
 
-class RutineCardInfoRow extends StatelessWidget {
+class RoutineCardInfoRow extends StatelessWidget {
   final Day? day;
   final bool? isFirst;
   final bool? isThird;
   final dynamic onTap;
   final Widget? tail;
-  const RutineCardInfoRow({
+  const RoutineCardInfoRow({
     super.key,
     this.isFirst,
     this.onTap,
@@ -68,7 +68,7 @@ class RutineCardInfoRow extends StatelessWidget {
                         alignment: AlignmentDirectional.center,
                         child: const Icon(Icons.arrow_forward_ios),
                       ),
-                    )
+                    ),
               ],
             ),
           ),
@@ -86,7 +86,7 @@ class TitleAndSubtitle extends StatelessWidget {
     required this.subtitle,
     this.subtitle3,
     this.crossAxisAlignment,
-    this.sbtitleSize,
+    this.subtitleSize,
     this.textScaleFactor,
   });
 
@@ -94,7 +94,7 @@ class TitleAndSubtitle extends StatelessWidget {
   final String subtitle;
   final String? subtitle3;
   final CrossAxisAlignment? crossAxisAlignment;
-  final double? sbtitleSize, textScaleFactor;
+  final double? subtitleSize, textScaleFactor;
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +121,7 @@ class TitleAndSubtitle extends StatelessWidget {
           style: TextStyle(
             fontFamily: 'Inter',
             fontWeight: FontWeight.w500,
-            fontSize: sbtitleSize ?? 12,
+            fontSize: subtitleSize ?? 12,
             height: 1.3,
             color: const Color(0xFF0168FF),
           ),
@@ -135,7 +135,7 @@ class TitleAndSubtitle extends StatelessWidget {
             style: TextStyle(
               fontFamily: 'Inter',
               fontWeight: FontWeight.w500,
-              fontSize: sbtitleSize ?? 12,
+              fontSize: subtitleSize ?? 12,
               height: 1.3,
               color: const Color(0xFF0168FF),
             ),

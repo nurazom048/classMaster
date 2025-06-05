@@ -1,4 +1,4 @@
-import 'package:classmate/features/search_fetures/data/models/search_rutin.dart';
+import 'package:classmate/features/search_fetures/data/models/search_routine.dart';
 
 class JoinedRutines {
   List<Routine> routines;
@@ -22,7 +22,7 @@ class JoinedRutines {
   }
 
   Map<String, dynamic> toJson() => {
-        'currentPage': currentPage,
-        'totalPages': totalPages,
-      };
+    'currentPage': currentPage,
+    'totalPages': totalPages,
+  };
 }

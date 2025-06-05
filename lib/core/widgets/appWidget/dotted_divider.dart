@@ -2,11 +2,7 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 
 class DotedDivider extends StatelessWidget {
-  const DotedDivider({
-    this.dashColor,
-    this.padding,
-    super.key,
-  });
+  const DotedDivider({this.dashColor, this.padding, super.key});
   final Color? dashColor;
   final EdgeInsetsGeometry? padding;
   @override

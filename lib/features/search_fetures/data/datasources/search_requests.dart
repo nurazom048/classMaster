@@ -4,21 +4,22 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constant/constant.dart';
-import '../models/search_rutin.dart';
+import '../models/search_routine.dart';
 import '../models/search_account.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../home_fetures/presentation/utils/utils.dart';
 
 //! provider
-final searchControllersProvider =
-    Provider<SearchRequests>((ref) => SearchRequests());
+final searchControllersProvider = Provider<SearchRequests>(
+  (ref) => SearchRequests(),
+);
 
 //
 class SearchRequests {
-//! Rutine Search
-//.... Routine Search .....///
-  Future<RutinQuarry> searchRoutine(String? valu, {int? page}) async {
+  //! Rutine Search
+  //.... Routine Search .....///
+  Future<RoutineQuery> searchRoutine(String? valu, {int? page}) async {
     final String pages = page == null ? '' : '&page=$page';
     var url = Uri.parse('${Const.BASE_URl}/routine/search?src=$valu$pages');
     final bool isOnline = await Utils.isOnlineMethod();
@@ -29,7 +30,7 @@ class SearchRequests {
       print(res);
 
       if (response.statusCode == 200) {
-        return RutinQuarry.fromJson(res);
+        return RoutineQuery.fromJson(res);
       } else if (isOnline == false) {
         throw Future.error("No Internet Connection");
       } else {
@@ -41,7 +42,7 @@ class SearchRequests {
       throw e.toString();
     }
   }
-//! Account Search
+  //! Account Search
 
   //********* searchAccount   ************ *//
 

@@ -1,10 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
-import 'dart:ui';
-
 import 'package:classmate/core/widgets/appWidget/app_text.dart';
 import 'package:flutter/material.dart';
-
 import '../../../../../core/constant/app_color.dart';
 
 class PeriodNumberButton extends StatelessWidget {
@@ -13,11 +10,11 @@ class PeriodNumberButton extends StatelessWidget {
   final dynamic onSelected;
 
   const PeriodNumberButton({
-    Key? key,
+    super.key,
     required this.periodNumber,
     this.isSelected,
     required this.onSelected,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,32 +23,36 @@ class PeriodNumberButton extends StatelessWidget {
       height: 46,
       margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 5),
       decoration: BoxDecoration(
-        color: isSelected == true
-            ? AppColor.nokiaBlue
-            : Colors.white.withOpacity(0.5),
+        color:
+            isSelected == true
+                ? AppColor.nokiaBlue
+                : Colors.white.withOpacity(0.5),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(width: 1, color: const Color(0xFF0168FF)),
       ),
       child: IconButton(
         onPressed: onSelected,
-        icon: Wrap(direction: Axis.horizontal, children: [
-          Text(
-            "$periodNumber",
-            style: TS.opensensBlue(
-              color: isSelected == true ? Colors.white : Colors.black,
-              fontSize: 20,
-              fontWeight:
-                  isSelected == true ? FontWeight.w700 : FontWeight.w400,
+        icon: Wrap(
+          direction: Axis.horizontal,
+          children: [
+            Text(
+              "$periodNumber",
+              style: TS.opensensBlue(
+                color: isSelected == true ? Colors.white : Colors.black,
+                fontSize: 20,
+                fontWeight:
+                    isSelected == true ? FontWeight.w700 : FontWeight.w400,
+              ),
             ),
-          ),
-          Text(
-            getSuffix(periodNumber.toInt()),
-            style: TextStyle(
-              color: isSelected == true ? Colors.white : Colors.black,
-              fontFeatures: const [FontFeature.superscripts()],
+            Text(
+              getSuffix(periodNumber.toInt()),
+              style: TextStyle(
+                color: isSelected == true ? Colors.white : Colors.black,
+                fontFeatures: const [FontFeature.superscripts()],
+              ),
             ),
-          ),
-        ]),
+          ],
+        ),
       ),
     );
   }
@@ -91,9 +92,7 @@ class _PeriodSelectionScreenState extends State<PeriodSelectionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Select a Period'),
-      ),
+      appBar: AppBar(title: const Text('Select a Period')),
       body: Center(
         child: Wrap(
           spacing: 8,

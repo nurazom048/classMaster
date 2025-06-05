@@ -20,7 +20,7 @@ class PeriodNumberSelector extends StatefulWidget {
   final int? initialEndNumber;
 
   const PeriodNumberSelector({
-    Key? key,
+    super.key,
     this.onStartSelected,
     required this.onEndSelected,
     required this.hint,
@@ -30,7 +30,7 @@ class PeriodNumberSelector extends StatefulWidget {
     this.onTapToAdd,
     this.initialStartNumber,
     this.initialEndNumber,
-  }) : super(key: key);
+  });
 
   @override
   _PeriodNumberSelectorState createState() => _PeriodNumberSelectorState();
@@ -82,14 +82,17 @@ class _PeriodNumberSelectorState extends State<PeriodNumberSelector> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Select Start Period
-          Text(widget.hint,
-              style: TextStyle(
-                  fontFamily: 'Open Sans',
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16.0,
-                  height: 1.3,
-                  color: AppColor.nokiaBlue)),
+          Text(
+            widget.hint,
+            style: TextStyle(
+              fontFamily: 'Open Sans',
+              fontStyle: FontStyle.normal,
+              fontWeight: FontWeight.w600,
+              fontSize: 16.0,
+              height: 1.3,
+              color: AppColor.nokiaBlue,
+            ),
+          ),
           const SizedBox(height: 5),
 
           SizedBox(
@@ -125,14 +128,17 @@ class _PeriodNumberSelectorState extends State<PeriodNumberSelector> {
           const SizedBox(height: 20),
 
           // Select End Period
-          Text(widget.subHint,
-              style: TextStyle(
-                  fontFamily: 'Open Sans',
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16.0,
-                  height: 1.3,
-                  color: AppColor.nokiaBlue)),
+          Text(
+            widget.subHint,
+            style: TextStyle(
+              fontFamily: 'Open Sans',
+              fontStyle: FontStyle.normal,
+              fontWeight: FontWeight.w600,
+              fontSize: 16.0,
+              height: 1.3,
+              color: AppColor.nokiaBlue,
+            ),
+          ),
           const SizedBox(height: 5),
           SizedBox(
             height: 65,

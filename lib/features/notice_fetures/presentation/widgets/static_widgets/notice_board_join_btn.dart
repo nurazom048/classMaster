@@ -15,7 +15,7 @@ class NoticeBoardJoinButton extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
 
   const NoticeBoardJoinButton({
-    Key? key,
+    super.key,
     required this.isJoin,
     required this.notificationOn,
     required this.showPanel,
@@ -24,13 +24,14 @@ class NoticeBoardJoinButton extends StatelessWidget {
     this.icon,
     this.colorBG,
     this.padding,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    IconData nIcon = notificationOn == true
-        ? Icons.notifications_active
-        : Icons.notifications_off;
+    IconData nIcon =
+        notificationOn == true
+            ? Icons.notifications_active
+            : Icons.notifications_off;
     String text = isJoin == false ? "Join" : "Joined";
 
     return Column(
@@ -57,11 +58,7 @@ class NoticeBoardJoinButton extends StatelessWidget {
                 ),
                 const SizedBox(width: 5),
                 if (icon != null)
-                  Icon(
-                    icon,
-                    size: 20,
-                    color: color ?? AppColor.nokiaBlue,
-                  ),
+                  Icon(icon, size: 20, color: color ?? AppColor.nokiaBlue),
               ],
             ),
           )

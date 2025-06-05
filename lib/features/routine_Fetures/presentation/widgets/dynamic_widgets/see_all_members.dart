@@ -5,17 +5,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../core/component/Loaders.dart';
 import '../../../../../core/dialogs/alert_dialogs.dart';
-import '../../../../../core/widgets/accound_card_row.dart';
+import '../../../../../core/widgets/account_card_row.dart';
 import '../../../../../features/account_fetures/data/models/account_models.dart';
 import '../../providers/members_controllers.dart';
 
 class SeeAllMembers extends ConsumerWidget {
-  String rutinId;
-  SeeAllMembers({super.key, required this.rutinId});
+  String routineId;
+  SeeAllMembers({super.key, required this.routineId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final all_members = ref.watch(memberControllerProvider(rutinId));
+    final all_members = ref.watch(memberControllerProvider(routineId));
     return SafeArea(
       child: Scaffold(
         body: Column(
@@ -31,17 +31,18 @@ class SeeAllMembers extends ConsumerWidget {
               child: all_members.when(
                 data: (data) {
                   return ListView.builder(
-                      itemCount: data.members.length,
-                      itemBuilder: (context, index) {
-                        return AccountCardRow(
-                          accountData: AccountModels().copyWith(
-                            id: data.members[index].id,
-                            image: data.members[index].image,
-                            name: data.members[index].name,
-                            username: data.members[index].username,
-                          ),
-                        );
-                      });
+                    itemCount: data.members.length,
+                    itemBuilder: (context, index) {
+                      return AccountCardRow(
+                        accountData: AccountModels().copyWith(
+                          id: data.members[index].id,
+                          image: data.members[index].image,
+                          name: data.members[index].name,
+                          username: data.members[index].username,
+                        ),
+                      );
+                    },
+                  );
                 },
                 error: (error, stackTrace) {
                   return Alert.handleError(context, error);

@@ -21,8 +21,9 @@ class SearchRutineScreen extends ConsumerWidget {
     final searchText = ref.watch(searchStringProvider);
     final searchRoutine = ref.watch(searchRutineController(searchText));
     //notifier
-    final homeRoutinesNotifier =
-        ref.watch(homeRoutineControllerProvider(null).notifier);
+    final homeRoutinesNotifier = ref.watch(
+      homeRoutineControllerProvider(null).notifier,
+    );
 
     //
     return Scaffold(
@@ -48,15 +49,17 @@ class SearchRutineScreen extends ConsumerWidget {
             itemCount: data.routines.length,
             itemBuilder: (context, index) {
               return RoutineBoxById(
-                  margin: EdgeInsets.zero,
-                  rutinName: data.routines[index].name,
-                  onTapMore: () => RoutineDialog.CheckStatusUser_BottomSheet(
-                        context,
-                        routineID: data.routines[index].id,
-                        routineName: data.routines[index].name,
-                        routinesController: homeRoutinesNotifier,
-                      ),
-                  routineId: data.routines[index].id);
+                margin: EdgeInsets.zero,
+                routineName: data.routines[index].name,
+                onTapMore:
+                    () => RoutineDialog.CheckStatusUser_BottomSheet(
+                      context,
+                      routineID: data.routines[index].id,
+                      routineName: data.routines[index].name,
+                      routinesController: homeRoutinesNotifier,
+                    ),
+                routineId: data.routines[index].id,
+              );
             },
             separatorBuilder: (context, index) => const SizedBox(height: 10),
           );
