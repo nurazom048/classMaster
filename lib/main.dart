@@ -6,13 +6,14 @@ import 'package:flutter/material.dart';
 
 // State management and routing
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart';
+
 import 'package:classmate/route/app_router.dart';
 
 // Firebase-related imports
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:get/get.dart';
 import 'services/firebase/firebase_options.dart';
 
 // Third-party utilities

@@ -3,7 +3,7 @@
 import 'package:classmate/core/widgets/appWidget/buttons/cupertino_buttons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+
 import 'package:pinput/pinput.dart';
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
 import '../../../../core/constant/app_color.dart';

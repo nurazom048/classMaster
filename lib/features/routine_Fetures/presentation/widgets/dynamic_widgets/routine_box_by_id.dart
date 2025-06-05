@@ -1,9 +1,10 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:classmate/features/authentication_fetures/presentation/screen/change_password.dart';
 import 'package:classmate/features/routine_Fetures/presentation/widgets/dynamic_widgets/routine_card_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart';
+import 'package:get/utils.dart';
 
 import '../../../../../../core/dialogs/alert_dialogs.dart';
 
@@ -174,7 +175,7 @@ class RoutineBoxById extends StatelessWidget {
                     error:
                         (error, stackTrace) =>
                             Alert.handleError(context, error),
-                    loading: () => const AccountScelton(),
+                    loading: () => const AccountSkeleton(),
                   ),
                 ],
               ),
@@ -332,18 +333,21 @@ class ClassSliderView extends ConsumerWidget {
     return newListOfDays;
   }
 
-  void onTap(Day? day, context) {
-    Get.to(
-      () => SummaryScreen(
-        classId: day!.id,
-        className: day.name,
-        instructorName: day.instructorName,
-        routineID: day.routineId,
-        subjectCode: day.subjectCode,
-        //
-        startTime: day.startTime,
-        endTime: day.endTime,
-        room: day.room,
+  void onTap(Day? day, BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder:
+            (context) => SummaryScreen(
+              classId: day!.id,
+              className: day.name,
+              instructorName: day.instructorName,
+              routineID: day.routineId,
+              subjectCode: day.subjectCode,
+              startTime: day.startTime,
+              endTime: day.endTime,
+              room: day.room,
+            ),
       ),
     );
   }

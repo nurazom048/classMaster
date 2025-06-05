@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+
 import 'package:http/http.dart' as http;
 
 import '../../core/constant/constant.dart';
@@ -36,8 +37,8 @@ class NotificationClass {
       // Check if offline and have cache
 
       if (!isOnline && isHaveCash) {
-        var getdata = await MyApiCache.getData(key);
-        return ClassNotificationResponse.fromJson(getdata);
+        var getData = await MyApiCache.getData(key);
+        return ClassNotificationResponse.fromJson(getData);
       }
 
       final response = await http.post(url, headers: headers);

@@ -1,6 +1,5 @@
 import 'package:classmate/core/widgets/widgets/drawer_item.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import '../../../features/search_fetures/presentation/screens/search_page.dart';
 import '../../../ui/bottom_nevbar_items/bottom_navbar.dart';

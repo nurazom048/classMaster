@@ -1,8 +1,8 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, unused_result, use_build_context_synchronously, avoid_print
 
+import 'package:classmate/core/component/heder%20component/transition/right_to_left_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart' as gx;
 import 'package:classmate/services/one%20signal/oneSignal.services.dart';
 import 'package:classmate/features/home_fetures/data/models/home_routines_model.dart';
 import 'package:classmate/features/home_fetures/presentation/utils/utils.dart';
@@ -241,9 +241,9 @@ class HomeRecentNoticeWidget extends ConsumerWidget {
       children: [
         RecentNoticeTitle(
           onTap: () {
-            return gx.Get.to(
-              () => ViewAllRecentNotice(),
-              transition: gx.Transition.rightToLeftWithFade,
+            Navigator.push(
+              context,
+              RightToLeftTransition(page: ViewAllRecentNotice()),
             );
           },
         ),

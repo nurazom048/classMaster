@@ -3,7 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart';
+
 import 'package:classmate/features/routine_summary_fetures/presentation/widgets/static_widgets/view_images.dart';
 import 'package:expandable_text/expandable_text.dart';
 import '../../../../../core/export_core.dart';

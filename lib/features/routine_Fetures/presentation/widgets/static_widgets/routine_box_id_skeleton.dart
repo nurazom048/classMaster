@@ -9,12 +9,12 @@ final ROUTINE_BOX_SKELTON = ListView.builder(
   padding: const EdgeInsets.only(bottom: 100),
   itemCount: 5,
   itemBuilder: (context, index) {
-    return const RutinBoxByIdSkelton();
+    return const RoutineBoxByIdSkeleton();
   },
 );
 
-class RutinBoxByIdSkelton extends StatelessWidget {
-  const RutinBoxByIdSkelton({super.key});
+class RoutineBoxByIdSkeleton extends StatelessWidget {
+  const RoutineBoxByIdSkeleton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +104,7 @@ class RutinBoxByIdSkelton extends StatelessWidget {
               child: Divider(thickness: 2, color: Colors.black),
             ),
             // const SizedBox(height: 16),
-            const AccountScelton(),
+            const AccountSkeleton(),
           ],
         ),
       ),
@@ -130,8 +130,8 @@ class JoinSkelton extends StatelessWidget {
   }
 }
 
-class AccountScelton extends StatelessWidget {
-  const AccountScelton({super.key});
+class AccountSkeleton extends StatelessWidget {
+  const AccountSkeleton({super.key});
 
   @override
   Widget build(BuildContext context) {

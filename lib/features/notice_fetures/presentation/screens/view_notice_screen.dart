@@ -1,6 +1,7 @@
+import 'package:classmate/core/component/heder%20component/transition/right_to_left_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
+
 import 'package:font_awesome_flutter/font_awesome_flutter.dart' as fa;
 import '../../../../../features/account_fetures/presentation/screens/profile_screen.dart';
 import '../../../../../features/account_fetures/data/models/account_models.dart';
@@ -43,20 +44,28 @@ class NoticeViewScreen extends StatelessWidget {
                   AppText("pdf", color: AppColor.nokiaBlue).heeding(),
                   const SizedBox(height: 10),
                   ViewPdfButton(
-                    onTap:
-                        () => Get.to(transition: Transition.rightToLeft, () {
-                          return ViewPDf(pdfLink: notice.pdf);
-                        }),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        RightToLeftTransition(
+                          page: ViewPDf(pdfLink: notice.pdf),
+                        ),
+                      );
+                    },
                   ),
                   const SizedBox(height: 80),
                   MiniAccountInfo(
                     accountData: notice.account,
                     hideMore: true,
                     onTap:
-                        () => Get.to(
-                          () => ProfileScreen(
-                            academyID: notice.account.id,
-                            username: notice.account.username,
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (context) => ProfileScreen(
+                                  academyID: notice.account.id,
+                                  username: notice.account.username,
+                                ),
                           ),
                         ),
                   ),

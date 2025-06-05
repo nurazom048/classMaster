@@ -2,7 +2,6 @@ import 'package:classmate/core/widgets/appWidget/buttons/cupertino_buttons.dart'
 import 'package:classmate/core/widgets/heder/heder_title.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import '../../../../core/constant/app_color.dart';
 
 import '../widgets/static_widget/phone_number_textfield.dart';
@@ -90,10 +89,14 @@ class _MyPhoneState extends State<PhoneNumberScreen> {
                               int? resendToken,
                             ) {
                               // go to otp screen
-                              Get.to(
-                                () => OtpScreen(
-                                  verificationId: verificationId,
-                                  phoneNumber: fullPhoneNumber,
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => OtpScreen(
+                                        verificationId: verificationId,
+                                        phoneNumber: fullPhoneNumber,
+                                      ),
                                 ),
                               );
                             },

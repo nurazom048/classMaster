@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart';
+
 import 'package:go_router/go_router.dart';
 import '../../../../../../features/home_fetures/presentation/utils/utils.dart';
 import '../../../../../../features/routine_Fetures/presentation/providers/routine_details.controller.dart';
@@ -124,13 +124,18 @@ class ClassListPage extends StatelessWidget {
                                   );
                                 },
                                 ontap:
-                                    () => Get.to(
-                                      () => SummaryScreen(
-                                        classId: allClass.id,
-                                        routineID: allClass.routineId,
-                                        className: allClass.name,
-                                        instructorName: allClass.instructorName,
-                                        subjectCode: allClass.subjectCode,
+                                    () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder:
+                                            (context) => SummaryScreen(
+                                              classId: allClass.id,
+                                              routineID: allClass.routineId,
+                                              className: allClass.name,
+                                              instructorName:
+                                                  allClass.instructorName,
+                                              subjectCode: allClass.subjectCode,
+                                            ),
                                       ),
                                     ),
                               ),

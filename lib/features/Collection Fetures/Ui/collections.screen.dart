@@ -1,9 +1,9 @@
 // ignore_for_file: use_build_context_synchronously, unused_result
 
+import 'package:classmate/core/component/heder%20component/transition/right_to_left_transition.dart';
 import 'package:classmate/route/route_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart';
 import '../../../core/widgets/my_divider.dart';
 
 import 'package:classmate/features/Collection%20Fetures/Ui/aboutus_screen.dart';
@@ -185,13 +185,14 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                                           ? MyContainerButton(
                                             const Icon(Icons.calendar_month),
                                             "My NoticeBoard",
-                                            onTap:
-                                                () => Get.to(
-                                                  () => ViewAllRecentNotice(),
-                                                  transition:
-                                                      Transition
-                                                          .rightToLeftWithFade,
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                RightToLeftTransition(
+                                                  page: ViewAllRecentNotice(),
                                                 ),
+                                              );
+                                            },
                                           )
                                           : const SizedBox(),
                                 ),
@@ -213,18 +214,34 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                             saxpath:
                                 'assets/svg/undraw_personal_file_re_5joy.svg',
                             imageMargin: const EdgeInsets.only(left: 10),
-                            onTap: () => Get.to(const SaveRoutinesScreen()),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                RightToLeftTransition(
+                                  page: const SaveRoutinesScreen(),
+                                ),
+                              );
+                            },
                           ),
                           const SizedBox(width: 20),
+
                           TilesButton(
                             "Saved Summaries",
                             const FaIcon(FontAwesomeIcons.bookmark),
                             saxpath:
                                 'assets/svg/undraw_my_documents_re_13dc.svg',
-                            onTap: () => Get.to(const SaveSummeryScreen()),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                RightToLeftTransition(
+                                  page: const SaveSummeryScreen(),
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
+
                       const MyDividerr(thickness: 1.0, height: 1.0),
                       MyContainerButton(
                         const Icon(Icons.settings_outlined),

@@ -6,7 +6,7 @@ import 'package:classmate/features/account_fetures/presentation/screens/edit_acc
 import 'package:classmate/route/route_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart';
+
 import 'package:go_router/go_router.dart';
 import '../../../core/export_core.dart';
 import '../../../theme/app_theme.dart';

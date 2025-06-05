@@ -144,7 +144,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                 email: emailController.text.trim(),
                                 username: usernameController.text.trim(),
                               );
-                              // Get.offAll(() => const LoginScreen());
+                              //=> const LoginScreen());
                             }
                           },
                         ),

@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
+
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import '../../../../core/constant/constant.dart';
@@ -106,10 +107,10 @@ class HomeReq {
   //---------------------- DeleteRoutine Api Request  -----------------------------------/
   //************************************************************************************/
 
-  Future<Either<Message, Message>> deleteRoutine(rutin_id) async {
+  Future<Either<Message, Message>> deleteRoutine(routineId) async {
     final headers = await LocalData.getHeader();
 
-    var url = Uri.parse("${Const.BASE_URl}/routine/$rutin_id");
+    var url = Uri.parse("${Const.BASE_URl}/routine/$routineId");
 
     try {
       final response = await http.delete(url, headers: headers);
@@ -118,7 +119,7 @@ class HomeReq {
         var res = Message.fromJson(jsonDecode(response.body));
         print("req from delete req ${res.message}");
 
-        return right(Message(message: res.message, routineID: rutin_id));
+        return right(Message(message: res.message, routineID: routineId));
       } else {
         var res = Message.fromJson(jsonDecode(response.body));
         return left(res);

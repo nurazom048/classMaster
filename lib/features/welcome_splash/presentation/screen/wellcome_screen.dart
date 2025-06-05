@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:classmate/core/component/heder%20component/transition/right_to_left_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_core/get_core.dart';
@@ -71,9 +72,9 @@ class WelcomeScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 25),
               color: AppColor.nokiaBlue,
               onPressed: () {
-                Get.to(
-                  () => const LoginScreen(),
-                  transition: Transition.rightToLeft,
+                Navigator.push(
+                  context,
+                  RightToLeftTransition(page: const LoginScreen()),
                 );
               },
             ),

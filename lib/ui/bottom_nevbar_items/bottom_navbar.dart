@@ -4,7 +4,6 @@ import 'package:classmate/core/local%20data/local_data.dart' show LocalData;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
 
 import '../../core/constant/app_color.dart';

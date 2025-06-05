@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../route/route_constant.dart';
+import '../../component/heder component/transition/right_to_left_transition.dart';
 import '../../constant/app_color.dart';
 import '../../../features/notification/screen/notification.screen.dart';
 
@@ -76,9 +76,9 @@ class CustomTitleBar extends StatelessWidget {
                 const SizedBox(width: 5),
                 InkWell(
                   onTap: () {
-                    Get.to(
-                      () => const NotificationScreen(),
-                      transition: Transition.rightToLeft,
+                    Navigator.push(
+                      context,
+                      RightToLeftTransition(page: const NotificationScreen()),
                     );
                   },
                   child: Icon(

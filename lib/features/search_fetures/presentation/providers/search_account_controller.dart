@@ -9,7 +9,10 @@ import '../../../../features/search_fetures/data/datasources/search_requests.dar
 import '../../../account_fetures/data/models/account_models.dart';
 
 final searchAccountController = StateNotifierProvider.family<
-    SearchAccountController, AsyncValue<AccountsResponse>, String>(
+  SearchAccountController,
+  AsyncValue<AccountsResponse>,
+  String
+>(
   (ref, searchString) => SearchAccountController(
     ref,
     searchString,
@@ -24,7 +27,7 @@ class SearchAccountController
   final String searchString;
   final SearchRequests search;
   SearchAccountController(this.ref, this.searchString, this.search)
-      : super(const AsyncLoading()) {
+    : super(const AsyncLoading()) {
     getItems();
   }
 
@@ -42,7 +45,7 @@ class SearchAccountController
 
   //
 
-// Loader More
+  // Loader More
   void loadMore(int page) async {
     try {
       if (page == state.value!.totalPages) {
@@ -50,8 +53,10 @@ class SearchAccountController
       } else {
         print('Call for loading more data: $page / ${state.value!.totalPages}');
 
-        final AccountsResponse newData =
-            await search.searchAccount(searchString, page: page + 1);
+        final AccountsResponse newData = await search.searchAccount(
+          searchString,
+          page: page + 1,
+        );
         print('newData');
         print('newData length: ${newData.accounts?.length}');
 
@@ -64,19 +69,17 @@ class SearchAccountController
               ...(state.value!.accounts ?? []),
               ...(newData.accounts ?? []),
             ];
-            state = AsyncData(state.value!.copyWith(
-              accounts: newAccountResult,
-              currentPage: newData.currentPage,
-            ));
+            state = AsyncData(
+              state.value!.copyWith(
+                accounts: newAccountResult,
+                currentPage: newData.currentPage,
+              ),
+            );
           }
         }
       }
     } catch (error) {
-      Get.snackbar(
-        'error',
-        '$error',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.snackbar('error', '$error', snackPosition: SnackPosition.BOTTOM);
     }
   }
 }

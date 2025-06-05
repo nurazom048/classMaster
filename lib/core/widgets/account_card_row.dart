@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart';
 import 'package:classmate/features/home_fetures/presentation/utils/utils.dart';
 
 import '../../features/account_fetures/data/models/account_models.dart';
@@ -43,13 +42,19 @@ class AccountCardRow extends ConsumerWidget {
     return InkWell(
       onTap:
           accountData.id != null
-              ? () => Get.to(
-                ProfileScreen(
-                  academyID: accountData.id,
-                  username: accountData.username,
-                ),
-              )
-              : () {},
+              ? () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder:
+                        (context) => ProfileScreen(
+                          academyID: accountData.id,
+                          username: accountData.username,
+                        ),
+                  ),
+                );
+              }
+              : null,
       child: Container(
         padding:
             padding ?? const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -170,7 +175,7 @@ class AccountCardRow extends ConsumerWidget {
                 TextButton(
                   onPressed:
                       addCapotes == true
-                          ? () => addCaptansAlart(context)
+                          ? () => addCaptansAlert(context)
                           : () => onUsername(accountData.username, ""),
                   child: Text(
                     buttontext ?? "",
@@ -187,7 +192,7 @@ class AccountCardRow extends ConsumerWidget {
 
   //... add capotes with position .../
 
-  addCaptansAlart(context) {
+  addCaptansAlert(context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
