@@ -86,6 +86,7 @@ class MyApp extends ConsumerWidget {
           ),
       data: (themeMode) {
         return GetMaterialApp.router(
+          key: ValueKey(themeMode.hashCode),
           debugShowCheckedModeBanner: false,
           title: Const.appName,
           theme: themeNotifier.lightTheme,

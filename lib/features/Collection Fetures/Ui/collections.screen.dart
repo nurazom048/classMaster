@@ -106,7 +106,7 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                                       child: Text("No Data Available"),
                                     ),
                                     (r) => AccountCard(
-                                      profilepicture: r.image,
+                                      profilePicture: r.image,
                                       name: r.name ?? "",
                                       username: '@${r.username}',
                                       onTap:

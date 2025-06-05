@@ -1,29 +1,22 @@
 // ignore_for_file: must_be_immutable, use_key_in_widget_constructors, camel_case_types
 
+import 'package:classmate/core/component/heder%20component/transition/right_to_Left_transition.dart';
 import 'package:classmate/features/authentication_fetures/presentation/screen/change_password.dart';
 import 'package:classmate/features/account_fetures/presentation/screens/edit_account.dart';
+import 'package:classmate/route/route_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/export_core.dart';
 import '../../../theme/app_theme.dart';
+import '../utils/show_theme_selection_dialog.dart';
 
 class SettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeAsync = ref.watch(themeNotifierProvider);
     final themeNotifier = ref.read(themeNotifierProvider.notifier);
-
-    String getCurrentThemeName(ThemeModeOption themeMode) {
-      switch (themeMode) {
-        case ThemeModeOption.light:
-          return "Light";
-        case ThemeModeOption.dark:
-          return "Dark";
-        case ThemeModeOption.system:
-          return "System";
-      }
-    }
 
     return SafeArea(
       child: Scaffold(
@@ -57,58 +50,38 @@ class SettingsPage extends ConsumerWidget {
                           SeatingOption(
                             title: 'Edit profile',
                             icon: Icons.person,
-                            onTap: () => Get.to(const EditAccount()),
+                            onTap: () {
+                              GoRouter.of(
+                                context,
+                              ).pushNamed(RouteConst.editAccount);
+                            },
                           ),
                           SeatingOption(
                             title: 'Change password',
                             icon: Icons.lock,
-                            onTap:
-                                () => Get.to(
-                                  () => const ChangePasswordPage(),
-                                  transition: Transition.rightToLeft,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                RightToLeftTransition(
+                                  page: const ChangePasswordPage(),
                                 ),
+                              );
+                            },
                           ),
                           SeatingOption(
                             title: 'Theme',
                             subtitle: getCurrentThemeName(currentTheme),
                             icon: Icons.nightlight_sharp,
                             onTap: () {
-                              showDialog(
+                              showThemeSelectionDialog(
                                 context: context,
-                                builder: (BuildContext dialogContext) {
-                                  return AlertDialog(
-                                    title: const Text('Select Theme'),
-                                    content: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children:
-                                          ThemeModeOption.values.map((mode) {
-                                            return RadioListTile<
-                                              ThemeModeOption
-                                            >(
-                                              title: Text(
-                                                getCurrentThemeName(mode),
-                                              ),
-                                              value: mode,
-                                              groupValue: currentTheme,
-                                              onChanged: (
-                                                ThemeModeOption? value,
-                                              ) {
-                                                if (value != null) {
-                                                  themeNotifier.setThemeMode(
-                                                    value,
-                                                  );
-                                                  Navigator.of(
-                                                    dialogContext,
-                                                  ).pop();
-                                                }
-                                              },
-                                            );
-                                          }).toList(),
-                                    ),
-                                  );
-                                },
+                                currentTheme: currentTheme,
+                                themeNotifier: themeNotifier,
+                                getThemeName: getCurrentThemeName,
                               );
                             },
+
+                            //
                           ),
                           Container(
                             alignment: Alignment.topLeft,
