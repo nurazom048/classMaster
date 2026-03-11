@@ -18,7 +18,7 @@ final summaryReqProvider = Provider<SummaryRequest>((ref) => SummaryRequest());
 // Summary request...//
 class SummaryRequest {
   //
-// add summary///
+  // add summary///
   static Future<Either<Message, Message>> addSummaryRequest({
     required String classId,
     required String routineId,
@@ -40,21 +40,19 @@ class SummaryRequest {
       for (var image in imageLinks) {
         if (kIsWeb) {
           final bytes = await image.readAsBytes();
-          request.files.add(http.MultipartFile.fromBytes(
-            'imageLinks',
-            bytes,
-            filename: image.name,
-          ));
+          request.files.add(
+            http.MultipartFile.fromBytes(
+              'imageLinks',
+              bytes,
+              filename: image.name,
+            ),
+          );
         } else {
-          request.files.add(await http.MultipartFile.fromPath(
-            'imageLinks',
-            image.path,
-          ));
+          request.files.add(
+            await http.MultipartFile.fromPath('imageLinks', image.path),
+          );
         }
       }
-
-      // Socket notification
-      SocketService.sendMessage(room: routineId);
 
       var streamedResponse = await request.send();
       var rs = await http.Response.fromStream(streamedResponse);
@@ -70,9 +68,9 @@ class SummaryRequest {
     }
   }
 
-//***************************************************************************************/
-//--------------------------- -get summary --------------------------------------/
-//**************************************************************************************/
+  //***************************************************************************************/
+  //--------------------------- -get summary --------------------------------------/
+  //**************************************************************************************/
 
   Future<AllSummaryModel> getSummaryList(String? classId, {int? pages}) async {
     print("call get summary ");
@@ -107,7 +105,8 @@ class SummaryRequest {
   /// get summary........///
 
   static Future<Either<Message, Message>> deleteSummary(
-      String summaryID) async {
+    String summaryID,
+  ) async {
     final Map<String, String> headers = await LocalData.getHeader();
 
     var url = Uri.parse('${Const.BASE_URl}/summary/$summaryID');
@@ -116,10 +115,7 @@ class SummaryRequest {
 
     //... send request....//
     try {
-      final response = await http.delete(
-        url,
-        headers: headers,
-      );
+      final response = await http.delete(url, headers: headers);
       var res = json.decode(response.body);
       var message = Message.fromJson(res);
       print(res);
@@ -152,15 +148,12 @@ class SummaryRequest {
       //   return CheckStatusModel.fromJson(getdata);
       // }
 
-      final response = await http.post(
-        url,
-        headers: headers,
-      );
+      final response = await http.post(url, headers: headers);
 
       if (response.statusCode == 200) {
         await LocalData.setHerder(response);
 
-//saved cash
+        //saved cash
         // // save to csh
         // APICacheDBModel cacheDBModel = APICacheDBModel(
         //     key: "checkStatus$rutin_id", syncData: response.body);
@@ -168,8 +161,9 @@ class SummaryRequest {
         //
 
         //
-        CheckStatusModel res =
-            CheckStatusModel.fromJson(jsonDecode(response.body));
+        CheckStatusModel res = CheckStatusModel.fromJson(
+          jsonDecode(response.body),
+        );
         print("res  ${jsonDecode(response.body)}");
         return res;
       } else {
@@ -184,7 +178,9 @@ class SummaryRequest {
   //******* Save unsaved summary ********* */
 
   Future<Either<Message, Message>> saveSummary(
-      String summaryId, bool save) async {
+    String summaryId,
+    bool save,
+  ) async {
     final Map<String, String> headers = await LocalData.getHeader();
 
     final url = Uri.parse('${Const.BASE_URl}/summary/save');

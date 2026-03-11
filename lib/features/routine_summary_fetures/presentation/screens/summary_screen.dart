@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 import '../../../../core/export_core.dart';
 import '../../../routine_Fetures/presentation/providers/checkbox_selector_button.dart';
 import '../providers/summary_controller.dart';
@@ -48,42 +49,83 @@ late ScrollController pageScrollController;
 
 class _SummaryScreenState extends State<SummaryScreen> {
   @override
-  void dispose() {
-    scrollController.dispose(); // Dispose the ScrollController
-    pageScrollController.dispose(); // Dispose the ScrollController
-    super.dispose();
+  void initState() {
+    super.initState();
+    print(
+      '[SummaryScreen] Initializing screen for routine ${widget.routineID}',
+    );
+    scrollController = ScrollController();
+    pageScrollController = ScrollController();
+    _initializeSocket();
   }
 
   @override
-  void initState() {
-    super.initState();
-    scrollController = ScrollController();
-    pageScrollController = ScrollController();
-
-    // Initialize the SocketService and join the room after initialization
-    SocketService.initializeSocket()
-        .then((_) {
-          // Join the room after socket initialization
-          SocketService.joinRoom(widget.routineID);
-        })
-        .catchError((error) {
-          print('Error initializing socket: $error');
-        });
+  void dispose() {
+    print('[SummaryScreen] Disposing screen for routine ${widget.routineID}');
+    print('[Socket] Leaving room ${widget.routineID}');
+    SocketService.leaveRoom(widget.routineID);
+    print('[Socket] Disconnecting socket');
+    SocketService.disconnect();
+    scrollController.dispose();
+    pageScrollController.dispose();
+    super.dispose();
   }
 
-  void _listenToChatMessages() {
-    SocketService.socket.on('chat message', (data) {
-      setState(() {});
-      print('Message received: ${data['message']} in room: ${data['room']}');
-    });
+  Future<void> _initializeSocket() async {
+    print('[Socket] Starting socket initialization');
+
+    try {
+      print('[Socket] Attempting to initialize socket connection');
+      await SocketService.initializeSocket();
+      print('[Socket] Successfully initialized socket connection');
+
+      print('[Socket] Attempting to join room ${widget.routineID}');
+      SocketService.joinRoom(widget.routineID);
+      print('[Socket] Join room request sent for ${widget.routineID}');
+
+      // Set up event listeners
+      SocketService.listenToRoomEvents(
+        onSummaryCreated: (summary) {
+          print('[Socket] [Event] New summary created: ${summary.toString()}');
+        },
+        onRoomJoined: (data) {
+          print('[Socket] [Event] Room joined confirmation received:');
+          print('  - Room: ${data['room']}');
+          print('  - Success: ${data['success']}');
+          print('  - Socket ID: ${data['socketId']}');
+        },
+      );
+
+      // Error listener
+      SocketService.socket.on('error', (error) {
+        print('[Socket] [Error] Socket error occurred:');
+        print('  - Message: ${error['message']}');
+        print('  - Code: ${error['code']}');
+      });
+
+      // Connection status listeners
+      SocketService.socket.onConnect((_) {
+        print('[Socket] [Status] Connected to socket server');
+        print('  - Socket ID: ${SocketService.socket.id}');
+      });
+
+      SocketService.socket.onDisconnect((_) {
+        print('[Socket] [Status] Disconnected from socket server');
+      });
+
+      SocketService.socket.onConnecting((_) {
+        print('[Socket] [Status] Attempting to connect to server...');
+      });
+
+      SocketService.socket.onReconnect((_) {
+        print('[Socket] [Status] Reconnected to server');
+      });
+    } catch (e) {
+      print('[Socket] [Error] Initialization failed:');
+      print('  - Error: $e');
+    }
   }
 
-  // Message received base on room id
-  // SocketService.socket.on('chat message', (data) {
-  //   final message = data['message'];
-  //   final room = data['room'];
-  //   print('Message received in room $room: $message');
-  // });
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -156,7 +198,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                     }
 
                     scrollController.addListener(() {
-                      _listenToChatMessages();
+                      //_listenToChatMessages();
                       if (scrollController.position.pixels ==
                           scrollController.position.maxScrollExtent) {
                         if (data.currentPage != data.totalPages) {

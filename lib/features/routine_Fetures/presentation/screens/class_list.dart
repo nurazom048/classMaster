@@ -1,9 +1,11 @@
 // ignore_for_file: avoid_print, unused_local_variable, use_build_context_synchronously, unused_result
 
+import 'package:classmate/features/routine_summary_fetures/presentation/socket%20services/socketCon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:go_router/go_router.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 import '../../../../../../features/home_fetures/presentation/utils/utils.dart';
 import '../../../../../../features/routine_Fetures/presentation/providers/routine_details.controller.dart';
 import '../providers/checkbox_selector_button.dart';
@@ -16,7 +18,7 @@ import '../widgets/static_widgets/class_row.dart';
 
 final totalClassCountProvider = StateProvider.autoDispose<int>((ref) => 0);
 
-class ClassListPage extends StatelessWidget {
+class ClassListPage extends ConsumerStatefulWidget {
   final String routineId;
   final String routineName;
 
@@ -27,18 +29,64 @@ class ClassListPage extends StatelessWidget {
   });
 
   @override
+  ConsumerState<ClassListPage> createState() => _ClassListPageState();
+}
+
+class _ClassListPageState extends ConsumerState<ClassListPage> {
+  @override
+  void initState() {
+    super.initState();
+    _initializeSocket();
+  }
+
+  Future<void> _initializeSocket() async {
+    try {
+      await SocketService.initializeSocket();
+      print('Socket initialized for routine ${widget.routineId}');
+
+      // Listen for connection status
+      SocketService.socket.onConnect((_) {
+        print(
+          '✅ Connected to Socket.IO server for routine ${widget.routineId}',
+        );
+      });
+
+      SocketService.socket.onDisconnect((_) {
+        print('❌ Disconnected from server for routine ${widget.routineId}');
+      });
+    } catch (e) {
+      print('Socket initialization error: $e');
+      if (mounted) {
+        Alert.showSnackBar(context, 'Failed to connect to live updates');
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    // Clean up socket connection when page is disposed
+    SocketService.disconnect();
+    print('Socket disconnected and cleaned up');
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, _) {
-        print(routineId);
+        print(widget.routineId);
         // key
         final scaffoldKey = GlobalKey<ScaffoldState>();
 
         // Provider
-        final routineDetails = ref.watch(routineDetailsProvider(routineId));
+        final routineDetails = ref.watch(
+          routineDetailsProvider(widget.routineId),
+        );
 
         // Notifiers
-        final checkStatus = ref.watch(checkStatusControllerProvider(routineId));
+        final checkStatus = ref.watch(
+          checkStatusControllerProvider(widget.routineId),
+        );
         final totalClassNotifier = ref.read(totalClassCountProvider.notifier);
 
         return Scaffold(
@@ -52,7 +100,7 @@ class ClassListPage extends StatelessWidget {
               } else {
                 //! provider
 
-                ref.refresh(routineDetailsProvider(routineId));
+                ref.refresh(routineDetailsProvider(widget.routineId));
               }
             },
             child: Builder(
@@ -77,7 +125,7 @@ class ClassListPage extends StatelessWidget {
                             context.pushNamed(
                               RouteConst.addClass,
                               extra: false,
-                              params: {'routineId': routineId},
+                              params: {'routineId': widget.routineId},
                             );
                           },
                         );
@@ -120,7 +168,7 @@ class ClassListPage extends StatelessWidget {
                                   PeriodAlert.logPressClass(
                                     context,
                                     classId: classsID,
-                                    routineId: routineId,
+                                    routineId: widget.routineId,
                                   );
                                 },
                                 ontap:

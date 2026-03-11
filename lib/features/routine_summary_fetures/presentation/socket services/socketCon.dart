@@ -6,70 +6,64 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 class SocketService {
   static IO.Socket? _socket;
 
-  // Getter for the socket instance
   static IO.Socket get socket {
     if (_socket == null) {
-      throw Exception(
-          "Socket is not initialized. Call initializeSocket first.");
+      throw Exception("Socket not initialized. Call initializeSocket() first.");
     }
     return _socket!;
   }
 
-  // Asynchronous initialization of the socket
   static Future<void> initializeSocket() async {
-    final headers = await LocalData.getHeader(); // Fetch headers asynchronously
+    try {
+      // Fetch headers (Bearer token + refresh token)
+      final headers = await LocalData.getHeader();
 
-    _socket = IO.io(
-      'http://10.0.2.2:4000',
-      IO.OptionBuilder()
-          .setTransports(['websocket']) // Specify transport
-          .enableAutoConnect() // Enable auto-connect
-          .setAuth({'token': ''}) // Add token if needed
-          .setExtraHeaders(headers) // Set extra headers
-          .build(),
-    );
+      _socket = IO.io(
+        'http://10.0.2.2:4000', // Replace with your server URL
+        IO.OptionBuilder()
+            .setTransports(['websocket']) // Force WebSocket
+            .enableAutoConnect() // Reconnect if disconnected
+            .setExtraHeaders(headers) // Attach auth headers
+            .build(),
+      );
 
-    // Listen for connection
-    _socket!.onConnect((_) {
-      print('Connected to server');
-    });
-    void listenChat() {
-      // Listen to 'chat message' events
+      // Connection listeners
+      _socket!.onConnect((_) => print('✅ Connected to Socket.IO server'));
+      _socket!.onDisconnect((_) => print('❌ Disconnected from server'));
+      _socket!.onError((error) => print('⚠️ Socket error: $error'));
+    } catch (e) {
+      print('Failed to initialize socket: $e');
+      rethrow;
     }
-
-    // Listen for disconnection
-    _socket!.onDisconnect((_) {
-      print('Disconnected from server');
-    });
   }
 
-  // Join a room
-  static void joinRoom(String room) {
-    if (_socket == null) {
-      throw Exception(
-          "Socket is not initialized. Call initializeSocket first.");
-    }
-    _socket!.emit('join room', room);
-    print('Joined room: $room');
+  // Join a room (matches server event `join:routine`)
+  static void joinRoom(String routineID) {
+    if (_socket == null) throw Exception("Socket not initialized.");
+    _socket!.emit('join:routine', routineID);
   }
 
-  // Send a chat message
-  static void sendMessage({
-    required String room,
+  // Leave a room (matches server event `leave:routine`)
+  static void leaveRoom(String routineID) {
+    _socket?.emit('leave:routine', routineID);
+  }
+
+  // Listen for room events (e.g., new summaries)
+  static void listenToRoomEvents({
+    Function(dynamic)? onSummaryCreated,
+    Function(dynamic)? onRoomJoined,
   }) {
-    if (_socket == null) {
-      throw Exception(
-          "Socket is not initialized. Call initializeSocket first.");
+    if (onSummaryCreated != null) {
+      _socket?.on('summary:created', onSummaryCreated);
     }
-    _socket!.emit('chat message', {
-      "message": 'this is new message',
-      "room": room,
-    });
-    print('Message sent to room $room');
+    if (onRoomJoined != null) {
+      _socket?.on('room:joined', onRoomJoined);
+    }
   }
 
-  // Disconnect the socket
+  // Disconnect socket
   static void disconnect() {
     _socket?.disconnect();
+    _socket = null;
   }
 }
