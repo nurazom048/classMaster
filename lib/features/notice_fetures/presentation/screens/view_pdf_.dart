@@ -1,35 +1,17 @@
-// ignore_for_file: library_private_types_in_public_api, avoid_print
-
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
-// Access to app-specific directories for caching (non-web only)
 import 'package:path_provider/path_provider.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart'
-    show
-        PdfDocumentLoadFailedDetails,
-        PdfDocumentLoadedDetails,
-        PdfViewerController,
-        SfPdfViewer,
-        SfPdfViewerState;
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-// Syncfusion widget for rendering PDFs from network or files
-// import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-
-// App-specific utilities and constants (e.g., BASE_URL)
 import '../../../../core/export_core.dart';
-
-// Connectivity check utility (isOnlineMethod)
 import '../../../home_fetures/presentation/utils/utils.dart';
-
-// PDF utility class for cache management
 import '../utils/pdf_utils.dart';
-// Adjust path based on your project structure
 
 class ViewPDf extends StatefulWidget {
-  final String pdfLink; // URL of the PDF to display
+  final String pdfLink;
 
   const ViewPDf({super.key, required this.pdfLink});
 
@@ -38,246 +20,185 @@ class ViewPDf extends StatefulWidget {
 }
 
 class _ViewPDfState extends State<ViewPDf> {
-  // Controller for navigating PDF pages
   final PdfViewerController _pdfViewerController = PdfViewerController();
-
-  // Key to manage the PDF viewer widget state
   final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
 
-  bool?
-  isOnline; // Tracks network status (null = checking, true = online, false = offline)
-  String? errorMessage; // Stores any error messages for display
-  File? cachedPdfFile; // Local file for cached PDF (non-web only)
-  String? validatedPdfUrl; // Validated proxy URL for online PDF display
-  bool isLoading = true; // Indicates if initialization is in progress
+  final String pdfBaseUrl = "${Const.BASE_URl}/storage/storageforclassmaster/";
+
+  bool? isOnline;
+  String? errorMessage;
+  bool isLoading = true;
+
+  File? cachedPdfFile;
+  Uint8List? webPdfBytes;
 
   @override
   void initState() {
     super.initState();
-    initializePdf(); // Kick off PDF loading and caching logic once
-    PdfUtils.initializeCacheClearTimer(); // Start the cache clearing timer
+    initializePdf();
+    PdfUtils.initializeCacheClearTimer();
   }
 
   @override
   void dispose() {
-    _pdfViewerController.dispose(); // Clean up the PDF controller
+    _pdfViewerController.dispose();
     super.dispose();
   }
 
-  // Initializes online/offline status and PDF setup
+  // 🔔 কাস্টম টোস্ট/স্ন্যাকবার মেথড
+  void _showToast(String message, {bool isError = false}) {
+    if (!mounted) return; // অ্যাপ অন্য স্ক্রিনে চলে গেলে যেন ক্র্যাশ না করে
+    ScaffoldMessenger.of(
+      context,
+    ).hideCurrentSnackBar(); // আগের মেসেজ ক্লিয়ার করবে
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: isError ? Colors.redAccent : Colors.green,
+        behavior: SnackBarBehavior.floating, // সুন্দর ভাসমান লুকের জন্য
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
   Future<void> initializePdf() async {
-    isOnline = await Utils.isOnlineMethod(); // Check network connectivity
-    print('Online status: $isOnline');
+    isOnline = await Utils.isOnlineMethod();
+
+    final String fullUrl =
+        widget.pdfLink.startsWith('http')
+            ? widget.pdfLink
+            : "$pdfBaseUrl${widget.pdfLink}";
 
     if (!kIsWeb) {
-      await initializeCachedPdf(); // Look for cached PDF on non-web platforms
+      bool hasCache = await checkLocalCache(fullUrl);
+      if (hasCache) {
+        _showToast("📂 Loading from offline cache..."); // cache থেকে লোড হলে
+        setState(() {
+          isLoading = false;
+        });
+        return;
+      }
     }
 
     if (isOnline == true) {
-      final url = PdfUtils.getProxiedPdfUrl(
-        widget.pdfLink,
-      ); // Get the proxy URL
-      validatedPdfUrl = await validateAndCachePdfUrl(
-        url,
-      ); // Validate and cache if online
+      await downloadAndCachePdf(fullUrl);
+    } else {
+      errorMessage = 'Offline: No internet and no cached file available.';
+      _showToast(errorMessage!, isError: true);
     }
 
     setState(() {
-      isLoading = false; // Initialization complete, update UI
+      isLoading = false;
     });
   }
 
-  // Checks for an existing cached PDF file (non-web only)
-  Future<void> initializeCachedPdf() async {
+  Future<bool> checkLocalCache(String fullUrl) async {
     try {
       final directory = await getApplicationDocumentsDirectory();
-      final fileName =
-          widget.pdfLink
-              .split('/')
-              .last
-              .split('?')
-              .first; // Extract filename from URL
+      final fileName = fullUrl.split('/').last.split('?').first;
       final file = File('${directory.path}/$fileName');
 
       if (await file.exists()) {
         cachedPdfFile = file;
-        print('Cached PDF found at: ${file.path}');
+        return true;
       }
     } catch (e) {
-      print('Error initializing cached PDF: $e');
+      print('Error checking cache: $e');
+    }
+    return false;
+  }
+
+  Future<void> downloadAndCachePdf(String fullUrl) async {
+    try {
+      _showToast("⏳ Downloading PDF from server..."); // ডাউনলোড শুরু
+      final response = await http.get(Uri.parse(fullUrl));
+
+      if (response.statusCode == 200) {
+        if (kIsWeb) {
+          webPdfBytes = response.bodyBytes;
+          _showToast("✅ PDF loaded successfully!"); // ওয়েবে লোড সাকসেস
+        } else {
+          final directory = await getApplicationDocumentsDirectory();
+          final fileName = originalFileName(fullUrl);
+          final file = File('${directory.path}/$fileName');
+          await file.writeAsBytes(response.bodyBytes);
+          cachedPdfFile = file;
+          _showToast(
+            "✅ PDF downloaded and cached successfully!",
+          ); // মোবাইলে সেভ সাকসেস
+        }
+      } else {
+        errorMessage = 'Server error: ${response.statusCode}';
+        _showToast(errorMessage!, isError: true);
+      }
+    } catch (e) {
+      errorMessage = 'Failed to load PDF: $e';
+      _showToast(errorMessage!, isError: true);
     }
   }
 
-  // Validates the proxy URL and caches the PDF if valid (non-web only)
-  Future<String?> validateAndCachePdfUrl(String url) async {
-    try {
-      final response = await http.get(Uri.parse(url));
-      print('Proxy response status: ${response.statusCode}');
-      print('Proxy response headers: ${response.headers}');
-
-      if (response.statusCode == 200 &&
-          response.headers['content-type'] == 'application/pdf') {
-        if (!kIsWeb) {
-          final directory = await getApplicationDocumentsDirectory();
-          final fileName = widget.pdfLink.split('/').last.split('?').first;
-          final file = File('${directory.path}/$fileName');
-          await file.writeAsBytes(response.bodyBytes); // Save PDF locally
-          cachedPdfFile = file;
-          print('PDF cached at: ${file.path}');
-        }
-        return url; // Return validated URL for display
-      } else {
-        errorMessage =
-            'Invalid PDF response from proxy: ${response.statusCode}';
-        return null;
-      }
-    } catch (e) {
-      errorMessage = 'Failed to validate PDF URL: $e';
-      return null;
-    }
+  String originalFileName(String url) {
+    return url.split('/').last.split('?').first;
   }
 
   @override
   Widget build(BuildContext context) {
-    print('Building ViewPDf with pdfLink: ${widget.pdfLink}');
     return SafeArea(
       child: Scaffold(
         appBar: AppBarCustom(
           'View PDF',
           actions: [
-            // Previous page button
             IconButton(
-              onPressed: () {
-                if (_pdfViewerController.pageNumber != 1) {
-                  _pdfViewerController.previousPage();
-                }
-              },
+              onPressed: () => _pdfViewerController.previousPage(),
               icon: const Icon(Icons.arrow_back),
             ),
-            // Next page button
             IconButton(
-              onPressed: () {
-                if (_pdfViewerController.pageNumber <
-                    _pdfViewerController.pageCount) {
-                  _pdfViewerController.nextPage();
-                }
-              },
+              onPressed: () => _pdfViewerController.nextPage(),
               icon: const Icon(Icons.arrow_forward),
             ),
           ],
         ),
-        body: SizedBox(
-          height:
-              MediaQuery.of(context).size.height -
-              100, // Adjust height for app bar
-          child: _buildContent(), // Delegate content building for clarity
-        ),
+        body: _buildContent(),
       ),
     );
   }
 
-  // Determines what to display based on state
   Widget _buildContent() {
     if (isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      ); // Show loading during initialization
-    }
-
-    if (isOnline == null) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      ); // Initial state before connectivity check
-    }
-
-    if (isOnline == false && kIsWeb) {
-      return const ErrorScreen(
-        error: 'You are offline (Web)',
-      ); // Web offline: no caching
-    }
-
-    if (isOnline == false && cachedPdfFile != null) {
-      return getCachedBody(); // Offline with cache: show local PDF
-    }
-
-    if (isOnline == false) {
-      return const ErrorScreen(
-        error: 'You are offline and no cached PDF is available',
-      ); // Offline, no cache
+      return const Center(child: CircularProgressIndicator());
     }
 
     if (errorMessage != null) {
-      return ErrorScreen(error: errorMessage!); // Display any errors
+      return ErrorScreen(error: errorMessage!);
     }
 
-    if (validatedPdfUrl != null) {
-      return getBody(
-        validatedPdfUrl!,
-      ); // Online with valid URL: show network PDF
-    }
-
-    return const ErrorScreen(
-      error: 'Failed to load PDF',
-    ); // Fallback for unexpected failure
-  }
-
-  // Displays the PDF from the network URL
-  Widget getBody(String pdfUrl) {
-    print('Loading PDF from network: $pdfUrl');
-    try {
-      return SfPdfViewer.network(
-        pdfUrl,
-        key: _pdfViewerKey,
-        enableDoubleTapZooming: true,
-        enableTextSelection: true,
-        controller: _pdfViewerController,
-        onDocumentLoaded: (PdfDocumentLoadedDetails details) {
-          print('PDF loaded successfully: $pdfUrl');
-        },
-        onDocumentLoadFailed: (PdfDocumentLoadFailedDetails details) {
-          print('PDF load failed: ${details.error} - ${details.description}');
-          setState(() {
-            errorMessage = '${details.error}: ${details.description}';
-          });
-        },
-      );
-    } catch (e) {
-      print('Error loading PDF: $e');
-      setState(() {
-        errorMessage = e.toString();
-      });
-      return const SizedBox(); // Empty widget on error
-    }
-  }
-
-  // Displays the cached PDF from local storage (non-web only)
-  Widget getCachedBody() {
-    try {
-      print('Loading cached PDF from: ${cachedPdfFile!.path}');
+    if (!kIsWeb && cachedPdfFile != null) {
       return SfPdfViewer.file(
         cachedPdfFile!,
         key: _pdfViewerKey,
-        enableDoubleTapZooming: true,
-        enableTextSelection: true,
         controller: _pdfViewerController,
-        onDocumentLoaded: (PdfDocumentLoadedDetails details) {
-          print('Cached PDF loaded successfully: ${cachedPdfFile!.path}');
-        },
-        onDocumentLoadFailed: (PdfDocumentLoadFailedDetails details) {
-          print(
-            'Cached PDF load failed: ${details.error} - ${details.description}',
-          );
+        onDocumentLoadFailed: (details) {
           setState(() {
-            errorMessage = '${details.error}: ${details.description}';
+            errorMessage = details.description;
           });
         },
       );
-    } catch (e) {
-      print('Error loading cached PDF: $e');
-      setState(() {
-        errorMessage = e.toString();
-      });
-      return const SizedBox(); // Empty widget on error
     }
+
+    if (kIsWeb && webPdfBytes != null) {
+      return SfPdfViewer.memory(
+        webPdfBytes!,
+        key: _pdfViewerKey,
+        canShowPaginationDialog: true,
+        controller: _pdfViewerController,
+        onDocumentLoadFailed: (details) {
+          setState(() {
+            errorMessage = "Error: ${details.description}";
+          });
+        },
+      );
+    }
+
+    return const ErrorScreen(error: 'Unknown error occurred or file missing.');
   }
 }
