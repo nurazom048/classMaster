@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import '../../../../core/constant/enum.dart';
 import '../../../../core/export_core.dart';
 import '../../data/models/account_models.dart';
 
@@ -27,8 +28,8 @@ class ProfileTop extends StatelessWidget {
                 PickImage(
                   onImagePathSelected: (onImagePathSelected) {},
                   onCoverImagePath: (onCoverImagePath) {},
-                  netWorkImage: accountData!.image,
-                  netWorkCoverImage: accountData!.coverImage,
+                  netWorkImage: accountData!.imageUrl,
+                  netWorkCoverImage: accountData!.coverImageUrl,
                 ),
               ],
             ),

@@ -23,8 +23,6 @@ class _ViewPDfState extends State<ViewPDf> {
   final PdfViewerController _pdfViewerController = PdfViewerController();
   final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
 
-  final String pdfBaseUrl = "${Const.BASE_URl}/storage/storageforclassmaster/";
-
   bool? isOnline;
   String? errorMessage;
   bool isLoading = true;
@@ -67,7 +65,7 @@ class _ViewPDfState extends State<ViewPDf> {
     final String fullUrl =
         widget.pdfLink.startsWith('http')
             ? widget.pdfLink
-            : "$pdfBaseUrl${widget.pdfLink}";
+            : "${Const.AWS_BASE_URL}${widget.pdfLink}";
 
     if (!kIsWeb) {
       bool hasCache = await checkLocalCache(fullUrl);

@@ -10,7 +10,7 @@ import 'dart:io' show File;
 class PickImage extends StatefulWidget {
   final String? netWorkImage;
   final String? netWorkCoverImage;
-  final bool isEddit;
+  final bool isEdit;
   final Function(XFile?) onImagePathSelected;
   final Function(XFile?) onCoverImagePath;
 
@@ -20,7 +20,7 @@ class PickImage extends StatefulWidget {
     required this.onCoverImagePath,
     required this.netWorkImage,
     required this.netWorkCoverImage,
-    this.isEddit = false,
+    this.isEdit = false,
   });
 
   @override
@@ -100,7 +100,7 @@ class _PickImageState extends State<PickImage> {
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: badges.Badge(
-              showBadge: widget.isEddit,
+              showBadge: widget.isEdit,
               position: badges.BadgePosition.bottomEnd(bottom: -3, end: 12),
               badgeStyle: const badges.BadgeStyle(
                 badgeColor: Colors.transparent,
@@ -119,7 +119,7 @@ class _PickImageState extends State<PickImage> {
             bottom: 0,
             left: MediaQuery.of(context).size.width / 2.9,
             child: badges.Badge(
-              showBadge: widget.isEddit,
+              showBadge: widget.isEdit,
               position: badges.BadgePosition.bottomEnd(),
               badgeStyle: const badges.BadgeStyle(
                 badgeColor: Colors.transparent,

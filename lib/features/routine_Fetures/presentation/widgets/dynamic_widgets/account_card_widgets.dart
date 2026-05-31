@@ -44,7 +44,7 @@ class AccountCard extends StatelessWidget {
               child:
                   accountData.image == null
                       ? null
-                      : Image.network(accountData.image!),
+                      : Image.network(accountData.imageUrl!),
             ),
 
             FittedBox(

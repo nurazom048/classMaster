@@ -51,7 +51,11 @@ class AccountRepositoryImpl implements AccountRepository {
       final response = await http.post(url, headers: headers);
 
       if (response.statusCode == 200) {
+        print(
+          'Response from account  : ${response.body}',
+        ); //TODO: remove this line after testing
         await MyApiCache.saveLocal(key: cacheKey, response: response.body);
+
         return Right(AccountModels.fromJson(json.decode(response.body)));
       }
 
@@ -115,7 +119,7 @@ class AccountRepositoryImpl implements AccountRepository {
           final bytes = await coverImage.readAsBytes();
           request.files.add(
             http.MultipartFile.fromBytes(
-              'cover',
+              'coverImage',
               bytes,
               filename: coverImage.name,
             ),
@@ -124,7 +128,7 @@ class AccountRepositoryImpl implements AccountRepository {
           // Native: Use file path
           request.files.add(
             await http.MultipartFile.fromPath(
-              'cover',
+              'coverImage',
               coverImage.path, // Use .path here
             ),
           );

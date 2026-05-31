@@ -1,19 +1,16 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import '../../features/account_fetures/data/models/account_models.dart';
 import '../../features/home_fetures/presentation/utils/utils.dart';
+import '../constant/constant.dart';
+import '../constant/enum.dart';
 
 class AccountCard extends StatelessWidget {
-  final dynamic onTap;
-  final String name, username;
-  final String? profilePicture;
-  const AccountCard({
-    super.key,
-    required this.name,
-    required this.username,
-    required this.profilePicture,
-    required this.onTap,
-  });
+  final AccountModels account;
+  final VoidCallback? onTap;
+
+  const AccountCard({super.key, required this.account, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -24,64 +21,48 @@ class AccountCard extends StatelessWidget {
           horizontal: 40,
         ).copyWith(top: 30, right: 0),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            FutureBuilder(
+            FutureBuilder<bool>(
               future: Utils.isOnlineMethod(),
               builder: (context, snapshot) {
-                bool isOnline = snapshot.data ?? false;
+                final isOnline = snapshot.data ?? false;
 
-                if (isOnline == true && profilePicture != null) {
+                if (isOnline) {
                   return SizedBox(
                     height: 70,
                     width: 70,
                     child: ClipOval(
                       child: Image.network(
-                        profilePicture!,
+                        account.imageUrl!,
                         fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const SizedBox();
+                        errorBuilder: (_, __, ___) {
+                          return const CircleAvatar(radius: 35);
                         },
                       ),
                     ),
                   );
                 }
-                {
-                  return const CircleAvatar(
-                    radius: 35,
-                    backgroundColor: Colors.red,
-                  );
-                }
+
+                return const CircleAvatar(radius: 35);
               },
             ),
+
             const SizedBox(width: 10),
-            FittedBox(
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.55,
-                // color: Colors.red,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      name,
-                      maxLines: 2,
-                      textScaleFactor: 1.3,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontFamily: 'Open Sans',
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w600,
-                        height: 1.3,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      username,
-                      style: const TextStyle(fontSize: 16, color: Colors.black),
-                    ),
-                  ],
-                ),
+
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    account.name ?? '',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text("@${account.username ?? ''}"),
+                ],
               ),
             ),
           ],

@@ -1,4 +1,5 @@
 //***********************   MiniAccountInfo*******************/
+import 'package:classmate/core/constant/enum.dart';
 import 'package:flutter/material.dart';
 
 import '../../features/account_fetures/data/models/account_models.dart';
@@ -40,11 +41,11 @@ class MiniAccountInfo extends StatelessWidget {
                   builder: (context, snapshot) {
                     final bool isOnline = snapshot.data ?? false;
 
-                    if (isOnline && accountData?.image != null) {
+                    if (isOnline) {
                       return CircleAvatar(
                         radius: 25,
                         backgroundColor: Colors.red,
-                        backgroundImage: NetworkImage(accountData!.image!),
+                        backgroundImage: NetworkImage(accountData!.imageUrl!),
                       );
                     }
                     {

@@ -10,6 +10,8 @@ abstract class Const {
   //home wifi
   ///static String BASE_URl = "http://192.168.31.229:4000";
   static String BASE_URl = "https://api.classmaster.top";
+  static String AWS_BASE_URL =
+      "${Const.BASE_URl}/storage/storageforclassmaster/";
   // render sojobe7394@telvetto.com. 13 jan 2024
   //static String BASE_URl = "https://classmaster-tu2c.onrender.com";
   //static String BASE_URl = "https://noticeapp-ifsc.onrender.com";
