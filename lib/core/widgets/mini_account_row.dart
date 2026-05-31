@@ -41,19 +41,18 @@ class MiniAccountInfo extends StatelessWidget {
                   builder: (context, snapshot) {
                     final bool isOnline = snapshot.data ?? false;
 
-                    if (isOnline) {
+                    if (isOnline && accountData?.imageUrl != null && accountData!.imageUrl!.isNotEmpty) {
                       return CircleAvatar(
                         radius: 25,
-                        backgroundColor: Colors.red,
+                        backgroundColor: Colors.grey[200],
                         backgroundImage: NetworkImage(accountData!.imageUrl!),
                       );
                     }
-                    {
-                      return const CircleAvatar(
-                        radius: 25,
-                        backgroundColor: Colors.red,
-                      );
-                    }
+                    return const CircleAvatar(
+                      radius: 25,
+                      backgroundColor: Colors.black12,
+                      child: Icon(Icons.person, color: Colors.grey),
+                    );
                   },
                 ),
                 const SizedBox(width: 10),

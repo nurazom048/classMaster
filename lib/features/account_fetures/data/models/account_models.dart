@@ -75,7 +75,7 @@ class AccountModels {
     }
 
     // AWS stored image → build full URL
-    if (imageStorageProvider == ImageStorageProvider.aws) {
+    if (imageStorageProvider == ImageStorageProvider.aws || !image!.startsWith('http')) {
       return "${Const.AWS_BASE_URL}$image";
     }
 
