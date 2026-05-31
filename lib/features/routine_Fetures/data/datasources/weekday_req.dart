@@ -4,7 +4,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 import '../../../../core/export_core.dart';
 import '../../../../core/local data/local_data.dart';
-import '../models/weekday_list.dart';
+import '../models/weekday_list_models.dart';
 import '../../presentation/utils/popup.dart';
 
 final weekdayReqProvider = Provider<WeekdayRequest>((ref) => WeekdayRequest());
@@ -65,10 +65,12 @@ class WeekdayRequest {
     }
   }
 
-// delete weekday
+  // delete weekday
 
   static Future<Either<Message, WeekdayList>> deleteWeekday(
-      String id, String classID) async {
+    String id,
+    String classID,
+  ) async {
     final headers = await LocalData.getHeader();
 
     try {
@@ -78,8 +80,9 @@ class WeekdayRequest {
       );
 
       if (response.statusCode == 200) {
-        WeekdayList weekdayList =
-            WeekdayList.fromJson(jsonDecode(response.body));
+        WeekdayList weekdayList = WeekdayList.fromJson(
+          jsonDecode(response.body),
+        );
 
         return right(weekdayList);
       } else {

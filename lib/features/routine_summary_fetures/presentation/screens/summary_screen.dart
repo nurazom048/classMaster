@@ -1,6 +1,6 @@
 // ignore_for_file: avoid_print, library_prefixes
 
-import 'package:classmate/features/routine_summary_fetures/presentation/screens/add_summary.dart';
+import 'package:classmate/features/routine_summary_fetures/presentation/screens/add_summary_screen.dart';
 import 'package:classmate/features/routine_summary_fetures/presentation/socket%20services/socketCon.dart';
 import 'package:classmate/features/routine_summary_fetures/presentation/widgets/static_widgets/chats.dribles%20.dart';
 import 'package:flutter/cupertino.dart';

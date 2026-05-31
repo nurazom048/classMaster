@@ -2,12 +2,13 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import '../../data/models/search_routine.dart';
+import '../../../routine_Fetures/data/models/routine_model.dart';
+import '../../data/models/search_routine_model.dart';
 import '../../../../features/search_fetures/data/datasources/search_requests.dart';
 
 final searchRutineController = StateNotifierProvider.family<
   SearchRutineController,
-  AsyncValue<RoutineQuery>,
+  AsyncValue<SearchRoutinesModel>,
   String
 >(
   (ref, searchString) => SearchRutineController(
@@ -18,7 +19,8 @@ final searchRutineController = StateNotifierProvider.family<
 );
 
 // Define the SearchRutineController class
-class SearchRutineController extends StateNotifier<AsyncValue<RoutineQuery>> {
+class SearchRutineController
+    extends StateNotifier<AsyncValue<SearchRoutinesModel>> {
   final Ref ref;
   final String searchString;
   final SearchRequests search;
@@ -30,7 +32,7 @@ class SearchRutineController extends StateNotifier<AsyncValue<RoutineQuery>> {
 
   Future<void> getItems() async {
     try {
-      final RoutineQuery data = await search.searchRoutine(searchString);
+      final SearchRoutinesModel data = await search.searchRoutine(searchString);
       if (!mounted) return;
       state = AsyncValue.data(data);
     } catch (err, stack) {
@@ -47,7 +49,7 @@ class SearchRutineController extends StateNotifier<AsyncValue<RoutineQuery>> {
       } else {
         print('Call for loading more data: $page / ${state.value!.totalPages}');
 
-        final RoutineQuery newData = await search.searchRoutine(
+        final SearchRoutinesModel newData = await search.searchRoutine(
           searchString,
           page: page + 1,
         );

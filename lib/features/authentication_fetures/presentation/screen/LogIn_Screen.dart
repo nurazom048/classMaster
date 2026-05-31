@@ -13,6 +13,7 @@ import '../../../../core/widgets/appWidget/app_text.dart';
 import '../../../../core/widgets/heder/heder_title.dart';
 
 import '../../../../route/route_constant.dart';
+import '../../data/services/credential_save_service.dart';
 import '../../domain/providers/auth_controller.dart';
 import '../../domain/providers/google_auth_controller.dart';
 
@@ -48,6 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
+    _loadSavedCredentials();
     if (widget.emailAddress != null) {
       if (widget.usernameAddress == null) {
         byUsername = false;
@@ -55,12 +57,29 @@ class _LoginScreenState extends State<LoginScreen> {
       emailController.text = widget.emailAddress!;
     }
     if (widget.usernameAddress != null) {
-      emailController.text = widget.usernameAddress!;
+      usernameController.text = widget.usernameAddress!;
     }
     if (widget.passwordAddress != null) {
       _passwordController.text = widget.passwordAddress!;
     }
     super.initState();
+  }
+
+  Future<void> _loadSavedCredentials() async {
+    final credentials = await CredentialSaveService.getSavedCredentials();
+    if (credentials['username'] != null) {
+      setState(() {
+        byUsername = true;
+        usernameController.text = credentials['username']!;
+        _passwordController.text = credentials['password'] ?? '';
+      });
+    } else if (credentials['email'] != null) {
+      setState(() {
+        byUsername = false;
+        emailController.text = credentials['email']!;
+        _passwordController.text = credentials['password'] ?? '';
+      });
+    }
   }
 
   @override

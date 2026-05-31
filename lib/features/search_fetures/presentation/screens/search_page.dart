@@ -89,7 +89,7 @@ class _SearchPageState extends State<SearchPage> {
                         ),
                         child: CustomTabBar(
                           // margin: const EdgeInsets.only(bottom: 20),
-                          tabItems: const ['Account', 'Rutins'],
+                          tabItems: const ['Account', 'Routine'],
                           selectedIndex: ref.watch(searchPageIndexProvider),
                           onTabSelected: (index) {
                             pageController.jumpToPage(index);
@@ -115,7 +115,7 @@ class _SearchPageState extends State<SearchPage> {
                     .watch(searchPageIndexProvider.notifier)
                     .update((state) => index);
               },
-              children: [AccountSearchScreen(), SearchRutineScreen()],
+              children: [AccountSearchScreen(), SearchRoutineScreen()],
             ),
           ),
         );

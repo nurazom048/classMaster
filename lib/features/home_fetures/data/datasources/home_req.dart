@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import '../../../../core/constant/constant.dart';
 import '../../../../core/local data/local_data.dart';
 import '../../../../core/models/message_model.dart';
-import '../../../routine_Fetures/data/models/save_routine.dart';
+import '../../../routine_Fetures/data/models/saved_routines_model.dart';
 import '../../presentation/utils/utils.dart';
 import '../models/home_routines_model.dart';
 
@@ -22,7 +22,7 @@ class HomeReq {
   //************************************************************************************/
   //---------------------- saveRoutines Api Request  -----------------------------------/
   //************************************************************************************/
-  Future<SaveRutileResponse> saveRoutines({pages}) async {
+  Future<SavedRoutinesModel> saveRoutines({pages}) async {
     String queryPage = "?page=$pages}";
     String? username = "";
     final headers = await LocalData.getHeader();
@@ -40,7 +40,7 @@ class HomeReq {
         var res = json.decode(response.body);
         print(res);
 
-        return SaveRutileResponse.fromJson(res);
+        return SavedRoutinesModel.fromJson(res);
       } else {
         throw "Failed to load saved routines";
       }

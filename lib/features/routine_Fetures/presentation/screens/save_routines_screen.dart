@@ -61,16 +61,16 @@ class _SaveRoutinesScreenState extends ConsumerState<SaveRoutinesScreen> {
                       }
 
                       saveRoutinesScrolled.addListener(scrollListener);
-                      return data.savedRoutines.isEmpty
+                      return data.routines.isEmpty
                           ? const ErrorScreen(error: 'No Save Routines')
                           : ListView.builder(
                             shrinkWrap: true,
-                            itemCount: data.savedRoutines.length,
+                            itemCount: data.routines.length,
                             controller: saveRoutinesScrolled,
                             // physics: const NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
-                              final id = data.savedRoutines[index].id;
-                              final name = data.savedRoutines[index].name;
+                              final id = data.routines[index].id;
+                              final name = data.routines[index].routineName;
                               return RoutineBoxById(
                                 routineId: id,
                                 routineName: name,

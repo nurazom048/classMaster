@@ -12,11 +12,6 @@ abstract class Const {
   static String BASE_URl = "https://api.classmaster.top";
   static String AWS_BASE_URL =
       "${Const.BASE_URl}/storage/storageforclassmaster/";
-  // render sojobe7394@telvetto.com. 13 jan 2024
-  //static String BASE_URl = "https://classmaster-tu2c.onrender.com";
-  //static String BASE_URl = "https://noticeapp-ifsc.onrender.com";
-
-  // static String BASE_URl = "http://192.168.0.125:3000";
 
   //  image
 

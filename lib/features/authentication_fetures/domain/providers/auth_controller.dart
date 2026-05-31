@@ -20,6 +20,7 @@ import '../../../home_fetures/presentation/utils/utils.dart';
 import '../../../welcome_splash/presentation/screen/pending_account.dart'
     show PendingScreen;
 import '../../data/datasources/auth_req.dart';
+import '../../data/services/credential_save_service.dart';
 import '../../presentation/screen/LogIn_Screen.dart';
 
 final authController_provider =
@@ -141,11 +142,20 @@ class AuthController extends StateNotifier<bool> {
             return Alert.errorAlertDialog(context, error.message);
           }
         },
-        (data) {
+        (data) async {
           state = false;
+
+          final isUsername = email == null || email == '';
+          await CredentialSaveService.saveCredentials(
+            context: context,
+            username: isUsername ? username : null,
+            email: !isUsername ? email : null,
+            password: password,
+            isUsername: isUsername,
+          );
+
           // land to the Home screen
           GoRouter.of(context).pushNamed(RouteConst.home);
-          Alert.showSnackBar(context, data);
           Alert.showSnackBar(context, data);
         },
       );
@@ -167,10 +177,6 @@ class AuthController extends StateNotifier<bool> {
         // Remove token and navigate to the login screen
         final prefs = await SharedPreferences.getInstance();
         prefs.remove('Token');
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
-        );
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const LoginScreen()),
@@ -227,24 +233,25 @@ class AuthController extends StateNotifier<bool> {
       "Are You Sure To logout?",
       onConfirm: (isConfirmed) async {
         if (isConfirmed) {
-          // Dismiss the dialog immediately before async operations
-          Navigator.of(context).pop();
+          // 1. Close only the dialog without destroying the main screen's navigation stack
+          Navigator.of(context, rootNavigator: true).pop();
 
           try {
-            // Sign out from Firebase if user exists
+            // 2. Sign out from Firebase if user session exists
             final user = FirebaseAuth.instance.currentUser;
             if (user != null) {
               await FirebaseAuth.instance.signOut();
             }
 
-            // Clear local data and PDF cache
+            // 3. Clear all stored local data and PDF cache
             await LocalData.emptyLocal();
             await PdfUtils.clearPdfCache();
 
-            // Ensure context is still valid before navigating
-            if (!context.mounted) return;
+            // 4. Give GoRouter a moment for the dialog animation to finish closing (Prevents race conditions)
+            await Future.delayed(const Duration(milliseconds: 100));
 
-            // Replace navigation stack to login screen
+            // 5. Check if the context is still mounted, then navigate to the login screen
+            if (!context.mounted) return;
             GoRouter.of(context).goNamed(RouteConst.login);
           } catch (e) {
             print('Logout error: $e');

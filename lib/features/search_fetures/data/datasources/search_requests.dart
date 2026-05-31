@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constant/constant.dart';
-import '../models/search_routine.dart';
+import '../models/search_routine_model.dart';
 import '../models/search_account.dart';
 import 'package:http/http.dart' as http;
 
@@ -17,11 +17,11 @@ final searchControllersProvider = Provider<SearchRequests>(
 
 //
 class SearchRequests {
-  //! Rutine Search
+  //! Routine Search
   //.... Routine Search .....///
-  Future<RoutineQuery> searchRoutine(String? valu, {int? page}) async {
+  Future<SearchRoutinesModel> searchRoutine(String? value, {int? page}) async {
     final String pages = page == null ? '' : '&page=$page';
-    var url = Uri.parse('${Const.BASE_URl}/routine/search?src=$valu$pages');
+    var url = Uri.parse('${Const.BASE_URl}/routine/search?src=$value$pages');
     final bool isOnline = await Utils.isOnlineMethod();
 
     try {
@@ -30,7 +30,7 @@ class SearchRequests {
       print(res);
 
       if (response.statusCode == 200) {
-        return RoutineQuery.fromJson(res);
+        return SearchRoutinesModel.fromJson(res);
       } else if (isOnline == false) {
         throw Future.error("No Internet Connection");
       } else {
@@ -46,9 +46,9 @@ class SearchRequests {
 
   //********* searchAccount   ************ *//
 
-  Future<AccountsResponse> searchAccount(String valu, {int? page}) async {
+  Future<AccountsResponse> searchAccount(String value, {int? page}) async {
     final String pages = page == null ? '' : '&page=$page';
-    var url = Uri.parse('${Const.BASE_URl}/account/find?q=$valu$pages');
+    var url = Uri.parse('${Const.BASE_URl}/account/find?q=$value$pages');
     final bool isOnline = await Utils.isOnlineMethod();
 
     try {

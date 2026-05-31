@@ -8,7 +8,7 @@ import 'package:classmate/features/routine_summary_fetures/data/datasources/summ
 import 'package:image_picker/image_picker.dart';
 import '../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../core/models/message_model.dart';
-import '../screens/add_summary.dart';
+import '../screens/add_summary_screen.dart';
 
 // providers
 final summaryControllerProvider = StateNotifierProvider.autoDispose

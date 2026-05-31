@@ -1,16 +1,20 @@
 class ClassNotificationResponse {
-  List<Weekday> allClassForNotification;
+  List<WeekdayForNotificationModel> allClassForNotification;
 
   ClassNotificationResponse({required this.allClassForNotification});
 
   factory ClassNotificationResponse.fromJson(Map<String, dynamic> json) =>
       ClassNotificationResponse(
-        allClassForNotification: List<Weekday>.from(
-            json["allClassForNotification"].map((x) => Weekday.fromJson(x))),
+        allClassForNotification: List<WeekdayForNotificationModel>.from(
+          json["allClassForNotification"].map(
+            (x) => WeekdayForNotificationModel.fromJson(x),
+          ),
+        ),
       );
 }
 
-class Weekday {
+// ignore: camel_case_types
+class WeekdayForNotificationModel {
   String id;
   String routineId;
   String classId;
@@ -22,7 +26,7 @@ class Weekday {
   DateTime updatedAt;
   ClassDetails classDetails;
 
-  Weekday({
+  WeekdayForNotificationModel({
     required this.id,
     required this.routineId,
     required this.classId,
@@ -35,7 +39,8 @@ class Weekday {
     required this.classDetails,
   });
 
-  factory Weekday.fromJson(Map<String, dynamic> json) => Weekday(
+  factory WeekdayForNotificationModel.fromJson(Map<String, dynamic> json) =>
+      WeekdayForNotificationModel(
         id: json["id"],
         routineId: json["routineId"],
         classId: json["classId"],
@@ -63,9 +68,9 @@ class ClassDetails {
   });
 
   factory ClassDetails.fromJson(Map<String, dynamic> json) => ClassDetails(
-        id: json["id"],
-        name: json["name"],
-        instructorName: json["instructorName"],
-        subjectCode: json["subjectCode"],
-      );
+    id: json["id"],
+    name: json["name"],
+    instructorName: json["instructorName"],
+    subjectCode: json["subjectCode"],
+  );
 }

@@ -12,127 +12,168 @@ import '../../presentation/utils/popup.dart';
 import '../models/class_model.dart';
 
 class ClassRequest {
-  //************************ Add Class Request ********************** */
+  // ==========================================================
+  // Add New Class
+  // ==========================================================
+  //
+  // Creates a new class inside a routine.
+  // After successful creation:
+  // 1. Refresh routine details provider
+  // 2. Show success message
+  // 3. Return newly created class id
+  //
   static Future<String> addClass(
     WidgetRef ref,
     String routineId,
     context,
-    ClassModel classModel,
+    ClasssModel classModel,
     DateTime startTime,
     DateTime endTime,
   ) async {
     try {
+      // Auth token + required request headers
       final headers = await LocalData.getHeader();
-      var url = Uri.parse('${Const.BASE_URl}/class/$routineId/addclass');
 
+      // API endpoint
+      final url = Uri.parse('${Const.BASE_URl}/class/$routineId/addclass');
+
+      // Send create class request
       final response = await http.post(
         url,
-        body: {
-          "name": classModel.className.toString(),
-          "instructorName": classModel.instructorName.toString(),
-          "room": classModel.roomNumber.toString(),
-          "subjectCode": classModel.subjectCode.toString(),
-          "startTime": endMaker(startTime.toIso8601String().toString()),
-          "endTime": endMaker(endTime.toIso8601String().toString()),
-          "weekday": classModel.weekday.toString(),
-        },
         headers: headers,
+        body: {
+          // Class information from model
+          ...classModel.toRequestBody(),
+
+          // Backend expects formatted datetime strings
+          "startTime": endMaker(startTime.toIso8601String()),
+          "endTime": endMaker(endTime.toIso8601String()),
+        },
       );
 
-      // print("  RES ..${json.decode(response.body)}");
-
+      // Class created successfully
       if (response.statusCode == 201) {
         final res = json.decode(response.body);
-        ref.refresh(routineDetailsProvider(routineId));
-        print("class created successfully ${res["class"]['id']}");
-        Alert.showSnackBar(context, 'class add successfully');
-        return res["class"]['id'];
-      } else {
-        var message = json.decode(response.body)["message"];
 
-        Alert.errorAlertDialog(context, message);
+        // Reload routine details so UI updates instantly
+        ref.refresh(routineDetailsProvider(routineId));
+
+        Alert.showSnackBar(context, 'Class added successfully');
+
+        return res["class"]["id"];
       }
+
+      // Backend validation / business logic error
+      final message = json.decode(response.body)["message"];
+      Alert.errorAlertDialog(context, message);
     } catch (e) {
-      print("from server");
-      print(e);
+      // Keep only error logs for debugging
+      print("Add Class Error: $e");
+
       Alert.handleError(context, e);
       return 'Failed to add $e';
     }
+
     return 'Failed to add';
   }
-  //************************* Edit Class Request ************************ */
 
-  Future<void> editClass(context, WidgetRef ref, String classId, routineId,
-      DateTime startTime, DateTime endTime, ClassModelUpdate classModel) async {
-    // Obtain shared preferences.
-    final Map<String, String> headers = await LocalData.getHeader();
-
+  // ==========================================================
+  // Edit Existing Class
+  // ==========================================================
+  //
+  // Updates class information.
+  // After successful update:
+  // 1. Refresh routine details
+  // 2. Show success message
+  // 3. Close edit screen
+  //
+  Future<void> editClass(
+    context,
+    WidgetRef ref,
+    String classId,
+    String routineId,
+    DateTime startTime,
+    DateTime endTime,
+    ClasssModel classModel,
+  ) async {
     try {
+      // Auth token + request headers
+      final headers = await LocalData.getHeader();
+
+      // Send update request
       final response = await http.post(
         Uri.parse('${Const.BASE_URl}/class/edit/$classId'),
         headers: headers,
-        body: {
-          "name": classModel.className.toString(),
-          "subjectCode": classModel.subjectCode.toString(),
-          "instructorName": classModel.instructorName.toString(),
-        },
+        body: classModel.toRequestBody(),
       );
 
-      final res = json.decode(response.body);
-      print(res);
+      final responseBody = json.decode(response.body);
 
+      // Update successful
       if (response.statusCode == 200) {
         await LocalData.setHerder(response);
-        Message message =
-            Message(message: json.decode(response.body)["message"]);
+
+        // Refresh routine details to get latest class data
         ref.refresh(routineDetailsProvider(routineId));
 
-        print("Routine created successfully");
-        Alert.showSnackBar(context, message.message);
+        Alert.showSnackBar(context, responseBody["message"]);
+
+        // Close edit page
         Navigator.pop(context);
 
-        print(res);
-      } else {
-        Message message =
-            Message(message: json.decode(response.body)["message"]);
-        Alert.showSnackBar(context, message.message);
+        return;
       }
+
+      // Validation / business error
+      Alert.showSnackBar(context, responseBody["message"]);
     } catch (e) {
+      print("Edit Class Error: $e");
+
       Alert.handleError(context, e.toString());
     }
   }
 
-  //************************* delete Class ************************ */
-
+  // ==========================================================
+  // Delete Class
+  // ==========================================================
+  //
+  // Removes a class permanently.
+  // After successful deletion:
+  // 1. Refresh routine details
+  // 2. Show success message
+  //
   static Future<void> removeClass(
     context,
     WidgetRef ref,
     String classId,
     String routineId,
   ) async {
-    // Obtain shared preferences.
-    Uri uri = Uri.parse('${Const.BASE_URl}/class/remove/$classId');
-    final Map<String, String> headers = await LocalData.getHeader();
-
     try {
+      // Auth token + request headers
+      final headers = await LocalData.getHeader();
+
+      // API endpoint
+      final uri = Uri.parse('${Const.BASE_URl}/class/remove/$classId');
+
+      // Send delete request
       final response = await http.delete(uri, headers: headers);
 
-      final res = json.decode(response.body);
-      print(res);
-
+      // Delete successful
       if (response.statusCode == 200) {
         await LocalData.setHerder(response);
 
-        print("Class Deleted successfully $res ");
-        Alert.showSnackBar(context, 'Class Deleted successfully');
+        // Refresh routine details to remove deleted class from UI
         ref.refresh(routineDetailsProvider(routineId));
 
-        print(res);
-      } else {
-        Alert.handleError(context, json.decode(response.body));
+        Alert.showSnackBar(context, 'Class deleted successfully');
+
+        return;
       }
+
+      Alert.handleError(context, json.decode(response.body));
     } catch (e) {
-      print(e);
+      print("Delete Class Error: $e");
+
       Alert.handleError(context, e.toString());
     }
   }

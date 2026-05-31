@@ -1,19 +1,20 @@
-import 'package:classmate/features/routine_Fetures/data/models/save_routine.dart';
+import 'package:classmate/features/routine_Fetures/data/models/routine_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:classmate/features/search_fetures/data/models/search_routine.dart';
+import 'package:classmate/features/search_fetures/data/models/search_routine_model.dart';
 import '../../../home_fetures/data/datasources/home_req.dart';
+import '../../data/models/saved_routines_model.dart';
 
 final saveRoutineProvider = StateNotifierProvider.autoDispose<
-  SaveRoutineController,
-  AsyncValue<SaveRutileResponse>
+  SavedRoutineController,
+  AsyncValue<SavedRoutinesModel>
 >((ref) {
-  return SaveRoutineController(ref.read(home_req_provider));
+  return SavedRoutineController(ref.read(home_req_provider));
 });
 
-class SaveRoutineController
-    extends StateNotifier<AsyncValue<SaveRutileResponse>> {
+class SavedRoutineController
+    extends StateNotifier<AsyncValue<SavedRoutinesModel>> {
   HomeReq homeReq;
-  SaveRoutineController(this.homeReq) : super(const AsyncLoading()) {
+  SavedRoutineController(this.homeReq) : super(const AsyncLoading()) {
     _init();
   }
 
@@ -34,7 +35,7 @@ class SaveRoutineController
     try {
       if (page == state.value!.totalPages) {
       } else {
-        final SaveRutileResponse newData = await homeReq.saveRoutines(
+        final SavedRoutinesModel newData = await homeReq.saveRoutines(
           pages: page + 1,
         );
 
@@ -44,10 +45,10 @@ class SaveRoutineController
           if (newData.currentPage <= totalPages) {
             // Add new routines to the existing list and update the page number
             List<Routine> routines =
-                state.value!.savedRoutines..addAll(newData.savedRoutines);
+                state.value!.routines..addAll(newData.routines);
             state = AsyncData(
               state.value!.copyWith(
-                savedRoutines: routines,
+                routines: routines,
                 currentPage: newData.currentPage,
               ),
             );

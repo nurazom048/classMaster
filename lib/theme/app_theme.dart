@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'light_theme.dart'; // Import the defined light theme
 import 'dark_theme.dart'; // Import the defined dark theme
 
@@ -12,14 +13,18 @@ const _themeModeKey = 'themeMode';
 class ThemeNotifier extends AsyncNotifier<ThemeModeOption> {
   @override
   Future<ThemeModeOption> build() async {
-    final box = await Hive.openBox('settings');
-    final themeIndex = box.get(_themeModeKey) as int?;
-    if (themeIndex != null &&
-        themeIndex >= 0 &&
-        themeIndex < ThemeModeOption.values.length) {
-      return ThemeModeOption.values[themeIndex];
+    // SharedPreferences বা লোকাল স্টোরেজ থেকে সেভ করা থিম রিড করার লজিক
+    final prefs = await SharedPreferences.getInstance();
+    final savedTheme = prefs.getString('theme_mode');
+
+    if (savedTheme == 'dark') {
+      return ThemeModeOption.dark;
+    } else if (savedTheme == 'system') {
+      return ThemeModeOption.system;
     }
-    return ThemeModeOption.system;
+
+    // যদি আগে থেকে কোনো থিম সেভ করা না থাকে, তবে ডিফল্ট হিসেবে Light রিটার্ন করবে
+    return ThemeModeOption.light;
   }
 
   Future<void> setThemeMode(ThemeModeOption mode) async {

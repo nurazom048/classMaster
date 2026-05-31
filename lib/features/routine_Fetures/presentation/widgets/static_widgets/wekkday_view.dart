@@ -7,34 +7,41 @@ import 'package:classmate/features/routine_Fetures/data/models/find_class_model.
 import '../../../../../core/constant/app_color.dart';
 import '../../../../../core/widgets/appWidget/app_text.dart';
 import '../../../../../core/widgets/appWidget/dotted_divider.dart';
+import '../../../data/models/weekday_model.dart';
 
 class WeekdayView extends ConsumerWidget {
   final Weekday weekday;
   final dynamic onTap;
   final dynamic showDeleteButton;
 
-  WeekdayView({
+  const WeekdayView({
     super.key,
     required this.weekday,
     required this.onTap,
     required this.showDeleteButton,
   });
 
-  final List<String> sevendays = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
+  // map of short day names to full day names
+  final Map<String, String> fullDayNames = const {
+    "sun": "Sunday",
+    "mon": "Monday",
+    "tue": "Tuesday",
+    "wed": "Wednesday",
+    "thu": "Thursday",
+    "fri": "Friday",
+    "sat": "Saturday",
+  };
+
+  // function to get full day name from short name
+  String _getFullDayName(String? shortName) {
+    if (shortName == null || shortName.isEmpty) return "Unknown Day";
+    return fullDayNames[shortName.toLowerCase()] ?? shortName;
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Size size = MediaQuery.of(context).size;
 
-    //total priode
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
@@ -43,10 +50,14 @@ class WeekdayView extends ConsumerWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: ExpansionTile(
-        // title: Text(sevendays[weekday].,
+        // here will show the full day name instead of short name
         title: Text(
-          'todo',
-          style: TextStyle(fontSize: 18, color: AppColor.nokiaBlue),
+          _getFullDayName(weekday.weekday),
+          style: TextStyle(
+            fontSize: 18,
+            color: AppColor.nokiaBlue,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         trailing:
             showDeleteButton == true
@@ -73,8 +84,6 @@ class WeekdayView extends ConsumerWidget {
                     time: weekday.startTime,
                     show: true,
                     onTap: () {},
-                    // _selectStartTime(
-                    //     _scaffoldKey.currentContext ?? context);
                   ),
                   SelectTime(
                     width: size.width * 0.40,
@@ -82,9 +91,6 @@ class WeekdayView extends ConsumerWidget {
                     time: weekday.endTime,
                     show: true,
                     onTap: () {},
-
-                    //  => _selectEndTime(
-                    //     _scaffoldKey.currentContext ?? context),
                   ),
                 ],
               ),

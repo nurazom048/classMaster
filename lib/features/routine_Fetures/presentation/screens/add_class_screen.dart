@@ -249,8 +249,10 @@ class _AddClassScreenState extends State<AddClassScreen> {
         widget.routineId,
         startTime,
         endTime,
-        ClassModelUpdate(
-          className: _classNameController.text,
+        ClasssModel(
+          id: '',
+          routineId: widget.routineId,
+          name: _classNameController.text,
           instructorName: _instructorController.text,
           roomNumber: _roomController.text,
           subjectCode: _subCodeController.text,
@@ -260,18 +262,18 @@ class _AddClassScreenState extends State<AddClassScreen> {
       if (_selectedDay == null) {
         Alert.errorAlertDialog(context, 'Select day');
       } else {
-        String? newclassID = await ClassRequest.addClass(
+        String? newClassID = await ClassRequest.addClass(
           ref,
           widget.routineId,
           context,
-          ClassModel(
-            className: _classNameController.text,
+          ClasssModel(
+            id: '',
+            routineId: widget.routineId,
+            name: _classNameController.text,
             instructorName: _instructorController.text,
             roomNumber: _roomController.text,
             subjectCode: _subCodeController.text,
             weekday: _selectedDay!,
-            startTime: startTime,
-            endTime: endTime,
           ),
           endTime,
           startTime,
@@ -296,7 +298,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                 ),
                 child: AddClassScreen(
                   routineId: widget.routineId,
-                  classId: newclassID,
+                  classId: newClassID,
                   isUpdate: true,
                 ),
               );
@@ -315,10 +317,11 @@ class _AddClassScreenState extends State<AddClassScreen> {
 
       if (response.statusCode == 200) {
         FindClass foundClass = FindClass.fromJson(json.decode(response.body));
+
         setState(() {
           _classNameController.text = foundClass.classes.name;
-          _instructorController.text = foundClass.classes.instuctorName;
-          _subCodeController.text = foundClass.classes.subjectcode;
+          _instructorController.text = foundClass.classes.instructorName;
+          _subCodeController.text = foundClass.classes.subjectCode;
         });
       } else {
         throw Exception('Failed to load data');

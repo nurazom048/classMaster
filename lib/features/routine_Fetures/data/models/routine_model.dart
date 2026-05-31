@@ -1,73 +1,52 @@
+import '../../../account_fetures/data/models/account_models.dart';
+
 class Routine {
+  String id;
+  String routineName;
+  String ownerAccountId;
+
+  RoutineOwner routineOwner;
+
   Routine({
     required this.id,
-    required this.name,
-    required this.owner,
+    required this.routineName,
+    required this.ownerAccountId,
+
+    required this.routineOwner,
   });
 
-  String id;
-  String name;
-  Owner owner;
-
-  factory Routine.fromJson(
-    String id,
-    String name,
-    Owner owner,
-  ) =>
-      Routine(
-        id: id,
-        name: name,
-        owner: owner,
-      );
-
-  Routine copyWith({
-    String? id,
-    String? name,
-    Owner? owner,
-  }) {
-    return Routine(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      owner: owner ?? this.owner,
-    );
-  }
-}
-
-class Owner {
-  Owner({
-    required this.id,
-    required this.username,
-    this.name,
-    this.image,
-  });
-
-  String id;
-  String username;
-  String? name;
-  String? image;
-
-  factory Owner.fromJson(Map<String, dynamic> json) => Owner(
-      id: json["_id"],
-      username: json["username"],
-      name: json['name'],
-      image: json['image']);
-
+  factory Routine.fromJson(Map<String, dynamic> json) => Routine(
+    id: json["id"],
+    routineName: json["routineName"],
+    ownerAccountId: json["ownerAccountId"],
+    routineOwner: RoutineOwner.fromJson(json["routineOwner"]),
+  );
   Map<String, dynamic> toJson() => {
-        "_id": id,
-        "username": username,
-      };
-
-  Owner copyWith({
-    String? id,
-    String? username,
-    String? name,
-    String? image,
-  }) {
-    return Owner(
-      id: id ?? this.id,
-      username: username ?? this.username,
-      name: name ?? this.name,
-      image: image ?? this.image,
-    );
-  }
+    "id": id,
+    "routineName": routineName,
+    "ownerAccountId": ownerAccountId,
+  };
 }
+
+class RoutineOwner {
+  final String? id;
+  String name;
+  String username;
+  String image;
+
+  RoutineOwner({
+    this.id,
+    required this.name,
+    required this.username,
+    required this.image,
+  });
+
+  factory RoutineOwner.fromJson(Map<String, dynamic> json) => RoutineOwner(
+    id: json["id"],
+    name: json["name"],
+    username: json["username"],
+    image: json["image"],
+  );
+}
+
+//

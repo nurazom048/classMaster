@@ -11,8 +11,8 @@ import '../../../routine_Fetures/presentation/widgets/dynamic_widgets/routine_bo
 import '../../../routine_Fetures/presentation/widgets/dynamic_widgets/see_all_members_screen.dart';
 import '../providers/search_rutine_controllers.dart';
 
-class SearchRutineScreen extends ConsumerWidget {
-  SearchRutineScreen({super.key});
+class SearchRoutineScreen extends ConsumerWidget {
+  SearchRoutineScreen({super.key});
   final scrollController = ScrollController();
 
   @override
@@ -50,12 +50,12 @@ class SearchRutineScreen extends ConsumerWidget {
             itemBuilder: (context, index) {
               return RoutineBoxById(
                 margin: EdgeInsets.zero,
-                routineName: data.routines[index].name,
+                routineName: data.routines[index].routineName,
                 onTapMore:
                     () => RoutineDialog.CheckStatusUser_BottomSheet(
                       context,
                       routineID: data.routines[index].id,
-                      routineName: data.routines[index].name,
+                      routineName: data.routines[index].routineName,
                       routinesController: homeRoutinesNotifier,
                     ),
                 routineId: data.routines[index].id,

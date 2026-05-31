@@ -6,6 +6,7 @@ import 'package:classmate/features/routine_Fetures/presentation/utils/add_class_
 import 'package:classmate/features/routine_Fetures/presentation/widgets/static_widgets/select_priode_number.dart';
 
 import '../../../../../core/constant/app_color.dart';
+import '../../../data/models/weekday_model.dart';
 
 class ExpandWeekDay extends StatelessWidget {
   final Weekday? weekday;
