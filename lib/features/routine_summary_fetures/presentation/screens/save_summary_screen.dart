@@ -41,45 +41,45 @@ class _SaveSummeryScreenState extends ConsumerState<SaveSummeryScreen> {
             children: [
               HeaderTitle("Save Summary", context),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8).copyWith(top: 20),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                ).copyWith(top: 20),
                 child: allSummary.when(
                   data: (data) {
                     int lenght = data.summaries.length;
 
                     return data.summaries.isEmpty
                         ? const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 400),
-                            child: Center(
-                                child: ErrorScreen(error: 'No Saved summary')),
-                          )
+                          padding: EdgeInsets.symmetric(vertical: 400),
+                          child: Center(
+                            child: ErrorScreen(error: 'No Saved summary'),
+                          ),
+                        )
                         : Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: List.generate(
-                              lenght,
-                              (i) {
-                                void scrollListener() {
-                                  if (scrollController.position.pixels ==
-                                      scrollController
-                                          .position.maxScrollExtent) {
-                                    summaryNotifier.loadMore(
-                                        data.currentPage, data.totalCount);
-                                  }
-                                }
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: List.generate(lenght, (i) {
+                            void scrollListener() {
+                              if (scrollController.position.pixels ==
+                                  scrollController.position.maxScrollExtent) {
+                                summaryNotifier.loadMore(
+                                  data.currentPage,
+                                  data.totalCount,
+                                );
+                              }
+                            }
 
-                                scrollController.addListener(scrollListener);
-                                if (data.summaries.isEmpty) {
-                                  return const ErrorScreen(
-                                      error: "There is no Summary");
-                                }
-                                return ChatsDribbles(
-                                    summary: data.summaries[i]);
-                              },
-                            ),
-                          );
+                            scrollController.addListener(scrollListener);
+                            if (data.summaries.isEmpty) {
+                              return const ErrorScreen(
+                                error: "There is no Summary",
+                              );
+                            }
+                            return ChatsDribbles(summary: data.summaries[i]);
+                          }),
+                        );
                   },
-                  error: (error, stackTrace) =>
-                      Alert.handleError(context, error),
+                  error:
+                      (error, stackTrace) => Alert.handleError(context, error),
                   loading: () => Loaders.center(),
                 ),
               ),

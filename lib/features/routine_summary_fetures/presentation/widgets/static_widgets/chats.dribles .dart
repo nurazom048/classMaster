@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:classmate/features/routine_summary_fetures/presentation/widgets/static_widgets/view_images.dart';
 import 'package:expandable_text/expandable_text.dart';
+import '../../../../../core/constant/enum.dart';
 import '../../../../../core/export_core.dart';
 import '../../../../home_fetures/presentation/utils/utils.dart';
 import '../../../data/models/all_summary_models.dart';
@@ -14,12 +15,19 @@ import '../../providers/summary_status.controller.dart';
 import '../../screens/summary_screen.dart';
 
 class ChatsDribbles extends StatelessWidget {
-  final Summary summary;
+  final SummaryModel summary;
 
   const ChatsDribbles({super.key, required this.summary});
 
   @override
   Widget build(BuildContext context) {
+    // 🔍 DEBUG PRINT: Let's check what URLs this specific summary contains
+    print("----------------------------");
+    print("Summary ID: ${summary.id}");
+    print("Raw Image Links Count: ${summary.imageLinks?.length}");
+    print("Generated Full Image URLs: ${summary.fullImageLinks}");
+    print("----------------------------");
+
     return Container(
       constraints: const BoxConstraints(
         minHeight: 100,
@@ -40,7 +48,8 @@ class ChatsDribbles extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildOwnerInformation(context),
-            if (summary.imageLinks.isNotEmpty) _buildImageGallery(),
+            // 🔥 FIXED: Use fullImageLinks here instead of raw imageLinks
+            if (summary.fullImageLinks.isNotEmpty) _buildImageGallery(),
           ],
         ),
       ),
@@ -59,9 +68,9 @@ class ChatsDribbles extends StatelessWidget {
                   builder:
                       (context) => ViewImagesFullScreen(
                         images:
-                            summary.owner.image != null
-                                ? [summary.owner.image!]
-                                : [],
+                            summary.owner?.image != null
+                                ? [summary.owner!.image!]
+                                : [DEMO_PROFILE_IMAGE],
                       ),
                 ),
               ),
@@ -71,7 +80,7 @@ class ChatsDribbles extends StatelessWidget {
               radius: 23,
               backgroundColor: Colors.black,
               backgroundImage: NetworkImage(
-                summary.owner.image ?? DEMO_PROFILE_IMAGE,
+                summary.owner?.image ?? DEMO_PROFILE_IMAGE,
               ),
             ),
           ),
@@ -91,7 +100,7 @@ class ChatsDribbles extends StatelessWidget {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.60,
                         child: Text(
-                          summary.owner.name,
+                          summary.owner?.name ?? "Unknown",
                           textScaleFactor: 1.4,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -104,7 +113,9 @@ class ChatsDribbles extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        Utils.formatDate(summary.createdAt),
+                        summary.createdAt != null
+                            ? Utils.formatDate(summary.createdAt!)
+                            : "Unknown Date",
                         style: const TextStyle(
                           fontFamily: 'Inter',
                           fontWeight: FontWeight.w500,
@@ -118,8 +129,8 @@ class ChatsDribbles extends StatelessWidget {
                     onPressed:
                         () => showActionSheet(
                           context,
-                          summary.id,
-                          summary.classDetail.id,
+                          summary.id ?? '',
+                          summary.classId ?? '',
                         ),
                     icon: const Icon(Icons.more_vert),
                   ),
@@ -127,23 +138,8 @@ class ChatsDribbles extends StatelessWidget {
               ),
               const SizedBox(height: 3),
               const SizedBox(height: 2, width: 100, child: DotedDivider()),
-
-              //
               const SizedBox(height: 4),
-              expendedText(
-                context,
-                summary.text,
-                // textScaleFactor: 1.3,
-                // style: const TextStyle(
-                //   fontFamily: 'Inter',
-                //   fontWeight: FontWeight.w400,
-                //   fontSize: 14,
-                //   height: 1.43,
-                //   color: Colors.black,
-                //   ),
-                // maxLines: 3,
-                // overflow: TextOverflow.ellipsis,
-              ),
+              expendedText(context, summary.text ?? ''),
             ],
           ),
         ),
@@ -159,9 +155,14 @@ class ChatsDribbles extends StatelessWidget {
           constraints: const BoxConstraints(minHeight: 0, maxHeight: 100),
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: summary.imageLinks.length,
+            // 🔥 FIXED: Read lengths and URLs from fullImageLinks
+            itemCount: summary.fullImageLinks.length,
             itemBuilder: (context, index) {
-              final imageUrl = summary.imageLinks[index];
+              final imageUrl = summary.fullImageLinks[index];
+
+              // 🔍 DEBUG PRINT: Check final computed url passed to Image.network
+              debugPrint("Rendering Image.network with URL: -> '$imageUrl'");
+
               return InkWell(
                 onTap:
                     () => Navigator.push(
@@ -169,7 +170,7 @@ class ChatsDribbles extends StatelessWidget {
                       MaterialPageRoute(
                         builder:
                             (context) => ViewImagesFullScreen(
-                              images: summary.imageLinks,
+                              images: summary.fullImageLinks,
                               initialPage: index,
                             ),
                       ),
@@ -182,7 +183,23 @@ class ChatsDribbles extends StatelessWidget {
                     color: Colors.black12,
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Image.network(imageUrl),
+                  child: Image.network(
+                    imageUrl,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      // 🔍 PRINT ON RENDER FAILURE
+                      debugPrint(
+                        "❌ Failed to render image over Network Image Error: $error",
+                      );
+                      return const Center(
+                        child: Icon(Icons.broken_image, color: Colors.grey),
+                      );
+                    },
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return const Center(child: CupertinoActivityIndicator());
+                    },
+                  ),
                 ),
               );
             },
@@ -194,7 +211,6 @@ class ChatsDribbles extends StatelessWidget {
   }
 
   void showActionSheet(BuildContext context, String summaryID, String classID) {
-    // ignore: avoid_print
     print("SummaryId: $summaryID");
     final parentContext = context;
 
@@ -203,7 +219,6 @@ class ChatsDribbles extends StatelessWidget {
       builder:
           (BuildContext context) => Consumer(
             builder: (context, ref, _) {
-              //! Providers
               final statusProvider = ref.watch(
                 summaryStatusProvider(summaryID),
               );
@@ -219,7 +234,6 @@ class ChatsDribbles extends StatelessWidget {
                   'Do You Want To  ...? ',
                   style: TS.heading(fontSize: 19),
                 ),
-                // message: const Text('Select an action'),
                 actions: <Widget>[
                   statusProvider.when(
                     data: (data) {
@@ -291,103 +305,26 @@ class ChatsDribbles extends StatelessWidget {
                     loading: () => Loaders.center(height: 100),
                   ),
                 ],
-                cancelButton: CupertinoActionSheetAction(
-                  isDefaultAction: true,
-                  onPressed: () => Navigator.pop(parentContext),
-                  child: const Text('Close'),
-                ),
               );
             },
           ),
     );
   }
 
-  // void showActionSheet(BuildContext context, String summaryID, String classID) {
-  //   print("SummaryId: $summaryID");
-  //   final parentContext = context;
-
-  //   showModalBottomSheet(
-  //     context: parentContext,
-  //     builder: (BuildContext context) => Consumer(builder: (context, ref, _) {
-  //       //! Providers
-  //       final statusProvider = ref.watch(summaryStatusProvider(summaryID));
-
-  //       bool summarySaved = statusProvider.value?.isSummarySaved ?? false;
-  //       bool isCaptain = statusProvider.value?.isCaptain ?? false;
-  //       bool isOwner = statusProvider.value?.isOwner ?? false;
-  //       final statusNotifier =
-  //           ref.watch(summaryStatusProvider(summaryID).notifier);
-  //       final summaryNotifier =
-  //           ref.watch(summaryControllerProvider(classID).notifier);
-
-  //       return Container(
-  //         padding: const EdgeInsets.symmetric(vertical: 20),
-  //         child: Column(
-  //           mainAxisAlignment: MainAxisAlignment.end,
-  //           mainAxisSize: MainAxisSize.min,
-  //           // title:
-  //           // message: const Text('Select an action'),
-  //           children: <Widget>[
-  //             Row(
-  //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //               children: [
-  //                 if (isCaptain || isOwner)
-  //                   SquareButton(
-  //                     icon: Icons.delete,
-  //                     text: "Delete",
-  //                     color: Colors.red,
-  //                     ontap: () {
-  //                       Alert.errorAlertDialogCallBack(
-  //                         context,
-  //                         "Are you sure you want to delete this summary?",
-  //                         onConfirm: () {
-  //                           summaryNotifier.deleteSummary(
-  //                               parentContext, summaryID);
-  //                         },
-  //                       );
-  //                     },
-  //                   ),
-
-  //                 //********* */
-
-  //                 SquareButton(
-  //                   inActiveIcon: Icons.bookmark_added,
-  //                   icon: Icons.bookmark_add_sharp,
-  //                   text: 'Save',
-  //                   inActiveText: "add to save",
-  //                   status: summarySaved == true ? true : false,
-  //                   ontap: () {
-  //                     bool condition = summarySaved == true ? false : true;
-  //                     statusNotifier.unsavedSummary(
-  //                       parentContext,
-
-  //                       summaryID: summaryID,
-  //                       condition: condition,
-  //                     );
-  //                   },
-  //                 ),
-  //               ],
-  //             ),
-  //           ],
-  //         ),
-  //       );
-  //     }),
-  //   );
-}
-
-Widget expendedText(BuildContext context, String longText) {
-  return ExpandableText(
-    longText,
-    expandText: 'show more',
-    collapseText: 'show less',
-    maxLines: 3,
-    linkColor: Colors.blue,
-    style: const TextStyle(
-      fontFamily: 'Inter',
-      fontWeight: FontWeight.w400,
-      fontSize: 16,
-      height: 1.43,
-      color: Colors.black,
-    ),
-  );
+  Widget expendedText(BuildContext context, String longText) {
+    return ExpandableText(
+      longText,
+      expandText: 'show more',
+      collapseText: 'show less',
+      maxLines: 3,
+      linkColor: Colors.blue,
+      style: const TextStyle(
+        fontFamily: 'Inter',
+        fontWeight: FontWeight.w400,
+        fontSize: 16,
+        height: 1.43,
+        color: Colors.black,
+      ),
+    );
+  }
 }

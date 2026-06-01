@@ -7,4 +7,4 @@ class AccountTypeString {
   static const academy = 'academy';
 }
 
-enum ImageStorageProvider { firebase, aws, others }
+enum ImageStorageProvider { firebase, aws, others, minio }

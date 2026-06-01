@@ -75,8 +75,9 @@ class AccountModels {
     }
 
     // AWS stored image → build full URL
-    if (imageStorageProvider == ImageStorageProvider.aws || !image!.startsWith('http')) {
-      return "${Const.AWS_BASE_URL}$image";
+    if (imageStorageProvider == ImageStorageProvider.minio ||
+        !image!.startsWith('http')) {
+      return "${Const.MINIO_BASE_URL}$image";
     }
 
     // Firebase / External URL
@@ -91,8 +92,8 @@ class AccountModels {
     }
 
     // AWS stored image → build full URL
-    if (coverImageStorageProvider == ImageStorageProvider.aws) {
-      return "${Const.AWS_BASE_URL}$coverImage";
+    if (coverImageStorageProvider == ImageStorageProvider.minio) {
+      return "${Const.MINIO_BASE_URL}$coverImage";
     }
 
     // Firebase / External URL

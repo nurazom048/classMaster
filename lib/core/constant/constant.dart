@@ -10,7 +10,7 @@ abstract class Const {
   //home wifi
   ///static String BASE_URl = "http://192.168.31.229:4000";
   static String BASE_URl = "https://api.classmaster.top";
-  static String AWS_BASE_URL =
+  static String MINIO_BASE_URL =
       "${Const.BASE_URl}/storage/storageforclassmaster/";
 
   //  image

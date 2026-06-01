@@ -16,6 +16,7 @@ class ViewPDf extends StatefulWidget {
   const ViewPDf({super.key, required this.pdfLink});
 
   @override
+  // ignore: library_private_types_in_public_api
   _ViewPDfState createState() => _ViewPDfState();
 }
 
@@ -65,7 +66,7 @@ class _ViewPDfState extends State<ViewPDf> {
     final String fullUrl =
         widget.pdfLink.startsWith('http')
             ? widget.pdfLink
-            : "${Const.AWS_BASE_URL}${widget.pdfLink}";
+            : "${Const.MINIO_BASE_URL}${widget.pdfLink}";
 
     if (!kIsWeb) {
       bool hasCache = await checkLocalCache(fullUrl);
