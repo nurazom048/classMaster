@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/utils.dart';
 
-import '../../../../../../core/dialogs/alert_dialogs.dart';
+import 'package:classmate/core/dialogs/alert_dialogs.dart';
 
 import '../../../../../core/widgets/appWidget/app_text.dart';
 import '../../../../../core/widgets/appWidget/buttons/expended_button.dart';

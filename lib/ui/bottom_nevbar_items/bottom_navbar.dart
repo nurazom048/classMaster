@@ -1,6 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:classmate/core/local%20data/local_data.dart' show LocalData;
+import 'package:classmate/core/local_data/local_data.dart' show LocalData;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -14,7 +14,7 @@ import '../../core/widgets/bottom_sheet_shape.dart';
 import '../../features/notice_fetures/presentation/screens/add_notice_screen.dart';
 import '../../features/routine_Fetures/presentation/screens/create_new_routine.dart';
 import '../../features/routine_Fetures/presentation/widgets/static_widgets/dash_border_button.dart';
-import '../../features/Collection Fetures/Ui/collections.screen.dart';
+import '../../features/collection_fetures/Ui/collections.screen.dart';
 import '../../features/home_fetures/presentation/screens/home.screen.dart';
 import '../../core/widgets/widgets/bottom_bar_item_custom.dart';
 

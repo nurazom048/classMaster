@@ -1,6 +1,6 @@
-import 'package:classmate/features/Collection%20Fetures/Ui/setting_screen.dart';
-import 'package:classmate/features/authentication_fetures/presentation/screen/LogIn_Screen.dart';
-import 'package:classmate/features/authentication_fetures/presentation/screen/SignUp_Screen.dart';
+import 'package:classmate/features/collection_fetures/Ui/setting_screen.dart';
+import 'package:classmate/features/authentication_fetures/presentation/screen/login_screen.dart';
+import 'package:classmate/features/authentication_fetures/presentation/screen/signup_screen.dart';
 import 'package:classmate/features/authentication_fetures/presentation/screen/forgetpassword_screen.dart';
 import 'package:classmate/features/routine_Fetures/presentation/screens/add_class_screen.dart';
 import 'package:classmate/route/route_constant.dart';

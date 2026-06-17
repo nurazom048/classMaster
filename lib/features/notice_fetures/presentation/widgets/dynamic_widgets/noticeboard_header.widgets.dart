@@ -1,6 +1,6 @@
 // ignore_for_file: avoid_print
 
-import 'package:classmate/core/component/heder%20component/transition/right_to_left_transition.dart';
+import 'package:classmate/core/component/heder_component/transition/right_to_left_transition.dart';
 import 'package:classmate/core/widgets/my_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

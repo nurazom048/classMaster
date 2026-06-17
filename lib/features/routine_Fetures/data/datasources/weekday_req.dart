@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 import '../../../../core/export_core.dart';
-import '../../../../core/local data/local_data.dart';
+import '../../../../core/local_data/local_data.dart';
 import '../models/weekday_list_models.dart';
 import '../../presentation/utils/popup.dart';
 

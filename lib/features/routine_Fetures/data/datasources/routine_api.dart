@@ -4,9 +4,9 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../../../core/constant/constant.dart';
-import '../../../../core/local data/api_cache_manager.dart';
-import '../../../../../features/home_fetures/presentation/utils/utils.dart';
+import 'package:classmate/core/constant/constant.dart';
+import '../../../../core/local_data/api_cache_manager.dart';
+import 'package:classmate/features/home_fetures/presentation/utils/utils.dart';
 import '../models/class_details_model.dart';
 
 final routine_Req_provider = Provider<Routine_Req>((ref) => Routine_Req());

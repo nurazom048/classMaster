@@ -22,5 +22,6 @@
         "Rahala",
         "ukey",
         "varifiaotp"
-    ]
+    ],
+    "cmake.ignoreCMakeListsMissing": true
 }

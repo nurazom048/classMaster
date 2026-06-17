@@ -5,7 +5,7 @@ import 'package:classmate/core/dialogs/alert_dialogs.dart';
 import 'package:classmate/features/authentication_fetures/presentation/screen/email_verification.screen.dart';
 import 'package:classmate/features/notice_fetures/presentation/utils/pdf_utils.dart';
 import 'package:go_router/go_router.dart';
-import 'package:classmate/core/local%20data/local_data.dart';
+import 'package:classmate/core/local_data/local_data.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +21,7 @@ import '../../../welcome_splash/presentation/screen/pending_account.dart'
     show PendingScreen;
 import '../../data/datasources/auth_req.dart';
 import '../../data/services/credential_save_service.dart';
-import '../../presentation/screen/LogIn_Screen.dart';
+import '../../presentation/screen/login_screen.dart';
 
 final authController_provider =
     StateNotifierProvider.autoDispose<AuthController, bool>(

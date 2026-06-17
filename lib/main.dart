@@ -1,5 +1,6 @@
 // Core Flutter and Dart imports
 import 'package:classmate/features/account_fetures/presentation/screens/edit_account.dart';
+import 'package:classmate/services/notification_services/awn_package.dart';
 import 'package:classmate/theme/app_theme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,6 @@ import 'package:url_strategy/url_strategy.dart';
 
 // App-specific imports
 import 'core/constant/constant.dart';
-import 'services/notification services/awn_package.dart'; // Fixed typo in path
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -102,3 +102,4 @@ class MyApp extends ConsumerWidget {
 }
 
 // flutter run -d edge --release --web-port 5000
+// flutter run -d chrome --release --web-port 5000

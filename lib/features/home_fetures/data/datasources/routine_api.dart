@@ -3,7 +3,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:fpdart/fpdart.dart';
-import 'package:classmate/core/local%20data/local_data.dart';
+import 'package:classmate/core/local_data/local_data.dart';
 import '../../../../core/constant/constant.dart';
 import '../../../../core/models/message_model.dart';
 

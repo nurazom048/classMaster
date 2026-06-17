@@ -6,7 +6,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../core/export_core.dart';
-import '../one signal/oneSignal.services.dart';
+import '../one_signal/one_signal.services.dart';
 
 class AwesomeNotificationSetup {
   // initialize

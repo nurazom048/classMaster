@@ -1,6 +1,6 @@
 // ignore_for_file: avoid_print, unnecessary_null_comparison
 
-import 'package:classmate/services/notification%20services/models.dart';
+import 'package:classmate/services/notification_services/models.dart';
 
 class LocalNotification {
   static void scheduleNotifications(ClassNotificationResponse data) async {

@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/local data/local_data.dart';
+import '../../core/local_data/local_data.dart';
 
 class RouterHelper {
   static Future<String?> handleRedirect(

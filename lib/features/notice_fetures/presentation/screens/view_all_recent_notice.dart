@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../../features/account_fetures/data/models/account_models.dart';
+import 'package:classmate/features/account_fetures/data/models/account_models.dart';
 import '../../../../core/export_core.dart';
 import '../providers/view_recent_notice_controller.dart';
 import '../utils/notice_board_dialog.dart';

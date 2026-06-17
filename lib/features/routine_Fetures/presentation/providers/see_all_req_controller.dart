@@ -2,7 +2,7 @@
 
 import 'package:classmate/features/routine_Fetures/data/datasources/member_request.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../../core/dialogs/alert_dialogs.dart';
+import 'package:classmate/core/dialogs/alert_dialogs.dart';
 import '../../data/models/see_all_request_model.dart';
 
 //! Provider

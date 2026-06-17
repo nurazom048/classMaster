@@ -1,4 +1,4 @@
-import 'package:classmate/core/widgets/text%20and%20buttons/square_button.dart';
+import 'package:classmate/core/widgets/text_and_buttons/square_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:classmate/features/routine_Fetures/presentation/providers/checkbox_selector_button.dart';

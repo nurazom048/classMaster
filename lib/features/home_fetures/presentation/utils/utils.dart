@@ -4,14 +4,15 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-
-import '../../../Collection Fetures/Ui/collections.screen.dart';
+import 'package:classmate/features/collection_fetures/Ui/collections.screen.dart';
 
 class Utils {
   // hide Navbar On scroll
 
   static bool hideNevBarOnScroll(
-      ScrollNotification? scrollNotification, WidgetRef ref) {
+    ScrollNotification? scrollNotification,
+    WidgetRef ref,
+  ) {
     // Logic of scrollNotification
     if (scrollNotification is ScrollStartNotification) {
       print("Scroll Started");
@@ -91,7 +92,7 @@ class Utils {
 
     // return set;
   }
-//*************************************************** */
+  //*************************************************** */
   //   ConnectivityResult _connectionStatus = ConnectivityResult.none;
 
   //   final Connectivity _connectivity = Connectivity();

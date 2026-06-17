@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-import 'package:classmate/core/local%20data/local_data.dart';
+import 'package:classmate/core/local_data/local_data.dart';
 import '../../../../core/export_core.dart';
 import '../../presentation/providers/routine_details.controller.dart';
 import '../../presentation/utils/popup.dart';

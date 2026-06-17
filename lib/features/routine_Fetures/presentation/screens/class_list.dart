@@ -1,13 +1,13 @@
 // ignore_for_file: avoid_print, unused_local_variable, use_build_context_synchronously, unused_result
 
-import 'package:classmate/features/routine_summary_fetures/presentation/socket%20services/socketCon.dart';
+import 'package:classmate/features/routine_summary_fetures/presentation/socket_services/socketCon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:go_router/go_router.dart';
 import 'package:socket_io_client/socket_io_client.dart';
-import '../../../../../../features/home_fetures/presentation/utils/utils.dart';
-import '../../../../../../features/routine_Fetures/presentation/providers/routine_details.controller.dart';
+import 'package:classmate/features/home_fetures/presentation/utils/utils.dart';
+import 'package:classmate/features/routine_Fetures/presentation/providers/routine_details.controller.dart';
 import '../providers/checkbox_selector_button.dart';
 import '../../../../core/export_core.dart';
 import '../../../../route/route_constant.dart';

@@ -8,9 +8,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../../../core/constant/constant.dart';
-import '../../../../core/local data/api_cache_manager.dart';
-import '../../../../../core/local data/local_data.dart';
+import 'package:classmate/core/constant/constant.dart';
+import '../../../../core/local_data/api_cache_manager.dart';
+import 'package:classmate/core/local_data/local_data.dart';
 import '../../../../core/models/message_model.dart';
 import '../../../home_fetures/presentation/utils/utils.dart';
 import '../../domain/interface/pdf_interface.dart' show PdfFileData;

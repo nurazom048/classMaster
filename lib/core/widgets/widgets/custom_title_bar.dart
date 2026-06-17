@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../route/route_constant.dart';
-import '../../component/heder component/transition/right_to_left_transition.dart';
+import '../../component/heder_component/transition/right_to_left_transition.dart';
 import '../../constant/app_color.dart';
 import '../../../features/notification/screen/notification.screen.dart';
 

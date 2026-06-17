@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import '../../../../core/export_core.dart';
 import '../../../../core/helper/helper_fun.dart';
-import '../../../../core/local data/local_data.dart';
+import '../../../../core/local_data/local_data.dart';
 import 'package:flutter/foundation.dart'; // For kIsWeb
 
 class AuthReq {

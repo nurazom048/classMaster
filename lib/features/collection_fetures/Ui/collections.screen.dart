@@ -1,12 +1,12 @@
 // ignore_for_file: use_build_context_synchronously, unused_result
 
-import 'package:classmate/core/component/heder%20component/transition/right_to_left_transition.dart';
+import 'package:classmate/core/component/heder_component/transition/right_to_left_transition.dart';
 import 'package:classmate/route/route_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/widgets/my_divider.dart';
 
-import 'package:classmate/features/Collection%20Fetures/Ui/aboutus_screen.dart';
+import 'package:classmate/features/collection_fetures/Ui/aboutus_screen.dart';
 import 'package:classmate/features/routine_Fetures/presentation/screens/save_routines_screen.dart';
 import 'package:classmate/features/routine_summary_fetures/presentation/screens/save_summary_screen.dart';
 import '../../../core/constant/enum.dart';
@@ -18,9 +18,9 @@ import '../../account_fetures/domain/providers/account_providers.dart';
 import '../../authentication_fetures/domain/providers/auth_controller.dart';
 import '../../notice_fetures/presentation/screens/view_all_recent_notice.dart';
 import '../../../services/firebase/firebase_analytics.service.dart';
-import '../../../services/notification services/awn_package.dart';
-import '../../../services/notification services/local_notifications.dart';
-import '../../../services/notification services/notification.dart';
+import '../../../services/notification_services/awn_package.dart';
+import '../../../services/notification_services/local_notifications.dart';
+import '../../../services/notification_services/notification.dart';
 import '../../home_fetures/presentation/utils/utils.dart';
 import '../../account_fetures/presentation/screens/profile_screen.dart';
 import 'setting_screen.dart';

@@ -1,6 +1,6 @@
 // ignore_for_file: must_be_immutable, use_key_in_widget_constructors, camel_case_types
 
-import 'package:classmate/core/component/heder%20component/transition/right_to_Left_transition.dart';
+import 'package:classmate/core/component/heder_component/transition/right_to_left_transition.dart';
 import 'package:classmate/features/authentication_fetures/presentation/screen/change_password.dart';
 import 'package:classmate/features/account_fetures/presentation/screens/edit_account.dart';
 import 'package:classmate/route/route_constant.dart';

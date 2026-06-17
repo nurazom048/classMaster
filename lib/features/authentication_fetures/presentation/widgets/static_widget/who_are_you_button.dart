@@ -5,7 +5,7 @@ import 'package:classmate/core/widgets/appWidget/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../screen/SignUp_Screen.dart';
+import '../../screen/signup_screen.dart';
 
 class WhoAreYouButton extends ConsumerWidget {
   final void Function(String)? onAccountType;

@@ -1,4 +1,4 @@
-import 'package:classmate/core/local%20data/local_data.dart';
+import 'package:classmate/core/local_data/local_data.dart';
 import 'package:classmate/route/route_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,7 +11,7 @@ import '../core/component/responsive.dart';
 import '../core/widgets/bottom_sheet_shape.dart';
 import '../features/notice_fetures/presentation/screens/add_notice_screen.dart';
 import '../features/routine_Fetures/presentation/widgets/static_widgets/dash_border_button.dart';
-import '../features/Collection Fetures/Ui/collections.screen.dart';
+import '../features/collection_fetures/Ui/collections.screen.dart';
 import '../features/home_fetures/presentation/screens/home.screen.dart';
 import '../core/widgets/widgets/bottom_bar_item_custom.dart';
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:classmate/features/routine_Fetures/presentation/widgets/static_widgets/wekkday_view.dart';
 
-import '../../../../../core/component/Loaders.dart';
+import '../../../../../core/component/loaders.dart';
 import '../../../../../core/dialogs/alert_dialogs.dart';
 import '../../providers/weekday_controller.dart';
 import '../../utils/add_weekday_screen.dart';

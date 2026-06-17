@@ -154,6 +154,7 @@ class _EditAccountState extends ConsumerState<EditAccount> {
             aboutController.text = account.about ?? '';
 
             // 🟢 ডাটাবেজ থেকে পাওয়া রোল রিভারপড প্রোভাইডারে সেট করা হচ্ছে (ধরে নেওয়া হচ্ছে ডাটাবেজে student/academy বা অনুরুপ ভ্যালু আছে)
+            // ignore: unused_local_variable
             final String currentRole =
                 account.accountType?.toString().split('.').last.toLowerCase() ??
                 'student';

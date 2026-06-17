@@ -6,7 +6,7 @@ import 'package:classmate/features/routine_summary_fetures/presentation/provider
 import 'package:badges/badges.dart' as badges;
 import 'package:mime/mime.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../../../../../core/helper/helper_fun.dart';
+import 'package:classmate/core/helper/helper_fun.dart';
 import '../../../../core/export_core.dart';
 import 'package:flutter/foundation.dart' show Uint8List, kIsWeb;
 import 'dart:io' show File;

@@ -1,13 +1,13 @@
 // ignore_for_file: avoid_print, prefer_interpolation_to_compose_strings
 
 import 'dart:convert';
-import 'package:classmate/features/routine_summary_fetures/presentation/socket%20services/socketCon.dart';
+import 'package:classmate/features/routine_summary_fetures/presentation/socket_services/socketCon.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../core/export_core.dart';
-import '../../../../core/local data/local_data.dart';
+import '../../../../core/local_data/local_data.dart';
 import '../../../routine_Fetures/data/models/check_status_model.dart';
 import '../models/all_summary_models.dart';
 import 'package:http/http.dart' as http;

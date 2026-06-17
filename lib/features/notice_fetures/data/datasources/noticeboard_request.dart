@@ -6,7 +6,7 @@ import 'package:classmate/features/notice_fetures/domain/repositories/noticeboar
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
-import '../../../../../core/local data/local_data.dart';
+import 'package:classmate/core/local_data/local_data.dart';
 import '../../../../core/export_core.dart';
 import '../../../routine_Fetures/data/models/check_status_model.dart';
 

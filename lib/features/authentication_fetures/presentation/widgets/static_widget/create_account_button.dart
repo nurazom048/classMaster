@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../screen/SignUp_Screen.dart';
+import '../../screen/signup_screen.dart';
 
 class CreateAccountPopUpButton extends StatelessWidget {
   const CreateAccountPopUpButton({super.key});

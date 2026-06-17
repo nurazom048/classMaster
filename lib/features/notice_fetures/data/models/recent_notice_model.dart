@@ -1,4 +1,4 @@
-import '../../../../../features/account_fetures/data/models/account_models.dart';
+import 'package:classmate/features/account_fetures/data/models/account_models.dart';
 
 class RecentNotice {
   String message;

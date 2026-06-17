@@ -10,7 +10,7 @@ export '../core/widgets/appWidget/app_text.dart';
 export 'widgets/appWidget/text_form_field.dart';
 export '../core/widgets/appWidget/buttons/cupertino_buttons.dart';
 export '../core/dialogs/alert_dialogs.dart';
-export '../core/widgets/text and buttons/square_button.dart';
+export '../core/widgets/text_and_buttons/square_button.dart';
 export '../core/widgets/appWidget/dotted_divider.dart';
 export '../core/constant/constant.dart';
 export '../core/constant/app_color.dart';

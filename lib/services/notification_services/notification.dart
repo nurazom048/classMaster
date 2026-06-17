@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import '../../core/constant/constant.dart';
-import '../../core/local data/api_cache_manager.dart';
-import '../../core/local data/local_data.dart';
+import '../../core/local_data/api_cache_manager.dart';
+import '../../core/local_data/local_data.dart';
 import '../../features/home_fetures/presentation/utils/utils.dart';
 import 'models.dart';
 

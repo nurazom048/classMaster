@@ -1,7 +1,7 @@
 import 'package:classmate/features/notice_fetures/data/models/recent_notice_model.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../../core/models/message_model.dart';
+import 'package:classmate/core/models/message_model.dart';
 import '../interface/pdf_interface.dart'; // For PdfFileData
 
 // notice repository

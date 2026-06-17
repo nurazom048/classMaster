@@ -1,10 +1,10 @@
-import 'package:classmate/core/component/heder%20component/transition/right_to_left_transition.dart';
+import 'package:classmate/core/component/heder_component/transition/right_to_left_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart' as fa;
-import '../../../../../features/account_fetures/presentation/screens/profile_screen.dart';
-import '../../../../../features/account_fetures/data/models/account_models.dart';
+import 'package:classmate/features/account_fetures/presentation/screens/profile_screen.dart';
+import 'package:classmate/features/account_fetures/data/models/account_models.dart';
 import '../../../../core/export_core.dart';
 import '../../../../core/widgets/mini_account_row.dart';
 import '../../data/models/recent_notice_model.dart';

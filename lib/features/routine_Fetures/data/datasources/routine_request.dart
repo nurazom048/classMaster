@@ -6,9 +6,9 @@ import 'package:fpdart/fpdart.dart';
 import 'package:get/get.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:classmate/core/local%20data/api_cache_manager.dart';
+import 'package:classmate/core/local_data/api_cache_manager.dart';
 import 'package:classmate/features/home_fetures/presentation/utils/utils.dart';
-import '../../../../../core/local data/local_data.dart';
+import 'package:classmate/core/local_data/local_data.dart';
 import '../../../../core/export_core.dart';
 import '../models/check_status_model.dart';
 

@@ -4,7 +4,7 @@ import 'package:classmate/core/widgets/appWidget/app_text.dart';
 import 'package:classmate/core/widgets/appWidget/buttons/cupertino_buttons.dart';
 import 'package:classmate/core/widgets/appWidget/text_form_field.dart';
 import 'package:classmate/core/widgets/heder/heder_title.dart';
-import 'package:classmate/features/authentication_fetures/presentation/screen/LogIn_Screen.dart';
+import 'package:classmate/features/authentication_fetures/presentation/screen/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,7 +14,7 @@ import '../../../../core/constant/app_color.dart';
 import '../../../../core/constant/constant.dart';
 import '../../../../core/constant/enum.dart';
 import '../../domain/providers/auth_controller.dart';
-import '../utils/validators/singUp_validation.dart';
+import '../utils/validators/sign_up_validation.dart';
 import '../widgets/static_widget/sign_up_page_switch.dart';
 import '../widgets/static_widget/who_are_you_button.dart';
 

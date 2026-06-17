@@ -17,7 +17,7 @@ import '../../data/services/credential_save_service.dart';
 import '../../domain/providers/auth_controller.dart';
 import '../../domain/providers/google_auth_controller.dart';
 
-import '../utils/validators/Login_validation.dart';
+import '../utils/validators/login_validation.dart';
 import '../widgets/static_widget/or.dart';
 import '../widgets/static_widget/sign_up_page_switch.dart';
 import '../widgets/static_widget/social_login_button.dart';

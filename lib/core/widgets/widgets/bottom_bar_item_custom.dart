@@ -7,7 +7,7 @@ import '../appWidget/app_text.dart';
 class BottomBarItemCustom extends StatelessWidget {
   final VoidCallback onTap;
   final bool isSelected;
-  final IconData icon;
+  final icon; //todo:
   final String label;
 
   const BottomBarItemCustom({

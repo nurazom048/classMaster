@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../core/component/Loaders.dart';
+import '../../../../../core/component/loaders.dart';
 import '../../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../../core/widgets/account_card_row.dart';
 import '../../../../../features/account_fetures/data/models/account_models.dart';

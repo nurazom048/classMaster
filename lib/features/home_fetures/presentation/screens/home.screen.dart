@@ -1,9 +1,9 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, unused_result, use_build_context_synchronously, avoid_print
 
-import 'package:classmate/core/component/heder%20component/transition/right_to_left_transition.dart';
+import 'package:classmate/core/component/heder_component/transition/right_to_left_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:classmate/services/one%20signal/oneSignal.services.dart';
+import 'package:classmate/services/one_signal/one_signal.services.dart';
 import 'package:classmate/features/home_fetures/data/models/home_routines_model.dart';
 import 'package:classmate/features/home_fetures/presentation/utils/utils.dart';
 import 'package:classmate/core/widgets/widgets/mydrawer.dart';
@@ -15,7 +15,7 @@ import '../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../core/widgets/appWidget/app_text.dart';
 import '../../../../core/widgets/error/error.widget.dart';
 import '../../../../services/firebase/firebase_analytics.service.dart';
-import '../../../../services/notification services/awn_package.dart';
+import '../../../../services/notification_services/awn_package.dart';
 import '../../../notice_fetures/presentation/screens/view_all_recent_notice.dart';
 import '../../../routine_Fetures/presentation/utils/routine_dialog.dart';
 import '../../../routine_Fetures/presentation/widgets/dynamic_widgets/routine_box_by_id.dart';

@@ -1,5 +1,5 @@
 import 'package:fpdart/fpdart.dart';
-import '../../../../../core/models/message_model.dart';
+import 'package:classmate/core/models/message_model.dart';
 import '../../../routine_Fetures/data/models/check_status_model.dart';
 
 abstract class NoticeboardRepository {

@@ -1,4 +1,4 @@
-import 'package:classmate/core/component/heder%20component/transition/right_to_left_transition.dart';
+import 'package:classmate/core/component/heder_component/transition/right_to_left_transition.dart';
 import 'package:classmate/features/notice_fetures/presentation/screens/view_notice_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

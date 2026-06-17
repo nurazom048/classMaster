@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:classmate/core/constant/app_color.dart';
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
 
-import '../../../../../features/routine_Fetures/data/datasources/class_request.dart';
+import 'package:classmate/features/routine_Fetures/data/datasources/class_request.dart';
 import '../screens/add_class_screen.dart';
 
 class PeriodAlert {

@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:classmate/features/routine_Fetures/data/models/members_models.dart';
-import '../../../../../core/local data/local_data.dart';
+import 'package:classmate/core/local_data/local_data.dart';
 import '../../../../core/export_core.dart';
 import '../models/see_all_request_model.dart';
 

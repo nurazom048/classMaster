@@ -1,6 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:classmate/core/component/heder%20component/transition/right_to_left_transition.dart';
+import 'package:classmate/core/component/heder_component/transition/right_to_left_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_core/get_core.dart';
@@ -9,7 +9,7 @@ import 'package:get/get_navigation/get_navigation.dart';
 import '../../../../core/constant/image_const.dart';
 
 import '../../../../core/export_core.dart';
-import '../../../authentication_fetures/presentation/screen/LogIn_Screen.dart';
+import '../../../authentication_fetures/presentation/screen/login_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});

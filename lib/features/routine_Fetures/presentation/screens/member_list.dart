@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/state_manager.dart';
 
-import '../../../../../../features/home_fetures/presentation/utils/utils.dart';
+import 'package:classmate/features/home_fetures/presentation/utils/utils.dart';
 import '../providers/checkbox_selector_button.dart';
-import '../../../../../../features/routine_Fetures/presentation/providers/members_controllers.dart';
-import '../../../../../../features/routine_Fetures/presentation/providers/see_all_req_controller.dart';
+import 'package:classmate/features/routine_Fetures/presentation/providers/members_controllers.dart';
+import 'package:classmate/features/routine_Fetures/presentation/providers/see_all_req_controller.dart';
 import '../../../../core/export_core.dart';
 import '../utils/popup.dart';
 import '../widgets/static_widgets/member_account_card.dart';

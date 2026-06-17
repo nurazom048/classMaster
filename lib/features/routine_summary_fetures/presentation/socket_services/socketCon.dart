@@ -1,6 +1,6 @@
 // ignore_for_file: avoid_print, library_prefixes, file_names, unused_element
 
-import 'package:classmate/core/local%20data/local_data.dart';
+import 'package:classmate/core/local_data/local_data.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class SocketService {

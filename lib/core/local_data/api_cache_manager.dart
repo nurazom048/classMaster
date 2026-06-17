@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:hive/hive.dart';
-import 'package:classmate/core/local%20data/local_data.dart';
+import 'package:classmate/core/local_data/local_data.dart';
 
 class MyApiCache {
   static const String boxName = "apiCache";

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:classmate/features/search_fetures/presentation/widgets/static_wdgets/search_bar_custom.dart';
-import '../../../../../core/component/Loaders.dart';
+import '../../../../../core/component/loaders.dart';
 import '../../../../../core/dialogs/alert_dialogs.dart';
 
 import '../../../../../core/widgets/account_card_row.dart';
