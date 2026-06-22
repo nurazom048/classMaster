@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 
 class LocalData {
@@ -6,9 +7,9 @@ class LocalData {
   static const String _username = "username";
   static const String _refreshToken = "refreshToken";
 
-//***********************************************************************************///
-//................ save Auth and refresh token header.................................//
-//*********************************************************************************** */
+  //***********************************************************************************///
+  //................ save Auth and refresh token header.................................//
+  //*********************************************************************************** */
 
   // Open the Hive box
   static Future<Box> _openBox() async {
@@ -19,6 +20,7 @@ class LocalData {
   static Future<void> saveAuthToken(String token) async {
     var box = await Hive.openBox('authBox');
     box.put('authToken', token);
+    box.put('isGuest', false);
   }
 
   static Future<String?> getAuthToken() async {
@@ -37,14 +39,35 @@ class LocalData {
     return box.get(_refreshToken);
   }
 
+  // Guest Mode
+  static Future<void> saveIsGuest(bool isGuest) async {
+    final box = await _openBox();
+    await box.put('isGuest', isGuest);
+  }
+
+  static Future<bool> isGuest() async {
+    final box = await _openBox();
+    return box.get('isGuest', defaultValue: false) == true;
+  }
+
   // Get header
   static Future<Map<String, String>> getHeader() async {
     final String? authToken = await getAuthToken();
     final String? refreshToken = await getRefreshToken();
-    return {
+    final bool guest = await isGuest();
+
+    final Map<String, String> headers = {
+      "Content-Type": "application/json",
       'Authorization': 'Bearer $authToken',
       'x-refresh-token': refreshToken ?? '',
     };
+
+    if (guest) {
+      headers['X-App-Client'] = 'ClassMaster';
+      headers['X-Guest'] = 'true';
+    }
+
+    return headers;
   }
 
   static Future<void> setHerder(response) async {
@@ -83,3 +106,7 @@ class LocalData {
     await box.clear();
   }
 }
+
+final isGuestProvider = FutureProvider<bool>((ref) async {
+  return LocalData.isGuest();
+});

@@ -8,6 +8,7 @@ import '../../../../core/dialogs/confirm_alert_dialog.dart';
 import '../../../home_fetures/data/datasources/home_routines_controller.dart';
 import '../providers/checkbox_selector_button.dart';
 import '../providers/members_controllers.dart';
+import '../../../../core/local_data/local_data.dart';
 
 class RoutineDialog {
   //**********     CheckStatusUser_BottomSheet       **********/
@@ -34,6 +35,47 @@ class RoutineDialog {
           ),
           child: Consumer(
             builder: (ctx, ref, _) {
+              final isGuest = ref.watch(isGuestProvider).value ?? false;
+
+              if (isGuest) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SquaresButton(
+                          icon: Icons.people_rounded,
+                          inActiveIcon: Icons.telegram,
+                          inActiveText: "Join",
+                          status: true,
+                          text: "Join",
+                          ontap: null,
+                        ),
+                        SquaresButton(
+                          inActiveIcon: Icons.bookmark_added,
+                          icon: Icons.bookmark_add_sharp,
+                          text: 'Save',
+                          inActiveText: "add to save",
+                          status: true,
+                          ontap: null,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      "Login required to join this routine.",
+                      style: TextStyle(
+                        color: Colors.redAccent,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                );
+              }
+
               // state providers
               final checkStatus = ref.watch(
                 checkStatusControllerProvider(routineID),
@@ -161,6 +203,31 @@ class RoutineDialog {
       builder: (BuildContext context) {
         return Consumer(
           builder: (context, ref, _) {
+            final isGuest = ref.watch(isGuestProvider).value ?? false;
+
+            if (isGuest) {
+              return SizedBox(
+                height: 180,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.lock_outline, size: 40, color: Colors.grey),
+                      SizedBox(height: 12),
+                      Text(
+                        "Login required to manage notifications.",
+                        style: TextStyle(
+                          color: Colors.black54,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }
+
             late bool notificationOn;
             late String status;
 

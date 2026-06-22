@@ -3,6 +3,9 @@
 import 'package:classmate/core/component/heder_component/transition/right_to_left_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/local_data/local_data.dart';
+import '../../../../route/route_constant.dart';
+import 'package:go_router/go_router.dart';
 import 'package:classmate/services/one_signal/one_signal.services.dart';
 import 'package:classmate/features/home_fetures/data/models/home_routines_model.dart';
 import 'package:classmate/features/home_fetures/presentation/utils/utils.dart';
@@ -35,6 +38,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late ScrollController mobileScrollController;
   late ScrollController recentNoticeScrollController;
+  bool isGuestMode = false;
 
   @override
   void initState() {
@@ -42,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // Initialize the scrollController
     mobileScrollController = ScrollController();
     recentNoticeScrollController = ScrollController();
+    _checkGuestMode();
 
     // One signal
     // OneSignalServices.initialize();
@@ -51,6 +56,15 @@ class _HomeScreenState extends State<HomeScreen> {
     // AwesomeNotificationSetup
 
     AwesomeNotificationSetup.takePermission(context);
+  }
+
+  void _checkGuestMode() async {
+    final guest = await LocalData.isGuest();
+    if (mounted) {
+      setState(() {
+        isGuestMode = guest;
+      });
+    }
   }
 
   @override
@@ -84,6 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
           homeRoutines: homeRoutines,
           scrollController: mobileScrollController,
           homeRoutineNotifier: homeRoutinesNotifier,
+          isGuestMode: isGuestMode,
         );
 
         return Responsive(
@@ -133,6 +148,7 @@ Widget homeMobileView(
   required WidgetRef ref,
   required ScrollController scrollController,
   required homeRoutineNotifier,
+  required bool isGuestMode,
 }) {
   print('homeMobileView');
   //
@@ -159,6 +175,53 @@ Widget homeMobileView(
         controller: scrollController,
         children: [
           if (Responsive.isMobile(context)) const CustomTitleBar("title"),
+
+          if (isGuestMode)
+            Container(
+              margin: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF37474F), Color(0xFF263238)],
+                ),
+                borderRadius: BorderRadius.circular(12.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 6,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.info_outline, color: Colors.amberAccent, size: 24),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      "You are exploring as a guest. Login to access all features.",
+                      style: TS.heading(fontSize: 14).copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      await LocalData.emptyLocal();
+                      context.goNamed(RouteConst.login);
+                    },
+                    child: const Text(
+                      "LOGIN",
+                      style: TextStyle(
+                        color: Colors.amberAccent,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
 
           //_______________________ recent notices _________________//
           const HomeRecentNoticeWidget(),

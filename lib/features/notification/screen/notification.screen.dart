@@ -6,6 +6,7 @@ import '../../../core/export_core.dart';
 import '../../notice_fetures/presentation/widgets/static_widgets/simple_notice_card.dart';
 import '../api/notification.api.dart';
 import '../model/notification.model.dart';
+import '../../../core/local_data/local_data.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});
@@ -29,8 +30,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, _) {
-        // provider
-        final notifications = ref.watch(notificationsProvider);
+        final isGuest = ref.watch(isGuestProvider).value ?? false;
+
         return SafeArea(
           child: Scaffold(
             body: SingleChildScrollView(
@@ -42,32 +43,34 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       horizontal: 20,
                       vertical: 26,
                     ).copyWith(top: 0),
-                    child: notifications.when(
-                      data: (data) {
-                        return data.fold(
-                          (error) => ErrorScreen(error: error.message),
-                          (value) => Column(
-                            children: List.generate(
-                              value.notifications.length,
-                              (i) => NotificationCard(
-                                notification: value.notifications[i],
-                                previousDateTime:
-                                    value.notifications[i].createdAt,
-                                isFirst: i == 0,
-                              ),
-                            ),
+                    child: isGuest
+                        ? const ErrorScreen(error: "Notifications are available after login.")
+                        : ref.watch(notificationsProvider).when(
+                            data: (data) {
+                              return data.fold(
+                                (error) => ErrorScreen(error: error.message),
+                                (value) => Column(
+                                  children: List.generate(
+                                    value.notifications.length,
+                                    (i) => NotificationCard(
+                                      notification: value.notifications[i],
+                                      previousDateTime:
+                                          value.notifications[i].createdAt,
+                                      isFirst: i == 0,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                            error:
+                                (error, stackTrace) =>
+                                    Alert.handleError(context, error),
+                            loading:
+                                () => Padding(
+                                  padding: const EdgeInsets.only(top: 200),
+                                  child: Loaders.center(),
+                                ),
                           ),
-                        );
-                      },
-                      error:
-                          (error, stackTrace) =>
-                              Alert.handleError(context, error),
-                      loading:
-                          () => Padding(
-                            padding: const EdgeInsets.only(top: 200),
-                            child: Loaders.center(),
-                          ),
-                    ),
                   ),
                 ],
               ),

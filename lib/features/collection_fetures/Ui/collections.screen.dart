@@ -26,6 +26,7 @@ import '../../account_fetures/presentation/screens/profile_screen.dart';
 import 'setting_screen.dart';
 import '../../account_fetures/presentation/screens/edit_account.dart';
 import 'package:go_router/go_router.dart';
+import '../../../core/local_data/local_data.dart';
 
 //! Hidden Bottom Nav on Scroll
 final hideNevBarOnScorningProvider = StateProvider.autoDispose<bool>(
@@ -67,6 +68,60 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isGuest = ref.watch(isGuestProvider).value ?? false;
+
+    if (isGuest) {
+      return SafeArea(
+        child: Scaffold(
+          appBar: const AppBarCustom('Collection', leadingIcon: false),
+          body: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.person_outline, size: 72, color: Colors.grey),
+                  const SizedBox(height: 24),
+                  const Text(
+                    "You are exploring as a guest.",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black87,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 12),
+                  const Text(
+                    "Login to access your profile, saved routines, and more.",
+                    style: TextStyle(fontSize: 14, color: Colors.black54),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 32),
+                  ElevatedButton.icon(
+                    onPressed: () async {
+                      await LocalData.emptyLocal();
+                      if (context.mounted) GoRouter.of(context).go('/auth/login');
+                    },
+                    icon: const Icon(Icons.login),
+                    label: const Text("Login Now"),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
+                      backgroundColor: const Color(0xFF0066CC),
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white10,

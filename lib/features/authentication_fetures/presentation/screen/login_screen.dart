@@ -13,6 +13,7 @@ import '../../../../core/widgets/appWidget/app_text.dart';
 import '../../../../core/widgets/heder/heder_title.dart';
 
 import '../../../../route/route_constant.dart';
+import '../../../../core/local_data/local_data.dart';
 import '../../data/services/credential_save_service.dart';
 import '../../domain/providers/auth_controller.dart';
 import '../../domain/providers/google_auth_controller.dart';
@@ -236,6 +237,20 @@ class _LoginScreenState extends State<LoginScreen> {
                           isLoading: googleAuthProvider.lodging || loading,
                           onTap: () {
                             googleAuthProvider.signing(context, ref);
+                          },
+                        ),
+
+                        const SizedBox(height: 20),
+                        CupertinoButtonCustom(
+                          isLoading: false,
+                          padding: const EdgeInsets.symmetric(horizontal: 40),
+                          color: Colors.blueGrey,
+                          text: "Explore Without Login",
+                          onPressed: () async {
+                            final router = GoRouter.of(context);
+                            await LocalData.emptyLocal();
+                            await LocalData.saveIsGuest(true);
+                            router.go('/home');
                           },
                         ),
 

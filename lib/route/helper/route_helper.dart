@@ -10,31 +10,29 @@ class RouterHelper {
       BuildContext context, GoRouterState state) async {
     final String? token = await LocalData.getAuthToken();
     final String? refreshToken = await LocalData.getRefreshToken();
+    final bool isGuest = await LocalData.isGuest();
 
-    print("Token: $token  refreshToken: $refreshToken");
+    print("Token: $token  refreshToken: $refreshToken  isGuest: $isGuest");
     print("Current location: ${state.location}");
 
-    // ✅ If the user is authenticated, allow them to access protected routes
-    if (token != null && refreshToken != null) {
-      if (state.subloc == '/') {
-        print('Redirecting authenticated user to /home');
-        return '/home';
-      }
-      return null; // Allow navigation for authenticated users
-    }
+    final bool isAuthenticated = token != null && refreshToken != null;
+    final bool isAuthRoute = state.subloc.startsWith('/auth/');
 
-    // ✅ Prevent infinite loop: Do NOT redirect if already on the login page
-    if (state.subloc == '/auth/login') {
-      print('Already on login screen, no redirect needed.');
+    // 1. If not authenticated and not a guest, they must go to/stay on auth routes
+    if (!isAuthenticated && !isGuest) {
+      if (!isAuthRoute) {
+        print('Redirecting unauthenticated/non-guest user to /auth/login');
+        return '/auth/login';
+      }
       return null;
     }
 
-    // 🚀 Fix: Redirect only from Splash or unknown routes to Login
-    if (state.subloc == '/') {
-      print('Redirecting unauthenticated user to /auth/login');
-      return '/auth/login';
+    // 2. If authenticated or guest, and they are at root '/' or auth routes, redirect to home
+    if (state.subloc == '/' || (isAuthRoute && state.subloc != '/auth/login')) {
+      print('Redirecting to /home');
+      return '/home';
     }
 
-    return null; // Allow access for other non-protected routes
+    return null; // Allow navigation
   }
 }

@@ -13,6 +13,7 @@ import '../../../routine_Fetures/presentation/providers/checkbox_selector_button
 import '../providers/summary_controller.dart';
 import '../widgets/static_widgets/add_summary_button.dart';
 import '../widgets/static_widgets/summary_header.dart';
+import '../../../../core/local_data/local_data.dart';
 
 // ignore: constant_identifier_names
 const String DEMO_PROFILE_IMAGE =
@@ -48,6 +49,8 @@ late ScrollController scrollController;
 late ScrollController pageScrollController;
 
 class _SummaryScreenState extends State<SummaryScreen> {
+  bool isGuestMode = false;
+
   @override
   void initState() {
     super.initState();
@@ -56,16 +59,30 @@ class _SummaryScreenState extends State<SummaryScreen> {
     );
     scrollController = ScrollController();
     pageScrollController = ScrollController();
-    _initializeSocket();
+    _checkGuestAndInit();
+  }
+
+  void _checkGuestAndInit() async {
+    final guest = await LocalData.isGuest();
+    if (mounted) {
+      setState(() {
+        isGuestMode = guest;
+      });
+      if (!guest) {
+        _initializeSocket();
+      }
+    }
   }
 
   @override
   void dispose() {
     print('[SummaryScreen] Disposing screen for routine ${widget.routineID}');
-    print('[Socket] Leaving room ${widget.routineID}');
-    SocketService.leaveRoom(widget.routineID);
-    print('[Socket] Disconnecting socket');
-    SocketService.disconnect();
+    if (!isGuestMode) {
+      print('[Socket] Leaving room ${widget.routineID}');
+      SocketService.leaveRoom(widget.routineID);
+      print('[Socket] Disconnecting socket');
+      SocketService.disconnect();
+    }
     scrollController.dispose();
     pageScrollController.dispose();
     super.dispose();
@@ -132,6 +149,14 @@ class _SummaryScreenState extends State<SummaryScreen> {
       child: Scaffold(
         body: Consumer(
           builder: (context, ref, _) {
+            final isGuest = ref.watch(isGuestProvider).value ?? false;
+
+            if (isGuest) {
+              return const ErrorScreen(
+                error: "Summaries are available only for logged-in routine members.",
+              );
+            }
+
             final checkStatus = ref.watch(
               checkStatusControllerProvider(widget.routineID),
             );
