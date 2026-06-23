@@ -20,6 +20,19 @@ class CheckStatusModel {
     this.summaryOwner,
     this.isSummarySaved,
   });
+  Map<String, dynamic> toJson() {
+    return {
+      'isOwner': isOwner,
+      'isCaptain': isCaptain,
+      'activeStatus': activeStatus,
+      'isSave': isSave,
+      'memberCount': memberCount,
+      'sentRequestCount': sentRequestCount,
+      'notificationOn': notificationOn,
+      'summaryOwner': summaryOwner,
+      'isSummarySaved': isSummarySaved,
+    };
+  }
 
   factory CheckStatusModel.fromJson(Map<String, dynamic> json) {
     return CheckStatusModel(

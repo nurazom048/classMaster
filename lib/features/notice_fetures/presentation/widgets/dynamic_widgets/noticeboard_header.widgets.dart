@@ -52,6 +52,10 @@ class NoticeBoardHeader extends ConsumerWidget {
           ),
           noticeBoardStatus.when(
             data: (data) {
+              print("========== NOTICE STATUS DATA ==========");
+              print(data);
+              print(data.toJson()); // যদি toJson() থাকে
+              print("=======================================");
               return NoticeBoardJoinButton(
                 isJoin: data.activeStatus == "joined" ? true : false,
                 notificationOn: data.notificationOn,
@@ -59,7 +63,17 @@ class NoticeBoardHeader extends ConsumerWidget {
                 onTapForJoin: () => statusNotifier.join(context),
               );
             },
-            error: (error, stackTrace) => Alert.handleError(context, error),
+            error: (error, stackTrace) {
+              print("========== NOTICE STATUS ERROR ==========");
+              print("Academy ID: $academyID");
+              print("Error Type: ${error.runtimeType}");
+              print("Error: $error");
+              print("Error String: ${error.toString()}");
+              print("========== STACK TRACE ==========");
+              print(stackTrace);
+              print("================================");
+              return Alert.handleError(context, error);
+            },
             loading: () => const JoinSkelton(width: 10),
           ),
         ],
