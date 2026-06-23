@@ -1,8 +1,10 @@
 // ignore_for_file: file_names, deprecated_member_use, use_build_context_synchronously
 
 import 'package:classmate/core/widgets/appWidget/buttons/cupertino_buttons.dart';
+import 'package:classmate/core/widgets/widgets/animi/auth_animi_wiggets.dart';
+import 'package:classmate/features/authentication_fetures/presentation/widgets/static_widget/charcater_painter.dart';
+import 'package:classmate/features/authentication_fetures/presentation/widgets/static_widget/forget_password_btn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
@@ -22,279 +24,369 @@ import '../utils/validators/login_validation.dart';
 import '../widgets/static_widget/or.dart';
 import '../widgets/static_widget/sign_up_page_switch.dart';
 import '../widgets/static_widget/social_login_button.dart';
+import 'dart:async';
+import 'dart:math';
+
+class AnimatedLoginScreen extends StatelessWidget {
+  const AnimatedLoginScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Animated Login',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        fontFamily: 'Inter',
+        scaffoldBackgroundColor: const Color(0xFFEAEAEF),
+      ),
+      home: const LoginScreen(),
+    );
+  }
+}
+
+// ============================================================================
+// PART 2: ACTUAL LOGIN SCREEN (Form Content + Logic)
+// Uses the AuthAnimationScreen wrapper to inherit the animations
+// ============================================================================
 
 class LoginScreen extends StatefulWidget {
-  final String? emailAddress;
-  final String? usernameAddress;
-  final String? passwordAddress;
-  const LoginScreen({
-    super.key,
-    this.emailAddress,
-    this.usernameAddress,
-    this.passwordAddress,
-  });
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-bool byUsername = true;
-
 class _LoginScreenState extends State<LoginScreen> {
-  //
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController usernameController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final GlobalKey<FormState> emailKey = GlobalKey<FormState>();
+  final FocusNode _emailFocus = FocusNode();
+  final FocusNode _passwordFocus = FocusNode();
+
+  bool _isPasswordVisible = false;
+  bool _isRememberMe = false;
+  bool _byUsername = false;
+
+  // Trackable states passed down to the reusable animation wrapper
+  double _inputProgress = 0.0;
+  bool _isWhistling = false;
+  bool _isAngry = false;
+  bool _isHappy = false;
+
+  String _statusText = "Please enter your details";
+  Color _statusColor = Colors.grey.shade500;
 
   @override
   void initState() {
-    _loadSavedCredentials();
-    if (widget.emailAddress != null) {
-      if (widget.usernameAddress == null) {
-        byUsername = false;
-      }
-      emailController.text = widget.emailAddress!;
-    }
-    if (widget.usernameAddress != null) {
-      usernameController.text = widget.usernameAddress!;
-    }
-    if (widget.passwordAddress != null) {
-      _passwordController.text = widget.passwordAddress!;
-    }
     super.initState();
-  }
 
-  Future<void> _loadSavedCredentials() async {
-    final credentials = await CredentialSaveService.getSavedCredentials();
-    if (credentials['username'] != null) {
+    void updateProgress() {
+      if (_isAngry || _isHappy) return;
       setState(() {
-        byUsername = true;
-        usernameController.text = credentials['username']!;
-        _passwordController.text = credentials['password'] ?? '';
-      });
-    } else if (credentials['email'] != null) {
-      setState(() {
-        byUsername = false;
-        emailController.text = credentials['email']!;
-        _passwordController.text = credentials['password'] ?? '';
+        final textLength =
+            _byUsername
+                ? _usernameController.text.length
+                : _emailController.text.length;
+        _inputProgress = min(textLength / 30.0, 1.0);
       });
     }
+
+    _emailController.addListener(updateProgress);
+    _usernameController.addListener(updateProgress);
+
+    _emailFocus.addListener(() {
+      setState(() {});
+    });
+
+    _passwordFocus.addListener(() {
+      if (_isAngry || _isHappy || _isPasswordVisible) return;
+      setState(() {
+        _isWhistling = _passwordFocus.hasFocus;
+      });
+    });
   }
 
   @override
   void dispose() {
-    emailController.dispose();
-    usernameController.dispose();
+    _emailController.dispose();
+    _usernameController.dispose();
     _passwordController.dispose();
+    _emailFocus.dispose();
+    _passwordFocus.dispose();
     super.dispose();
+  }
+
+  void _resetToNormal() {
+    if (mounted) {
+      setState(() {
+        _isAngry = false;
+        _isHappy = false;
+        _statusText = "Please enter your details";
+        _statusColor = Colors.grey.shade500;
+        if (_passwordFocus.hasFocus && !_isPasswordVisible) {
+          _isWhistling = true;
+        }
+      });
+    }
+  }
+
+  void _triggerFeedback(bool isSuccess) {
+    FocusScope.of(context).unfocus();
+    setState(() {
+      _isWhistling = false;
+    });
+
+    if (!isSuccess) {
+      setState(() {
+        _isAngry = true;
+        _statusText = "Validation Failed! Please check fields.";
+        _statusColor = Colors.red.shade500;
+      });
+      Future.delayed(const Duration(seconds: 2), _resetToNormal);
+    } else {
+      setState(() {
+        _isHappy = true;
+        _statusText = "Processing login details...";
+        _statusColor = Colors.green.shade500;
+      });
+      Future.delayed(const Duration(seconds: 3), _resetToNormal);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, _) {
-        //
         final authLogin = ref.watch(authController_provider.notifier);
         final bool loading = ref.watch(authController_provider);
         final googleAuthProvider = ref.read(googleAuthControllerProvider);
 
-        return WillPopScope(
-          onWillPop: () => Future.value(false),
-          child: SafeArea(
-            child: Scaffold(
-              body: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.only(bottom: 400),
-                child: Form(
-                  key: formKey,
-                  child: AutofillGroup(
+        // Wrap the form inside our highly reusable Animation Screen
+        return AuthAnimationScreen(
+          progress: _inputProgress,
+          isFocused: _emailFocus.hasFocus,
+          isEyesClosed:
+              _isPasswordVisible ||
+              (_passwordFocus.hasFocus && !_isPasswordVisible),
+          isWhistling: _isWhistling,
+          isAngry: _isAngry,
+          isHappy: _isHappy,
+          child: Form(
+            key: _formKey,
+            child: AutofillGroup(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Brand Header (Logo & Title)
+                  Center(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        HeaderTitle(
-                          "Log In",
-                          context,
-                          hideArrow: true,
-                          onTap: () {},
-                        ),
-                        const SizedBox(height: 40),
-                        const AppText("   Login To Continue").title(),
-                        const SizedBox(height: 30),
-
-                        ///
-                        AppTextFromField(
-                          autofillHints:
-                              byUsername == true
-                                  ? const [AutofillHints.username]
-                                  : const [AutofillHints.email],
-                          controller:
-                              byUsername ? usernameController : emailController,
-                          hint: byUsername ? 'Username' : "Email",
-                          labelText:
-                              byUsername
-                                  ? "Enter Username "
-                                  : "Enter email address",
-                          validator: (value) {
-                            if (byUsername == true) {
-                              return LoginValidation.validUsername(value);
-                            } else {
-                              return LoginValidation.validateEmail(value);
-                            }
-                          },
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 10,
-                            horizontal: 20,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  setState(() => byUsername = !byUsername);
-                                },
-                                child: Text(
-                                  byUsername ? 'With Email?' : 'With Username?',
-                                ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/png/logo.png',
+                              width: 36,
+                              height: 36,
+                              fit: BoxFit.contain,
+                              errorBuilder: (context, error, stackTrace) {
+                                // Fallback if logo fails to load
+                                return Icon(
+                                  Icons.school,
+                                  color: AppColor.nokiaBlue,
+                                  size: 36,
+                                );
+                              },
+                            ),
+                            const SizedBox(width: 10),
+                            const Text(
+                              "Class Master",
+                              style: TextStyle(
+                                fontSize: 26,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1.0,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-
-                        AppTextFromField(
-                          autofillHints: const [AutofillHints.password],
-                          margin: const EdgeInsets.symmetric(
-                            vertical: 5,
-                            horizontal: 25,
-                          ),
-                          controller: _passwordController,
-                          obscureText: true,
-                          hint: "password",
-                          labelText: "Enter a valid password",
-                          validator:
-                              (value) =>
-                                  LoginValidation.validatePassword(value),
-                        ),
-
-                        //
-                        const SizedBox(height: 30),
-
-                        SignUpSwitcherButton(
-                          "",
-                          "Forgot your Password?",
-                          onTap: () async {
-                            await FirebaseAuth.instance.signOut();
-
-                            context.pushNamed(
-                              RouteConst.forgetPassword,
-                              extra: emailController.text.trim().toString(),
-                            );
-                          },
-                        ),
-                        const SizedBox(height: 30),
-
-                        CupertinoButtonCustom(
-                          isLoading: loading,
-                          padding: const EdgeInsets.symmetric(horizontal: 40),
-                          color: AppColor.nokiaBlue,
-                          text: "Log In",
-                          onPressed: () async {
-                            if (formKey.currentState?.validate() ?? false) {
-                              authLogin.signIn(
-                                context,
-                                username: usernameController.text.trim(),
-                                email: emailController.text.trim(),
-                                password: _passwordController.text,
-                              );
-                            } else {
-                              Alert.showSnackBar(context, 'Fill the form');
-                            }
-                          },
-                        ),
-
-                        //
-                        const OR(),
-
-                        SignUpSwitcherButton(
-                          "Do not have an account?",
-                          "Sign up",
-                          onTap: () {
-                            context.pushNamed(
-                              RouteConst.signUp,
-                              extra: emailController.text.trim().toString(),
-                            );
-                          },
-                        ),
-
-                        //****************************************************************************************************/
-                        // --------------------------------- Continue With Google --------------------------------------------/
-                        //****************************************************************************************************/
-                        //const SizedBox(height: 20),
-                        SocialLoginButton(
-                          isLoading: googleAuthProvider.lodging || loading,
-                          onTap: () {
-                            googleAuthProvider.signing(context, ref);
-                          },
-                        ),
-
                         const SizedBox(height: 20),
-                        CupertinoButtonCustom(
-                          isLoading: false,
-                          padding: const EdgeInsets.symmetric(horizontal: 40),
-                          color: Colors.blueGrey,
-                          text: "Explore Without Login",
-                          onPressed: () async {
-                            final router = GoRouter.of(context);
-                            await LocalData.emptyLocal();
-                            await LocalData.saveIsGuest(true);
-                            router.go('/home');
-                          },
-                        ),
-
-                        // SocialLoginButton(
-                        //   iphone: true,
-                        //   onTap: () async {
-                        //     Navigator.push(
-                        // context,
-                        // MaterialPageRoute(builder: (context) => const PhoneNumberScreen()));
-                        //   },
-                        // ),
-                        if (kDebugMode)
-                          Row(
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  authLogin.signIn(
-                                    context,
-                                    username: "nurazom049",
-                                    email: null,
-                                    password: "@Nurazom123",
-                                  );
-                                },
-                                // ignore: prefer_const_constructors
-                                child: Text('nurazom ac'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  authLogin.signIn(
-                                    context,
-                                    username: "roma123",
-                                    email: null,
-                                    password: "@Rahala+Nur123",
-                                  );
-                                },
-                                // ignore: prefer_const_constructors
-                                child: Text('skip'),
-                              ),
-                            ],
+                        const Text(
+                          "Welcome back!",
+                          style: TextStyle(
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF111827),
                           ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          _statusText,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: _statusColor,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                ),
+                  const SizedBox(height: 30),
+
+                  // Email/Username Field
+                  AppTextFromField(
+                    focusNode: _emailFocus,
+                    margin: EdgeInsets.zero,
+                    autofillHints:
+                        _byUsername
+                            ? const [AutofillHints.username]
+                            : const [AutofillHints.email],
+                    controller:
+                        _byUsername ? _usernameController : _emailController,
+                    hint: _byUsername ? 'Username' : "Email",
+                    labelText:
+                        _byUsername ? "Enter Username" : "Enter email address",
+                    validator: (value) {
+                      if (_byUsername) {
+                        return LoginValidation.validUsername(value);
+                      } else {
+                        return LoginValidation.validateEmail(value);
+                      }
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8, bottom: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              _byUsername = !_byUsername;
+                              _emailController.clear();
+                              _usernameController.clear();
+                              _emailFocus.requestFocus();
+                            });
+                          },
+                          child: Text(
+                            _byUsername ? 'With Email?' : 'With Username?',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Color(0xFF6B7280),
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Password Field
+                  AppTextFromField(
+                    focusNode: _passwordFocus,
+                    margin: EdgeInsets.zero,
+                    autofillHints: const [AutofillHints.password],
+                    controller: _passwordController,
+                    obscureText: !_isPasswordVisible,
+                    hint: "Password",
+                    labelText: "••••••••",
+                    validator:
+                        (value) => LoginValidation.validatePassword(value),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // Forget password
+                  ForgetPasswordBtn(
+                    onTap: () async {
+                      await FirebaseAuth.instance.signOut();
+                      context.pushNamed(
+                        RouteConst.forgetPassword,
+                        extra: _emailController.text.trim().toString(),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Custom Login Button with Validation
+                  CupertinoButtonCustom(
+                    isLoading: loading,
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    color: AppColor.nokiaBlue,
+                    text: "Log In",
+                    onPressed: () async {
+                      if (_formKey.currentState?.validate() ?? false) {
+                        _triggerFeedback(true);
+                        authLogin.signIn(
+                          context,
+                          username: _usernameController.text.trim(),
+                          email: _emailController.text.trim(),
+                          password: _passwordController.text,
+                        );
+                      } else {
+                        _triggerFeedback(false);
+                        Alert.showSnackBar(context, 'Fill the form');
+                      }
+                    },
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // Google Login Button
+                  SocialLoginButton(
+                    isLoading: false,
+                    onTap: () {
+                      googleAuthProvider.signing(context, ref);
+                    },
+                  ),
+
+                  const SizedBox(height: 30),
+                  Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        context.pushNamed(
+                          RouteConst.signUp,
+                          extra: _emailController.text.trim().toString(),
+                        );
+                      },
+                      child: RichText(
+                        text: const TextSpan(
+                          text: "Don't have an account? ",
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 22, 75, 182),
+                            fontSize: 14,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: "Sign up",
+                              style: TextStyle(
+                                color: Color(0xFF111827),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  CupertinoButtonCustom(
+                    isLoading: false,
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    color: Colors.blueGrey,
+                    text: "Explore Without Login",
+                    onPressed: () async {
+                      final router = GoRouter.of(context);
+                      await LocalData.emptyLocal();
+                      await LocalData.saveIsGuest(true);
+                      router.go('/home');
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                ],
               ),
             ),
           ),

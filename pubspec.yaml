@@ -27,12 +27,13 @@ dependencies:
   carousel_slider: ^5.0.0
   custom_pop_up_menu: ^1.2.4
   expandable_text: ^2.3.0
+  url_launcher: ^6.2.5
 
   # Networking and API
   http:
   socket_io_client: ^2.0.3+1
   connectivity_plus: ^4.0.1
-  url_launcher: ^6.1.12
+  
   
   # State Management and Utilities
   flutter_riverpod: ^2.2.0
@@ -78,6 +79,7 @@ dependencies:
   sentry_flutter: ^7.14.0
   flutter_lints: ^5.0.0
   image_cropper: ^12.2.1
+  share_plus: ^10.0.2
 
 
 

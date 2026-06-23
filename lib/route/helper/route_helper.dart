@@ -7,32 +7,40 @@ import '../../core/local_data/local_data.dart';
 
 class RouterHelper {
   static Future<String?> handleRedirect(
-      BuildContext context, GoRouterState state) async {
+    BuildContext context,
+    GoRouterState state,
+  ) async {
     final String? token = await LocalData.getAuthToken();
     final String? refreshToken = await LocalData.getRefreshToken();
     final bool isGuest = await LocalData.isGuest();
 
     print("Token: $token  refreshToken: $refreshToken  isGuest: $isGuest");
-    print("Current location: ${state.location}");
+    print("Current location: ${state.subloc}");
 
     final bool isAuthenticated = token != null && refreshToken != null;
     final bool isAuthRoute = state.subloc.startsWith('/auth/');
 
-    // 1. If not authenticated and not a guest, they must go to/stay on auth routes
+    // 🔥 নতুন কন্ডিশন: ইউজার নোটিশ দেখতে চাচ্ছে কিনা চেক করা
+    final bool isNoticeRoute = state.subloc.startsWith('/notice/');
+
+    // ১. ইউজার যদি লগইন না থাকে এবং গেস্টও না হয়
     if (!isAuthenticated && !isGuest) {
-      if (!isAuthRoute) {
-        print('Redirecting unauthenticated/non-guest user to /auth/login');
+      // অথ রুট এবং নোটিশ রুট বাদে অন্য যেকোনো পেজে যেতে চাইলে তাকে লগইন পেজে পাঠাও
+      // (যাতে শেয়ার করা নোটিশের লিংকে ক্লিক করলে লগইন ছাড়াও নোটিশ দেখা যায়)
+      if (!isAuthRoute && !isNoticeRoute) {
+        print('Redirecting unauthenticated user to /auth/login');
         return '/auth/login';
       }
       return null;
     }
 
-    // 2. If authenticated or guest, and they are at root '/' or auth routes, redirect to home
+    // ২. যদি লগইন বা গেস্ট ইউজার ভুল করে রুট '/' বা অথ রুটে চলে যায়, তাকে হোমে পাঠাও
     if (state.subloc == '/' || (isAuthRoute && state.subloc != '/auth/login')) {
       print('Redirecting to /home');
       return '/home';
     }
 
-    return null; // Allow navigation
+    // বাকি সব রুটের জন্য (যেমন: /notice/:id) নরমাল ন্যাভিগেশন অ্যালাউ করো
+    return null;
   }
 }

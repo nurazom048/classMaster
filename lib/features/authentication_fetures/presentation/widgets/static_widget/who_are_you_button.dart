@@ -10,8 +10,9 @@ import '../../screen/signup_screen.dart';
 class WhoAreYouButton extends ConsumerWidget {
   final void Function(String)? onAccountType;
   String selectedRole = 'student';
+  double? horizontal ;
 
-  WhoAreYouButton({super.key, required this.onAccountType});
+  WhoAreYouButton({super.key, required this.onAccountType, this.horizontal});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,7 +22,7 @@ class WhoAreYouButton extends ConsumerWidget {
     final selected = ref.watch(selectAccountTypeProvider);
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24).copyWith(top: 30),
+      margin: EdgeInsets.symmetric(horizontal: horizontal ?? 24).copyWith(top: 30),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

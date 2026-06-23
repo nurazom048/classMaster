@@ -72,9 +72,9 @@ class AuthController extends StateNotifier<bool> {
           MaterialPageRoute(
             builder: (context) {
               return LoginScreen(
-                emailAddress: username.isNotEmpty ? email : null,
-                passwordAddress: password,
-                usernameAddress: username,
+                // emailAddress: username.isNotEmpty ? email : null,
+                //passwordAddress: password,
+                //usernameAddress: username,
               );
             },
           ),
@@ -127,16 +127,8 @@ class AuthController extends StateNotifier<bool> {
               email: error.email!,
               password: password,
             );
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder:
-                    (context) => EmailVerificationScreen(
-                      email: error.email!,
-                      password: password,
-                    ),
-              ),
-            );
+            // go to email verification screen
+            context.pushNamed(RouteConst.verifiedEmail, extra: error.email);
             Alert.showSnackBar(context, 'Email is not verified');
           } else {
             return Alert.errorAlertDialog(context, error.message);

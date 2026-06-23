@@ -3,11 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:classmate/features/account_fetures/data/models/account_models.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/export_core.dart';
 import '../providers/view_recent_notice_controller.dart';
 import '../utils/notice_board_dialog.dart';
 import '../widgets/static_widgets/simple_notice_card.dart';
-import 'view_notice_screen.dart';
+import 'view_notice_screen.dart'
+    hide HeaderTitle, AppText, AccountModels
+    hide HeaderTitle, AppText, AccountModels;
 
 class ViewAllRecentNotice extends ConsumerWidget {
   ViewAllRecentNotice({super.key, this.accountData});
@@ -83,16 +86,14 @@ class ViewAllRecentNotice extends ConsumerWidget {
                           noticeId: notice.id,
                         );
                       },
+                      // আগের Navigator.push এর বদলে এই কোড বসবে:
                       ontap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (context) => NoticeViewScreen(
-                                  notice: notice,
-                                  accountModel: accountModel,
-                                ),
-                          ),
+                        GoRouter.of(context).push(
+                          '/notice/${notice.id}',
+                          extra: {
+                            'notice': notice,
+                            'accountModel': accountModel,
+                          },
                         );
                       },
                     );

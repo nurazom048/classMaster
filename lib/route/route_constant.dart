@@ -8,6 +8,7 @@ class RouteConst {
   static const String login = 'login';
   static const String signUp = 'signUp';
   static const String forgetPassword = 'forgetPassword';
+  static const String verifiedEmail = 'verifiedEmail';
 
   // Routine routes
   static const String createRoutine = 'createRoutine';
@@ -20,4 +21,7 @@ class RouteConst {
   // Account routes
   static const String editAccount = 'edit-account';
   static const String settingsPage = 'settings';
+
+  // Notice
+  static const String viewNotice = "viewNotice";
 }
