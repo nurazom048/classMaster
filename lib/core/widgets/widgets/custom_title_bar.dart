@@ -65,7 +65,7 @@ class CustomTitleBar extends StatelessWidget {
                 const Spacer(flex: 18),
                 InkWell(
                   onTap: () {
-                    GoRouter.of(context).pushNamed(RouteConst.searchPage);
+                    context.pushNamed(RouteConst.searchPage);
                   },
                   child: Icon(
                     icon ?? Icons.search,

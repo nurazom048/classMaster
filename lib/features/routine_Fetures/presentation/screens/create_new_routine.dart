@@ -99,7 +99,7 @@ class CreateNewRoutine extends StatelessWidget {
           await Future.delayed(const Duration(seconds: 2));
           createRoutineLoaderNotifier.update((state) => false);
           // Wait for 5 seconds
-          GoRouter.of(context).pushNamed(
+          context.pushNamed(
             RouteConst.viewRoutine,
             params: {"routineID": data.routineID!},
             extra: data.routineName,

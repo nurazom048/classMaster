@@ -1,9 +1,12 @@
 import 'package:classmate/core/component/heder_component/transition/right_to_left_transition.dart';
 import 'package:classmate/features/notice_fetures/data/models/recent_notice_model.dart';
 import 'package:classmate/features/notice_fetures/presentation/screens/view_notice_screen.dart';
+import 'package:classmate/route/app_router.dart';
+import 'package:classmate/route/route_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
+import 'package:go_router/go_router.dart';
 import '../providers/view_recent_notice_controller.dart';
 import '../widgets/static_widgets/simple_notice_card.dart';
 
@@ -50,20 +53,14 @@ class ListOfNoticeScreen extends ConsumerWidget {
                         id: data.notices[index].id,
                         noticeName: data.notices[index].title,
                         ontap: () {
-                          Navigator.push(
-                            context,
-                            RightToLeftTransition(
-                              page: NoticeViewScreen(
-                                notice: Notice(
-                                  id: data.notices[index].id,
-                                  title: data.notices[index].title,
-                                  pdf: data.notices[index].pdf,
-                                  account: data.notices[index].account,
-                                  description: data.notices[index].description,
-                                  createdAt: data.notices[index].createdAt,
-                                ),
-                                accountModel: data.notices[index].account,
-                              ),
+                          final notice = data.notices[index];
+
+                          context.push(
+                            '/notice/${notice.id}',
+                            extra: ViewNoticeExtraData(
+                              id: notice.id,
+                              notice: notice,
+                              accountModel: notice.account,
                             ),
                           );
                         },

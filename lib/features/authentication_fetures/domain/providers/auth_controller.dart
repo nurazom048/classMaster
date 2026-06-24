@@ -147,7 +147,7 @@ class AuthController extends StateNotifier<bool> {
           );
 
           // land to the Home screen
-          GoRouter.of(context).pushNamed(RouteConst.home);
+          context.pushNamed(RouteConst.home);
           Alert.showSnackBar(context, data);
         },
       );
@@ -244,7 +244,7 @@ class AuthController extends StateNotifier<bool> {
 
             // 5. Check if the context is still mounted, then navigate to the login screen
             if (!context.mounted) return;
-            GoRouter.of(context).goNamed(RouteConst.login);
+            context.pushNamed(RouteConst.login);
           } catch (e) {
             print('Logout error: $e');
             if (context.mounted) {

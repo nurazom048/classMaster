@@ -1,4 +1,6 @@
+import 'dart:html' as html;
 import 'package:classmate/core/component/heder_component/transition/right_to_left_transition.dart';
+import 'package:classmate/features/notice_fetures/data/datasources/notice_request.dart';
 import 'package:classmate/features/notice_fetures/presentation/utils/share_notice_dialog.dart';
 import 'package:classmate/features/notice_fetures/presentation/widgets/static_widgets/custom_share_bottom_sheet.dart';
 import 'package:classmate/features/notice_fetures/presentation/widgets/static_widgets/share_notice_button.dart';
@@ -19,61 +21,145 @@ import 'package:url_launcher/url_launcher.dart';
 // MAIN SCREEN
 // ============================================================================
 
-class NoticeViewScreen extends StatelessWidget {
-  final Notice notice; // Typed as Notice instead of dynamic
-  final AccountModels accountModel;
+class NoticeViewScreen extends StatefulWidget {
+  final Notice? notice;
+  final AccountModels? accountModel;
+  final String? noticeId; // New: Pass ID if coming from a link
 
   const NoticeViewScreen({
     super.key,
-    required this.notice,
-    required this.accountModel,
+    this.notice,
+    this.accountModel,
+    this.noticeId,
   });
 
-  void _showShareBottomSheet(BuildContext context, String url) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => CustomShareBottomSheet(shareableUrl: url),
-    );
+  @override
+  State<NoticeViewScreen> createState() => _NoticeViewScreenState();
+}
+
+class _NoticeViewScreenState extends State<NoticeViewScreen> {
+  Notice? _notice;
+  AccountModels? _accountModel;
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Logic: Only fetch if data is missing (Deep Link scenario)
+    if (widget.notice == null || widget.accountModel == null) {
+      _fetchNoticeData();
+    } else {
+      _notice = widget.notice;
+      _accountModel = widget.accountModel;
+    }
   }
 
-  // Helper method to format the time
-  String _formatTimeAgo(DateTime timestamp) {
-    final now = DateTime.now();
-    final difference = now.difference(timestamp);
-
-    if (difference.inHours < 24) {
-      if (difference.inHours > 0) {
-        return '${difference.inHours} hour${difference.inHours == 1 ? '' : 's'} ago';
-      } else if (difference.inMinutes > 0) {
-        return '${difference.inMinutes} minute${difference.inMinutes == 1 ? '' : 's'} ago';
-      } else {
-        return 'Just now';
-      }
-    } else {
-      // Simple date formatting for older than 24 hours (e.g., Oct 24, 2023)
-      // You can use the intl package for better localization if needed
-      const months = [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec',
-      ];
-      return '${months[timestamp.month - 1]} ${timestamp.day}, ${timestamp.year}';
+  Future<void> _fetchNoticeData() async {
+    if (widget.noticeId == null) return;
+    setState(() => _isLoading = true);
+    try {
+      final noticeRequest = NoticeRequest();
+      final result = await noticeRequest.getNoticeById(
+        noticeId: widget.noticeId!,
+      );
+      setState(() {
+        _notice = result;
+        _accountModel = result.account;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() => _isLoading = false);
+      // Handle error (e.g., show snackbar)
     }
+  }
+
+  String _formatTimeAgo(DateTime dateTime) {
+    final now = DateTime.now();
+    final difference = now.difference(dateTime);
+
+    if (difference.inSeconds < 60) {
+      return 'Just now';
+    } else if (difference.inMinutes < 60) {
+      return '${difference.inMinutes} minutes ago';
+    } else if (difference.inHours < 24) {
+      return '${difference.inHours} hours ago';
+    } else if (difference.inDays < 7) {
+      return '${difference.inDays} days ago';
+    } else if (difference.inDays < 30) {
+      return '${(difference.inDays / 7).floor()} weeks ago';
+    } else if (difference.inDays < 365) {
+      return '${(difference.inDays / 30).floor()} months ago';
+    } else {
+      return '${(difference.inDays / 365).floor()} years ago';
+    }
+  }
+
+  void _showShareBottomSheet(BuildContext context, String shareableUrl) {
+    showModalBottomSheet<void>(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (BuildContext context) {
+        return Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Share Notice',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 12),
+              SelectableText(
+                shareableUrl,
+                style: const TextStyle(fontSize: 14, color: Colors.blue),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton.icon(
+                onPressed: () async {
+                  final Uri emailUri = Uri(
+                    scheme: 'mailto',
+                    queryParameters: {
+                      'subject': 'Notice from ClassMaster',
+                      'body': shareableUrl,
+                    },
+                  );
+                  if (await canLaunchUrl(emailUri)) {
+                    await launchUrl(emailUri);
+                  }
+                },
+                icon: const Icon(Icons.email),
+                label: const Text('Share via email'),
+              ),
+              const SizedBox(height: 12),
+              ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.close),
+                label: const Text('Close'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    print("REAL URL => ${html.window.location.href}");
+
+    if (_isLoading) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+
+    if (_notice == null) {
+      return const Scaffold(body: Center(child: Text("Notice not found")));
+    }
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xFFFDFDFD), // Light background
@@ -102,7 +188,7 @@ class NoticeViewScreen extends StatelessWidget {
                         ),
                         // Display the formatted time
                         Text(
-                          _formatTimeAgo(notice.createdAt),
+                          _formatTimeAgo(_notice!.createdAt),
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.grey.shade600,
@@ -123,7 +209,7 @@ class NoticeViewScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      notice.title,
+                      _notice!.title,
                       style: const TextStyle(
                         fontSize: 16,
                         color: Colors.black87,
@@ -142,7 +228,7 @@ class NoticeViewScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      notice.description ?? '',
+                      _notice!.description ?? '',
                       style: const TextStyle(
                         fontSize: 16,
                         color: Colors.black87,
@@ -172,7 +258,8 @@ class NoticeViewScreen extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder:
-                                      (context) => ViewPDf(pdfLink: notice.pdf),
+                                      (context) =>
+                                          ViewPDf(pdfLink: _notice!.pdf),
                                 ),
                               );
                             },
@@ -186,7 +273,7 @@ class NoticeViewScreen extends StatelessWidget {
                             label: "Share",
                             onTap: () {
                               final String shareableUrl =
-                                  "https://classmaster.top/notice/${notice.id}";
+                                  "https://classmaster.top/notice/${_notice!.id}";
                               _showShareBottomSheet(context, shareableUrl);
                             },
                           ),
@@ -197,7 +284,7 @@ class NoticeViewScreen extends StatelessWidget {
                     const SizedBox(height: 40),
 
                     MiniAccountInfo(
-                      accountData: notice.account,
+                      accountData: _notice!.account,
                       hideMore: true,
                       onTap:
                           () => Navigator.push(
@@ -205,8 +292,8 @@ class NoticeViewScreen extends StatelessWidget {
                             MaterialPageRoute(
                               builder:
                                   (context) => ProfileScreen(
-                                    academyID: notice.account.id,
-                                    username: notice.account.username,
+                                    academyID: _notice!.account.id,
+                                    username: _notice!.account.username,
                                   ),
                             ),
                           ),

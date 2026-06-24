@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print
 
+import 'package:classmate/route/app_router.dart';
+import 'package:classmate/route/route_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:classmate/features/account_fetures/data/models/account_models.dart';
@@ -8,9 +10,7 @@ import '../../../../core/export_core.dart';
 import '../providers/view_recent_notice_controller.dart';
 import '../utils/notice_board_dialog.dart';
 import '../widgets/static_widgets/simple_notice_card.dart';
-import 'view_notice_screen.dart'
-    hide HeaderTitle, AppText, AccountModels
-    hide HeaderTitle, AppText, AccountModels;
+import 'view_notice_screen.dart';
 
 class ViewAllRecentNotice extends ConsumerWidget {
   ViewAllRecentNotice({super.key, this.accountData});
@@ -86,14 +86,20 @@ class ViewAllRecentNotice extends ConsumerWidget {
                           noticeId: notice.id,
                         );
                       },
-                      // আগের Navigator.push এর বদলে এই কোড বসবে:
+
                       ontap: () {
-                        GoRouter.of(context).push(
+                        //uncomment after testing
+                        print("clicked");
+
+                        final notice = data.notices[index];
+
+                        context.push(
                           '/notice/${notice.id}',
-                          extra: {
-                            'notice': notice,
-                            'accountModel': accountModel,
-                          },
+                          extra: ViewNoticeExtraData(
+                            id: notice.id,
+                            notice: notice,
+                            accountModel: notice.account,
+                          ),
                         );
                       },
                     );

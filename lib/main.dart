@@ -61,12 +61,15 @@ void main() async {
     // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
     // We recommend adjusting this value in production.
     options.tracesSampleRate = 1.0;
-  }, appRunner: () => runApp(const ProviderScope(child: MyApp())));
+  }, appRunner: () => runApp(ProviderScope(child: MyApp())));
 }
 //
 
 class MyApp extends ConsumerWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  // Create only ONE GoRouter instance
+  final router = AppRouters().router;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -80,12 +83,11 @@ class MyApp extends ConsumerWidget {
           home: Scaffold(body: Center(child: CircularProgressIndicator())),
         );
       },
-      error:
-          (error, stackTrace) => MaterialApp(
-            home: Scaffold(
-              body: Center(child: Text('Theme load error: $error')),
-            ),
-          ),
+      error: (error, stackTrace) {
+        return MaterialApp(
+          home: Scaffold(body: Center(child: Text('Theme load error: $error'))),
+        );
+      },
       data: (themeMode) {
         return GetMaterialApp.router(
           key: ValueKey(themeMode.hashCode),
@@ -94,8 +96,9 @@ class MyApp extends ConsumerWidget {
           theme: themeNotifier.lightTheme,
           darkTheme: themeNotifier.darkTheme,
           themeMode: themeNotifier.flutterThemeMode,
-          routeInformationParser: AppRouters().router.routeInformationParser,
-          routerDelegate: AppRouters().router.routerDelegate,
+          routeInformationParser: router.routeInformationParser,
+          routeInformationProvider: router.routeInformationProvider,
+          routerDelegate: router.routerDelegate,
         );
       },
     );

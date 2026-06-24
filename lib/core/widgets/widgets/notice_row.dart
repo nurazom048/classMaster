@@ -1,5 +1,7 @@
-import 'package:flutter/cupertino.dart';
+import 'package:classmate/route/app_router.dart';
+import 'package:classmate/route/route_constant.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import '../../../features/account_fetures/data/models/account_models.dart';
 import '../../../features/notice_fetures/data/models/recent_notice_model.dart';
@@ -53,26 +55,27 @@ class NoticeRow extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         style: TS.opensensBlue(
-                            fontSize: 20,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w300),
+                          fontSize: 20,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w300,
+                        ),
                       ),
                     ),
                   ],
                 ),
                 GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                          builder: (context) => NoticeViewScreen(
-                            notice: notice,
-                            accountModel: accountModels,
-                          ),
-                        ),
-                      );
-                    },
-                    child: const Icon(Icons.arrow_forward))
+                  onTap: () {
+                    context.push(
+                      '/notice/${notice.id}',
+                      extra: ViewNoticeExtraData(
+                        id: notice.id,
+                        notice: notice,
+                        accountModel: notice.account,
+                      ),
+                    );
+                  },
+                  child: const Icon(Icons.arrow_forward),
+                ),
               ],
             ),
           ),

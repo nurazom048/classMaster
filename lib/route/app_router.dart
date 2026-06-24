@@ -37,151 +37,143 @@ class AppRouters {
       ),
 
       // Auth routes group
-      ...[
-        GoRoute(
-          path: '/auth/login',
-          name: RouteConst.login,
-          pageBuilder:
-              (context, state) => const MaterialPage(child: LoginScreen()),
-        ),
-        GoRoute(
-          path: '/auth/sign_up',
-          name: RouteConst.signUp,
-          pageBuilder:
-              (context, state) => MaterialPage(
-                child: SignUpScreen(emailAddress: state.extra as String?),
-              ),
-        ),
-
-        GoRoute(
-          path: '/auth/forget_password',
-          name: RouteConst.forgetPassword,
-          pageBuilder:
-              (context, state) => MaterialPage(
-                child: ForgetPasswordScreen(email: state.extra as String?),
-              ),
-        ),
-        GoRoute(
-          path: '/auth/verifiedEmail',
-          name: RouteConst.verifiedEmail,
-          pageBuilder:
-              (context, state) => MaterialPage(
-                child: EmailVerificationScreen(email: state.extra as String),
-              ),
-        ),
-      ],
+      GoRoute(
+        path: '/auth/login',
+        name: RouteConst.login,
+        pageBuilder:
+            (context, state) => const MaterialPage(child: LoginScreen()),
+      ),
+      GoRoute(
+        path: '/auth/sign_up',
+        name: RouteConst.signUp,
+        pageBuilder:
+            (context, state) => MaterialPage(
+              child: SignUpScreen(emailAddress: state.extra as String?),
+            ),
+      ),
+      GoRoute(
+        path: '/auth/forget_password',
+        name: RouteConst.forgetPassword,
+        pageBuilder:
+            (context, state) => MaterialPage(
+              child: ForgetPasswordScreen(email: state.extra as String?),
+            ),
+      ),
+      GoRoute(
+        path: '/auth/verifiedEmail',
+        name: RouteConst.verifiedEmail,
+        pageBuilder:
+            (context, state) => MaterialPage(
+              child: EmailVerificationScreen(email: state.extra as String),
+            ),
+      ),
 
       // Routine routes group
-      ...[
-        GoRoute(
-          path: '/routine/create',
-          name: RouteConst.createRoutine,
-          pageBuilder:
-              (context, state) => MaterialPage(child: CreateNewRoutine()),
-        ),
-        GoRoute(
-          path: '/routine/:routineID/view',
-          name: RouteConst.viewRoutine,
-          pageBuilder:
-              (context, state) => MaterialPage(
-                child: ViewMore(
-                  routineId: state.params['routineID']!,
-                  routineName: state.extra as String,
-                ),
+      GoRoute(
+        path: '/routine/create',
+        name: RouteConst.createRoutine,
+        pageBuilder:
+            (context, state) => MaterialPage(child: CreateNewRoutine()),
+      ),
+      GoRoute(
+        path: '/routine/:routineID/view',
+        name: RouteConst.viewRoutine,
+        pageBuilder:
+            (context, state) => MaterialPage(
+              child: ViewMore(
+                routineId: state.params['routineID']!,
+                routineName: state.extra as String,
               ),
-        ),
-        GoRoute(
-          path: '/routine/:routineId/addclass',
-          name: RouteConst.addClass,
-          pageBuilder:
-              (context, state) => MaterialPage(
-                child: AddClassScreen(
-                  routineId: state.params["routineId"]!,
-                  isUpdate: state.extra as bool?,
-                ),
+            ),
+      ),
+      GoRoute(
+        path: '/routine/:routineId/addclass',
+        name: RouteConst.addClass,
+        pageBuilder:
+            (context, state) => MaterialPage(
+              child: AddClassScreen(
+                routineId: state.params["routineId"]!,
+                isUpdate: state.extra as bool?,
               ),
-        ),
-      ],
+            ),
+      ),
 
       // Search routes group
-      ...[
-        GoRoute(
-          path: '/search',
-          name: RouteConst.searchPage,
-          pageBuilder:
-              (context, state) => CustomTransitionPage(
-                child: SearchPage(),
-                transitionsBuilder: (
-                  context,
-                  animation,
-                  secondaryAnimation,
-                  child,
-                ) {
-                  return SlideTransition(
-                    position: Tween<Offset>(
-                      begin: const Offset(1, 0),
-                      end: Offset.zero,
-                    ).animate(animation),
-                    child: child,
-                  );
-                },
-              ),
-        ),
-      ],
+      GoRoute(
+        path: '/search',
+        name: RouteConst.searchPage,
+        pageBuilder:
+            (context, state) => CustomTransitionPage(
+              child: SearchPage(),
+              transitionsBuilder: (
+                context,
+                animation,
+                secondaryAnimation,
+                child,
+              ) {
+                return SlideTransition(
+                  position: Tween<Offset>(
+                    begin: const Offset(1, 0),
+                    end: Offset.zero,
+                  ).animate(animation),
+                  child: child,
+                );
+              },
+            ),
+      ),
 
-      // Account routes group
-      ...[
-        GoRoute(
-          path: '/edit-account',
-          name: RouteConst.editAccount,
-          pageBuilder:
-              (context, state) => const MaterialPage(child: EditAccount()),
-        ),
-        GoRoute(
-          path: '/settings',
-          name: RouteConst.settingsPage,
-          pageBuilder: (context, state) => MaterialPage(child: SettingsPage()),
-        ),
-      ],
+      // Account settings routes
+      GoRoute(
+        path: '/edit-account',
+        name: RouteConst.editAccount,
+        pageBuilder:
+            (context, state) => const MaterialPage(child: EditAccount()),
+      ),
+      GoRoute(
+        path: '/settings',
+        name: RouteConst.settingsPage,
+        pageBuilder: (context, state) => MaterialPage(child: SettingsPage()),
+      ),
 
-      // Notice Board routes
-      // GoRoute(
-      //   path: '/notice/:noticeId',
-      //   name: 'viewNotice',
-      //   pageBuilder: (context, state) {
-      //     final noticeId = state.params['noticeId']!;
-      //     return MaterialPage(child: PublicNoticeScreen(noticeId: noticeId));
-      //   },
-      // ),
-      // Notice Board routes
       GoRoute(
         path: '/notice/:id',
-        name: 'noticeView',
+        name: RouteConst.viewNotice,
         pageBuilder: (context, state) {
-          // 🔥 তোমার go_router ভার্সন অনুযায়ী শুধু state.params['id'] ব্যবহার করো
-          final noticeId = state.params['id']!;
+          print("NOTICE ROUTE OPENED");
+          print("Location = ${state.location}");
 
-          // অ্যাপের ভেতর থেকে নেভিগেট করলে extra ডেটা পাবো
-          final Map<String, dynamic>? extraData =
-              state.extra as Map<String, dynamic>?;
+          // URL থেকে id
+          final noticeId = state.params['id'];
 
-          // Extra থেকে ডেটা রিসিভ করা
-          final notice = extraData?['notice'] as Notice?;
-          final accountModel = extraData?['accountModel'] as AccountModels?;
+          // Extra data (optional)
+          final extraData = state.extra as ViewNoticeExtraData?;
 
-          return MaterialPage(
-            child:
-                notice != null && accountModel != null
-                    ? NoticeViewScreen(
-                      notice: notice,
-                      accountModel: accountModel,
-                    )
-                    : _FetchNoticeWrapper(noticeId: noticeId),
+          return CustomTransitionPage(
+            child: NoticeViewScreen(
+              noticeId: noticeId,
+              notice: extraData?.notice,
+              accountModel: extraData?.accountModel,
+            ),
+            transitionsBuilder: (
+              context,
+              animation,
+              secondaryAnimation,
+              child,
+            ) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(1, 0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              );
+            },
           );
         },
       ),
     ],
     redirect: (context, state) async {
+      print("Current path: ${state.location}");
       return await RouterHelper.handleRedirect(context, state);
     },
     errorPageBuilder:
@@ -190,20 +182,13 @@ class AppRouters {
         ),
   );
 }
+////
+///
 
-class _FetchNoticeWrapper extends StatelessWidget {
-  final String noticeId;
-  const _FetchNoticeWrapper({required this.noticeId});
+class ViewNoticeExtraData {
+  final String? id;
+  final Notice? notice;
+  final AccountModels? accountModel;
 
-  @override
-  Widget build(BuildContext context) {
-    // এখানে FutureBuilder দিয়ে তোমার API কল করবে
-    // API: getNoticeById(noticeId)
-    return Scaffold(
-      body: Center(
-        child: Text("Loading Notice $noticeId from API..."),
-        // ডেটা লোড হয়ে গেলে NoticeViewScreen রিটার্ন করে দিবে
-      ),
-    );
-  }
+  const ViewNoticeExtraData({this.id, this.notice, this.accountModel});
 }
