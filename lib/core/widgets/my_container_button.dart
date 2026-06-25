@@ -8,7 +8,6 @@ class MyContainerButton extends StatelessWidget {
   final Widget? icon;
   final String text;
   final Color? color;
-
   final VoidCallback onTap;
 
   const MyContainerButton(
@@ -22,35 +21,63 @@ class MyContainerButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final isMobile = size.width < 650;
+    
+    // Choose a responsive width with a maximum constraint
+    final double buttonWidth = isMobile 
+        ? (size.width * 0.85).clamp(280.0, 360.0) 
+        : 400.0;
 
-    return InkWell(
-      onTap: onTap,
-      child: Row(
-        children: [
-          const Spacer(flex: 3),
-          icon ?? const SizedBox.shrink(),
-          const Spacer(flex: 2),
-          Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.all(8.0),
-            margin: const EdgeInsets.only(bottom: 5, top: 5),
-            width: size.width / 1.8,
-            decoration: BoxDecoration(
-              color: const Color.fromRGBO(1, 104, 255, 0.10),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Text(
-              text,
-              textScaleFactor: 1.1,
-              style: TextStyle(
-                color: color,
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6.0),
+        child: SizedBox(
+          width: buttonWidth,
+          child: InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(12),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
+              decoration: BoxDecoration(
+                color: isDarkMode 
+                    ? const Color.fromRGBO(1, 104, 255, 0.15)
+                    : const Color.fromRGBO(1, 104, 255, 0.08),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: const Color.fromRGBO(1, 104, 255, 0.15),
+                  width: 1,
+                ),
+              ),
+              child: Row(
+                children: [
+                  if (icon != null) ...[
+                    icon!,
+                    const SizedBox(width: 16),
+                  ],
+                  Expanded(
+                    child: Text(
+                      text,
+                      style: TextStyle(
+                        color: color ?? theme.textTheme.bodyLarge?.color,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  Icon(
+                    Icons.chevron_right,
+                    size: 20,
+                    color: (color ?? theme.textTheme.bodyLarge?.color)?.withOpacity(0.5) 
+                        ?? Colors.grey.shade500,
+                  ),
+                ],
               ),
             ),
           ),
-          const Spacer(flex: 4),
-        ],
+        ),
       ),
     );
   }

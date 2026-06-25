@@ -4,9 +4,11 @@ import 'package:classmate/core/constant/constant.dart';
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
 import 'package:classmate/features/authentication_fetures/presentation/screen/email_verification.screen.dart';
 import 'package:classmate/features/notice_fetures/presentation/utils/pdf_utils.dart';
+import 'package:classmate/ui/bottom_nevbar_items/bottom_navbar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:classmate/core/local_data/local_data.dart';
 
+import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,7 +17,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/models/message_model.dart';
 import '../../../../route/route_constant.dart';
-import '../../../../ui/bottom_navbar.dart';
 import '../../../home_fetures/presentation/utils/utils.dart';
 import '../../../welcome_splash/presentation/screen/pending_account.dart'
     show PendingScreen;
@@ -86,7 +87,7 @@ class AuthController extends StateNotifier<bool> {
 
   //******** signIn      ************ */
   Future<void> signIn(
-    context, {
+    BuildContext context, {
     String? username,
     String? email,
     required String password,
@@ -99,44 +100,66 @@ class AuthController extends StateNotifier<bool> {
         'You are in Offline',
         title: 'Network Error',
       );
+      return; // Added return to prevent continuing on error
     }
-    // print('Username $username || emails$email');
-    else if ((username == null || username == '') &&
+
+    if ((username == null || username == '') &&
         (email == null || email == '')) {
       Alert.errorAlertDialog(context, "email or username is required");
-    } else {
-      state = true;
-      final res = await authReq.login(
-        username: email == null || email == '' ? username : null,
-        email: email,
-        password: password,
-      );
+      return; // Added return to prevent continuing on error
+    }
 
-      res.fold(
-        (error) async {
-          state = false;
+    state = true;
+    final res = await authReq.login(
+      username: email == null || email == '' ? username : null,
+      email: email,
+      password: password,
+    );
 
-          if (error.message == 'Academy request is pending') {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const PendingScreen()),
-            );
-          }
-          if (error.message == 'Email is not verified') {
+    res.fold(
+      (error) async {
+        state = false;
+
+        if (error.message == 'Academy request is pending') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const PendingScreen()),
+          );
+          return;
+        }
+        if (error.message == 'Email is not verified') {
+          try {
             await FirebaseAuth.instance.signInWithEmailAndPassword(
               email: error.email!,
               password: password,
             );
-            // go to email verification screen
-            context.pushNamed(RouteConst.verifiedEmail, extra: error.email);
-            Alert.showSnackBar(context, 'Email is not verified');
-          } else {
-            return Alert.errorAlertDialog(context, error.message);
+          } catch (e) {
+            // Silently handle Firebase error if necessary
           }
-        },
-        (data) async {
-          state = false;
 
+          if (!context.mounted) return;
+
+          // go to email verification screen
+          context.pushNamed(RouteConst.verifiedEmail, extra: error.email);
+          Alert.showSnackBar(context, 'Email is not verified');
+        } else {
+          if (!context.mounted) return;
+          Alert.errorAlertDialog(context, error.message);
+        }
+      },
+      (dynamic data) async {
+        state = false;
+
+        // Trigger browser / Google password manager saving
+        try {
+          TextInput.finishAutofillContext();
+        } catch (e) {
+          debugPrint('Failed to finish autofill context: $e');
+        }
+
+        // 1. Wrap in try/catch! If the credential prompt is dismissed or fails,
+        // it won't crash the code and stop the routing process.
+        try {
           final isUsername = email == null || email == '';
           await CredentialSaveService.saveCredentials(
             context: context,
@@ -145,13 +168,30 @@ class AuthController extends StateNotifier<bool> {
             password: password,
             isUsername: isUsername,
           );
+        } catch (e) {
+          debugPrint('Credential save skipped or failed: $e');
+        }
 
-          // land to the Home screen
-          context.pushNamed(RouteConst.home);
-          Alert.showSnackBar(context, data);
-        },
-      );
-    }
+        // 2. Ensure widget is still mounted before routing
+        if (!context.mounted) return;
+
+        // 3. Land to the Home screen FIRST
+        context.goNamed(RouteConst.home);
+
+        // 4. Safely extract the message for the SnackBar.
+        // Your console shows `data` is an Object/Map, not a raw String!
+        String successMsg = "Login Successful";
+        if (data is Map && data['message'] != null) {
+          successMsg = data['message'].toString();
+        } else if (data != null) {
+          try {
+            successMsg = (data as dynamic).message ?? successMsg;
+          } catch (_) {}
+        }
+
+        Alert.showSnackBar(context, successMsg);
+      },
+    );
   }
 
   //******** change password  ************ */
@@ -244,7 +284,7 @@ class AuthController extends StateNotifier<bool> {
 
             // 5. Check if the context is still mounted, then navigate to the login screen
             if (!context.mounted) return;
-            context.pushNamed(RouteConst.login);
+            context.goNamed(RouteConst.login);
           } catch (e) {
             print('Logout error: $e');
             if (context.mounted) {

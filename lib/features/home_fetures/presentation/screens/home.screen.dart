@@ -43,18 +43,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // Initialize the scrollController
     mobileScrollController = ScrollController();
     recentNoticeScrollController = ScrollController();
     _checkGuestMode();
-
-    // One signal
-    // OneSignalServices.initialize();
-    //OneSignalServices.oneSignalPermission();
-    // Firebase
     FirebaseAnalyticsServices.logHome();
-    // AwesomeNotificationSetup
-
     AwesomeNotificationSetup.takePermission(context);
   }
 
@@ -69,7 +61,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    // Dispose of the scrollController
     recentNoticeScrollController.dispose();
     mobileScrollController.dispose();
     super.dispose();
@@ -83,15 +74,11 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context, ref, _) {
         print('HomeScreen');
 
-        // provider
         final homeRoutines = ref.watch(homeRoutineControllerProvider(null));
-        // final recentNoticeList = ref.watch(recentNoticeController(null));
-
-        //notifier
         final homeRoutinesNotifier = ref.watch(
           homeRoutineControllerProvider(null).notifier,
         );
-        //
+
         final _mobileView = homeMobileView(
           context,
           ref: ref,
@@ -102,25 +89,18 @@ class _HomeScreenState extends State<HomeScreen> {
         );
 
         return Responsive(
-          // Mobile view
-          mobile: SafeArea(
-            child: Scaffold(
-              backgroundColor: const Color(0xFFF2F2F2),
-              body: _mobileView,
-            ),
-          ),
+          // Mobile view - return plain widget without Scaffold
+          mobile: _mobileView,
 
           // Desktop view
           desktop: Scaffold(
             body: Column(
               children: [
-                const CustomTitleBar("title"),
+                const CustomTitleBar("Home"),
                 Expanded(
                   child: Row(
                     children: [
-                      // Drawer
                       const Expanded(flex: 1, child: MyDrawer()),
-                      // mobile
                       Expanded(
                         flex: 3,
                         child: Container(
@@ -141,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-//**************  homeMobileView **************************/
+//************** homeMobileView **************************/
 Widget homeMobileView(
   BuildContext context, {
   required AsyncValue<RoutineHome> homeRoutines,
@@ -151,20 +131,17 @@ Widget homeMobileView(
   required bool isGuestMode,
 }) {
   print('homeMobileView');
-  //
   return NotificationListener<ScrollNotification>(
-    // hide bottom nav bar on scroll
-    onNotification:
-        (scrollNotification) =>
-            Utils.hideNevBarOnScroll(scrollNotification, ref),
+    onNotification: (scrollNotification) {
+      Utils.hideNevBarOnScroll(scrollNotification, ref);
+      return false;
+    },
     child: RefreshIndicator(
       onRefresh: () async {
         final bool isOnline = await Utils.isOnlineMethod();
         if (!isOnline) {
-          Alert.showSnackBar(context, 'You are in offline mode');
+          Alert.showSnackBar(context, 'You are offline');
         } else {
-          //! provider
-
           ref.refresh(homeRoutineControllerProvider(null));
           ref.refresh(recentNoticeController(null));
         }
@@ -174,12 +151,15 @@ Widget homeMobileView(
         padding: const EdgeInsets.only(bottom: 100),
         controller: scrollController,
         children: [
-          if (Responsive.isMobile(context)) const CustomTitleBar("title"),
+          if (Responsive.isMobile(context)) const CustomTitleBar("Home"),
 
           if (isGuestMode)
             Container(
               margin: const EdgeInsets.all(12.0),
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 12.0,
+              ),
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
                   colors: [Color(0xFF37474F), Color(0xFF263238)],
@@ -195,15 +175,21 @@ Widget homeMobileView(
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.info_outline, color: Colors.amberAccent, size: 24),
+                  const Icon(
+                    Icons.info_outline,
+                    color: Colors.amberAccent,
+                    size: 24,
+                  ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      "You are exploring as a guest. Login to access all features.",
-                      style: TS.heading(fontSize: 14).copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      "You are exploring as a guest. Log in to access all features.",
+                      style: TS
+                          .heading(fontSize: 14)
+                          .copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          ),
                     ),
                   ),
                   TextButton(
@@ -212,7 +198,7 @@ Widget homeMobileView(
                       context.goNamed(RouteConst.login);
                     },
                     child: const Text(
-                      "LOGIN",
+                      "LOG IN",
                       style: TextStyle(
                         color: Colors.amberAccent,
                         fontWeight: FontWeight.bold,
@@ -223,23 +209,9 @@ Widget homeMobileView(
               ),
             ),
 
-          //_______________________ recent notices _________________//
           const HomeRecentNoticeWidget(),
-          // // uploaded Routine
           homeRoutines.when(
             data: (data) {
-              // void scrollListener() {
-              //   if (scrollController.position.pixels ==
-              //       scrollController.position.maxScrollExtent) {
-              //     print('end.........................');
-              //     ref
-              //         .watch(homeRoutineControllerProvider(null).notifier)
-              //         .loadMore(data.currentPage);
-              //   }
-              // }
-
-              // scrollController.addListener(scrollListener);
-
               if (data.homeRoutines.isEmpty) {
                 return SizedBox(
                   height: 400,
@@ -284,8 +256,6 @@ Widget homeMobileView(
               );
             },
           ),
-
-          //
         ],
       ),
     ),
@@ -312,7 +282,6 @@ class HomeRecentNoticeWidget extends ConsumerWidget {
         ),
         SizedBox(
           height: 160,
-          // color: Colors.red,
           child: recentNoticeList.when(
             data: (data) {
               int length = data.notices.length;
@@ -326,15 +295,13 @@ class HomeRecentNoticeWidget extends ConsumerWidget {
                     singleCondition: length == 1,
                     recentNotice: data,
                   ),
-
-                  //
                   RecentNoticeSliderItem(
                     notice: data.notices,
                     index: 2,
                     condition: length >= 4,
                     singleCondition: length == 3,
                     recentNotice: data,
-                  ), //
+                  ),
                   RecentNoticeSliderItem(
                     notice: data.notices,
                     index: 3,
@@ -342,7 +309,6 @@ class HomeRecentNoticeWidget extends ConsumerWidget {
                     singleCondition: length == 5,
                     recentNotice: data,
                   ),
-
                   RecentNoticeSliderItem(
                     notice: data.notices,
                     index: 4,
@@ -359,8 +325,6 @@ class HomeRecentNoticeWidget extends ConsumerWidget {
             loading: () => const RecentNoticeSliderSkelton(),
           ),
         ),
-
-        //
         const SizedBox(height: 10),
       ],
     );

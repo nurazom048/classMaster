@@ -2,6 +2,7 @@
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:classmate/features/collection_fetures/Ui/collections.screen.dart';
@@ -13,32 +14,28 @@ class Utils {
     ScrollNotification? scrollNotification,
     WidgetRef ref,
   ) {
-    // Logic of scrollNotification
-    if (scrollNotification is ScrollStartNotification) {
-      print("Scroll Started");
-
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref
-            .watch(hideNevBarOnScorningProvider.notifier)
-            .update((state) => true);
-      });
-    } else if (scrollNotification is ScrollUpdateNotification) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref
-            .watch(hideNevBarOnScorningProvider.notifier)
-            .update((state) => true);
-      });
-      // print(message);
+    if (scrollNotification is UserScrollNotification) {
+      if (scrollNotification.direction == ScrollDirection.reverse) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          ref
+              .watch(hideNevBarOnScorningProvider.notifier)
+              .update((state) => true);
+        });
+      } else if (scrollNotification.direction == ScrollDirection.forward) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          ref
+              .watch(hideNevBarOnScorningProvider.notifier)
+              .update((state) => false);
+        });
+      }
     } else if (scrollNotification is ScrollEndNotification) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ref
             .watch(hideNevBarOnScorningProvider.notifier)
             .update((state) => false);
       });
-
-      // String message = 'Scroll Ended';
     }
-    return true;
+    return false;
   }
 
   //

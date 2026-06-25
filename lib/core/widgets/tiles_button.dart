@@ -22,15 +22,31 @@ class TilesButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final isMobile = size.width < 650;
+    final double buttonWidth = isMobile
+        ? ((size.width - 52) / 2).clamp(110.0, 160.0)
+        : 150.0;
+        
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+
     return InkWell(
       onTap: onTap,
+      borderRadius: BorderRadius.circular(15),
       child: Container(
-        padding: const EdgeInsets.all(5),
-        width: 138,
+        padding: const EdgeInsets.all(8),
+        width: buttonWidth,
         height: 174,
         decoration: BoxDecoration(
-          color: const Color.fromRGBO(1, 104, 255, 0.10),
+          color: isDarkMode 
+              ? const Color.fromRGBO(1, 104, 255, 0.15)
+              : const Color.fromRGBO(1, 104, 255, 0.08),
           borderRadius: BorderRadius.circular(15),
+          border: Border.all(
+            color: const Color.fromRGBO(1, 104, 255, 0.15),
+            width: 1,
+          ),
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
@@ -38,9 +54,17 @@ class TilesButton extends StatelessWidget {
             children: [
               Stack(
                 children: [
-                  const Positioned(right: 2, child: Icon(Icons.arrow_forward)),
+                  Positioned(
+                    right: 0,
+                    top: 0,
+                    child: Icon(
+                      Icons.arrow_forward,
+                      size: 18,
+                      color: theme.textTheme.bodyLarge?.color?.withOpacity(0.6),
+                    ),
+                  ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(4.0),
                     child: Container(
                       margin: imageMargin,
                       height: 92,
@@ -48,28 +72,30 @@ class TilesButton extends StatelessWidget {
                         child: SvgPicture.asset(
                           saxpath,
                           height: 92,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.contain,
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 1),
                 ],
               ),
-              Text(
-                text,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontFamily: "Open Sans",
-                  fontSize: 16,
-                  color: Color.fromRGBO(51, 51, 51, 1),
+              const SizedBox(height: 8),
+              Expanded(
+                child: Center(
+                  child: Text(
+                    text,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: "Open Sans",
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: theme.textTheme.bodyLarge?.color,
+                    ),
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                  ),
                 ),
-                softWrap: true,
-                overflow: TextOverflow.clip,
-                maxLines: 2,
-
-                // Adjust the width and height values as per your requirement
-                // or remove the 'frame' property if not needed
               ),
             ],
           ),

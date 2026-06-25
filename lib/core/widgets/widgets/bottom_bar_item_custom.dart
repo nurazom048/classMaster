@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart' as fa;
 
 import '../../constant/app_color.dart';
 import '../appWidget/app_text.dart';
@@ -7,7 +6,7 @@ import '../appWidget/app_text.dart';
 class BottomBarItemCustom extends StatelessWidget {
   final VoidCallback onTap;
   final bool isSelected;
-  final icon; //todo:
+  final IconData icon;
   final String label;
 
   const BottomBarItemCustom({
@@ -26,7 +25,7 @@ class BottomBarItemCustom extends StatelessWidget {
       onTap: onTap,
       child: Row(
         children: [
-          fa.FaIcon(icon, color: color),
+          Icon(icon, color: color),
           const SizedBox(width: 5),
           Text(label, style: TS.opensensBlue(color: color, fontSize: 14)),
         ],

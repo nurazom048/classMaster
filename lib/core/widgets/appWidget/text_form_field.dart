@@ -134,6 +134,7 @@ class _AppTextFromFieldState extends State<AppTextFromField> {
             TextFormField(
               controller: widget.controller,
               focusNode: widget.focusNode,
+              autofillHints: widget.autofillHints,
               onFieldSubmitted: widget.onFieldSubmitted,
               validator: widget.validator,
               keyboardType: widget.keyboardType,

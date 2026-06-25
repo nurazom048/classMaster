@@ -10,11 +10,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart' as fa;
 import 'package:classmate/features/account_fetures/presentation/screens/profile_screen.dart';
 import 'package:classmate/features/account_fetures/data/models/account_models.dart';
+import 'package:go_router/go_router.dart';
+import '../../../../core/local_data/local_data.dart';
 import '../../../../core/export_core.dart';
 import '../../../../core/widgets/mini_account_row.dart';
 import '../../data/models/recent_notice_model.dart';
 import 'view_pdf_.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 // ============================================================================
@@ -94,58 +95,21 @@ class _NoticeViewScreenState extends State<NoticeViewScreen> {
     }
   }
 
-  void _showShareBottomSheet(BuildContext context, String shareableUrl) {
-    showModalBottomSheet<void>(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      builder: (BuildContext context) {
-        return Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Share Notice',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 12),
-              SelectableText(
-                shareableUrl,
-                style: const TextStyle(fontSize: 14, color: Colors.blue),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton.icon(
-                onPressed: () async {
-                  final Uri emailUri = Uri(
-                    scheme: 'mailto',
-                    queryParameters: {
-                      'subject': 'Notice from ClassMaster',
-                      'body': shareableUrl,
-                    },
-                  );
-                  if (await canLaunchUrl(emailUri)) {
-                    await launchUrl(emailUri);
-                  }
-                },
-                icon: const Icon(Icons.email),
-                label: const Text('Share via email'),
-              ),
-              const SizedBox(height: 12),
-              ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: const Icon(Icons.close),
-                label: const Text('Close'),
-              ),
-            ],
-          ),
-        );
-      },
-    );
+  Future<void> _handleBackNavigation() async {
+    final String? token = await LocalData.getAuthToken();
+    final bool hasToken = token != null && token.isNotEmpty;
+    
+    if (!mounted) return;
+    
+    if (hasToken) {
+      if (Navigator.canPop(context)) {
+        Navigator.pop(context);
+      } else {
+        context.go('/home');
+      }
+    } else {
+      context.go('/auth/login');
+    }
   }
 
   @override
@@ -160,150 +124,167 @@ class _NoticeViewScreenState extends State<NoticeViewScreen> {
       return const Scaffold(body: Center(child: Text("Notice not found")));
     }
 
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: const Color(0xFFFDFDFD), // Light background
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            HeaderTitle("Back to Home", context),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        const Text(
-                          "View Notice",
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        // Display the formatted time
-                        Text(
-                          _formatTimeAgo(_notice!.createdAt),
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey.shade600,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 30),
-
-                    const Text(
-                      "Title",
-                      style: TextStyle(
-                        color: Color(0xFF0066FF),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      _notice!.title,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.black87,
-                      ),
-                    ),
-
-                    const SizedBox(height: 24),
-
-                    const Text(
-                      "Description",
-                      style: TextStyle(
-                        color: Color(0xFF0066FF),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      _notice!.description ?? '',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.black87,
-                        height: 1.4,
-                      ),
-                    ),
-
-                    const SizedBox(height: 24),
-
-                    const Text(
-                      "PDF Document",
-                      style: TextStyle(
-                        color: Color(0xFF0066FF),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: ViewPdfButton(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder:
-                                      (context) =>
-                                          ViewPDf(pdfLink: _notice!.pdf),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          flex: 1,
-                          child: ActionButton(
-                            icon: Icons.share,
-                            label: "Share",
-                            onTap: () {
-                              final String shareableUrl =
-                                  "https://classmaster.top/notice/${_notice!.id}";
-                              _showShareBottomSheet(context, shareableUrl);
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    const SizedBox(height: 40),
-
-                    MiniAccountInfo(
-                      accountData: _notice!.account,
-                      hideMore: true,
-                      onTap:
-                          () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder:
-                                  (context) => ProfileScreen(
-                                    academyID: _notice!.account.id,
-                                    username: _notice!.account.username,
-                                  ),
+    return WillPopScope(
+      onWillPop: () async {
+        await _handleBackNavigation();
+        return false;
+      },
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: const Color(0xFFFDFDFD), // Light background
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              HeaderTitle(
+                "Back to Home", 
+                context,
+                onTap: _handleBackNavigation,
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          const Text(
+                            "View Notice",
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
                             ),
                           ),
-                    ),
-                    const SizedBox(height: 40),
-                  ],
+                          // Display the formatted time
+                          Text(
+                            _formatTimeAgo(_notice!.createdAt),
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey.shade600,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 30),
+  
+                      const Text(
+                        "Title",
+                        style: TextStyle(
+                          color: Color(0xFF0066FF),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        _notice!.title,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.black87,
+                        ),
+                      ),
+  
+                      const SizedBox(height: 24),
+  
+                      const Text(
+                        "Description",
+                        style: TextStyle(
+                          color: Color(0xFF0066FF),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        _notice!.description ?? '',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.black87,
+                          height: 1.4,
+                        ),
+                      ),
+  
+                      const SizedBox(height: 24),
+  
+                      const Text(
+                        "PDF Document",
+                        style: TextStyle(
+                          color: Color(0xFF0066FF),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+  
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: ViewPdfButton(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (context) =>
+                                            ViewPDf(pdfLink: _notice!.pdf),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            flex: 1,
+                            child: ActionButton(
+                              icon: Icons.share,
+                              label: "Share",
+                              onTap: () {
+                                final String shareableUrl =
+                                    "https://classmaster.top/notice/${_notice!.id}";
+                                showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  builder: (context) => CustomShareBottomSheet(
+                                    shareableUrl: shareableUrl,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+  
+                      const SizedBox(height: 40),
+  
+                      MiniAccountInfo(
+                        accountData: _notice!.account,
+                        hideMore: true,
+                        onTap:
+                            () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (context) => ProfileScreen(
+                                      academyID: _notice!.account.id,
+                                      username: _notice!.account.username,
+                                    ),
+                              ),
+                            ),
+                      ),
+                      const SizedBox(height: 40),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

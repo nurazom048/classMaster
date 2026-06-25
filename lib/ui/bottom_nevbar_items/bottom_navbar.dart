@@ -42,98 +42,96 @@ class BottomNavBar extends StatelessWidget {
     return Consumer(
       builder: (context, ref, _) {
         final index = ref.watch(bottomNavBarIndexProvider);
-
         final hideNavBar =
             ref.watch(hideNevBarOnScorningProvider) ||
             !Responsive.isMobile(context);
+
         final showPlus = ref.watch(showPlusProvider);
         return Scaffold(
+          extendBody: true,
           body: pages[index],
-          floatingActionButton: AnimatedOpacity(
+          bottomNavigationBar: AnimatedContainer(
             duration: const Duration(milliseconds: 300),
-            opacity: hideNavBar ? 0.0 : 1.0,
-            child: Visibility(
-              visible: !hideNavBar,
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: Container(
-                  margin: const EdgeInsets.symmetric(
-                    vertical: 0,
-                    horizontal: 30,
-                  ).copyWith(right: 0),
-                  width: 270,
-                  height: 64,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(63),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.35),
-                        blurRadius: 40,
-
-                        //         //  offset: const Offset(0, 0),
+            height: hideNavBar ? 0 : 80,
+            child: Wrap(
+              children: [
+                SafeArea(
+                  bottom: true,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
+                    child: Container(
+                      height: 64,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(63),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.35),
+                            blurRadius: 40,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      BottomBarItemCustom(
-                        label: "Home",
-                        icon: Icons.home_filled,
-                        isSelected: index == 0 && showPlus == false,
-                        onTap: () {
-                          ref
-                              .watch(bottomNavBarIndexProvider.notifier)
-                              .update((state) => 0);
-                        },
-                      ),
-                      InkWell(
-                        onTap: () {
-                          ref
-                              .watch(showPlusProvider.notifier)
-                              .update(
-                                (state) => showPlus == false ? true : false,
-                              );
-                          plusBottomSheet(context);
-                        },
-                        child:
-                            showPlus == false
-                                ? CircleAvatar(
-                                  radius: 19,
-                                  backgroundColor: AppColor.nokiaBlue,
-                                  child: CircleAvatar(
-                                    radius: 17.6,
-                                    backgroundColor: Colors.white,
-                                    child: FaIcon(
-                                      FontAwesomeIcons.plus,
-                                      color: AppColor.nokiaBlue,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          BottomBarItemCustom(
+                            label: "Home",
+                            icon: Icons.home_filled,
+                            isSelected: index == 0 && showPlus == false,
+                            onTap: () {
+                              ref
+                                  .watch(bottomNavBarIndexProvider.notifier)
+                                  .update((state) => 0);
+                            },
+                          ),
+                          InkWell(
+                            onTap: () {
+                              ref
+                                  .watch(showPlusProvider.notifier)
+                                  .update(
+                                    (state) => showPlus == false ? true : false,
+                                  );
+                              plusBottomSheet(context);
+                            },
+                            child:
+                                showPlus == false
+                                    ? CircleAvatar(
+                                      radius: 19,
+                                      backgroundColor: AppColor.nokiaBlue,
+                                      child: CircleAvatar(
+                                        radius: 17.6,
+                                        backgroundColor: Colors.white,
+                                        child: FaIcon(
+                                          FontAwesomeIcons.plus,
+                                          color: AppColor.nokiaBlue,
+                                        ),
+                                      ),
+                                    )
+                                    : CircleAvatar(
+                                      radius: 20,
+                                      backgroundColor: AppColor.nokiaBlue,
+                                      child: const Icon(
+                                        Icons.add,
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                  ),
-                                )
-                                : CircleAvatar(
-                                  radius: 20,
-                                  backgroundColor: AppColor.nokiaBlue,
-                                  child: const Icon(
-                                    Icons.add,
-                                    color: Colors.white,
-                                  ),
-                                ),
+                          ),
+                          BottomBarItemCustom(
+                            label: "Collections",
+                            icon: Icons.person_outline_outlined,
+                            isSelected: index == 2 && showPlus == false,
+                            onTap: () {
+                              ref
+                                  .watch(bottomNavBarIndexProvider.notifier)
+                                  .update((state) => 2);
+                            },
+                          ),
+                        ],
                       ),
-                      BottomBarItemCustom(
-                        label: "Collections",
-                        icon: Icons.person_outline_outlined,
-                        isSelected: index == 2 && showPlus == false,
-                        onTap: () {
-                          ref
-                              .watch(bottomNavBarIndexProvider.notifier)
-                              .update((state) => 2);
-                        },
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
           ),
         );

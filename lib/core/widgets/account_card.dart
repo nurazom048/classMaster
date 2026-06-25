@@ -28,7 +28,7 @@ class AccountCard extends StatelessWidget {
               builder: (context, snapshot) {
                 final isOnline = snapshot.data ?? false;
 
-                if (isOnline) {
+                if (isOnline && account.imageUrl != null && account.imageUrl!.isNotEmpty) {
                   return SizedBox(
                     height: 70,
                     width: 70,

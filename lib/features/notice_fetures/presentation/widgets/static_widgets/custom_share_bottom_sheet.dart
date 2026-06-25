@@ -3,10 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-// ============================================================================
-// SHARE BOTTOM SHEET COMPONENT
-// ============================================================================
-
 class CustomShareBottomSheet extends StatelessWidget {
   final String shareableUrl;
 
@@ -14,13 +10,26 @@ class CustomShareBottomSheet extends StatelessWidget {
 
   void _copyToClipboard(BuildContext context) {
     Clipboard.setData(ClipboardData(text: shareableUrl)).then((_) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Link copied to clipboard!'),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-      Navigator.pop(context); // Close sheet after copying
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(Icons.check_circle, color: Colors.greenAccent, size: 20),
+                const SizedBox(width: 10),
+                const Text(
+                  'Link copied to clipboard!',
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+                ),
+              ],
+            ),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: const Color(0xFF2D2D2D),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
     });
   }
 
@@ -33,13 +42,12 @@ class CustomShareBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Dark theme styling similar to the YouTube example
     return Container(
       decoration: const BoxDecoration(
-        color: Color(0xFF212121), // Dark grey background
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        color: Color(0xFF1E1E1E), // Premium sleek dark background
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      padding: const EdgeInsets.only(top: 8, bottom: 24),
+      padding: const EdgeInsets.only(top: 12, bottom: 30),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,125 +57,141 @@ class CustomShareBottomSheet extends StatelessWidget {
             child: Container(
               width: 40,
               height: 4,
-              margin: const EdgeInsets.only(bottom: 16),
+              margin: const EdgeInsets.only(bottom: 20),
               decoration: BoxDecoration(
-                color: Colors.grey.shade600,
+                color: Colors.white24,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
           ),
 
           const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: EdgeInsets.symmetric(horizontal: 24),
             child: Text(
               'Sharing Link',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 18,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
           const SizedBox(height: 16),
 
-          // Link Container with Copy Button
+          // Clickable Link Container with Copy Button inside
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: const Color(0xFF303030),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      shareableUrl,
-                      style: const TextStyle(color: Colors.white70),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: InkWell(
+              onTap: () => _copyToClipboard(context),
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF2D2D2D),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.white10, width: 1),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        shareableUrl,
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 14,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  IconButton(
-                    icon: const Icon(Icons.copy, color: Colors.white70),
-                    onPressed: () => _copyToClipboard(context),
-                    tooltip: 'Copy link',
-                  ),
-                ],
+                    const SizedBox(width: 12),
+                    const Icon(
+                      Icons.content_copy_rounded,
+                      color: Colors.white70,
+                      size: 20,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
 
-          const SizedBox(height: 20),
-          const Divider(color: Colors.white24, height: 1),
-          const SizedBox(height: 20),
+          const SizedBox(height: 24),
+          const Divider(color: Colors.white12, height: 1),
+          const SizedBox(height: 24),
 
-          // Social Media Icons Grid
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Wrap(
-              spacing: 24,
-              runSpacing: 24,
-              alignment: WrapAlignment.start,
-              children: [
-                _buildShareIcon(
-                  icon: FontAwesomeIcons.whatsapp,
-                  color: const Color(0xFF25D366),
-                  label: 'WhatsApp',
-                  onTap:
-                      () => _launchUrl(
-                        'https://wa.me/?text=${Uri.encodeComponent(shareableUrl)}',
-                      ),
-                ),
-                _buildShareIcon(
-                  icon: FontAwesomeIcons.facebook,
-                  color: const Color(0xFF1877F2),
-                  label: 'Facebook',
-                  onTap:
-                      () => _launchUrl(
-                        'https://www.facebook.com/sharer/sharer.php?u=${Uri.encodeComponent(shareableUrl)}',
-                      ),
-                ),
-                _buildShareIcon(
-                  icon: FontAwesomeIcons.facebookMessenger,
-                  color: const Color(0xFF00B2FF),
-                  label: 'Messenger',
-                  onTap:
-                      () => _launchUrl(
-                        'fb-messenger://share/?link=${Uri.encodeComponent(shareableUrl)}',
-                      ),
-                ),
-                _buildShareIcon(
-                  icon: FontAwesomeIcons.telegram,
-                  color: const Color(0xFF0088cc),
-                  label: 'Telegram',
-                  onTap:
-                      () => _launchUrl(
-                        'https://t.me/share/url?url=${Uri.encodeComponent(shareableUrl)}',
-                      ),
-                ),
-                _buildShareIcon(
-                  icon: FontAwesomeIcons.twitter,
-                  color: const Color(0xFF1DA1F2),
-                  label: 'Twitter',
-                  onTap:
-                      () => _launchUrl(
-                        'https://twitter.com/intent/tweet?url=${Uri.encodeComponent(shareableUrl)}',
-                      ),
-                ),
-                _buildShareIcon(
-                  icon: Icons.email,
-                  color: Colors.redAccent,
-                  label: 'Email',
-                  isMaterial: true, // Flag to use standard Icon
-                  onTap:
-                      () => _launchUrl(
-                        'mailto:?subject=Check out this Notice&body=${Uri.encodeComponent(shareableUrl)}',
-                      ),
-                ),
-              ],
+          // Horizontally Scrollable Social Media Icons Row
+          SizedBox(
+            height: 90,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Row(
+                children: [
+                  _buildShareIcon(
+                    icon: FontAwesomeIcons.whatsapp,
+                    bgColor: const Color(0xFFB5C9BC), // Light Sage Green
+                    iconColor: const Color(0xFF1E3A27),
+                    label: 'WhatsApp',
+                    onTap: () => _launchUrl(
+                      'https://api.whatsapp.com/send?text=${Uri.encodeComponent(shareableUrl)}',
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  _buildShareIcon(
+                    icon: FontAwesomeIcons.facebookF,
+                    bgColor: const Color(0xFFB1C4D6), // Light Slate Blue
+                    iconColor: const Color(0xFF1A365D),
+                    label: 'Facebook',
+                    onTap: () => _launchUrl(
+                      'https://www.facebook.com/sharer/sharer.php?u=${Uri.encodeComponent(shareableUrl)}',
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  _buildShareIcon(
+                    icon: FontAwesomeIcons.facebookMessenger,
+                    bgColor: const Color(0xFFB5D3E3), // Soft Sky Blue
+                    iconColor: const Color(0xFF1E3E54),
+                    label: 'Messenger',
+                    onTap: () => _launchUrl(
+                      'https://www.facebook.com/dialog/send?link=${Uri.encodeComponent(shareableUrl)}&app_id=123456789&redirect_uri=${Uri.encodeComponent(shareableUrl)}',
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  _buildShareIcon(
+                    icon: FontAwesomeIcons.telegram,
+                    bgColor: const Color(0xFFB8C7D2), // Soft Blue-Grey
+                    iconColor: const Color(0xFF2C3E50),
+                    label: 'Telegram',
+                    onTap: () => _launchUrl(
+                      'https://t.me/share/url?url=${Uri.encodeComponent(shareableUrl)}',
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  _buildShareIcon(
+                    icon: FontAwesomeIcons.twitter,
+                    bgColor: const Color(0xFFB8C7D2), // Soft Blue-Grey
+                    iconColor: const Color(0xFF2C3E50),
+                    label: 'Twitter',
+                    onTap: () => _launchUrl(
+                      'https://twitter.com/intent/tweet?url=${Uri.encodeComponent(shareableUrl)}',
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  _buildShareIcon(
+                    icon: Icons.email,
+                    bgColor: const Color(0xFFFF005B), // Vibrant Hot Pink Circle
+                    iconColor: Colors.white,
+                    label: 'Email',
+                    isMaterial: true,
+                    isCircle: true,
+                    onTap: () => _launchUrl(
+                      'mailto:?subject=ClassMaster Notice&body=${Uri.encodeComponent(shareableUrl)}',
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -177,10 +201,12 @@ class CustomShareBottomSheet extends StatelessWidget {
 
   Widget _buildShareIcon({
     required dynamic icon,
-    required Color color,
+    required Color bgColor,
+    required Color iconColor,
     required String label,
     required VoidCallback onTap,
     bool isMaterial = false,
+    bool isCircle = false,
   }) {
     return GestureDetector(
       onTap: onTap,
@@ -188,19 +214,27 @@ class CustomShareBottomSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-            // Use FaIcon for FontAwesome, standard Icon for Material
-            child:
-                isMaterial
-                    ? Icon(icon as IconData, color: Colors.white, size: 28)
-                    : FaIcon(icon, color: Colors.white, size: 28),
+            width: 52,
+            height: 52,
+            decoration: BoxDecoration(
+              color: bgColor,
+              shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
+              borderRadius: isCircle ? null : BorderRadius.circular(14),
+            ),
+            child: Center(
+              child: isMaterial
+                  ? Icon(icon as IconData, color: iconColor, size: 24)
+                  : FaIcon(icon, color: iconColor, size: 24),
+            ),
           ),
           const SizedBox(height: 8),
           Text(
             label,
-            style: const TextStyle(color: Colors.white70, fontSize: 12),
+            style: const TextStyle(
+              color: Colors.white70,
+              fontSize: 11,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ],
       ),
