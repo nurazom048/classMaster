@@ -7,14 +7,14 @@ import 'package:classmate/features/authentication_fetures/presentation/screen/fo
 import 'package:classmate/features/notice_fetures/data/models/recent_notice_model.dart';
 import 'package:classmate/features/notice_fetures/presentation/screens/view_notice_screen.dart';
 import 'package:classmate/features/notice_fetures/presentation/widgets/static_widgets/public_notice_screen.dart';
-import 'package:classmate/features/routine_Fetures/presentation/screens/add_class_screen.dart';
+import 'package:classmate/features/routine/presentation/screens/add_class_screen.dart';
 import 'package:classmate/route/route_constant.dart';
 import 'package:classmate/ui/bottom_nevbar_items/bottom_navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../features/account_fetures/presentation/screens/edit_account.dart';
-import '../features/routine_Fetures/presentation/screens/create_new_routine.dart';
-import '../features/routine_Fetures/presentation/screens/view_more_screen.dart';
+import '../features/routine/presentation/screens/create_new_routine.dart';
+import '../features/routine/presentation/screens/view_more_screen.dart';
 import '../features/search_fetures/presentation/screens/search_page.dart';
 import '../features/welcome_splash/presentation/screen/splash_screen.dart';
 import 'helper/route_helper.dart';

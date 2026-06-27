@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/constant/app_color.dart';
-import '../../../../routine_Fetures/presentation/widgets/static_widgets/notification_buton.dart';
+import '../../../../routine/presentation/widgets/static_widgets/notification_buton.dart';
 
 class NoticeBoardJoinButton extends StatelessWidget {
   final bool isJoin;

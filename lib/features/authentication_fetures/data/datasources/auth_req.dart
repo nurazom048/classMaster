@@ -145,7 +145,7 @@ class AuthReq {
       final response = await http.post(
         url,
         headers: headers,
-        body: {"oldPassword": oldPassword, "newPassword": newPassword},
+        body: jsonEncode({"oldPassword": oldPassword, "newPassword": newPassword}),
       );
       print(jsonDecode(response.body));
 
@@ -176,11 +176,11 @@ class AuthReq {
       final response = await http.post(
         url,
         headers: headers,
-        body: {
+        body: jsonEncode({
           "email": email.toString(),
           "username": username.toString(),
           "phone": phone.toString(),
-        },
+        }),
       );
 
       Message message = Message.fromJson(json.decode(response.body));

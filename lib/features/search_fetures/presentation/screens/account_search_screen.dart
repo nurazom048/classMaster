@@ -1,4 +1,4 @@
-import 'package:classmate/features/routine_Fetures/presentation/widgets/dynamic_widgets/see_all_members_screen.dart';
+import 'package:classmate/features/routine/presentation/widgets/dynamic_widgets/see_all_members_screen.dart';
 import 'package:classmate/features/search_fetures/presentation/providers/search_account_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

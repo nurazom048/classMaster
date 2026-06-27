@@ -12,7 +12,7 @@ import '../../domain/interface/pdf_interface.dart' show PdfFileData;
 import '../providers/view_recent_notice_controller.dart';
 import '../../../../core/widgets/widgets/custom_title_bar.dart';
 import '../../../../core/widgets/widgets/mydrawer.dart';
-import '../../../routine_Fetures/presentation/widgets/static_widgets/uploaded_pdf_button.dart';
+import '../../../routine/presentation/widgets/static_widgets/uploaded_pdf_button.dart';
 
 class AddNoticeScreen extends ConsumerWidget {
   AddNoticeScreen({super.key});

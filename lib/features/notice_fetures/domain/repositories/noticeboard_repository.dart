@@ -1,6 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:classmate/core/models/message_model.dart';
-import '../../../routine_Fetures/data/models/check_status_model.dart';
+import '../../../routine/data/models/check_status_model.dart';
 
 abstract class NoticeboardRepository {
   Future<Either<Message, Message>> leaveMember(String noticeBoard);

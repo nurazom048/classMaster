@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
 import '../../../../core/models/message_model.dart';
-import '../../../routine_Fetures/data/models/check_status_model.dart';
+import '../../../routine/data/models/check_status_model.dart';
 import '../../data/datasources/summary_request.dart';
 
 //! Providers

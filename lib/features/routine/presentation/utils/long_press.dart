@@ -1,0 +1,86 @@
+// ignore_for_file: non_constant_identifier_names
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:classmate/core/constant/app_color.dart';
+import 'package:classmate/core/dialogs/alert_dialogs.dart';
+
+import 'package:classmate/features/routine/presentation/providers/routine_controller.dart';
+import '../screens/add_class_screen.dart';
+
+class PeriodAlert {
+  //
+  //! **********     long press to class       *********//
+  static Future<dynamic> logPressClass(
+    BuildContext context, {
+    required String routineId,
+    required String classId,
+  }) {
+    return showCupertinoModalPopup(
+      context: context,
+      builder:
+          (context) => Consumer(
+            builder: (context, ref, _) {
+              return CupertinoActionSheet(
+                title: const Text(
+                  " Do you want to.. ?",
+                  style: TextStyle(fontSize: 22, color: Colors.black87),
+                ),
+                actions: [
+                  // Edit
+                  CupertinoActionSheetAction(
+                    child: Text(
+                      "Update Class ",
+                      style: TextStyle(color: AppColor.nokiaBlue),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          fullscreenDialog: true,
+                          builder:
+                              (context) => AddClassScreen(
+                                routineId: routineId,
+                                classId: classId,
+                                isUpdate: true,
+                              ),
+                        ),
+                      );
+                    },
+                  ),
+                  // delete
+                  CupertinoActionSheetAction(
+                    child: const Text(
+                      "Remove class",
+                      style: TextStyle(color: Colors.red),
+                    ),
+                    onPressed: () {
+                      Alert.errorAlertDialogCallBack(
+                        context,
+                        'Do you want to delete this Class? You can\'t undo this action.',
+                        onConfirm: (isConfirmed) {
+                          if (isConfirmed) {
+                            ref.read(routineControllerProvider.notifier).deleteClass(
+                              classId,
+                              routineId,
+                              ref,
+                              context,
+                            );
+                            Navigator.of(context).pop();
+                          }
+                        },
+                      );
+                    },
+                  ),
+                ],
+                cancelButton: CupertinoActionSheetAction(
+                  child: const Text("cancel"),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              );
+            },
+          ),
+    );
+  }
+}

@@ -7,7 +7,7 @@ import '../../../../core/local_data/local_data.dart';
 import '../../../../route/route_constant.dart';
 import 'package:go_router/go_router.dart';
 import 'package:classmate/services/one_signal/one_signal.services.dart';
-import 'package:classmate/features/home_fetures/data/models/home_routines_model.dart';
+import 'package:classmate/features/routine/data/models/routine_response_model.dart';
 import 'package:classmate/features/home_fetures/presentation/utils/utils.dart';
 import 'package:classmate/core/widgets/widgets/mydrawer.dart';
 import 'package:classmate/core/widgets/widgets/recent_notice_title.dart';
@@ -20,13 +20,13 @@ import '../../../../core/widgets/error/error.widget.dart';
 import '../../../../services/firebase/firebase_analytics.service.dart';
 import '../../../../services/notification_services/awn_package.dart';
 import '../../../notice_fetures/presentation/screens/view_all_recent_notice.dart';
-import '../../../routine_Fetures/presentation/utils/routine_dialog.dart';
-import '../../../routine_Fetures/presentation/widgets/dynamic_widgets/routine_box_by_id.dart';
-import '../../../routine_Fetures/presentation/widgets/static_widgets/routine_box_id_skeleton.dart';
+import '../../../routine/presentation/utils/routine_dialog.dart';
+import '../../../routine/presentation/widgets/dynamic_widgets/routine_box_by_id.dart';
+import '../../../routine/presentation/widgets/static_widgets/routine_box_id_skeleton.dart';
 import '../../../notice_fetures/presentation/providers/view_recent_notice_controller.dart';
 import '../../../../core/widgets/widgets/custom_title_bar.dart';
 import '../../../../core/widgets/widgets/slider/recent_notice_slider.dart';
-import '../../data/datasources/home_routines_controller.dart';
+import '../../../routine/presentation/providers/routine_list_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -74,9 +74,9 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context, ref, _) {
         print('HomeScreen');
 
-        final homeRoutines = ref.watch(homeRoutineControllerProvider(null));
+        final homeRoutines = ref.watch(routineListProvider(const RoutineListQuery()));
         final homeRoutinesNotifier = ref.watch(
-          homeRoutineControllerProvider(null).notifier,
+          routineListProvider(const RoutineListQuery()).notifier,
         );
 
         final _mobileView = homeMobileView(
@@ -124,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
 //************** homeMobileView **************************/
 Widget homeMobileView(
   BuildContext context, {
-  required AsyncValue<RoutineHome> homeRoutines,
+  required AsyncValue<RoutineResponse> homeRoutines,
   required WidgetRef ref,
   required ScrollController scrollController,
   required homeRoutineNotifier,
@@ -142,7 +142,7 @@ Widget homeMobileView(
         if (!isOnline) {
           Alert.showSnackBar(context, 'You are offline');
         } else {
-          ref.refresh(homeRoutineControllerProvider(null));
+          ref.refresh(routineListProvider(const RoutineListQuery()));
           ref.refresh(recentNoticeController(null));
         }
       },
@@ -212,7 +212,7 @@ Widget homeMobileView(
           const HomeRecentNoticeWidget(),
           homeRoutines.when(
             data: (data) {
-              if (data.homeRoutines.isEmpty) {
+              if (data.routines.isEmpty) {
                 return SizedBox(
                   height: 400,
                   child: Center(
@@ -227,16 +227,16 @@ Widget homeMobileView(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   padding: const EdgeInsets.only(bottom: 100),
-                  itemCount: data.homeRoutines.length,
+                  itemCount: data.routines.length,
                   itemBuilder: (context, index) {
                     return RoutineBoxById(
-                      routineId: data.homeRoutines[index].id,
-                      routineName: data.homeRoutines[index].routineName,
+                      routineId: data.routines[index].id,
+                      routineName: data.routines[index].routineName,
                       onTapMore:
                           () => RoutineDialog.CheckStatusUser_BottomSheet(
                             context,
-                            routineID: data.homeRoutines[index].id,
-                            routineName: data.homeRoutines[index].routineName,
+                            routineID: data.routines[index].id,
+                            routineName: data.routines[index].routineName,
                             routinesController: homeRoutineNotifier,
                           ),
                     );

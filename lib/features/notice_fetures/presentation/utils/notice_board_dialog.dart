@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/export_core.dart';
 import '../../../../core/dialogs/confirm_alert_dialog.dart';
-import '../../../routine_Fetures/presentation/widgets/static_widgets/checkbox_selector_button.dart';
+import '../../../routine/presentation/widgets/static_widgets/checkbox_selector_button.dart';
 import '../providers/noticeboard_status_controller.dart';
 import '../providers/view_recent_notice_controller.dart';
 

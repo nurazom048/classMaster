@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../core/export_core.dart';
-import '../../../../routine_Fetures/presentation/widgets/dynamic_widgets/routine_card_row.dart';
+import '../../../../routine/presentation/widgets/dynamic_widgets/routine_card_row.dart';
 
 class SummaryHeader extends StatelessWidget {
   final String classId;

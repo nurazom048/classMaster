@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
 
-import '../../../routine_Fetures/data/models/check_status_model.dart';
+import '../../../routine/data/models/check_status_model.dart';
 import '../../data/datasources/noticeboard_request.dart';
 
 // notice code update

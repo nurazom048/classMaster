@@ -8,7 +8,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:classmate/core/local_data/local_data.dart';
 import '../../../../core/export_core.dart';
-import '../../../routine_Fetures/data/models/check_status_model.dart';
+import '../../../routine/data/models/check_status_model.dart';
 
 final noticeboardRequestProvider = Provider<NoticeboardRequest>(
   (ref) => NoticeboardRequest(),

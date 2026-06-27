@@ -20,6 +20,10 @@ class AccountModels {
   ImageStorageProvider? imageStorageProvider;
   ImageStorageProvider? coverImageStorageProvider;
 
+  // Step 3: Added requestId and requestMessage fields to AccountModels to handle pending join requests.
+  String? requestId;
+  String? requestMessage;
+
   AccountModels({
     this.id,
     this.username,
@@ -33,6 +37,8 @@ class AccountModels {
     this.isVerified,
     this.imageStorageProvider,
     this.coverImageStorageProvider,
+    this.requestId,
+    this.requestMessage,
   });
 
   /// Create model from API JSON response
@@ -61,6 +67,9 @@ class AccountModels {
       (e) => e.name == json['coverImageStorageProvider'],
       orElse: () => ImageStorageProvider.others,
     );
+
+    requestId = json['requestId'];
+    requestMessage = json['requestMessage'];
   }
 
   /// Full profile image URL
@@ -115,6 +124,8 @@ class AccountModels {
       'isVerified': isVerified,
       'imageStorageProvider': imageStorageProvider?.name,
       'coverImageStorageProvider': coverImageStorageProvider?.name,
+      'requestId': requestId,
+      'requestMessage': requestMessage,
     };
   }
 
@@ -132,6 +143,8 @@ class AccountModels {
     bool? isVerified,
     ImageStorageProvider? imageStorageProvider,
     ImageStorageProvider? coverImageStorageProvider,
+    String? requestId,
+    String? requestMessage,
   }) {
     return AccountModels(
       id: id ?? this.id,
@@ -147,6 +160,8 @@ class AccountModels {
       imageStorageProvider: imageStorageProvider ?? this.imageStorageProvider,
       coverImageStorageProvider:
           coverImageStorageProvider ?? this.coverImageStorageProvider,
+      requestId: requestId ?? this.requestId,
+      requestMessage: requestMessage ?? this.requestMessage,
     );
   }
 }

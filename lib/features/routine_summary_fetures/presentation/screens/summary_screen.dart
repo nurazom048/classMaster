@@ -9,7 +9,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import '../../../../core/export_core.dart';
-import '../../../routine_Fetures/presentation/providers/checkbox_selector_button.dart';
+import '../../../routine/presentation/providers/chack_status_controller.dart';
 import '../providers/summary_controller.dart';
 import '../widgets/static_widgets/add_summary_button.dart';
 import '../widgets/static_widgets/summary_header.dart';

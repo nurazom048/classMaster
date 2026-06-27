@@ -1,6 +1,6 @@
 import '../../../../core/constant/constant.dart';
 import '../../../../core/constant/enum.dart';
-import '../../../routine_Fetures/data/models/class_model.dart';
+import '../../../routine/data/models/class_model.dart';
 
 class AllSummaryModel {
   String message;

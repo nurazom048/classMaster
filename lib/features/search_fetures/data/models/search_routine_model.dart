@@ -1,4 +1,4 @@
-import 'package:classmate/features/routine_Fetures/data/models/routine_model.dart';
+import 'package:classmate/features/routine/data/models/routine_model.dart';
 import '../../../account_fetures/data/models/account_models.dart';
 import 'dart:convert';
 

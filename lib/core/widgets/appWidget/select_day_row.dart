@@ -4,7 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../features/routine_Fetures/presentation/widgets/dynamic_widgets/routine_box_by_id.dart';
+import '../../../features/routine/presentation/widgets/dynamic_widgets/routine_box_by_id.dart';
 import '../../export_core.dart';
 
 final initialDayProvider = StateProvider<DateTime>((ref) {

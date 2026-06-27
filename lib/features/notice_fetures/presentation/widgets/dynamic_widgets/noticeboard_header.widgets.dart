@@ -9,8 +9,8 @@ import 'package:classmate/features/notice_fetures/presentation/widgets/static_wi
 
 import '../../../../../core/export_core.dart';
 import '../../screens/view_all_recent_notice.dart';
-import '../../../../routine_Fetures/presentation/widgets/static_widgets/checkbox_selector_button.dart';
-import '../../../../routine_Fetures/presentation/widgets/static_widgets/routine_box_id_skeleton.dart';
+import '../../../../routine/presentation/widgets/static_widgets/checkbox_selector_button.dart';
+import '../../../../routine/presentation/widgets/static_widgets/routine_box_id_skeleton.dart';
 import '../../providers/noticeboard_status_controller.dart';
 import '../../../../account_fetures/data/models/account_models.dart';
 

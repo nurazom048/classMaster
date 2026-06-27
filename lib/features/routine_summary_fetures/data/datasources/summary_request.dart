@@ -8,7 +8,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../core/export_core.dart';
 import '../../../../core/local_data/local_data.dart';
-import '../../../routine_Fetures/data/models/check_status_model.dart';
+import '../../../routine/data/models/check_status_model.dart';
 import '../models/all_summary_models.dart';
 import 'package:http/http.dart' as http;
 
@@ -189,7 +189,7 @@ class SummaryRequest {
       final response = await http.post(
         url,
         headers: headers,
-        body: {"summaryId": summaryId, "save": save.toString()},
+        body: jsonEncode({"summaryId": summaryId, "save": save.toString()}),
       );
       var res = json.decode(response.body);
       print(res);

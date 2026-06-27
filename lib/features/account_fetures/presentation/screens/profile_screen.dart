@@ -5,10 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:classmate/features/notice_fetures/presentation/widgets/dynamic_widgets/noticeboard_header.widgets.dart';
 
 import '../../../../core/export_core.dart';
-import '../../../home_fetures/data/datasources/home_routines_controller.dart';
-import '../../../routine_Fetures/presentation/utils/routine_dialog.dart';
-import '../../../routine_Fetures/presentation/widgets/dynamic_widgets/routine_box_by_id.dart';
-import '../../../routine_Fetures/presentation/widgets/static_widgets/routine_box_id_skeleton.dart';
+import '../../../routine/presentation/providers/routine_list_provider.dart';
+import '../../../routine/presentation/utils/routine_dialog.dart';
+import '../../../routine/presentation/widgets/dynamic_widgets/routine_box_by_id.dart';
+import '../../../routine/presentation/widgets/static_widgets/routine_box_id_skeleton.dart';
 import '../../../notice_fetures/presentation/providers/view_recent_notice_controller.dart';
 import '../../../../core/widgets/widgets/recent_notice_slider_skeleton.dart';
 import '../../../../core/widgets/widgets/slider/recent_notice_slider_item.dart';
@@ -31,12 +31,12 @@ class ProfileScreen extends ConsumerWidget {
     final recentNoticeList = ref.watch(recentNoticeController(academyID));
     final accountData = ref.watch(accountDataProvider(username));
     final uploadedRoutines = ref.watch(
-      homeRoutineControllerProvider(academyID),
+      routineListProvider(RoutineListQuery(username: username ?? academyID)),
     );
 
     // Read notifier instead of watching to prevent unnecessary rebuilds
     final uploadedRoutinesNotifier = ref.read(
-      homeRoutineControllerProvider(academyID).notifier,
+      routineListProvider(RoutineListQuery(username: username ?? academyID)).notifier,
     );
 
     return SafeArea(
@@ -112,9 +112,9 @@ class ProfileScreen extends ConsumerWidget {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     padding: const EdgeInsets.only(bottom: 100),
-                    itemCount: routineData.homeRoutines.length,
+                    itemCount: routineData.routines.length,
                     itemBuilder: (context, index) {
-                      final routine = routineData.homeRoutines[index];
+                      final routine = routineData.routines[index];
                       return RoutineBoxById(
                         routineId: routine.id,
                         routineName: routine.routineName,

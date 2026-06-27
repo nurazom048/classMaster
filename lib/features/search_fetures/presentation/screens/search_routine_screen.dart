@@ -5,11 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/component/loaders.dart';
 import '../../../../core/dialogs/alert_dialogs.dart';
 import '../../../../core/widgets/error/error.widget.dart';
-import '../../../home_fetures/data/datasources/home_routines_controller.dart';
-import '../../../routine_Fetures/presentation/utils/routine_dialog.dart';
-import '../../../routine_Fetures/presentation/widgets/dynamic_widgets/routine_box_by_id.dart';
-import '../../../routine_Fetures/presentation/widgets/dynamic_widgets/see_all_members_screen.dart';
-import '../providers/search_rutine_controllers.dart';
+import '../../../routine/presentation/providers/routine_list_provider.dart';
+import '../../../routine/presentation/utils/routine_dialog.dart';
+import '../../../routine/presentation/widgets/dynamic_widgets/routine_box_by_id.dart';
+import 'search_page.dart' show searchStringProvider;
 
 class SearchRoutineScreen extends ConsumerWidget {
   SearchRoutineScreen({super.key});
@@ -17,12 +16,10 @@ class SearchRoutineScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    //! provider
     final searchText = ref.watch(searchStringProvider);
-    final searchRoutine = ref.watch(searchRutineController(searchText));
-    //notifier
+    final searchRoutine = ref.watch(routineListProvider(RoutineListQuery(search: searchText)));
     final homeRoutinesNotifier = ref.watch(
-      homeRoutineControllerProvider(null).notifier,
+      routineListProvider(RoutineListQuery(search: searchText)).notifier,
     );
 
     //
@@ -32,9 +29,7 @@ class SearchRoutineScreen extends ConsumerWidget {
           void scrollListener(double pixels) {
             if (pixels == scrollController.position.maxScrollExtent) {
               print('End of scroll');
-              ref
-                  .watch(searchRutineController(searchText).notifier)
-                  .loadMore(data.currentPage);
+              homeRoutinesNotifier.loadMore();
             }
           }
 
