@@ -10,8 +10,8 @@ import '../../../../../core/constant/enum.dart';
 import '../../../../../core/export_core.dart';
 import '../../../../home_fetures/presentation/utils/utils.dart';
 import '../../../data/models/all_summary_models.dart';
-import '../../providers/summary_controller.dart';
-import '../../providers/summary_status.controller.dart';
+import '../../../domain/providers/summary_controller.dart';
+import '../../../domain/providers/summary_status.controller.dart';
 import '../../screens/summary_screen.dart';
 
 class ChatsDribbles extends StatelessWidget {

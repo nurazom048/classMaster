@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:classmate/features/routine_summary_fetures/presentation/providers/summary_controller.dart';
+import 'package:classmate/features/routine_summary_fetures/domain/providers/summary_controller.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:mime/mime.dart';
 import 'package:image_picker/image_picker.dart';
@@ -29,6 +29,16 @@ class AddSummaryScreen extends ConsumerStatefulWidget {
 
 final _summaryController = TextEditingController();
 final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+// ✅ Helper function to check if file is an image
+bool isImageFile(String fileName) {
+  final name = fileName.toLowerCase();
+  return name.endsWith('.png') ||
+      name.endsWith('.jpg') ||
+      name.endsWith('.jpeg') ||
+      name.endsWith('.gif') ||
+      name.endsWith('.webp');
+}
 
 class _AddSummaryScreenState extends ConsumerState<AddSummaryScreen> {
   List<XFile> imageLinks = [];
@@ -97,7 +107,7 @@ class _AddSummaryScreenState extends ConsumerState<AddSummaryScreen> {
                               itemCount: imageLinks.length,
                               itemBuilder: (context, index) {
                                 print(
-                                  'Rendering image ${index + 1}/${imageLinks.length}: ${imageLinks[index].path}',
+                                  'Rendering file ${index + 1}/${imageLinks.length}: ${imageLinks[index].name}',
                                 );
                                 return Container(
                                   alignment: Alignment.centerLeft,
@@ -111,66 +121,105 @@ class _AddSummaryScreenState extends ConsumerState<AddSummaryScreen> {
                                   ),
                                   child: badges.Badge(
                                     onTap: () {
-                                      print('Removing image at index $index');
+                                      print('Removing file at index $index');
                                       setState(
                                         () => imageLinks.removeAt(index),
                                       );
                                     },
                                     badgeContent: const Icon(Icons.close),
                                     child:
-                                        kIsWeb
-                                            ? FutureBuilder<Uint8List>(
-                                              future:
-                                                  imageLinks[index]
-                                                      .readAsBytes(),
-                                              builder: (context, snapshot) {
-                                                if (snapshot.hasData) {
-                                                  print(
-                                                    'Image bytes loaded for index $index',
-                                                  );
-                                                  return Image.memory(
-                                                    snapshot.data!,
-                                                    fit: BoxFit.cover,
-                                                    errorBuilder: (
-                                                      context,
-                                                      error,
-                                                      stackTrace,
-                                                    ) {
+                                        isImageFile(imageLinks[index].name)
+                                            ? (kIsWeb
+                                                ? FutureBuilder<Uint8List>(
+                                                  future:
+                                                      imageLinks[index]
+                                                          .readAsBytes(),
+                                                  builder: (context, snapshot) {
+                                                    if (snapshot.hasData) {
                                                       print(
-                                                        'Error displaying web image: $error',
+                                                        'Image bytes loaded for index $index',
+                                                      );
+                                                      return Image.memory(
+                                                        snapshot.data!,
+                                                        fit: BoxFit.cover,
+                                                        errorBuilder: (
+                                                          context,
+                                                          error,
+                                                          stackTrace,
+                                                        ) {
+                                                          print(
+                                                            'Error displaying web image: $error',
+                                                          );
+                                                          return const Icon(
+                                                            Icons.error,
+                                                          );
+                                                        },
+                                                      );
+                                                    } else if (snapshot
+                                                        .hasError) {
+                                                      print(
+                                                        'Error loading web image bytes: ${snapshot.error}',
                                                       );
                                                       return const Icon(
                                                         Icons.error,
                                                       );
-                                                    },
-                                                  );
-                                                } else if (snapshot.hasError) {
-                                                  print(
-                                                    'Error loading web image bytes: ${snapshot.error}',
-                                                  );
-                                                  return const Icon(
-                                                    Icons.error,
-                                                  );
-                                                }
-                                                print(
-                                                  'Loading image bytes for index $index',
-                                                );
-                                                return const CircularProgressIndicator();
-                                              },
-                                            )
-                                            : Image.file(
-                                              File(imageLinks[index].path),
-                                              fit: BoxFit.cover,
-                                              errorBuilder: (
-                                                context,
-                                                error,
-                                                stackTrace,
-                                              ) {
-                                                print(
-                                                  'Error loading native image: $error',
-                                                );
-                                                return const Icon(Icons.error);
-                                              },
+                                                    }
+                                                    print(
+                                                      'Loading image bytes for index $index',
+                                                    );
+                                                    return const CircularProgressIndicator();
+                                                  },
+                                                )
+                                                : Image.file(
+                                                  File(imageLinks[index].path),
+                                                  fit: BoxFit.cover,
+                                                  errorBuilder: (
+                                                    context,
+                                                    error,
+                                                    stackTrace,
+                                                  ) {
+                                                    print(
+                                                      'Error loading native image: $error',
+                                                    );
+                                                    return const Icon(
+                                                      Icons.error,
+                                                    );
+                                                  },
+                                                ))
+                                            : Container(
+                                              color: Colors.grey[200],
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Icon(
+                                                    imageLinks[index].name
+                                                            .toLowerCase()
+                                                            .endsWith('.pdf')
+                                                        ? Icons.picture_as_pdf
+                                                        : Icons.description,
+                                                    size: 40,
+                                                    color:
+                                                        imageLinks[index].name
+                                                                .toLowerCase()
+                                                                .endsWith(
+                                                                  '.pdf',
+                                                                )
+                                                            ? Colors.redAccent
+                                                            : Colors.blueAccent,
+                                                  ),
+                                                  const SizedBox(height: 4),
+                                                  Text(
+                                                    imageLinks[index].name,
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: const TextStyle(
+                                                      fontSize: 10,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                   ),
                                 );
@@ -179,19 +228,19 @@ class _AddSummaryScreenState extends ConsumerState<AddSummaryScreen> {
                           ),
                           IconButton(
                             onPressed: () async {
-                              print('Image picker button pressed');
+                              print('File picker button pressed');
                               final imagelink =
                                   await Multiple.pickAndCompressMultipleImages();
                               if (imagelink != null) {
-                                print('Images picked: ${imagelink.length}');
+                                print('Files picked: ${imagelink.length}');
                                 setState(() {
                                   imageLinks.addAll(imagelink);
                                   print(
-                                    'Images added to list: ${imageLinks.length}',
+                                    'Files added to list: ${imageLinks.length}',
                                   );
                                 });
                               } else {
-                                print('No images selected from picker');
+                                print('No files selected from picker');
                               }
                             },
                             icon: const Icon(Icons.add),
@@ -257,37 +306,62 @@ class _AddSummaryScreenState extends ConsumerState<AddSummaryScreen> {
   }
 
   Future<bool> checkedFileType(List<XFile> imageLinks) async {
-    print('Checking file types for ${imageLinks.length} images');
+    print('Checking file types for ${imageLinks.length} files');
+
+    // অনুমোদিত এক্সটেনশন ও মাইম টাইপ লিস্ট
+    final allowedExtensions = [
+      '.png',
+      '.jpg',
+      '.jpeg',
+      '.gif',
+      '.webp',
+      '.pdf',
+      '.doc',
+      '.docx',
+      '.xls',
+      '.xlsx',
+    ];
+
     for (var image in imageLinks) {
-      final mimeType = lookupMimeType(image.path) ?? image.mimeType;
+      final mimeType = lookupMimeType(image.path) ?? image.mimeType ?? '';
+      final fileName = image.name.toLowerCase();
+
       final sizeInBytes =
           kIsWeb
               ? (await image.readAsBytes()).length
               : File(image.path).lengthSync();
 
       print(
-        'File: ${image.path}, MIME: $mimeType, Size: ${sizeInBytes ~/ 1024} KB',
+        'File: $fileName, MIME: $mimeType, Size: ${sizeInBytes ~/ 1024} KB',
       );
 
-      if (mimeType != 'image/jpeg' && mimeType != 'image/png') {
-        print('Invalid file type: $mimeType');
-        Alert.errorAlertDialog(context, 'Only [image/jpeg, image/png] allowed');
+      // এক্সটেনশন চেক করা হচ্ছে
+      bool hasValidExt = allowedExtensions.any((ext) => fileName.endsWith(ext));
+
+      if (!hasValidExt) {
+        print('Invalid file type for: $fileName');
+        Alert.errorAlertDialog(
+          context,
+          'Only Images, PDF, Word, and Excel files are allowed',
+        );
         return false;
       }
+
       if (sizeInBytes > 10 * 1024 * 1024) {
+        // 10MB limit
         print('File too large: ${sizeInBytes ~/ 1024} KB');
         Alert.errorAlertDialog(context, 'Maximum file size allowed is 10 MB');
         return false;
       }
     }
-    print('All files passed type and size checks');
+    print('All files passed checks');
     return true;
   }
 
   bool checkedMaxUploadLimit(List<XFile> imageLinks) {
-    print('Checking upload limit: ${imageLinks.length} images');
+    print('Checking upload limit: ${imageLinks.length} files');
     if (imageLinks.length > 9) {
-      print('Too many images: ${imageLinks.length} > 9');
+      print('Too many files: ${imageLinks.length} > 9');
       Alert.errorAlertDialog(context, 'Maximum file limit allowed is 10');
       return false;
     }

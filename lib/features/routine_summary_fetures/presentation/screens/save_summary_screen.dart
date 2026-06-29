@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/export_core.dart';
-import '../providers/summary_controller.dart';
+import '../../domain/providers/summary_controller.dart';
 import '../widgets/static_widgets/chats_dribbles.dart';
 
 class SaveSummeryScreen extends ConsumerStatefulWidget {

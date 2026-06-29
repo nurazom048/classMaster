@@ -10,7 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import '../../../../core/export_core.dart';
 import '../../../routine/presentation/providers/chack_status_controller.dart';
-import '../providers/summary_controller.dart';
+import '../../domain/providers/summary_controller.dart';
 import '../widgets/static_widgets/add_summary_button.dart';
 import '../widgets/static_widgets/summary_header.dart';
 import '../../../../core/local_data/local_data.dart';
@@ -50,6 +50,7 @@ late ScrollController pageScrollController;
 
 class _SummaryScreenState extends State<SummaryScreen> {
   bool isGuestMode = false;
+  WidgetRef? _ref; // ✅ Store ref reference
 
   @override
   void initState() {
@@ -69,7 +70,10 @@ class _SummaryScreenState extends State<SummaryScreen> {
         isGuestMode = guest;
       });
       if (!guest) {
-        _initializeSocket();
+        // ✅ Pass ref when available
+        if (_ref != null) {
+          _initializeSocket(_ref!);
+        }
       }
     }
   }
@@ -88,7 +92,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
     super.dispose();
   }
 
-  Future<void> _initializeSocket() async {
+  Future<void> _initializeSocket(WidgetRef ref) async {
     print('[Socket] Starting socket initialization');
 
     try {
@@ -100,10 +104,14 @@ class _SummaryScreenState extends State<SummaryScreen> {
       SocketService.joinRoom(widget.routineID);
       print('[Socket] Join room request sent for ${widget.routineID}');
 
-      // Set up event listeners
+      // Set up event listeners with refresh callback
       SocketService.listenToRoomEvents(
         onSummaryCreated: (summary) {
           print('[Socket] [Event] New summary created: ${summary.toString()}');
+          // ✅ Refresh the summary list when a new summary is added
+          if (mounted) {
+            ref.refresh(summaryControllerProvider(widget.classId));
+          }
         },
         onRoomJoined: (data) {
           print('[Socket] [Event] Room joined confirmation received:');
@@ -149,11 +157,15 @@ class _SummaryScreenState extends State<SummaryScreen> {
       child: Scaffold(
         body: Consumer(
           builder: (context, ref, _) {
+            // ✅ Store ref for use in other methods
+            _ref = ref;
+
             final isGuest = ref.watch(isGuestProvider).value ?? false;
 
             if (isGuest) {
               return const ErrorScreen(
-                error: "Summaries are available only for logged-in routine members.",
+                error:
+                    "Summaries are available only for logged-in routine members.",
               );
             }
 
@@ -223,7 +235,6 @@ class _SummaryScreenState extends State<SummaryScreen> {
                     }
 
                     scrollController.addListener(() {
-                      //_listenToChatMessages();
                       if (scrollController.position.pixels ==
                           scrollController.position.maxScrollExtent) {
                         if (data.currentPage != data.totalPages) {
@@ -242,6 +253,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                       itemBuilder: (context, i) {
                         return Column(
                           children: [
+                            // ✅ Pass the full summary model to ChatsDribbles
                             ChatsDribbles(summary: data.summaries[i]),
                             if (data.currentPage != data.totalPages &&
                                 data.totalPages > 10 &&
@@ -269,19 +281,6 @@ class _SummaryScreenState extends State<SummaryScreen> {
             isCaptain || isOwner
                 ? AddSummaryButton(
                   onTap: () async {
-                    // // Initialize the SocketService and join the room after initialization
-                    // SocketService.initializeSocket().then((_) {
-                    //   // Join the room after socket initialization
-                    //   SocketService.sendMessage(room: widget.routineID);
-                    // }).catchError((error) {
-                    //   print('Error initializing socket: $error');
-                    // });
-                    //  Message received base on room id
-                    SocketService.socket.on('chat message', (data) {
-                      final message = data['message'];
-                      final room = data['room'];
-                      print('Message received in room $room: $message');
-                    });
                     Navigator.push(
                       context,
                       CupertinoPageRoute(
