@@ -1,4 +1,3 @@
-import 'dart:html' as html;
 import 'package:classmate/core/component/heder_component/transition/right_to_left_transition.dart';
 import 'package:classmate/features/notice_fetures/data/datasources/notice_request.dart';
 import 'package:classmate/features/notice_fetures/presentation/utils/share_notice_dialog.dart';
@@ -98,9 +97,9 @@ class _NoticeViewScreenState extends State<NoticeViewScreen> {
   Future<void> _handleBackNavigation() async {
     final String? token = await LocalData.getAuthToken();
     final bool hasToken = token != null && token.isNotEmpty;
-    
+
     if (!mounted) return;
-    
+
     if (hasToken) {
       if (Navigator.canPop(context)) {
         Navigator.pop(context);
@@ -114,8 +113,6 @@ class _NoticeViewScreenState extends State<NoticeViewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("REAL URL => ${html.window.location.href}");
-
     if (_isLoading) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
@@ -136,7 +133,7 @@ class _NoticeViewScreenState extends State<NoticeViewScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               HeaderTitle(
-                "Back to Home", 
+                "Back to Home",
                 context,
                 onTap: _handleBackNavigation,
               ),
@@ -171,7 +168,7 @@ class _NoticeViewScreenState extends State<NoticeViewScreen> {
                         ],
                       ),
                       const SizedBox(height: 30),
-  
+
                       const Text(
                         "Title",
                         style: TextStyle(
@@ -188,9 +185,9 @@ class _NoticeViewScreenState extends State<NoticeViewScreen> {
                           color: Colors.black87,
                         ),
                       ),
-  
+
                       const SizedBox(height: 24),
-  
+
                       const Text(
                         "Description",
                         style: TextStyle(
@@ -208,9 +205,9 @@ class _NoticeViewScreenState extends State<NoticeViewScreen> {
                           height: 1.4,
                         ),
                       ),
-  
+
                       const SizedBox(height: 24),
-  
+
                       const Text(
                         "PDF Document",
                         style: TextStyle(
@@ -220,7 +217,7 @@ class _NoticeViewScreenState extends State<NoticeViewScreen> {
                         ),
                       ),
                       const SizedBox(height: 10),
-  
+
                       Row(
                         children: [
                           Expanded(
@@ -251,18 +248,19 @@ class _NoticeViewScreenState extends State<NoticeViewScreen> {
                                   context: context,
                                   isScrollControlled: true,
                                   backgroundColor: Colors.transparent,
-                                  builder: (context) => CustomShareBottomSheet(
-                                    shareableUrl: shareableUrl,
-                                  ),
+                                  builder:
+                                      (context) => CustomShareBottomSheet(
+                                        shareableUrl: shareableUrl,
+                                      ),
                                 );
                               },
                             ),
                           ),
                         ],
                       ),
-  
+
                       const SizedBox(height: 40),
-  
+
                       MiniAccountInfo(
                         accountData: _notice!.account,
                         hideMore: true,

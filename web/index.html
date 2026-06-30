@@ -6,17 +6,47 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <meta name="description" content="ClassMaster Web Application">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="classmate">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
+  <meta name="apple-mobile-web-app-title" content="classmaster">
   <link rel="icon" type="image/png" href="favicon.png" />
 
   <title>classmaster</title>
-  <link rel="manifest" href="manifest.json">
+
+  <style>
+    body {
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3498db;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
   <script type="text/javascript">
@@ -25,6 +55,15 @@
 </head>
 
 <body>
+  <div id="loader" class="spinner"></div>
+
+  <script>
+    // HTML renderer er madhyome fast load hobe
+    window.flutterConfiguration = {
+      renderer: "html",
+      canvasKitBaseUrl: "https://www.gstatic.com/flutter-canvaskit/e9575971a74288019a58b43825a1e7b1a629b352/"
+    };
+  </script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 

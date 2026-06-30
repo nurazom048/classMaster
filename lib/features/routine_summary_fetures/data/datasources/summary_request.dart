@@ -3,23 +3,19 @@
 import 'dart:convert';
 import 'package:classmate/features/routine_summary_fetures/data/implements/routine_summary_imp.dart';
 import 'package:classmate/features/routine_summary_fetures/data/models/all_summary_models.dart';
-import 'package:classmate/features/routine_summary_fetures/presentation/socket_services/socketCon.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpdart/fpdart.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../core/export_core.dart';
 import '../../../../core/local_data/local_data.dart';
-import '../../../routine/data/models/check_status_model.dart';
 import 'package:http/http.dart' as http;
 
-// ... Providers....//
+// Providers
 final summaryReqProvider = Provider<SummaryRepository>(
   (ref) => SummaryRepository(),
 );
 
 class SummaryRepository implements ISummaryRepository {
-  // 🔗 আপনার API এর বেস URL
   final String baseUrl = '${Const.BASE_URl}/summary';
 
   @override
@@ -27,7 +23,7 @@ class SummaryRepository implements ISummaryRepository {
     required String classId,
     String? message,
     List<String>? externalLinks,
-    List<XFile>? files, // 🔥 XFile parameter
+    List<XFile>? files,
   }) async {
     final Map<String, String> headers = await LocalData.getHeader();
     final uri = Uri.parse('$baseUrl/class/$classId');
@@ -36,21 +32,17 @@ class SummaryRepository implements ISummaryRepository {
       var request = http.MultipartRequest('POST', uri);
       request.headers.addAll(headers);
 
-      // Add Text fields
       if (message != null && message.trim().isNotEmpty) {
         request.fields['message'] = message;
       }
 
-      // Send external links as JSON string for backend
       if (externalLinks != null && externalLinks.isNotEmpty) {
         request.fields['externalLinks'] = jsonEncode(externalLinks);
       }
 
-      // Add Files with cross-platform support (Web & Mobile)
       if (files != null && files.isNotEmpty) {
         for (var file in files) {
           if (kIsWeb) {
-            // 🔥 Web Specific Logic
             final bytes = await file.readAsBytes();
             request.files.add(
               http.MultipartFile.fromBytes(
@@ -83,7 +75,7 @@ class SummaryRepository implements ISummaryRepository {
   }
 
   // ------------------------------------------
-  // 📚 1. GET SUMMARIES (Mapped to AllSummaryModel)
+  // 📚 1. GET SUMMARIES (Query params formatting fixed)
   // ------------------------------------------
   @override
   Future<AllSummaryModel> getSummaries({
@@ -94,21 +86,23 @@ class SummaryRepository implements ISummaryRepository {
   }) async {
     final headers = await LocalData.getHeader();
 
-    // Build query parameters based on route logic
     final queryParams = <String, String>{
       'page': page.toString(),
       'limit': limit.toString(),
     };
 
+    // 🎯 সঠিক কুয়েরি ডিস্ট্রিবিউশন
     if (type == 'saved') {
       queryParams['type'] = 'saved';
-    } else if (classId != null) {
+    } else if (classId != null && classId.isNotEmpty) {
       queryParams['classId'] = classId;
     } else {
-      throw Exception('Must provide either classId or type="saved"');
+      print('query is empty  provide so  autos set  type="saved"');
+      queryParams['type'] = 'saved';
     }
 
     final uri = Uri.parse(baseUrl).replace(queryParameters: queryParams);
+    print("📡 Requesting summaries URL: $uri");
 
     try {
       final response = await http.get(uri, headers: headers);
