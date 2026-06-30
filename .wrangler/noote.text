@@ -1,0 +1,15 @@
+নতুন চেঞ্জেস ডিপ্লয় করার স্টেপস:
+১. আগের বিল্ড ক্যাশ ক্লিয়ার করতে:
+
+Bash
+flutter clean
+২. নতুন করে ফ্লাটার ওয়েবের রিলিজ বিল্ড তৈরি করতে:
+
+Bash
+flutter pub get
+flutter build web --release --no-wasm-dry-run
+৩. নতুন বিল্ডটি Cloudflare-এ ডিপ্লয় করতে:
+
+Bash
+wrangler pages deploy build/web --project-name classmaster
+(লক্ষ্য করুন: এবার আমি কমান্ডের সাথে --project-name classmaster যোগ করে দিয়েছি। এটি করলে টার্মিনাল আর আপনাকে নতুন করে প্রজেক্টের নাম বা ব্রাঞ্চের নাম জিজ্ঞেস করবে না, সরাসরি আপনার ওই classmaster প্রজেক্টেই নতুন ভার্সনটি আপডেট করে দেবে।)

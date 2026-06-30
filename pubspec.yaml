@@ -107,6 +107,7 @@ flutter:
     - assets/logo/white_logo.png
     - assets/png/wa.png
     - shorebird.yaml
+    - web/_redirects
 
   fonts:
     - family: AppIcons
