@@ -128,17 +128,7 @@ class AuthController extends StateNotifier<bool> {
           return;
         }
         if (error.message == 'Email is not verified') {
-          try {
-            await FirebaseAuth.instance.signInWithEmailAndPassword(
-              email: error.email!,
-              password: password,
-            );
-          } catch (e) {
-            // Silently handle Firebase error if necessary
-          }
-
           if (!context.mounted) return;
-
           // go to email verification screen
           context.pushNamed(RouteConst.verifiedEmail, extra: error.email);
           Alert.showSnackBar(context, 'Email is not verified');

@@ -84,7 +84,7 @@ class AccountModels {
     }
 
     // AWS stored image → build full URL
-    if (imageStorageProvider == ImageStorageProvider.minio ||
+    if (imageStorageProvider == ImageStorageProvider.aws ||
         !image!.startsWith('http')) {
       return "${Const.MINIO_BASE_URL}$image";
     }
@@ -101,7 +101,7 @@ class AccountModels {
     }
 
     // AWS stored image → build full URL
-    if (coverImageStorageProvider == ImageStorageProvider.minio) {
+    if (coverImageStorageProvider == ImageStorageProvider.aws) {
       return "${Const.MINIO_BASE_URL}$coverImage";
     }
 
