@@ -13,7 +13,10 @@ import '../providers/view_recent_notice_controller.dart';
 import '../../../../core/widgets/widgets/custom_title_bar.dart';
 import '../../../../core/widgets/widgets/mydrawer.dart';
 import '../../../routine/presentation/widgets/static_widgets/uploaded_pdf_button.dart';
+import '../widgets/static_widgets/catagori_selector.widgets.dart'
+    show CategorySelector;
 
+// ignore: must_be_immutable
 class AddNoticeScreen extends ConsumerWidget {
   AddNoticeScreen({super.key});
 
@@ -22,10 +25,22 @@ class AddNoticeScreen extends ConsumerWidget {
   final TextEditingController noticeTitleController = TextEditingController();
   final _appBar = const CustomTitleBar("title");
 
+  // 🎯 Default Selected Category State
+  String selectedCategory = 'notice';
+
+  // List of Categories
+  final List<Map<String, String>> categories = [
+    {'key': 'job_circular', 'label': 'Job Circular'},
+    {'key': 'notice', 'label': 'Notice'},
+    {'key': 'result', 'label': 'Result'},
+    {'key': 'other', 'label': 'Other'},
+  ];
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pdfData = ref.watch(selectedPdfPathProvider);
     print('Building AddNoticeScreen, pdfData: ${pdfData?.name}');
+
     return SafeArea(
       child: Scaffold(
         body: Responsive(
@@ -77,14 +92,11 @@ class AddNoticeScreen extends ConsumerWidget {
                 children: [
                   const SizedBox(height: 20),
                   const Text(
-                    "Add A New \nNotice",
+                    "Add A New Notice",
                     style: TextStyle(
-                      fontFamily: 'Open Sans',
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.w300,
-                      fontSize: 48.0,
-                      height: 65 / 48,
-                      color: Colors.black,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF1F2937),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -116,7 +128,17 @@ class AddNoticeScreen extends ConsumerWidget {
                       print('onSelected called with: $pdfFileData');
                     },
                   ),
-                  const SizedBox(height: 60),
+                  const SizedBox(height: 20),
+
+                  // Category Selector Custom Widget
+                  CategorySelector(
+                    initialCategory: selectedCategory,
+                    onCategorySelected: (String newCategory) {
+                      selectedCategory = newCategory;
+                    },
+                  ),
+
+                  const SizedBox(height: 20),
                   CupertinoButtonCustom(
                     icon: Icons.check,
                     isLoading: isLoading,
@@ -125,6 +147,7 @@ class AddNoticeScreen extends ConsumerWidget {
                     onPressed: () async {
                       final currentPdfData = ref.read(selectedPdfPathProvider);
                       print("pdf data in onPressed: ${currentPdfData?.name}");
+
                       if (_formKey.currentState!.validate()) {
                         if (currentPdfData == null) {
                           Alert.errorAlertDialog(context, "Select a PDF");
@@ -174,6 +197,7 @@ class AddNoticeScreen extends ConsumerWidget {
                       }
                     },
                   ),
+                  const SizedBox(height: 40),
                 ],
               ),
             ),
@@ -192,9 +216,11 @@ class AddNoticeScreen extends ConsumerWidget {
     Either<String, String> res = await NoticeRequest().addNotice(
       contentName: noticeTitleController.text,
       description: descriptionController.text,
+      category: selectedCategory, // Passes the updated value directly
       pdfFileData: pdfData,
       ref: ref,
     );
+
     res.fold(
       (l) {
         isLoadingNotifier.update((state) => false);

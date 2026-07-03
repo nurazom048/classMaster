@@ -7,7 +7,7 @@ import '../../../data/models/recent_notice_model.dart';
 class PremiumNoticeCard extends StatelessWidget {
   final Notice notice;
   final String? academyID;
-  final VoidCallback onTap;
+  final onTap;
   final VoidCallback onLongPress;
 
   const PremiumNoticeCard({

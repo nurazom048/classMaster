@@ -13,7 +13,7 @@ class RecentNoticeSliderSkelton extends StatelessWidget {
         children: [
           // 📄 Skeleton card 1 (Bigger height)
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -32,7 +32,7 @@ class RecentNoticeSliderSkelton extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: 10),
 
                 // Content skeleton
                 Expanded(
@@ -50,14 +50,14 @@ class RecentNoticeSliderSkelton extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Container(
-                        width: 200,
+                        width: 180,
                         height: 14,
                         decoration: BoxDecoration(
                           color: Colors.grey.shade300,
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 10),
 
                       // Publisher info skeleton
                       Row(

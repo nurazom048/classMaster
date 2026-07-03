@@ -1,15 +1,15 @@
-import 'recent_notice_model.dart';
+// import 'recent_notice_model.dart';
 
-class AddNoticeMessage {
-  String message;
-  Notice notice;
+// class AddNoticeMessage {
+//   String message;
+//   Notice notice;
 
-  AddNoticeMessage({required this.message, required this.notice});
+//   AddNoticeMessage({required this.message, required this.notice});
 
-  factory AddNoticeMessage.fromJson(Map<String, dynamic> json) {
-    return AddNoticeMessage(
-      message: json['message'] as String,
-      notice: Notice.fromJson(json['notice'] as Map<String, dynamic>),
-    );
-  }
-}
+//   factory AddNoticeMessage.fromJson(Map<String, dynamic> json) {
+//     return AddNoticeMessage(
+//       message: json['message'] as String,
+//       notice: Notice.fromJson(json['notice'] as Map<String, dynamic>),
+//     );
+//   }
+// }
