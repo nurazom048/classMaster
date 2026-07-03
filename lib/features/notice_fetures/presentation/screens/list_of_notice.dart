@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
 import 'package:go_router/go_router.dart';
 import '../providers/view_recent_notice_controller.dart';
-import '../widgets/static_widgets/simple_notice_card.dart';
+import '../widgets/static_widgets/modern_reusable_notice_card_widget.dart';
 
 ////////////////////////////////////
 class ListOfNoticeScreen extends ConsumerWidget {
@@ -47,12 +47,11 @@ class ListOfNoticeScreen extends ConsumerWidget {
                     controller: scrollController,
                     itemCount: data.notices.length,
                     itemBuilder: (context, index) {
-                      return SimpleNoticeCard(
-                        previousDateTime:
-                            data.notices[index == 0 ? 0 : index - 1].createdAt,
-                        id: data.notices[index].id,
-                        noticeName: data.notices[index].title,
-                        ontap: () {
+                      return PremiumNoticeCard(
+                        notice: data.notices[index],
+                        academyID: data.notices[index].id,
+
+                        onTap: () {
                           final notice = data.notices[index];
 
                           context.push(
@@ -65,7 +64,6 @@ class ListOfNoticeScreen extends ConsumerWidget {
                           );
                         },
                         onLongPress: () {},
-                        dateTime: data.notices[index].createdAt,
                       );
                     },
                   );

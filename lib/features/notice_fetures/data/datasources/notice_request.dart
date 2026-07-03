@@ -29,22 +29,29 @@ final noticeReqProvider = Provider<NoticeRequest>((ref) => NoticeRequest());
 class NoticeRequest implements NoticeRepository {
   //****** Fetch Recent Notice ********* */
   @override
-  Future<RecentNotice> fetchRecentNotice({int? page, String? academyId}) async {
+  Future<RecentNotice> fetchRecentNotice({
+    int? page,
+    String? academyId,
+    String category = 'all',
+  }) async {
     // Step 1: Get authentication headers
     final headers = await LocalData.getHeader();
     print("Headers before sending request: $headers");
 
-    // Step 2: Construct the correct RESTful URL based on academyId presence
-    final pageQuery = page == null ? '' : "?page=$page";
-    final baseUrl = Const.BASE_URl;
+    // ডাইনামিক URL বিল্ডিং
+    String urlString =
+        academyId != null
+            ? '${Const.BASE_URl}/notice/academy/$academyId'
+            : '${Const.BASE_URl}/notice/';
 
-    // Updated to match GET /notice and GET /notice/academy/:academyID
-    final recentNoticeUrl = Uri.parse('$baseUrl/notice$pageQuery');
-    final academyNoticeUrl = Uri.parse(
-      '$baseUrl/notice/academy/$academyId$pageQuery',
+    final uri = Uri.parse(urlString).replace(
+      queryParameters: {
+        'page': page.toString(),
+        'limit': '10',
+        'category': category, // 🎯 ফিল্টার প্যারামিটার পাঠানো হচ্ছে
+      },
     );
-    final requestUrl = academyId == null ? recentNoticeUrl : academyNoticeUrl;
-    final cacheKey = requestUrl.toString();
+    final cacheKey = uri.toString();
 
     // Step 3: Check network connectivity and local cache
     final isOnline = await Utils.isOnlineMethod();
@@ -59,10 +66,7 @@ class NoticeRequest implements NoticeRepository {
       }
 
       // Step 5: Make GET API request to the backend
-      final response = await http.get(
-        requestUrl,
-        headers: headers,
-      ); // Changed to GET
+      final response = await http.get(uri, headers: headers); // Changed to GET
       final responseData = json.decode(response.body);
 
       // Step 6: Handle Response
@@ -112,6 +116,7 @@ class NoticeRequest implements NoticeRepository {
     String? contentName,
     String? description,
     PdfFileData? pdfFileData,
+    String category = 'notice',
     required WidgetRef ref,
   }) async {
     // Step 1: Get authentication headers
@@ -125,6 +130,7 @@ class NoticeRequest implements NoticeRepository {
     request.headers.addAll(headers);
     request.fields['title'] = contentName ?? '';
     request.fields['description'] = description ?? '';
+    request.fields['category'] = category;
     request.fields['mimetypeChecked'] = "true";
 
     // Step 4: Attach PDF file based on platform (Web vs Mobile)

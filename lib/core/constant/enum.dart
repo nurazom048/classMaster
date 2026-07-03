@@ -8,3 +8,5 @@ class AccountTypeString {
 }
 
 enum ImageStorageProvider { firebase, aws, others, minio }
+
+enum NoticeCategory { job_circular, notice, result, other }

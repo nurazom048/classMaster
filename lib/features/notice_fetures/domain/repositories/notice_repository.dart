@@ -7,7 +7,11 @@ import '../interface/pdf_interface.dart'; // For PdfFileData
 // notice repository
 abstract class NoticeRepository {
   /// Fetches recent notices with optional pagination and academy filtering
-  Future<RecentNotice> fetchRecentNotice({int? page, String? academyId});
+  Future<RecentNotice> fetchRecentNotice({
+    int? page,
+    String? academyId,
+    String category,
+  });
   //get notice by id
   Future<Notice> getNoticeById({required String noticeId});
 
@@ -15,6 +19,7 @@ abstract class NoticeRepository {
   Future<Either<String, String>> addNotice({
     String? contentName,
     String? description,
+    String category,
     PdfFileData? pdfFileData,
     required WidgetRef ref,
   });
