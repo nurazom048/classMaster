@@ -1,68 +1,129 @@
-import 'package:carousel_slider/carousel_slider.dart' as slider;
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../../../constant/app_color.dart';
-
-final carouselIndexProvider = StateProvider.family<int, String>(
-  (ref, key) => 0,
-);
-
-class RecentNoticeSlider extends StatelessWidget {
-  final List<Widget> list;
+class RecentNoticeSlider extends StatefulWidget {
   final String ukey;
+  final List<Widget> list;
 
-  const RecentNoticeSlider({super.key, required this.list, required this.ukey});
+  const RecentNoticeSlider({super.key, required this.ukey, required this.list});
+
+  @override
+  State<RecentNoticeSlider> createState() => _RecentNoticeSliderState();
+}
+
+class _RecentNoticeSliderState extends State<RecentNoticeSlider> {
+  late PageController _pageController;
+  int _currentPage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: 0, keepPage: true);
+
+    // 👂 Listen to page changes
+    _pageController.addListener(() {
+      int nextPage = _pageController.page?.round() ?? 0;
+      if (nextPage != _currentPage) {
+        setState(() {
+          _currentPage = nextPage;
+        });
+        debugPrint('🔄 Swiped to page: $_currentPage');
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 160,
-      child: Consumer(
-        builder: (context, ref, _) {
-          //! provider
-          final carouselIndex = ref.watch(carouselIndexProvider(ukey));
-          final carouselIndexNotifier = ref.read(
-            carouselIndexProvider(ukey).notifier,
-          );
-          return Column(
-            children: [
-              Container(
-                height: 125,
-                margin: const EdgeInsets.symmetric(horizontal: 18),
-                padding: const EdgeInsets.all(10),
-                width: double.infinity,
+    if (widget.list.isEmpty) {
+      return const Center(child: Text('No notices available'));
+    }
+
+    return Column(
+      children: [
+        // 📄 Swipeable PageView
+        Expanded(
+          child: GestureDetector(
+            onHorizontalDragEnd: (details) {
+              // 👈 Swipe left -> next page
+              if (details.primaryVelocity! < 0) {
+                if (_currentPage < widget.list.length - 1) {
+                  _pageController.nextPage(
+                    duration: const Duration(milliseconds: 400),
+                    curve: Curves.easeInOut,
+                  );
+                }
+              }
+              // 👉 Swipe right -> previous page
+              else if (details.primaryVelocity! > 0) {
+                if (_currentPage > 0) {
+                  _pageController.previousPage(
+                    duration: const Duration(milliseconds: 400),
+                    curve: Curves.easeInOut,
+                  );
+                }
+              }
+            },
+            child: PageView(
+              controller: _pageController,
+              physics:
+                  const NeverScrollableScrollPhysics(), // ⚠️ Disable default swipe
+              onPageChanged: (index) {
+                setState(() {
+                  _currentPage = index;
+                });
+                debugPrint('📄 Page changed to: $index');
+              },
+              children: widget.list,
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+
+        // 🔵 Indicator dots
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(
+            widget.list.length,
+            (index) => GestureDetector(
+              onTap: () {
+                debugPrint('🔵 Tapped dot: $index');
+                _pageController.animateToPage(
+                  index,
+                  duration: const Duration(milliseconds: 400),
+                  curve: Curves.easeInOut,
+                );
+              },
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 5),
+                width: _currentPage == index ? 14 : 8,
+                height: 8,
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: slider.CarouselSlider(
-                  options: slider.CarouselOptions(
-                    height: 120.0,
-                    viewportFraction: 1,
-                    onPageChanged: (index, reason) {
-                      carouselIndexNotifier.state = index;
-                    },
-                    //autoPlay: true,
-                  ),
-                  items: list,
-                ),
-              ),
-              const SizedBox(height: 13),
-              AnimatedSmoothIndicator(
-                activeIndex: carouselIndex,
-                count: 4, // Update the count based on the number of items
-                effect: ExpandingDotsEffect(
-                  dotHeight: 12,
-                  activeDotColor: AppColor.nokiaBlue,
+                  shape: BoxShape.circle,
+                  color:
+                      _currentPage == index
+                          ? const Color(0xFF0052CC) // Active: Royal Blue
+                          : Colors.grey.shade300, // Inactive: Light grey
+                  boxShadow:
+                      _currentPage == index
+                          ? [
+                            BoxShadow(
+                              color: const Color(0xFF0052CC).withOpacity(0.4),
+                              blurRadius: 6,
+                              spreadRadius: 2,
+                            ),
+                          ]
+                          : [],
                 ),
               ),
-              const SizedBox(height: 10),
-            ],
-          );
-        },
-      ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

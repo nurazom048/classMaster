@@ -66,15 +66,15 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  final Widget homeRecentNoticeWidget = const HomeRecentNoticeWidget();
-
   @override
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, _) {
-        print('HomeScreen');
+        debugPrint('🏠 HomeScreen rebuilding');
 
-        final homeRoutines = ref.watch(routineListProvider(const RoutineListQuery()));
+        final homeRoutines = ref.watch(
+          routineListProvider(const RoutineListQuery()),
+        );
         final homeRoutinesNotifier = ref.watch(
           routineListProvider(const RoutineListQuery()).notifier,
         );
@@ -89,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
         );
 
         return Responsive(
-          // Mobile view - return plain widget without Scaffold
+          // Mobile view
           mobile: _mobileView,
 
           // Desktop view
@@ -104,11 +104,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       Expanded(
                         flex: 3,
                         child: Container(
-                          color: Colors.yellow,
+                          color: const Color(0xFFF5F5F5),
                           child: _mobileView,
                         ),
                       ),
-                      Expanded(flex: 1, child: Container(color: Colors.black)),
+                      Expanded(
+                        flex: 1,
+                        child: Container(color: const Color(0xFFF5F5F5)),
+                      ),
                     ],
                   ),
                 ),
@@ -121,7 +124,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-//************** homeMobileView **************************/
+//============================================
+// 📱 Mobile View Widget
+//============================================
 Widget homeMobileView(
   BuildContext context, {
   required AsyncValue<RoutineResponse> homeRoutines,
@@ -130,7 +135,8 @@ Widget homeMobileView(
   required homeRoutineNotifier,
   required bool isGuestMode,
 }) {
-  print('homeMobileView');
+  debugPrint('📱 homeMobileView rebuilding');
+
   return NotificationListener<ScrollNotification>(
     onNotification: (scrollNotification) {
       Utils.hideNevBarOnScroll(scrollNotification, ref);
@@ -151,65 +157,16 @@ Widget homeMobileView(
         padding: const EdgeInsets.only(bottom: 100),
         controller: scrollController,
         children: [
+          // Title Bar (Mobile only)
           if (Responsive.isMobile(context)) const CustomTitleBar("Home"),
 
-          if (isGuestMode)
-            Container(
-              margin: const EdgeInsets.all(12.0),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 12.0,
-              ),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF37474F), Color(0xFF263238)],
-                ),
-                borderRadius: BorderRadius.circular(12.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 6,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.info_outline,
-                    color: Colors.amberAccent,
-                    size: 24,
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      "You are exploring as a guest. Log in to access all features.",
-                      style: TS
-                          .heading(fontSize: 14)
-                          .copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
-                          ),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () async {
-                      await LocalData.emptyLocal();
-                      context.goNamed(RouteConst.login);
-                    },
-                    child: const Text(
-                      "LOG IN",
-                      style: TextStyle(
-                        color: Colors.amberAccent,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          // Guest Mode Banner
+          if (isGuestMode) _buildGuestModeBanner(context),
 
+          // Recent Notices Section
           const HomeRecentNoticeWidget(),
+
+          // Routines Section
           homeRoutines.when(
             data: (data) {
               if (data.routines.isEmpty) {
@@ -262,12 +219,65 @@ Widget homeMobileView(
   );
 }
 
+//============================================
+// 🎫 Guest Mode Banner
+//============================================
+Widget _buildGuestModeBanner(BuildContext context) {
+  return Container(
+    margin: const EdgeInsets.all(12.0),
+    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+    decoration: BoxDecoration(
+      gradient: const LinearGradient(
+        colors: [Color(0xFF37474F), Color(0xFF263238)],
+      ),
+      borderRadius: BorderRadius.circular(12.0),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.1),
+          blurRadius: 6,
+          offset: const Offset(0, 3),
+        ),
+      ],
+    ),
+    child: Row(
+      children: [
+        const Icon(Icons.info_outline, color: Colors.amberAccent, size: 24),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Text(
+            "You are exploring as a guest. Log in to access all features.",
+            style: TS
+                .heading(fontSize: 14)
+                .copyWith(color: Colors.white, fontWeight: FontWeight.w500),
+          ),
+        ),
+        TextButton(
+          onPressed: () async {
+            await LocalData.emptyLocal();
+            context.goNamed(RouteConst.login);
+          },
+          child: const Text(
+            "LOG IN",
+            style: TextStyle(
+              color: Colors.amberAccent,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+//============================================
+// 📰 Home Recent Notice Widget
+//============================================
 class HomeRecentNoticeWidget extends ConsumerWidget {
   const HomeRecentNoticeWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print('HomeRecentNoticeWidget');
+    debugPrint('📰 HomeRecentNoticeWidget rebuilding');
     final recentNoticeList = ref.watch(recentNoticeController(null));
 
     return Column(
@@ -276,18 +286,30 @@ class HomeRecentNoticeWidget extends ConsumerWidget {
           onTap: () {
             Navigator.push(
               context,
-              RightToLeftTransition(page: ViewAllRecentNotice()),
+              RightToLeftTransition(page: const ViewAllRecentNotice()),
             );
           },
         ),
         SizedBox(
-          height: 160,
+          height: 280, // Increased height for better spacing
           child: recentNoticeList.when(
             data: (data) {
               int length = data.notices.length;
+
+              // 🔍 Return empty state if no notices
+              if (length == 0) {
+                return const Center(
+                  child: Text(
+                    "No recent notices available",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                );
+              }
+
               return RecentNoticeSlider(
                 ukey: 'Home Recent Notice',
                 list: <Widget>[
+                  // Slide 1: Index 0 & 1
                   RecentNoticeSliderItem(
                     notice: data.notices,
                     index: 0,
@@ -295,37 +317,35 @@ class HomeRecentNoticeWidget extends ConsumerWidget {
                     singleCondition: length == 1,
                     recentNotice: data,
                   ),
-                  RecentNoticeSliderItem(
-                    notice: data.notices,
-                    index: 2,
-                    condition: length >= 4,
-                    singleCondition: length == 3,
-                    recentNotice: data,
-                  ),
-                  RecentNoticeSliderItem(
-                    notice: data.notices,
-                    index: 3,
-                    condition: length >= 6,
-                    singleCondition: length == 5,
-                    recentNotice: data,
-                  ),
-                  RecentNoticeSliderItem(
-                    notice: data.notices,
-                    index: 4,
-                    condition: length >= 8,
-                    singleCondition: length == 7,
-                    recentNotice: data,
-                  ),
+                  // Slide 2: Index 2 & 3
+                  if (length > 2)
+                    RecentNoticeSliderItem(
+                      notice: data.notices,
+                      index: 2,
+                      condition: length >= 4,
+                      singleCondition: length == 3,
+                      recentNotice: data,
+                    ),
+                  // Slide 3: Index 4 & 5
+                  if (length > 4)
+                    RecentNoticeSliderItem(
+                      notice: data.notices,
+                      index: 4,
+                      condition: length >= 6,
+                      singleCondition: length == 5,
+                      recentNotice: data,
+                    ),
                 ],
               );
             },
             error: (error, stackTrace) {
+              debugPrint('❌ Error loading recent notices: $error');
               return Alert.handleError(context, error);
             },
             loading: () => const RecentNoticeSliderSkelton(),
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 16),
       ],
     );
   }

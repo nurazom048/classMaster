@@ -3,7 +3,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../../features/notice_fetures/data/models/recent_notice_model.dart';
-import '../notice_row.dart';
+import '../../../../features/notice_fetures/presentation/widgets/static_widgets/modern_reusable_notice_card_widget.dart'
+    show PremiumNoticeCard;
 
 class RecentNoticeSliderItem extends StatelessWidget {
   const RecentNoticeSliderItem({
@@ -15,6 +16,7 @@ class RecentNoticeSliderItem extends StatelessWidget {
     required this.recentNotice,
     this.emptyMessage,
   });
+
   final List<Notice> notice;
   final int index;
   final bool condition;
@@ -25,32 +27,62 @@ class RecentNoticeSliderItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 120,
+      height: 180,
       child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            if (singleCondition == true)
-              NoticeRow(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          if (singleCondition == true)
+            Expanded(
+              child: PremiumNoticeCard(
                 notice: notice[index],
-                accountModels: recentNotice.notices[index].account,
-              )
-            else if (condition == true) ...[
-              NoticeRow(
-                notice: notice[index],
-                accountModels: recentNotice.notices[index].account,
+                academyID: recentNotice.notices[index].publisherId,
+                onTap: () {
+                  // Handle navigation to notice details
+                  debugPrint('Tapped notice: ${notice[index].title}');
+                },
+                onLongPress: () {
+                  // Handle long press action
+                  debugPrint('Long pressed notice: ${notice[index].title}');
+                },
               ),
-              NoticeRow(
+            )
+          else if (condition == true) ...[
+            Expanded(
+              child: PremiumNoticeCard(
+                notice: notice[index],
+                academyID: recentNotice.notices[index].publisherId,
+                onTap: () {
+                  debugPrint('Tapped notice: ${notice[index].title}');
+                },
+                onLongPress: () {
+                  debugPrint('Long pressed notice: ${notice[index].title}');
+                },
+              ),
+            ),
+            Expanded(
+              child: PremiumNoticeCard(
                 notice: notice[index + 1],
-                accountModels: recentNotice.notices[index + 1].account,
+                academyID: recentNotice.notices[index + 1].publisherId,
+                onTap: () {
+                  debugPrint('Tapped notice: ${notice[index + 1].title}');
+                },
+                onLongPress: () {
+                  debugPrint('Long pressed notice: ${notice[index + 1].title}');
+                },
               ),
-            ] else
-              Expanded(
-                  child: Center(
+            ),
+          ] else
+            Expanded(
+              child: Center(
                 child: Text(
-                    emptyMessage ?? "Join NoticeBoard to see Recent Notices"),
-              ))
-          ]),
+                  emptyMessage ?? "Join NoticeBoard to see Recent Notices",
+                  style: const TextStyle(color: Colors.grey, fontSize: 14),
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
