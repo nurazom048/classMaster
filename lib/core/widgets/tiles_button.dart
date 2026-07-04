@@ -10,6 +10,8 @@ class TilesButton extends StatelessWidget {
   final dynamic onTap;
   final String saxpath;
   final EdgeInsetsGeometry? imageMargin;
+  final double? width;
+  final double? height;
 
   const TilesButton(
     this.text,
@@ -18,15 +20,17 @@ class TilesButton extends StatelessWidget {
     this.onTap,
     required this.saxpath,
     this.imageMargin,
+    this.width,
+    this.height,
   });
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final isMobile = size.width < 650;
-    final double buttonWidth = isMobile
+    final double buttonWidth = width ?? (isMobile
         ? ((size.width - 52) / 2).clamp(110.0, 160.0)
-        : 150.0;
+        : 150.0);
         
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
@@ -35,9 +39,9 @@ class TilesButton extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(15),
       child: Container(
-        padding: const EdgeInsets.all(8),
+        padding: height != null ? const EdgeInsets.all(4) : const EdgeInsets.all(8),
         width: buttonWidth,
-        height: 174,
+        height: height ?? 174,
         decoration: BoxDecoration(
           color: isDarkMode 
               ? const Color.fromRGBO(1, 104, 255, 0.15)
@@ -49,7 +53,9 @@ class TilesButton extends StatelessWidget {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 5),
+          padding: height != null 
+              ? const EdgeInsets.symmetric(vertical: 2)
+              : const EdgeInsets.symmetric(vertical: 5),
           child: Column(
             children: [
               Stack(
@@ -64,14 +70,16 @@ class TilesButton extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(4.0),
+                    padding: height != null 
+                        ? const EdgeInsets.all(2.0)
+                        : const EdgeInsets.all(4.0),
                     child: Container(
                       margin: imageMargin,
-                      height: 92,
+                      height: (height ?? 174) * 0.40,
                       child: Center(
                         child: SvgPicture.asset(
                           saxpath,
-                          height: 92,
+                          height: (height ?? 174) * 0.40,
                           fit: BoxFit.contain,
                         ),
                       ),
@@ -79,7 +87,7 @@ class TilesButton extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: height != null ? 4 : 8),
               Expanded(
                 child: Center(
                   child: Text(

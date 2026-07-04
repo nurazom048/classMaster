@@ -49,12 +49,42 @@ class _SaveSummeryScreenState extends ConsumerState<SaveSummeryScreen> {
                     int lenght = data.summaries.length;
 
                     return data.summaries.isEmpty
-                        ? const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 400),
-                          child: Center(
-                            child: ErrorScreen(error: 'No Saved summary'),
-                          ),
-                        )
+                        ? Padding(
+                            padding: const EdgeInsets.only(top: 150),
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.bookmark_border_rounded,
+                                    size: 72,
+                                    color: Colors.grey.shade400,
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    "No saved summaries yet",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey.shade700,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                                    child: Text(
+                                      "Summaries you bookmark will appear here for quick access even when offline.",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey.shade500,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
                         : Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: List.generate(lenght, (i) {

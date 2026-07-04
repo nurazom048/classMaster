@@ -24,9 +24,8 @@ class _SearchBarCustomState extends State<SearchBarCustom> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(top: 6),
-      height: 120,
+    return SizedBox(
+      height: 48,
       width: MediaQuery.of(context).size.width,
       child: Row(
         children: [

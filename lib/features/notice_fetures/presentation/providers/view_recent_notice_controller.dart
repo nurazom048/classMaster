@@ -49,31 +49,48 @@ class UploadedRutinsController extends StateNotifier<AsyncValue<RecentNotice>> {
     await _init(); // ফ্রেশ ডেটা রিলোড করবে
   }
 
+  bool _isLoadingMore = false;
+
   // loaded more data
   void loadMore(page, context) async {
+    if (_isLoadingMore) return;
+
+    final currentRecent = state.value;
+    if (currentRecent != null && page >= currentRecent.totalPages) {
+      return;
+    }
+
+    _isLoadingMore = true;
     try {
       final RecentNotice newData = await noticeRequest.fetchRecentNotice(
         page: page + 1,
         category: _selectedCategory,
+        academyId: academyID,
       );
-
-      // print(
-      //     "total ${newData.totalPages} : giver page $page new current page  ${newData.currentPage}   ");
 
       if (newData.currentPage != state.value?.currentPage) {
         List<Notice> notices = List.from(
           state.value!.notices,
         ); // Create a new list with existing notices
-        notices.addAll(newData.notices); // Add new notices to the list
+
+        // De-duplicate notices to prevent any accidental duplicate cards
+        final existingIds = notices.map((n) => n.id).toSet();
+        final uniqueNewNotices = newData.notices.where((n) => !existingIds.contains(n.id)).toList();
+
+        notices.addAll(uniqueNewNotices); // Add only unique new notices to the list
+
         state = AsyncData(
           state.value!.copyWith(
             notices: notices,
             currentPage: newData.currentPage,
+            totalPages: newData.totalPages,
           ),
         );
       }
     } catch (error) {
       Alert.handleError(context, error);
+    } finally {
+      _isLoadingMore = false;
     }
   }
 

@@ -168,40 +168,37 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                         final accountData = ref.watch(
                           accountDataProvider(widget.accountUsername),
                         );
-                        return SizedBox(
-                          height: 129,
-                          child: accountData.when(
-                            data:
-                                (data) => data.fold(
-                                  (l) => const Center(
-                                    child: Text("No Data Available"),
-                                  ),
-                                  (r) => AccountCard(
-                                    account: r,
-                                    onTap: () {
-                                      context.pushNamed(
-                                        RouteConst.viewProfile,
-                                        params: {'username': r.username ?? ''},
-                                      );
-                                    },
-                                  ),
+                        return accountData.when(
+                          data:
+                              (data) => data.fold(
+                                (l) => const Center(
+                                  child: Text("No Data Available"),
                                 ),
-                            error: (error, stackTrace) {
-                              WidgetsBinding.instance.addPostFrameCallback((_) {
-                                if (context.mounted) {
-                                  Alert.showSnackBar(context, error.toString());
-                                }
-                              });
-                              return const Center(
-                                child: Text("Failed to load account details"),
-                              );
-                            },
-                            loading:
-                                () => SizedBox(
-                                  height: 100,
-                                  child: Center(child: Loaders.center()),
+                                (r) => AccountCard(
+                                  account: r,
+                                  onTap: () {
+                                    context.pushNamed(
+                                      RouteConst.viewProfile,
+                                      params: {'username': r.username ?? ''},
+                                    );
+                                  },
                                 ),
-                          ),
+                              ),
+                          error: (error, stackTrace) {
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              if (context.mounted) {
+                                Alert.showSnackBar(context, error.toString());
+                              }
+                            });
+                            return const Center(
+                              child: Text("Failed to load account details"),
+                            );
+                          },
+                          loading:
+                              () => SizedBox(
+                                height: 80,
+                                child: Center(child: Loaders.center()),
+                              ),
                         );
                       },
                     ),
@@ -271,55 +268,62 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                       },
                     ),
                     const MyDividerr(thickness: 1.0, height: 1.0),
-                    Wrap(
-                      spacing: 16,
-                      runSpacing: 16,
-                      alignment: WrapAlignment.center,
-                      children: [
-                        TilesButton(
-                          "Saved\nRoutines",
-                          const FaIcon(FontAwesomeIcons.bookmark),
-                          saxpath:
-                              'assets/svg/undraw_personal_file_re_5joy.svg',
-                          imageMargin: const EdgeInsets.only(left: 10),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              RightToLeftTransition(
-                                page: const SaveRoutinesScreen(),
-                              ),
-                            );
-                          },
-                        ),
-                        TilesButton(
-                          "Saved Summaries",
-                          const FaIcon(FontAwesomeIcons.bookmark),
-                          saxpath:
-                              'assets/svg/undraw_my_documents_re_13dc.svg',
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              RightToLeftTransition(
-                                page: const SaveSummeryScreen(),
-                              ),
-                            );
-                          },
-                        ),
-                        TilesButton(
-                          "Saved\nNotices",
-                          const Icon(Icons.bookmark_added_rounded),
-                          saxpath:
-                              'assets/svg/undraw_personal_text_re_vqj3.svg',
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              RightToLeftTransition(
-                                page: const SavedNoticesScreen(),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TilesButton(
+                            "Saved\nRoutines",
+                            const FaIcon(FontAwesomeIcons.bookmark),
+                            saxpath:
+                                'assets/svg/undraw_personal_file_re_5joy.svg',
+                            imageMargin: const EdgeInsets.only(left: 10),
+                            width: (MediaQuery.of(context).size.width - 48) / 3,
+                            height: 115,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                RightToLeftTransition(
+                                  page: const SaveRoutinesScreen(),
+                                ),
+                              );
+                            },
+                          ),
+                          TilesButton(
+                            "Saved\nSummaries",
+                            const FaIcon(FontAwesomeIcons.bookmark),
+                            saxpath:
+                                'assets/svg/undraw_my_documents_re_13dc.svg',
+                            width: (MediaQuery.of(context).size.width - 48) / 3,
+                            height: 115,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                RightToLeftTransition(
+                                  page: const SaveSummeryScreen(),
+                                ),
+                              );
+                            },
+                          ),
+                          TilesButton(
+                            "Saved\nNotices",
+                            const Icon(Icons.bookmark_added_rounded),
+                            saxpath:
+                                'assets/svg/undraw_personal_text_re_vqj3.svg',
+                            width: (MediaQuery.of(context).size.width - 48) / 3,
+                            height: 115,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                RightToLeftTransition(
+                                  page: const SavedNoticesScreen(),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                     const MyDividerr(thickness: 1.0, height: 1.0),
                     MyContainerButton(

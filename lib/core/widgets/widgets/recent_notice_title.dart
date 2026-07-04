@@ -11,7 +11,7 @@ class RecentNoticeTitle extends StatelessWidget {
     return SizedBox(
       height: 55,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

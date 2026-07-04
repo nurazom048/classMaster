@@ -14,12 +14,14 @@ class AccountCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return InkWell(
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.symmetric(
-          horizontal: 40,
-        ).copyWith(top: 30, right: 0),
+          horizontal: 16,
+          vertical: 12,
+        ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -29,26 +31,41 @@ class AccountCard extends StatelessWidget {
                 final isOnline = snapshot.data ?? false;
 
                 if (isOnline && account.imageUrl != null && account.imageUrl!.isNotEmpty) {
-                  return SizedBox(
-                    height: 70,
-                    width: 70,
+                  return Container(
+                    height: 60,
+                    width: 60,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: theme.colorScheme.primary.withOpacity(0.2),
+                        width: 2,
+                      ),
+                    ),
                     child: ClipOval(
                       child: Image.network(
                         account.imageUrl!,
                         fit: BoxFit.cover,
                         errorBuilder: (_, __, ___) {
-                          return const CircleAvatar(radius: 35);
+                          return CircleAvatar(
+                            radius: 30,
+                            backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
+                            child: Icon(Icons.person, color: theme.colorScheme.primary, size: 30),
+                          );
                         },
                       ),
                     ),
                   );
                 }
 
-                return const CircleAvatar(radius: 35);
+                return CircleAvatar(
+                  radius: 30,
+                  backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
+                  child: Icon(Icons.person, color: theme.colorScheme.primary, size: 30),
+                );
               },
             ),
 
-            const SizedBox(width: 10),
+            const SizedBox(width: 16),
 
             Expanded(
               child: Column(
@@ -58,10 +75,22 @@ class AccountCard extends StatelessWidget {
                 children: [
                   Text(
                     account.name ?? '',
-                    maxLines: 2,
+                    maxLines: 1,
                     overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  Text("@${account.username ?? ''}"),
+                  const SizedBox(height: 2),
+                  Text(
+                    "@${account.username ?? ''}",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: theme.colorScheme.primary.withOpacity(0.7),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                 ],
               ),
             ),

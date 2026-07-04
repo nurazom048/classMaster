@@ -6,8 +6,7 @@ import '../../../../core/export_core.dart';
 import '../../../../core/widgets/account_card_row.dart';
 
 class AccountSearchScreen extends ConsumerWidget {
-  AccountSearchScreen({super.key});
-  final scrollController = ScrollController();
+  const AccountSearchScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -15,26 +14,11 @@ class AccountSearchScreen extends ConsumerWidget {
     final searchText = ref.watch(searchStringProvider);
     final searchAccounts = ref.watch(searchAccountController(searchText));
 
-    return Scaffold(
-      body: searchAccounts.when(
+    return searchAccounts.when(
         data: (data) {
-          void scrollListener(double pixels) {
-            if (pixels == scrollController.position.maxScrollExtent) {
-              // ignore: avoid_print
-              print('End of scroll');
-              ref
-                  .watch(searchAccountController(searchText).notifier)
-                  .loadMore(data.currentPage ?? 1);
-            }
-          }
-
-          scrollController.addListener(() {
-            scrollListener(scrollController.position.pixels);
-          });
-
           return ListView.separated(
-            // physics: const NeverScrollableScrollPhysics(),
-            controller: scrollController,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
             padding: const EdgeInsets.only(bottom: 200),
             itemCount: data.accounts?.length ?? 0,
             itemBuilder: (context, index) {
@@ -44,8 +28,7 @@ class AccountSearchScreen extends ConsumerWidget {
                 return const ErrorScreen(error: 'No Account found');
               }
             },
-            separatorBuilder:
-                (BuildContext context, int index) => const SizedBox(height: 10),
+            separatorBuilder: (context, index) => const SizedBox(height: 10),
           );
         },
         error: (error, stackTrace) {
@@ -53,7 +36,6 @@ class AccountSearchScreen extends ConsumerWidget {
           // return ErrorScreen(error: error.toString());
         },
         loading: () => Loaders.center(),
-      ),
-    );
+      );
   }
 }

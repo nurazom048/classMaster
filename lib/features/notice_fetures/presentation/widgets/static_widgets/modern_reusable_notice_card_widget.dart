@@ -75,7 +75,7 @@ class PremiumNoticeCard extends StatelessWidget {
       onTap: onTap,
       onLongPress: onLongPress,
       child: Container(
-        margin: margin ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        margin: margin ?? const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         padding: padding ?? const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.white,

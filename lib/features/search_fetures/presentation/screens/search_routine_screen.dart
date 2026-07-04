@@ -11,8 +11,7 @@ import '../../../routine/presentation/widgets/dynamic_widgets/routine_box_by_id.
 import 'search_page.dart' show searchStringProvider;
 
 class SearchRoutineScreen extends ConsumerWidget {
-  SearchRoutineScreen({super.key});
-  final scrollController = ScrollController();
+  const SearchRoutineScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,23 +22,11 @@ class SearchRoutineScreen extends ConsumerWidget {
     );
 
     //
-    return Scaffold(
-      body: searchRoutine.when(
+    return searchRoutine.when(
         data: (data) {
-          void scrollListener(double pixels) {
-            if (pixels == scrollController.position.maxScrollExtent) {
-              print('End of scroll');
-              homeRoutinesNotifier.loadMore();
-            }
-          }
-
-          scrollController.addListener(() {
-            scrollListener(scrollController.position.pixels);
-          });
-
           return ListView.separated(
-            //physics: const NeverScrollableScrollPhysics(),
-            controller: scrollController,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
             padding: const EdgeInsets.only(bottom: 100),
             itemCount: data.routines.length,
             itemBuilder: (context, index) {
@@ -64,7 +51,6 @@ class SearchRoutineScreen extends ConsumerWidget {
           return ErrorScreen(error: error.toString());
         },
         loading: () => Loaders.center(),
-      ),
-    );
+      );
   }
 }

@@ -68,6 +68,7 @@ class SavedNoticesScreen extends ConsumerWidget {
                         return PremiumNoticeCard(
                           notice: notice,
                           academyID: null,
+                          margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
                           onLongPress: () {},
                           onTap: () {
                             context.push(

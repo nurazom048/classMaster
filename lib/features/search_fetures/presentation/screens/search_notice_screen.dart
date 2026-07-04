@@ -17,9 +17,7 @@ class SearchNoticeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final searchNoticesAsync = ref.watch(searchNoticeProvider);
 
-    return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FD),
-      body: searchNoticesAsync.when(
+    return searchNoticesAsync.when(
         data: (notices) {
           if (notices.isEmpty) {
             return const Center(
@@ -35,6 +33,8 @@ class SearchNoticeScreen extends ConsumerWidget {
           }
 
           return ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
             padding: const EdgeInsets.only(bottom: 100, left: 12, right: 12, top: 12),
             itemCount: notices.length,
             separatorBuilder: (context, index) => const SizedBox(height: 10),
@@ -43,6 +43,7 @@ class SearchNoticeScreen extends ConsumerWidget {
               return PremiumNoticeCard(
                 notice: notice,
                 academyID: null,
+                margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
                 onLongPress: () {},
                 onTap: () {
                   // Navigate to notice details page using router
@@ -64,7 +65,6 @@ class SearchNoticeScreen extends ConsumerWidget {
           return ErrorScreen(error: error.toString());
         },
         loading: () => Center(child: Loaders.center()),
-      ),
-    );
+      );
   }
 }

@@ -28,7 +28,7 @@ class RecentNoticeSliderItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 4.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -37,7 +37,7 @@ class RecentNoticeSliderItem extends StatelessWidget {
             PremiumNoticeCard(
               notice: notice[index],
               academyID: recentNotice.notices[index].publisherId,
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               onTap: () {
                 debugPrint('🔗 Navigating to notice: ${notice[index].id}');
@@ -59,7 +59,7 @@ class RecentNoticeSliderItem extends StatelessWidget {
             PremiumNoticeCard(
               notice: notice[index],
               academyID: recentNotice.notices[index].publisherId,
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               onTap: () {
                 debugPrint('🔗 Navigating to notice: ${notice[index].id}');
@@ -82,7 +82,7 @@ class RecentNoticeSliderItem extends StatelessWidget {
             PremiumNoticeCard(
               notice: notice[index + 1],
               academyID: recentNotice.notices[index + 1].publisherId,
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               onTap: () {
                 debugPrint(

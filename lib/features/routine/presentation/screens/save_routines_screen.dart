@@ -16,8 +16,6 @@ class SaveRoutinesScreen extends ConsumerStatefulWidget {
       _SaveRoutinesScreenState();
 }
 
-final saveRoutinesScrolled = ScrollController();
-
 class _SaveRoutinesScreenState extends ConsumerState<SaveRoutinesScreen> {
   @override
   Widget build(BuildContext context) {
@@ -45,43 +43,72 @@ class _SaveRoutinesScreenState extends ConsumerState<SaveRoutinesScreen> {
                 child: Container(
                   child: saveRoutines.when(
                     data: (data) {
-                      void scrollListener() {
-                        if (saveRoutinesScrolled.position.pixels ==
-                            saveRoutinesScrolled.position.maxScrollExtent) {
-                          homeRoutinesNotifier.loadMore();
-                        }
-                      }
-
-                      saveRoutinesScrolled.addListener(scrollListener);
                       return data.routines.isEmpty
-                          ? const ErrorScreen(error: 'No Save Routines')
-                          : ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: data.routines.length,
-                            controller: saveRoutinesScrolled,
-                            // physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              final id = data.routines[index].id;
-                              final name = data.routines[index].routineName;
-                              return RoutineBoxById(
-                                routineId: id,
-                                routineName: name,
-                                onTapMore:
-                                    () =>
-                                        RoutineDialog.CheckStatusUser_BottomSheet(
-                                          context,
-                                          routineID: id,
-                                          routineName: name,
-                                          routinesController:
-                                              homeRoutinesNotifier,
-                                        ),
-                              );
-                            },
-                          );
+                          ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.bookmark_border_rounded,
+                                    size: 72,
+                                    color: Colors.grey.shade400,
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    "No saved routines yet",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey.shade700,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                                    child: Text(
+                                      "Routines you bookmark will appear here for quick access even when offline.",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey.shade500,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : NotificationListener<ScrollNotification>(
+                              onNotification: (scrollInfo) {
+                                if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
+                                  homeRoutinesNotifier.loadMore();
+                                }
+                                return false;
+                              },
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: data.routines.length,
+                                // physics: const NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  final id = data.routines[index].id;
+                                  final name = data.routines[index].routineName;
+                                  return RoutineBoxById(
+                                    routineId: id,
+                                    routineName: name,
+                                    onTapMore:
+                                        () =>
+                                            RoutineDialog.CheckStatusUser_BottomSheet(
+                                              context,
+                                              routineID: id,
+                                              routineName: name,
+                                              routinesController:
+                                                  homeRoutinesNotifier,
+                                            ),
+                                  );
+                                },
+                              ),
+                            );
                     },
-                    error:
-                        (error, stackTrace) =>
-                            Alert.handleError(context, error),
+                    error: (error, stackTrace) => Alert.handleError(context, error),
                     loading: () => Loaders.center(),
                   ),
                 ),
