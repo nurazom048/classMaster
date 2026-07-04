@@ -21,7 +21,12 @@ class RouteConst {
   // Account routes
   static const String editAccount = 'edit-account';
   static const String settingsPage = 'settings';
+  static const String passwordChange = 'passwordChange';
+  static const String viewProfile = 'profile';
 
   // Notice
   static const String viewNotice = "viewNotice";
+
+  // Notification
+  static const String notification = 'notification';
 }

@@ -8,6 +8,9 @@ import 'package:classmate/features/notice_fetures/data/models/recent_notice_mode
 import 'package:classmate/features/notice_fetures/presentation/screens/view_notice_screen.dart';
 import 'package:classmate/features/notice_fetures/presentation/widgets/static_widgets/public_notice_screen.dart';
 import 'package:classmate/features/routine/presentation/screens/add_class_screen.dart';
+import 'package:classmate/features/notification/screen/notification.screen.dart';
+import 'package:classmate/features/authentication_fetures/presentation/screen/change_password.dart';
+import 'package:classmate/features/account_fetures/presentation/screens/profile_screen.dart';
 import 'package:classmate/route/route_constant.dart';
 import 'package:classmate/ui/bottom_nevbar_items/bottom_navbar.dart';
 import 'package:flutter/material.dart';
@@ -76,13 +79,13 @@ class AppRouters {
             (context, state) => MaterialPage(child: CreateNewRoutine()),
       ),
       GoRoute(
-        path: '/routine/:routineID/view',
+        path: '/routine/:routineID',
         name: RouteConst.viewRoutine,
         pageBuilder:
             (context, state) => MaterialPage(
               child: ViewMore(
                 routineId: state.params['routineID']!,
-                routineName: state.extra as String,
+                routineName: state.extra as String?,
               ),
             ),
       ),
@@ -133,6 +136,32 @@ class AppRouters {
         path: '/settings',
         name: RouteConst.settingsPage,
         pageBuilder: (context, state) => MaterialPage(child: SettingsPage()),
+      ),
+      GoRoute(
+        path: '/password_change',
+        name: RouteConst.passwordChange,
+        pageBuilder: (context, state) => const MaterialPage(child: ChangePasswordPage()),
+      ),
+      GoRoute(
+        path: '/profile',
+        pageBuilder: (context, state) => const MaterialPage(child: ProfileScreen()),
+      ),
+      GoRoute(
+        path: '/profile/:username',
+        name: RouteConst.viewProfile,
+        pageBuilder: (context, state) {
+          final username = state.params['username'];
+          return MaterialPage(
+            child: ProfileScreen(
+              username: username,
+            ),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/notification',
+        name: RouteConst.notification,
+        pageBuilder: (context, state) => const MaterialPage(child: NotificationScreen()),
       ),
 
       GoRoute(

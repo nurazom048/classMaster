@@ -84,10 +84,9 @@ class RouterHelper {
       return null;
     }
 
-    // ✅ Authenticated or Guest
-    // If on root or auth route (except login), redirect to home
-    if (state.subloc == '/' || (isAuthRoute && state.subloc != '/auth/login')) {
-      print('Redirecting to /home');
+    // ✅ Authenticated or Guest: Redirect away from splash ('/') or any auth route (including login) to home
+    if (state.subloc == '/' || isAuthRoute) {
+      print('Redirecting authenticated/guest user from ${state.subloc} to /home');
       return '/home';
     }
 

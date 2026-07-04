@@ -28,16 +28,24 @@ class ProfileScreen extends ConsumerWidget {
     print("username : $username");
 
     //! Riverpod Providers
-    final recentNoticeList = ref.watch(recentNoticeController(academyID));
     final accountData = ref.watch(accountDataProvider(username));
+
+    // Resolve academy ID: fallback to loaded user's ID if constructor argument is null
+    final accountValue = accountData.value?.fold((l) => null, (r) => r);
+    final resolvedAcademyID = academyID ?? accountValue?.id;
+
+    // Reactively watch recent notice list based on the resolved academy ID
+    final recentNoticeList = ref.watch(recentNoticeController(resolvedAcademyID));
+
+    // Watch uploaded routines based on username or resolved academy ID
     final uploadedRoutines = ref.watch(
-      routineListProvider(RoutineListQuery(username: username ?? academyID)),
+      routineListProvider(RoutineListQuery(username: username ?? resolvedAcademyID)),
     );
 
     // Read notifier instead of watching to prevent unnecessary rebuilds
     final uploadedRoutinesNotifier = ref.read(
       routineListProvider(
-        RoutineListQuery(username: username ?? academyID),
+        RoutineListQuery(username: username ?? resolvedAcademyID),
       ).notifier,
     );
 

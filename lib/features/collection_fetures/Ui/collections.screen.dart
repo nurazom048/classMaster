@@ -177,17 +177,12 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                                   ),
                                   (r) => AccountCard(
                                     account: r,
-                                    onTap:
-                                        () => Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder:
-                                                (context) => ProfileScreen(
-                                                  academyID: r.id,
-                                                  username: r.username,
-                                                ),
-                                          ),
-                                        ),
+                                    onTap: () {
+                                      context.pushNamed(
+                                        RouteConst.viewProfile,
+                                        params: {'username': r.username ?? ''},
+                                      );
+                                    },
                                   ),
                                 ),
                             error: (error, stackTrace) {

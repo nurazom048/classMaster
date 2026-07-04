@@ -7,6 +7,7 @@ import 'package:classmate/features/notice_fetures/presentation/utils/pdf_utils.d
 import 'package:classmate/ui/bottom_nevbar_items/bottom_navbar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:classmate/core/local_data/local_data.dart';
+import 'package:classmate/route/helper/route_helper.dart';
 
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -165,6 +166,9 @@ class AuthController extends StateNotifier<bool> {
         // 2. Ensure widget is still mounted before routing
         if (!context.mounted) return;
 
+        // Clear redirect cache so RouterHelper gets fresh data
+        RouterHelper.clearCache();
+
         // 3. Land to the Home screen FIRST
         context.goNamed(RouteConst.home);
 
@@ -195,16 +199,15 @@ class AuthController extends StateNotifier<bool> {
       },
       (r) async {
         state = false;
-        await FirebaseAuth.instance.signOut();
-        // Remove token and navigate to the login screen
-        final prefs = await SharedPreferences.getInstance();
-        prefs.remove('Token');
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
-        );
-
-        Alert.showSnackBar(context, r.message);
+        try {
+          await FirebaseAuth.instance.signOut();
+        } catch (_) {}
+        await LocalData.emptyLocal();
+        RouterHelper.clearCache();
+        if (context.mounted) {
+          context.goNamed(RouteConst.login);
+          Alert.showSnackBar(context, r.message);
+        }
       },
     );
   }
@@ -265,9 +268,10 @@ class AuthController extends StateNotifier<bool> {
               await FirebaseAuth.instance.signOut();
             }
 
-            // 3. Clear all stored local data and PDF cache
+            // 3. Clear all stored local data, PDF cache, and Router cache
             await LocalData.emptyLocal();
             await PdfUtils.clearPdfCache();
+            RouterHelper.clearCache();
 
             // 4. Give GoRouter a moment for the dialog animation to finish closing (Prevents race conditions)
             await Future.delayed(const Duration(milliseconds: 100));
@@ -323,11 +327,11 @@ class AuthController extends StateNotifier<bool> {
         },
         (data) async {
           state = false;
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => BottomNavBar()),
-          );
-          Alert.showSnackBar(context, data);
+          RouterHelper.clearCache();
+          if (context.mounted) {
+            context.goNamed(RouteConst.home);
+            Alert.showSnackBar(context, data);
+          }
         },
       );
     }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/export_core.dart';
 import '../../../../core/widgets/custom_tab_bar.widget.dart';
+import '../providers/routine_details.controller.dart';
 import '../widgets/dynamic_widgets/routine_box_by_id.dart';
 import 'class_list.dart';
 
@@ -12,12 +13,13 @@ final viewMoreIndexProvider = StateProvider<int>((ref) => 0);
 
 class ViewMore extends StatelessWidget {
   final String routineId;
-  final String routineName;
+  final String? routineName;
   final String? ownerName;
+
   const ViewMore({
     super.key,
     required this.routineId,
-    required this.routineName,
+    this.routineName,
     this.ownerName,
   });
 
@@ -25,13 +27,29 @@ class ViewMore extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, _) {
-        final ownerName = ref.watch(ownerNameProvider(routineId));
+        // Watch routine details (which contains owner and the newly returned routineName)
+        final routineDetails = ref.watch(routineDetailsProvider(routineId));
 
-        //
+        // Read ownerName from cache provider
+        final cachedOwnerName = ref.watch(ownerNameProvider(routineId));
+
+        // Resolve routineName: use constructor value, fallback to API details, then default to "Routine"
+        final resolvedName = routineName ?? 
+            routineDetails.value?.routineName ?? 
+            "Routine";
+
+        // Resolve ownerName: use constructor value, fallback to cached value, then fallback to API owner name
+        final resolvedOwnerName = ownerName ?? 
+            cachedOwnerName ?? 
+            routineDetails.value?.owner.name ?? 
+            "";
+
+        // Define the tabs for class list and routine members
         final List<Widget> pages = [
-          ClassListPage(routineId: routineId, routineName: routineId),
+          ClassListPage(routineId: routineId, routineName: resolvedName),
           MemberList(routineId: routineId),
         ];
+
         return SafeArea(
           child: Scaffold(
             body: NestedScrollView(
@@ -51,10 +69,8 @@ class ViewMore extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   const SizedBox(height: 20),
-                                  AppText(routineName.toUpperCase()).title(),
-                                  AppText(
-                                    ownerName ?? ownerName ?? "",
-                                  ).heeding(),
+                                  AppText(resolvedName.toUpperCase()).title(),
+                                  AppText(resolvedOwnerName).heeding(),
                                   const SizedBox(height: 25),
                                 ],
                               ),
@@ -81,8 +97,6 @@ class ViewMore extends StatelessWidget {
                 child: pages[ref.watch(viewMoreIndexProvider)],
               ),
             ),
-
-            //
           ),
         );
       },

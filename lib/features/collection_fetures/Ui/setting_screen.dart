@@ -60,12 +60,7 @@ class SettingsPage extends ConsumerWidget {
                             title: 'Change password',
                             icon: Icons.lock,
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                RightToLeftTransition(
-                                  page: const ChangePasswordPage(),
-                                ),
-                              );
+                              context.pushNamed(RouteConst.passwordChange);
                             },
                           ),
                           SeatingOption(

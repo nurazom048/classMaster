@@ -10,11 +10,13 @@ class AllClassesResponse {
   final List<AllClass> allClass;
   final Classes weekdayClasses;
   final AccountModels owner;
+  final String? routineName;
 
   AllClassesResponse({
     required this.allClass,
     required this.weekdayClasses,
     required this.owner,
+    this.routineName,
   });
 
   factory AllClassesResponse.fromJson(Map<String, dynamic> json) {
@@ -25,6 +27,7 @@ class AllClassesResponse {
               .toList(),
       weekdayClasses: Classes.fromJson(json['weekdayClasses']),
       owner: AccountModels.fromJson(json['owner']),
+      routineName: json['routineName'],
     );
   }
 }
