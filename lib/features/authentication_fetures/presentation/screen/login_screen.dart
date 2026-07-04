@@ -338,7 +338,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   // Custom Login Button with Validation
                   CupertinoButtonCustom(
                     isLoading: loading,
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    padding: EdgeInsets.zero,
                     color: AppColor.nokiaBlue,
                     text: "Log In",
                     onPressed: () async {
@@ -359,12 +359,41 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   const SizedBox(height: 16),
 
-                  // Google Login Button
-                  SocialLoginButton(
-                    isLoading: false,
-                    onTap: () {
-                      googleAuthProvider.signing(context, ref);
-                    },
+                  Row(
+                    children: [
+                      // Google Login Button
+                      Expanded(
+                        child: SocialLoginButton(
+                          margin: EdgeInsets.zero,
+                          isLoading: false,
+                          onTap: () {
+                            googleAuthProvider.signing(context, ref);
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      // Guest Login Button
+                      Expanded(
+                        child: SocialLoginButton(
+                          margin: EdgeInsets.zero,
+                          backgroundColor: Colors.blueGrey.shade50,
+                          textColor: Colors.blueGrey.shade700,
+                          icon: Icon(
+                            Icons.explore_outlined,
+                            color: Colors.blueGrey.shade700,
+                            size: 20,
+                          ),
+                          text: "Explore",
+                          isLoading: false,
+                          onTap: () async {
+                            final router = GoRouter.of(context);
+                            await LocalData.emptyLocal();
+                            await LocalData.saveIsGuest(true);
+                            router.go('/home');
+                          },
+                        ),
+                      ),
+                    ],
                   ),
 
                   const SizedBox(height: 30),
@@ -395,20 +424,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-
-                  CupertinoButtonCustom(
-                    isLoading: false,
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
-                    color: Colors.blueGrey,
-                    text: "Explore Without Login",
-                    onPressed: () async {
-                      final router = GoRouter.of(context);
-                      await LocalData.emptyLocal();
-                      await LocalData.saveIsGuest(true);
-                      router.go('/home');
-                    },
                   ),
                   const SizedBox(height: 20),
                 ],

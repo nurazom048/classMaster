@@ -441,7 +441,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   CupertinoButtonCustom(
                     icon: isAcademy ? Icons.send : Icons.check,
                     isLoading: loading,
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    padding: EdgeInsets.zero,
                     color: AppColor.nokiaBlue,
                     text: isAcademy ? 'Send Create Request' : "Sign up",
                     onPressed: () async {

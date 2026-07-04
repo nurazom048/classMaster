@@ -219,24 +219,30 @@ class _AuthAnimationScreenState extends State<AuthAnimationScreen>
     bool isDesktop = MediaQuery.of(context).size.width > 768;
 
     return Scaffold(
+      backgroundColor: isDesktop ? null : Colors.white,
       body: MouseRegion(
         onHover: _handlePointerHover,
         child: Center(
           child: SingleChildScrollView(
             child: Container(
-              width: MediaQuery.of(context).size.width * 0.9,
+              width: isDesktop
+                  ? MediaQuery.of(context).size.width * 0.9
+                  : MediaQuery.of(context).size.width,
               constraints: const BoxConstraints(maxWidth: 1000),
               height: isDesktop ? 650 : null,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(32),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.black12,
-                    blurRadius: 30,
-                    offset: Offset(0, 15),
-                  ),
-                ],
+                borderRadius:
+                    isDesktop ? BorderRadius.circular(32) : BorderRadius.zero,
+                boxShadow: isDesktop
+                    ? const [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 30,
+                          offset: Offset(0, 15),
+                        ),
+                      ]
+                    : null,
               ),
               clipBehavior: Clip.antiAlias,
               child: Flex(
@@ -269,8 +275,8 @@ class _AuthAnimationScreenState extends State<AuthAnimationScreen>
                         radius: const Radius.circular(8),
                         child: SingleChildScrollView(
                           controller: _scrollController,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 40,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: isDesktop ? 40 : 20,
                             vertical: 30,
                           ),
                           child: widget.child,
