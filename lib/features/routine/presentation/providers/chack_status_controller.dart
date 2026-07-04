@@ -62,6 +62,8 @@ class CheckStatusController
       condition,
     );
 
+    if (!context.mounted) return;
+
     result.fold(
       (errorMessage) => Alert.errorAlertDialog(context, errorMessage),
       (response) {
@@ -76,6 +78,8 @@ class CheckStatusController
   void sendReqController(BuildContext context, {String? requestMessage}) async {
     final result = await memberRequests.sendMemberRequest(routineId, requestMessage: requestMessage);
 
+    if (!context.mounted) return;
+
     result.fold(
       (errorMessage) => Alert.errorAlertDialog(context, errorMessage),
       (response) {
@@ -87,11 +91,13 @@ class CheckStatusController
     );
   }
 
-  void notificationOff(context) async {
+  void notificationOff(BuildContext context) async {
     final result = await routineRepository.classNotification(
       routineID: routineId,
       status: false,
     );
+
+    if (!context.mounted) return;
 
     result.fold(
       (errorMessage) => Alert.errorAlertDialog(context, errorMessage),
@@ -104,11 +110,13 @@ class CheckStatusController
     );
   }
 
-  void notificationOn(context) async {
+  void notificationOn(BuildContext context) async {
     final result = await routineRepository.classNotification(
       routineID: routineId,
       status: true,
     );
+
+    if (!context.mounted) return;
 
     result.fold(
       (errorMessage) => Alert.errorAlertDialog(context, errorMessage),
@@ -137,6 +145,8 @@ class CheckStatusController
 
       final res = await memberRequests.removeMember(routineId, accountId);
 
+      if (!context.mounted) return;
+
       res.fold(
         (error) {
           return Alert.errorAlertDialog(context, error.message);
@@ -147,7 +157,9 @@ class CheckStatusController
         },
       );
     } catch (e) {
-      Alert.handleError(context, e);
+      if (context.mounted) {
+        Alert.handleError(context, e);
+      }
     }
   }
 }

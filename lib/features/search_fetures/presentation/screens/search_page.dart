@@ -9,6 +9,7 @@ import '../../../../core/widgets/widgets/custom_title_bar.dart';
 import '../../../../core/widgets/widgets/mydrawer.dart';
 import 'account_search_screen.dart';
 import 'search_routine_screen.dart';
+import 'search_notice_screen.dart';
 
 //! search String provider
 final searchStringProvider = StateProvider<String>((ref) => "");
@@ -80,7 +81,7 @@ class _SearchPageState extends State<SearchPage> {
                         ),
                       ),
 
-                      //
+                      // Custom Tab Bar with 3 tabs: Account, Routine, Notice
                       Container(
                         width: MediaQuery.of(context).size.width,
                         margin: const EdgeInsets.symmetric(
@@ -88,8 +89,7 @@ class _SearchPageState extends State<SearchPage> {
                           horizontal: 10,
                         ),
                         child: CustomTabBar(
-                          // margin: const EdgeInsets.only(bottom: 20),
-                          tabItems: const ['Account', 'Routine'],
+                          tabItems: const ['Account', 'Routine', 'Notice'],
                           selectedIndex: ref.watch(searchPageIndexProvider),
                           onTabSelected: (index) {
                             pageController.jumpToPage(index);
@@ -115,7 +115,11 @@ class _SearchPageState extends State<SearchPage> {
                     .watch(searchPageIndexProvider.notifier)
                     .update((state) => index);
               },
-              children: [AccountSearchScreen(), SearchRoutineScreen()],
+              children: [
+                AccountSearchScreen(),
+                SearchRoutineScreen(),
+                SearchNoticeScreen(),
+              ],
             ),
           ),
         );

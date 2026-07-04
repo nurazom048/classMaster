@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/export_core.dart';
 import '../../../../core/helper/timer.helper.dart' show getTimeGroupLabel;
 import '../../../../route/app_router.dart';
+import '../../../../route/route_constant.dart';
 import '../providers/view_recent_notice_controller.dart';
 import '../utils/notice_board_dialog.dart';
 import '../widgets/static_widgets/modern_reusable_notice_card_widget.dart'
@@ -96,7 +97,9 @@ class _ViewAllRecentNoticeState extends ConsumerState<ViewAllRecentNotice> {
                                 Icons.search,
                                 color: Colors.blueAccent,
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                context.pushNamed(RouteConst.searchPage);
+                              },
                             ),
                           ],
                         ),

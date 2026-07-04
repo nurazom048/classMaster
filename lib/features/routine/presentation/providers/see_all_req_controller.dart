@@ -45,32 +45,44 @@ class SeeAllRequestControllerClass
   }
 
   void acceptMember(WidgetRef ref, String? requestId, BuildContext context, {bool? acceptAll}) async {
-    final res = memberRequests.handleRequestStatus(
-      routineId,
-      requestId: requestId,
-      status: 'ACCEPTED',
-      acceptAll: acceptAll,
-    );
+    try {
+      final value = await memberRequests.handleRequestStatus(
+        routineId,
+        requestId: requestId,
+        status: 'ACCEPTED',
+        acceptAll: acceptAll,
+      );
 
-    res.catchError((error) => Alert.handleError(context, error));
-    res.then((value) {
       ref.refresh(seeAllRequestControllerProvider(routineId));
       ref.refresh(memberControllerProvider(routineId)); // Refresh member list to show newly accepted members
-      return Alert.showSnackBar(context, value.message);
-    });
+      
+      if (context.mounted) {
+        Alert.showSnackBar(context, value.message);
+      }
+    } catch (error) {
+      if (context.mounted) {
+        Alert.handleError(context, error);
+      }
+    }
   }
 
   void rejectMembers(WidgetRef ref, String requestId, BuildContext context) async {
-    final res = memberRequests.handleRequestStatus(
-      routineId,
-      requestId: requestId,
-      status: 'REJECTED',
-    );
+    try {
+      final value = await memberRequests.handleRequestStatus(
+        routineId,
+        requestId: requestId,
+        status: 'REJECTED',
+      );
 
-    res.catchError((error) => Alert.handleError(context, error));
-    res.then((value) {
       ref.refresh(seeAllRequestControllerProvider(routineId));
-      return Alert.showSnackBar(context, value.message);
-    });
+      
+      if (context.mounted) {
+        Alert.showSnackBar(context, value.message);
+      }
+    } catch (error) {
+      if (context.mounted) {
+        Alert.handleError(context, error);
+      }
+    }
   }
 }

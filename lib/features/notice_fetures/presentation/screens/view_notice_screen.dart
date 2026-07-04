@@ -5,6 +5,8 @@ import 'package:classmate/features/notice_fetures/presentation/widgets/static_wi
 import 'package:classmate/features/notice_fetures/presentation/widgets/static_widgets/share_notice_button.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/saved_notices_provider.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart' as fa;
 import 'package:classmate/features/account_fetures/presentation/screens/profile_screen.dart';
@@ -21,7 +23,7 @@ import 'package:url_launcher/url_launcher.dart';
 // MAIN SCREEN
 // ============================================================================
 
-class NoticeViewScreen extends StatefulWidget {
+class NoticeViewScreen extends ConsumerStatefulWidget {
   final Notice? notice;
   final AccountModels? accountModel;
   final String? noticeId; // New: Pass ID if coming from a link
@@ -34,10 +36,10 @@ class NoticeViewScreen extends StatefulWidget {
   });
 
   @override
-  State<NoticeViewScreen> createState() => _NoticeViewScreenState();
+  ConsumerState<NoticeViewScreen> createState() => _NoticeViewScreenState();
 }
 
-class _NoticeViewScreenState extends State<NoticeViewScreen> {
+class _NoticeViewScreenState extends ConsumerState<NoticeViewScreen> {
   Notice? _notice;
   AccountModels? _accountModel;
   bool _isLoading = false;
@@ -120,6 +122,10 @@ class _NoticeViewScreenState extends State<NoticeViewScreen> {
     if (_notice == null) {
       return const Scaffold(body: Center(child: Text("Notice not found")));
     }
+
+    // Watch saved notices to dynamically update the bookmark icon color
+    ref.watch(savedNoticesProvider);
+    final isSaved = ref.read(savedNoticesProvider.notifier).isSaved(_notice!.id);
 
     return WillPopScope(
       onWillPop: () async {
@@ -221,7 +227,7 @@ class _NoticeViewScreenState extends State<NoticeViewScreen> {
                       Row(
                         children: [
                           Expanded(
-                            flex: 3,
+                            flex: 2,
                             child: ViewPdfButton(
                               onTap: () {
                                 Navigator.push(
@@ -235,7 +241,7 @@ class _NoticeViewScreenState extends State<NoticeViewScreen> {
                               },
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: 10),
                           Expanded(
                             flex: 1,
                             child: ActionButton(
@@ -252,6 +258,28 @@ class _NoticeViewScreenState extends State<NoticeViewScreen> {
                                       (context) => CustomShareBottomSheet(
                                         shareableUrl: shareableUrl,
                                       ),
+                                );
+                              },
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            flex: 1,
+                            child: ActionButton(
+                              icon: isSaved ? Icons.bookmark : Icons.bookmark_border,
+                              iconColor: isSaved ? AppColor.nokiaBlue : Colors.black87,
+                              label: "Save",
+                              onTap: () {
+                                ref.read(savedNoticesProvider.notifier).toggleSaveNotice(_notice!);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      isSaved
+                                          ? "Notice removed from Saved"
+                                          : "Notice saved successfully",
+                                    ),
+                                    duration: const Duration(seconds: 2),
+                                  ),
                                 );
                               },
                             ),
@@ -338,11 +366,13 @@ class ActionButton extends StatelessWidget {
     required this.onTap,
     required this.icon,
     required this.label,
+    this.iconColor,
   });
 
   final VoidCallback onTap;
   final IconData icon;
   final String label;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -357,7 +387,7 @@ class ActionButton extends StatelessWidget {
         ),
         height: 48,
         alignment: Alignment.center,
-        child: Icon(icon, color: Colors.black87, size: 22),
+        child: Icon(icon, color: iconColor ?? Colors.black87, size: 22),
       ),
     );
   }

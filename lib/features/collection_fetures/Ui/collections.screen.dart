@@ -9,6 +9,7 @@ import '../../../core/widgets/my_divider.dart';
 import 'package:classmate/features/collection_fetures/Ui/aboutus_screen.dart';
 import 'package:classmate/features/routine/presentation/screens/save_routines_screen.dart';
 import 'package:classmate/features/routine_summary_fetures/presentation/screens/save_summary_screen.dart';
+import 'package:classmate/features/notice_fetures/presentation/screens/saved_notices_screen.dart';
 import '../../../core/constant/enum.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../core/export_core.dart';
@@ -270,8 +271,10 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                       },
                     ),
                     const MyDividerr(thickness: 1.0, height: 1.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    Wrap(
+                      spacing: 16,
+                      runSpacing: 16,
+                      alignment: WrapAlignment.center,
                       children: [
                         TilesButton(
                           "Saved\nRoutines",
@@ -288,7 +291,6 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                             );
                           },
                         ),
-                        const SizedBox(width: 20),
                         TilesButton(
                           "Saved Summaries",
                           const FaIcon(FontAwesomeIcons.bookmark),
@@ -299,6 +301,20 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                               context,
                               RightToLeftTransition(
                                 page: const SaveSummeryScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                        TilesButton(
+                          "Saved\nNotices",
+                          const Icon(Icons.bookmark_added_rounded),
+                          saxpath:
+                              'assets/svg/undraw_personal_text_re_vqj3.svg',
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              RightToLeftTransition(
+                                page: const SavedNoticesScreen(),
                               ),
                             );
                           },
