@@ -9,6 +9,8 @@ class PremiumNoticeCard extends StatelessWidget {
   final String? academyID;
   final onTap;
   final VoidCallback onLongPress;
+  final EdgeInsetsGeometry? margin;
+  final EdgeInsetsGeometry? padding;
 
   const PremiumNoticeCard({
     super.key,
@@ -16,6 +18,8 @@ class PremiumNoticeCard extends StatelessWidget {
     required this.academyID,
     required this.onTap,
     required this.onLongPress,
+    this.margin,
+    this.padding,
   });
 
   // ক্যাটাগরি ভিত্তিক রেন্ডারিং টেক্সট এবং কালার ম্যাপ
@@ -71,8 +75,8 @@ class PremiumNoticeCard extends StatelessWidget {
       onTap: onTap,
       onLongPress: onLongPress,
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        padding: const EdgeInsets.all(16),
+        margin: margin ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: padding ?? const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
