@@ -75,7 +75,7 @@ class ProfileScreen extends ConsumerWidget {
                         if (r.accountType == "academy") ...[
                           NoticeBoardHeader(academyID: r.id!, accountdata: r),
                           SizedBox(
-                            height: 280, // Increased height for better spacing
+                            height: 236,
                             child: recentNoticeList.when(
                               data: (data) {
                                 int length = data.notices.length;

@@ -258,9 +258,6 @@ class AuthController extends StateNotifier<bool> {
       "Are You Sure To logout?",
       onConfirm: (isConfirmed) async {
         if (isConfirmed) {
-          // 1. Close only the dialog without destroying the main screen's navigation stack
-          Navigator.of(context, rootNavigator: true).pop();
-
           try {
             // 2. Sign out from Firebase if user session exists
             final user = FirebaseAuth.instance.currentUser;

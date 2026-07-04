@@ -82,7 +82,7 @@ class _RecentNoticeSliderState extends State<RecentNoticeSlider> {
             ),
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
 
         // 🔵 Indicator dots
         Row(

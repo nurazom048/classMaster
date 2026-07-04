@@ -291,7 +291,7 @@ class HomeRecentNoticeWidget extends ConsumerWidget {
           },
         ),
         SizedBox(
-          height: 280, // Increased height for better spacing
+          height: 236,
           child: recentNoticeList.when(
             data: (data) {
               int length = data.notices.length;
@@ -345,7 +345,7 @@ class HomeRecentNoticeWidget extends ConsumerWidget {
             loading: () => const RecentNoticeSliderSkelton(),
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 8),
       ],
     );
   }

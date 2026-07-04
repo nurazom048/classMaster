@@ -154,7 +154,7 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                   children: [
                     if (isMobile)
                       const Padding(
-                        padding: EdgeInsets.all(16.0),
+                        padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 4.0),
                         child: Text(
                           'Collection',
                           style: TextStyle(

@@ -5,6 +5,7 @@ import 'package:classmate/core/export_core.dart';
 import 'package:classmate/features/account_fetures/presentation/utils/edit_account.validation.dart';
 import '../../../../core/constant/enum.dart';
 import '../../../authentication_fetures/presentation/widgets/static_widget/who_are_you_button.dart';
+import '../../../authentication_fetures/presentation/screen/signup_screen.dart';
 import '../../data/models/account_models.dart';
 import '../../domain/providers/account_providers.dart';
 import 'package:image_picker/image_picker.dart';
@@ -154,11 +155,10 @@ class _EditAccountState extends ConsumerState<EditAccount> {
             aboutController.text = account.about ?? '';
 
             // 🟢 ডাটাবেজ থেকে পাওয়া রোল রিভারপড প্রোভাইডারে সেট করা হচ্ছে (ধরে নেওয়া হচ্ছে ডাটাবেজে student/academy বা অনুরুপ ভ্যালু আছে)
-            // ignore: unused_local_variable
             final String currentRole =
                 account.accountType?.toString().split('.').last.toLowerCase() ??
                 'student';
-            //    ref.read(selectAccountTypeProvider.notifier).update((state) => currentRole);
+            ref.read(selectAccountTypeProvider.notifier).update((state) => currentRole);
           });
         }
       },
