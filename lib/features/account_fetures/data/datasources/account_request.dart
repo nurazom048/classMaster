@@ -78,6 +78,12 @@ class AccountRepositoryImpl implements AccountRepository {
     required String name,
     required String username,
     required String about,
+    String? accountType,
+    String? district,
+    String? upazila,
+    String? streetAddress,
+    double? latitude,
+    double? longitude,
     XFile? profileImage,
     XFile? coverImage,
   }) async {
@@ -90,6 +96,12 @@ class AccountRepositoryImpl implements AccountRepository {
       request.fields['name'] = name;
       request.fields['username'] = username;
       request.fields['about'] = about;
+      if (accountType != null) request.fields['accountType'] = accountType;
+      if (district != null) request.fields['district'] = district;
+      if (upazila != null) request.fields['upazila'] = upazila;
+      if (streetAddress != null) request.fields['streetAddress'] = streetAddress;
+      if (latitude != null) request.fields['latitude'] = latitude.toString();
+      if (longitude != null) request.fields['longitude'] = longitude.toString();
 
       if (profileImage != null) {
         if (kIsWeb) {

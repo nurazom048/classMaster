@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:classmate/core/export_core.dart';
 import 'package:classmate/features/account_fetures/presentation/utils/edit_account.validation.dart';
+import 'package:classmate/features/account_fetures/presentation/utils/bangladesh_locations.dart';
+import 'package:classmate/core/widgets/searchable_dropdown.dart';
 import '../../../../core/constant/enum.dart';
 import '../../../authentication_fetures/presentation/widgets/static_widget/who_are_you_button.dart';
 import '../../../authentication_fetures/presentation/screen/signup_screen.dart';
@@ -22,6 +24,9 @@ class _EditAccountState extends ConsumerState<EditAccount> {
   final nameController = TextEditingController();
   final usernameController = TextEditingController();
   final aboutController = TextEditingController();
+  final streetAddressController = TextEditingController();
+  final latitudeController = TextEditingController();
+  final longitudeController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   // Focus nodes
@@ -34,6 +39,8 @@ class _EditAccountState extends ConsumerState<EditAccount> {
   XFile? coverImage;
   String? netProfileImage;
   String? netCoverImage;
+  String? selectedDistrict;
+  String? selectedUpazila;
 
   @override
   void initState() {
@@ -46,6 +53,9 @@ class _EditAccountState extends ConsumerState<EditAccount> {
     nameController.dispose();
     usernameController.dispose();
     aboutController.dispose();
+    streetAddressController.dispose();
+    latitudeController.dispose();
+    longitudeController.dispose();
     nameFocusNode.dispose();
     usernameFocusNode.dispose();
     super.dispose();
@@ -53,6 +63,7 @@ class _EditAccountState extends ConsumerState<EditAccount> {
 
   @override
   Widget build(BuildContext context) {
+    final selectedRole = ref.watch(selectAccountTypeProvider);
     return SafeArea(
       child: Scaffold(
         appBar: const AppBarCustom('Edit Account'),
@@ -101,12 +112,14 @@ class _EditAccountState extends ConsumerState<EditAccount> {
                         focusNode: usernameFocusNode,
                       ),
 
-                      // 🟢 AbsorbPointer make it (Read-Only)
+                      // 🟢 AbsorbPointer makes it (Read-Only)
                       AbsorbPointer(
                         absorbing: true,
                         child: Opacity(
                           opacity: 0.8,
-                          child: WhoAreYouButton(onAccountType: (role) {}),
+                          child: WhoAreYouButton(
+                            onAccountType: (role) {},
+                          ),
                         ),
                       ),
 
@@ -118,6 +131,160 @@ class _EditAccountState extends ConsumerState<EditAccount> {
                         labelText: 'Write About Text',
                         validator: EditAccountValidation.validateAbout,
                       ).multiline(),
+
+                      // --- Address & Location Section ---
+                      Container(
+                        width: double.infinity,
+                        margin: const EdgeInsets.symmetric(horizontal: 24).copyWith(top: 30),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Address & Location",
+                                  style: TS.opensensBlue(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                if (selectedRole == 'academy')
+                                  IconButton(
+                                    onPressed: () {
+                                      // Simulate permission dialog
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                          title: const Text('Allow Location Access?'),
+                                          content: const Text('Class Master needs access to your location to auto-fill the coordinates.'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(context),
+                                              child: const Text('Deny'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                                setState(() {
+                                                  latitudeController.text = '23.8103';
+                                                  longitudeController.text = '90.4125';
+                                                });
+                                                print('Permission granted. Location data received: Latitude = ${latitudeController.text}, Longitude = ${longitudeController.text}, District = $selectedDistrict, Upazila = $selectedUpazila, Street Address = ${streetAddressController.text}');
+                                                Alert.showSnackBar(context, 'Location auto-filled: Dhaka, Bangladesh');
+                                              },
+                                              child: const Text('Allow'),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    icon: Icon(Icons.my_location, color: AppColor.nokiaBlue),
+                                    tooltip: 'Get Location',
+                                  ),
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+                            
+                            // Street Address Input
+                            AppTextFromField(
+                              controller: streetAddressController,
+                              hint: 'Street Address',
+                              labelText: 'e.g. 123 Main St',
+                              margin: EdgeInsets.zero,
+                            ),
+                            const SizedBox(height: 20),
+                            
+                            // District & Upazila side-by-side searchable dropdowns
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: SearchableDropdown(
+                                    label: 'District',
+                                    hint: 'Select District',
+                                    value: selectedDistrict,
+                                    items: bangladeshDistrictsAndUpazilas.keys.toList(),
+                                    onChanged: (district) {
+                                      setState(() {
+                                        selectedDistrict = district;
+                                        selectedUpazila = null; // Reset upazila when district changes
+                                      });
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: SearchableDropdown(
+                                    label: 'Upazila / Thana',
+                                    hint: 'Select Upazila',
+                                    value: selectedUpazila,
+                                    items: selectedDistrict != null
+                                        ? bangladeshDistrictsAndUpazilas[selectedDistrict] ?? []
+                                        : [],
+                                    onChanged: (upazila) {
+                                      setState(() {
+                                        selectedUpazila = upazila;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      // Conditional Map Section for Academy
+                      if (selectedRole == 'academy') ...[
+                        const SizedBox(height: 16),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextFormField(
+                                  controller: latitudeController,
+                                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                                  decoration: InputDecoration(
+                                    labelText: 'Latitude',
+                                    labelStyle: TextStyle(color: AppColor.nokiaBlue),
+                                    border: UnderlineInputBorder(
+                                      borderSide: BorderSide(color: AppColor.nokiaBlue),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: TextFormField(
+                                  controller: longitudeController,
+                                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                                  decoration: InputDecoration(
+                                    labelText: 'Longitude',
+                                    labelStyle: TextStyle(color: AppColor.nokiaBlue),
+                                    border: UnderlineInputBorder(
+                                      borderSide: BorderSide(color: AppColor.nokiaBlue),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: Text(
+                            '* Click map icon to auto-fill or type manually',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey.shade600,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ),
+                      ],
 
                       const SizedBox(height: 60),
 
@@ -148,11 +315,34 @@ class _EditAccountState extends ConsumerState<EditAccount> {
     eitherResult.fold(
       (error) => Alert.showSnackBar(context, 'Failed to load data: $error'),
       (account) {
+        // Log account and address details to console for debugging
+        print('Account loaded: ${account.toJson()}');
+        print('Address: ${account.address?.toJson()}');
+
         if (mounted) {
           setState(() {
             nameController.text = account.name ?? '';
             usernameController.text = account.username ?? '';
             aboutController.text = account.about ?? '';
+
+            if (account.image != null) {
+              netProfileImage = account.image;
+            }
+            if (account.coverImage != null) {
+              netCoverImage = account.coverImage;
+            }
+
+            if (account.address != null) {
+              selectedDistrict = account.address!.district;
+              selectedUpazila = account.address!.upazila;
+              streetAddressController.text = account.address!.streetAddress ?? '';
+              latitudeController.text = account.address!.latitude != null
+                  ? account.address!.latitude.toString()
+                  : '';
+              longitudeController.text = account.address!.longitude != null
+                  ? account.address!.longitude.toString()
+                  : '';
+            }
 
             // 🟢 ডাটাবেজ থেকে পাওয়া রোল রিভারপড প্রোভাইডারে সেট করা হচ্ছে (ধরে নেওয়া হচ্ছে ডাটাবেজে student/academy বা অনুরুপ ভ্যালু আছে)
             final String currentRole =
@@ -171,10 +361,22 @@ class _EditAccountState extends ConsumerState<EditAccount> {
     setState(() => isLoading = true);
     Alert.showSnackBar(context, 'Updating your profile, please wait...');
 
+    final selectedRole = ref.read(selectAccountTypeProvider);
+
     final editAccountData = AccountEditModel(
       name: nameController.text,
       username: usernameController.text,
       about: aboutController.text,
+      accountType: selectedRole,
+      district: selectedDistrict,
+      upazila: selectedUpazila,
+      streetAddress: streetAddressController.text.isNotEmpty ? streetAddressController.text : null,
+      latitude: (selectedRole == 'academy' && latitudeController.text.isNotEmpty)
+          ? double.tryParse(latitudeController.text)
+          : null,
+      longitude: (selectedRole == 'academy' && longitudeController.text.isNotEmpty)
+          ? double.tryParse(longitudeController.text)
+          : null,
       image: image,
       coverImage: coverImage,
     );
@@ -188,6 +390,7 @@ class _EditAccountState extends ConsumerState<EditAccount> {
         Alert.showSnackBar(context, 'Update failed: $error');
       },
       (message) {
+        ref.invalidate(accountDataProvider(null));
         Alert.showSnackBar(context, 'Success: $message');
         if (mounted) Navigator.pop(context);
       },

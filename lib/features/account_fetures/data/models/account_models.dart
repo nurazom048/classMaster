@@ -24,6 +24,8 @@ class AccountModels {
   String? requestId;
   String? requestMessage;
 
+  AddressModel? address;
+
   AccountModels({
     this.id,
     this.username,
@@ -39,6 +41,7 @@ class AccountModels {
     this.coverImageStorageProvider,
     this.requestId,
     this.requestMessage,
+    this.address,
   });
 
   /// Create model from API JSON response
@@ -70,6 +73,7 @@ class AccountModels {
 
     requestId = json['requestId'];
     requestMessage = json['requestMessage'];
+    address = json['address'] != null ? AddressModel.fromJson(json['address']) : null;
   }
 
   /// Full profile image URL
@@ -126,6 +130,7 @@ class AccountModels {
       'coverImageStorageProvider': coverImageStorageProvider?.name,
       'requestId': requestId,
       'requestMessage': requestMessage,
+      'address': address?.toJson(),
     };
   }
 
@@ -145,6 +150,7 @@ class AccountModels {
     ImageStorageProvider? coverImageStorageProvider,
     String? requestId,
     String? requestMessage,
+    AddressModel? address,
   }) {
     return AccountModels(
       id: id ?? this.id,
@@ -162,6 +168,7 @@ class AccountModels {
           coverImageStorageProvider ?? this.coverImageStorageProvider,
       requestId: requestId ?? this.requestId,
       requestMessage: requestMessage ?? this.requestMessage,
+      address: address ?? this.address,
     );
   }
 }
@@ -173,6 +180,12 @@ class AccountEditModel {
   final String name;
   final String username;
   final String about;
+  final String? accountType;
+  final String? district;
+  final String? upazila;
+  final String? streetAddress;
+  final double? latitude;
+  final double? longitude;
   final XFile? image;
   final XFile? coverImage;
 
@@ -180,7 +193,69 @@ class AccountEditModel {
     required this.name,
     required this.username,
     required this.about,
+    this.accountType,
+    this.district,
+    this.upazila,
+    this.streetAddress,
+    this.latitude,
+    this.longitude,
     this.image,
     this.coverImage,
   });
+}
+
+class AddressModel {
+  String? id;
+  String? district;
+  String? upazila;
+  String? streetAddress;
+  double? latitude;
+  double? longitude;
+
+  AddressModel({
+    this.id,
+    this.district,
+    this.upazila,
+    this.streetAddress,
+    this.latitude,
+    this.longitude,
+  });
+
+  AddressModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    district = json['district'];
+    upazila = json['upazila'];
+    streetAddress = json['streetAddress'];
+    latitude = json['latitude'] != null ? (json['latitude'] as num).toDouble() : null;
+    longitude = json['longitude'] != null ? (json['longitude'] as num).toDouble() : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'district': district,
+      'upazila': upazila,
+      'streetAddress': streetAddress,
+      'latitude': latitude,
+      'longitude': longitude,
+    };
+  }
+
+  AddressModel copyWith({
+    String? id,
+    String? district,
+    String? upazila,
+    String? streetAddress,
+    double? latitude,
+    double? longitude,
+  }) {
+    return AddressModel(
+      id: id ?? this.id,
+      district: district ?? this.district,
+      upazila: upazila ?? this.upazila,
+      streetAddress: streetAddress ?? this.streetAddress,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+    );
+  }
 }

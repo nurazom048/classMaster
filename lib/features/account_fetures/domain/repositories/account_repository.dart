@@ -10,6 +10,12 @@ abstract class AccountRepository {
     required String name,
     required String username,
     required String about,
+    String? accountType,
+    String? district,
+    String? upazila,
+    String? streetAddress,
+    double? latitude,
+    double? longitude,
     XFile? profileImage, // Changed from String? to XFile?
     XFile? coverImage, // Changed from String? to XFile?
   });
