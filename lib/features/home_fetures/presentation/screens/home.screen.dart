@@ -291,7 +291,7 @@ class HomeRecentNoticeWidget extends ConsumerWidget {
           },
         ),
         SizedBox(
-          height: 236,
+          height: 260,
           child: recentNoticeList.when(
             data: (data) {
               int length = data.notices.length;

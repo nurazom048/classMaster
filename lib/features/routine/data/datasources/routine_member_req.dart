@@ -168,8 +168,8 @@ class RoutineMemberRequestImpl implements MemberRepositoryImp {
   }) async {
     final header = await LocalData.getHeader();
 
-    // If 'acceptAll' is true, requestId might be empty, so we provide a safe fallback string for the URL
-    final safeRequestId = requestId ?? 'bulk';
+    // If 'acceptAll' is true, requestId might be empty or null, so we provide a safe fallback string for the URL
+    final safeRequestId = (requestId == null || requestId.isEmpty) ? 'bulk' : requestId;
     final Uri url = Uri.parse(
       '${Const.BASE_URl}/routine/$routineID/requests/$safeRequestId',
     );
