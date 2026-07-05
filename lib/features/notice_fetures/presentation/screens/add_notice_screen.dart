@@ -213,26 +213,31 @@ class AddNoticeScreen extends ConsumerWidget {
     WidgetRef ref,
     StateController<bool> isLoadingNotifier,
   ) async {
-    Either<String, String> res = await NoticeRequest().addNotice(
-      contentName: noticeTitleController.text,
-      description: descriptionController.text,
-      category: selectedCategory, // Passes the updated value directly
-      pdfFileData: pdfData,
-      ref: ref,
-    );
+    try {
+      Either<String, String> res = await NoticeRequest().addNotice(
+        contentName: noticeTitleController.text,
+        description: descriptionController.text,
+        category: selectedCategory, // Passes the updated value directly
+        pdfFileData: pdfData,
+        ref: ref,
+      );
 
-    res.fold(
-      (l) {
-        isLoadingNotifier.update((state) => false);
-        Alert.errorAlertDialog(context, l);
-      },
-      (r) {
-        // ignore: unused_result
-        ref.refresh(recentNoticeController(null));
-        Navigator.pop(context);
-        isLoadingNotifier.update((state) => false);
-        Alert.showSnackBar(context, r);
-      },
-    );
+      res.fold(
+        (l) {
+          isLoadingNotifier.update((state) => false);
+          Alert.errorAlertDialog(context, l);
+        },
+        (r) {
+          // ignore: unused_result
+          ref.refresh(recentNoticeController(null));
+          Navigator.pop(context);
+          isLoadingNotifier.update((state) => false);
+          Alert.showSnackBar(context, r);
+        },
+      );
+    } catch (e) {
+      isLoadingNotifier.update((state) => false);
+      Alert.errorAlertDialog(context, e.toString());
+    }
   }
 }

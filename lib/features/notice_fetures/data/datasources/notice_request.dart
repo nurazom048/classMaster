@@ -119,23 +119,23 @@ class NoticeRequest implements NoticeRepository {
     String category = 'notice',
     required WidgetRef ref,
   }) async {
-    // Step 1: Get authentication headers
-    final headers = await LocalData.getHeader();
+    try {
+      // Step 1: Get authentication headers
+      final headers = await LocalData.getHeader();
 
-    // Step 2: Construct POST URL (Updated to POST /notice)
-    final url = Uri.parse('${Const.BASE_URl}/notice');
+      // Step 2: Construct POST URL (Updated to POST /notice)
+      final url = Uri.parse('${Const.BASE_URl}/notice');
 
-    // Step 3: Initialize Multipart Request
-    final request = http.MultipartRequest('POST', url);
-    request.headers.addAll(headers);
-    request.fields['title'] = contentName ?? '';
-    request.fields['description'] = description ?? '';
-    request.fields['category'] = category;
-    request.fields['mimetypeChecked'] = "true";
+      // Step 3: Initialize Multipart Request
+      final request = http.MultipartRequest('POST', url);
+      request.headers.addAll(headers);
+      request.fields['title'] = contentName ?? '';
+      request.fields['description'] = description ?? '';
+      request.fields['category'] = category;
+      request.fields['mimetypeChecked'] = "true";
 
-    // Step 4: Attach PDF file based on platform (Web vs Mobile)
-    if (pdfFileData != null) {
-      try {
+      // Step 4: Attach PDF file based on platform (Web vs Mobile)
+      if (pdfFileData != null) {
         if (kIsWeb) {
           if (pdfFileData.bytes != null) {
             request.files.add(
@@ -159,20 +159,23 @@ class NoticeRequest implements NoticeRepository {
             return left('No PDF path provided on non-web');
           }
         }
-      } catch (e) {
-        return left("Error uploading PDF: $e");
       }
-    }
 
-    // Step 5: Send Request and await response
-    final response = await request.send();
-    final responded = await http.Response.fromStream(response);
-    final resData = json.decode(responded.body);
-    print("Response status: ${response.statusCode}");
-    print("Response data: $resData");
+      // Step 5: Send Request and await response
+      final response = await request.send();
+      final responded = await http.Response.fromStream(response);
+      
+      dynamic resData;
+      try {
+        resData = json.decode(responded.body);
+      } catch (e) {
+        return left("Server returned an invalid response (status code: ${response.statusCode})");
+      }
 
-    // Step 6: Handle Success or Failure
-    try {
+      print("Response status: ${response.statusCode}");
+      print("Response data: $resData");
+
+      // Step 6: Handle Success or Failure
       if (response.statusCode == 200) {
         Message message = Message.fromJson(resData);
         return right(message.message);
