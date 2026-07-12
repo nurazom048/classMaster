@@ -36,4 +36,10 @@ abstract class ISummaryRepository {
     required String summaryId,
     required bool save,
   });
+
+  /// Casts a vote or toggles a vote on a poll option
+  Future<bool> votePoll({
+    required String summaryId,
+    required int optionIndex,
+  });
 }

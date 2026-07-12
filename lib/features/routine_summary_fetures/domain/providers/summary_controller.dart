@@ -112,17 +112,13 @@ class SummaryController extends StateNotifier<AsyncValue<AllSummaryModel>> {
         files: imageLinks,
       );
 
-      if (!mounted) return;
       ref.refresh(summaryControllerProvider(classId));
       Navigator.of(context).pop();
       Alert.showSnackBar(context, "Summary created successfully!");
     } catch (error) {
-      if (!mounted) return;
       Alert.errorAlertDialog(context, error.toString());
     } finally {
-      if (mounted) {
-        ref.read(loaderProvider.notifier).update((state) => false);
-      }
+      ref.read(loaderProvider.notifier).update((state) => false);
     }
   }
 
@@ -134,13 +130,23 @@ class SummaryController extends StateNotifier<AsyncValue<AllSummaryModel>> {
       // 🆕 Using Repository
       await summaryRepo.removeSummary(summaryID);
 
-      if (!mounted) return;
       ref.refresh(summaryControllerProvider(classId));
       Navigator.pop(context);
       Alert.showSnackBar(context, "Summary deleted successfully!");
     } catch (error) {
-      if (!mounted) return;
       print(error);
+      Alert.errorAlertDialog(context, error.toString());
+    }
+  }
+
+  // Vote in a poll
+  void voteSummaryPoll(BuildContext context, String summaryID, int optionIndex) async {
+    try {
+      await summaryRepo.votePoll(summaryId: summaryID, optionIndex: optionIndex);
+      if (!mounted) return;
+      ref.refresh(summaryControllerProvider(classId));
+    } catch (error) {
+      if (!mounted) return;
       Alert.errorAlertDialog(context, error.toString());
     }
   }

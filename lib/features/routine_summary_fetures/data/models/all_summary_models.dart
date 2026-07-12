@@ -2,6 +2,29 @@ import '../../../../core/constant/constant.dart';
 import '../../../../core/constant/enum.dart';
 import '../../../routine/data/models/class_model.dart';
 
+enum SummaryType { TEXT, MEDIA, POLL, SYSTEM }
+
+class PollOption {
+  String option;
+  List<String> votes; // List of user IDs who voted for this option
+
+  PollOption({required this.option, required this.votes});
+
+  factory PollOption.fromJson(Map<String, dynamic> json) {
+    return PollOption(
+      option: json['option'] ?? '',
+      votes: List<String>.from(json['votes'] ?? []),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'option': option,
+      'votes': votes,
+    };
+  }
+}
+
 class AllSummaryModel {
   String message;
   List<SummaryModel> summaries;
@@ -51,11 +74,14 @@ class SummaryModel {
   String? id;
   String? ownerId;
   String? text;
-  List<String>? imageLinks; // ✅ This will map from 'fileLinks' from backend
+  List<String>? imageLinks; // maps from backend fileLinks
   String? routineId;
   String? classId;
   DateTime? createdAt;
   DateTime? updatedAt;
+  SummaryType? type;
+  String? fileType; // 'image', 'video', 'document'
+  List<PollOption>? pollOptions;
 
   Owner? owner;
   ClasssModel? classInfo;
@@ -70,18 +96,19 @@ class SummaryModel {
     this.classId,
     this.createdAt,
     this.updatedAt,
+    this.type,
+    this.fileType,
+    this.pollOptions,
     this.owner,
     this.classInfo,
     this.imageStorageProvider,
   });
 
-  /// Create model from API JSON response
   factory SummaryModel.fromJson(Map<String, dynamic> json) {
     return SummaryModel(
       id: json['id'],
       ownerId: json['ownerId'],
       text: json['text'],
-      // ✅ FIX: Map 'fileLinks' from backend to 'imageLinks' in Flutter
       imageLinks:
           json['fileLinks'] != null ? List<String>.from(json['fileLinks']) : [],
       routineId: json['routineId'],
@@ -94,9 +121,21 @@ class SummaryModel {
           json['updatedAt'] != null
               ? DateTime.tryParse(json['updatedAt'])
               : null,
+      type: json['type'] != null
+          ? SummaryType.values.firstWhere(
+              (e) => e.name == json['type'],
+              orElse: () => SummaryType.TEXT,
+            )
+          : SummaryType.TEXT,
+      fileType: json['fileType'],
+      pollOptions: json['pollOptions'] != null
+          ? (json['pollOptions'] as List<dynamic>)
+              .map((opt) => PollOption.fromJson(opt))
+              .toList()
+          : null,
       owner: json['owner'] != null ? Owner.fromJson(json['owner']) : null,
       classInfo:
-          json['class'] != null ? ClasssModel.fromJson(json['class']) : null,
+          json['classInfo'] != null ? ClasssModel.fromJson(json['classInfo']) : null,
       imageStorageProvider:
           json['imageStorageProvider'] != null
               ? ImageStorageProvider.values.firstWhere(
@@ -107,47 +146,40 @@ class SummaryModel {
     );
   }
 
-  /// Generates the Full Image URLs based on the storage provider
   List<String> get fullImageLinks {
     if (imageLinks == null || imageLinks!.isEmpty) {
       return [];
     }
 
     return imageLinks!.map((path) {
-      // If it already has http (e.g., Firebase URLs or old data), return as is
       if (path.startsWith('http')) {
         return path;
       }
-
-      // MinIO: Prepend base URL and bucket name from your Const file
       if (imageStorageProvider == ImageStorageProvider.minio) {
-        // Example: "api.classmaster.top/storageforclassmaster/"  + "ID-xxx/routine/..."
         return "${Const.MINIO_BASE_URL}$path";
       }
-
-      // AWS S3 or other providers
       if (imageStorageProvider == ImageStorageProvider.aws) {
-        // If you have AWS base URL
         return "${Const.MINIO_BASE_URL}$path";
       }
-
       return path;
     }).toList();
   }
 
-  /// Convert to JSON (useful for debugging or local storage)
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'ownerId': ownerId,
       'text': text,
-      'fileLinks': imageLinks, // ✅ Convert back to 'fileLinks' for API
+      'fileLinks': imageLinks,
       'routineId': routineId,
       'classId': classId,
       'createdAt': createdAt?.toIso8601String(),
       'updatedAt': updatedAt?.toIso8601String(),
+      'type': type?.name,
+      'fileType': fileType,
+      'pollOptions': pollOptions?.map((e) => e.toJson()).toList(),
       'owner': owner?.toJson(),
-      'class': classInfo?.toJson(),
+      'classInfo': classInfo?.toJson(),
       'imageStorageProvider': imageStorageProvider?.name,
     };
   }
@@ -161,6 +193,9 @@ class SummaryModel {
     String? classId,
     DateTime? createdAt,
     DateTime? updatedAt,
+    SummaryType? type,
+    String? fileType,
+    List<PollOption>? pollOptions,
     Owner? owner,
     ClasssModel? classInfo,
     ImageStorageProvider? imageStorageProvider,
@@ -174,6 +209,9 @@ class SummaryModel {
       classId: classId ?? this.classId,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      type: type ?? this.type,
+      fileType: fileType ?? this.fileType,
+      pollOptions: pollOptions ?? this.pollOptions,
       owner: owner ?? this.owner,
       classInfo: classInfo ?? this.classInfo,
       imageStorageProvider: imageStorageProvider ?? this.imageStorageProvider,
@@ -208,12 +246,18 @@ class Owner {
   }
 }
 
-// ✅ Add this extension for easier access
 extension SummaryModelExtension on SummaryModel {
   bool get hasImages => imageLinks != null && imageLinks!.isNotEmpty;
   bool get hasText => text != null && text!.isNotEmpty;
   String get displayText => text ?? 'No summary text';
   int get imageCount => imageLinks?.length ?? 0;
+
+  int get daysUntilDeletion {
+    if (createdAt == null) return 120;
+    final deletionDate = createdAt!.add(const Duration(days: 120));
+    final difference = deletionDate.difference(DateTime.now()).inDays;
+    return difference < 0 ? 0 : difference;
+  }
 
   String get formattedDate {
     if (createdAt == null) return 'Unknown date';

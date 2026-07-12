@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:classmate/features/routine_summary_fetures/domain/providers/summary_controller.dart';
+import 'package:classmate/features/routine_summary_fetures/presentation/socket_services/socketCon.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:mime/mime.dart';
 import 'package:image_picker/image_picker.dart';
@@ -50,6 +51,12 @@ class _AddSummaryScreenState extends ConsumerState<AddSummaryScreen> {
   }
 
   @override
+  void dispose() {
+    SocketService.sendStopTyping(widget.routineId);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     print('Building AddSummaryScreen');
     return SafeArea(
@@ -79,6 +86,13 @@ class _AddSummaryScreenState extends ConsumerState<AddSummaryScreen> {
                           TextFormField(
                             controller: _summaryController,
                             maxLines: 5,
+                            onChanged: (val) {
+                              if (val.isNotEmpty) {
+                                SocketService.sendTyping(widget.routineId);
+                              } else {
+                                SocketService.sendStopTyping(widget.routineId);
+                              }
+                            },
                             decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: 'Write Summary',

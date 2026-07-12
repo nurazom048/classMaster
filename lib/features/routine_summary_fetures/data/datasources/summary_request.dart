@@ -196,4 +196,31 @@ class SummaryRepository implements ISummaryRepository {
       throw Exception('Error toggling save: $e');
     }
   }
+
+  @override
+  Future<bool> votePoll({
+    required String summaryId,
+    required int optionIndex,
+  }) async {
+    final headers = await LocalData.getHeader();
+    final uri = Uri.parse('$baseUrl/$summaryId/vote');
+
+    try {
+      final response = await http.post(
+        uri,
+        headers: headers,
+        body: jsonEncode({'optionIndex': optionIndex}),
+      );
+
+      final resData = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        throw resData['message'] ?? 'Failed to cast vote';
+      }
+    } catch (e) {
+      throw Exception('Error voting in poll: $e');
+    }
+  }
 }

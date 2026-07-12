@@ -19,7 +19,7 @@ import '../../../../core/local_data/local_data.dart';
 const String DEMO_PROFILE_IMAGE =
     "https://icon-library.com/images/person-icon-png/person-icon-png-1.jpg";
 
-class SummaryScreen extends StatefulWidget {
+class SummaryScreen extends ConsumerStatefulWidget {
   final String classId;
   final String routineID;
   final String? className;
@@ -42,15 +42,15 @@ class SummaryScreen extends StatefulWidget {
   });
 
   @override
-  State<SummaryScreen> createState() => _SummaryScreenState();
+  ConsumerState<SummaryScreen> createState() => _SummaryScreenState();
 }
 
 late ScrollController scrollController;
 late ScrollController pageScrollController;
 
-class _SummaryScreenState extends State<SummaryScreen> {
+class _SummaryScreenState extends ConsumerState<SummaryScreen> {
   bool isGuestMode = false;
-  WidgetRef? _ref; // ✅ Store ref reference
+  List<String> typingUsers = []; // Track who is typing
 
   @override
   void initState() {
@@ -70,10 +70,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
         isGuestMode = guest;
       });
       if (!guest) {
-        // ✅ Pass ref when available
-        if (_ref != null) {
-          _initializeSocket(_ref!);
-        }
+        _initializeSocket();
       }
     }
   }
@@ -92,7 +89,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
     super.dispose();
   }
 
-  Future<void> _initializeSocket(WidgetRef ref) async {
+  Future<void> _initializeSocket() async {
     print('[Socket] Starting socket initialization');
 
     try {
@@ -106,18 +103,57 @@ class _SummaryScreenState extends State<SummaryScreen> {
 
       // Set up event listeners with refresh callback
       SocketService.listenToRoomEvents(
-        onSummaryCreated: (summary) {
-          print('[Socket] [Event] New summary created: ${summary.toString()}');
-          // ✅ Refresh the summary list when a new summary is added
+        onChatMessage: (summary) {
+          print('[Socket] [Event] New chat message received: ${summary.toString()}');
           if (mounted) {
+            // ignore: unused_result
             ref.refresh(summaryControllerProvider(widget.classId));
           }
         },
-        onRoomJoined: (data) {
-          print('[Socket] [Event] Room joined confirmation received:');
-          print('  - Room: ${data['room']}');
-          print('  - Success: ${data['success']}');
-          print('  - Socket ID: ${data['socketId']}');
+        onUserOnline: (data) {
+          print('[Socket] [Event] User online: ${data['username']}');
+          final name = data['username'] ?? 'User';
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("🟢 $name is online"),
+                duration: const Duration(seconds: 2),
+                behavior: SnackBarBehavior.floating,
+              ),
+            );
+          }
+        },
+        onUserOffline: (data) {
+          print('[Socket] [Event] User offline: ${data['username'] ?? data['userId']}');
+          final name = data['username'] ?? 'User';
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("🔴 $name went offline"),
+                duration: const Duration(seconds: 2),
+                behavior: SnackBarBehavior.floating,
+              ),
+            );
+          }
+        },
+        onUserTyping: (data) {
+          final name = data['username'] ?? 'Someone';
+          if (!typingUsers.contains(name)) {
+            setState(() {
+              typingUsers.add(name);
+            });
+          }
+          // Auto-remove typing user after 4 seconds of inactivity
+          Future.delayed(const Duration(seconds: 4), () {
+            if (mounted && typingUsers.contains(name)) {
+              setState(() {
+                typingUsers.remove(name);
+              });
+            }
+          });
+        },
+        onUserStopTyping: (data) {
+          // Timer naturally cleans it up, or if user leaves room
         },
       );
 
@@ -153,32 +189,29 @@ class _SummaryScreenState extends State<SummaryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isGuest = ref.watch(isGuestProvider).value ?? false;
+
+    if (isGuest) {
+      return const SafeArea(
+        child: Scaffold(
+          body: ErrorScreen(
+            error:
+                "Summaries are available only for logged-in routine members.",
+          ),
+        ),
+      );
+    }
+
+    final checkStatus = ref.watch(
+      checkStatusControllerProvider(widget.routineID),
+    );
+
     return SafeArea(
       child: Scaffold(
-        body: Consumer(
-          builder: (context, ref, _) {
-            // ✅ Store ref for use in other methods
-            _ref = ref;
-
-            final isGuest = ref.watch(isGuestProvider).value ?? false;
-
-            if (isGuest) {
-              return const ErrorScreen(
-                error:
-                    "Summaries are available only for logged-in routine members.",
-              );
-            }
-
-            final checkStatus = ref.watch(
-              checkStatusControllerProvider(widget.routineID),
-            );
-
-            return checkStatus.when(
-              data: (data) => onData(ref, data),
-              error: (error, stackTrace) => Alert.handleError(context, error),
-              loading: () => Loaders.center(),
-            );
-          },
+        body: checkStatus.when(
+          data: (data) => onData(ref, data),
+          error: (error, stackTrace) => Alert.handleError(context, error),
+          loading: () => Loaders.center(),
         ),
       ),
     );
@@ -246,27 +279,59 @@ class _SummaryScreenState extends State<SummaryScreen> {
                       }
                     });
 
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      controller: scrollController,
-                      itemCount: data.summaries.length,
-                      itemBuilder: (context, i) {
-                        return Column(
-                          children: [
-                            // ✅ Pass the full summary model to ChatsDribbles
-                            ChatsDribbles(summary: data.summaries[i]),
-                            if (data.currentPage != data.totalPages &&
-                                data.totalPages > 10 &&
-                                i == data.summaries.length - 1)
-                              Loaders.center()
-                            else if (i == data.summaries.length - 1)
-                              const Padding(
-                                padding: EdgeInsets.symmetric(vertical: 10),
-                                child: Text("Reached to end"),
-                              ),
-                          ],
-                        );
-                      },
+                    return Column(
+                      children: [
+                        if (typingUsers.isNotEmpty)
+                          Container(
+                            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                            decoration: BoxDecoration(
+                              color: Colors.blue.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              children: [
+                                const SizedBox(
+                                  width: 12,
+                                  height: 12,
+                                  child: CircularProgressIndicator(strokeWidth: 2),
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  "${typingUsers.join(', ')} is typing...",
+                                  style: const TextStyle(
+                                    fontStyle: FontStyle.italic,
+                                    color: Colors.blue,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        Expanded(
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            controller: scrollController,
+                            itemCount: data.summaries.length,
+                            itemBuilder: (context, i) {
+                              return Column(
+                                children: [
+                                  ChatsDribbles(summary: data.summaries[i]),
+                                  if (data.currentPage != data.totalPages &&
+                                      data.totalPages > 10 &&
+                                      i == data.summaries.length - 1)
+                                    Loaders.center()
+                                  else if (i == data.summaries.length - 1)
+                                    const Padding(
+                                      padding: EdgeInsets.symmetric(vertical: 10),
+                                      child: Text("Reached to end"),
+                                    ),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     );
                   },
                   error:
