@@ -79,7 +79,7 @@ class AccountModels {
   /// Full profile image URL
   ///
   /// Example:
-  /// AWS    -> https://api.classmaster.top/storage/storageforclassmaster/...
+  /// AWS    -> https://c.api.classmaster.top/storage/storageforclassmaster/...
   /// Firebase -> https://firebasestorage.googleapis.com/...
   String? get imageUrl {
     // No image available
@@ -87,8 +87,10 @@ class AccountModels {
       return null;
     }
 
-    // AWS stored image → build full URL
+    // AWS / MinIO / Appwrite stored image → build full URL
     if (imageStorageProvider == ImageStorageProvider.aws ||
+        imageStorageProvider == ImageStorageProvider.minio ||
+        imageStorageProvider == ImageStorageProvider.appwrite ||
         !image!.startsWith('http')) {
       return "${Const.MINIO_BASE_URL}$image";
     }
@@ -104,8 +106,10 @@ class AccountModels {
       return null;
     }
 
-    // AWS stored image → build full URL
-    if (coverImageStorageProvider == ImageStorageProvider.aws) {
+    // AWS / MinIO / Appwrite stored image → build full URL
+    if (coverImageStorageProvider == ImageStorageProvider.aws ||
+        coverImageStorageProvider == ImageStorageProvider.minio ||
+        coverImageStorageProvider == ImageStorageProvider.appwrite) {
       return "${Const.MINIO_BASE_URL}$coverImage";
     }
 

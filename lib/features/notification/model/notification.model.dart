@@ -3,6 +3,7 @@
 //     final notificationModel = notificationModelFromJson(jsonString);
 
 import 'dart:convert';
+import '../../../core/constant/constant.dart';
 
 class NotificationModel {
   List<AppNotification> notifications;
@@ -65,7 +66,9 @@ class AppNotification {
         id: json["_id"],
         title: json["title"],
         body: json["body"],
-        imageUrl: json["imageUrl"],
+        imageUrl: json["imageUrl"] != null && json["imageUrl"].startsWith('http')
+            ? json["imageUrl"]
+            : (json["imageUrl"] != null ? "${Const.MINIO_BASE_URL}${json["imageUrl"]}" : null),
         type: json["type"],
         createdAt: DateTime.parse(json["createdAt"]),
         v: json["__v"],

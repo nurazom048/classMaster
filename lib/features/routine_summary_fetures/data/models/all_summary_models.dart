@@ -155,10 +155,9 @@ class SummaryModel {
       if (path.startsWith('http')) {
         return path;
       }
-      if (imageStorageProvider == ImageStorageProvider.minio) {
-        return "${Const.MINIO_BASE_URL}$path";
-      }
-      if (imageStorageProvider == ImageStorageProvider.aws) {
+      if (imageStorageProvider == ImageStorageProvider.minio ||
+          imageStorageProvider == ImageStorageProvider.aws ||
+          imageStorageProvider == ImageStorageProvider.appwrite) {
         return "${Const.MINIO_BASE_URL}$path";
       }
       return path;
