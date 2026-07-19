@@ -10,7 +10,7 @@ import 'package:classmate/features/collection_fetures/Ui/aboutus_screen.dart';
 import 'package:classmate/features/routine/presentation/screens/save_routines_screen.dart';
 import 'package:classmate/features/routine_summary_fetures/presentation/screens/save_summary_screen.dart';
 import 'package:classmate/features/notice_fetures/presentation/screens/saved_notices_screen.dart';
-import '../../../core/constant/enum.dart';
+import '../../../core/constant/enums.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../core/export_core.dart';
 import '../../../core/widgets/account_card.dart';

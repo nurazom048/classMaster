@@ -1,4 +1,4 @@
-import '../../../../core/constant/enum.dart';
+import '../../../../core/constant/enums.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../core/constant/constant.dart';
 
@@ -17,8 +17,8 @@ class AccountModels {
 
   bool? isVerified;
 
-  ImageStorageProvider? imageStorageProvider;
-  ImageStorageProvider? coverImageStorageProvider;
+  StorageProvider? imageStorageProvider;
+  StorageProvider? coverImageStorageProvider;
 
   // Step 3: Added requestId and requestMessage fields to AccountModels to handle pending join requests.
   String? requestId;
@@ -61,15 +61,19 @@ class AccountModels {
 
     isVerified = json['isVerified'];
 
-    imageStorageProvider = ImageStorageProvider.values.firstWhere(
-      (e) => e.name == json['imageStorageProvider'],
-      orElse: () => ImageStorageProvider.others,
-    );
+    imageStorageProvider = json['imageStorageProvider'] != null
+        ? StorageProvider.values.firstWhere(
+            (e) => e.name == json['imageStorageProvider'],
+            orElse: () => json['imageStorageProvider'] == 'aws' ? StorageProvider.r2 : StorageProvider.minio,
+          )
+        : null;
 
-    coverImageStorageProvider = ImageStorageProvider.values.firstWhere(
-      (e) => e.name == json['coverImageStorageProvider'],
-      orElse: () => ImageStorageProvider.others,
-    );
+    coverImageStorageProvider = json['coverImageStorageProvider'] != null
+        ? StorageProvider.values.firstWhere(
+            (e) => e.name == json['coverImageStorageProvider'],
+            orElse: () => json['coverImageStorageProvider'] == 'aws' ? StorageProvider.r2 : StorageProvider.minio,
+          )
+        : null;
 
     requestId = json['requestId'];
     requestMessage = json['requestMessage'];
@@ -87,12 +91,14 @@ class AccountModels {
       return null;
     }
 
-    // AWS / MinIO / Appwrite stored image → build full URL
-    if (imageStorageProvider == ImageStorageProvider.aws ||
-        imageStorageProvider == ImageStorageProvider.minio ||
-        imageStorageProvider == ImageStorageProvider.appwrite ||
-        !image!.startsWith('http')) {
-      return "${Const.MINIO_BASE_URL}$image";
+    // AWS / MinIO / Appwrite / R2 stored image → build full URL
+    if (imageStorageProvider != null || !image!.startsWith('http')) {
+      if (imageStorageProvider == StorageProvider.others) {
+        return image;
+      }
+      return imageStorageProvider == StorageProvider.r2
+          ? "${Const.R2_BASE_URL}$image"
+          : "${Const.MINIO_BASE_URL}$image";
     }
 
     // Firebase / External URL
@@ -106,11 +112,14 @@ class AccountModels {
       return null;
     }
 
-    // AWS / MinIO / Appwrite stored image → build full URL
-    if (coverImageStorageProvider == ImageStorageProvider.aws ||
-        coverImageStorageProvider == ImageStorageProvider.minio ||
-        coverImageStorageProvider == ImageStorageProvider.appwrite) {
-      return "${Const.MINIO_BASE_URL}$coverImage";
+    // AWS / MinIO / Appwrite / R2 stored image → build full URL
+    if (coverImageStorageProvider != null) {
+      if (coverImageStorageProvider == StorageProvider.others) {
+        return coverImage;
+      }
+      return coverImageStorageProvider == StorageProvider.r2
+          ? "${Const.R2_BASE_URL}$coverImage"
+          : "${Const.MINIO_BASE_URL}$coverImage";
     }
 
     // Firebase / External URL
@@ -150,8 +159,8 @@ class AccountModels {
     String? about,
     String? accountType,
     bool? isVerified,
-    ImageStorageProvider? imageStorageProvider,
-    ImageStorageProvider? coverImageStorageProvider,
+    StorageProvider? imageStorageProvider,
+    StorageProvider? coverImageStorageProvider,
     String? requestId,
     String? requestMessage,
     AddressModel? address,

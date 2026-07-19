@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart' as slider;
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../core/export_core.dart';
@@ -33,7 +34,12 @@ class ViewImagesFullScreen extends ConsumerWidget {
           return SizedBox(
             width: MediaQuery.of(context).size.width,
             child: InteractiveViewer(
-              child: Image.network(imageUrl, fit: BoxFit.fitWidth),
+              child: CachedNetworkImage(
+                imageUrl: imageUrl,
+                fit: BoxFit.fitWidth,
+                placeholder: (context, url) => Center(child: Loaders.center()),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              ),
             ),
           );
         }),

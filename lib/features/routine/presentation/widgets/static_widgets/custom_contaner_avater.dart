@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../../../../core/constant/constant.dart';
 
@@ -36,7 +37,7 @@ class CustomContainerAvatar extends StatelessWidget {
         decoration: BoxDecoration(
           image: DecorationImage(
               fit: BoxFit.cover,
-              image: NetworkImage(image == null ? Const.accountimage : image!)),
+              image: CachedNetworkImageProvider(image == null ? Const.accountimage : image!)),
           shape: BoxShape.circle,
           color: const Color(0xFFFCFCFC),
           border: Border.all(

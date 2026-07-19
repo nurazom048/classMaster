@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../core/constant/constant.dart';
@@ -157,7 +158,7 @@ class PremiumNoticeCard extends StatelessWidget {
                         backgroundColor: Colors.blue.shade100,
                         backgroundImage:
                             imageUrl != null && imageUrl.isNotEmpty
-                                ? NetworkImage(imageUrl)
+                                ? CachedNetworkImageProvider(imageUrl)
                                 : null,
                         child:
                             imageUrl == null || imageUrl.isEmpty

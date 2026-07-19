@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:classmate/features/home_fetures/presentation/utils/utils.dart';
@@ -73,11 +74,11 @@ class AccountCardRow extends ConsumerWidget {
                 builder: (context, snapshot) {
                   bool isOffline = snapshot.data ?? false;
 
-                  if (isOffline && accountData.image != null) {
+                  if (isOffline && accountData.imageUrl != null && accountData.imageUrl!.isNotEmpty) {
                     return CircleAvatar(
                       radius: 25,
                       backgroundColor: Colors.white54,
-                      backgroundImage: NetworkImage(accountData.image!),
+                      backgroundImage: CachedNetworkImageProvider(accountData.imageUrl!),
                     );
                   }
                   {

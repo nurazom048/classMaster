@@ -1,5 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../../../../core/constant/app_color.dart';
 import '../../../../../core/widgets/appWidget/app_text.dart';
@@ -41,10 +42,9 @@ class AccountCard extends StatelessWidget {
             CircleAvatar(
               radius: 24,
               backgroundColor: Colors.red,
-              child:
-                  accountData.image == null
-                      ? null
-                      : Image.network(accountData.imageUrl!),
+              backgroundImage: accountData.imageUrl == null || accountData.imageUrl!.isEmpty
+                  ? null
+                  : CachedNetworkImageProvider(accountData.imageUrl!),
             ),
 
             FittedBox(

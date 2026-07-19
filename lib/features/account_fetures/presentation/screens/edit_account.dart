@@ -5,7 +5,7 @@ import 'package:classmate/core/export_core.dart';
 import 'package:classmate/features/account_fetures/presentation/utils/edit_account.validation.dart';
 import 'package:classmate/features/account_fetures/presentation/utils/bangladesh_locations.dart';
 import 'package:classmate/core/widgets/searchable_dropdown.dart';
-import '../../../../core/constant/enum.dart';
+import '../../../../core/constant/enums.dart';
 import '../../../authentication_fetures/presentation/widgets/static_widget/who_are_you_button.dart';
 import '../../../authentication_fetures/presentation/screen/signup_screen.dart';
 import '../../data/models/account_models.dart';

@@ -1,10 +1,11 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../features/account_fetures/data/models/account_models.dart';
 import '../../features/home_fetures/presentation/utils/utils.dart';
 import '../constant/constant.dart';
-import '../constant/enum.dart';
+import '../constant/enums.dart';
 
 class AccountCard extends StatelessWidget {
   final AccountModels account;
@@ -42,10 +43,11 @@ class AccountCard extends StatelessWidget {
                       ),
                     ),
                     child: ClipOval(
-                      child: Image.network(
-                        account.imageUrl!,
+                      child: CachedNetworkImage(
+                        imageUrl: account.imageUrl!,
                         fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) {
+                        placeholder: (context, url) => Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                        errorWidget: (context, url, error) {
                           return CircleAvatar(
                             radius: 30,
                             backgroundColor: theme.colorScheme.primary.withOpacity(0.1),

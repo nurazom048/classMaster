@@ -66,7 +66,7 @@ class _ViewPDfState extends State<ViewPDf> {
     final String fullUrl =
         widget.pdfLink.startsWith('http')
             ? widget.pdfLink
-            : "${Const.MINIO_BASE_URL}${widget.pdfLink}";
+            : "${Const.R2_BASE_URL}${widget.pdfLink}";
 
     if (!kIsWeb) {
       bool hasCache = await checkLocalCache(fullUrl);

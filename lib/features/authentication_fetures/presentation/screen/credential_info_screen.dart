@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constant/app_color.dart';
 import '../../../../core/constant/constant.dart';
-import '../../../../core/constant/enum.dart';
+import '../../../../core/constant/enums.dart';
 import '../../../../core/dialogs/alert_dialogs.dart';
 
 import '../../../../core/widgets/appWidget/buttons/cupertino_buttons.dart';

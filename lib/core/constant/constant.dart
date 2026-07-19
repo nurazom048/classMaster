@@ -9,8 +9,11 @@ abstract class Const {
   //static String BASE_URl = "http://10.0.2.2:3000";
   //home wifi
   ///static String BASE_URl = "http://192.168.31.229:4000";
+  //static String BASE_URl = "https://dev.classmaster.top";
   static String BASE_URl = "https://c.api.classmaster.top";
   static String MINIO_BASE_URL =
+      "${Const.BASE_URl}/storage/storageforclassmaster/";
+  static String R2_BASE_URL =
       "${Const.BASE_URl}/storage/storageforclassmaster/";
 
   //  image

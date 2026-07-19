@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart' show Uint8List, kIsWeb;
 import 'package:image_picker/image_picker.dart';
 import 'package:badges/badges.dart' as badges;
@@ -179,17 +180,12 @@ class _PickImageState extends State<PickImage> {
           );
     } else if (widget.netWorkCoverImage != null) {
       print('Displaying network cover image: ${widget.netWorkCoverImage}');
-      return Image.network(
-        widget.netWorkCoverImage!,
+      return CachedNetworkImage(
+        imageUrl: widget.netWorkCoverImage!,
         fit: BoxFit.cover,
-        loadingBuilder: (context, child, loadingProgress) {
-          if (loadingProgress == null) return child;
-          print('Loading network cover image');
-          return Loaders.center();
-        },
-        errorBuilder: (context, error, stackTrace) {
+        placeholder: (context, url) => Center(child: Loaders.center()),
+        errorWidget: (context, url, error) {
           print('Error loading network cover image: $error');
-          print('Stack trace: $stackTrace');
           return const Icon(Icons.error);
         },
       );
@@ -236,17 +232,12 @@ class _PickImageState extends State<PickImage> {
           );
     } else if (widget.netWorkImage != null) {
       print('Displaying network profile image: ${widget.netWorkImage}');
-      return Image.network(
-        widget.netWorkImage!,
+      return CachedNetworkImage(
+        imageUrl: widget.netWorkImage!,
         fit: BoxFit.cover,
-        loadingBuilder: (context, child, loadingProgress) {
-          if (loadingProgress == null) return child;
-          print('Loading network profile image');
-          return Loaders.center();
-        },
-        errorBuilder: (context, error, stackTrace) {
+        placeholder: (context, url) => Center(child: Loaders.center()),
+        errorWidget: (context, url, error) {
           print('Error loading network profile image: $error');
-          print('Stack trace: $stackTrace');
           return const Icon(Icons.error);
         },
       );

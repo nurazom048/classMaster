@@ -1,6 +1,6 @@
 // ignore_for_file: avoid_print, unnecessary_null_comparison
 
-import 'package:classmate/core/constant/enum.dart';
+import 'package:classmate/core/constant/enums.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as img; // Alias to avoid conflicts
 import 'package:path_provider/path_provider.dart';

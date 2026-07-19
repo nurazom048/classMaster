@@ -68,7 +68,7 @@ class AppNotification {
         body: json["body"],
         imageUrl: json["imageUrl"] != null && json["imageUrl"].startsWith('http')
             ? json["imageUrl"]
-            : (json["imageUrl"] != null ? "${Const.MINIO_BASE_URL}${json["imageUrl"]}" : null),
+            : (json["imageUrl"] != null ? "${Const.R2_BASE_URL}${json["imageUrl"]}" : null),
         type: json["type"],
         createdAt: DateTime.parse(json["createdAt"]),
         v: json["__v"],

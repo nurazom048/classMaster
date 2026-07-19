@@ -1,6 +1,7 @@
 //***********************   MiniAccountInfo*******************/
-import 'package:classmate/core/constant/enum.dart';
+import 'package:classmate/core/constant/enums.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../features/account_fetures/data/models/account_models.dart';
 import '../../features/home_fetures/presentation/utils/utils.dart';
@@ -45,7 +46,7 @@ class MiniAccountInfo extends StatelessWidget {
                       return CircleAvatar(
                         radius: 25,
                         backgroundColor: Colors.grey[200],
-                        backgroundImage: NetworkImage(accountData!.imageUrl!),
+                        backgroundImage: CachedNetworkImageProvider(accountData!.imageUrl!),
                       );
                     }
                     return const CircleAvatar(

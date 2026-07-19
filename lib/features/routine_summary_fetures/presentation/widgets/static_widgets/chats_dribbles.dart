@@ -2,11 +2,12 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:classmate/features/routine_summary_fetures/presentation/widgets/static_widgets/view_images.dart';
 import 'package:expandable_text/expandable_text.dart';
-import '../../../../../core/constant/enum.dart';
+import '../../../../../core/constant/enums.dart';
 import '../../../../../core/export_core.dart';
 import '../../../../home_fetures/presentation/utils/utils.dart';
 import '../../../data/models/all_summary_models.dart';
@@ -245,7 +246,7 @@ class ChatsDribbles extends ConsumerWidget {
         color: Colors.black87,
         borderRadius: BorderRadius.circular(12),
         image: const DecorationImage(
-          image: NetworkImage("https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=600"),
+          image: CachedNetworkImageProvider("https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=600"),
           fit: BoxFit.cover,
           opacity: 0.6,
         ),
@@ -419,7 +420,7 @@ class ChatsDribbles extends ConsumerWidget {
             child: CircleAvatar(
               radius: 23,
               backgroundColor: Colors.black,
-              backgroundImage: NetworkImage(
+              backgroundImage: CachedNetworkImageProvider(
                 summary.owner?.image ?? DEMO_PROFILE_IMAGE,
               ),
             ),
@@ -518,18 +519,15 @@ class ChatsDribbles extends ConsumerWidget {
                     color: Colors.black12,
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Image.network(
-                    imageUrl,
+                  child: CachedNetworkImage(
+                    imageUrl: imageUrl,
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
+                    errorWidget: (context, url, error) {
                       return const Center(
                         child: Icon(Icons.broken_image, color: Colors.grey),
                       );
                     },
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return const Center(child: CupertinoActivityIndicator());
-                    },
+                    placeholder: (context, url) => const Center(child: CupertinoActivityIndicator()),
                   ),
                 ),
               );

@@ -14,7 +14,7 @@ import 'package:classmate/core/dialogs/alert_dialogs.dart';
 import 'package:hive/hive.dart';
 import '../../../../core/constant/app_color.dart';
 import '../../../../core/constant/constant.dart';
-import '../../../../core/constant/enum.dart';
+import '../../../../core/constant/enums.dart';
 import '../../../../core/widgets/widgets/animi/auth_animi_wiggets.dart';
 import '../../domain/providers/auth_controller.dart';
 import '../utils/validators/sign_up_validation.dart';

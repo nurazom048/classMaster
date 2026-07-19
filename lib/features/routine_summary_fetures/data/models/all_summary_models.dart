@@ -1,8 +1,6 @@
 import '../../../../core/constant/constant.dart';
-import '../../../../core/constant/enum.dart';
+import '../../../../core/constant/enums.dart';
 import '../../../routine/data/models/class_model.dart';
-
-enum SummaryType { TEXT, MEDIA, POLL, SYSTEM }
 
 class PollOption {
   String option;
@@ -85,7 +83,7 @@ class SummaryModel {
 
   Owner? owner;
   ClasssModel? classInfo;
-  ImageStorageProvider? imageStorageProvider;
+  StorageProvider? imageStorageProvider;
 
   SummaryModel({
     this.id,
@@ -136,13 +134,12 @@ class SummaryModel {
       owner: json['owner'] != null ? Owner.fromJson(json['owner']) : null,
       classInfo:
           json['classInfo'] != null ? ClasssModel.fromJson(json['classInfo']) : null,
-      imageStorageProvider:
-          json['imageStorageProvider'] != null
-              ? ImageStorageProvider.values.firstWhere(
-                (e) => e.name == json['imageStorageProvider'],
-                orElse: () => ImageStorageProvider.minio,
-              )
-              : ImageStorageProvider.minio,
+      imageStorageProvider: json['imageStorageProvider'] != null
+          ? StorageProvider.values.firstWhere(
+              (e) => e.name == json['imageStorageProvider'],
+              orElse: () => json['imageStorageProvider'] == 'aws' ? StorageProvider.r2 : StorageProvider.minio,
+            )
+          : StorageProvider.minio,
     );
   }
 
@@ -155,10 +152,13 @@ class SummaryModel {
       if (path.startsWith('http')) {
         return path;
       }
-      if (imageStorageProvider == ImageStorageProvider.minio ||
-          imageStorageProvider == ImageStorageProvider.aws ||
-          imageStorageProvider == ImageStorageProvider.appwrite) {
-        return "${Const.MINIO_BASE_URL}$path";
+      if (imageStorageProvider != null) {
+        if (imageStorageProvider == StorageProvider.others) {
+          return path;
+        }
+        return imageStorageProvider == StorageProvider.r2
+            ? "${Const.R2_BASE_URL}$path"
+            : "${Const.MINIO_BASE_URL}$path";
       }
       return path;
     }).toList();
@@ -197,7 +197,7 @@ class SummaryModel {
     List<PollOption>? pollOptions,
     Owner? owner,
     ClasssModel? classInfo,
-    ImageStorageProvider? imageStorageProvider,
+    StorageProvider? imageStorageProvider,
   }) {
     return SummaryModel(
       id: id ?? this.id,

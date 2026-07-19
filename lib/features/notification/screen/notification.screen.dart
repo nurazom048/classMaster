@@ -1,5 +1,6 @@
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:classmate/services/firebase/firebase_analytics.service.dart';
 import '../../../core/export_core.dart';
@@ -140,7 +141,7 @@ class NotificationCard extends StatelessWidget {
                   height: 173,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(notification.imageUrl!),
+                      image: CachedNetworkImageProvider(notification.imageUrl!),
                       fit: BoxFit.cover,
                     ),
                     color: Colors.red,

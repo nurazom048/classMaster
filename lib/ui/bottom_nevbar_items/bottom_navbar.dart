@@ -7,7 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
 
 import '../../core/constant/app_color.dart';
-import '../../core/constant/enum.dart';
+import '../../core/constant/enums.dart';
 
 import '../../core/component/responsive.dart';
 import '../../core/widgets/bottom_sheet_shape.dart';
