@@ -114,21 +114,24 @@ class _LoginScreenState extends State<LoginScreen> {
     if (credentials.isEmpty) return;
 
     setState(() {
-      if (credentials['username'] != null && credentials['username']!.isNotEmpty) {
+      if (credentials['username'] != null &&
+          credentials['username']!.isNotEmpty) {
         _byUsername = true;
         _usernameController.text = credentials['username']!;
-      } else if (credentials['email'] != null && credentials['email']!.isNotEmpty) {
+      } else if (credentials['email'] != null &&
+          credentials['email']!.isNotEmpty) {
         _byUsername = false;
         _emailController.text = credentials['email']!;
       }
       if (credentials['password'] != null) {
         _passwordController.text = credentials['password']!;
       }
-      
+
       // Update progress bar
-      final textLength = _byUsername
-          ? _usernameController.text.length
-          : _emailController.text.length;
+      final textLength =
+          _byUsername
+              ? _usernameController.text.length
+              : _emailController.text.length;
       _inputProgress = min(textLength / 30.0, 1.0);
     });
   }

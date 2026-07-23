@@ -12,3 +12,17 @@ enum StorageProvider { minio, r2, appwrite, others }
 enum NoticeCategory { job_circular, notice, result, other }
 
 enum SummaryType { TEXT, MEDIA, POLL, SYSTEM }
+//ui
+
+enum DrawerItem {
+  home,
+  add,
+  search,
+  saveNotice,
+  saveRoutine,
+  saveSummary,
+  settings,
+  notifications,
+  profile,
+  none,
+}

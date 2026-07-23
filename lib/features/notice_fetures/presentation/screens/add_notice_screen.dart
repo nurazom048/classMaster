@@ -43,30 +43,7 @@ class AddNoticeScreen extends ConsumerWidget {
 
     return SafeArea(
       child: Scaffold(
-        body: Responsive(
-          mobile: Scaffold(body: _mobile(context, ref, pdfData)),
-          desktop: Scaffold(
-            body: Row(
-              children: [
-                const Expanded(flex: 1, child: MyDrawer()),
-                Expanded(
-                  flex: 4,
-                  child: Column(
-                    children: [
-                      _appBar,
-                      Expanded(
-                        child: Container(
-                          color: Colors.yellow,
-                          child: _mobile(context, ref, pdfData),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+        body: _mobile(context, ref, pdfData),
       ),
     );
   }

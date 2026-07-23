@@ -42,40 +42,48 @@ class BottomSheetShape extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.width - 5;
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isMobile = screenWidth < 650;
+    final double width = isMobile ? (screenWidth - 20) : size;
+
     return Container(
       alignment: Alignment.center,
-      width: width,
+      width: screenWidth,
       height: 122,
-      // color: Colors.amberAccent,
-      child: Stack(
-        children: [
-          Positioned(
-            bottom: 0,
-            left: width * 0.37,
-            child: ClipPath(
-              clipper: MyBottomSheetClipper(),
+      child: SizedBox(
+        width: width,
+        height: 122,
+        child: Stack(
+          children: [
+            Positioned(
+              bottom: 0,
+              left: width * 0.37,
+              child: ClipPath(
+                clipper: MyBottomSheetClipper(),
+                child: Container(
+                  width: 60,
+                  height: 30,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 30,
+              left: 0,
+              right: 0,
               child: Container(
-                width: 60,
-                height: 30,
-                color: Colors.white,
+                height: 90,
+                width: width,
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(63),
+                ),
+                child: Center(child: child),
               ),
             ),
-          ),
-          Positioned(
-            bottom: 30,
-            child: Container(
-              height: 90,
-              width: width,
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(63),
-              ),
-              child: Center(child: child),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

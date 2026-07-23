@@ -18,8 +18,8 @@ class SettingsPage extends ConsumerWidget {
     final themeAsync = ref.watch(themeNotifierProvider);
     final themeNotifier = ref.read(themeNotifierProvider.notifier);
 
-    return SafeArea(
-      child: Scaffold(
+    return  SafeArea(
+        child: Scaffold(
         body: themeAsync.when(
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (e, st) => Center(child: Text('Error: $e')),
@@ -104,6 +104,7 @@ class SettingsPage extends ConsumerWidget {
               ),
         ),
       ),
+    
     );
   }
 }

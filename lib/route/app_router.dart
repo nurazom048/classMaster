@@ -17,6 +17,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../features/account_fetures/presentation/screens/edit_account.dart';
 import '../features/routine/presentation/screens/create_new_routine.dart';
+import '../features/routine/presentation/screens/save_routines_screen.dart';
+import '../features/routine_summary_fetures/presentation/screens/save_summary_screen.dart';
+import '../features/notice_fetures/presentation/screens/saved_notices_screen.dart';
 import '../features/routine/presentation/screens/view_more_screen.dart';
 import '../features/search_fetures/presentation/screens/search_page.dart';
 import '../features/welcome_splash/presentation/screen/splash_screen.dart';
@@ -140,28 +143,27 @@ class AppRouters {
       GoRoute(
         path: '/password_change',
         name: RouteConst.passwordChange,
-        pageBuilder: (context, state) => const MaterialPage(child: ChangePasswordPage()),
+        pageBuilder:
+            (context, state) => const MaterialPage(child: ChangePasswordPage()),
       ),
       GoRoute(
         path: '/profile',
-        pageBuilder: (context, state) => const MaterialPage(child: ProfileScreen()),
+        pageBuilder:
+            (context, state) => const MaterialPage(child: ProfileScreen()),
       ),
       GoRoute(
         path: '/profile/:username',
         name: RouteConst.viewProfile,
         pageBuilder: (context, state) {
           final username = state.params['username'];
-          return MaterialPage(
-            child: ProfileScreen(
-              username: username,
-            ),
-          );
+          return MaterialPage(child: ProfileScreen(username: username));
         },
       ),
       GoRoute(
         path: '/notification',
         name: RouteConst.notification,
-        pageBuilder: (context, state) => const MaterialPage(child: NotificationScreen()),
+        pageBuilder:
+            (context, state) => const MaterialPage(child: NotificationScreen()),
       ),
 
       GoRoute(
@@ -199,6 +201,74 @@ class AppRouters {
             },
           );
         },
+      ),
+
+      // Saved items routes
+      GoRoute(
+        path: '/saved_routine',
+        name: RouteConst.savedRoutines,
+        pageBuilder:
+            (context, state) => CustomTransitionPage(
+              child: const SaveRoutinesScreen(),
+              transitionsBuilder: (
+                context,
+                animation,
+                secondaryAnimation,
+                child,
+              ) {
+                return SlideTransition(
+                  position: Tween<Offset>(
+                    begin: const Offset(1, 0),
+                    end: Offset.zero,
+                  ).animate(animation),
+                  child: child,
+                );
+              },
+            ),
+      ),
+      GoRoute(
+        path: '/saved_summary',
+        name: RouteConst.savedSummaries,
+        pageBuilder:
+            (context, state) => CustomTransitionPage(
+              child: const SaveSummeryScreen(),
+              transitionsBuilder: (
+                context,
+                animation,
+                secondaryAnimation,
+                child,
+              ) {
+                return SlideTransition(
+                  position: Tween<Offset>(
+                    begin: const Offset(1, 0),
+                    end: Offset.zero,
+                  ).animate(animation),
+                  child: child,
+                );
+              },
+            ),
+      ),
+      GoRoute(
+        path: '/saved_notice',
+        name: RouteConst.savedNotices,
+        pageBuilder:
+            (context, state) => CustomTransitionPage(
+              child: const SavedNoticesScreen(),
+              transitionsBuilder: (
+                context,
+                animation,
+                secondaryAnimation,
+                child,
+              ) {
+                return SlideTransition(
+                  position: Tween<Offset>(
+                    begin: const Offset(1, 0),
+                    end: Offset.zero,
+                  ).animate(animation),
+                  child: child,
+                );
+              },
+            ),
       ),
     ],
     redirect: (context, state) async {

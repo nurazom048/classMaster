@@ -125,191 +125,203 @@ class _NoticeViewScreenState extends ConsumerState<NoticeViewScreen> {
 
     // Watch saved notices to dynamically update the bookmark icon color
     ref.watch(savedNoticesProvider);
-    final isSaved = ref.read(savedNoticesProvider.notifier).isSaved(_notice!.id);
+    final isSaved = ref
+        .read(savedNoticesProvider.notifier)
+        .isSaved(_notice!.id);
 
-    return WillPopScope(
-      onWillPop: () async {
-        await _handleBackNavigation();
-        return false;
-      },
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: const Color(0xFFFDFDFD), // Light background
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              HeaderTitle(
-                "Back to Home",
-                context,
-                onTap: _handleBackNavigation,
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          const Text(
-                            "View Notice",
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87,
-                            ),
-                          ),
-                          // Display the formatted time
-                          Text(
-                            _formatTimeAgo(_notice!.createdAt),
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey.shade600,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 30),
-
-                      const Text(
-                        "Title",
-                        style: TextStyle(
-                          color: Color(0xFF0066FF),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        _notice!.title,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.black87,
-                        ),
-                      ),
-
-                      const SizedBox(height: 24),
-
-                      const Text(
-                        "Description",
-                        style: TextStyle(
-                          color: Color(0xFF0066FF),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        _notice!.description ?? '',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.black87,
-                          height: 1.4,
-                        ),
-                      ),
-
-                      const SizedBox(height: 24),
-
-                      const Text(
-                        "PDF Document",
-                        style: TextStyle(
-                          color: Color(0xFF0066FF),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: ViewPdfButton(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder:
-                                        (context) =>
-                                            ViewPDf(pdfLink: _notice!.pdf),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            flex: 1,
-                            child: ActionButton(
-                              icon: Icons.share,
-                              label: "Share",
-                              onTap: () {
-                                final String shareableUrl =
-                                    "https://classmaster.top/notice/${_notice!.id}";
-                                showModalBottomSheet(
-                                  context: context,
-                                  isScrollControlled: true,
-                                  backgroundColor: Colors.transparent,
-                                  builder:
-                                      (context) => CustomShareBottomSheet(
-                                        shareableUrl: shareableUrl,
-                                      ),
-                                );
-                              },
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            flex: 1,
-                            child: ActionButton(
-                              icon: isSaved ? Icons.bookmark : Icons.bookmark_border,
-                              iconColor: isSaved ? AppColor.nokiaBlue : Colors.black87,
-                              label: "Save",
-                              onTap: () {
-                                ref.read(savedNoticesProvider.notifier).toggleSaveNotice(_notice!);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      isSaved
-                                          ? "Notice removed from Saved"
-                                          : "Notice saved successfully",
-                                    ),
-                                    duration: const Duration(seconds: 2),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      const SizedBox(height: 40),
-
-                      MiniAccountInfo(
-                        accountData: _notice!.account,
-                        hideMore: true,
-                        onTap:
-                            () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder:
-                                    (context) => ProfileScreen(
-                                      academyID: _notice!.account.id,
-                                      username: _notice!.account.username,
-                                    ),
+    return DesktopLayoutWrapper(
+      child: WillPopScope(
+        onWillPop: () async {
+          await _handleBackNavigation();
+          return false;
+        },
+        child: SafeArea(
+          child: Scaffold(
+            backgroundColor: const Color(0xFFFDFDFD), // Light background
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                HeaderTitle(
+                  "Back to Home",
+                  context,
+                  onTap: _handleBackNavigation,
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            const Text(
+                              "View Notice",
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
                               ),
                             ),
-                      ),
-                      const SizedBox(height: 40),
-                    ],
+                            // Display the formatted time
+                            Text(
+                              _formatTimeAgo(_notice!.createdAt),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey.shade600,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 30),
+
+                        const Text(
+                          "Title",
+                          style: TextStyle(
+                            color: Color(0xFF0066FF),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          _notice!.title,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.black87,
+                          ),
+                        ),
+
+                        const SizedBox(height: 24),
+
+                        const Text(
+                          "Description",
+                          style: TextStyle(
+                            color: Color(0xFF0066FF),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          _notice!.description ?? '',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.black87,
+                            height: 1.4,
+                          ),
+                        ),
+
+                        const SizedBox(height: 24),
+
+                        const Text(
+                          "PDF Document",
+                          style: TextStyle(
+                            color: Color(0xFF0066FF),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: ViewPdfButton(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:
+                                          (context) =>
+                                              ViewPDf(pdfLink: _notice!.pdf),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              flex: 1,
+                              child: ActionButton(
+                                icon: Icons.share,
+                                label: "Share",
+                                onTap: () {
+                                  final String shareableUrl =
+                                      "https://classmaster.top/notice/${_notice!.id}";
+                                  showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    builder:
+                                        (context) => CustomShareBottomSheet(
+                                          shareableUrl: shareableUrl,
+                                        ),
+                                  );
+                                },
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              flex: 1,
+                              child: ActionButton(
+                                icon:
+                                    isSaved
+                                        ? Icons.bookmark
+                                        : Icons.bookmark_border,
+                                iconColor:
+                                    isSaved
+                                        ? AppColor.nokiaBlue
+                                        : Colors.black87,
+                                label: "Save",
+                                onTap: () {
+                                  ref
+                                      .read(savedNoticesProvider.notifier)
+                                      .toggleSaveNotice(_notice!);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        isSaved
+                                            ? "Notice removed from Saved"
+                                            : "Notice saved successfully",
+                                      ),
+                                      duration: const Duration(seconds: 2),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 40),
+
+                        MiniAccountInfo(
+                          accountData: _notice!.account,
+                          hideMore: true,
+                          onTap:
+                              () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => ProfileScreen(
+                                        academyID: _notice!.account.id,
+                                        username: _notice!.account.username,
+                                      ),
+                                ),
+                              ),
+                        ),
+                        const SizedBox(height: 40),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

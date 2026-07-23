@@ -88,7 +88,9 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
-                  color: Theme.of(context).textTheme.titleLarge?.color ?? Colors.black87,
+                  color:
+                      Theme.of(context).textTheme.titleLarge?.color ??
+                      Colors.black87,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -97,7 +99,11 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                 "Login to access your profile, saved routines, and more.",
                 style: TextStyle(
                   fontSize: 14,
-                  color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7) ?? Colors.black54,
+                  color:
+                      Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.color?.withOpacity(0.7) ??
+                      Colors.black54,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -140,221 +146,231 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                   Alert.showSnackBar(context, 'You are in offline mode');
                 } else {
                   try {
-                    await ref.refresh(accountDataProvider(widget.accountUsername).future);
+                    await ref.refresh(
+                      accountDataProvider(widget.accountUsername).future,
+                    );
                   } catch (e) {
                     // Handled by accountDataProvider error state
                   }
                 }
               },
-              child: SingleChildScrollView(
+              child: Scrollbar(
                 controller: collectionPageScroll,
-                padding: EdgeInsets.only(bottom: isMobile ? 100 : 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (isMobile)
-                      const Padding(
-                        padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 4.0),
-                        child: Text(
-                          'Collection',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    Consumer(
-                      builder: (context, ref, _) {
-                        final accountData = ref.watch(
-                          accountDataProvider(widget.accountUsername),
-                        );
-                        return accountData.when(
-                          data:
-                              (data) => data.fold(
-                                (l) => const Center(
-                                  child: Text("No Data Available"),
-                                ),
-                                (r) => AccountCard(
-                                  account: r,
-                                  onTap: () {
-                                    context.pushNamed(
-                                      RouteConst.viewProfile,
-                                      params: {'username': r.username ?? ''},
-                                    );
-                                  },
-                                ),
-                              ),
-                          error: (error, stackTrace) {
-                            WidgetsBinding.instance.addPostFrameCallback((_) {
-                              if (context.mounted) {
-                                Alert.showSnackBar(context, error.toString());
-                              }
-                            });
-                            return const Center(
-                              child: Text("Failed to load account details"),
-                            );
-                          },
-                          loading:
-                              () => SizedBox(
-                                height: 80,
-                                child: Center(child: Loaders.center()),
-                              ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 5),
-                    Consumer(
-                      builder: (context, ref, _) {
-                        final classNotification = ref.watch(
-                          classNotificationProvider,
-                        );
-                        return SizedBox(
-                          height: 1,
-                          width: 1,
-                          child: classNotification.when(
-                            data: (data) {
-                              if (data != null) {
-                                LocalNotification.scheduleNotifications(data);
-                              }
-                              return const SizedBox();
-                            },
-                            error: (error, stackTrace) => const SizedBox(),
-                            loading: () => const SizedBox(),
-                          ),
-                        );
-                      },
-                    ),
-                    MyContainerButton(
-                      const FaIcon(FontAwesomeIcons.pen),
-                      "Edit Profile",
-                      onTap: () {
-                        GoRouter.of(
-                          context,
-                        ).pushNamed(RouteConst.editAccount);
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    Consumer(
-                      builder: (context, ref, _) {
-                        final accountData = ref.watch(
-                          accountDataProvider(widget.accountUsername),
-                        );
-                        return accountData.when(
-                          data:
-                              (data) => data.fold(
-                                (l) => const Center(
-                                  child: Text("User data not found"),
-                                ),
-                                (r) =>
-                                    r.accountType == AccountTypeString.academy
-                                        ? MyContainerButton(
-                                          const Icon(Icons.calendar_month),
-                                          "My NoticeBoard",
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              RightToLeftTransition(
-                                                page: ViewAllRecentNotice(),
-                                              ),
-                                            );
-                                          },
-                                        )
-                                        : const SizedBox(),
-                              ),
-                          error:
-                              (error, stackTrace) => const SizedBox.shrink(),
-                          loading: () => const SizedBox.shrink(),
-                        );
-                      },
-                    ),
-                    const MyDividerr(thickness: 1.0, height: 1.0),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          TilesButton(
-                            "Saved\nRoutines",
-                            const FaIcon(FontAwesomeIcons.bookmark),
-                            saxpath:
-                                'assets/svg/undraw_personal_file_re_5joy.svg',
-                            imageMargin: const EdgeInsets.only(left: 10),
-                            width: (MediaQuery.of(context).size.width - 48) / 3,
-                            height: 115,
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                RightToLeftTransition(
-                                  page: const SaveRoutinesScreen(),
-                                ),
-                              );
-                            },
-                          ),
-                          TilesButton(
-                            "Saved\nSummaries",
-                            const FaIcon(FontAwesomeIcons.bookmark),
-                            saxpath:
-                                'assets/svg/undraw_my_documents_re_13dc.svg',
-                            width: (MediaQuery.of(context).size.width - 48) / 3,
-                            height: 115,
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                RightToLeftTransition(
-                                  page: const SaveSummeryScreen(),
-                                ),
-                              );
-                            },
-                          ),
-                          TilesButton(
-                            "Saved\nNotices",
-                            const Icon(Icons.bookmark_added_rounded),
-                            saxpath:
-                                'assets/svg/undraw_personal_text_re_vqj3.svg',
-                            width: (MediaQuery.of(context).size.width - 48) / 3,
-                            height: 115,
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                RightToLeftTransition(
-                                  page: const SavedNoticesScreen(),
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                    const MyDividerr(thickness: 1.0, height: 1.0),
-                    MyContainerButton(
-                      const Icon(Icons.settings_outlined),
-                      "Settings",
-                      onTap: () {
-                        GoRouter.of(
-                          context,
-                        ).pushNamed(RouteConst.settingsPage);
-                      },
-                    ),
-                    MyContainerButton(
-                      const Icon(Icons.logout_outlined),
-                      "Sign out",
-                      color: Colors.red,
-                      onTap: () => AuthController.logOut(context, ref: ref),
-                    ),
-                    const MyDividerr(thickness: 1.0, height: 1.0),
-                    MyContainerButton(
-                      const Icon(Icons.help_rounded),
-                      "About",
-                      onTap:
-                          () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const AboutScreen(),
+                thumbVisibility: !isMobile,
+                trackVisibility: !isMobile,
+                child: SingleChildScrollView(
+                  controller: collectionPageScroll,
+                  padding: EdgeInsets.only(bottom: isMobile ? 100 : 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (isMobile)
+                        const Padding(
+                          padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 4.0),
+                          child: Text(
+                            'Collection',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                    ),
-                    const SizedBox(height: 100),
-                  ],
+                        ),
+                      Consumer(
+                        builder: (context, ref, _) {
+                          final accountData = ref.watch(
+                            accountDataProvider(widget.accountUsername),
+                          );
+                          return accountData.when(
+                            data:
+                                (data) => data.fold(
+                                  (l) => const Center(
+                                    child: Text("No Data Available"),
+                                  ),
+                                  (r) => AccountCard(
+                                    account: r,
+                                    onTap: () {
+                                      context.pushNamed(
+                                        RouteConst.viewProfile,
+                                        params: {'username': r.username ?? ''},
+                                      );
+                                    },
+                                  ),
+                                ),
+                            error: (error, stackTrace) {
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                if (context.mounted) {
+                                  Alert.showSnackBar(context, error.toString());
+                                }
+                              });
+                              return const Center(
+                                child: Text("Failed to load account details"),
+                              );
+                            },
+                            loading:
+                                () => SizedBox(
+                                  height: 80,
+                                  child: Center(child: Loaders.center()),
+                                ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 5),
+                      Consumer(
+                        builder: (context, ref, _) {
+                          final classNotification = ref.watch(
+                            classNotificationProvider,
+                          );
+                          return SizedBox(
+                            height: 1,
+                            width: 1,
+                            child: classNotification.when(
+                              data: (data) {
+                                if (data != null) {
+                                  LocalNotification.scheduleNotifications(data);
+                                }
+                                return const SizedBox();
+                              },
+                              error: (error, stackTrace) => const SizedBox(),
+                              loading: () => const SizedBox(),
+                            ),
+                          );
+                        },
+                      ),
+                      MyContainerButton(
+                        const FaIcon(FontAwesomeIcons.pen),
+                        "Edit Profile",
+                        onTap: () {
+                          GoRouter.of(
+                            context,
+                          ).pushNamed(RouteConst.editAccount);
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                      Consumer(
+                        builder: (context, ref, _) {
+                          final accountData = ref.watch(
+                            accountDataProvider(widget.accountUsername),
+                          );
+                          return accountData.when(
+                            data:
+                                (data) => data.fold(
+                                  (l) => const Center(
+                                    child: Text("User data not found"),
+                                  ),
+                                  (r) =>
+                                      r.accountType == AccountTypeString.academy
+                                          ? MyContainerButton(
+                                            const Icon(Icons.calendar_month),
+                                            "My NoticeBoard",
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                RightToLeftTransition(
+                                                  page: ViewAllRecentNotice(),
+                                                ),
+                                              );
+                                            },
+                                          )
+                                          : const SizedBox(),
+                                ),
+                            error:
+                                (error, stackTrace) => const SizedBox.shrink(),
+                            loading: () => const SizedBox.shrink(),
+                          );
+                        },
+                      ),
+                      const MyDividerr(thickness: 1.0, height: 1.0),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            TilesButton(
+                              "Saved\nRoutines",
+                              const FaIcon(FontAwesomeIcons.bookmark),
+                              saxpath:
+                                  'assets/svg/undraw_personal_file_re_5joy.svg',
+                              imageMargin: const EdgeInsets.only(left: 10),
+                              width:
+                                  (MediaQuery.of(context).size.width - 48) / 3,
+                              height: 115,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  RightToLeftTransition(
+                                    page: const SaveRoutinesScreen(),
+                                  ),
+                                );
+                              },
+                            ),
+                            TilesButton(
+                              "Saved\nSummaries",
+                              const FaIcon(FontAwesomeIcons.bookmark),
+                              saxpath:
+                                  'assets/svg/undraw_my_documents_re_13dc.svg',
+                              width:
+                                  (MediaQuery.of(context).size.width - 48) / 3,
+                              height: 115,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  RightToLeftTransition(
+                                    page: const SaveSummeryScreen(),
+                                  ),
+                                );
+                              },
+                            ),
+                            TilesButton(
+                              "Saved\nNotices",
+                              const Icon(Icons.bookmark_added_rounded),
+                              saxpath:
+                                  'assets/svg/undraw_personal_text_re_vqj3.svg',
+                              width:
+                                  (MediaQuery.of(context).size.width - 48) / 3,
+                              height: 115,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  RightToLeftTransition(
+                                    page: const SavedNoticesScreen(),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      const MyDividerr(thickness: 1.0, height: 1.0),
+                      MyContainerButton(
+                        const Icon(Icons.settings_outlined),
+                        "Settings",
+                        onTap: () {
+                          GoRouter.of(
+                            context,
+                          ).pushNamed(RouteConst.settingsPage);
+                        },
+                      ),
+                      MyContainerButton(
+                        const Icon(Icons.logout_outlined),
+                        "Sign out",
+                        color: Colors.red,
+                        onTap: () => AuthController.logOut(context, ref: ref),
+                      ),
+                      const MyDividerr(thickness: 1.0, height: 1.0),
+                      MyContainerButton(
+                        const Icon(Icons.help_rounded),
+                        "About",
+                        onTap:
+                            () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const AboutScreen(),
+                              ),
+                            ),
+                      ),
+                      const SizedBox(height: 100),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -364,10 +380,11 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
     }
 
     return Scaffold(
-      appBar: isMobile ? null : const AppBarCustom('Collection', leadingIcon: false),
-      body: SafeArea(
-        child: bodyContent,
-      ),
+      appBar:
+          isMobile
+              ? null
+              : const AppBarCustom('Collection', leadingIcon: false),
+      body: SafeArea(child: bodyContent),
     );
   }
 }

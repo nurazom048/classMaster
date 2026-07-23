@@ -13,7 +13,8 @@ class AboutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return DesktopLayoutWrapper(
+      child: Scaffold(
       appBar: const AppBarCustom('About Us'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(bottom: 20),
@@ -54,6 +55,7 @@ class AboutScreen extends StatelessWidget {
           ),
         ),
       ),
+    ),
     );
   }
 }

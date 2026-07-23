@@ -113,7 +113,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 ),
               const SizedBox(height: 30),
               CupertinoButtonCustom(
-                isLoading: loading ?? false,
+                isLoading: loading,
                 color: AppColor.nokiaBlue,
                 text: "Send Reset Link",
                 icon: Icons.email,

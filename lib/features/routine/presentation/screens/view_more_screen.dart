@@ -50,8 +50,9 @@ class ViewMore extends StatelessWidget {
           MemberList(routineId: routineId),
         ];
 
-        return SafeArea(
-          child: Scaffold(
+        return DesktopLayoutWrapper(
+          child: SafeArea(
+            child: Scaffold(
             body: NestedScrollView(
               headerSliverBuilder:
                   (context, innerBoxIsScrolled) => [
@@ -98,6 +99,7 @@ class ViewMore extends StatelessWidget {
               ),
             ),
           ),
+        ),
         );
       },
     );

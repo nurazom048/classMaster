@@ -42,44 +42,30 @@ class _SearchPageState extends ConsumerState<SearchPage> {
   }
 
   void _scrollListener() {
-    if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
       final selectedIndex = ref.read(searchPageIndexProvider);
       final searchText = ref.read(searchStringProvider);
       if (selectedIndex == 0) {
         final searchAccounts = ref.read(searchAccountController(searchText));
-        ref.read(searchAccountController(searchText).notifier).loadMore(searchAccounts.value?.currentPage ?? 1);
+        ref
+            .read(searchAccountController(searchText).notifier)
+            .loadMore(searchAccounts.value?.currentPage ?? 1);
       } else if (selectedIndex == 1) {
-        ref.read(routineListProvider(RoutineListQuery(search: searchText)).notifier).loadMore();
+        ref
+            .read(
+              routineListProvider(
+                RoutineListQuery(search: searchText),
+              ).notifier,
+            )
+            .loadMore();
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Responsive(
-      // Mobile
-      mobile: SafeArea(child: Scaffold(body: _mobile())),
-
-      // Desktop
-      desktop: Scaffold(
-        body: Column(
-          children: [
-            _appBar,
-            Expanded(
-              child: Row(
-                children: [
-                  const Expanded(flex: 1, child: MyDrawer()),
-                  Expanded(
-                    flex: 4,
-                    child: Container(color: Colors.yellow, child: _mobile()),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    return SafeArea(child: Scaffold(body: _mobile()));
   }
 
   Widget _mobile() {

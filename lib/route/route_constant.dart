@@ -29,4 +29,9 @@ class RouteConst {
 
   // Notification
   static const String notification = 'notification';
+
+  // Saved routes
+  static const String savedRoutines = 'savedRoutines';
+  static const String savedSummaries = 'savedSummaries';
+  static const String savedNotices = 'savedNotices';
 }

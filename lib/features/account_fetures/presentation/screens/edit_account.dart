@@ -64,8 +64,9 @@ class _EditAccountState extends ConsumerState<EditAccount> {
   @override
   Widget build(BuildContext context) {
     final selectedRole = ref.watch(selectAccountTypeProvider);
-    return SafeArea(
-      child: Scaffold(
+    return DesktopLayoutWrapper(
+      child: SafeArea(
+        child: Scaffold(
         appBar: const AppBarCustom('Edit Account'),
         body: Form(
           key: formKey,
@@ -304,6 +305,7 @@ class _EditAccountState extends ConsumerState<EditAccount> {
           ),
         ),
       ),
+    ),
     );
   }
 

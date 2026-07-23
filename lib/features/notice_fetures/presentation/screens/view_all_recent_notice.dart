@@ -49,8 +49,9 @@ class _ViewAllRecentNoticeState extends ConsumerState<ViewAllRecentNotice> {
 
     final recentNoticeList = ref.watch(recentNoticeController(academyID));
 
-    return SafeArea(
-      child: Scaffold(
+    return DesktopLayoutWrapper(
+      child: SafeArea(
+        child: Scaffold(
         backgroundColor: const Color(0xFFF8F9FD),
         body: recentNoticeList.when(
           data: (data) {
@@ -285,6 +286,7 @@ class _ViewAllRecentNoticeState extends ConsumerState<ViewAllRecentNotice> {
           ),
         ),
       ),
+    ),
     );
   }
 }

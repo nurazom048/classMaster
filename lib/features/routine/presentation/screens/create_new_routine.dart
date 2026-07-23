@@ -18,8 +18,9 @@ class CreateNewRoutine extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final double h = MediaQuery.of(context).size.height;
-    return SafeArea(
-      child: Scaffold(
+    return DesktopLayoutWrapper(
+      child: SafeArea(
+        child: Scaffold(
         body: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 20,
@@ -66,6 +67,7 @@ class CreateNewRoutine extends ConsumerWidget {
           ),
         ),
       ),
+    ),
     );
   }
 

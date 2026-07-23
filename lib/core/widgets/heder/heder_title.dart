@@ -1,9 +1,12 @@
 // ignore_for_file: avoid_renaming_method_parameters
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../export_core.dart';
+import '../../../ui/bottom_nevbar_items/bottom_navbar.dart';
+import '../../constant/enums.dart';
 
-class HeaderTitle extends StatelessWidget {
+class HeaderTitle extends ConsumerWidget {
   const HeaderTitle(
     this.title,
     this.context, {
@@ -19,8 +22,9 @@ class HeaderTitle extends StatelessWidget {
   final EdgeInsetsGeometry? margin;
   final Widget? widget;
   final bool hideArrow;
+
   @override
-  Widget build(BuildContext contextt) {
+  Widget build(BuildContext contextt, WidgetRef ref) {
     return Container(
       margin: margin ?? EdgeInsets.only(left: 25.5, top: KtopPadding),
       child: Row(
@@ -33,7 +37,16 @@ class HeaderTitle extends StatelessWidget {
                 InkWell(
                   onTap: onTap != null
                       ? () => onTap!()
-                      : () => Navigator.pop(context),
+                      : () {
+                          final navigator = Navigator.of(contextt);
+                          if (navigator.canPop()) {
+                            navigator.pop();
+                            if (!navigator.canPop()) {
+                              ref.read(bottomNavBarIndexProvider.notifier).state = 0;
+                              ref.read(drawerActiveItemProvider.notifier).state = DrawerItem.home;
+                            }
+                          }
+                        },
                   child: const Icon(
                     Icons.arrow_back_ios,
                     size: 25,

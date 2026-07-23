@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/widgets/mydrawer.dart';
 
 class Responsive extends StatelessWidget {
   final Widget mobile;
@@ -46,5 +47,16 @@ class Responsive extends StatelessWidget {
         }
       },
     );
+  }
+}
+
+class DesktopLayoutWrapper extends StatelessWidget {
+  final Widget child;
+
+  const DesktopLayoutWrapper({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return child;
   }
 }

@@ -49,8 +49,9 @@ class ProfileScreen extends ConsumerWidget {
       ).notifier,
     );
 
-    return SafeArea(
-      child: Scaffold(
+    return DesktopLayoutWrapper(
+      child: SafeArea(
+        child: Scaffold(
         body: ListView(
           children: [
             HeaderTitle(
@@ -174,6 +175,7 @@ class ProfileScreen extends ConsumerWidget {
           ],
         ),
       ),
+    ),
     );
   }
 }
