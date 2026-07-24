@@ -260,17 +260,16 @@ class RoutineDialog {
                         CheckBoxSelector(
                           isChecked: notificationOn,
                           icon: Icons.notifications_active,
-                          text: "notifications_active",
+                          text: "Notification On",
+                          color: Colors.teal,
                           onTap: () {
-                            WidgetsBinding.instance.addPostFrameCallback((_) {
-                              ref
-                                  .watch(
-                                    checkStatusControllerProvider(
-                                      routineId,
-                                    ).notifier,
-                                  )
-                                  .notificationOn(context);
-                            });
+                            ref
+                                .read(
+                                  checkStatusControllerProvider(
+                                    routineId,
+                                  ).notifier,
+                                )
+                                .notificationOn(context);
                           },
                         ),
                         CheckBoxSelector(
@@ -279,15 +278,13 @@ class RoutineDialog {
                           text: "Notification Off",
                           color: Colors.red,
                           onTap: () {
-                            WidgetsBinding.instance.addPostFrameCallback((_) {
-                              ref
-                                  .watch(
-                                    checkStatusControllerProvider(
-                                      routineId,
-                                    ).notifier,
-                                  )
-                                  .notificationOff(context);
-                            });
+                            ref
+                                .read(
+                                  checkStatusControllerProvider(
+                                    routineId,
+                                  ).notifier,
+                                )
+                                .notificationOff(context);
                           },
                         ),
                         const MyDivider(),

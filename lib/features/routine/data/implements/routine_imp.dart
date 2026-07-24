@@ -34,8 +34,8 @@ abstract class RoutineRepositoryImp {
     required DateTime endTime,
   });
 
-  /// Maps to POST `/classes/notification`
-  Future<Either<String, Message>> classNotification({
+  /// Maps to POST `/:routineID` (updates notification on/off and returns CheckStatusModel)
+  Future<Either<String, CheckStatusModel>> classNotification({
     required String routineID,
     required bool status,
   });
@@ -79,8 +79,8 @@ abstract class RoutineRepositoryImp {
   /// Maps to DELETE `/:routineID`
   Future<Either<Message, Message>> deleteRoutineById(String routineID);
 
-  /// Maps to POST `/:routineID/save-toggle`
-  Future<Either<String, Message>> saveAndUnsaveRoutine(
+  /// Maps to POST `/:routineID` (updates save/unsave and returns CheckStatusModel)
+  Future<Either<String, CheckStatusModel>> saveAndUnsaveRoutine(
     String routineID,
     String saveCondition,
   );

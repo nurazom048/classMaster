@@ -64,6 +64,122 @@
       canvasKitBaseUrl: "https://www.gstatic.com/flutter-canvaskit/e9575971a74288019a58b43825a1e7b1a629b352/"
     };
   </script>
+  <script>
+    function playNotificationSound() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+
+        if (ctx.state === 'suspended') {
+          ctx.resume();
+        }
+
+        const now = ctx.currentTime;
+
+        // 🎵 Tone 1: High Chime (880 Hz - A5)
+        const osc1 = ctx.createOscillator();
+        const gain1 = ctx.createGain();
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(880, now);
+        gain1.gain.setValueAtTime(0.7, now);
+        gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+        osc1.connect(gain1);
+        gain1.connect(ctx.destination);
+        osc1.start(now);
+        osc1.stop(now + 0.3);
+
+        // 🎵 Tone 2: Warm Second Chime (587.33 Hz - D5)
+        const osc2 = ctx.createOscillator();
+        const gain2 = ctx.createGain();
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(587.33, now + 0.18);
+        gain2.gain.setValueAtTime(0.8, now + 0.18);
+        gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.65);
+        osc2.connect(gain2);
+        gain2.connect(ctx.destination);
+        osc2.start(now + 0.18);
+        osc2.stop(now + 0.65);
+      } catch (e) {
+        console.warn('Audio sound error:', e);
+      }
+    }
+
+    function isWebNotificationGranted() {
+      return ('Notification' in window && Notification.permission === 'granted');
+    }
+
+    async function requestWebNotificationPermission() {
+      if (!('Notification' in window)) {
+        console.error('Browser does not support notifications.');
+        return 'unsupported';
+      }
+      if (Notification.permission !== 'granted') {
+        const permission = await Notification.requestPermission();
+        console.log('Permission requested. Outcome:', permission);
+        return permission;
+      }
+      return Notification.permission;
+    }
+
+    async function scheduleOfflineWebNotification(title, body, timestampMS) {
+      console.log('🔔 [JS] scheduleOfflineWebNotification called with:', title, body, timestampMS);
+      console.log('🔔 [JS] Notification support in window:', ('Notification' in window));
+      console.log('🔔 [JS] Current Permission Status:', Notification.permission);
+
+      if (!('Notification' in window)) {
+        console.error('This browser does not support desktop notifications.');
+        return;
+      }
+
+      let permission = Notification.permission;
+      if (permission !== 'granted') {
+        console.log('🔔 [JS] Permission is not granted yet. Requesting permission...');
+        permission = await Notification.requestPermission();
+        console.log('🔔 [JS] Permission status after request:', permission);
+      }
+
+      if (permission !== 'granted') {
+        console.warn('⚠️ [JS] Notification permission DENIED or DISMISSED. Cannot show popup.');
+        return;
+      }
+
+      const delay = Math.max(0, timestampMS - Date.now());
+      console.log('⏳ [JS] Notification scheduled to trigger in', (delay / 1000).toFixed(2), 'seconds.');
+
+      setTimeout(() => {
+        console.log('🚀 [JS] Triggering Notification NOW!');
+
+        // 1. Play Ding-Dong Chime Sound
+        playNotificationSound();
+
+        // 2. Native Desktop Notification Popup
+        try {
+          const notif = new Notification(title, {
+            body: body,
+            icon: 'assets/png/logo.png',
+            requireInteraction: true
+          });
+
+          notif.onshow = function() {
+            console.log('✅ [JS] Notification displayed successfully on your desktop!');
+          };
+
+          notif.onerror = function(err) {
+            console.error('❌ [JS] Notification failed to display:', err);
+          };
+
+          notif.onclick = function() {
+            window.focus();
+            notif.close();
+          };
+
+        } catch (e) {
+          console.error('❌ [JS] Exception creating Notification instance:', e);
+        }
+      }, delay);
+    }
+  </script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 

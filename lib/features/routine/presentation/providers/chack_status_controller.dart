@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/export_core.dart';
 import '../../data/datasources/routine_req.dart';
@@ -12,6 +11,7 @@ import '../../data/implements/member_imp.dart';
 import '../../data/models/check_status_model.dart';
 import '../../../account_fetures/domain/providers/account_providers.dart';
 import 'routine_list_provider.dart';
+import '../../../../services/notification_services/online_notification/online_notification_service.dart';
 
 final checkStatusControllerProvider = StateNotifierProvider.autoDispose
     .family<CheckStatusController, AsyncValue<CheckStatusModel>, String>((
@@ -59,17 +59,20 @@ class CheckStatusController
   void saveUnsaved(BuildContext context, condition) async {
     final result = await routineRepository.saveAndUnsaveRoutine(
       routineId,
-      condition,
+      condition.toString(),
     );
 
     if (!context.mounted) return;
 
     result.fold(
       (errorMessage) => Alert.errorAlertDialog(context, errorMessage),
-      (response) {
-        state = AsyncData(state.value!.copyWith(isSave: response.save));
+      (updatedStatus) {
+        state = AsyncData(updatedStatus);
         ref.refresh(routineListProvider(const RoutineListQuery(type: 'saved')));
-        Alert.showSnackBar(context, response.message);
+        Alert.showSnackBar(
+          context,
+          updatedStatus.isSave ? "Routine saved successfully" : "Routine unsaved successfully",
+        );
       },
     );
   }
@@ -101,11 +104,10 @@ class CheckStatusController
 
     result.fold(
       (errorMessage) => Alert.errorAlertDialog(context, errorMessage),
-      (response) {
-        state = AsyncData(
-          state.value!.copyWith(notificationOn: response.notificationOn),
-        );
-        Alert.showSnackBar(context, response.message);
+      (updatedStatus) {
+        state = AsyncData(updatedStatus);
+        ref.refresh(classNotificationProvider);
+        Alert.showSnackBar(context, "Notification turned off successfully");
       },
     );
   }
@@ -120,11 +122,10 @@ class CheckStatusController
 
     result.fold(
       (errorMessage) => Alert.errorAlertDialog(context, errorMessage),
-      (response) {
-        state = AsyncData(
-          state.value!.copyWith(notificationOn: response.notificationOn),
-        );
-        Alert.showSnackBar(context, response.message);
+      (updatedStatus) {
+        state = AsyncData(updatedStatus);
+        ref.refresh(classNotificationProvider);
+        Alert.showSnackBar(context, "Notification turned on successfully");
       },
     );
   }

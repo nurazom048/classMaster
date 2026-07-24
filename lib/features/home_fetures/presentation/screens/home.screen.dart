@@ -50,7 +50,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     _mainScrollController = ScrollController();
     _checkGuestMode();
     FirebaseAnalyticsServices.logHome();
-    AwesomeNotificationSetup.takePermission(context);
   }
 
   void _checkGuestMode() async {

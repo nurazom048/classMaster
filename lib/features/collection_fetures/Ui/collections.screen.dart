@@ -51,8 +51,6 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
   void initState() {
     super.initState();
     collectionPageScroll = ScrollController();
-    // Request notification permission on screen init
-    AwesomeNotificationSetup.takePermission(context);
     // Log screen event in Firebase Analytics
     FirebaseAnalyticsServices.logEvent(
       name: 'collection_screen',

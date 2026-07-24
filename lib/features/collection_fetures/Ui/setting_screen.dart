@@ -12,6 +12,10 @@ import '../../../core/export_core.dart';
 import '../../../theme/app_theme.dart';
 import '../utils/show_theme_selection_dialog.dart';
 
+import 'package:flutter/foundation.dart';
+import 'package:classmate/services/notification_services/awn_package.dart';
+import 'package:classmate/services/notification_services/local_notification/web/web_notification_helper.dart';
+
 class SettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -89,13 +93,7 @@ class SettingsPage extends ConsumerWidget {
                               ),
                             ),
                           ),
-                          SeatingOption(
-                            title: 'Notification settings',
-                            icon: Icons.notifications,
-                            onTap: () {
-                              // Add your notification settings logic
-                            },
-                          ),
+                          const NotificationStatusTile(),
                         ],
                       ),
                     ),
@@ -105,6 +103,95 @@ class SettingsPage extends ConsumerWidget {
         ),
       ),
     
+    );
+  }
+}
+
+class NotificationStatusTile extends StatefulWidget {
+  const NotificationStatusTile({super.key});
+
+  @override
+  State<NotificationStatusTile> createState() => _NotificationStatusTileState();
+}
+
+class _NotificationStatusTileState extends State<NotificationStatusTile> {
+  bool isGranted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkPermission();
+  }
+
+  void _checkPermission() {
+    if (kIsWeb) {
+      setState(() {
+        isGranted = WebNotificationHelper.isPermissionGranted();
+      });
+    } else {
+      setState(() {
+        isGranted = true;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final String platformName = kIsWeb ? "Web Browser" : "Android Device";
+    final String statusText = isGranted ? "Allowed / Active" : "Not Allowed (Tap to enable)";
+    final Color statusColor = isGranted ? Colors.teal : Colors.orange.shade800;
+    final IconData statusIcon = isGranted ? Icons.check_circle : Icons.warning_amber_rounded;
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: statusColor.withOpacity(0.3), width: 1.5),
+      ),
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        leading: CircleAvatar(
+          backgroundColor: statusColor.withOpacity(0.12),
+          child: Icon(statusIcon, color: statusColor),
+        ),
+        title: Text(
+          "$platformName Notifications",
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+        ),
+        subtitle: Padding(
+          padding: const EdgeInsets.only(top: 4.0),
+          child: Row(
+            children: [
+              Text(
+                "Status: ",
+                style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(
+                  color: statusColor.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Text(
+                  statusText,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: statusColor,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: () async {
+          AwesomeNotificationSetup.takePermission(context);
+          await Future.delayed(const Duration(milliseconds: 500));
+          _checkPermission();
+        },
+      ),
     );
   }
 }

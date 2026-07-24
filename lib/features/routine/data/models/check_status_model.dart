@@ -42,7 +42,7 @@ class CheckStatusModel {
       isSave: json['isSave'] ?? json['isSaved'] ?? false,
       memberCount: json['memberCount'] ?? 0,
       sentRequestCount: json['sentRequestCount'] ?? 0,
-      notificationOn: json['notificationOn'] ?? false,
+      notificationOn: json['notificationOn'] ?? json['notification_on'] ?? json['isNotificationOn'] ?? json['notificationStatus'] ?? false,
       summaryOwner: json['summaryOwner'] ?? false,
       isSummarySaved: json['isSummarySaved'] ?? false,
     );

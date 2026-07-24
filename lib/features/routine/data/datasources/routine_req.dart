@@ -170,27 +170,27 @@ class RoutineRequestImpl implements RoutineRepositoryImp {
   }
 
   @override
-  Future<Either<String, Message>> classNotification({
+  Future<Either<String, CheckStatusModel>> classNotification({
     required String routineID,
     required bool status,
   }) async {
     final headers = await LocalData.getHeader();
-    final url = Uri.parse('${Const.BASE_URl}/routine/classes/notification');
+    final url = Uri.parse('${Const.BASE_URl}/routine/$routineID');
     try {
       final response = await http.post(
         url,
         headers: headers,
         body: jsonEncode({
-          "routineId": routineID,
+          "notificationOn": status,
           "status": status ? "on" : "off",
         }),
       );
-      final res = jsonDecode(response.body);
-      final message = Message.fromJson(res);
       if (response.statusCode == 200) {
-        return right(message);
+        final statusModel = CheckStatusModel.fromJson(jsonDecode(response.body));
+        return right(statusModel);
       } else {
-        return left(message.message);
+        final res = jsonDecode(response.body);
+        return left(res["message"] ?? "Failed to update notification status");
       }
     } catch (e) {
       return left(e.toString());
@@ -365,26 +365,24 @@ class RoutineRequestImpl implements RoutineRepositoryImp {
   }
 
   @override
-  Future<Either<String, Message>> saveAndUnsaveRoutine(
+  Future<Either<String, CheckStatusModel>> saveAndUnsaveRoutine(
     String routineID,
     String saveCondition,
   ) async {
     final headers = await LocalData.getHeader();
-    final url = Uri.parse('${Const.BASE_URl}/routine/$routineID/save-toggle');
+    final url = Uri.parse('${Const.BASE_URl}/routine/$routineID');
     try {
       final response = await http.post(
         url,
         headers: headers,
         body: jsonEncode({'saveCondition': saveCondition}),
       );
-      final res = json.decode(response.body);
-      final message = Message.fromJson(res);
       if (response.statusCode == 200) {
-        return right(message);
+        final statusModel = CheckStatusModel.fromJson(jsonDecode(response.body));
+        return right(statusModel);
       } else {
-        return right(
-          message,
-        ); // Might want to return left(message.message) here on fail
+        final res = jsonDecode(response.body);
+        return left(res["message"] ?? "Failed to save/unsave routine");
       }
     } catch (e) {
       return left(e.toString());
