@@ -278,7 +278,7 @@ class _CustomTitleBarState extends ConsumerState<CustomTitleBar> {
               const SizedBox(width: 4),
             ],
 
-            // Notifications Icon with Badge
+            // Notifications Icon
             InkWell(
               onTap:
                   () => _navigateToShellPage(
@@ -286,41 +286,12 @@ class _CustomTitleBarState extends ConsumerState<CustomTitleBar> {
                     DrawerItem.notifications,
                   ),
               borderRadius: BorderRadius.circular(20),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    const Icon(
-                      Icons.notifications_none_outlined,
-                      size: 25,
-                      color: Colors.black87,
-                    ),
-                    Positioned(
-                      right: -2,
-                      top: -2,
-                      child: Container(
-                        padding: const EdgeInsets.all(3),
-                        decoration: const BoxDecoration(
-                          color: Colors.redAccent,
-                          shape: BoxShape.circle,
-                        ),
-                        constraints: const BoxConstraints(
-                          minWidth: 14,
-                          minHeight: 14,
-                        ),
-                        child: const Text(
-                          '3',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 8,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                  ],
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(
+                  Icons.notifications_none_outlined,
+                  size: 25,
+                  color: Colors.black87,
                 ),
               ),
             ),

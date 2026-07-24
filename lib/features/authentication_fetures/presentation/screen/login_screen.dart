@@ -17,6 +17,8 @@ import '../../../../core/widgets/heder/heder_title.dart';
 import '../../../../route/route_constant.dart';
 import '../../../../core/local_data/local_data.dart';
 import '../../data/services/credential_save_service.dart';
+import '../../data/services/saved_accounts_service.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../domain/providers/auth_controller.dart';
 import '../../domain/providers/google_auth_controller.dart';
 
@@ -66,8 +68,11 @@ class _LoginScreenState extends State<LoginScreen> {
   final FocusNode _passwordFocus = FocusNode();
 
   bool _isPasswordVisible = false;
-  bool _isRememberMe = false;
   bool _byUsername = false;
+
+  // Saved accounts state (Facebook style)
+  List<SavedAccount> _savedAccounts = [];
+  bool _showManualForm = false;
 
   // Trackable states passed down to the reusable animation wrapper
   double _inputProgress = 0.0;
@@ -81,6 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
+    _loadSavedAccountsList();
     _loadSavedCredentials();
 
     void updateProgress() {
@@ -107,6 +113,20 @@ class _LoginScreenState extends State<LoginScreen> {
         _isWhistling = _passwordFocus.hasFocus;
       });
     });
+  }
+
+  Future<void> _loadSavedAccountsList() async {
+    final list = await SavedAccountsService.getSavedAccounts();
+    if (mounted) {
+      setState(() {
+        _savedAccounts = list;
+        if (list.isNotEmpty) {
+          _showManualForm = false;
+        } else {
+          _showManualForm = true;
+        }
+      });
+    }
   }
 
   Future<void> _loadSavedCredentials() async {
@@ -183,6 +203,29 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  void _loginWithSavedAccount(SavedAccount account, AuthController authLogin) {
+    _triggerFeedback(true);
+    authLogin.signIn(
+      context,
+      username: account.username,
+      email: account.email,
+      password: account.password,
+    );
+  }
+
+  void _confirmRemoveSavedAccount(SavedAccount account) {
+    Alert.errorAlertDialogCallBack(
+      context,
+      "Remove ${account.name ?? account.id} from this device?",
+      onConfirm: (isConfirmed) async {
+        if (isConfirmed) {
+          await SavedAccountsService.removeAccount(account.id);
+          await _loadSavedAccountsList();
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer(
@@ -191,7 +234,6 @@ class _LoginScreenState extends State<LoginScreen> {
         final bool loading = ref.watch(authController_provider);
         final googleAuthProvider = ref.read(googleAuthControllerProvider);
 
-        // Wrap the form inside our highly reusable Animation Screen
         return AuthAnimationScreen(
           progress: _inputProgress,
           isFocused: _emailFocus.hasFocus,
@@ -221,7 +263,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               height: 36,
                               fit: BoxFit.contain,
                               errorBuilder: (context, error, stackTrace) {
-                                // Fallback if logo fails to load
                                 return Icon(
                                   Icons.school,
                                   color: AppColor.nokiaBlue,
@@ -241,9 +282,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           ],
                         ),
                         const SizedBox(height: 20),
-                        const Text(
-                          "Welcome back!",
-                          style: TextStyle(
+                        Text(
+                          (!_showManualForm && _savedAccounts.isNotEmpty)
+                              ? "Recent Logins"
+                              : "Welcome back!",
+                          style: const TextStyle(
                             fontSize: 32,
                             fontWeight: FontWeight.bold,
                             color: Color(0xFF111827),
@@ -251,7 +294,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          _statusText,
+                          (!_showManualForm && _savedAccounts.isNotEmpty)
+                              ? "Tap your picture or account to log in"
+                              : _statusText,
                           style: TextStyle(
                             fontSize: 14,
                             color: _statusColor,
@@ -261,173 +306,400 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 24),
 
-                  // Email/Username Field
-                  AppTextFromField(
-                    focusNode: _emailFocus,
-                    margin: EdgeInsets.zero,
-                    autofillHints:
-                        _byUsername
-                            ? const [AutofillHints.username]
-                            : const [AutofillHints.email],
-                    controller:
-                        _byUsername ? _usernameController : _emailController,
-                    hint: _byUsername ? 'Username' : "Email",
-                    labelText:
-                        _byUsername ? "Enter Username" : "Enter email address",
-                    validator: (value) {
-                      if (_byUsername) {
-                        return LoginValidation.validUsername(value);
-                      } else {
-                        return LoginValidation.validateEmail(value);
-                      }
-                    },
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8, bottom: 16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        InkWell(
+                  // =========================================================
+                  // SECTION A: SAVED ACCOUNTS CARD LIST (Facebook Style)
+                  // =========================================================
+                  if (!_showManualForm && _savedAccounts.isNotEmpty) ...[
+                    ..._savedAccounts.map((account) {
+                      final String displayName =
+                          account.name ??
+                          (account.username ??
+                              account.email ??
+                              'Saved Account');
+                      final String subtitle =
+                          account.username != null &&
+                                  account.username!.isNotEmpty
+                              ? "@${account.username}"
+                              : (account.email ?? '');
+
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 12),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: Colors.grey.shade200),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.04),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(16),
+                          onTap:
+                              loading
+                                  ? null
+                                  : () => _loginWithSavedAccount(
+                                    account,
+                                    authLogin,
+                                  ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 14,
+                            ),
+                            child: Row(
+                              children: [
+                                CircleAvatar(
+                                  radius: 26,
+                                  backgroundColor: AppColor.nokiaBlue
+                                      .withOpacity(0.1),
+                                  backgroundImage:
+                                      account.imageUrl != null &&
+                                              account.imageUrl!.isNotEmpty
+                                          ? CachedNetworkImageProvider(
+                                            account.imageUrl!,
+                                          )
+                                          : null,
+                                  child:
+                                      account.imageUrl == null ||
+                                              account.imageUrl!.isEmpty
+                                          ? Text(
+                                            displayName.isNotEmpty
+                                                ? displayName[0].toUpperCase()
+                                                : 'U',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: AppColor.nokiaBlue,
+                                            ),
+                                          )
+                                          : null,
+                                ),
+                                const SizedBox(width: 14),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        displayName,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xFF111827),
+                                        ),
+                                      ),
+                                      if (subtitle.isNotEmpty) ...[
+                                        const SizedBox(height: 2),
+                                        Text(
+                                          subtitle,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            color: Colors.grey.shade600,
+                                          ),
+                                        ),
+                                      ],
+                                    ],
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.close,
+                                    size: 20,
+                                    color: Colors.grey,
+                                  ),
+                                  onPressed:
+                                      () => _confirmRemoveSavedAccount(account),
+                                ),
+                                const Icon(
+                                  Icons.chevron_right,
+                                  color: Colors.grey,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+
+                    const SizedBox(height: 10),
+
+                    // "Use another account" Button (Facebook Style)
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          setState(() {
+                            _showManualForm = true;
+                          });
+                        },
+                        icon: const Icon(
+                          Icons.person_add_outlined,
+                          size: 20,
+                          color: Color(0xFF111827),
+                        ),
+                        label: const Text(
+                          "Use another profile",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF111827),
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          backgroundColor: const Color(0xFFF0F2F5),
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    // Create New Account Button
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton(
+                        onPressed: () {
+                          context.pushNamed(
+                            RouteConst.signUp,
+                            extra: _emailController.text.trim().toString(),
+                          );
+                        },
+                        style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          side: const BorderSide(color: Color(0xFF164BB6)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: const Text(
+                          "Create new account",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF164BB6),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ]
+
+                  // =========================================================
+                  // SECTION B: MANUAL LOGIN FORM SECTION
+                  // =========================================================
+                  else ...[
+                    if (_savedAccounts.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: InkWell(
                           onTap: () {
                             setState(() {
-                              _byUsername = !_byUsername;
-                              _emailController.clear();
-                              _usernameController.clear();
-                              _emailFocus.requestFocus();
+                              _showManualForm = false;
                             });
                           },
-                          child: Text(
-                            _byUsername ? 'With Email?' : 'With Username?',
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: Color(0xFF6B7280),
-                              fontWeight: FontWeight.w600,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.arrow_back,
+                                size: 18,
+                                color: AppColor.nokiaBlue,
+                              ),
+                              const SizedBox(width: 6),
+                              Text(
+                                "Back to saved profiles",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColor.nokiaBlue,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                    // Email/Username Field
+                    AppTextFromField(
+                      focusNode: _emailFocus,
+                      margin: EdgeInsets.zero,
+                      autofillHints:
+                          _byUsername
+                              ? const [AutofillHints.username]
+                              : const [AutofillHints.email],
+                      controller:
+                          _byUsername ? _usernameController : _emailController,
+                      hint: _byUsername ? 'Username' : "Email",
+                      labelText:
+                          _byUsername
+                              ? "Enter Username"
+                              : "Enter email address",
+                      validator: (value) {
+                        if (_byUsername) {
+                          return LoginValidation.validUsername(value);
+                        } else {
+                          return LoginValidation.validateEmail(value);
+                        }
+                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8, bottom: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                _byUsername = !_byUsername;
+                                _emailController.clear();
+                                _usernameController.clear();
+                                _emailFocus.requestFocus();
+                              });
+                            },
+                            child: Text(
+                              _byUsername ? 'With Email?' : 'With Username?',
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Color(0xFF6B7280),
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // Password Field
+                    AppTextFromField(
+                      focusNode: _passwordFocus,
+                      margin: EdgeInsets.zero,
+                      autofillHints: const [AutofillHints.password],
+                      controller: _passwordController,
+                      obscureText: !_isPasswordVisible,
+                      hint: "Password",
+                      labelText: "••••••••",
+                      validator:
+                          (value) => LoginValidation.validatePassword(value),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    // Forget password
+                    ForgetPasswordBtn(
+                      onTap: () async {
+                        await FirebaseAuth.instance.signOut();
+                        context.pushNamed(
+                          RouteConst.forgetPassword,
+                          extra: _emailController.text.trim().toString(),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 24),
+
+                    // Custom Login Button with Validation
+                    CupertinoButtonCustom(
+                      isLoading: loading,
+                      padding: EdgeInsets.zero,
+                      color: AppColor.nokiaBlue,
+                      text: "Log In",
+                      onPressed: () async {
+                        if (_formKey.currentState?.validate() ?? false) {
+                          _triggerFeedback(true);
+                          authLogin.signIn(
+                            context,
+                            username: _usernameController.text.trim(),
+                            email: _emailController.text.trim(),
+                            password: _passwordController.text,
+                          );
+                        } else {
+                          _triggerFeedback(false);
+                          Alert.showSnackBar(context, 'Fill the form');
+                        }
+                      },
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    Row(
+                      children: [
+                        // Google Login Button
+                        Expanded(
+                          child: SocialLoginButton(
+                            margin: EdgeInsets.zero,
+                            isLoading: false,
+                            onTap: () {
+                              googleAuthProvider.signing(context, ref);
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        // Guest Login Button
+                        Expanded(
+                          child: SocialLoginButton(
+                            margin: EdgeInsets.zero,
+                            backgroundColor: Colors.blueGrey.shade50,
+                            textColor: Colors.blueGrey.shade700,
+                            icon: Icon(
+                              Icons.explore_outlined,
+                              color: Colors.blueGrey.shade700,
+                              size: 20,
+                            ),
+                            text: "Explore",
+                            isLoading: false,
+                            onTap: () async {
+                              final router = GoRouter.of(context);
+                              await LocalData.emptyLocal();
+                              await LocalData.saveIsGuest(true);
+                              router.go('/home');
+                            },
                           ),
                         ),
                       ],
                     ),
-                  ),
 
-                  // Password Field
-                  AppTextFromField(
-                    focusNode: _passwordFocus,
-                    margin: EdgeInsets.zero,
-                    autofillHints: const [AutofillHints.password],
-                    controller: _passwordController,
-                    obscureText: !_isPasswordVisible,
-                    hint: "Password",
-                    labelText: "••••••••",
-                    validator:
-                        (value) => LoginValidation.validatePassword(value),
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  // Forget password
-                  ForgetPasswordBtn(
-                    onTap: () async {
-                      await FirebaseAuth.instance.signOut();
-                      context.pushNamed(
-                        RouteConst.forgetPassword,
-                        extra: _emailController.text.trim().toString(),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 24),
-
-                  // Custom Login Button with Validation
-                  CupertinoButtonCustom(
-                    isLoading: loading,
-                    padding: EdgeInsets.zero,
-                    color: AppColor.nokiaBlue,
-                    text: "Log In",
-                    onPressed: () async {
-                      if (_formKey.currentState?.validate() ?? false) {
-                        _triggerFeedback(true);
-                        authLogin.signIn(
-                          context,
-                          username: _usernameController.text.trim(),
-                          email: _emailController.text.trim(),
-                          password: _passwordController.text,
-                        );
-                      } else {
-                        _triggerFeedback(false);
-                        Alert.showSnackBar(context, 'Fill the form');
-                      }
-                    },
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  Row(
-                    children: [
-                      // Google Login Button
-                      Expanded(
-                        child: SocialLoginButton(
-                          margin: EdgeInsets.zero,
-                          isLoading: false,
-                          onTap: () {
-                            googleAuthProvider.signing(context, ref);
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      // Guest Login Button
-                      Expanded(
-                        child: SocialLoginButton(
-                          margin: EdgeInsets.zero,
-                          backgroundColor: Colors.blueGrey.shade50,
-                          textColor: Colors.blueGrey.shade700,
-                          icon: Icon(
-                            Icons.explore_outlined,
-                            color: Colors.blueGrey.shade700,
-                            size: 20,
-                          ),
-                          text: "Explore",
-                          isLoading: false,
-                          onTap: () async {
-                            final router = GoRouter.of(context);
-                            await LocalData.emptyLocal();
-                            await LocalData.saveIsGuest(true);
-                            router.go('/home');
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 30),
-                  Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        context.pushNamed(
-                          RouteConst.signUp,
-                          extra: _emailController.text.trim().toString(),
-                        );
-                      },
-                      child: RichText(
-                        text: const TextSpan(
-                          text: "Don't have an account? ",
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 22, 75, 182),
-                            fontSize: 14,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: "Sign up",
-                              style: TextStyle(
-                                color: Color(0xFF111827),
-                                fontWeight: FontWeight.w600,
-                              ),
+                    const SizedBox(height: 30),
+                    Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          context.pushNamed(
+                            RouteConst.signUp,
+                            extra: _emailController.text.trim().toString(),
+                          );
+                        },
+                        child: RichText(
+                          text: const TextSpan(
+                            text: "Don't have an account? ",
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 22, 75, 182),
+                              fontSize: 14,
                             ),
-                          ],
+                            children: [
+                              TextSpan(
+                                text: "Sign up",
+                                style: TextStyle(
+                                  color: Color(0xFF111827),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                  ],
                   const SizedBox(height: 20),
                 ],
               ),

@@ -75,7 +75,7 @@ class RoutineBoxById extends StatelessWidget {
         return Container(
           constraints: const BoxConstraints(minHeight: 426),
           margin:
-              margin ?? const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
+              margin ?? const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           padding: const EdgeInsets.symmetric(vertical: 5),
           decoration: BoxDecoration(
             color: Colors.white,

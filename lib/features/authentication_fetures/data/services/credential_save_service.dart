@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'android_credential_manager.dart';
 
+import 'saved_accounts_service.dart';
+
 class CredentialSaveService {
   static Future<void> saveCredentials({
     required BuildContext context,
@@ -114,6 +116,12 @@ class CredentialSaveService {
         await prefs.setString('saved_email', email);
       }
       await prefs.setString('saved_password', password);
+
+      await SavedAccountsService.saveAccount(
+        username: isUsername ? username : null,
+        email: !isUsername ? email : null,
+        password: password,
+      );
     } catch (e) {
       print('Error saving credentials: $e');
     }

@@ -306,8 +306,8 @@ class _MobileNoticeCarouselState extends State<MobileNoticeCarousel> {
   @override
   void initState() {
     super.initState();
-    // 0.9 viewportFraction lets adjacent cards peek through horizontally
-    _pageController = PageController(viewportFraction: 0.9);
+    // 0.98 viewportFraction lets cards span full width while keeping smooth swiping
+    _pageController = PageController(viewportFraction: 0.98);
   }
 
   @override
@@ -344,8 +344,8 @@ class _MobileNoticeCarouselState extends State<MobileNoticeCarousel> {
                     PremiumNoticeCard(
                       notice: widget.notices[firstIndex],
                       academyID: widget.notices[firstIndex].publisherId,
-                      margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                       onTap: () {
                         context.push(
                           '/notice/${widget.notices[firstIndex].id}',
@@ -362,8 +362,8 @@ class _MobileNoticeCarouselState extends State<MobileNoticeCarousel> {
                     PremiumNoticeCard(
                       notice: widget.notices[secondIndex],
                       academyID: widget.notices[secondIndex].publisherId,
-                      margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                       onTap: () {
                         context.push(
                           '/notice/${widget.notices[secondIndex].id}',
@@ -541,13 +541,14 @@ class _RoutinesSectionState extends ConsumerState<RoutinesSection> {
                       ? ListView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
                           itemCount: routinesList.length,
                           itemBuilder: (context, index) {
                             final routine = routinesList[index];
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 8.0),
                               child: RoutineBoxById(
+                                margin: EdgeInsets.zero,
                                 routineId: routine.id,
                                 routineName: routine.routineName,
                                 onTapMore: () => RoutineDialog.CheckStatusUser_BottomSheet(
