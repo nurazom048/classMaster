@@ -105,6 +105,17 @@
       }
     }
 
+    // Register Service Worker for mobile notification support
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('sw.js').then(function(reg) {
+          console.log('✅ [JS] ServiceWorker registered successfully!');
+        }).catch(function(err) {
+          console.warn('⚠️ [JS] ServiceWorker registration failed:', err);
+        });
+      });
+    }
+
     function isWebNotificationGranted() {
       return ('Notification' in window && Notification.permission === 'granted');
     }
@@ -128,7 +139,7 @@
       console.log('🔔 [JS] Current Permission Status:', Notification.permission);
 
       if (!('Notification' in window)) {
-        console.error('This browser does not support desktop notifications.');
+        console.error('This browser does not support desktop/mobile notifications.');
         return;
       }
 
@@ -147,35 +158,61 @@
       const delay = Math.max(0, timestampMS - Date.now());
       console.log('⏳ [JS] Notification scheduled to trigger in', (delay / 1000).toFixed(2), 'seconds.');
 
-      setTimeout(() => {
+      setTimeout(async () => {
         console.log('🚀 [JS] Triggering Notification NOW!');
 
-        // 1. Play Ding-Dong Chime Sound
+        // 1. Play Audio Chime Sound
         playNotificationSound();
 
-        // 2. Native Desktop Notification Popup
-        try {
-          const notif = new Notification(title, {
-            body: body,
-            icon: 'assets/png/logo.png',
-            requireInteraction: true
-          });
+        // 2. Mobile & Desktop Notification Options
+        const options = {
+          body: body,
+          icon: 'icons/Icon-192.png',
+          badge: 'icons/Icon-192.png',
+          vibrate: [200, 100, 200],
+          requireInteraction: true,
+          tag: 'classmaster-alert-' + Date.now()
+        };
 
-          notif.onshow = function() {
-            console.log('✅ [JS] Notification displayed successfully on your desktop!');
-          };
+        // 3. Try Service Worker showNotification FIRST (Required for Mobile Chrome & Edge on Android)
+        let swShown = false;
+        if ('serviceWorker' in navigator) {
+          try {
+            let registration = await navigator.serviceWorker.getRegistration();
+            if (!registration) {
+              registration = await navigator.serviceWorker.register('sw.js');
+            }
+            if (registration && registration.showNotification) {
+              await registration.showNotification(title, options);
+              console.log('✅ [JS] Notification displayed successfully via ServiceWorker (Mobile/Desktop compatible)!');
+              swShown = true;
+            }
+          } catch (swErr) {
+            console.warn('⚠️ [JS] Service Worker showNotification failed, attempting fallback:', swErr);
+          }
+        }
 
-          notif.onerror = function(err) {
-            console.error('❌ [JS] Notification failed to display:', err);
-          };
+        // 4. Fallback to standard Notification constructor (Desktop browsers)
+        if (!swShown) {
+          try {
+            const notif = new Notification(title, options);
 
-          notif.onclick = function() {
-            window.focus();
-            notif.close();
-          };
+            notif.onshow = function() {
+              console.log('✅ [JS] Notification displayed successfully on your browser!');
+            };
 
-        } catch (e) {
-          console.error('❌ [JS] Exception creating Notification instance:', e);
+            notif.onerror = function(err) {
+              console.error('❌ [JS] Notification failed to display:', err);
+            };
+
+            notif.onclick = function() {
+              window.focus();
+              notif.close();
+            };
+
+          } catch (e) {
+            console.error('❌ [JS] Exception creating Notification instance:', e);
+          }
         }
       }, delay);
     }
