@@ -72,10 +72,10 @@ class NoticeRequest implements NoticeRepository {
       // Step 6: Handle Response
       if (response.statusCode == 200) {
         await MyApiCache.saveLocal(key: cacheKey, response: response.body);
-        print(responseData);
         return RecentNotice.fromJson(responseData);
       } else {
-        print(responseData);
+        // ignore: avoid_print
+        print('❌ [FetchRecentNotice Error] Status: ${response.statusCode} | Data: $responseData');
         final errorMessage = Message.fromJson(responseData);
         throw errorMessage.message;
       }

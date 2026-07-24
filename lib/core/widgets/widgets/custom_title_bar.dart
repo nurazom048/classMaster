@@ -74,7 +74,7 @@ class _CustomTitleBarState extends ConsumerState<CustomTitleBar> {
     // Get formatted date details
     final now = DateTime.now();
     final dayOfWeek = DateFormat('EEEE').format(now);
-    final dateStr = DateFormat('MM/dd/yy').format(now);
+    final dateStr = DateFormat('dd MMMM').format(now);
 
     return Container(
       height: 70,

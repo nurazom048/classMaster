@@ -21,33 +21,33 @@ final classNotificationProvider = FutureProvider<ClassNotificationResponse?>((
 
 class NotificationClass {
   Future<ClassNotificationResponse?> classNotifications() async {
-    // ignore: avoid_print
-    print('call fore notification');
-
     final Map<String, String> headers = await LocalData.getHeader();
 
-    final url = Uri.parse('${Const.BASE_URl}/class/notification');
+    final url = Uri.parse('${Const.BASE_URl}/routine/classes/notification');
     final bool isOnline = await Utils.isOnlineMethod();
     final String key = "notification$url";
     var isHaveCash = await MyApiCache.haveCache(key);
+
     // ignore: avoid_print
-    print(url);
+    print('📡 [OnlineNotificationService] Fetching class notifications at ${DateTime.now()} from $url (Online: $isOnline)');
     try {
       // Check if offline and have cache
-
       if (!isOnline && isHaveCash) {
         var getData = await MyApiCache.getData(key);
+        // ignore: avoid_print
+        print('📦 [OnlineNotificationService] Loaded offline cached notifications');
         return ClassNotificationResponse.fromJson(getData);
       }
 
-      final response = await http.post(url, headers: headers);
+      final response = await http.get(url, headers: headers);
       if (response.statusCode == 200) {
         await LocalData.setHerder(response);
 
         final res = json.decode(response.body);
+        // ignore: avoid_print
+        print('✅ [OnlineNotificationService] Received ${(res['allClassForNotification'] as List?)?.length ?? 0} active notification classes');
 
         // Save to cache
-
         MyApiCache.saveLocal(key: key, response: response.body);
 
         return ClassNotificationResponse.fromJson(res);

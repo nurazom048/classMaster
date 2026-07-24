@@ -61,12 +61,14 @@ class WebNotificationHelper {
     if (!kIsWeb) return;
 
     final days = data.allClassForNotification;
+    print("🔔 [WebNotificationHelper] Scheduling ${days.length} notifications at ${DateTime.now()}");
+
     for (int i = 0; i < days.length; i++) {
       final item = days[i];
 
       // 🛑 SKIP IF NOTIFICATION IS TURNED OFF FOR THIS ROUTINE/CLASS!
       if (item.notificationOn == false) {
-        print("Skipping web notification for routine ${item.routineId} (Notification is OFF)");
+        print("❌ [Web Notification Skipped] Routine ${item.routineId} - Class ${item.classDetails.name} (Notification is OFF)");
         continue;
       }
 
@@ -74,6 +76,10 @@ class WebNotificationHelper {
       final String title = "${item.classDetails.name} Alert! 🔔";
       final String body =
           "${item.classDetails.name} starts in ${offset.inMinutes} mins at Room ${item.room}. Instructor: ${item.classDetails.instructorName}";
+
+      print(
+        "✅ [NOTIFICATION CREATED] 📅 Day: ${item.day} | 🕒 StartTime: ${item.startTime} | ⏰ NotifyAt: $notifyTime | 🏷️ Title: '$title' | 📢 Body: '$body' | 🕒 CreatedAt: ${DateTime.now()}",
+      );
 
       scheduleNotification(
         title: title,

@@ -25,7 +25,7 @@ class Weekday {
     classId: json["classId"].toString(),
     room: json["room"].toString(),
     weekday: json["Day"]?.toString() ?? "Unknown",
-    startTime: DateTime.parse(endMaker(json["startTime"])),
-    endTime: DateTime.parse(endMaker(json["endTime"])),
+    startTime: DateTime.parse(endMaker(json["startTime"])).toLocal(),
+    endTime: DateTime.parse(endMaker(json["endTime"])).toLocal(),
   );
 }

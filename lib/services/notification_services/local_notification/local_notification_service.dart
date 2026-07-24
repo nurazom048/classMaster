@@ -7,6 +7,9 @@ import 'android/android_notification_stub.dart'
 
 class LocalNotification {
   static void scheduleNotifications(ClassNotificationResponse data) async {
+    // ignore: avoid_print
+    print("🔔 [LocalNotification] Received ${data.allClassForNotification.length} active classes to schedule at ${DateTime.now()}");
+
     // 🌐 Web Environment -> Handled by WebNotificationHelper
     if (kIsWeb) {
       WebNotificationHelper.scheduleFromNotificationResponse(data);
@@ -21,11 +24,15 @@ class LocalNotification {
       // 🛑 SKIP IF NOTIFICATION IS TURNED OFF FOR THIS ROUTINE/CLASS!
       if (item.notificationOn == false) {
         // ignore: avoid_print
-        print("Skipping Android notification for routine ${item.routineId} (Notification is OFF)");
+        print("❌ [Notification Skipped] Routine ${item.routineId} - Class ${item.classDetails.name} (Notification is OFF)");
         continue;
       }
 
       int weekday = getWeekdayInt(item.day);
+      // ignore: avoid_print
+      print(
+        "✅ [NOTIFICATION CREATED] 📅 Day: ${item.day} | 🕒 StartTime: ${item.startTime} | 🏷️ Name: ${item.classDetails.name} | 📍 Room: ${item.room} | 🕒 CreatedAt: ${DateTime.now()}",
+      );
       AndroidNotificationHelper.scheduleNotification(item, i, getWeekday(weekday));
     }
   }
