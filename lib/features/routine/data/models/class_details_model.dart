@@ -35,8 +35,8 @@ class AllClassesResponse {
       exams: (json['exams'] as List? ?? [])
           .map((item) => ExamModel.fromJson(item))
           .toList(),
-      routineType: json['routineType'] ?? "CLASS",
-      owner: AccountModels.fromJson(json['owner']),
+      routineType: (json['routineType'] ?? "CLASS").toString().toUpperCase(),
+      owner: json['owner'] != null ? AccountModels.fromJson(json['owner']) : AccountModels(),
       routineName: json['routineName'],
     );
   }

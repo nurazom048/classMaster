@@ -19,7 +19,7 @@ class Routine {
   factory Routine.fromJson(Map<String, dynamic> json) => Routine(
     id: json["id"],
     routineName: json["routineName"],
-    routineType: json["routineType"] ?? "CLASS",
+    routineType: (json["routineType"] ?? "CLASS").toString().toUpperCase(),
     ownerAccountId: json["ownerAccountId"],
     routineOwner: RoutineOwner.fromJson(json["routineOwner"]),
   );

@@ -56,9 +56,10 @@ class RoutineFeedCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final checkStatus = ref.watch(checkStatusControllerProvider(routineId));
     final routineDetails = ref.watch(routineDetailsProvider(routineId));
+    final isMobile = MediaQuery.of(context).size.width < 650;
 
     return Container(
-      constraints: const BoxConstraints(minHeight: 380),
+      constraints: BoxConstraints(minHeight: isMobile ? 0 : 380),
       margin: margin ?? const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -250,9 +251,9 @@ class RoutineFeedCard extends ConsumerWidget {
                 data: (data) {
                   final isExam = (data.routineType.toUpperCase() == "EXAM") || (routineType.toUpperCase() == "EXAM");
                   if (isExam) {
-                    return ExamRoutineView(routineId: routineId, data: data);
+                    return ExamRoutineView(routineId: routineId, routineName: routineName, data: data);
                   } else {
-                    return ClassRoutineView(routineId: routineId, data: data);
+                    return ClassRoutineView(routineId: routineId, routineName: routineName, data: data);
                   }
                 },
                 loading: () => const Padding(
@@ -299,16 +300,19 @@ class RoutineFeedCard extends ConsumerWidget {
 /// =====================================================================
 class ClassRoutineView extends ConsumerWidget {
   final String routineId;
+  final String routineName;
   final AllClassesResponse data;
 
   const ClassRoutineView({
     super.key,
     required this.routineId,
+    required this.routineName,
     required this.data,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isMobile = MediaQuery.of(context).size.width < 650;
     final selectedDayIndex = ref.watch(selectedWeekdayIndexProvider(routineId));
     final isExpanded = ref.watch(classIsExpandedProvider(routineId));
 
@@ -396,21 +400,33 @@ class ClassRoutineView extends ConsumerWidget {
 
               return InkWell(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SummaryScreen(
-                        classId: item.id,
-                        className: item.name,
-                        instructorName: item.instructorName,
-                        routineID: item.routineId,
-                        subjectCode: item.subjectCode,
-                        startTime: item.startTime,
-                        endTime: item.endTime,
-                        room: item.room,
+                  if (isMobile) {
+                    navigateToShellPage(
+                      context,
+                      ref,
+                      ViewMore(
+                        routineId: routineId,
+                        routineName: routineName,
                       ),
-                    ),
-                  );
+                      drawerItem: DrawerItem.saveRoutine,
+                    );
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SummaryScreen(
+                          classId: item.id,
+                          className: item.name,
+                          instructorName: item.instructorName,
+                          routineID: item.routineId,
+                          subjectCode: item.subjectCode,
+                          startTime: item.startTime,
+                          endTime: item.endTime,
+                          room: item.room,
+                        ),
+                      ),
+                    );
+                  }
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -479,31 +495,47 @@ class ClassRoutineView extends ConsumerWidget {
             },
           ),
 
-        // 🔽 Expansion Toggle Button (+ X More Classes)
-        if (weekdaysList.length > 3)
+        // 🔽 Expansion Toggle Button (+ X More Classes) / Move to Details Button on Mobile
+        if (weekdaysList.length > 3 || isMobile)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: InkWell(
               onTap: () {
-                ref.read(classIsExpandedProvider(routineId).notifier).state = !isExpanded;
+                if (isMobile) {
+                  navigateToShellPage(
+                    context,
+                    ref,
+                    ViewMore(
+                      routineId: routineId,
+                      routineName: routineName,
+                    ),
+                    drawerItem: DrawerItem.saveRoutine,
+                  );
+                } else {
+                  ref.read(classIsExpandedProvider(routineId).notifier).state = !isExpanded;
+                }
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    isExpanded ? "- Hide Classes" : "+ $hiddenCount More Classes",
+                    isMobile
+                        ? "View Routine Details →"
+                        : (isExpanded ? "- Hide Classes" : "+ $hiddenCount More Classes"),
                     style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF0052CC),
                     ),
                   ),
-                  const SizedBox(width: 4),
-                  Icon(
-                    isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-                    size: 16,
-                    color: const Color(0xFF0052CC),
-                  ),
+                  if (!isMobile) ...[
+                    const SizedBox(width: 4),
+                    Icon(
+                      isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                      size: 16,
+                      color: const Color(0xFF0052CC),
+                    ),
+                  ],
                 ],
               ),
             ),
@@ -531,16 +563,19 @@ class ClassRoutineView extends ConsumerWidget {
 /// =====================================================================
 class ExamRoutineView extends ConsumerWidget {
   final String routineId;
+  final String routineName;
   final AllClassesResponse data;
 
   const ExamRoutineView({
     super.key,
     required this.routineId,
+    required this.routineName,
     required this.data,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isMobile = MediaQuery.of(context).size.width < 650;
     final isExpanded = ref.watch(examIsExpandedProvider(routineId));
     final examsList = data.exams;
 
@@ -572,106 +607,137 @@ class ExamRoutineView extends ConsumerWidget {
             final dateStr = DateFormat("d MMM yyyy (E)").format(exam.date);
             final timeStr = "${DateFormat.jm().format(exam.startTime)} - ${DateFormat.jm().format(exam.endTime)}";
 
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              child: Row(
-                children: [
-                  // 1️⃣ Number Badge Container (Soft Orange Box)
-                  Container(
-                    width: 36,
-                    height: 36,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFFF3E0),
-                      borderRadius: BorderRadius.circular(10),
+            return InkWell(
+              onTap: () {
+                if (isMobile) {
+                  navigateToShellPage(
+                    context,
+                    ref,
+                    ViewMore(
+                      routineId: routineId,
+                      routineName: routineName,
                     ),
-                    child: Text(
-                      "${index + 1}",
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFFFF5722),
+                    drawerItem: DrawerItem.saveRoutine,
+                  );
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                child: Row(
+                  children: [
+                    // 1️⃣ Number Badge Container (Soft Orange Box)
+                    Container(
+                      width: 36,
+                      height: 36,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFF3E0),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        "${exam.model_no ?? (index + 1)}",
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFFFF5722),
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 14),
+                    const SizedBox(width: 14),
 
-                  // Exam Details
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          exam.name,
-                          style: const TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF0F172A),
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          "$dateStr\n$timeStr",
-                          style: const TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFF64748B),
-                            height: 1.3,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        // Room Badge (Soft Orange Pill)
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFFFF3E0),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text(
-                            exam.room.isNotEmpty ? exam.room : "Room N/A",
+                    // Exam Details
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            exam.name,
                             style: const TextStyle(
-                              fontSize: 10,
+                              fontSize: 13,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFFFF5722),
+                              color: Color(0xFF0F172A),
                             ),
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 2),
+                          Text(
+                            "$dateStr\n$timeStr",
+                            style: const TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFF64748B),
+                              height: 1.3,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          // Room Badge (Soft Orange Pill)
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFFFF3E0),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              exam.room.isNotEmpty ? exam.room : "Room N/A",
+                              style: const TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFFFF5722),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
 
-                  const Icon(Icons.arrow_forward_ios, size: 14, color: Color(0xFF94A3B8)),
-                ],
+                    const Icon(Icons.arrow_forward_ios, size: 14, color: Color(0xFF94A3B8)),
+                  ],
+                ),
               ),
             );
           },
         ),
 
-        // 🔽 Expansion Toggle Button (+ X More Exams)
-        if (examsList.length > 4)
+        // 🔽 Expansion Toggle Button (+ X More Exams) / Move to Details on Mobile
+        if (examsList.length > 4 || isMobile)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: InkWell(
               onTap: () {
-                ref.read(examIsExpandedProvider(routineId).notifier).state = !isExpanded;
+                if (isMobile) {
+                  navigateToShellPage(
+                    context,
+                    ref,
+                    ViewMore(
+                      routineId: routineId,
+                      routineName: routineName,
+                    ),
+                    drawerItem: DrawerItem.saveRoutine,
+                  );
+                } else {
+                  ref.read(examIsExpandedProvider(routineId).notifier).state = !isExpanded;
+                }
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    isExpanded ? "- Hide Exams" : "+ $hiddenCount More Exams",
+                    isMobile
+                        ? "View Routine Details →"
+                        : (isExpanded ? "- Hide Exams" : "+ $hiddenCount More Exams"),
                     style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFFFF5722),
                     ),
                   ),
-                  const SizedBox(width: 4),
-                  Icon(
-                    isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-                    size: 16,
-                    color: const Color(0xFFFF5722),
-                  ),
+                  if (!isMobile) ...[
+                    const SizedBox(width: 4),
+                    Icon(
+                      isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                      size: 16,
+                      color: const Color(0xFFFF5722),
+                    ),
+                  ],
                 ],
               ),
             ),

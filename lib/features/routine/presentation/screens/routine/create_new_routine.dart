@@ -7,10 +7,13 @@ import '../../../../../route/route_constant.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../data/datasources/routine_req.dart';
+import '../../providers/routine_list_provider.dart';
+import '../../providers/routine_details.controller.dart';
+import '../../../../account_fetures/domain/providers/account_providers.dart';
 
 final createRoutineLoaderProvider = StateProvider<bool>((ref) => false);
-final selectedRoutineTypeProvider = StateProvider.autoDispose<String>((ref) => "CLASS");
-final selectedVisibilityProvider = StateProvider.autoDispose<String>((ref) => "PUBLIC");
+final selectedRoutineTypeProvider = StateProvider<String>((ref) => "CLASS");
+final selectedVisibilityProvider = StateProvider<String>((ref) => "PUBLIC");
 
 class CreateNewRoutine extends ConsumerWidget {
   CreateNewRoutine({super.key});
@@ -21,6 +24,10 @@ class CreateNewRoutine extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedType = ref.watch(selectedRoutineTypeProvider);
     final selectedVis = ref.watch(selectedVisibilityProvider);
+
+    final accountData = ref.watch(accountDataProvider(null));
+    final userAccount = accountData.value?.fold((l) => null, (r) => r);
+    final isAcademy = userAccount?.accountType?.toLowerCase() == "academy";
 
     return DesktopLayoutWrapper(
       child: SafeArea(
@@ -45,8 +52,8 @@ class CreateNewRoutine extends ConsumerWidget {
                     AppTextFromField(
                       margin: EdgeInsets.zero,
                       controller: _routineNameController,
-                      hint: "Routine name (in short)",
-                      labelText: "Enter Routine Short name",
+                      hint: "Enter routine name (max 150 chars)",
+                      labelText: "Routine Name",
                       validator: (value) => routineNameValidator(value),
                     ),
 
@@ -105,10 +112,17 @@ class CreateNewRoutine extends ConsumerWidget {
                           ),
                         ),
                         const SizedBox(width: 12),
-                        // Exam Routine Chip
+                        // Exam Routine Chip (Locked for non-Academy users)
                         Expanded(
                           child: InkWell(
                             onTap: () {
+                              if (!isAcademy) {
+                                Alert.showSnackBar(
+                                  context,
+                                  "Only Academy accounts can create Exam routines",
+                                );
+                                return;
+                              }
                               ref.read(selectedRoutineTypeProvider.notifier).state = "EXAM";
                             },
                             borderRadius: BorderRadius.circular(12),
@@ -127,8 +141,10 @@ class CreateNewRoutine extends ConsumerWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
-                                    Icons.assignment_outlined,
-                                    color: selectedType == "EXAM" ? const Color(0xFFFF5722) : const Color(0xFF64748B),
+                                    isAcademy ? Icons.assignment_outlined : Icons.lock_outline_rounded,
+                                    color: selectedType == "EXAM"
+                                        ? const Color(0xFFFF5722)
+                                        : (isAcademy ? const Color(0xFF64748B) : const Color(0xFF94A3B8)),
                                     size: 20,
                                   ),
                                   const SizedBox(width: 8),
@@ -137,7 +153,9 @@ class CreateNewRoutine extends ConsumerWidget {
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 13,
-                                      color: selectedType == "EXAM" ? const Color(0xFFFF5722) : const Color(0xFF64748B),
+                                      color: selectedType == "EXAM"
+                                          ? const Color(0xFFFF5722)
+                                          : (isAcademy ? const Color(0xFF64748B) : const Color(0xFF94A3B8)),
                                     ),
                                   ),
                                 ],
@@ -271,16 +289,27 @@ class CreateNewRoutine extends ConsumerWidget {
   }
 
   void _onTapToButton(BuildContext context, WidgetRef ref) async {
+    final selectedType = ref.read(selectedRoutineTypeProvider);
+    final accountData = ref.read(accountDataProvider(null));
+    final userAccount = accountData.value?.fold((l) => null, (r) => r);
+    final isAcademy = userAccount?.accountType?.toLowerCase() == "academy";
+
+    if (selectedType == "EXAM" && !isAcademy) {
+      Alert.showSnackBar(context, "Only Academy accounts can create Exam routines");
+      return;
+    }
+
+    print('🚀 [CreateRoutine] User selected routineType: $selectedType');
+
     final createRoutineLoaderNotifier = ref.read(
       createRoutineLoaderProvider.notifier,
     );
 
     createRoutineLoaderNotifier.state = true;
 
-    final selectedType = ref.read(selectedRoutineTypeProvider);
     final repo = ref.read(routineReqProvider);
     final res = await repo.createRoutine(
-      routineName: _routineNameController.text,
+      routineName: _routineNameController.text.trim(),
       routineType: selectedType,
     );
 
@@ -290,8 +319,11 @@ class CreateNewRoutine extends ConsumerWidget {
         return Alert.errorAlertDialog(context, error.message);
       },
       (data) async {
+        ref.read(selectedRoutineTypeProvider.notifier).state = "CLASS";
         if (data.routineID != null) {
-          await Future.delayed(const Duration(seconds: 1));
+          ref.invalidate(routineListProvider);
+          ref.invalidate(routineDetailsProvider(data.routineID!));
+          await Future.delayed(const Duration(milliseconds: 300));
           createRoutineLoaderNotifier.state = false;
           if (context.mounted) {
             context.pushNamed(
@@ -309,11 +341,11 @@ class CreateNewRoutine extends ConsumerWidget {
   }
 
   static String? routineNameValidator(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return 'Routine name is required';
     }
-    if (value.trim().length > 25) {
-      return 'Routine name cannot exceed 25 characters';
+    if (value.trim().length > 150) {
+      return 'Routine name cannot exceed 150 characters';
     }
     return null;
   }

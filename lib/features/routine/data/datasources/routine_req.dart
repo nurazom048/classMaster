@@ -85,6 +85,8 @@ class RoutineRequestImpl implements RoutineRepositoryImp {
     final headers = await LocalData.getHeader();
     final uri = Uri.parse('${Const.BASE_URl}/routine');
 
+    print('🚀 [HTTP POST /routine] Body: name="$routineName", routineType="$routineType"');
+
     try {
       final response = await http.post(
         uri,
@@ -95,6 +97,7 @@ class RoutineRequestImpl implements RoutineRepositoryImp {
         headers: headers,
       );
 
+      print('📥 [HTTP POST /routine] Response status=${response.statusCode}, body=${response.body}');
       final res = json.decode(response.body);
       Message message = Message.fromJson(res);
 
@@ -130,6 +133,7 @@ class RoutineRequestImpl implements RoutineRepositoryImp {
       } else {
         final response = await http.get(url, headers: headers);
         final res = json.decode(response.body);
+        print('📥 [HTTP GET /routine/$routineID/classes] Response routineType=${res['routineType']}');
         if (response.statusCode == 200) {
           await MyApiCache.saveLocal(key: key, response: response.body);
           return AllClassesResponse.fromJson(res);

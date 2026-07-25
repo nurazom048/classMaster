@@ -26,6 +26,7 @@ final showPlusProvider = StateProvider<bool>((ref) => false);
 final drawerActiveItemProvider = StateProvider<DrawerItem>(
   (ref) => DrawerItem.home,
 );
+final hideBottomNavBarProvider = StateProvider<int>((ref) => 0);
 
 final GlobalKey<NavigatorState> collectionNavigatorKey =
     GlobalKey<NavigatorState>();
@@ -117,7 +118,9 @@ class BottomNavBar extends StatelessWidget {
 
         if (isMobile) {
           // 📱 Mobile View: Drawer sidebar & floating bottom navigation bar
-          final hideNavBar = ref.watch(hideNevBarOnScorningProvider);
+          final hideNavBarOnScroll = ref.watch(hideNevBarOnScorningProvider);
+          final hideNavBarExplicit = ref.watch(hideBottomNavBarProvider) > 0;
+          final hideNavBar = hideNavBarOnScroll || hideNavBarExplicit;
           final showPlus = ref.watch(showPlusProvider);
 
           return Scaffold(

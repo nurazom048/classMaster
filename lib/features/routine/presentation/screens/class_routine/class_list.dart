@@ -87,6 +87,11 @@ class _ClassListPageState extends ConsumerState<ClassListPage> {
   void initState() {
     super.initState();
     _initializeSocket();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        ref.read(hideBottomNavBarProvider.notifier).update((state) => state + 1);
+      }
+    });
   }
 
   Future<void> _initializeSocket() async {
@@ -115,6 +120,7 @@ class _ClassListPageState extends ConsumerState<ClassListPage> {
   void dispose() {
     SocketService.disconnect();
     print('Socket disconnected and cleaned up');
+    ref.read(hideBottomNavBarProvider.notifier).update((state) => (state - 1).clamp(0, 999));
     super.dispose();
   }
 
@@ -853,9 +859,9 @@ class _ClassListPageState extends ConsumerState<ClassListPage> {
                         const SizedBox(height: 14),
 
                         // 5. CLASSES LIST ITEMS WITH TIME STACKED ON LEFT COLUMN
-                        if (dayClasses.isEmpty && data.allClass.isEmpty)
+                        if (data.allClass.isEmpty)
                           Container(
-                            padding: const EdgeInsets.symmetric(vertical: 30),
+                            padding: const EdgeInsets.symmetric(vertical: 36),
                             child: const Center(
                               child: Text(
                                 "No Class Created",
@@ -867,208 +873,29 @@ class _ClassListPageState extends ConsumerState<ClassListPage> {
                             ),
                           )
                         else if (dayClasses.isEmpty)
-                          ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: data.allClass.length,
-                            itemBuilder: (context, index) {
-                              final allClass = data.allClass[index];
-                              return Container(
-                                margin: const EdgeInsets.only(bottom: 10),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 14,
-                                  vertical: 12,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(14),
-                                  border: Border.all(
-                                    color: const Color(0xFFE2E8F0),
+                          Container(
+                            padding: const EdgeInsets.symmetric(vertical: 36),
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.event_busy_rounded,
+                                    size: 40,
+                                    color: Color(0xFF94A3B8),
                                   ),
-                                ),
-                                child: InkWell(
-                                  onLongPress: () {
-                                    PeriodAlert.logPressClass(
-                                      context,
-                                      classId: allClass.id,
-                                      routineId: widget.routineId,
-                                    );
-                                  },
-                                  onTap:
-                                      () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder:
-                                              (context) => SummaryScreen(
-                                                classId: allClass.id,
-                                                routineID: allClass.routineId,
-                                                className: allClass.name,
-                                                instructorName:
-                                                    allClass.instructorName,
-                                                subjectCode:
-                                                    allClass.subjectCode,
-                                              ),
-                                        ),
-                                      ),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 38,
-                                        height: 38,
-                                        decoration: const BoxDecoration(
-                                          color: Color(0xFFEFF6FF),
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: const Icon(
-                                          Icons.class_rounded,
-                                          color: Color(0xFF2563EB),
-                                          size: 20,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 12),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Wrap(
-                                              crossAxisAlignment:
-                                                  WrapCrossAlignment.center,
-                                              spacing: 6,
-                                              runSpacing: 4,
-                                              children: [
-                                                Text(
-                                                  allClass.name,
-                                                  style: const TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Color(0xFF0F172A),
-                                                  ),
-                                                ),
-                                                if (allClass
-                                                    .subjectCode
-                                                    .isNotEmpty)
-                                                  Container(
-                                                    padding:
-                                                        const EdgeInsets.symmetric(
-                                                          horizontal: 6,
-                                                          vertical: 2,
-                                                        ),
-                                                    decoration: BoxDecoration(
-                                                      color: const Color(
-                                                        0xFFF1F5F9,
-                                                      ),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                            6,
-                                                          ),
-                                                      border: Border.all(
-                                                        color: const Color(
-                                                          0xFFE2E8F0,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    child: Text(
-                                                      allClass.subjectCode,
-                                                      style: const TextStyle(
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: Color(
-                                                          0xFF475569,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                              ],
-                                            ),
-                                            if (allClass
-                                                .instructorName
-                                                .isNotEmpty) ...[
-                                              const SizedBox(height: 4),
-                                              Row(
-                                                children: [
-                                                  const Icon(
-                                                    Icons
-                                                        .person_outline_rounded,
-                                                    size: 14,
-                                                    color: Color(0xFF64748B),
-                                                  ),
-                                                  const SizedBox(width: 4),
-                                                  Expanded(
-                                                    child: Text(
-                                                      allClass.instructorName,
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: const TextStyle(
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: Color(
-                                                          0xFF475569,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ],
-                                        ),
-                                      ),
-                                      OutlinedButton.icon(
-                                        style: OutlinedButton.styleFrom(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 10,
-                                            vertical: 6,
-                                          ),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              8,
-                                            ),
-                                          ),
-                                          side: const BorderSide(
-                                            color: Color(0xFF2563EB),
-                                          ),
-                                        ),
-                                        onPressed:
-                                            () => Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder:
-                                                    (context) => SummaryScreen(
-                                                      classId: allClass.id,
-                                                      routineID:
-                                                          allClass.routineId,
-                                                      className: allClass.name,
-                                                      instructorName:
-                                                          allClass
-                                                              .instructorName,
-                                                      subjectCode:
-                                                          allClass.subjectCode,
-                                                    ),
-                                              ),
-                                            ),
-                                        icon: const Icon(
-                                          Icons.chat_bubble_outline,
-                                          size: 14,
-                                          color: Color(0xFF2563EB),
-                                        ),
-                                        label: const Text(
-                                          "Chat",
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFF2563EB),
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    "No classes scheduled for ${fullDaysList[selectedDayIndex]}",
+                                    style: const TextStyle(
+                                      color: Color(0xFF64748B),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
+                                ],
+                              ),
+                            ),
                           )
                         else
                           ListView.builder(

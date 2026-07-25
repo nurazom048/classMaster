@@ -900,7 +900,7 @@ class _ExamRoutineDetailViewState extends ConsumerState<ExamRoutineDetailView> {
                                 builder:
                                     (context) => CreateExamScreen(
                                       routineId: widget.routineId,
-                                      serialNumber: exams.length + 1,
+                                      serialNumber: widget.data.exams.length + 1,
                                     ),
                               ),
                             );
