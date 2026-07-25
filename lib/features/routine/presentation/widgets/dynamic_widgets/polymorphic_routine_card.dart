@@ -11,10 +11,15 @@ import 'package:classmate/core/dialogs/alert_dialogs.dart';
 import '../../../data/models/class_details_model.dart';
 import '../../providers/chack_status_controller.dart';
 import '../../providers/routine_details.controller.dart';
-import '../../screens/view_more_screen.dart';
+import '../../screens/screens.dart';
 import '../../utils/routine_dialog.dart';
 import '../static_widgets/routine_box_id_skeleton.dart';
 import '../../../../routine_summary_fetures/presentation/screens/summary_screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import '../../../../account_fetures/data/models/account_models.dart';
+import '../../../../account_fetures/presentation/screens/profile_screen.dart';
+import 'package:classmate/ui/bottom_nevbar_items/bottom_navbar.dart';
+import 'package:classmate/core/constant/enums.dart';
 
 // State Providers for Weekday and Expansion
 final selectedExamIndexProvider = StateProvider.family<int, String>((ref, id) => 0);
@@ -89,14 +94,14 @@ class RoutineFeedCard extends ConsumerWidget {
                         Expanded(
                           child: InkWell(
                             onTap: () {
-                              Navigator.push(
+                              navigateToShellPage(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (context) => ViewMore(
-                                    routineId: routineId,
-                                    routineName: routineName,
-                                  ),
+                                ref,
+                                ViewMore(
+                                  routineId: routineId,
+                                  routineName: routineName,
                                 ),
+                                drawerItem: DrawerItem.saveRoutine,
                               );
                             },
                             child: Text(
@@ -139,21 +144,89 @@ class RoutineFeedCard extends ConsumerWidget {
                               ),
                             ),
                             const SizedBox(width: 6),
-                            // Notification bell status
+                            // Dynamic Join Status / Notification bell
                             checkStatus.when(
                               data: (statusData) {
-                                return InkWell(
-                                  onTap: () {
-                                    RoutineDialog.routineNotificationsSelect(context, routineId);
-                                  },
-                                  child: Icon(
-                                    statusData.notificationOn
-                                        ? Icons.notifications_active_outlined
-                                        : Icons.notifications_none_outlined,
-                                    size: 16,
-                                    color: statusData.notificationOn ? badgeColor : Colors.grey.shade500,
-                                  ),
-                                );
+                                final isJoined = statusData.isOwner ||
+                                    statusData.isCaptain ||
+                                    statusData.activeStatus == "joined" ||
+                                    statusData.activeStatus == "accepted";
+                                final isPending = statusData.activeStatus == "request_pending" ||
+                                    statusData.activeStatus == "pending";
+
+                                if (isJoined) {
+                                  return InkWell(
+                                    onTap: () {
+                                      RoutineDialog.routineNotificationsSelect(context, routineId);
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                                      child: Icon(
+                                        statusData.notificationOn
+                                            ? Icons.notifications_active_outlined
+                                            : Icons.notifications_none_outlined,
+                                        size: 18,
+                                        color: statusData.notificationOn ? badgeColor : Colors.grey.shade500,
+                                      ),
+                                    ),
+                                  );
+                                } else if (isPending) {
+                                  return Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                    decoration: BoxDecoration(
+                                      color: Colors.amber.shade50,
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(color: Colors.amber.shade300, width: 1),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: const [
+                                        Icon(Icons.hourglass_empty, size: 12, color: Colors.amber),
+                                        SizedBox(width: 4),
+                                        Text(
+                                          "Pending",
+                                          style: TextStyle(
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.amber,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                } else {
+                                  return InkWell(
+                                    onTap: () {
+                                      ref
+                                          .read(checkStatusControllerProvider(routineId).notifier)
+                                          .sendReqController(context);
+                                    },
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                      decoration: BoxDecoration(
+                                        color: badgeColor.withOpacity(0.1),
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(color: badgeColor, width: 1),
+                                      ),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(Icons.person_add_alt_1, size: 12, color: badgeColor),
+                                          const SizedBox(width: 4),
+                                          Text(
+                                            "Send Req",
+                                            style: TextStyle(
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.bold,
+                                              color: badgeColor,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }
                               },
                               loading: () => const SizedBox.shrink(),
                               error: (_, __) => const SizedBox.shrink(),
@@ -204,8 +277,9 @@ class RoutineFeedCard extends ConsumerWidget {
                 data: (data) {
                   final nameStr = data.owner.name;
                   return RoutineCardFooter(
+                    owner: data.owner,
                     ownerName: (nameStr != null && nameStr.isNotEmpty) ? nameStr : "ECH Coaching Center",
-                    isVerified: true, // Show verified badge as in UI design
+                    isVerified: data.owner.isVerified ?? true,
                     onTapMore: onTapMore,
                   );
                 },
@@ -608,15 +682,17 @@ class ExamRoutineView extends ConsumerWidget {
 }
 
 /// =====================================================================
-/// 🏛️ ROUTINE CARD FOOTER (Coaching Center Name + Verified Badge)
+/// 🏛️ ROUTINE CARD FOOTER (Coaching Center Name + Profile Avatar + Verified Badge)
 /// =====================================================================
 class RoutineCardFooter extends StatelessWidget {
+  final AccountModels? owner;
   final String ownerName;
   final bool isVerified;
   final VoidCallback onTapMore;
 
   const RoutineCardFooter({
     super.key,
+    this.owner,
     required this.ownerName,
     this.isVerified = true,
     required this.onTapMore,
@@ -624,28 +700,58 @@ class RoutineCardFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final imageUrl = owner?.imageUrl;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              const Icon(Icons.account_balance, size: 18, color: Color(0xFF0052CC)),
-              const SizedBox(width: 8),
-              Text(
-                ownerName,
-                style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF1E293B),
-                ),
+          InkWell(
+            onTap: owner != null
+                ? () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProfileScreen(
+                          academyID: owner!.id,
+                          username: owner!.username,
+                        ),
+                      ),
+                    );
+                  }
+                : null,
+            borderRadius: BorderRadius.circular(20),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 12,
+                    backgroundColor: const Color(0xFFEFF6FF),
+                    backgroundImage: imageUrl != null && imageUrl.isNotEmpty
+                        ? CachedNetworkImageProvider(imageUrl)
+                        : null,
+                    child: imageUrl == null || imageUrl.isEmpty
+                        ? const Icon(Icons.school, size: 14, color: Color(0xFF0052CC))
+                        : null,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    ownerName,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF1E293B),
+                    ),
+                  ),
+                  if (isVerified) ...[
+                    const SizedBox(width: 4),
+                    const Icon(Icons.verified, size: 14, color: Color(0xFF0052CC)),
+                  ],
+                ],
               ),
-              if (isVerified) ...[
-                const SizedBox(width: 4),
-                const Icon(Icons.verified, size: 14, color: Color(0xFF0052CC)),
-              ],
-            ],
+            ),
           ),
           InkWell(
             onTap: onTapMore,

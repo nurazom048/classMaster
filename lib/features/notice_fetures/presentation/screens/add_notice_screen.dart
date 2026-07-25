@@ -41,9 +41,11 @@ class AddNoticeScreen extends ConsumerWidget {
     final pdfData = ref.watch(selectedPdfPathProvider);
     print('Building AddNoticeScreen, pdfData: ${pdfData?.name}');
 
-    return SafeArea(
-      child: Scaffold(
-        body: _mobile(context, ref, pdfData),
+    return DesktopLayoutWrapper(
+      child: SafeArea(
+        child: Scaffold(
+          body: _mobile(context, ref, pdfData),
+        ),
       ),
     );
   }

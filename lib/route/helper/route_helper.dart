@@ -1,5 +1,4 @@
-// ignore_for_file: avoid_print
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -49,11 +48,32 @@ class RouterHelper {
     BuildContext context,
     GoRouterState state,
   ) async {
-    print("REDIRECT CHECK => ${state.subloc}");
+    // ===== PUBLIC NOTICE & ROUTINE ROUTES =====
+    final String subloc = state.subloc;
+    final String location = state.location;
+    final String webPath = kIsWeb ? Uri.base.path : '';
 
-    // ===== PUBLIC NOTICE ROUTE =====
-    if (state.subloc.startsWith('/notice/')) {
-      print("PUBLIC NOTICE ROUTE ALLOWED");
+    final bool isWebRoutine = kIsWeb && (webPath.startsWith('/routine/') || webPath == '/routine' || webPath.startsWith('/routine?'));
+    final bool isWebNotice = kIsWeb && webPath.startsWith('/notice');
+    final bool isWebCreateRoutine = kIsWeb && webPath.startsWith('/routine/create');
+
+    final bool isSublocRoutine = subloc.startsWith('/routine/') || subloc == '/routine' || subloc.startsWith('/routine?');
+    final bool isSublocNotice = subloc.startsWith('/notice');
+    final bool isSublocCreate = subloc.startsWith('/routine/create');
+
+    final bool isPublicRoutine = (isSublocRoutine || isWebRoutine) && !(isSublocCreate || isWebCreateRoutine);
+    final bool isPublicNotice = isSublocNotice || isWebNotice;
+
+    if (isPublicNotice || isPublicRoutine) {
+      print(
+        "PUBLIC ROUTE ALLOWED => subloc: $subloc, location: $location, webPath: $webPath",
+      );
+      if (kIsWeb && subloc == '/' && (isWebRoutine || isWebNotice)) {
+        final query = Uri.base.query;
+        final targetPath = query.isNotEmpty ? '$webPath?$query' : webPath;
+        print("REDIRECTING INITIAL WEB DEEP LINK TO => $targetPath");
+        return targetPath;
+      }
       return null;
     }
 

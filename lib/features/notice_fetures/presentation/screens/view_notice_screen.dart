@@ -251,16 +251,9 @@ class _NoticeViewScreenState extends ConsumerState<NoticeViewScreen> {
                                 icon: Icons.share,
                                 label: "Share",
                                 onTap: () {
-                                  final String shareableUrl =
-                                      "https://classmaster.top/notice/${_notice!.id}";
-                                  showModalBottomSheet(
-                                    context: context,
-                                    isScrollControlled: true,
-                                    backgroundColor: Colors.transparent,
-                                    builder:
-                                        (context) => CustomShareBottomSheet(
-                                          shareableUrl: shareableUrl,
-                                        ),
+                                  CustomShareButton.show(
+                                    context,
+                                    "https://classmaster.top/notice/${_notice!.id}",
                                   );
                                 },
                               ),

@@ -55,14 +55,16 @@ class LocalData {
     final String? authToken = await getAuthToken();
     final String? refreshToken = await getRefreshToken();
     final bool guest = await isGuest();
+    final bool hasToken = authToken != null && authToken.isNotEmpty && authToken != 'null';
 
     final Map<String, String> headers = {
       "Content-Type": "application/json",
-      'Authorization': 'Bearer $authToken',
-      'x-refresh-token': refreshToken ?? '',
+      if (hasToken) 'Authorization': 'Bearer $authToken',
+      if (refreshToken != null && refreshToken.isNotEmpty)
+        'x-refresh-token': refreshToken,
     };
 
-    if (guest) {
+    if (guest || !hasToken) {
       headers['X-App-Client'] = 'ClassMaster';
       headers['X-Guest'] = 'true';
     }

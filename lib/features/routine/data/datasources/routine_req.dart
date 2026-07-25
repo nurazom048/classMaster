@@ -80,6 +80,7 @@ class RoutineRequestImpl implements RoutineRepositoryImp {
   @override
   Future<Either<Message, Message>> createRoutine({
     required String routineName,
+    String routineType = 'CLASS',
   }) async {
     final headers = await LocalData.getHeader();
     final uri = Uri.parse('${Const.BASE_URl}/routine');
@@ -87,7 +88,10 @@ class RoutineRequestImpl implements RoutineRepositoryImp {
     try {
       final response = await http.post(
         uri,
-        body: jsonEncode({"name": routineName}),
+        body: jsonEncode({
+          "name": routineName,
+          "routineType": routineType,
+        }),
         headers: headers,
       );
 
@@ -361,6 +365,52 @@ class RoutineRequestImpl implements RoutineRepositoryImp {
       }
     } catch (e) {
       return left(Message(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<ExamModel> createExam({
+    required String routineID,
+    required String name,
+    String? subjectCode,
+    required DateTime date,
+    required DateTime startTime,
+    required DateTime endTime,
+    required String room,
+  }) async {
+    final headers = await LocalData.getHeader();
+    final url = Uri.parse('${Const.BASE_URl}/routine/$routineID/exams');
+
+    final response = await http.post(
+      url,
+      headers: headers,
+      body: jsonEncode({
+        "name": name,
+        "subjectCode": subjectCode,
+        "date": date.toIso8601String(),
+        "startTime": startTime.toIso8601String(),
+        "endTime": endTime.toIso8601String(),
+        "room": room,
+      }),
+    );
+    final res = json.decode(response.body);
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      return ExamModel.fromJson(res["exam"]);
+    } else {
+      throw res["message"] ?? "Failed to add exam";
+    }
+  }
+
+  @override
+  Future<Message> removeExam(String examID) async {
+    final headers = await LocalData.getHeader();
+    final url = Uri.parse('${Const.BASE_URl}/routine/exams/$examID');
+    final response = await http.delete(url, headers: headers);
+    final res = json.decode(response.body);
+    if (response.statusCode == 200) {
+      return Message.fromJson(res);
+    } else {
+      throw res["message"] ?? "Failed to remove exam";
     }
   }
 

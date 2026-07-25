@@ -21,6 +21,7 @@ abstract class RoutineRepositoryImp {
   /// Maps to POST `/`
   Future<Either<Message, Message>> createRoutine({
     required String routineName,
+    String routineType = 'CLASS',
   });
 
   /// Maps to GET `/:routineID/classes`
@@ -78,6 +79,20 @@ abstract class RoutineRepositoryImp {
 
   /// Maps to DELETE `/:routineID`
   Future<Either<Message, Message>> deleteRoutineById(String routineID);
+
+  /// Maps to POST `/:routineID/exams`
+  Future<ExamModel> createExam({
+    required String routineID,
+    required String name,
+    String? subjectCode,
+    required DateTime date,
+    required DateTime startTime,
+    required DateTime endTime,
+    required String room,
+  });
+
+  /// Maps to DELETE `/exams/:examId`
+  Future<Message> removeExam(String examID);
 
   /// Maps to POST `/:routineID` (updates save/unsave and returns CheckStatusModel)
   Future<Either<String, CheckStatusModel>> saveAndUnsaveRoutine(

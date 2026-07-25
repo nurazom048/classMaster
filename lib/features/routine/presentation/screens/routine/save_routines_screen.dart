@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:classmate/features/routine/presentation/providers/routine_list_provider.dart';
-import '../../../../core/export_core.dart';
-import '../../../home_fetures/presentation/utils/utils.dart';
-import '../utils/routine_dialog.dart';
-import '../widgets/dynamic_widgets/routine_box_by_id.dart';
+import '../../../../../core/export_core.dart';
+import '../../../../home_fetures/presentation/utils/utils.dart';
+import '../../utils/routine_dialog.dart';
+import '../../widgets/dynamic_widgets/routine_box_by_id.dart';
 
 class SaveRoutinesScreen extends ConsumerStatefulWidget {
   const SaveRoutinesScreen({super.key});

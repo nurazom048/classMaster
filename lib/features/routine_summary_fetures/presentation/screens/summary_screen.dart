@@ -206,12 +206,14 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
       checkStatusControllerProvider(widget.routineID),
     );
 
-    return SafeArea(
-      child: Scaffold(
-        body: checkStatus.when(
-          data: (data) => onData(ref, data),
-          error: (error, stackTrace) => Alert.handleError(context, error),
-          loading: () => Loaders.center(),
+    return DesktopLayoutWrapper(
+      child: SafeArea(
+        child: Scaffold(
+          body: checkStatus.when(
+            data: (data) => onData(ref, data),
+            error: (error, stackTrace) => Alert.handleError(context, error),
+            loading: () => Loaders.center(),
+          ),
         ),
       ),
     );

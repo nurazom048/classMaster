@@ -44,6 +44,7 @@ class AllClassesResponse {
 
 class ExamModel {
   final String id;
+  final int? model_no;
   final String name;
   final String? subjectCode;
   final DateTime date;
@@ -54,6 +55,7 @@ class ExamModel {
 
   ExamModel({
     required this.id,
+    this.model_no,
     required this.name,
     this.subjectCode,
     required this.date,
@@ -66,6 +68,7 @@ class ExamModel {
   factory ExamModel.fromJson(Map<String, dynamic> json) {
     return ExamModel(
       id: json['id'] ?? '',
+      model_no: json['model_no'] ?? json['modelNo'],
       name: json['name'] ?? '',
       subjectCode: json['subjectCode'],
       date: DateTime.parse(json['date']),

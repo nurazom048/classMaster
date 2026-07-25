@@ -6,12 +6,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/state_manager.dart';
 
 import 'package:classmate/features/home_fetures/presentation/utils/utils.dart';
-import '../providers/chack_status_controller.dart';
+import '../../providers/chack_status_controller.dart';
 import 'package:classmate/features/routine/presentation/providers/member_controller_provider.dart';
 import 'package:classmate/features/routine/presentation/providers/see_all_req_controller.dart';
-import '../../../../core/export_core.dart';
-import '../utils/popup.dart';
-import '../widgets/static_widgets/member_account_card.dart';
+import '../../../../../core/export_core.dart';
+import '../../utils/popup.dart';
+import '../../widgets/static_widgets/member_account_card.dart';
 
 final membersCountProvider = StateProvider.autoDispose<int>((ref) => 0);
 final offsetProvider = StateProvider<Offset?>((ref) => null);
@@ -124,11 +124,6 @@ class _MemberListState extends State<MemberList> {
                 // const SizedBox(height: 20),
                 // const DashBorderButton(),
                 // const SizedBox(height: 30),
-
-                //____________________________________Requests___________________________________//
-                if (isCaptain == true || isOwner == true) ...[
-                  JoinRequestPart(routineID: widget.routineId),
-                ],
 
                 ///
                 //____________________________________Members___________________________________//

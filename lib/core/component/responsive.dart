@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../widgets/widgets/mydrawer.dart';
+import '../local_data/local_data.dart';
 
 class Responsive extends StatelessWidget {
   final Widget mobile;
   final Widget? tablet;
   final Widget desktop;
 
-  //
   const Responsive({
     super.key,
     required this.mobile,
@@ -14,9 +15,6 @@ class Responsive extends StatelessWidget {
     required this.desktop,
   });
 
-// This size work fine on my design, maybe you need some customization depends on your design
-
-  // This isMobile, isTablet, isDesktop helep us later
   static bool isMobile(BuildContext context) =>
       MediaQuery.of(context).size.width < 650;
 
@@ -30,19 +28,12 @@ class Responsive extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
-      // If our width is more than 1100 then we consider it a desktop
       builder: (context, constraints) {
         if (constraints.maxWidth >= 1100) {
           return desktop;
-        }
-        // If width it less then 1100 and more then 650 we consider it as tablet
-        else if (constraints.maxWidth >= 900) {
-          // else if (constraints.maxWidth >= 650) {
-          // return tablet;
+        } else if (constraints.maxWidth >= 900) {
           return desktop;
-        }
-        // Or less then that we called it mobile
-        else {
+        } else {
           return mobile;
         }
       },
@@ -50,13 +41,13 @@ class Responsive extends StatelessWidget {
   }
 }
 
-class DesktopLayoutWrapper extends StatelessWidget {
+class DesktopLayoutWrapper extends ConsumerWidget {
   final Widget child;
 
   const DesktopLayoutWrapper({super.key, required this.child});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return child;
   }
 }

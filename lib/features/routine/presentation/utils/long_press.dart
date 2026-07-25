@@ -7,7 +7,7 @@ import 'package:classmate/core/constant/app_color.dart';
 import 'package:classmate/core/dialogs/alert_dialogs.dart';
 
 import 'package:classmate/features/routine/presentation/providers/routine_controller.dart';
-import '../screens/add_class_screen.dart';
+import '../screens/screens.dart';
 
 class PeriodAlert {
   //

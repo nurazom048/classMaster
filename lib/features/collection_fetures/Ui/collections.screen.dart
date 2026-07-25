@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/widgets/my_divider.dart';
 
 import 'package:classmate/features/collection_fetures/Ui/aboutus_screen.dart';
-import 'package:classmate/features/routine/presentation/screens/save_routines_screen.dart';
+import 'package:classmate/features/routine/presentation/screens/screens.dart';
 import 'package:classmate/features/routine_summary_fetures/presentation/screens/save_summary_screen.dart';
 import 'package:classmate/features/notice_fetures/presentation/screens/saved_notices_screen.dart';
 import '../../../core/constant/enums.dart';

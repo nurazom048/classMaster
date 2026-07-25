@@ -17,7 +17,7 @@ import '../../../../routine_summary_fetures/presentation/screens/summary_screen.
 import '../../../data/models/class_details_model.dart';
 import '../../providers/chack_status_controller.dart';
 import '../../providers/routine_details.controller.dart';
-import '../../screens/view_more_screen.dart';
+import '../../screens/screens.dart';
 import '../../utils/routine_dialog.dart';
 import '../static_widgets/routine_box_id_skeleton.dart';
 import '../static_widgets/send_request_button.dart';

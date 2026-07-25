@@ -21,10 +21,10 @@ class AddClassValidator {
 
   static String? roomNumber(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Room number is required';
+      return null;
     }
-    if (value.trim().length > 10) {
-      return 'Room number cannot exceed 10 words';
+    if (value.trim().length > 30) {
+      return 'Room number cannot exceed 30 words';
     }
     return null;
   }

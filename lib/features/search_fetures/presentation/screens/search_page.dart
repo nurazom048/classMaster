@@ -65,7 +65,9 @@ class _SearchPageState extends ConsumerState<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(child: Scaffold(body: _mobile()));
+    return DesktopLayoutWrapper(
+      child: SafeArea(child: Scaffold(body: _mobile())),
+    );
   }
 
   Widget _mobile() {

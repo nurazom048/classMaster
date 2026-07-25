@@ -12,7 +12,7 @@ import '../../core/constant/enums.dart';
 import '../../core/component/responsive.dart';
 import '../../core/widgets/bottom_sheet_shape.dart';
 import '../../features/notice_fetures/presentation/screens/add_notice_screen.dart';
-import '../../features/routine/presentation/screens/create_new_routine.dart';
+import '../../features/routine/presentation/screens/screens.dart';
 import '../../features/routine/presentation/widgets/static_widgets/dash_border_button.dart';
 import '../../features/collection_fetures/Ui/collections.screen.dart';
 import '../../features/home_fetures/presentation/screens/home.screen.dart';
@@ -29,6 +29,30 @@ final drawerActiveItemProvider = StateProvider<DrawerItem>(
 
 final GlobalKey<NavigatorState> collectionNavigatorKey =
     GlobalKey<NavigatorState>();
+
+void navigateToShellPage(
+  BuildContext context,
+  WidgetRef ref,
+  Widget page, {
+  DrawerItem drawerItem = DrawerItem.saveRoutine,
+}) {
+  final isMobile = MediaQuery.of(context).size.width < 650;
+  if (isMobile) {
+    try {
+      if (Navigator.of(context).canPop()) {
+        Navigator.pop(context);
+      }
+    } catch (_) {}
+  }
+  ref.read(drawerActiveItemProvider.notifier).state = drawerItem;
+  ref.read(bottomNavBarIndexProvider.notifier).state = 2;
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    collectionNavigatorKey.currentState?.popUntil((route) => route.isFirst);
+    collectionNavigatorKey.currentState?.push(
+      RightToLeftTransition(page: page),
+    );
+  });
+}
 
 class CollectionNavigator extends ConsumerWidget {
   const CollectionNavigator({super.key});
