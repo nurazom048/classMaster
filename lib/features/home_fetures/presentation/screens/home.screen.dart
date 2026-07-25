@@ -550,6 +550,7 @@ class _RoutinesSectionState extends ConsumerState<RoutinesSection> {
                                 margin: EdgeInsets.zero,
                                 routineId: routine.id,
                                 routineName: routine.routineName,
+                                routineType: routine.routineType,
                                 onTapMore: () => RoutineDialog.CheckStatusUser_BottomSheet(
                                   context,
                                   routineID: routine.id,
@@ -578,6 +579,7 @@ class _RoutinesSectionState extends ConsumerState<RoutinesSection> {
                                 margin: EdgeInsets.zero,
                                 routineId: routine.id,
                                 routineName: routine.routineName,
+                                routineType: routine.routineType,
                                 onTapMore: () => RoutineDialog.CheckStatusUser_BottomSheet(
                                   context,
                                   routineID: routine.id,

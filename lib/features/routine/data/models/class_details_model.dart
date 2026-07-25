@@ -9,12 +9,16 @@ AllClassesResponse allClassesResponseFromJson(String str) =>
 class AllClassesResponse {
   final List<AllClass> allClass;
   final Classes weekdayClasses;
+  final List<ExamModel> exams;
+  final String routineType;
   final AccountModels owner;
   final String? routineName;
 
   AllClassesResponse({
     required this.allClass,
     required this.weekdayClasses,
+    this.exams = const [],
+    this.routineType = "CLASS",
     required this.owner,
     this.routineName,
   });
@@ -22,12 +26,53 @@ class AllClassesResponse {
   factory AllClassesResponse.fromJson(Map<String, dynamic> json) {
     return AllClassesResponse(
       allClass:
-          (json['allClass'] as List)
+          (json['allClass'] as List? ?? [])
               .map((item) => AllClass.fromJson(item))
               .toList(),
-      weekdayClasses: Classes.fromJson(json['weekdayClasses']),
+      weekdayClasses: json['weekdayClasses'] != null 
+          ? Classes.fromJson(json['weekdayClasses']) 
+          : Classes(sunday: [], monday: [], tuesday: [], wednesday: [], thursday: [], friday: [], saturday: []),
+      exams: (json['exams'] as List? ?? [])
+          .map((item) => ExamModel.fromJson(item))
+          .toList(),
+      routineType: json['routineType'] ?? "CLASS",
       owner: AccountModels.fromJson(json['owner']),
       routineName: json['routineName'],
+    );
+  }
+}
+
+class ExamModel {
+  final String id;
+  final String name;
+  final String? subjectCode;
+  final DateTime date;
+  final DateTime startTime;
+  final DateTime endTime;
+  final String room;
+  final String routineId;
+
+  ExamModel({
+    required this.id,
+    required this.name,
+    this.subjectCode,
+    required this.date,
+    required this.startTime,
+    required this.endTime,
+    required this.room,
+    required this.routineId,
+  });
+
+  factory ExamModel.fromJson(Map<String, dynamic> json) {
+    return ExamModel(
+      id: json['id'] ?? '',
+      name: json['name'] ?? '',
+      subjectCode: json['subjectCode'],
+      date: DateTime.parse(json['date']),
+      startTime: DateTime.parse(json['startTime']),
+      endTime: DateTime.parse(json['endTime']),
+      room: json['room'] ?? '',
+      routineId: json['routineId'] ?? '',
     );
   }
 }

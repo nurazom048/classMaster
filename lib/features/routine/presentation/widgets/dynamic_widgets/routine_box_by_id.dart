@@ -21,6 +21,7 @@ import '../../screens/view_more_screen.dart';
 import '../../utils/routine_dialog.dart';
 import '../static_widgets/routine_box_id_skeleton.dart';
 import '../static_widgets/send_request_button.dart';
+import 'polymorphic_routine_card.dart';
 
 //! provider
 
@@ -48,6 +49,7 @@ final initialWeekdayProvider = StateProvider.family<int, String>((
 class RoutineBoxById extends StatelessWidget {
   final String routineName;
   final String routineId;
+  final String routineType;
   final dynamic onTapMore;
   final EdgeInsetsGeometry? margin;
 
@@ -56,133 +58,18 @@ class RoutineBoxById extends StatelessWidget {
     required this.routineName,
     required this.onTapMore,
     required this.routineId,
+    this.routineType = "CLASS",
     this.margin,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(
-      builder: (context, ref, _) {
-        // Get providers
-        final checkStatus = ref.watch(checkStatusControllerProvider(routineId));
-        final routineDetails = ref.watch(routineDetailsProvider(routineId));
-        final checkStatusNotifier = ref.watch(
-          checkStatusControllerProvider(routineId).notifier,
-        );
-
-        //
-
-        return Container(
-          constraints: const BoxConstraints(minHeight: 426),
-          margin:
-              margin ?? const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          padding: const EdgeInsets.symmetric(vertical: 5),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(6),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  // Top section
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 14),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // Routine name
-                        InkWell(
-                          onTap:
-                              () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder:
-                                      (context) => ViewMore(
-                                        routineId: routineId,
-                                        routineName: routineName,
-                                        ownerName: ref.watch(
-                                          ownerNameProvider(routineId),
-                                        ),
-                                      ),
-                                ),
-                              ),
-                          child: Text(routineName, style: TS.heading()),
-                        ),
-
-                        //  Notification button or request button
-                        checkStatus.when(
-                          data: (data) {
-                            String status = data.activeStatus;
-                            bool notificationOn = data.notificationOn;
-                            return SendReqButton(
-                              isNotSendRequest: status == "not_joined",
-                              isPending: status == "request_pending",
-                              isMember: true,
-                              notificationOn: notificationOn,
-                              sendRequest: () {
-                                checkStatusNotifier.sendReqController(context);
-                              },
-                              showPanel: () {
-                                RoutineDialog.routineNotificationsSelect(
-                                  context,
-                                  routineId,
-                                );
-                              },
-                            );
-                          },
-                          error:
-                              (error, stackTrace) =>
-                                  Alert.handleError(context, error),
-                          loading: () => const Text("...."),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  // Divider
-                  MyDivider(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                    ).copyWith(bottom: 0),
-                  ),
-                  ClassSliderView(routineId: routineId),
-                ],
-              ),
-              // Bottom section
-              Column(
-                children: [
-                  MyDivider(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                    ).copyWith(top: 0).copyWith(bottom: 3),
-                  ),
-                  routineDetails.when(
-                    data: (data) {
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        String? ownerName = data.owner.name;
-                        ref
-                            .watch(ownerNameProvider(routineId).notifier)
-                            .update((state) => ownerName);
-                      });
-
-                      return MiniAccountInfo(
-                        accountData: data.owner,
-                        onTapMore: onTapMore,
-                      );
-                    },
-                    error:
-                        (error, stackTrace) =>
-                            Alert.handleError(context, error),
-                    loading: () => const AccountSkeleton(),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
+    return RoutineFeedCard(
+      routineId: routineId,
+      routineName: routineName,
+      routineType: routineType,
+      onTapMore: onTapMore is VoidCallback ? onTapMore : () {},
+      margin: margin,
     );
   }
 }
