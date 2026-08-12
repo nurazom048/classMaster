@@ -7,8 +7,8 @@ import 'package:classmate/features/authentication_fetures/presentation/screen/fo
 import 'package:classmate/features/notice_fetures/data/models/recent_notice_model.dart';
 import 'package:classmate/features/notice_fetures/presentation/screens/view_notice_screen.dart';
 import 'package:classmate/features/notice_fetures/presentation/widgets/static_widgets/public_notice_screen.dart';
-import 'package:classmate/features/routine/presentation/screens/screens.dart';
-import 'package:classmate/features/routine/presentation/screens/routine/routine_details_screen.dart';
+import 'package:classmate/features/routine_fetures/presentation/screens/screens.dart';
+import 'package:classmate/features/routine_fetures/presentation/screens/routine/routine_details_screen.dart';
 import 'package:classmate/features/notification/screen/notification.screen.dart';
 import 'package:classmate/features/authentication_fetures/presentation/screen/change_password.dart';
 import 'package:classmate/features/account_fetures/presentation/screens/profile_screen.dart';

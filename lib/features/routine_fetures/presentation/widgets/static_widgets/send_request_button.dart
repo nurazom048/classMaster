@@ -1,25 +1,28 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../../../../../core/constant/app_color.dart';
-import '../../../../routine_fetures/presentation/widgets/static_widgets/notification_buton.dart';
+import 'notification_buton.dart';
 
-class NoticeBoardJoinButton extends StatelessWidget {
-  final bool isJoin;
+class SendReqButton extends StatelessWidget {
+  final bool isNotSendRequest;
+  final bool isPending;
+  final bool isMember;
   final bool notificationOn;
+  final VoidCallback sendRequest;
   final VoidCallback showPanel;
-  final VoidCallback onTapForJoin;
   final Color? color;
   final Color? colorBG;
   final IconData? icon;
   final EdgeInsetsGeometry? padding;
 
-  const NoticeBoardJoinButton({
+  const SendReqButton({
     super.key,
-    required this.isJoin,
+    required this.isNotSendRequest,
+    required this.isPending,
+    required this.isMember,
     required this.notificationOn,
+    required this.sendRequest,
     required this.showPanel,
-    required this.onTapForJoin,
     this.color,
     this.icon,
     this.colorBG,
@@ -29,16 +32,21 @@ class NoticeBoardJoinButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     IconData nIcon =
-        notificationOn == true
-            ? Icons.notifications_active
-            : Icons.notifications_off;
-    String text = isJoin == false ? "Join" : "Joined";
+        notificationOn == false
+            ? Icons.notifications_off
+            : Icons.notifications_active;
+    String text =
+        isNotSendRequest
+            ? "Send Request"
+            : isPending
+            ? "Request Pending"
+            : "";
 
     return Column(
       children: [
-        if (isJoin == false)
+        if (isNotSendRequest || isPending)
           CupertinoButton(
-            onPressed: onTapForJoin,
+            onPressed: sendRequest,
             color: colorBG ?? const Color(0xFFE4F0FF),
             borderRadius: BorderRadius.circular(19),
             padding: padding ?? const EdgeInsets.all(8),
@@ -48,7 +56,7 @@ class NoticeBoardJoinButton extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "       $text       ",
+                  text,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   style: TextStyle(

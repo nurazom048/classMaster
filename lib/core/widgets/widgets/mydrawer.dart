@@ -12,7 +12,7 @@ import '../../../features/account_fetures/domain/providers/account_providers.dar
 import '../../../features/account_fetures/data/models/account_models.dart';
 import '../../../ui/bottom_nevbar_items/bottom_navbar.dart';
 import 'package:classmate/core/component/heder_component/transition/right_to_left_transition.dart';
-import 'package:classmate/features/routine/presentation/screens/screens.dart';
+import 'package:classmate/features/routine_fetures/presentation/screens/screens.dart';
 import 'package:classmate/features/routine_summary_fetures/presentation/screens/save_summary_screen.dart';
 import 'package:classmate/features/notice_fetures/presentation/screens/saved_notices_screen.dart';
 import 'package:classmate/features/search_fetures/presentation/screens/search_page.dart';

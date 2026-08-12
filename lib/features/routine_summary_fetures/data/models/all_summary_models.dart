@@ -1,6 +1,6 @@
 import '../../../../core/constant/constant.dart';
 import '../../../../core/constant/enums.dart';
-import '../../../routine/data/models/class_model.dart';
+import '../../../routine_fetures/data/models/class_model.dart';
 
 class PollOption {
   String option;
@@ -16,10 +16,7 @@ class PollOption {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'option': option,
-      'votes': votes,
-    };
+    return {'option': option, 'votes': votes};
   }
 }
 
@@ -119,27 +116,36 @@ class SummaryModel {
           json['updatedAt'] != null
               ? DateTime.tryParse(json['updatedAt'])
               : null,
-      type: json['type'] != null
-          ? SummaryType.values.firstWhere(
-              (e) => e.name == json['type'],
-              orElse: () => SummaryType.TEXT,
-            )
-          : SummaryType.TEXT,
+      type:
+          json['type'] != null
+              ? SummaryType.values.firstWhere(
+                (e) => e.name == json['type'],
+                orElse: () => SummaryType.TEXT,
+              )
+              : SummaryType.TEXT,
       fileType: json['fileType'],
-      pollOptions: json['pollOptions'] != null
-          ? (json['pollOptions'] as List<dynamic>)
-              .map((opt) => PollOption.fromJson(opt))
-              .toList()
-          : null,
+      pollOptions:
+          json['pollOptions'] != null
+              ? (json['pollOptions'] as List<dynamic>)
+                  .map((opt) => PollOption.fromJson(opt))
+                  .toList()
+              : null,
       owner: json['owner'] != null ? Owner.fromJson(json['owner']) : null,
       classInfo:
-          json['classInfo'] != null ? ClasssModel.fromJson(json['classInfo']) : null,
-      imageStorageProvider: json['imageStorageProvider'] != null
-          ? StorageProvider.values.firstWhere(
-              (e) => e.name == json['imageStorageProvider'],
-              orElse: () => json['imageStorageProvider'] == 'aws' ? StorageProvider.r2 : StorageProvider.minio,
-            )
-          : StorageProvider.minio,
+          json['classInfo'] != null
+              ? ClasssModel.fromJson(json['classInfo'])
+              : null,
+      imageStorageProvider:
+          json['imageStorageProvider'] != null
+              ? StorageProvider.values.firstWhere(
+                (e) => e.name == json['imageStorageProvider'],
+                orElse:
+                    () =>
+                        json['imageStorageProvider'] == 'aws'
+                            ? StorageProvider.r2
+                            : StorageProvider.minio,
+              )
+              : StorageProvider.minio,
     );
   }
 

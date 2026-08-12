@@ -12,8 +12,8 @@ import '../../core/constant/enums.dart';
 import '../../core/component/responsive.dart';
 import '../../core/widgets/bottom_sheet_shape.dart';
 import '../../features/notice_fetures/presentation/screens/add_notice_screen.dart';
-import '../../features/routine/presentation/screens/screens.dart';
-import '../../features/routine/presentation/widgets/static_widgets/dash_border_button.dart';
+import '../../features/routine_fetures/presentation/screens/screens.dart';
+import '../../features/routine_fetures/presentation/widgets/static_widgets/dash_border_button.dart';
 import '../../features/collection_fetures/Ui/collections.screen.dart';
 import '../../features/home_fetures/presentation/screens/home.screen.dart';
 import '../../core/widgets/widgets/bottom_bar_item_custom.dart';
@@ -81,7 +81,8 @@ class CollectionNavigator extends ConsumerWidget {
             final prevIndex = ref.read(previousBottomNavBarIndexProvider);
             ref.read(bottomNavBarIndexProvider.notifier).state = prevIndex;
             if (prevIndex == 0) {
-              ref.read(drawerActiveItemProvider.notifier).state = DrawerItem.home;
+              ref.read(drawerActiveItemProvider.notifier).state =
+                  DrawerItem.home;
             }
           }
           return false;

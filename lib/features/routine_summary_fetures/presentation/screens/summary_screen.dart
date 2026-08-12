@@ -9,7 +9,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import '../../../../core/export_core.dart';
-import '../../../routine/presentation/providers/chack_status_controller.dart';
+import '../../../routine_fetures/presentation/providers/chack_status_controller.dart';
 import '../../domain/providers/summary_controller.dart';
 import '../widgets/static_widgets/add_summary_button.dart';
 import '../widgets/static_widgets/summary_header.dart';
@@ -104,7 +104,9 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
       // Set up event listeners with refresh callback
       SocketService.listenToRoomEvents(
         onChatMessage: (summary) {
-          print('[Socket] [Event] New chat message received: ${summary.toString()}');
+          print(
+            '[Socket] [Event] New chat message received: ${summary.toString()}',
+          );
           if (mounted) {
             // ignore: unused_result
             ref.refresh(summaryControllerProvider(widget.classId));
@@ -124,7 +126,9 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
           }
         },
         onUserOffline: (data) {
-          print('[Socket] [Event] User offline: ${data['username'] ?? data['userId']}');
+          print(
+            '[Socket] [Event] User offline: ${data['username'] ?? data['userId']}',
+          );
           final name = data['username'] ?? 'User';
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -285,8 +289,14 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
                       children: [
                         if (typingUsers.isNotEmpty)
                           Container(
-                            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 8,
+                              horizontal: 16,
+                            ),
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 5,
+                            ),
                             decoration: BoxDecoration(
                               color: Colors.blue.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(10),
@@ -296,7 +306,9 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
                                 const SizedBox(
                                   width: 12,
                                   height: 12,
-                                  child: CircularProgressIndicator(strokeWidth: 2),
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
@@ -325,7 +337,9 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
                                     Loaders.center()
                                   else if (i == data.summaries.length - 1)
                                     const Padding(
-                                      padding: EdgeInsets.symmetric(vertical: 10),
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: 10,
+                                      ),
                                       child: Text("Reached to end"),
                                     ),
                                 ],

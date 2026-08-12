@@ -8,7 +8,7 @@ import '../../../../core/widgets/custom_tab_bar.widget.dart';
 import '../../../../core/widgets/widgets/custom_title_bar.dart';
 import '../../../../core/widgets/widgets/mydrawer.dart';
 import '../providers/search_account_controller.dart';
-import '../../../routine/presentation/providers/routine_list_provider.dart';
+import '../../../routine_fetures/presentation/providers/routine_list_provider.dart';
 import 'account_search_screen.dart';
 import 'search_routine_screen.dart';
 import 'search_notice_screen.dart';

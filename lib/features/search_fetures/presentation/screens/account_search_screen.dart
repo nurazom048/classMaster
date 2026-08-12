@@ -1,4 +1,4 @@
-import 'package:classmate/features/routine/presentation/widgets/dynamic_widgets/see_all_members_screen.dart';
+import 'package:classmate/features/routine_fetures/presentation/widgets/dynamic_widgets/see_all_members_screen.dart';
 import 'package:classmate/features/search_fetures/presentation/providers/search_account_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,27 +15,27 @@ class AccountSearchScreen extends ConsumerWidget {
     final searchAccounts = ref.watch(searchAccountController(searchText));
 
     return searchAccounts.when(
-        data: (data) {
-          return ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: const EdgeInsets.only(bottom: 200),
-            itemCount: data.accounts?.length ?? 0,
-            itemBuilder: (context, index) {
-              if (data.accounts!.isNotEmpty) {
-                return AccountCardRow(accountData: data.accounts![index]);
-              } else {
-                return const ErrorScreen(error: 'No Account found');
-              }
-            },
-            separatorBuilder: (context, index) => const SizedBox(height: 10),
-          );
-        },
-        error: (error, stackTrace) {
-          return Alert.handleError(context, error);
-          // return ErrorScreen(error: error.toString());
-        },
-        loading: () => Loaders.center(),
-      );
+      data: (data) {
+        return ListView.separated(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          padding: const EdgeInsets.only(bottom: 200),
+          itemCount: data.accounts?.length ?? 0,
+          itemBuilder: (context, index) {
+            if (data.accounts!.isNotEmpty) {
+              return AccountCardRow(accountData: data.accounts![index]);
+            } else {
+              return const ErrorScreen(error: 'No Account found');
+            }
+          },
+          separatorBuilder: (context, index) => const SizedBox(height: 10),
+        );
+      },
+      error: (error, stackTrace) {
+        return Alert.handleError(context, error);
+        // return ErrorScreen(error: error.toString());
+      },
+      loading: () => Loaders.center(),
+    );
   }
 }

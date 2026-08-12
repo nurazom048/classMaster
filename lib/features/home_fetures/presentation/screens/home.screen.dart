@@ -7,7 +7,7 @@ import '../../../../core/local_data/local_data.dart';
 import '../../../../route/route_constant.dart';
 import 'package:go_router/go_router.dart';
 import 'package:classmate/services/one_signal/one_signal.services.dart';
-import 'package:classmate/features/routine/data/models/routine_response_model.dart';
+import 'package:classmate/features/routine_fetures/data/models/routine_response_model.dart';
 import 'package:classmate/features/home_fetures/presentation/utils/utils.dart';
 import '../../../../core/component/responsive.dart';
 import '../../../../core/dialogs/alert_dialogs.dart';
@@ -16,12 +16,12 @@ import '../../../../core/widgets/error/error.widget.dart';
 import '../../../../services/firebase/firebase_analytics.service.dart';
 import '../../../../services/notification_services/awn_package.dart';
 import '../../../notice_fetures/presentation/screens/view_all_recent_notice.dart';
-import '../../../routine/presentation/utils/routine_dialog.dart';
-import '../../../routine/presentation/widgets/dynamic_widgets/routine_box_by_id.dart';
-import '../../../routine/presentation/widgets/static_widgets/routine_box_id_skeleton.dart';
+import '../../../routine_fetures/presentation/utils/routine_dialog.dart';
+import '../../../routine_fetures/presentation/widgets/dynamic_widgets/routine_box_by_id.dart';
+import '../../../routine_fetures/presentation/widgets/static_widgets/routine_box_id_skeleton.dart';
 import '../../../notice_fetures/presentation/providers/view_recent_notice_controller.dart';
 import '../../../../core/widgets/widgets/custom_title_bar.dart';
-import '../../../routine/presentation/providers/routine_list_provider.dart';
+import '../../../routine_fetures/presentation/providers/routine_list_provider.dart';
 import '../../../../features/notice_fetures/presentation/widgets/static_widgets/modern_reusable_notice_card_widget.dart';
 import '../../../../features/notice_fetures/data/models/recent_notice_model.dart';
 import '../../../../core/constant/app_color.dart';
@@ -94,7 +94,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           // 📜 Scrollbar wrapped list for desktop/web scrolling ease
           child: Scrollbar(
             controller: _mainScrollController,
-            thumbVisibility: !isMobile, // Keep scrollbar visible on desktop/tablet
+            thumbVisibility:
+                !isMobile, // Keep scrollbar visible on desktop/tablet
             trackVisibility: !isMobile,
             child: ListView(
               controller: _mainScrollController,
@@ -133,10 +134,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 class GuestModeBanner extends StatelessWidget {
   final bool isGuestMode;
 
-  const GuestModeBanner({
-    super.key,
-    required this.isGuestMode,
-  });
+  const GuestModeBanner({super.key, required this.isGuestMode});
 
   @override
   Widget build(BuildContext context) {
@@ -224,7 +222,11 @@ class RecentNoticeSectionHeader extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 2),
-                Icon(Icons.arrow_forward_ios, size: 10, color: AppColor.nokiaBlue),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  size: 10,
+                  color: AppColor.nokiaBlue,
+                ),
               ],
             ),
           ),
@@ -251,9 +253,10 @@ class HomeRecentNoticeWidget extends ConsumerWidget {
     return recentNoticeList.when(
       data: (data) {
         final noticesLimit = showAd ? 4 : 6;
-        final notices = isMobile
-            ? data.notices.take(6).toList()
-            : data.notices.take(noticesLimit).toList();
+        final notices =
+            isMobile
+                ? data.notices.take(6).toList()
+                : data.notices.take(noticesLimit).toList();
 
         if (notices.isEmpty) {
           return const Center(
@@ -279,10 +282,11 @@ class HomeRecentNoticeWidget extends ConsumerWidget {
         debugPrint('❌ Error loading recent notices: $error');
         return Alert.handleError(context, error);
       },
-      loading: () => const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
-        child: RecentNoticeSliderSkelton(),
-      ),
+      loading:
+          () => const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: RecentNoticeSliderSkelton(),
+          ),
     );
   }
 }
@@ -343,8 +347,14 @@ class _MobileNoticeCarouselState extends State<MobileNoticeCarousel> {
                     PremiumNoticeCard(
                       notice: widget.notices[firstIndex],
                       academyID: widget.notices[firstIndex].publisherId,
-                      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 4,
+                        vertical: 4,
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 10,
+                      ),
                       onTap: () {
                         context.push(
                           '/notice/${widget.notices[firstIndex].id}',
@@ -361,8 +371,14 @@ class _MobileNoticeCarouselState extends State<MobileNoticeCarousel> {
                     PremiumNoticeCard(
                       notice: widget.notices[secondIndex],
                       academyID: widget.notices[secondIndex].publisherId,
-                      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 4,
+                        vertical: 4,
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 10,
+                      ),
                       onTap: () {
                         context.push(
                           '/notice/${widget.notices[secondIndex].id}',
@@ -392,16 +408,20 @@ class _MobileNoticeCarouselState extends State<MobileNoticeCarousel> {
               height: 7,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4),
-                color: _currentPage == index ? AppColor.nokiaBlue : Colors.grey.shade300,
-                boxShadow: _currentPage == index
-                    ? [
-                        BoxShadow(
-                          color: AppColor.nokiaBlue.withOpacity(0.3),
-                          blurRadius: 4,
-                          spreadRadius: 1,
-                        )
-                      ]
-                    : [],
+                color:
+                    _currentPage == index
+                        ? AppColor.nokiaBlue
+                        : Colors.grey.shade300,
+                boxShadow:
+                    _currentPage == index
+                        ? [
+                          BoxShadow(
+                            color: AppColor.nokiaBlue.withOpacity(0.3),
+                            blurRadius: 4,
+                            spreadRadius: 1,
+                          ),
+                        ]
+                        : [],
               ),
             ),
           ),
@@ -474,8 +494,12 @@ class _RoutinesSectionState extends ConsumerState<RoutinesSection> {
 
   @override
   Widget build(BuildContext context) {
-    final homeRoutines = ref.watch(routineListProvider(const RoutineListQuery()));
-    final homeRoutinesNotifier = ref.watch(routineListProvider(const RoutineListQuery()).notifier);
+    final homeRoutines = ref.watch(
+      routineListProvider(const RoutineListQuery()),
+    );
+    final homeRoutinesNotifier = ref.watch(
+      routineListProvider(const RoutineListQuery()).notifier,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -519,7 +543,10 @@ class _RoutinesSectionState extends ConsumerState<RoutinesSection> {
                 child: Center(
                   child: Text(
                     "You don't have joined or created any Routines",
-                    style: TS.heading(fontSize: 15, color: Colors.grey.shade500),
+                    style: TS.heading(
+                      fontSize: 15,
+                      color: Colors.grey.shade500,
+                    ),
                   ),
                 ),
               );
@@ -527,69 +554,78 @@ class _RoutinesSectionState extends ConsumerState<RoutinesSection> {
               final showAd = ref.watch(showAdProvider);
               final width = MediaQuery.of(context).size.width;
               final isMobile = width < 650;
-              final int crossAxisCount = isMobile ? 1 : (width < 1100 ? 2 : (showAd ? 2 : 3));
+              final int crossAxisCount =
+                  isMobile ? 1 : (width < 1100 ? 2 : (showAd ? 2 : 3));
               final int routinesLimit = isMobile ? 4 : (crossAxisCount * 2);
 
-              final routinesList = _showAllRoutines 
-                  ? data.routines 
-                  : data.routines.take(routinesLimit).toList();
+              final routinesList =
+                  _showAllRoutines
+                      ? data.routines
+                      : data.routines.take(routinesLimit).toList();
 
               return Column(
                 children: [
                   isMobile
                       ? ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        itemCount: routinesList.length,
+                        itemBuilder: (context, index) {
+                          final routine = routinesList[index];
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: RoutineBoxById(
+                              margin: EdgeInsets.zero,
+                              routineId: routine.id,
+                              routineName: routine.routineName,
+                              routineType: routine.routineType,
+                              onTapMore:
+                                  () =>
+                                      RoutineDialog.CheckStatusUser_BottomSheet(
+                                        context,
+                                        routineID: routine.id,
+                                        routineName: routine.routineName,
+                                        routinesController:
+                                            homeRoutinesNotifier,
+                                      ),
+                            ),
+                          );
+                        },
+                      )
+                      : Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: GridView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
                           itemCount: routinesList.length,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: crossAxisCount,
+                                mainAxisExtent: 430,
+                                crossAxisSpacing: 16,
+                                mainAxisSpacing: 12,
+                              ),
                           itemBuilder: (context, index) {
                             final routine = routinesList[index];
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 8.0),
-                              child: RoutineBoxById(
-                                margin: EdgeInsets.zero,
-                                routineId: routine.id,
-                                routineName: routine.routineName,
-                                routineType: routine.routineType,
-                                onTapMore: () => RoutineDialog.CheckStatusUser_BottomSheet(
-                                  context,
-                                  routineID: routine.id,
-                                  routineName: routine.routineName,
-                                  routinesController: homeRoutinesNotifier,
-                                ),
-                              ),
+                            return RoutineBoxById(
+                              margin: EdgeInsets.zero,
+                              routineId: routine.id,
+                              routineName: routine.routineName,
+                              routineType: routine.routineType,
+                              onTapMore:
+                                  () =>
+                                      RoutineDialog.CheckStatusUser_BottomSheet(
+                                        context,
+                                        routineID: routine.id,
+                                        routineName: routine.routineName,
+                                        routinesController:
+                                            homeRoutinesNotifier,
+                                      ),
                             );
                           },
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: GridView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: routinesList.length,
-                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: crossAxisCount,
-                              mainAxisExtent: 430,
-                              crossAxisSpacing: 16,
-                              mainAxisSpacing: 12,
-                            ),
-                            itemBuilder: (context, index) {
-                              final routine = routinesList[index];
-                              return RoutineBoxById(
-                                margin: EdgeInsets.zero,
-                                routineId: routine.id,
-                                routineName: routine.routineName,
-                                routineType: routine.routineType,
-                                onTapMore: () => RoutineDialog.CheckStatusUser_BottomSheet(
-                                  context,
-                                  routineID: routine.id,
-                                  routineName: routine.routineName,
-                                  routinesController: homeRoutinesNotifier,
-                                ),
-                              );
-                            },
-                          ),
                         ),
+                      ),
                   // "Load More" Button at the bottom (shows only if routines exceed limit and not showing all)
                   if (data.routines.length > routinesLimit && !_showAllRoutines)
                     Padding(
@@ -604,13 +640,23 @@ class _RoutinesSectionState extends ConsumerState<RoutinesSection> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             foregroundColor: AppColor.nokiaBlue,
-                            side: BorderSide(color: AppColor.nokiaBlue.withOpacity(0.5)),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                            side: BorderSide(
+                              color: AppColor.nokiaBlue.withOpacity(0.5),
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 12,
+                            ),
                             elevation: 0,
                           ),
                           icon: const Icon(Icons.expand_more, size: 18),
-                          label: const Text("Load More Routines", style: TextStyle(fontWeight: FontWeight.bold)),
+                          label: const Text(
+                            "Load More Routines",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
                     ),
@@ -618,10 +664,11 @@ class _RoutinesSectionState extends ConsumerState<RoutinesSection> {
               );
             }
           },
-          loading: () => Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: ROUTINE_BOX_SKELTON,
-          ),
+          loading:
+              () => Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: ROUTINE_BOX_SKELTON,
+              ),
           error: (error, stackTrace) {
             return Alert.handleError(
               context,
