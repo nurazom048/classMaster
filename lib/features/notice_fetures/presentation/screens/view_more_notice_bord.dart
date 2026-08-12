@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/export_core.dart';
 
-class ViewMoreNoticeBord extends StatelessWidget {
+class RoutineDetailsScreenNoticeBord extends StatelessWidget {
   final String noticeBoardName;
   final String id;
   final String? about;
 
-  ViewMoreNoticeBord({
+  RoutineDetailsScreenNoticeBord({
     super.key,
     required this.noticeBoardName,
     required this.id,

@@ -69,7 +69,7 @@ class MemberController extends StateNotifier<AsyncValue<RoutineMembersModel>> {
           ),
         );
       }
-    } catch (error, stackTrace) {
+    } catch (error) {
       // Don't overwrite the whole state with an error if pagination fails, just log it
       if (kDebugMode) print('Pagination error: $error');
     }

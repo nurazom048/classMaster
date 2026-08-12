@@ -30,7 +30,7 @@ import 'dart:async';
 import 'dart:math';
 
 class AnimatedLoginScreen extends StatelessWidget {
-  const AnimatedLoginScreen({Key? key}) : super(key: key);
+  const AnimatedLoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,7 @@ class AnimatedLoginScreen extends StatelessWidget {
 // ============================================================================
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final FocusNode _emailFocus = FocusNode();
   final FocusNode _passwordFocus = FocusNode();
 
-  bool _isPasswordVisible = false;
+  final bool _isPasswordVisible = false;
   bool _byUsername = false;
 
   // Saved accounts state (Facebook style)

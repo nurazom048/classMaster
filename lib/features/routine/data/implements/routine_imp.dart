@@ -85,6 +85,8 @@ abstract class RoutineRepositoryImp {
     required String routineID,
     required String name,
     String? subjectCode,
+    double? price,
+    dynamic syllabus,
     required DateTime date,
     required DateTime startTime,
     required DateTime endTime,

@@ -13,6 +13,7 @@ class AllClassesResponse {
   final String routineType;
   final AccountModels owner;
   final String? routineName;
+  final dynamic about;
 
   AllClassesResponse({
     required this.allClass,
@@ -21,6 +22,7 @@ class AllClassesResponse {
     this.routineType = "CLASS",
     required this.owner,
     this.routineName,
+    this.about,
   });
 
   factory AllClassesResponse.fromJson(Map<String, dynamic> json) {
@@ -38,6 +40,7 @@ class AllClassesResponse {
       routineType: (json['routineType'] ?? "CLASS").toString().toUpperCase(),
       owner: json['owner'] != null ? AccountModels.fromJson(json['owner']) : AccountModels(),
       routineName: json['routineName'],
+      about: json['about'],
     );
   }
 }
@@ -47,6 +50,8 @@ class ExamModel {
   final int? model_no;
   final String name;
   final String? subjectCode;
+  final double? price;
+  final dynamic syllabus;
   final DateTime date;
   final DateTime startTime;
   final DateTime endTime;
@@ -58,6 +63,8 @@ class ExamModel {
     this.model_no,
     required this.name,
     this.subjectCode,
+    this.price = 0,
+    this.syllabus,
     required this.date,
     required this.startTime,
     required this.endTime,
@@ -65,12 +72,78 @@ class ExamModel {
     required this.routineId,
   });
 
+  bool get isFree => price == null || price == 0;
+
+  String? get commonSyllabus {
+    dynamic sys = syllabus;
+    if (sys is String && sys.trim().startsWith('{')) {
+      try {
+        sys = json.decode(sys);
+      } catch (_) {}
+    }
+
+    if (sys is Map) {
+      final val = sys['common'] ?? sys['commonSyllabus'];
+      return val?.toString();
+    } else if (sys is String) {
+      return sys;
+    }
+    return null;
+  }
+
+  String? getDepartmentSyllabus(String departmentName) {
+    dynamic sys = syllabus;
+    if (sys is String && sys.trim().startsWith('{')) {
+      try {
+        sys = json.decode(sys);
+      } catch (_) {}
+    }
+
+    if (sys is Map) {
+      final target = departmentName.toLowerCase().trim();
+
+      Map? depts;
+      if (sys['departments'] is Map) {
+        depts = sys['departments'] as Map;
+      } else {
+        depts = sys;
+      }
+
+      // Exact match
+      for (final entry in depts.entries) {
+        final keyStr = entry.key.toString().toLowerCase().trim();
+        if (keyStr == target) {
+          return entry.value?.toString();
+        }
+      }
+
+      // Contains/Fuzzy match
+      for (final entry in depts.entries) {
+        final keyStr = entry.key.toString().toLowerCase().trim();
+        if (keyStr.isNotEmpty && keyStr != 'common' && keyStr != 'departments' &&
+            (keyStr.contains(target) || target.contains(keyStr))) {
+          return entry.value?.toString();
+        }
+      }
+    }
+    return null;
+  }
+
   factory ExamModel.fromJson(Map<String, dynamic> json) {
+    dynamic parsedSyllabus = json['syllabus'];
+    if (parsedSyllabus is String && parsedSyllabus.trim().startsWith('{')) {
+      try {
+        parsedSyllabus = jsonDecode(parsedSyllabus);
+      } catch (_) {}
+    }
+
     return ExamModel(
       id: json['id'] ?? '',
       model_no: json['model_no'] ?? json['modelNo'],
       name: json['name'] ?? '',
       subjectCode: json['subjectCode'],
+      price: json['price'] != null ? (json['price'] as num).toDouble() : 0,
+      syllabus: parsedSyllabus,
       date: DateTime.parse(json['date']),
       startTime: DateTime.parse(json['startTime']),
       endTime: DateTime.parse(json['endTime']),

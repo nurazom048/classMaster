@@ -28,7 +28,7 @@ class AuthAnimationScreen extends StatefulWidget {
   final bool isHappy; // Trigger happy/success state
 
   const AuthAnimationScreen({
-    Key? key,
+    super.key,
     required this.child,
     this.progress = 0.0,
     this.isFocused = false,
@@ -36,7 +36,7 @@ class AuthAnimationScreen extends StatefulWidget {
     this.isWhistling = false,
     this.isAngry = false,
     this.isHappy = false,
-  }) : super(key: key);
+  });
 
   @override
   State<AuthAnimationScreen> createState() => _AuthAnimationScreenState();
@@ -50,7 +50,7 @@ class _AuthAnimationScreenState extends State<AuthAnimationScreen>
   late AnimationController _jumpController;
   final ScrollController _scrollController = ScrollController();
 
-  List<FloatingIcon> _floatingIcons = [];
+  final List<FloatingIcon> _floatingIcons = [];
   Timer? _iconTimer;
 
   @override

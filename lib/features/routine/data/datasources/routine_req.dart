@@ -36,8 +36,9 @@ class RoutineRequestImpl implements RoutineRepositoryImp {
     final queryParams = <String, String>{};
     if (type != null && type.isNotEmpty) queryParams['type'] = type;
     if (search != null && search.isNotEmpty) queryParams['search'] = search;
-    if (username != null && username.isNotEmpty)
+    if (username != null && username.isNotEmpty) {
       queryParams['username'] = username;
+    }
     if (page != null) queryParams['page'] = page.toString();
     if (limit != null) queryParams['limit'] = limit.toString();
 
@@ -377,6 +378,8 @@ class RoutineRequestImpl implements RoutineRepositoryImp {
     required String routineID,
     required String name,
     String? subjectCode,
+    double? price,
+    dynamic syllabus,
     required DateTime date,
     required DateTime startTime,
     required DateTime endTime,
@@ -391,6 +394,8 @@ class RoutineRequestImpl implements RoutineRepositoryImp {
       body: jsonEncode({
         "name": name,
         "subjectCode": subjectCode,
+        "price": price ?? 0,
+        "syllabus": syllabus,
         "date": date.toIso8601String(),
         "startTime": startTime.toIso8601String(),
         "endTime": endTime.toIso8601String(),

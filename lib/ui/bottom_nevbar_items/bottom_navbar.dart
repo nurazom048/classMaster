@@ -22,6 +22,7 @@ import '../../core/widgets/widgets/promo_ad_widget.dart';
 import '../../core/component/heder_component/transition/right_to_left_transition.dart';
 
 final bottomNavBarIndexProvider = StateProvider<int>((ref) => 0);
+final previousBottomNavBarIndexProvider = StateProvider<int>((ref) => 0);
 final showPlusProvider = StateProvider<bool>((ref) => false);
 final drawerActiveItemProvider = StateProvider<DrawerItem>(
   (ref) => DrawerItem.home,
@@ -45,14 +46,25 @@ void navigateToShellPage(
       }
     } catch (_) {}
   }
+  final currentIndex = ref.read(bottomNavBarIndexProvider);
+  if (currentIndex != 2) {
+    ref.read(previousBottomNavBarIndexProvider.notifier).state = currentIndex;
+  }
   ref.read(drawerActiveItemProvider.notifier).state = drawerItem;
   ref.read(bottomNavBarIndexProvider.notifier).state = 2;
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    collectionNavigatorKey.currentState?.popUntil((route) => route.isFirst);
-    collectionNavigatorKey.currentState?.push(
-      RightToLeftTransition(page: page),
-    );
-  });
+
+  final navState = collectionNavigatorKey.currentState;
+  if (navState != null) {
+    navState.popUntil((route) => route.isFirst);
+    navState.push(RightToLeftTransition(page: page));
+  } else {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      collectionNavigatorKey.currentState?.popUntil((route) => route.isFirst);
+      collectionNavigatorKey.currentState?.push(
+        RightToLeftTransition(page: page),
+      );
+    });
+  }
 }
 
 class CollectionNavigator extends ConsumerWidget {
@@ -66,8 +78,11 @@ class CollectionNavigator extends ConsumerWidget {
         if (navigator != null && navigator.canPop()) {
           navigator.pop();
           if (!navigator.canPop()) {
-            ref.read(bottomNavBarIndexProvider.notifier).state = 0;
-            ref.read(drawerActiveItemProvider.notifier).state = DrawerItem.home;
+            final prevIndex = ref.read(previousBottomNavBarIndexProvider);
+            ref.read(bottomNavBarIndexProvider.notifier).state = prevIndex;
+            if (prevIndex == 0) {
+              ref.read(drawerActiveItemProvider.notifier).state = DrawerItem.home;
+            }
           }
           return false;
         }

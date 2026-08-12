@@ -12,6 +12,7 @@ import '../../../data/models/class_details_model.dart';
 import '../../providers/chack_status_controller.dart';
 import '../../providers/routine_details.controller.dart';
 import '../../screens/screens.dart';
+import '../../screens/routine/routine_details_screen.dart';
 import '../../utils/routine_dialog.dart';
 import '../static_widgets/routine_box_id_skeleton.dart';
 import '../../../../routine_summary_fetures/presentation/screens/summary_screen.dart';
@@ -20,12 +21,22 @@ import '../../../../account_fetures/data/models/account_models.dart';
 import '../../../../account_fetures/presentation/screens/profile_screen.dart';
 import 'package:classmate/ui/bottom_nevbar_items/bottom_navbar.dart';
 import 'package:classmate/core/constant/enums.dart';
+import 'package:classmate/core/component/heder_component/transition/right_to_left_transition.dart';
 
 // State Providers for Weekday and Expansion
-final selectedExamIndexProvider = StateProvider.family<int, String>((ref, id) => 0);
-final examIsExpandedProvider = StateProvider.family<bool, String>((ref, id) => false);
-final classIsExpandedProvider = StateProvider.family<bool, String>((ref, id) => false);
-final selectedWeekdayIndexProvider = StateProvider.family<int, String>((ref, id) {
+final selectedExamIndexProvider = StateProvider.family<int, String>(
+  (ref, id) => 0,
+);
+final examIsExpandedProvider = StateProvider.family<bool, String>(
+  (ref, id) => false,
+);
+final classIsExpandedProvider = StateProvider.family<bool, String>(
+  (ref, id) => false,
+);
+final selectedWeekdayIndexProvider = StateProvider.family<int, String>((
+  ref,
+  id,
+) {
   final int weekday = DateTime.now().weekday; // 1 = Mon ... 7 = Sun
   return weekday == 7 ? 0 : weekday; // Map Sunday to 0
 });
@@ -98,7 +109,7 @@ class RoutineFeedCard extends ConsumerWidget {
                               navigateToShellPage(
                                 context,
                                 ref,
-                                ViewMore(
+                                RoutineDetailsScreen(
                                   routineId: routineId,
                                   routineName: routineName,
                                 ),
@@ -120,7 +131,11 @@ class RoutineFeedCard extends ConsumerWidget {
                         ),
                         // 3-dots popup menu
                         IconButton(
-                          icon: const Icon(Icons.more_vert, color: Color(0xFF64748B), size: 20),
+                          icon: const Icon(
+                            Icons.more_vert,
+                            color: Color(0xFF64748B),
+                            size: 20,
+                          ),
                           onPressed: onTapMore,
                         ),
                       ],
@@ -130,9 +145,15 @@ class RoutineFeedCard extends ConsumerWidget {
                     // Routine Type Badge & Bell Icon Row
                     routineDetails.when(
                       data: (data) {
-                        final isExam = (data.routineType.toUpperCase() == "EXAM") || (routineType.toUpperCase() == "EXAM");
-                        final badgeColor = isExam ? const Color(0xFFFF5722) : const Color(0xFF0052CC);
-                        final badgeLabel = isExam ? "Exam Routine" : "Class Routine";
+                        final isExam =
+                            (data.routineType.toUpperCase() == "EXAM") ||
+                            (routineType.toUpperCase() == "EXAM");
+                        final badgeColor =
+                            isExam
+                                ? const Color(0xFFFF5722)
+                                : const Color(0xFF0052CC);
+                        final badgeLabel =
+                            isExam ? "Exam Routine" : "Class Routine";
 
                         return Row(
                           children: [
@@ -148,41 +169,64 @@ class RoutineFeedCard extends ConsumerWidget {
                             // Dynamic Join Status / Notification bell
                             checkStatus.when(
                               data: (statusData) {
-                                final isJoined = statusData.isOwner ||
+                                final isJoined =
+                                    statusData.isOwner ||
                                     statusData.isCaptain ||
                                     statusData.activeStatus == "joined" ||
                                     statusData.activeStatus == "accepted";
-                                final isPending = statusData.activeStatus == "request_pending" ||
+                                final isPending =
+                                    statusData.activeStatus ==
+                                        "request_pending" ||
                                     statusData.activeStatus == "pending";
 
                                 if (isJoined) {
                                   return InkWell(
                                     onTap: () {
-                                      RoutineDialog.routineNotificationsSelect(context, routineId);
+                                      RoutineDialog.routineNotificationsSelect(
+                                        context,
+                                        routineId,
+                                      );
                                     },
                                     child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 4,
+                                        vertical: 2,
+                                      ),
                                       child: Icon(
                                         statusData.notificationOn
-                                            ? Icons.notifications_active_outlined
+                                            ? Icons
+                                                .notifications_active_outlined
                                             : Icons.notifications_none_outlined,
                                         size: 18,
-                                        color: statusData.notificationOn ? badgeColor : Colors.grey.shade500,
+                                        color:
+                                            statusData.notificationOn
+                                                ? badgeColor
+                                                : Colors.grey.shade500,
                                       ),
                                     ),
                                   );
                                 } else if (isPending) {
                                   return Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 3,
+                                    ),
                                     decoration: BoxDecoration(
                                       color: Colors.amber.shade50,
                                       borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(color: Colors.amber.shade300, width: 1),
+                                      border: Border.all(
+                                        color: Colors.amber.shade300,
+                                        width: 1,
+                                      ),
                                     ),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: const [
-                                        Icon(Icons.hourglass_empty, size: 12, color: Colors.amber),
+                                        Icon(
+                                          Icons.hourglass_empty,
+                                          size: 12,
+                                          color: Colors.amber,
+                                        ),
                                         SizedBox(width: 4),
                                         Text(
                                           "Pending",
@@ -199,21 +243,35 @@ class RoutineFeedCard extends ConsumerWidget {
                                   return InkWell(
                                     onTap: () {
                                       ref
-                                          .read(checkStatusControllerProvider(routineId).notifier)
+                                          .read(
+                                            checkStatusControllerProvider(
+                                              routineId,
+                                            ).notifier,
+                                          )
                                           .sendReqController(context);
                                     },
                                     borderRadius: BorderRadius.circular(12),
                                     child: Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 3,
+                                      ),
                                       decoration: BoxDecoration(
                                         color: badgeColor.withOpacity(0.1),
                                         borderRadius: BorderRadius.circular(12),
-                                        border: Border.all(color: badgeColor, width: 1),
+                                        border: Border.all(
+                                          color: badgeColor,
+                                          width: 1,
+                                        ),
                                       ),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          Icon(Icons.person_add_alt_1, size: 12, color: badgeColor),
+                                          Icon(
+                                            Icons.person_add_alt_1,
+                                            size: 12,
+                                            color: badgeColor,
+                                          ),
                                           const SizedBox(width: 4),
                                           Text(
                                             "Send Req",
@@ -249,21 +307,35 @@ class RoutineFeedCard extends ConsumerWidget {
               // -----------------------------------------------------------------
               routineDetails.when(
                 data: (data) {
-                  final isExam = (data.routineType.toUpperCase() == "EXAM") || (routineType.toUpperCase() == "EXAM");
+                  final isExam =
+                      (data.routineType.toUpperCase() == "EXAM") ||
+                      (routineType.toUpperCase() == "EXAM");
                   if (isExam) {
-                    return ExamRoutineView(routineId: routineId, routineName: routineName, data: data);
+                    return ExamRoutineView(
+                      routineId: routineId,
+                      routineName: routineName,
+                      data: data,
+                    );
                   } else {
-                    return ClassRoutineView(routineId: routineId, routineName: routineName, data: data);
+                    return ClassRoutineView(
+                      routineId: routineId,
+                      routineName: routineName,
+                      data: data,
+                    );
                   }
                 },
-                loading: () => const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 40),
-                  child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
-                ),
-                error: (error, stack) => Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Alert.handleError(context, error),
-                ),
+                loading:
+                    () => const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 40),
+                      child: Center(
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                    ),
+                error:
+                    (error, stack) => Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Alert.handleError(context, error),
+                    ),
               ),
             ],
           ),
@@ -279,7 +351,10 @@ class RoutineFeedCard extends ConsumerWidget {
                   final nameStr = data.owner.name;
                   return RoutineCardFooter(
                     owner: data.owner,
-                    ownerName: (nameStr != null && nameStr.isNotEmpty) ? nameStr : "ECH Coaching Center",
+                    ownerName:
+                        (nameStr != null && nameStr.isNotEmpty)
+                            ? nameStr
+                            : "ECH Coaching Center",
                     isVerified: data.owner.isVerified ?? true,
                     onTapMore: onTapMore,
                   );
@@ -316,8 +391,12 @@ class ClassRoutineView extends ConsumerWidget {
     final selectedDayIndex = ref.watch(selectedWeekdayIndexProvider(routineId));
     final isExpanded = ref.watch(classIsExpandedProvider(routineId));
 
-    final weekdaysList = _getClassesForIndex(data.weekdayClasses, selectedDayIndex);
-    final int displayCount = (isExpanded || weekdaysList.length <= 3) ? weekdaysList.length : 3;
+    final weekdaysList = _getClassesForIndex(
+      data.weekdayClasses,
+      selectedDayIndex,
+    );
+    final int displayCount =
+        (isExpanded || weekdaysList.length <= 3) ? weekdaysList.length : 3;
     final int hiddenCount = weekdaysList.length - 3;
 
     return Column(
@@ -330,16 +409,21 @@ class ClassRoutineView extends ConsumerWidget {
             children: List.generate(7, (index) {
               final days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
               // Generate date numbers for sample strip
-              final dateNum = 19 + index; 
+              final dateNum = 19 + index;
               final isSelected = selectedDayIndex == index;
 
               return InkWell(
                 onTap: () {
-                  ref.read(selectedWeekdayIndexProvider(routineId).notifier).state = index;
+                  ref
+                      .read(selectedWeekdayIndexProvider(routineId).notifier)
+                      .state = index;
                 },
                 borderRadius: BorderRadius.circular(20),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 4,
+                    vertical: 2,
+                  ),
                   child: Column(
                     children: [
                       Text(
@@ -347,7 +431,10 @@ class ClassRoutineView extends ConsumerWidget {
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.w500,
-                          color: isSelected ? const Color(0xFF0052CC) : const Color(0xFF64748B),
+                          color:
+                              isSelected
+                                  ? const Color(0xFF0052CC)
+                                  : const Color(0xFF64748B),
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -357,14 +444,21 @@ class ClassRoutineView extends ConsumerWidget {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: isSelected ? const Color(0xFF0052CC) : Colors.transparent,
+                          color:
+                              isSelected
+                                  ? const Color(0xFF0052CC)
+                                  : Colors.transparent,
                         ),
                         child: Text(
                           "$dateNum",
                           style: TextStyle(
                             fontSize: 12,
-                            fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
-                            color: isSelected ? Colors.white : const Color(0xFF1E293B),
+                            fontWeight:
+                                isSelected ? FontWeight.bold : FontWeight.w600,
+                            color:
+                                isSelected
+                                    ? Colors.white
+                                    : const Color(0xFF1E293B),
                           ),
                         ),
                       ),
@@ -392,7 +486,8 @@ class ClassRoutineView extends ConsumerWidget {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: displayCount,
-            separatorBuilder: (_, __) => const Divider(height: 1, color: Color(0xFFF8FAFC)),
+            separatorBuilder:
+                (_, __) => const Divider(height: 1, color: Color(0xFFF8FAFC)),
             itemBuilder: (context, index) {
               final item = weekdaysList[index];
               final startTimeStr = DateFormat.jm().format(item.startTime);
@@ -404,7 +499,7 @@ class ClassRoutineView extends ConsumerWidget {
                     navigateToShellPage(
                       context,
                       ref,
-                      ViewMore(
+                      RoutineDetailsScreen(
                         routineId: routineId,
                         routineName: routineName,
                       ),
@@ -414,22 +509,26 @@ class ClassRoutineView extends ConsumerWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => SummaryScreen(
-                          classId: item.id,
-                          className: item.name,
-                          instructorName: item.instructorName,
-                          routineID: item.routineId,
-                          subjectCode: item.subjectCode,
-                          startTime: item.startTime,
-                          endTime: item.endTime,
-                          room: item.room,
-                        ),
+                        builder:
+                            (context) => SummaryScreen(
+                              classId: item.id,
+                              className: item.name,
+                              instructorName: item.instructorName,
+                              routineID: item.routineId,
+                              subjectCode: item.subjectCode,
+                              startTime: item.startTime,
+                              endTime: item.endTime,
+                              room: item.room,
+                            ),
                       ),
                     );
                   }
                 },
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 10,
+                  ),
                   child: Row(
                     children: [
                       // Clock Icon Badge
@@ -440,7 +539,11 @@ class ClassRoutineView extends ConsumerWidget {
                           color: Color(0xFFEFF6FF),
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(Icons.access_time, color: Color(0xFF0052CC), size: 18),
+                        child: const Icon(
+                          Icons.access_time,
+                          color: Color(0xFF0052CC),
+                          size: 18,
+                        ),
                       ),
                       const SizedBox(width: 14),
 
@@ -469,7 +572,10 @@ class ClassRoutineView extends ConsumerWidget {
                             const SizedBox(height: 4),
                             // Room Badge
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 2,
+                              ),
                               decoration: BoxDecoration(
                                 color: const Color(0xFFEFF6FF),
                                 borderRadius: BorderRadius.circular(10),
@@ -487,7 +593,11 @@ class ClassRoutineView extends ConsumerWidget {
                         ),
                       ),
 
-                      const Icon(Icons.arrow_forward_ios, size: 14, color: Color(0xFF94A3B8)),
+                      const Icon(
+                        Icons.arrow_forward_ios,
+                        size: 14,
+                        color: Color(0xFF94A3B8),
+                      ),
                     ],
                   ),
                 ),
@@ -505,14 +615,15 @@ class ClassRoutineView extends ConsumerWidget {
                   navigateToShellPage(
                     context,
                     ref,
-                    ViewMore(
+                    RoutineDetailsScreen(
                       routineId: routineId,
                       routineName: routineName,
                     ),
                     drawerItem: DrawerItem.saveRoutine,
                   );
                 } else {
-                  ref.read(classIsExpandedProvider(routineId).notifier).state = !isExpanded;
+                  ref.read(classIsExpandedProvider(routineId).notifier).state =
+                      !isExpanded;
                 }
               },
               child: Row(
@@ -521,7 +632,9 @@ class ClassRoutineView extends ConsumerWidget {
                   Text(
                     isMobile
                         ? "View Routine Details →"
-                        : (isExpanded ? "- Hide Classes" : "+ $hiddenCount More Classes"),
+                        : (isExpanded
+                            ? "- Hide Classes"
+                            : "+ $hiddenCount More Classes"),
                     style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
@@ -531,7 +644,9 @@ class ClassRoutineView extends ConsumerWidget {
                   if (!isMobile) ...[
                     const SizedBox(width: 4),
                     Icon(
-                      isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                      isExpanded
+                          ? Icons.keyboard_arrow_up
+                          : Icons.keyboard_arrow_down,
                       size: 16,
                       color: const Color(0xFF0052CC),
                     ),
@@ -546,14 +661,22 @@ class ClassRoutineView extends ConsumerWidget {
 
   List<Day> _getClassesForIndex(Classes weekdayClasses, int index) {
     switch (index) {
-      case 0: return weekdayClasses.sunday;
-      case 1: return weekdayClasses.monday;
-      case 2: return weekdayClasses.tuesday;
-      case 3: return weekdayClasses.wednesday;
-      case 4: return weekdayClasses.thursday;
-      case 5: return weekdayClasses.friday;
-      case 6: return weekdayClasses.saturday;
-      default: return [];
+      case 0:
+        return weekdayClasses.sunday;
+      case 1:
+        return weekdayClasses.monday;
+      case 2:
+        return weekdayClasses.tuesday;
+      case 3:
+        return weekdayClasses.wednesday;
+      case 4:
+        return weekdayClasses.thursday;
+      case 5:
+        return weekdayClasses.friday;
+      case 6:
+        return weekdayClasses.saturday;
+      default:
+        return [];
     }
   }
 }
@@ -579,7 +702,8 @@ class ExamRoutineView extends ConsumerWidget {
     final isExpanded = ref.watch(examIsExpandedProvider(routineId));
     final examsList = data.exams;
 
-    final int displayCount = (isExpanded || examsList.length <= 4) ? examsList.length : 4;
+    final int displayCount =
+        (isExpanded || examsList.length <= 4) ? examsList.length : 4;
     final int hiddenCount = examsList.length - 4;
 
     if (examsList.isEmpty) {
@@ -601,11 +725,13 @@ class ExamRoutineView extends ConsumerWidget {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: displayCount,
-          separatorBuilder: (_, __) => const Divider(height: 1, color: Color(0xFFF8FAFC)),
+          separatorBuilder:
+              (_, __) => const Divider(height: 1, color: Color(0xFFF8FAFC)),
           itemBuilder: (context, index) {
             final exam = examsList[index];
             final dateStr = DateFormat("d MMM yyyy (E)").format(exam.date);
-            final timeStr = "${DateFormat.jm().format(exam.startTime)} - ${DateFormat.jm().format(exam.endTime)}";
+            final timeStr =
+                "${DateFormat.jm().format(exam.startTime)} - ${DateFormat.jm().format(exam.endTime)}";
 
             return InkWell(
               onTap: () {
@@ -613,7 +739,7 @@ class ExamRoutineView extends ConsumerWidget {
                   navigateToShellPage(
                     context,
                     ref,
-                    ViewMore(
+                    RoutineDetailsScreen(
                       routineId: routineId,
                       routineName: routineName,
                     ),
@@ -622,7 +748,10 @@ class ExamRoutineView extends ConsumerWidget {
                 }
               },
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
                 child: Row(
                   children: [
                     // 1️⃣ Number Badge Container (Soft Orange Box)
@@ -671,7 +800,10 @@ class ExamRoutineView extends ConsumerWidget {
                           const SizedBox(height: 4),
                           // Room Badge (Soft Orange Pill)
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 2,
+                            ),
                             decoration: BoxDecoration(
                               color: const Color(0xFFFFF3E0),
                               borderRadius: BorderRadius.circular(10),
@@ -689,7 +821,11 @@ class ExamRoutineView extends ConsumerWidget {
                       ),
                     ),
 
-                    const Icon(Icons.arrow_forward_ios, size: 14, color: Color(0xFF94A3B8)),
+                    const Icon(
+                      Icons.arrow_forward_ios,
+                      size: 14,
+                      color: Color(0xFF94A3B8),
+                    ),
                   ],
                 ),
               ),
@@ -707,14 +843,15 @@ class ExamRoutineView extends ConsumerWidget {
                   navigateToShellPage(
                     context,
                     ref,
-                    ViewMore(
+                    RoutineDetailsScreen(
                       routineId: routineId,
                       routineName: routineName,
                     ),
                     drawerItem: DrawerItem.saveRoutine,
                   );
                 } else {
-                  ref.read(examIsExpandedProvider(routineId).notifier).state = !isExpanded;
+                  ref.read(examIsExpandedProvider(routineId).notifier).state =
+                      !isExpanded;
                 }
               },
               child: Row(
@@ -723,7 +860,9 @@ class ExamRoutineView extends ConsumerWidget {
                   Text(
                     isMobile
                         ? "View Routine Details →"
-                        : (isExpanded ? "- Hide Exams" : "+ $hiddenCount More Exams"),
+                        : (isExpanded
+                            ? "- Hide Exams"
+                            : "+ $hiddenCount More Exams"),
                     style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
@@ -733,7 +872,9 @@ class ExamRoutineView extends ConsumerWidget {
                   if (!isMobile) ...[
                     const SizedBox(width: 4),
                     Icon(
-                      isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                      isExpanded
+                          ? Icons.keyboard_arrow_up
+                          : Icons.keyboard_arrow_down,
                       size: 16,
                       color: const Color(0xFFFF5722),
                     ),
@@ -774,19 +915,21 @@ class RoutineCardFooter extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           InkWell(
-            onTap: owner != null
-                ? () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProfileScreen(
-                          academyID: owner!.id,
-                          username: owner!.username,
+            onTap:
+                owner != null
+                    ? () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) => ProfileScreen(
+                                academyID: owner!.id,
+                                username: owner!.username,
+                              ),
                         ),
-                      ),
-                    );
-                  }
-                : null,
+                      );
+                    }
+                    : null,
             borderRadius: BorderRadius.circular(20),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
@@ -795,12 +938,18 @@ class RoutineCardFooter extends StatelessWidget {
                   CircleAvatar(
                     radius: 12,
                     backgroundColor: const Color(0xFFEFF6FF),
-                    backgroundImage: imageUrl != null && imageUrl.isNotEmpty
-                        ? CachedNetworkImageProvider(imageUrl)
-                        : null,
-                    child: imageUrl == null || imageUrl.isEmpty
-                        ? const Icon(Icons.school, size: 14, color: Color(0xFF0052CC))
-                        : null,
+                    backgroundImage:
+                        imageUrl != null && imageUrl.isNotEmpty
+                            ? CachedNetworkImageProvider(imageUrl)
+                            : null,
+                    child:
+                        imageUrl == null || imageUrl.isEmpty
+                            ? const Icon(
+                              Icons.school,
+                              size: 14,
+                              color: Color(0xFF0052CC),
+                            )
+                            : null,
                   ),
                   const SizedBox(width: 8),
                   Text(
@@ -813,7 +962,11 @@ class RoutineCardFooter extends StatelessWidget {
                   ),
                   if (isVerified) ...[
                     const SizedBox(width: 4),
-                    const Icon(Icons.verified, size: 14, color: Color(0xFF0052CC)),
+                    const Icon(
+                      Icons.verified,
+                      size: 14,
+                      color: Color(0xFF0052CC),
+                    ),
                   ],
                 ],
               ),
@@ -821,7 +974,11 @@ class RoutineCardFooter extends StatelessWidget {
           ),
           InkWell(
             onTap: onTapMore,
-            child: const Icon(Icons.more_vert, size: 18, color: Color(0xFF94A3B8)),
+            child: const Icon(
+              Icons.more_vert,
+              size: 18,
+              color: Color(0xFF94A3B8),
+            ),
           ),
         ],
       ),

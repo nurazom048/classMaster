@@ -140,9 +140,16 @@ class SummaryController extends StateNotifier<AsyncValue<AllSummaryModel>> {
   }
 
   // Vote in a poll
-  void voteSummaryPoll(BuildContext context, String summaryID, int optionIndex) async {
+  void voteSummaryPoll(
+    BuildContext context,
+    String summaryID,
+    int optionIndex,
+  ) async {
     try {
-      await summaryRepo.votePoll(summaryId: summaryID, optionIndex: optionIndex);
+      await summaryRepo.votePoll(
+        summaryId: summaryID,
+        optionIndex: optionIndex,
+      );
       if (!mounted) return;
       ref.refresh(summaryControllerProvider(classId));
     } catch (error) {

@@ -8,6 +8,7 @@ import 'package:classmate/features/notice_fetures/data/models/recent_notice_mode
 import 'package:classmate/features/notice_fetures/presentation/screens/view_notice_screen.dart';
 import 'package:classmate/features/notice_fetures/presentation/widgets/static_widgets/public_notice_screen.dart';
 import 'package:classmate/features/routine/presentation/screens/screens.dart';
+import 'package:classmate/features/routine/presentation/screens/routine/routine_details_screen.dart';
 import 'package:classmate/features/notification/screen/notification.screen.dart';
 import 'package:classmate/features/authentication_fetures/presentation/screen/change_password.dart';
 import 'package:classmate/features/account_fetures/presentation/screens/profile_screen.dart';
@@ -90,7 +91,7 @@ class AppRouters {
               uri.queryParameters['routineID'] ??
               '';
           return MaterialPage(
-            child: ViewMore(
+            child: RoutineDetailsScreen(
               routineId: routineId,
               routineName: (state.extra as String?) ?? '',
             ),
@@ -102,7 +103,7 @@ class AppRouters {
         name: RouteConst.viewRoutine,
         pageBuilder:
             (context, state) => MaterialPage(
-              child: ViewMore(
+              child: RoutineDetailsScreen(
                 routineId: state.params['routineID']!,
                 routineName: (state.extra as String?) ?? '',
               ),
