@@ -16,6 +16,7 @@ import 'package:classmate/features/collection_fetures/Ui/collections.screen.dart
 import 'package:classmate/core/constant/enums.dart';
 import 'package:classmate/core/component/heder_component/transition/right_to_left_transition.dart';
 
+import 'create_new_routine.dart';
 import '../../../data/models/class_details_model.dart';
 import '../class_routine/add_class_screen.dart';
 import '../exam_routine/create_exam_screen.dart';
@@ -238,6 +239,30 @@ class _RoutineDetailsScreenState extends ConsumerState<RoutineDetailsScreen> {
           ),
           centerTitle: true,
           actions: [
+            if (canModify)
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder:
+                          (context) => CreateNewRoutine(
+                            isEditMode: true,
+                            routineId: widget.routineId,
+                            initialRoutineName: data.routineName,
+                            initialRoutineType: data.routineType,
+                            initialAbout: data.about,
+                          ),
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.edit_note_rounded,
+                  color: Color(0xFF0F172A),
+                  size: 24,
+                ),
+                tooltip: "Edit Routine",
+              ),
             IconButton(
               onPressed: () {
                 final controller = ref.read(
