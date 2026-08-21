@@ -76,8 +76,19 @@ class AppRouters {
       GoRoute(
         path: '/routine/create',
         name: RouteConst.createRoutine,
-        pageBuilder:
-            (context, state) => MaterialPage(child: CreateNewRoutine()),
+        pageBuilder: (context, state) {
+          final extraMap = state.extra as Map<String, dynamic>?;
+          return MaterialPage(
+            child: CreateNewRoutine(
+              isEditMode: extraMap?['isEditMode'] ?? false,
+              routineId: extraMap?['routineId'],
+              initialRoutineName: extraMap?['initialRoutineName'],
+              initialRoutineType: extraMap?['initialRoutineType'],
+              initialVisibility: extraMap?['initialVisibility'],
+              initialAbout: extraMap?['initialAbout'],
+            ),
+          );
+        },
       ),
       GoRoute(
         path: '/routine',

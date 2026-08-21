@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import '../../../widgets/dynamic_widgets/routine_theme.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RoutineSettingsTabView extends StatelessWidget {
+import '../../../providers/routine_details.controller.dart';
+import '../../../widgets/dynamic_widgets/routine_theme.dart';
+import '../create_new_routine.dart';
+
+class RoutineSettingsTabView extends ConsumerWidget {
   final RoutineTheme theme;
   final String routineId;
   final bool isOwnerOrCaptain;
@@ -14,7 +18,10 @@ class RoutineSettingsTabView extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final routineDetails = ref.watch(routineDetailsProvider(routineId));
+    final routineData = routineDetails.value;
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -82,7 +89,21 @@ class RoutineSettingsTabView extends StatelessWidget {
                 Icons.chevron_right_rounded,
                 color: Color(0xFF94A3B8),
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder:
+                        (context) => CreateNewRoutine(
+                          isEditMode: true,
+                          routineId: routineId,
+                          initialRoutineName: routineData?.routineName,
+                          initialRoutineType: routineData?.routineType,
+                          initialAbout: routineData?.about,
+                        ),
+                  ),
+                );
+              },
             ),
           ],
         ],

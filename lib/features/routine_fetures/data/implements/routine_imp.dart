@@ -24,6 +24,13 @@ abstract class RoutineRepositoryImp {
     String routineType = 'CLASS',
   });
 
+  /// Maps to PUT `/:routineID`
+  Future<Either<Message, Message>> updateRoutine({
+    required String routineID,
+    required String routineName,
+    dynamic about,
+  });
+
   /// Maps to GET `/:routineID/classes`
   Future<AllClassesResponse> getAllClasses(String routineID);
 

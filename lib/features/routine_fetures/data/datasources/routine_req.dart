@@ -120,6 +120,44 @@ class RoutineRequestImpl implements RoutineRepositoryImp {
   }
 
   @override
+  Future<Either<Message, Message>> updateRoutine({
+    required String routineID,
+    required String routineName,
+    dynamic about,
+  }) async {
+    final headers = await LocalData.getHeader();
+    final uri = Uri.parse('${Const.BASE_URl}/routine/$routineID');
+
+    print('🚀 [HTTP PUT /routine/$routineID] Body: name="$routineName"');
+
+    try {
+      final response = await http.put(
+        uri,
+        body: jsonEncode({"name": routineName, "about": about}),
+        headers: headers,
+      );
+
+      print('📥 [HTTP PUT /routine/$routineID] Response status=${response.statusCode}, body=${response.body}');
+      final res = json.decode(response.body);
+      Message message = Message.fromJson(res);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return right(
+          Message(
+            message: message.message,
+            routineID: routineID,
+            routineName: routineName,
+          ),
+        );
+      } else {
+        return left(message);
+      }
+    } catch (e) {
+      return left(Message(message: e.toString()));
+    }
+  }
+
+  @override
   Future<AllClassesResponse> getAllClasses(String routineID) async {
     final bool isOnline = await Utils.isOnlineMethod();
     final String path = "${Const.BASE_URl}/routine/$routineID/classes";

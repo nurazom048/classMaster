@@ -8,6 +8,8 @@ import '../../../../core/dialogs/confirm_alert_dialog.dart';
 import '../providers/routine_list_provider.dart';
 import '../providers/chack_status_controller.dart';
 import '../providers/member_controller_provider.dart';
+import '../providers/routine_details.controller.dart';
+import '../screens/routine/create_new_routine.dart';
 import '../../../../core/local_data/local_data.dart';
 
 class RoutineDialog {
@@ -145,6 +147,35 @@ class RoutineDialog {
                             },
                           ),
                           if (data.isCaptain || data.isOwner) ...[
+                            SquaresButton(
+                              icon: Icons.edit_note_rounded,
+                              text: "Edit",
+                              color: AppColor.nokiaBlue,
+                              ontap: () {
+                                Navigator.of(context).pop();
+                                final routineDetails =
+                                    ref
+                                        .read(routineDetailsProvider(routineID))
+                                        .value;
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (context) => CreateNewRoutine(
+                                          isEditMode: true,
+                                          routineId: routineID,
+                                          initialRoutineName:
+                                              routineName.isNotEmpty
+                                                  ? routineName
+                                                  : routineDetails?.routineName,
+                                          initialRoutineType:
+                                              routineDetails?.routineType,
+                                          initialAbout: routineDetails?.about,
+                                        ),
+                                  ),
+                                );
+                              },
+                            ),
                             if (data.isOwner == true) ...[
                               SquaresButton(
                                 icon: Icons.delete,
