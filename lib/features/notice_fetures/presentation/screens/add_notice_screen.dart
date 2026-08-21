@@ -125,40 +125,59 @@ class AddNoticeScreen extends ConsumerWidget {
 
                       if (_formKey.currentState!.validate()) {
                         if (currentPdfData == null) {
-                          Alert.errorAlertDialog(context, "Select a PDF");
+                          Alert.errorAlertDialog(context, "Select a PDF or image file");
                           return;
                         }
 
-                        if (kIsWeb) {
-                          if (currentPdfData.bytes == null) {
-                            Alert.errorAlertDialog(context, "PDF data missing");
+                        if (currentPdfData.isImageSelection) {
+                          final imgCount = (currentPdfData.imagePaths?.length ??
+                              currentPdfData.imageBytesList?.length ??
+                              0);
+                          if (imgCount == 0) {
+                            Alert.errorAlertDialog(context, "No images selected");
                             return;
                           }
-                          if (currentPdfData.bytes!.length > 10 * 1024 * 1024) {
+                          if (imgCount > 10) {
                             Alert.errorAlertDialog(
                               context,
-                              'Maximum file size allowed is 10 MB',
+                              "Maximum 10 images allowed at once",
                             );
                             return;
                           }
                         } else {
-                          File thePdf = File(currentPdfData.path!);
-                          String? mimeType = lookupMimeType(
-                            currentPdfData.path!,
-                          );
-                          if (mimeType != 'application/pdf') {
-                            Alert.errorAlertDialog(
-                              context,
-                              'Only PDF files are allowed',
-                            );
-                            return;
-                          }
-                          if (thePdf.lengthSync() > 10 * 1024 * 1024) {
-                            Alert.errorAlertDialog(
-                              context,
-                              'Maximum file size allowed is 10 MB',
-                            );
-                            return;
+                          if (kIsWeb) {
+                            if (currentPdfData.bytes == null) {
+                              Alert.errorAlertDialog(context, "PDF data missing");
+                              return;
+                            }
+                            if (currentPdfData.bytes!.length > 10 * 1024 * 1024) {
+                              Alert.errorAlertDialog(
+                                context,
+                                'Maximum file size allowed is 10 MB',
+                              );
+                              return;
+                            }
+                          } else {
+                            if (currentPdfData.path != null) {
+                              File thePdf = File(currentPdfData.path!);
+                              String? mimeType = lookupMimeType(
+                                currentPdfData.path!,
+                              );
+                              if (mimeType != 'application/pdf') {
+                                Alert.errorAlertDialog(
+                                  context,
+                                  'Only PDF files are allowed',
+                                );
+                                return;
+                              }
+                              if (thePdf.lengthSync() > 10 * 1024 * 1024) {
+                                Alert.errorAlertDialog(
+                                  context,
+                                  'Maximum file size allowed is 10 MB',
+                                );
+                                return;
+                              }
+                            }
                           }
                         }
 

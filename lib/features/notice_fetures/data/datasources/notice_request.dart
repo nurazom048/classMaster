@@ -134,29 +134,55 @@ class NoticeRequest implements NoticeRepository {
       request.fields['category'] = category;
       request.fields['mimetypeChecked'] = "true";
 
-      // Step 4: Attach PDF file based on platform (Web vs Mobile)
+      // Step 4: Attach PDF file or Images based on selection & platform
       if (pdfFileData != null) {
-        if (kIsWeb) {
-          if (pdfFileData.bytes != null) {
-            request.files.add(
-              http.MultipartFile.fromBytes(
-                'pdf_file',
-                pdfFileData.bytes!,
-                filename: pdfFileData.name,
-              ),
-            );
+        if (pdfFileData.isImageSelection) {
+          if (kIsWeb) {
+            if (pdfFileData.imageBytesList != null) {
+              for (int i = 0; i < pdfFileData.imageBytesList!.length; i++) {
+                request.files.add(
+                  http.MultipartFile.fromBytes(
+                    'pdf_file',
+                    pdfFileData.imageBytesList![i],
+                    filename: 'image_$i.jpg',
+                  ),
+                );
+              }
+            }
           } else {
-            return left('No PDF bytes provided on web');
+            if (pdfFileData.imagePaths != null) {
+              for (var imgPath in pdfFileData.imagePaths!) {
+                final file = await http.MultipartFile.fromPath(
+                  'pdf_file',
+                  imgPath,
+                );
+                request.files.add(file);
+              }
+            }
           }
         } else {
-          if (pdfFileData.path != null) {
-            final pdfPath = await http.MultipartFile.fromPath(
-              'pdf_file',
-              pdfFileData.path!,
-            );
-            request.files.add(pdfPath);
+          if (kIsWeb) {
+            if (pdfFileData.bytes != null) {
+              request.files.add(
+                http.MultipartFile.fromBytes(
+                  'pdf_file',
+                  pdfFileData.bytes!,
+                  filename: pdfFileData.name,
+                ),
+              );
+            } else {
+              return left('No PDF bytes provided on web');
+            }
           } else {
-            return left('No PDF path provided on non-web');
+            if (pdfFileData.path != null) {
+              final pdfPath = await http.MultipartFile.fromPath(
+                'pdf_file',
+                pdfFileData.path!,
+              );
+              request.files.add(pdfPath);
+            } else {
+              return left('No PDF path provided on non-web');
+            }
           }
         }
       }
