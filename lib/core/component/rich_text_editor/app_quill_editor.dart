@@ -47,9 +47,19 @@ class AppQuillEditorState extends State<AppQuillEditor> {
 
     if (rawStr.trim().isNotEmpty) {
       try {
-        final parsed = jsonDecode(rawStr);
+        var parsed = jsonDecode(rawStr);
+        if (parsed is String && parsed.trim().isNotEmpty) {
+          try {
+            parsed = jsonDecode(parsed);
+          } catch (_) {}
+        }
+
         if (parsed is List) {
           doc = Document.fromJson(parsed);
+        } else if (parsed is Map &&
+            parsed.containsKey('ops') &&
+            parsed['ops'] is List) {
+          doc = Document.fromJson(parsed['ops']);
         } else {
           doc = Document()..insert(0, rawStr);
         }
@@ -310,9 +320,19 @@ class AppQuillViewer extends StatelessWidget {
 
     Document doc;
     try {
-      final parsed = jsonDecode(contentStr);
+      var parsed = jsonDecode(contentStr);
+      if (parsed is String && parsed.trim().isNotEmpty) {
+        try {
+          parsed = jsonDecode(parsed);
+        } catch (_) {}
+      }
+
       if (parsed is List) {
         doc = Document.fromJson(parsed);
+      } else if (parsed is Map &&
+          parsed.containsKey('ops') &&
+          parsed['ops'] is List) {
+        doc = Document.fromJson(parsed['ops']);
       } else {
         return Text(contentStr, style: defaultStyle);
       }

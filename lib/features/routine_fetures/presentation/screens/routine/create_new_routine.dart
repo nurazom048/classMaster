@@ -1,4 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -55,9 +56,8 @@ class _CreateNewRoutineState extends ConsumerState<CreateNewRoutine> {
     if (widget.initialAbout != null) {
       if (widget.initialAbout is String) {
         _initialAboutStr = widget.initialAbout;
-      } else if (widget.initialAbout is Map &&
-          widget.initialAbout.containsKey('text')) {
-        _initialAboutStr = widget.initialAbout['text']?.toString();
+      } else if (widget.initialAbout is List || widget.initialAbout is Map) {
+        _initialAboutStr = jsonEncode(widget.initialAbout);
       } else {
         _initialAboutStr = widget.initialAbout.toString();
       }
@@ -475,8 +475,17 @@ class _CreateNewRoutineState extends ConsumerState<CreateNewRoutine> {
         _initialAboutStr;
     final String plainText =
         _quillEditorKey.currentState?.plainText ?? '';
-    final dynamic finalAboutPayload =
-        plainText.isNotEmpty ? aboutFinalContent : null;
+
+    dynamic finalAboutPayload;
+    if (plainText.isNotEmpty && aboutFinalContent != null) {
+      try {
+        finalAboutPayload = jsonDecode(aboutFinalContent);
+      } catch (_) {
+        finalAboutPayload = aboutFinalContent;
+      }
+    } else {
+      finalAboutPayload = null;
+    }
 
     if (widget.isEditMode) {
       if (widget.routineId == null) {
