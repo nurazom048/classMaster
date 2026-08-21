@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../../../../../core/component/rich_text_editor/app_quill_editor.dart';
 import 'routine_theme.dart';
@@ -173,22 +174,14 @@ class _RoutineOptionsCardState extends State<RoutineOptionsCard> {
   }
 
   Widget _buildAboutDetailsContent() {
-    String? aboutText;
-    final List<Widget> customAboutWidgets = [];
-
+    bool hasAboutData = false;
     if (widget.about != null) {
-      if (widget.about is String) {
-        aboutText = widget.about as String;
-      } else if (widget.about is Map) {
-        final Map map = widget.about as Map;
-        map.forEach((key, val) {
-          customAboutWidgets.add(
-            Padding(
-              padding: const EdgeInsets.only(top: 6),
-              child: _buildDetailRow(key.toString(), val.toString()),
-            ),
-          );
-        });
+      if (widget.about is String && (widget.about as String).trim().isNotEmpty) {
+        hasAboutData = true;
+      } else if (widget.about is List && (widget.about as List).isNotEmpty) {
+        hasAboutData = true;
+      } else if (widget.about is Map && (widget.about as Map).isNotEmpty) {
+        hasAboutData = true;
       }
     }
 
@@ -220,8 +213,8 @@ class _RoutineOptionsCardState extends State<RoutineOptionsCard> {
             const SizedBox(height: 6),
             _buildDetailRow("Description", widget.routineDescription!),
           ],
-          if (aboutText != null && aboutText.isNotEmpty) ...[
-            const SizedBox(height: 10),
+          if (hasAboutData) ...[
+            const SizedBox(height: 12),
             const Text(
               "About Routine",
               style: TextStyle(
@@ -230,11 +223,8 @@ class _RoutineOptionsCardState extends State<RoutineOptionsCard> {
                 color: Color(0xFF64748B),
               ),
             ),
-            const SizedBox(height: 4),
-            AppQuillViewer(content: aboutText),
-          ],
-          if (customAboutWidgets.isNotEmpty) ...[
-            ...customAboutWidgets,
+            const SizedBox(height: 6),
+            AppQuillViewer(content: widget.about),
           ],
         ],
       ),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 
 class AppQuillEditor extends StatefulWidget {
-  final String? initialContent;
+  final dynamic initialContent;
   final ValueChanged<String>? onChanged;
   final String hintText;
   final double minHeight;
@@ -33,17 +33,28 @@ class AppQuillEditorState extends State<AppQuillEditor> {
 
   void _initController() {
     Document doc;
-    if (widget.initialContent != null &&
-        widget.initialContent!.trim().isNotEmpty) {
+    String rawStr = '';
+
+    if (widget.initialContent != null) {
+      if (widget.initialContent is String) {
+        rawStr = widget.initialContent as String;
+      } else if (widget.initialContent is List || widget.initialContent is Map) {
+        rawStr = jsonEncode(widget.initialContent);
+      } else {
+        rawStr = widget.initialContent.toString();
+      }
+    }
+
+    if (rawStr.trim().isNotEmpty) {
       try {
-        final parsed = jsonDecode(widget.initialContent!);
+        final parsed = jsonDecode(rawStr);
         if (parsed is List) {
           doc = Document.fromJson(parsed);
         } else {
-          doc = Document()..insert(0, widget.initialContent!);
+          doc = Document()..insert(0, rawStr);
         }
       } catch (_) {
-        doc = Document()..insert(0, widget.initialContent!);
+        doc = Document()..insert(0, rawStr);
       }
     } else {
       doc = Document();
@@ -269,7 +280,7 @@ class AppQuillEditorState extends State<AppQuillEditor> {
 }
 
 class AppQuillViewer extends StatelessWidget {
-  final String? content;
+  final dynamic content;
   final TextStyle? defaultStyle;
 
   const AppQuillViewer({
@@ -280,20 +291,33 @@ class AppQuillViewer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (content == null || content!.trim().isEmpty) {
+    if (content == null) {
+      return const SizedBox.shrink();
+    }
+
+    String contentStr = '';
+    if (content is String) {
+      contentStr = content as String;
+    } else if (content is List || content is Map) {
+      contentStr = jsonEncode(content);
+    } else {
+      contentStr = content.toString();
+    }
+
+    if (contentStr.trim().isEmpty) {
       return const SizedBox.shrink();
     }
 
     Document doc;
     try {
-      final parsed = jsonDecode(content!);
+      final parsed = jsonDecode(contentStr);
       if (parsed is List) {
         doc = Document.fromJson(parsed);
       } else {
-        return Text(content!, style: defaultStyle);
+        return Text(contentStr, style: defaultStyle);
       }
     } catch (_) {
-      return Text(content!, style: defaultStyle);
+      return Text(contentStr, style: defaultStyle);
     }
 
     final controller = QuillController(
