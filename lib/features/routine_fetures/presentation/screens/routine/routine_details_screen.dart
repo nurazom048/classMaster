@@ -12,6 +12,7 @@ import '../../../../../core/local_data/local_data.dart';
 import 'package:classmate/features/notice_fetures/presentation/widgets/static_widgets/custom_share_bottom_sheet.dart';
 import 'package:classmate/features/routine_summary_fetures/presentation/screens/summary_screen.dart';
 import 'package:classmate/ui/bottom_nevbar_items/bottom_navbar.dart';
+import 'package:classmate/features/collection_fetures/Ui/collections.screen.dart';
 import 'package:classmate/core/constant/enums.dart';
 import 'package:classmate/core/component/heder_component/transition/right_to_left_transition.dart';
 
@@ -88,6 +89,10 @@ class _RoutineDetailsScreenState extends ConsumerState<RoutineDetailsScreen> {
     final bool hasToken = token != null && token.isNotEmpty;
 
     if (!mounted) return;
+
+    // Reset bottom nav bar hidden state so navbar shows on Home
+    ref.read(hideBottomNavBarProvider.notifier).state = 0;
+    ref.read(hideNevBarOnScorningProvider.notifier).state = false;
 
     if (hasToken) {
       if (Navigator.canPop(context)) {

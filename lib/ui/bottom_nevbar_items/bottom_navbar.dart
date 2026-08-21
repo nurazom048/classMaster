@@ -173,6 +173,12 @@ class BottomNavBar extends StatelessWidget {
                               isSelected: index == 0 && showPlus == false,
                               onTap: () {
                                 ref
+                                    .read(hideBottomNavBarProvider.notifier)
+                                    .state = 0;
+                                ref
+                                    .read(hideNevBarOnScorningProvider.notifier)
+                                    .state = false;
+                                ref
                                     .read(bottomNavBarIndexProvider.notifier)
                                     .state = 0;
                                 ref
