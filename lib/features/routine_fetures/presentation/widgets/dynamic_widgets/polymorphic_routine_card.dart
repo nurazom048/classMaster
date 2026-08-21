@@ -332,9 +332,14 @@ class RoutineFeedCard extends ConsumerWidget {
                       ),
                     ),
                 error:
-                    (error, stack) => Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Alert.handleError(context, error),
+                    (error, stack) => const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 24.0, horizontal: 16.0),
+                      child: Center(
+                        child: Text(
+                          "No classes or routine details found.",
+                          style: TextStyle(color: Colors.grey, fontSize: 13),
+                        ),
+                      ),
                     ),
               ),
             ],

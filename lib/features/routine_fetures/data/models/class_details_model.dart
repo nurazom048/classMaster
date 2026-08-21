@@ -138,17 +138,17 @@ class ExamModel {
     }
 
     return ExamModel(
-      id: json['id'] ?? '',
+      id: json['id']?.toString() ?? '',
       model_no: json['model_no'] ?? json['modelNo'],
-      name: json['name'] ?? '',
-      subjectCode: json['subjectCode'],
+      name: json['name']?.toString() ?? '',
+      subjectCode: json['subjectCode']?.toString(),
       price: json['price'] != null ? (json['price'] as num).toDouble() : 0,
       syllabus: parsedSyllabus,
-      date: DateTime.parse(json['date']),
-      startTime: DateTime.parse(json['startTime']),
-      endTime: DateTime.parse(json['endTime']),
-      room: json['room'] ?? '',
-      routineId: json['routineId'] ?? '',
+      date: json['date'] != null ? DateTime.tryParse(json['date'].toString()) ?? DateTime.now() : DateTime.now(),
+      startTime: json['startTime'] != null ? DateTime.tryParse(json['startTime'].toString()) ?? DateTime.now() : DateTime.now(),
+      endTime: json['endTime'] != null ? DateTime.tryParse(json['endTime'].toString()) ?? DateTime.now() : DateTime.now(),
+      room: json['room']?.toString() ?? '',
+      routineId: json['routineId']?.toString() ?? '',
     );
   }
 }
@@ -170,11 +170,11 @@ class AllClass {
 
   factory AllClass.fromJson(Map<String, dynamic> json) {
     return AllClass(
-      id: json['id'],
-      name: json['name'],
-      instructorName: json['instructorName'],
-      subjectCode: json['subjectCode'],
-      routineId: json['routineId'],
+      id: json['id']?.toString() ?? '',
+      name: json['name']?.toString() ?? '',
+      instructorName: json['instructorName']?.toString() ?? '',
+      subjectCode: json['subjectCode']?.toString() ?? '',
+      routineId: json['routineId']?.toString() ?? '',
     );
   }
 
@@ -247,18 +247,18 @@ class Day {
   });
 
   factory Day.fromJson(Map<String, dynamic> json) => Day(
-    room: json["room"],
-    id: json["id"],
-    routineId: json["routineId"],
-    name: json["name"],
-    instructorName: json["instructorName"],
-    subjectCode: json["subjectCode"],
-    startTime: DateTime.parse(json["startTime"]),
-    endTime: DateTime.parse(json["endTime"]),
-    createdAt: DateTime.parse(json["createdAt"]),
-    updatedAt: DateTime.parse(json["updatedAt"]),
+    room: json["room"]?.toString() ?? '',
+    id: json["id"]?.toString() ?? '',
+    routineId: json["routineId"]?.toString() ?? '',
+    name: json["name"]?.toString() ?? '',
+    instructorName: json["instructorName"]?.toString() ?? '',
+    subjectCode: json["subjectCode"]?.toString() ?? '',
+    startTime: json["startTime"] != null ? DateTime.tryParse(json["startTime"].toString()) ?? DateTime.now() : DateTime.now(),
+    endTime: json["endTime"] != null ? DateTime.tryParse(json["endTime"].toString()) ?? DateTime.now() : DateTime.now(),
+    createdAt: json["createdAt"] != null ? DateTime.tryParse(json["createdAt"].toString()) ?? DateTime.now() : DateTime.now(),
+    updatedAt: json["updatedAt"] != null ? DateTime.tryParse(json["updatedAt"].toString()) ?? DateTime.now() : DateTime.now(),
     weekdays:
-        (json['weekdays'] as List)
+        (json['weekdays'] as List? ?? [])
             .map((item) => Weekday.fromJson(item))
             .toList(),
   );

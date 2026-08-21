@@ -147,8 +147,10 @@ class RoutineRequestImpl implements RoutineRepositoryImp {
       }
     } catch (error) {
       if (isHaveCache) {
-        final getData = await MyApiCache.getData(key);
-        return AllClassesResponse.fromJson(getData);
+        try {
+          final getData = await MyApiCache.getData(key);
+          return AllClassesResponse.fromJson(getData);
+        } catch (_) {}
       }
       rethrow;
     }
