@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../../core/component/rich_text_editor/app_quill_editor.dart';
 import 'routine_theme.dart';
 
 class RoutineOptionsCard extends StatefulWidget {
@@ -220,8 +221,17 @@ class _RoutineOptionsCardState extends State<RoutineOptionsCard> {
             _buildDetailRow("Description", widget.routineDescription!),
           ],
           if (aboutText != null && aboutText.isNotEmpty) ...[
-            const SizedBox(height: 6),
-            _buildDetailRow("About", aboutText),
+            const SizedBox(height: 10),
+            const Text(
+              "About Routine",
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF64748B),
+              ),
+            ),
+            const SizedBox(height: 4),
+            AppQuillViewer(content: aboutText),
           ],
           if (customAboutWidgets.isNotEmpty) ...[
             ...customAboutWidgets,

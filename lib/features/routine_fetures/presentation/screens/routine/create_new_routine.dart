@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../core/component/rich_text_editor/app_quill_editor.dart';
 import '../../../../../core/export_core.dart';
 import '../../../../../route/route_constant.dart';
 import '../../../../account_fetures/domain/providers/account_providers.dart';
@@ -38,7 +39,10 @@ class CreateNewRoutine extends ConsumerStatefulWidget {
 
 class _CreateNewRoutineState extends ConsumerState<CreateNewRoutine> {
   late final TextEditingController _routineNameController;
-  late final TextEditingController _aboutController;
+  final GlobalKey<AppQuillEditorState> _quillEditorKey =
+      GlobalKey<AppQuillEditorState>();
+  String? _initialAboutStr;
+  String? _aboutJsonContent;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -48,18 +52,16 @@ class _CreateNewRoutineState extends ConsumerState<CreateNewRoutine> {
       text: widget.initialRoutineName ?? '',
     );
 
-    String aboutText = '';
     if (widget.initialAbout != null) {
       if (widget.initialAbout is String) {
-        aboutText = widget.initialAbout;
+        _initialAboutStr = widget.initialAbout;
       } else if (widget.initialAbout is Map &&
           widget.initialAbout.containsKey('text')) {
-        aboutText = widget.initialAbout['text']?.toString() ?? '';
+        _initialAboutStr = widget.initialAbout['text']?.toString();
       } else {
-        aboutText = widget.initialAbout.toString();
+        _initialAboutStr = widget.initialAbout.toString();
       }
     }
-    _aboutController = TextEditingController(text: aboutText);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.initialRoutineType != null) {
@@ -76,7 +78,6 @@ class _CreateNewRoutineState extends ConsumerState<CreateNewRoutine> {
   @override
   void dispose() {
     _routineNameController.dispose();
-    _aboutController.dispose();
     super.dispose();
   }
 
@@ -405,9 +406,9 @@ class _CreateNewRoutineState extends ConsumerState<CreateNewRoutine> {
 
                     const SizedBox(height: 24),
 
-                    // 4. About Section (Description / Notes / Instructions)
+                    // 4. About Section (Flutter Quill Rich Text Editor)
                     const Text(
-                      "About Routine",
+                      "About Routine (Formatting & Details)",
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
@@ -415,39 +416,14 @@ class _CreateNewRoutineState extends ConsumerState<CreateNewRoutine> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    TextFormField(
-                      controller: _aboutController,
-                      maxLines: 4,
-                      decoration: InputDecoration(
-                        hintText:
-                            "Add routine details, instructions, links, or syllabus note...",
-                        hintStyle: const TextStyle(
-                          fontSize: 13,
-                          color: Color(0xFF94A3B8),
-                        ),
-                        contentPadding: const EdgeInsets.all(14),
-                        filled: true,
-                        fillColor: const Color(0xFFF8FAFC),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
-                            color: Color(0xFFE2E8F0),
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
-                            color: Color(0xFFE2E8F0),
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
-                            color: Color(0xFF0052CC),
-                            width: 1.5,
-                          ),
-                        ),
-                      ),
+                    AppQuillEditor(
+                      key: _quillEditorKey,
+                      initialContent: _initialAboutStr,
+                      onChanged: (jsonVal) {
+                        _aboutJsonContent = jsonVal;
+                      },
+                      hintText:
+                          "Add bold, underline, lists, instructions, links, or syllabus note...",
                     ),
 
                     const SizedBox(height: 36),
@@ -493,6 +469,15 @@ class _CreateNewRoutineState extends ConsumerState<CreateNewRoutine> {
     createRoutineLoaderNotifier.state = true;
     final repo = ref.read(routineReqProvider);
 
+    final String? aboutFinalContent =
+        _aboutJsonContent ??
+        _quillEditorKey.currentState?.jsonDeltaString ??
+        _initialAboutStr;
+    final String plainText =
+        _quillEditorKey.currentState?.plainText ?? '';
+    final dynamic finalAboutPayload =
+        plainText.isNotEmpty ? aboutFinalContent : null;
+
     if (widget.isEditMode) {
       if (widget.routineId == null) {
         createRoutineLoaderNotifier.state = false;
@@ -500,11 +485,10 @@ class _CreateNewRoutineState extends ConsumerState<CreateNewRoutine> {
         return;
       }
 
-      final aboutText = _aboutController.text.trim();
       final res = await repo.updateRoutine(
         routineID: widget.routineId!,
         routineName: _routineNameController.text.trim(),
-        about: aboutText.isNotEmpty ? aboutText : null,
+        about: finalAboutPayload,
       );
 
       res.fold(
