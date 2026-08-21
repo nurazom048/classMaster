@@ -53,14 +53,13 @@ class AddNoticeScreen extends ConsumerWidget {
 
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
-      padding: const EdgeInsets.only(top: 40),
+      padding: const EdgeInsets.only(top: 10),
       child: Form(
         key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (Responsive.isMobile(context))
-              HeaderTitle("Back to Home", context),
+            HeaderTitle("Back to Home", context),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(

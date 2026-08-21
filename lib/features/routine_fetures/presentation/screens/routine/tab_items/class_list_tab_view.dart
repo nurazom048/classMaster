@@ -99,10 +99,7 @@ class ClassListTabView extends StatelessWidget {
     ];
 
     final dayClasses = _getClassesForDay(selectedDayIndex);
-    final demoClasses = _getDemoClasses(selectedDayIndex);
-    final isRealDataAvailable = dayClasses.isNotEmpty;
-    final totalCount =
-        isRealDataAvailable ? dayClasses.length : demoClasses.length;
+    final totalCount = dayClasses.length;
 
     final todayIndex = (DateTime.now().weekday + 1) % 7;
 
@@ -257,38 +254,40 @@ class ClassListTabView extends StatelessWidget {
           ),
           child: Column(
             children: [
-              ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: totalCount,
-                separatorBuilder:
-                    (context, index) => const Divider(
-                      height: 1,
-                      color: Color(0xFFF1F5F9),
-                      indent: 16,
-                      endIndent: 16,
+              if (totalCount == 0)
+                Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Center(
+                    child: Text(
+                      "No classes scheduled for ${fullDays[selectedDayIndex]}",
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Color(0xFF64748B),
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                itemBuilder: (context, index) {
-                  final number = index + 1;
-                  final String name =
-                      isRealDataAvailable
-                          ? dayClasses[index].name
-                          : demoClasses[index]["name"]!;
-                  final String time =
-                      isRealDataAvailable
-                          ? "${DateFormat('hh:mm a').format(dayClasses[index].startTime)} – ${DateFormat('hh:mm a').format(dayClasses[index].endTime)}"
-                          : demoClasses[index]["time"]!;
-                  final String room =
-                      isRealDataAvailable
-                          ? dayClasses[index].room
-                          : demoClasses[index]["room"]!;
-                  final String teacher =
-                      isRealDataAvailable
-                          ? dayClasses[index].instructorName
-                          : demoClasses[index]["teacher"]!;
-
-                  final dayClassItem =
-                      isRealDataAvailable ? dayClasses[index] : null;
+                  ),
+                )
+              else
+                ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: totalCount,
+                  separatorBuilder:
+                      (context, index) => const Divider(
+                        height: 1,
+                        color: Color(0xFFF1F5F9),
+                        indent: 16,
+                        endIndent: 16,
+                      ),
+                  itemBuilder: (context, index) {
+                    final number = index + 1;
+                    final dayClassItem = dayClasses[index];
+                    final String name = dayClassItem.name;
+                    final String time =
+                        "${DateFormat('hh:mm a').format(dayClassItem.startTime)} – ${DateFormat('hh:mm a').format(dayClassItem.endTime)}";
+                    final String room = dayClassItem.room;
+                    final String teacher = dayClassItem.instructorName;
 
                   return InkWell(
                     onLongPress: () {

@@ -15,8 +15,7 @@ import '../../../../../core/widgets/heder/heder_title.dart';
 import '../../../data/models/class_model.dart';
 import '../../../data/models/find_class_model.dart';
 
-import '../../widgets/static_widgets/select_time.dart';
-import '../../widgets/static_widgets/show_weekday_widgets.dart';
+import '../../widgets/static_widgets/set_schedule_section.dart';
 
 class AddClassScreen extends ConsumerStatefulWidget {
   final String routineId;
@@ -46,14 +45,8 @@ class _AddClassScreenState extends ConsumerState<AddClassScreen> {
   final _instructorController = TextEditingController();
   final _roomController = TextEditingController();
   final _subCodeController = TextEditingController();
-  // Selected day of the week
-  String? _selectedDay;
-  bool showStartTime = false;
-  bool showEndTime = false;
-
-  // Default start and end times
-  DateTime startTime = DateTime.now();
-  DateTime endTime = DateTime.now().add(const Duration(minutes: 30));
+  // Schedules list
+  List<ClassScheduleItem> _schedules = [];
 
   @override
   void initState() {
@@ -123,82 +116,16 @@ class _AddClassScreenState extends ConsumerState<AddClassScreen> {
                       ),
                       const SizedBox(height: 20),
 
-                      if (widget.isUpdate == true && widget.classId != null)
-                        ShowWeekdayWidgets(classId: widget.classId!)
-                      else
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 16),
-                          height: 480,
-                          width: MediaQuery.of(context).size.width,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              DayDropdown(
-                                labelText: "Tap Here",
-                                onPressed: () {},
-                                onChanged: (selectedDay) {
-                                  setState(() {
-                                    _selectedDay = selectedDay;
-                                  });
-                                },
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 5,
-                                  vertical: 20,
-                                ).copyWith(bottom: 0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    // Header
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        SelectTime(
-                                          width: size.width * 0.40,
-                                          timeText: 'Start Time',
-                                          time: startTime,
-                                          show: showStartTime,
-                                          onTap: () {
-                                            _selectStartTime(
-                                              scaffoldKey.currentContext ??
-                                                  context,
-                                            );
-                                          },
-                                        ),
-                                        SelectTime(
-                                          width: size.width * 0.40,
-                                          timeText: 'End Time',
-                                          time: endTime,
-                                          show: showEndTime,
-                                          onTap:
-                                              () => _selectEndTime(
-                                                scaffoldKey.currentContext ??
-                                                    context,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-                              AppTextFromField(
-                                margin: const EdgeInsets.symmetric(
-                                  horizontal: 22,
-                                ).copyWith(top: 0),
-                                controller: _roomController,
-                                hint: "Classroom Number",
-                                labelText: "Enter Classroom Number (Optional)",
-                                validator:
-                                    (value) =>
-                                        AddClassValidator.roomNumber(value),
-                              ),
-                            ],
-                          ),
-                        ),
+                      // Set Schedule Section (Redesigned Schedule Architecture)
+                      SetScheduleSection(
+                        key: ValueKey(_schedules.length),
+                        initialSchedules: _schedules,
+                        onSchedulesChanged: (updatedSchedules) {
+                          setState(() {
+                            _schedules = updatedSchedules;
+                          });
+                        },
+                      ),
 
                       const SizedBox(height: 30),
                       CupertinoButtonCustom(
@@ -234,19 +161,24 @@ class _AddClassScreenState extends ConsumerState<AddClassScreen> {
 
     final repo = ref.read(routineReqProvider);
 
+    if (_schedules.isEmpty) {
+      Alert.errorAlertDialog(context, 'Please select at least one schedule day & time');
+      return;
+    }
+
     if (widget.isUpdate == true) {
       try {
         await repo.editClass(
           classID: widget.classId ?? "",
           routineID: widget.routineId,
-          startTime: startTime,
-          endTime: endTime,
+          startTime: _schedules.first.startTime,
+          endTime: _schedules.first.endTime,
           classModel: ClasssModel(
             id: '',
             routineId: widget.routineId,
             name: _classNameController.text,
             instructorName: _instructorController.text,
-            roomNumber: _roomController.text,
+            roomNumber: _schedules.first.roomNumber,
             subjectCode: _subCodeController.text,
           ),
         );
@@ -261,56 +193,29 @@ class _AddClassScreenState extends ConsumerState<AddClassScreen> {
         }
       }
     } else {
-      if (_selectedDay == null) {
-        Alert.errorAlertDialog(context, 'Select day');
-      } else {
-        try {
-          String newClassID = await repo.createClass(
-            routineID: widget.routineId,
-            classModel: ClasssModel(
-              id: '',
-              routineId: widget.routineId,
-              name: _classNameController.text,
-              instructorName: _instructorController.text,
-              roomNumber: _roomController.text,
-              subjectCode: _subCodeController.text,
-              weekday: _selectedDay!,
-            ),
-            startTime: startTime,
-            endTime: endTime,
-          );
-          ref.refresh(routineDetailsProvider(widget.routineId));
-          if (!mounted) return;
-          Alert.showSnackBar(context, "Class added successfully");
+      try {
+        String newClassID = await repo.createClass(
+          routineID: widget.routineId,
+          classModel: ClasssModel(
+            id: '',
+            routineId: widget.routineId,
+            name: _classNameController.text,
+            instructorName: _instructorController.text,
+            roomNumber: _schedules.first.roomNumber,
+            subjectCode: _subCodeController.text,
+            weekday: _schedules.first.day,
+          ),
+          startTime: _schedules.first.startTime,
+          endTime: _schedules.first.endTime,
+        );
+        ref.refresh(routineDetailsProvider(widget.routineId));
+        if (!mounted) return;
+        Alert.showSnackBar(context, "Class added successfully");
 
-          Navigator.pushReplacement(
-            context,
-            PageRouteBuilder(
-              pageBuilder: (
-                BuildContext context,
-                Animation<double> animation,
-                Animation<double> secondaryAnimation,
-              ) {
-                return SlideTransition(
-                  position: Tween<Offset>(
-                    begin: const Offset(1, 0),
-                    end: Offset.zero,
-                  ).animate(
-                    CurvedAnimation(parent: animation, curve: Curves.easeOut),
-                  ),
-                  child: AddClassScreen(
-                    routineId: widget.routineId,
-                    classId: newClassID,
-                    isUpdate: true,
-                  ),
-                );
-              },
-            ),
-          );
-        } catch (e) {
-          if (context.mounted) {
-            Alert.handleError(context, e.toString());
-          }
+        Navigator.pop(context);
+      } catch (e) {
+        if (context.mounted) {
+          Alert.handleError(context, e.toString());
         }
       }
     }
@@ -326,56 +231,13 @@ class _AddClassScreenState extends ConsumerState<AddClassScreen> {
         _classNameController.text = foundClass.classes.name;
         _instructorController.text = foundClass.classes.instructorName;
         _subCodeController.text = foundClass.classes.subjectCode;
+        if (foundClass.schedules.isNotEmpty) {
+          _schedules = List.from(foundClass.schedules);
+        }
       });
     } catch (e) {
       Alert.handleError(context, e.toString());
     }
     return null;
-  }
-
-  void _selectStartTime(context) {
-    showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.fromDateTime(startTime),
-    ).then((value) {
-      if (value != null) {
-        setState(() {
-          showStartTime = true;
-          startTime = DateTime(
-            startTime.year,
-            startTime.month,
-            startTime.day,
-            value.hour,
-            value.minute,
-          );
-        });
-      }
-    });
-  }
-
-  void _selectEndTime(context) {
-    showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.fromDateTime(endTime),
-    ).then((value) {
-      if (value != null) {
-        DateTime selectedEndTime = DateTime(
-          endTime.year,
-          endTime.month,
-          endTime.day,
-          value.hour,
-          value.minute,
-        );
-
-        if (selectedEndTime.isAfter(startTime)) {
-          setState(() {
-            showEndTime = true;
-            endTime = selectedEndTime;
-          });
-        } else {
-          Alert.showSnackBar(context, 'End time must be after start time');
-        }
-      }
-    });
   }
 }
