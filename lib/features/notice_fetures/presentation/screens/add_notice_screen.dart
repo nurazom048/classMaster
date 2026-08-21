@@ -6,6 +6,7 @@ import 'package:mime/mime.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
+import '../../../../core/component/rich_text_editor/app_quill_editor.dart';
 import '../../../../core/export_core.dart';
 import '../../data/datasources/notice_request.dart';
 import '../../domain/interface/pdf_interface.dart' show PdfFileData;
@@ -91,13 +92,23 @@ class AddNoticeScreen extends ConsumerWidget {
                     },
                   ),
                   const SizedBox(height: 20),
-                  AppTextFromField(
-                    margin: EdgeInsets.zero,
-                    controller: descriptionController,
-                    hint: "Notice Description",
-                    labelText: "Describe what the notice is about.",
-                  ).multiline(),
-                  const SizedBox(height: 60),
+                  const Text(
+                    "Notice Description",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF0168FF),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  AppQuillEditor(
+                    hintText: "Describe what the notice is about...",
+                    minHeight: 150,
+                    onChanged: (jsonStr) {
+                      descriptionController.text = jsonStr;
+                    },
+                  ),
+                  const SizedBox(height: 40),
                   UploadPDFButton(
                     onSelected: (pdfFileData) {
                       print('onSelected called with: $pdfFileData');

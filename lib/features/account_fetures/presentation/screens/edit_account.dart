@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:classmate/core/export_core.dart';
+import 'package:classmate/core/component/rich_text_editor/app_quill_editor.dart';
 import 'package:classmate/features/account_fetures/presentation/utils/edit_account.validation.dart';
 import 'package:classmate/features/account_fetures/presentation/utils/bangladesh_locations.dart';
 import 'package:classmate/core/widgets/searchable_dropdown.dart';
@@ -126,12 +127,30 @@ class _EditAccountState extends ConsumerState<EditAccount> {
 
                       const SizedBox(height: 16),
 
-                      AppTextFromField(
-                        controller: aboutController,
-                        hint: 'About',
-                        labelText: 'Write About Text',
-                        validator: EditAccountValidation.validateAbout,
-                      ).multiline(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "About",
+                              style: TS.opensensBlue(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            AppQuillEditor(
+                              initialContent: aboutController.text,
+                              hintText: "Write About Text...",
+                              minHeight: 150,
+                              onChanged: (jsonStr) {
+                                aboutController.text = jsonStr;
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
 
                       // --- Address & Location Section ---
                       Container(
