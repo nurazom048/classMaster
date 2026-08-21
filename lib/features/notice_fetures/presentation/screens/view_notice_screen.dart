@@ -1,4 +1,5 @@
 import 'package:classmate/core/component/heder_component/transition/right_to_left_transition.dart';
+import 'package:classmate/core/component/rich_text_editor/app_quill_editor.dart';
 import 'package:classmate/features/notice_fetures/data/datasources/notice_request.dart';
 import 'package:classmate/features/notice_fetures/presentation/utils/share_notice_dialog.dart';
 import 'package:classmate/features/notice_fetures/presentation/widgets/static_widgets/custom_share_bottom_sheet.dart';
@@ -206,9 +207,9 @@ class _NoticeViewScreenState extends ConsumerState<NoticeViewScreen> {
                           ),
                         ),
                         const SizedBox(height: 4),
-                        Text(
-                          _notice!.description ?? '',
-                          style: const TextStyle(
+                        AppQuillViewer(
+                          content: _notice!.description,
+                          defaultStyle: const TextStyle(
                             fontSize: 16,
                             color: Colors.black87,
                             height: 1.4,

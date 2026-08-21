@@ -45,14 +45,16 @@ class ThemeNotifier extends AsyncNotifier<ThemeModeOption> {
   final ThemeData darkTheme = ThemeData.dark();
 
   ThemeData get currentTheme {
-    final brightness = WidgetsBinding.instance.window.platformBrightness;
     final mode = state.value ?? ThemeModeOption.system;
 
     return switch (mode) {
       ThemeModeOption.light => lightTheme,
       ThemeModeOption.dark => darkTheme,
       ThemeModeOption.system =>
-        brightness == Brightness.dark ? darkTheme : lightTheme,
+        WidgetsBinding.instance.platformDispatcher.platformBrightness ==
+                Brightness.dark
+            ? darkTheme
+            : lightTheme,
     };
   }
 }

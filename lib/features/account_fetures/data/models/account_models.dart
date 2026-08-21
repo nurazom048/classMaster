@@ -1,3 +1,4 @@
+import 'dart:convert';
 import '../../../../core/constant/enums.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../core/constant/constant.dart';
@@ -56,7 +57,9 @@ class AccountModels {
     coverImage = json['coverImage'] == "null" ? null : json['coverImage'];
 
     position = json['position'];
-    about = json['about'];
+    about = json['about'] is String
+        ? json['about']
+        : (json['about'] != null ? jsonEncode(json['about']) : null);
     accountType = json['accountType'];
 
     isVerified = json['isVerified'];

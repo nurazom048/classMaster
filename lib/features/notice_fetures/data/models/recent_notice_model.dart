@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:classmate/features/account_fetures/data/models/account_models.dart';
 
 class RecentNotice {
@@ -100,7 +101,9 @@ class Notice {
     id: json["id"] ?? '',
     title: json["title"] ?? '',
     pdf: json["pdf"] ?? '',
-    description: json["description"],
+    description: json["description"] is String
+        ? json["description"]
+        : (json["description"] != null ? jsonEncode(json["description"]) : null),
     category: json["category"] ?? 'notice',
     publisherId: json["publisherId"] ?? '',
     account: AccountModels.fromJson(

@@ -144,7 +144,7 @@ class AddNoticeScreen extends ConsumerWidget {
                               currentPdfData.imageBytesList?.length ??
                               0);
                           if (imgCount == 0) {
-                            Alert.errorAlertDialog(context, "No images selected");
+                            Alert.errorAlertDialog(context, "Select a PDF or image file");
                             return;
                           }
                           if (imgCount > 10) {
@@ -157,36 +157,48 @@ class AddNoticeScreen extends ConsumerWidget {
                         } else {
                           if (kIsWeb) {
                             if (currentPdfData.bytes == null) {
-                              Alert.errorAlertDialog(context, "PDF data missing");
+                              Alert.errorAlertDialog(context, "Notice file missing");
                               return;
                             }
-                            if (currentPdfData.bytes!.length > 10 * 1024 * 1024) {
+                            if (currentPdfData.bytes!.length > 15 * 1024 * 1024) {
                               Alert.errorAlertDialog(
                                 context,
-                                'Maximum file size allowed is 10 MB',
+                                'Maximum file size allowed is 15 MB',
                               );
                               return;
                             }
                           } else {
                             if (currentPdfData.path != null) {
-                              File thePdf = File(currentPdfData.path!);
+                              File selectedFile = File(currentPdfData.path!);
+                              if (!selectedFile.existsSync()) {
+                                Alert.errorAlertDialog(context, "Selected file does not exist");
+                                return;
+                              }
                               String? mimeType = lookupMimeType(
                                 currentPdfData.path!,
                               );
-                              if (mimeType != 'application/pdf') {
+                              String ext = currentPdfData.path!.split('.').last.toLowerCase();
+                              bool isPdf = (mimeType == 'application/pdf') || (ext == 'pdf');
+                              bool isImage = (mimeType != null && mimeType.startsWith('image/')) ||
+                                  ['jpg', 'jpeg', 'png', 'webp', 'heic'].contains(ext);
+
+                              if (!isPdf && !isImage) {
                                 Alert.errorAlertDialog(
                                   context,
-                                  'Only PDF files are allowed',
+                                  'Invalid file type. Only PDF and image files (JPG, PNG, WEBP) are allowed.',
                                 );
                                 return;
                               }
-                              if (thePdf.lengthSync() > 10 * 1024 * 1024) {
+                              if (selectedFile.lengthSync() > 15 * 1024 * 1024) {
                                 Alert.errorAlertDialog(
                                   context,
-                                  'Maximum file size allowed is 10 MB',
+                                  'Maximum file size allowed is 15 MB',
                                 );
                                 return;
                               }
+                            } else if (currentPdfData.bytes == null) {
+                              Alert.errorAlertDialog(context, "Select a PDF or image file");
+                              return;
                             }
                           }
                         }

@@ -131,20 +131,22 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _loadSavedCredentials() async {
     final credentials = await CredentialSaveService.getSavedCredentials();
-    if (credentials.isEmpty) return;
+    if (credentials.isEmpty || !mounted) return;
 
     setState(() {
-      if (credentials['username'] != null &&
-          credentials['username']!.isNotEmpty) {
+      final username = credentials['username'];
+      final email = credentials['email'];
+      final password = credentials['password'];
+
+      if (username != null && username.isNotEmpty) {
         _byUsername = true;
-        _usernameController.text = credentials['username']!;
-      } else if (credentials['email'] != null &&
-          credentials['email']!.isNotEmpty) {
+        _usernameController.text = username;
+      } else if (email != null && email.isNotEmpty) {
         _byUsername = false;
-        _emailController.text = credentials['email']!;
+        _emailController.text = email;
       }
-      if (credentials['password'] != null) {
-        _passwordController.text = credentials['password']!;
+      if (password != null && password.isNotEmpty) {
+        _passwordController.text = password;
       }
 
       // Update progress bar
@@ -259,46 +261,46 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             Image.asset(
                               'assets/png/logo.png',
-                              width: 36,
-                              height: 36,
+                              width: 32,
+                              height: 32,
                               fit: BoxFit.contain,
                               errorBuilder: (context, error, stackTrace) {
                                 return Icon(
                                   Icons.school,
                                   color: AppColor.nokiaBlue,
-                                  size: 36,
+                                  size: 32,
                                 );
                               },
                             ),
-                            const SizedBox(width: 10),
+                            const SizedBox(width: 8),
                             const Text(
                               "Class Master",
                               style: TextStyle(
-                                fontSize: 26,
+                                fontSize: 22,
                                 fontWeight: FontWeight.bold,
-                                letterSpacing: 1.0,
+                                letterSpacing: 0.8,
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 12),
                         Text(
                           (!_showManualForm && _savedAccounts.isNotEmpty)
                               ? "Recent Logins"
                               : "Welcome back!",
                           style: const TextStyle(
-                            fontSize: 32,
+                            fontSize: 26,
                             fontWeight: FontWeight.bold,
                             color: Color(0xFF111827),
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 4),
                         Text(
                           (!_showManualForm && _savedAccounts.isNotEmpty)
                               ? "Tap your picture or account to log in"
                               : _statusText,
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 13,
                             color: _statusColor,
                             fontWeight: FontWeight.w500,
                           ),
@@ -306,7 +308,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 16),
 
                   // =========================================================
                   // SECTION A: SAVED ACCOUNTS CARD LIST (Facebook Style)
@@ -354,31 +356,30 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             child: Row(
                               children: [
-                                CircleAvatar(
-                                  radius: 26,
-                                  backgroundColor: AppColor.nokiaBlue
-                                      .withOpacity(0.1),
-                                  backgroundImage:
-                                      account.imageUrl != null &&
-                                              account.imageUrl!.isNotEmpty
-                                          ? CachedNetworkImageProvider(
-                                            account.imageUrl!,
-                                          )
+                                Builder(
+                                  builder: (context) {
+                                    final imageUrl = account.imageUrl;
+                                    final hasImage = imageUrl != null && imageUrl.isNotEmpty;
+                                    return CircleAvatar(
+                                      radius: 26,
+                                      backgroundColor: AppColor.nokiaBlue.withOpacity(0.1),
+                                      backgroundImage: hasImage
+                                          ? CachedNetworkImageProvider(imageUrl)
                                           : null,
-                                  child:
-                                      account.imageUrl == null ||
-                                              account.imageUrl!.isEmpty
+                                      child: !hasImage
                                           ? Text(
-                                            displayName.isNotEmpty
-                                                ? displayName[0].toUpperCase()
-                                                : 'U',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                              color: AppColor.nokiaBlue,
-                                            ),
-                                          )
+                                              displayName.isNotEmpty
+                                                  ? displayName[0].toUpperCase()
+                                                  : 'U',
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                color: AppColor.nokiaBlue,
+                                              ),
+                                            )
                                           : null,
+                                    );
+                                  },
                                 ),
                                 const SizedBox(width: 14),
                                 Expanded(
@@ -496,7 +497,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ]
-
                   // =========================================================
                   // SECTION B: MANUAL LOGIN FORM SECTION
                   // =========================================================
@@ -590,12 +590,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: _passwordController,
                       obscureText: !_isPasswordVisible,
                       hint: "Password",
-                      labelText: "••••••••",
+                      labelText: "Please enter your password",
                       validator:
                           (value) => LoginValidation.validatePassword(value),
                     ),
 
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 10),
 
                     // Forget password
                     ForgetPasswordBtn(
@@ -607,7 +607,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
                       },
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 16),
 
                     // Custom Login Button with Validation
                     CupertinoButtonCustom(
@@ -631,7 +631,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                     ),
 
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 12),
 
                     Row(
                       children: [
@@ -670,7 +670,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
 
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 16),
                     Center(
                       child: GestureDetector(
                         onTap: () {

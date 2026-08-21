@@ -680,6 +680,7 @@ class _RoutinesSectionState extends ConsumerState<RoutinesSection> {
             );
           },
         ),
+        const SizedBox(height: 120),
       ],
     );
   }

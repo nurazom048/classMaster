@@ -58,7 +58,7 @@ class GoogleAuthController extends ChangeNotifier {
             .signInWithCredential(credential);
 
         // If the user is first time login thn go to credential screen else Api Call
-        if (userCredential.additionalUserInfo!.isNewUser) {
+        if (userCredential.additionalUserInfo?.isNewUser ?? false) {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const CredentialScreen()),

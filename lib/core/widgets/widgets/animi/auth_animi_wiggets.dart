@@ -226,10 +226,10 @@ class _AuthAnimationScreenState extends State<AuthAnimationScreen>
           child: SingleChildScrollView(
             child: Container(
               width: isDesktop
-                  ? MediaQuery.of(context).size.width * 0.9
+                  ? MediaQuery.of(context).size.width * 0.75
                   : MediaQuery.of(context).size.width,
-              constraints: const BoxConstraints(maxWidth: 1000),
-              height: isDesktop ? 650 : null,
+              constraints: const BoxConstraints(maxWidth: 820),
+              height: isDesktop ? 540 : null,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius:

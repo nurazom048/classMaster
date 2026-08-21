@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import '../../../../core/component/rich_text_editor/app_quill_editor.dart';
 import '../../../../core/constant/enums.dart';
 import '../../../../core/export_core.dart';
 import '../../data/models/account_models.dart';
@@ -72,7 +73,13 @@ class ProfileTop extends StatelessWidget {
               children: [
                 Text("About", style: TS.heading()),
                 const SizedBox(height: 10),
-                Text("${accountData!.about}"),
+                AppQuillViewer(
+                  content: accountData!.about,
+                  defaultStyle: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.black87,
+                  ),
+                ),
               ],
             ),
           ),
