@@ -39,7 +39,6 @@ class CustomTitleBar extends ConsumerStatefulWidget
 }
 
 class _CustomTitleBarState extends ConsumerState<CustomTitleBar> {
-  bool _isSearchExpanded = false;
   final TextEditingController _searchController = TextEditingController();
 
   void _navigateToShellPage(Widget page, [DrawerItem? drawerItem]) {
@@ -85,70 +84,13 @@ class _CustomTitleBarState extends ConsumerState<CustomTitleBar> {
         ),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child:
-          _isSearchExpanded && isMobile
-              ? _buildMobileExpandedSearch()
-              : _buildStandardHeader(
-                isMobile,
-                dayOfWeek,
-                dateStr,
-                accountData,
-                isGuest,
-              ),
-    );
-  }
-
-  // 🔍 Mobile View - Expanded Search Bar
-  Widget _buildMobileExpandedSearch() {
-    return Row(
-      children: [
-        IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black87),
-          onPressed: () {
-            setState(() {
-              _isSearchExpanded = false;
-            });
-          },
-        ),
-        Expanded(
-          child: Container(
-            height: 42,
-            decoration: BoxDecoration(
-              color: Colors.grey.shade100,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: TextField(
-              controller: _searchController,
-              autofocus: true,
-              textInputAction: TextInputAction.search,
-              onChanged: (value) {
-                setState(() {});
-              },
-              onSubmitted: (value) {
-                if (value.trim().isNotEmpty) {
-                  ref.read(searchStringProvider.notifier).state = value;
-                  _navigateToShellPage(const SearchPage(), DrawerItem.search);
-                }
-              },
-              decoration: const InputDecoration(
-                hintText: "Search notices, routines...",
-                hintStyle: TextStyle(fontSize: 14, color: Colors.grey),
-                prefixIcon: Icon(Icons.search, size: 20, color: Colors.grey),
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.symmetric(vertical: 10),
-              ),
-            ),
-          ),
-        ),
-        if (_searchController.text.isNotEmpty)
-          IconButton(
-            icon: const Icon(Icons.close, color: Colors.grey),
-            onPressed: () {
-              _searchController.clear();
-              setState(() {});
-            },
-          ),
-      ],
+      child: _buildStandardHeader(
+        isMobile,
+        dayOfWeek,
+        dateStr,
+        accountData,
+        isGuest,
+      ),
     );
   }
 
@@ -270,9 +212,10 @@ class _CustomTitleBarState extends ConsumerState<CustomTitleBar> {
               IconButton(
                 icon: Icon(Icons.search, color: AppColor.nokiaBlue, size: 24),
                 onPressed: () {
-                  setState(() {
-                    _isSearchExpanded = true;
-                  });
+                  _navigateToShellPage(
+                    const SearchPage(),
+                    DrawerItem.search,
+                  );
                 },
               ),
               const SizedBox(width: 4),
