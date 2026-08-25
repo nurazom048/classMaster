@@ -200,18 +200,24 @@ class RoutineRequestImpl implements RoutineRepositoryImp {
     required ClasssModel classModel,
     required DateTime startTime,
     required DateTime endTime,
+    List<dynamic>? schedules,
   }) async {
     final headers = await LocalData.getHeader();
     final url = Uri.parse('${Const.BASE_URl}/routine/$routineID/classes');
 
+    final bodyData = <String, dynamic>{
+      ...classModel.toRequestBody(),
+      "startTime": endMaker(startTime.toIso8601String().toString()),
+      "endTime": endMaker(endTime.toIso8601String().toString()),
+    };
+    if (schedules != null && schedules.isNotEmpty) {
+      bodyData["schedules"] = schedules.map((s) => s.toJson()).toList();
+    }
+
     final response = await http.post(
       url,
       headers: headers,
-      body: jsonEncode({
-        ...classModel.toRequestBody(),
-        "startTime": endMaker(startTime.toIso8601String().toString()),
-        "endTime": endMaker(endTime.toIso8601String().toString()),
-      }),
+      body: jsonEncode(bodyData),
     );
     final res = json.decode(response.body);
     if (response.statusCode == 201 || response.statusCode == 200) {
@@ -270,17 +276,23 @@ class RoutineRequestImpl implements RoutineRepositoryImp {
     required DateTime startTime,
     required DateTime endTime,
     required ClasssModel classModel,
+    List<dynamic>? schedules,
   }) async {
     final headers = await LocalData.getHeader();
     final url = Uri.parse('${Const.BASE_URl}/routine/classes/$classID');
+    final bodyData = <String, dynamic>{
+      ...classModel.toRequestBody(),
+      "startTime": startTime.toIso8601String().substring(0, 19),
+      "endTime": endTime.toIso8601String().substring(0, 19),
+    };
+    if (schedules != null && schedules.isNotEmpty) {
+      bodyData["schedules"] = schedules.map((s) => s.toJson()).toList();
+    }
+
     final response = await http.put(
       url,
       headers: headers,
-      body: jsonEncode({
-        ...classModel.toRequestBody(),
-        "startTime": startTime.toIso8601String().substring(0, 19),
-        "endTime": endTime.toIso8601String().substring(0, 19),
-      }),
+      body: jsonEncode(bodyData),
     );
     if (response.statusCode != 200) {
       final res = json.decode(response.body);

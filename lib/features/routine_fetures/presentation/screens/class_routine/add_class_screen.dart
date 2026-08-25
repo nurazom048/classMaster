@@ -47,6 +47,7 @@ class _AddClassScreenState extends ConsumerState<AddClassScreen> {
   final _subCodeController = TextEditingController();
   // Schedules list
   List<ClassScheduleItem> _schedules = [];
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -128,22 +129,41 @@ class _AddClassScreenState extends ConsumerState<AddClassScreen> {
                       ),
 
                       const SizedBox(height: 30),
-                      CupertinoButtonCustom(
-                        icon: widget.isUpdate == true ? Icons.check : null,
-                        padding: const EdgeInsets.symmetric(horizontal: 25),
-                        text:
-                            widget.isUpdate == true
-                                ? 'Update Class'
-                                : "Create Class",
-                        color: AppColor.nokiaBlue,
-                        onPressed: () async {
-                          if (formKey.currentState!.validate()) {
-                            _onTapToButton();
-                          } else {
-                            Alert.showSnackBar(context, 'Fill the form');
-                          }
-                        },
-                      ),
+                      _isLoading
+                          ? Container(
+                              height: 48,
+                              padding: const EdgeInsets.symmetric(horizontal: 25),
+                              decoration: BoxDecoration(
+                                color: AppColor.nokiaBlue.withOpacity(0.7),
+                                borderRadius: BorderRadius.circular(25),
+                              ),
+                              child: const Center(
+                                child: SizedBox(
+                                  width: 22,
+                                  height: 22,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2.5,
+                                  ),
+                                ),
+                              ),
+                            )
+                          : CupertinoButtonCustom(
+                              icon: widget.isUpdate == true ? Icons.check : null,
+                              padding: const EdgeInsets.symmetric(horizontal: 25),
+                              text:
+                                  widget.isUpdate == true
+                                      ? 'Update Class'
+                                      : "Create Class",
+                              color: AppColor.nokiaBlue,
+                              onPressed: () async {
+                                if (formKey.currentState!.validate()) {
+                                  _onTapToButton();
+                                } else {
+                                  Alert.showSnackBar(context, 'Fill the form');
+                                }
+                              },
+                            ),
                       const SizedBox(height: 200),
                     ],
                   ),
@@ -159,42 +179,42 @@ class _AddClassScreenState extends ConsumerState<AddClassScreen> {
   void _onTapToButton() async {
     if (!mounted) return;
 
-    final repo = ref.read(routineReqProvider);
-
     if (_schedules.isEmpty) {
       Alert.errorAlertDialog(context, 'Please select at least one schedule day & time');
       return;
     }
 
-    if (widget.isUpdate == true) {
-      try {
+    setState(() {
+      _isLoading = true;
+    });
+
+    final repo = ref.read(routineReqProvider);
+
+    try {
+      if (widget.isUpdate == true) {
         await repo.editClass(
           classID: widget.classId ?? "",
           routineID: widget.routineId,
           startTime: _schedules.first.startTime,
           endTime: _schedules.first.endTime,
           classModel: ClasssModel(
-            id: '',
+            id: widget.classId ?? '',
             routineId: widget.routineId,
             name: _classNameController.text,
             instructorName: _instructorController.text,
             roomNumber: _schedules.first.roomNumber,
             subjectCode: _subCodeController.text,
+            weekday: _schedules.first.day,
           ),
+          schedules: _schedules,
         );
         ref.refresh(routineDetailsProvider(widget.routineId));
         if (context.mounted) {
           Alert.showSnackBar(context, "Class updated successfully");
           Navigator.pop(context);
         }
-      } catch (e) {
-        if (context.mounted) {
-          Alert.handleError(context, e.toString());
-        }
-      }
-    } else {
-      try {
-        String newClassID = await repo.createClass(
+      } else {
+        await repo.createClass(
           routineID: widget.routineId,
           classModel: ClasssModel(
             id: '',
@@ -207,16 +227,23 @@ class _AddClassScreenState extends ConsumerState<AddClassScreen> {
           ),
           startTime: _schedules.first.startTime,
           endTime: _schedules.first.endTime,
+          schedules: _schedules,
         );
         ref.refresh(routineDetailsProvider(widget.routineId));
         if (!mounted) return;
         Alert.showSnackBar(context, "Class added successfully");
 
         Navigator.pop(context);
-      } catch (e) {
-        if (context.mounted) {
-          Alert.handleError(context, e.toString());
-        }
+      }
+    } catch (e) {
+      if (context.mounted) {
+        Alert.handleError(context, e.toString());
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
       }
     }
   }

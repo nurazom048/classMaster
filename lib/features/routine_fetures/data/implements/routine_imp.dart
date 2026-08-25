@@ -40,6 +40,7 @@ abstract class RoutineRepositoryImp {
     required ClasssModel classModel,
     required DateTime startTime,
     required DateTime endTime,
+    List<dynamic>? schedules,
   });
 
   /// Maps to POST `/:routineID` (updates notification on/off and returns CheckStatusModel)
@@ -58,6 +59,7 @@ abstract class RoutineRepositoryImp {
     required DateTime startTime,
     required DateTime endTime,
     required ClasssModel classModel,
+    List<dynamic>? schedules,
   });
 
   /// Maps to DELETE `/classes/:classID`
