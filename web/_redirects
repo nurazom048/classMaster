@@ -1,3 +1,4 @@
 🚀 Redirect all SPA routes to index.html for Flutter GoRouter deep linking
 
+/sitemap.xml  https://api.classmaster.top/sitemap.xml  301
 /* /index.html 200
